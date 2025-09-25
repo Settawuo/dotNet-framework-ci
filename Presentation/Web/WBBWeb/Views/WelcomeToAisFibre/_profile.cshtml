@@ -1,0 +1,669 @@
+﻿@using WBBWeb.Extension
+@using WBBEntity.PanelModels;
+@model WBBWeb.Models.WelcomeAisModel
+@{
+
+    string W_LOGIN_1 = "";
+    string W_PROFILE_1 = "";//ข้อมูลของคุณ
+    string W_PROFILE_2 = "";//คุณ
+    string W_PROFILE_3 = "";//หมายเลขอินเทอร์เน็ต
+    string W_PROFILE_4 = "";//เบอร์ติดต่อ
+    string W_PROFILE_5 = "";//อีเมลล์
+    string W_PROFILE_6 = "";//วันเกิด
+    string W_PROFILE_7 = "";//AIS point
+    string W_PROFILE_8 = ""; //คะแนน
+    string W_BILL_1 = "";//รอบบิล
+    string W_BILL_2 = "";//รอบบิลของคุณ
+    string W_BILL_3 = "";//วันที่ {x} ถึงวันที่ {Y} ของทุกเดือน
+    string W_CHANNEL_BILL_1 = "";//ช่องทางการรับใบแจ้งค่าบริการ
+    string W_CHANNEL_BILL_2 = "";//ช่องทางการรับใบแจ้งค่าใช้บริการ
+    string W_CHANNEL_BILL_3 = "";//ภาษาที่แสดงบนใบค่าใช้บริการ
+    string W_TYPE_BILL_1 = "";//ข้อมูลใบเสร็จรับเงิน
+    string W_TYPE_BILL_2 = "";//รูปแบบการรับใบเสร็จรับเงิน
+    string W_ADDRESS_BILL_1 = "";//ที่อยู่ในการจัดส่งเอกสาร
+    string W_ADDRESS_BILL_2 = "";//ชื่อ - นามสกุล
+    string W_ADDRESS_BILL_3 = "";//ที่อยู่
+    string W_ADDRESS_INSTALL_1 = "";//ที่อยู่ติดตั้ง
+    string W_ADDRESS_INSTALL_2 = "";//ชื่อ - นามสกุล
+    string W_ADDRESS_INSTALL_3 = "";//ที่อยู่
+    string W_PROFILE_SCREEN = "";//กลับหน้าหลัก
+    string W_TYPE_BILL_3 = "";//ใบเสร็จรับเงิน
+    string W_TYPE_BILL_4 = "";//ใบเสร็จรับเงินออนไลน์ (eReceipt)
+    string W_CHANNEL_BILL_4 = "";//ภาษาไทย
+    string W_CHANNEL_BILL_5 = "";//ภาษาอังกฤษ
+
+
+    if (ViewBag.LabelFBBOR051 != null)
+    {
+        var LabelFBBOR051 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR051;
+        W_LOGIN_1 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_1").DisplayValue : "";
+        W_PROFILE_1 = LabelFBBOR051.Any(c => c.Name == "W_PROFILE_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_PROFILE_1").DisplayValue : "";
+        W_PROFILE_2 = LabelFBBOR051.Any(c => c.Name == "W_PROFILE_2") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_PROFILE_2").DisplayValue : "";
+        W_PROFILE_3 = LabelFBBOR051.Any(c => c.Name == "W_PROFILE_3") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_PROFILE_3").DisplayValue : "";
+        W_PROFILE_4 = LabelFBBOR051.Any(c => c.Name == "W_PROFILE_4") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_PROFILE_4").DisplayValue : "";
+        W_PROFILE_5 = LabelFBBOR051.Any(c => c.Name == "W_PROFILE_5") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_PROFILE_5").DisplayValue : "";
+        W_PROFILE_6 = LabelFBBOR051.Any(c => c.Name == "W_PROFILE_6") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_PROFILE_6").DisplayValue : "";
+        W_PROFILE_7 = LabelFBBOR051.Any(c => c.Name == "W_PROFILE_7") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_PROFILE_7").DisplayValue : "";
+        W_PROFILE_8 = LabelFBBOR051.Any(c => c.Name == "W_PROFILE_8") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_PROFILE_8").DisplayValue : "";
+        W_BILL_1 = LabelFBBOR051.Any(c => c.Name == "W_BILL_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_BILL_1").DisplayValue : "";
+        W_BILL_2 = LabelFBBOR051.Any(c => c.Name == "W_BILL_2") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_BILL_2").DisplayValue : "";
+        W_BILL_3 = LabelFBBOR051.Any(c => c.Name == "W_BILL_3") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_BILL_3").DisplayValue : "";
+        W_CHANNEL_BILL_1 = LabelFBBOR051.Any(c => c.Name == "W_CHANNEL_BILL_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_CHANNEL_BILL_1").DisplayValue : "";
+        W_CHANNEL_BILL_1 = LabelFBBOR051.Any(c => c.Name == "W_CHANNEL_BILL_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_CHANNEL_BILL_1").DisplayValue : "";
+        W_CHANNEL_BILL_2 = LabelFBBOR051.Any(c => c.Name == "W_CHANNEL_BILL_2") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_CHANNEL_BILL_2").DisplayValue : "";
+        W_CHANNEL_BILL_3 = LabelFBBOR051.Any(c => c.Name == "W_CHANNEL_BILL_3") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_CHANNEL_BILL_3").DisplayValue : "";
+        W_CHANNEL_BILL_4 = LabelFBBOR051.Any(c => c.Name == "W_CHANNEL_BILL_4") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_CHANNEL_BILL_4").DisplayValue : "";
+        W_CHANNEL_BILL_5 = LabelFBBOR051.Any(c => c.Name == "W_CHANNEL_BILL_5") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_CHANNEL_BILL_5").DisplayValue : "";
+        W_TYPE_BILL_1 = LabelFBBOR051.Any(c => c.Name == "W_TYPE_BILL_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_TYPE_BILL_1").DisplayValue : "";
+        W_TYPE_BILL_2 = LabelFBBOR051.Any(c => c.Name == "W_TYPE_BILL_2") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_TYPE_BILL_2").DisplayValue : "";
+        W_TYPE_BILL_3 = LabelFBBOR051.Any(c => c.Name == "W_TYPE_BILL_3") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_TYPE_BILL_3").DisplayValue : "";
+        W_TYPE_BILL_4 = LabelFBBOR051.Any(c => c.Name == "W_TYPE_BILL_4") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_TYPE_BILL_4").DisplayValue : "";
+        W_ADDRESS_BILL_1 = LabelFBBOR051.Any(c => c.Name == "W_ADDRESS_BILL_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_ADDRESS_BILL_1").DisplayValue : "";
+        W_ADDRESS_BILL_2 = LabelFBBOR051.Any(c => c.Name == "W_ADDRESS_BILL_2") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_ADDRESS_BILL_2").DisplayValue : "";
+        W_ADDRESS_BILL_3 = LabelFBBOR051.Any(c => c.Name == "W_ADDRESS_BILL_3") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_ADDRESS_BILL_3").DisplayValue : "";
+        W_ADDRESS_INSTALL_1 = LabelFBBOR051.Any(c => c.Name == "W_ADDRESS_INSTALL_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_ADDRESS_INSTALL_1").DisplayValue : "";
+        W_ADDRESS_INSTALL_2 = LabelFBBOR051.Any(c => c.Name == "W_ADDRESS_INSTALL_2") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_ADDRESS_INSTALL_2").DisplayValue : "";
+        W_ADDRESS_INSTALL_3 = LabelFBBOR051.Any(c => c.Name == "W_ADDRESS_INSTALL_3") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_ADDRESS_INSTALL_3").DisplayValue : "";
+        W_PROFILE_SCREEN = LabelFBBOR051.Any(c => c.Name == "W_PROFILE_SCREEN") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_PROFILE_SCREEN").DisplayValue : "";
+    }
+
+    string FBB_Con_INPUT_FIBRENET_ID = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_Con_INPUT_FIBRENET_ID = FbbConstant.Any(f => f.Field == "INPUT_FIBRENET_ID") ? FbbConstant.First(f => f.Field == "INPUT_FIBRENET_ID").Validation : "";
+
+    }
+}
+
+<style>
+
+    @@media(min-width:920px){
+        .fbwe_p4_box-profile_tab1 {
+            min-height: 400px;
+        }
+
+        .fbwe_p4_box-profile_tab2 {
+            min-height: 180px;
+        }
+
+        .fbwe_p4_box-profile_tab3 {
+            min-height: 260px;
+        }
+    }
+
+</style>
+
+<div id="divProfile" class="fbwe_p4_wrap" style="display:none;">
+    <div class="fbwe_p4_cont">
+        <div>
+            <picture>
+                <source media=" (min-width: 920px)" srcset="~/Content/ContentWelcome/images/info/banner_960.png" />
+                <img src="~/Content/ContentWelcome/images/info/banner.png" alt="welcometoaisfibre">
+            </picture>
+        </div>
+        <div class="row">
+            <div class="row">
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p4_box fbwe_p4_box-profile_tab1">
+                            <div class="fbwe_p4_tag">@W_PROFILE_1</div>
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_name"></i>@W_PROFILE_2<b id="txt_name"></b>
+                            </div>
+                            <hr class="info">
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_net"></i>@W_PROFILE_3 <b id="txt_net"></b>
+                            </div>
+                            <hr class="info">
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_number"></i>@W_PROFILE_4 <b id="txt_number"></b>
+                            </div>
+                            <hr class="info">
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_mail"></i>@W_PROFILE_5 <b id="txt_mail"></b>
+                            </div>
+                            <hr class="info">
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_birthday"></i>@W_PROFILE_6 <b id="txt_birthday"></b>
+                            </div>
+                            <hr class="info">
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_point"></i>@W_PROFILE_7 <b id="txt_point"></b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p4_box fbwe_p4_box-profile_tab1">
+                            <div class="fbwe_p4_tag">@W_BILL_1</div>
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_bill2"></i>@W_BILL_2 <b id="txt_bill"></b>
+                            </div>
+                            <hr class="info">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p4_box fbwe_p4_box-profile_tab2">
+                            <div class="fbwe_p4_tag">@W_CHANNEL_BILL_1</div>
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_bill1"></i>@W_CHANNEL_BILL_2 <b id="txt_cahnel_bill"></b>
+                            </div>
+                            <hr class="info">
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_lang"></i>@W_CHANNEL_BILL_3 <b id="txt_cahnel_lang"></b>
+                            </div>
+                            <hr class="info">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p4_box fbwe_p4_box-profile_tab2">
+                            <div class="fbwe_p4_tag">@W_TYPE_BILL_1</div>
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_ereceipt"></i>@W_TYPE_BILL_2 <b id="txt_type_ereceipt_bill"></b>
+                            </div>
+                            <hr class="info">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p4_box fbwe_p4_box-profile_tab3">
+                            <div class="fbwe_p4_tag">@W_ADDRESS_BILL_1</div>
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_name"></i>@W_ADDRESS_BILL_2<b id="txt_address_name_bill"></b>
+                            </div>
+                            <hr class="info">
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_ereceipt"></i>@W_ADDRESS_BILL_3  <b id="txt_address_ereceipt_bill"></b>
+                            </div>
+                            <hr class="info">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p4_box fbwe_p4_box-profile_tab3">
+                            <div class="fbwe_p4_tag">@W_ADDRESS_INSTALL_1</div>
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_name"></i>@W_ADDRESS_INSTALL_2<b id="txt_install_name_bill"></b>
+                            </div>
+                            <hr class="info">
+                            <div class="fbwe_info_tab">
+                                <i class="fbwe_info_ico fbwe_info_ic_ereceipt"></i>@W_ADDRESS_INSTALL_3  <b id="txt_install_ereceipt_bill"></b>
+                            </div>
+                            <hr class="info">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fbwe_p4_btn_wrap">
+            <a onclick="backPage()" class="fbwe_btn_edit"><img src="~/Content/ContentWelcome/images/package/arr.png" width="" alt=""> @W_PROFILE_SCREEN</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .fbwe_p4_btn_wrap {
+        margin-top: auto !important;
+        padding-bottom: 30px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var fibrenetId = "";
+    var address_name = "", address_Install = "", address_bill = "";
+    var billCycle = "", billMedia = "", billLanguage = "";
+    var firstName = "", lastName = "";
+    var houseNo = "", moo = "", mooban = "", room = "", floor = "", buildingName = "", soi = "", streetName = "", tumbol = "", provinceName = "", amphur = "", zipCode = "";
+    var payMentOrderId = "";
+    var internetNoPiont = "", mobileNoPoint = "";
+    var Receipt = "";
+    var passNumber = "";
+
+    function startPageProfile() {
+
+        fibrenetId = $("#AisAirNumber").val();
+        address_name = "";
+        address_Install = "";
+        address_bill = "";
+        billCycle = "";
+        billMedia = "";
+        billLanguage = "";
+        firstName = "";
+        lastName = "";
+        houseNo = "";
+        moo = "";
+        mooban = "";
+        room = "";
+        floor = "";
+        buildingName = "";
+        soi = "";
+        streetName = "";
+        tumbol = "";
+        provinceName = "";
+        amphur = "";
+        zipCode = "";
+        payMentOrderId = "";
+        internetNoPiont = "";
+        mobileNoPoint = "";
+        Receipt = "";
+        
+              
+        GetPersonalInformationOption5(fibrenetId);
+        GetPersonalInformationOption4(fibrenetId);
+        GetDataAddressInstallProfile(fibrenetId);
+        CheckPrivilegePoint();
+
+        Receipt = GetAccountInformationListInForWelcome();
+
+        DatabindProfile();
+    }
+
+    function GetPersonalInformationOption5(fibrenetId) {
+
+        $.ajax({
+            url: '/WelcomeToAisFibre/evESQueryPersonalInformationfoForWelcome',
+            data: { fibrenetId: fibrenetId, option: "5" },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+
+                if (response.length > 0) {
+
+                    $.each(response, function (index, val) {
+
+                        firstName = val.firstName;
+                        lastName = val.lastName;
+
+                        //input  
+                        houseNo = val.houseNo;
+                        moo = val.moo;
+                        mooban = val.mooban;
+                        room = val.room;
+                        floor = val.floor;
+                        buildingName = val.buildingName;
+                        soi = val.soi;
+                        streetName = val.streetName;
+                        tumbol = val.tumbol;
+                        provinceName = val.provinceName;
+                        amphur = val.amphur;
+                        zipCode = val.zipCode;
+
+                    })
+
+                    GetDataAddressBillProfile(fibrenetId, houseNo, moo, mooban, room, floor, buildingName, soi, streetName, tumbol, provinceName, amphur, zipCode);
+                }
+                else {
+
+                    firstName = "";
+                    lastName = "";
+
+                    //input  
+                    houseNo = "";
+                    moo = "";
+                    mooban = "";
+                    room = "";
+                    floor = "";
+                    buildingName = "";
+                    soi = "";
+                    streetName = "";
+                    tumbol = "";
+                    provinceName = "";
+                    amphur = "";
+                    zipCode = "";
+                }
+            },
+            error: function (err) {
+                console.log('Error in Operation');
+            }
+        });
+    }
+
+    function GetPersonalInformationOption4(fibrenetId) {
+
+        $.ajax({
+            url: '/WelcomeToAisFibre/evESQueryPersonalInformationfoForWelcome',
+            data: { fibrenetId: fibrenetId, option: "4" },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.length > 0) {
+                    $.each(response, function (index, val) {
+
+                        billCycle = val.billCycle
+                        billMedia = val.billMedia
+                        billLanguage = val.billLanguage
+                    });
+                }
+                else {
+                    billCycle = ""
+                    billMedia = ""
+                    billLanguage = ""
+                }
+            },
+            error: function (err) {
+
+                console.log('Error in Operation')
+            }
+        });
+    }
+
+    function GetDataAddressBillProfile(fibrenetId,houseNo, moo, mooban, room, floor, buildingName, soi, streetName, tumbol, provinceName, amphur, zipCode) {
+
+        $.ajax({
+            url: '/WelcomeToAisFibre/GetDataAddressBillProfile',
+            data: {
+                fibrenetId: fibrenetId,
+                houseNo: houseNo,
+                Moo: moo,
+                Mooban: mooban,
+                Room: room,
+                Floor: floor,
+                buildingName: buildingName,
+                Soi: soi,
+                streetName : streetName,
+                Tumbol: tumbol,
+                Amphur: amphur,
+                provinceName : provinceName,
+                zipCode: zipCode,
+
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                var data = response.data;
+                if (data.address_curror.length > 0) {
+                    $.each(data.address_curror, function (index, val) {
+                        address_bill = val.Address_bill
+
+                    })
+                }
+                else {
+                    address_bill = ""
+                }
+            },
+            error: function (err) {
+                console.log('Error in Operation')
+            }
+        });
+    }
+
+    function GetDataAddressInstallProfile(fibrenetId) {
+
+        $.ajax({
+            url: '/WelcomeToAisFibre/GetDataAddressInstallProfile',
+            data: { fibrenetId: fibrenetId },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                var data = response.data;
+                if (data.install_curror.length > 0) {
+                    $.each(data.install_curror, function (index, val) {
+                        address_name = val.Address_Name
+                        address_Install = val.Address_Install
+                    })
+                } else {
+                    address_name = ""
+                    address_Install = ""
+                }
+            },
+            error: function (err) {
+                console.log('Error in Operation')
+            }
+        });
+
+    }
+
+    function CheckPrivilegePoint() {
+
+        var payMentOrderId = GenTransactionID();
+        var nonMobile = $("#AisAirNumber").val();
+        var mobileNo = $("#MobileNo").val();
+
+        $.ajax({
+            url: '/SelectPackage/CheckPrivilegePoint',
+            data: { InternetNo: nonMobile, MobileNo: mobileNo, PaymentOrderID: payMentOrderId },
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (data) {
+                if (data != "" || data != null) {
+                    internetNoPiont = accounting.formatNumber(data.InternetNoPiont);
+                    mobileNoPoint = accounting.formatNumber(data.MobileNoPoint);
+                } else {
+                    internetNoPiont = "";
+                    mobileNoPoint = "";
+                }
+            }
+        });
+    }
+
+    function GenTransactionID() {
+        var payMentOrderId = "";
+        $.ajax({
+            url: '/PaymentMesh/GenTransactionIDWithArpu',
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (data) {
+                payMentOrderId = data;
+            }
+        });
+        return payMentOrderId;
+    }
+
+    function GetAccountInformationListInForWelcome() {
+        var resultReceipt = "";
+        var outBillingAccountNumber = $("#outBillingAccountNumber").val();
+        var outAccountName = $("#outAccountName").val();
+
+        if (outBillingAccountNumber != "") {
+            $.ajax({
+                url: '/WelcomeToAisFibre/evCorpESQueryAccountInformationListInForWelcome',
+                data: {
+                    inAccountNo: outBillingAccountNumber,
+                    inAccountName: outAccountName
+                },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (data) {
+                    if (data.errorCode != "" || data != null) {
+
+                        var strBillRecipt = '@W_TYPE_BILL_3'
+                        var strBillERecipt = '@W_TYPE_BILL_4'
+
+                        if (data.taxPaperFlag == "Y") {
+                            resultReceipt = strBillRecipt
+                        } else if (data.taxPaperFlag == "N") {
+                            resultReceipt = strBillERecipt
+                        } else {
+                            resultReceipt = ""
+                        }
+
+                    } else {
+                        resultReceipt = ""
+                    }
+                }
+            });
+        }
+        else {
+            resultReceipt = ""
+        }
+        return resultReceipt;
+    }
+
+    //Convert format data
+    function ConvertCycle(data) {
+
+        var result = ""
+        var strCycleBill = '@W_BILL_3'
+
+        if (data != "" || data != null) {
+            var cycleSpace = data.split(" ");
+            var cycleSlash = cycleSpace[1].split("-");
+            var cyclebSlash = cycleSlash[1].split("/");
+
+            if (strCycleBill != "" || strCycleBill != null) {
+                var resultX = strCycleBill.replace("{x}", cycleSlash[0])
+                var resultY = resultX.replace("{Y}", cyclebSlash[0])
+
+                result = resultY
+            } 
+        }
+        return result;
+    }
+
+    function ConvertToDateThai(date) {
+
+        var result = ""
+
+        if (date != "") {
+
+            var dt = date.split("/");
+            var day = dt[0]
+            var mounth = dt[1]
+            var year = dt[2]
+
+            var month_th = [
+                "",
+                "มกราคม",
+                "กุมภาพันธ์",
+                "มีนาคม",
+                "เมษายน",
+                "พฤษภาคม",
+                "มิถุนายน",
+                "กรกฎาคม",
+                "สิงหาคม",
+                "กันยายน",
+                "ตุลาคม",
+                "พฤศจิกายน",
+                "ธันวาคม"
+            ];
+
+            for (let i = 0; i < month_th.length; i++) {
+                if (mounth == i) {
+                    mounth = month_th[i];
+                }
+            }
+            result = day + " " + mounth + " " + (parseInt(year) + 543);
+        }
+        return result
+    }
+
+    function ConvertBillLanguage(lang) {
+
+        var result = ""
+        var strBillLanguageTHA = '@W_CHANNEL_BILL_4'
+        var strBillLanguageENU = '@W_CHANNEL_BILL_5'
+
+        if (lang != "") {
+            if (lang == "THA") {
+                result = strBillLanguageTHA
+            } else if (lang == "ENU") {
+                result = strBillLanguageENU
+            } else {
+                result = lang
+            }
+        }
+        return result
+    }
+    
+    function ConvertFormatNumber(number) {
+
+        var result = ""
+
+        if (number != "" || number != null) {
+
+            const index1 = 3;
+            const index2 = 7;
+            const insert = '-';
+            const res1 = number.replace(new RegExp(`^(.{${index1}})(.)`), `$1${insert}$2`);
+            const res2 = res1.replace(new RegExp(`^(.{${index2}})(.)`), `$1${insert}$2`);
+
+            result = res2
+        }
+
+        return result
+
+    }
+
+    function CheckEmptyData(input) {
+
+        var result = ""
+
+        if (input == "" || input == null) {
+            result = "-"
+        }
+        else {
+            result = input
+        }
+        return result
+    }
+
+    //Databind data
+    function DatabindProfile() {
+
+        var passfibrenetId = $("#AisAirNumber").val()
+        var fibrenetId = ConvertFormatNumber(passfibrenetId)
+        var passmobileNo = $("#MobileNo").val()
+        var mobileNo = ConvertFormatNumber(passmobileNo)
+        var outPrimaryContactFirstName = $("#outPrimaryContactFirstName").val()
+        var outContactLastName = $("#outContactLastName ").val()
+        var outEmail = $("#outEmail").val()
+
+        var outBirthDate = ConvertToDateThai($("#outBirthDate").val())  
+        var outBillLanguage = ConvertBillLanguage(billLanguage)
+        var outbillCycle = ConvertCycle(billCycle)
+        var strPoint = '@W_PROFILE_8'
+
+        //tab 5.1 ข้อมูลของคุณ
+        $("#txt_name").text(" " + CheckEmptyData(outPrimaryContactFirstName) + " " + CheckEmptyData(outContactLastName))
+        $("#txt_net").text(CheckEmptyData(fibrenetId))
+        $("#txt_number").text(CheckEmptyData(mobileNo))
+        $("#txt_mail").text(CheckEmptyData(outEmail))
+        $("#txt_birthday").text(CheckEmptyData(outBirthDate))
+        $("#txt_point").text(internetNoPiont + " " + strPoint)
+
+        //tab 5.2 รอบบิล
+        $("#txt_bill").text(CheckEmptyData(outbillCycle))
+
+        //tab 5.3 ช่องทางการรับใบแจ้งค่าใช้บริการ
+        $("#txt_cahnel_bill").text(CheckEmptyData(billMedia))
+        $("#txt_cahnel_lang").text(CheckEmptyData(outBillLanguage))
+
+        //tab 5.4 ข้อมูลใบเสร็จรับเงิน
+        $("#txt_type_ereceipt_bill").text(CheckEmptyData(Receipt))
+
+        //tab 5.5 ที่อยู่ในการจัดส่งเอกสาร 
+        $("#txt_address_name_bill").text(" " + CheckEmptyData(firstName) + " " + CheckEmptyData(lastName))
+        $("#txt_address_ereceipt_bill").text(CheckEmptyData(address_bill))
+
+        //tab 5.6 ที่อยู่ติดตั้ง 
+        $("#txt_install_name_bill").text(" " + CheckEmptyData(address_name))
+        $("#txt_install_ereceipt_bill").text(CheckEmptyData(address_Install))
+
+    }
+
+</script>

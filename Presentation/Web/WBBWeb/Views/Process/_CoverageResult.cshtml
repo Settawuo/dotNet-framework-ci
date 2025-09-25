@@ -1,0 +1,531 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@{
+
+    string Length_Name_Lastname = "";
+    string Length_Contact_Mobile = "";
+    string Char_Not_on_Name = "";
+    string Char_Not_on_Name_LastName = "";
+    string Input_Contact_Mobile = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var LabelFbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        Length_Name_Lastname = LabelFbbConstant.Any(f => f.Field == "Length_Name_Lastname") ? LabelFbbConstant.First(f => f.Field == "Length_Name_Lastname").Validation : "";
+        Length_Contact_Mobile = LabelFbbConstant.Any(f => f.Field == "Length_Contact_Mobile") ? LabelFbbConstant.First(f => f.Field == "Length_Contact_Mobile").Validation : "";
+        Char_Not_on_Name = LabelFbbConstant.Any(f => f.Field == "Char Not on Name") ? LabelFbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        Char_Not_on_Name_LastName = LabelFbbConstant.Any(f => f.Field == "Char Not on Name LastName") ? LabelFbbConstant.First(f => f.Field == "Char Not on Name LastName").Validation : "";
+        Input_Contact_Mobile = LabelFbbConstant.Any(f => f.Field == "Input_Contact_Mobile") ? LabelFbbConstant.First(f => f.Field == "Input_Contact_Mobile").Validation : "";
+    }
+
+    string lBConfirm = "";
+
+    if (ViewBag.LabelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR000;
+        lBConfirm = labelFBBTR000.Any(c => c.Name == "B_CONFIRM") ? labelFBBTR000.First(c => c.Name == "B_CONFIRM").DisplayValue : "";
+    }
+
+    string lResult = "";
+    string lResultDetail = "";
+    string lFirstLast = "";
+    string ContactPhone = "";
+    string L_RESULT_PLAN = "";
+    string L_RESULT_NO = "";
+    string L_ADDRESS_COVERAGE = "";
+    string ContactLineID = "";
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var labelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        lResult = labelFBBTR001.Any(c => c.Name == "L_RESULT") ? labelFBBTR001.First(c => c.Name == "L_RESULT").DisplayValue : "";
+        lResultDetail = labelFBBTR001.Any(c => c.Name == "L_RESULT_DETAIL") ? labelFBBTR001.First(c => c.Name == "L_RESULT_DETAIL").DisplayValue : "";
+        lFirstLast = labelFBBTR001.Any(c => c.Name == "L_FIRST_LAST") ? labelFBBTR001.First(c => c.Name == "L_FIRST_LAST").DisplayValue : "";
+        ContactPhone = labelFBBTR001.Any(c => c.Name == "L_CONTACT_PHONE_OUT_COVERAGE") ? labelFBBTR001.First(c => c.Name == "L_CONTACT_PHONE_OUT_COVERAGE").DisplayValue : "";
+
+        L_RESULT_NO = labelFBBTR001.Any(c => c.Name == "L_RESULT_NO") ? labelFBBTR001.First(c => c.Name == "L_RESULT_NO").DisplayValue : "";
+        L_RESULT_PLAN = labelFBBTR001.Any(c => c.Name == "L_RESULT_PLAN") ? labelFBBTR001.First(c => c.Name == "L_RESULT_PLAN").DisplayValue : "";
+        L_ADDRESS_COVERAGE = labelFBBTR001.Any(c => c.Name == "L_ADDRESS_COVERAGE") ? labelFBBTR001.First(c => c.Name == "L_ADDRESS_COVERAGE").DisplayValue : "";
+
+        ContactLineID = labelFBBTR001.Any(c => c.Name == "L_LINEID") ? labelFBBTR001.First(c => c.Name == "L_LINEID").DisplayValue : "";
+    }
+
+    string FirstName = "";
+    string LastName = "";
+    string L_TITLE = "";
+    string L_INSTALL_MONTH_OF_YEAR = "";
+    string L_INSTALL_MONTH_OF_YEARENG = "";
+    string ContactEmail = "";
+    string L_ADDRESS_DETAIL = "";
+    string L_REMARK_OUT = "";
+    List<string> LIST_L_DROPDOWN_TYPE = null;
+    List<string> LIST_L_DROPDOWN_TECH = null;
+    List<string> LIST_L_DROPDOWN_PROJECT = null;
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        FirstName = labelFBBTR003.Any(c => c.Name == "L_FIRST_NAME") ? labelFBBTR003.First(c => c.Name == "L_FIRST_NAME").DisplayValue : "";
+        LastName = labelFBBTR003.Any(c => c.Name == "L_LAST_NAME") ? labelFBBTR003.First(c => c.Name == "L_LAST_NAME").DisplayValue : "";
+        L_TITLE = labelFBBTR003.Any(c => c.Name == "L_TITLE") ? labelFBBTR003.First(c => c.Name == "L_TITLE").DisplayValue : "";
+
+        L_INSTALL_MONTH_OF_YEAR = labelFBBTR003.Any(c => c.Name.StartsWith("L_INSTALL_MONTH_OF_YEAR")) ? labelFBBTR003.First(c => c.Name.StartsWith("L_INSTALL_MONTH_OF_YEAR")).LovValue3 : "";
+        L_INSTALL_MONTH_OF_YEARENG = labelFBBTR003.Any(c => c.Name.StartsWith("L_INSTALL_MONTH_OF_YEAR")) ? labelFBBTR003.First(c => c.Name.StartsWith("L_INSTALL_MONTH_OF_YEAR")).DisplayValueJing : "";
+
+        ContactEmail = labelFBBTR003.Any(c => c.Name == "L_EMAIL") ? labelFBBTR003.First(c => c.Name == "L_EMAIL").DisplayValue : "";
+
+        L_ADDRESS_DETAIL = labelFBBTR003.Any(c => c.Name == "L_ADDRESS_DETAIL") ? labelFBBTR003.First(c => c.Name == "L_ADDRESS_DETAIL").DisplayValue : "";
+        L_REMARK_OUT = labelFBBTR003.Any(c => c.Name == "L_REMARK_OUT") ? labelFBBTR003.First(c => c.Name == "L_REMARK_OUT").DisplayValue : "";
+        LIST_L_DROPDOWN_TYPE = labelFBBTR003.Where(c => c.Name == "L_DROPDOWN_TYPE").Select(c => c.DisplayValue).ToList();
+        LIST_L_DROPDOWN_TECH = labelFBBTR003.Where(c => c.Name == "L_DROPDOWN_TECH").Select(c => c.DisplayValue).ToList();
+        LIST_L_DROPDOWN_PROJECT = labelFBBTR003.Where(c => c.Name == "L_DROPDOWN_PROJECT").Select(c => c.DisplayValue).ToList();
+    }
+
+
+    var chkCoverage = false;
+    if (null != ViewBag.chkCoverage)
+    {
+        chkCoverage = ViewBag.chkCoverage;
+    }
+
+    string officer = "";
+    if (null != ViewBag.officer)
+    {
+        officer = "1";
+    }
+    else
+    {
+        if (Session["OfficerModel"] != null)
+        {
+            officer = "1";
+        }
+    }
+}
+<div id="page12" class="container addrounded" style="display: none;">
+    <h4 class="page-header tgreen">@lResult</h4>
+    <p class="clearfix"></p>
+    <p class="clearfix text-center" id="lbPlanSite"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <div class="col-md-10 col-md-offset-1 col-xs-12">
+        <div>
+            <ul id="errxvalidatepage12" class="i-red"></ul>
+        </div>
+        <p class="clearfix"></p>
+
+        <div class="col-sm-4 col-xs-12">
+            <select id="COVERATE_RESULT_TITLE_CODE" name="CoveragePanelModel.L_FIRST_LAST" class="select" style="width: 100%"></select>
+
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            @Html.TextBoxFor(model => model.CoveragePanelModel.L_FIRST_NAME,
+            new
+            {
+                @id = "L_FIRST_NAME_PAGE12",
+                @class = "form-control",
+                @title = FirstName,
+                @maxlength = Length_Name_Lastname,
+                @placeholder = FirstName
+            })
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            @Html.TextBoxFor(model => model.CoveragePanelModel.L_LAST_NAME,
+            new
+            {
+                @id = "L_LAST_NAME_PAGE12",
+                @class = "form-control",
+                @title = LastName,
+                @maxlength = Length_Name_Lastname,
+                @placeholder = LastName
+            })
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-8 col-xs-12">
+            @Html.TextBoxFor(model => model.CoveragePanelModel.L_CONTACT_PHONE,
+            new
+            {
+                @id = "L_CONTACT_PHONE_PAGE12",
+                @class = "form-control",
+                @title = ContactPhone,
+                @maxlength = Length_Contact_Mobile,
+                @placeholder = ContactPhone
+            })
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            @Html.TextBoxFor(model => model.CoveragePanelModel.L_CONTACT_EMAIL,
+            new
+            {
+                @id = "L_CONTACT_EMAIL_PAGE12",
+                @class = "form-control",
+                @title = ContactEmail,
+                @maxlength = "100",
+                @placeholder = ContactEmail
+
+            })
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            @Html.TextBoxFor(model => model.CoveragePanelModel.L_CONTACT_LINE_ID,
+            new
+            {
+                @id = "L_CONTACT_LINE_ID_PAGE12",
+                @class = "form-control",
+                @title = ContactLineID,
+                @maxlength = "50",
+                @placeholder = ContactLineID
+
+            })
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-sm-12 col-xs-12">@L_ADDRESS_DETAIL</div>
+        <p class="clearfix"></p>
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressBuildName" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        @if (officer == "1")
+        {
+            <div class="col-sm-4 col-xs-12">
+                @*ddlType*@
+                <select class="select" style="width: 100%;" id="ddlType" title="Type" onchange="onChangeType(this)">
+                    <option value="" selected disabled>Type</option>
+
+                    @foreach (var listDDLType in LIST_L_DROPDOWN_TYPE)
+                    {
+                        <option value="@listDDLType">@listDDLType</option>
+                    }
+                </select>
+
+                @Html.HiddenFor(model => model.CoveragePanelModel.ADDRESS_TYPE_DTL, new { @id = "CoveragePanelModel_ADDRESS_TYPE_DTL", @value = "" })
+                <p class="clearfix"></p>
+            </div>
+        }
+        <p class="clearfix"></p>
+
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressHomeNumber" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressBuildNo" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressfloor" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressMoo" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressSoi" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressRoad" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressTumbol" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressAmphur" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressProvince" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+
+        <div class="col-sm-4 col-xs-12">
+            <input id="txtOutAddressZipcode" type="text" class="form-control" />
+            <p class="clearfix"></p>
+        </div>
+        @if (officer == "1")
+        {
+            <div class="col-sm-4 col-xs-12">
+                @*ddlTech*@
+                <select class="select" style="width: 100%;" id="ddlTech" title="Technology" onchange="onChangeTech(this)">
+                    <option value="" selected disabled>Technology</option>
+
+                    @foreach (var listDDLTech in LIST_L_DROPDOWN_TECH)
+                    {
+                        <option value="@listDDLTech">@listDDLTech</option>
+                    }
+                </select>
+                @Html.HiddenFor(model => model.CoveragePanelModel.TECHNOLOGY, new { @id = "CoveragePanelModel_TECHNOLOGY", @value = "" })
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                @*ddlProject*@
+                <select class="select" style="width: 100%;" id="ddlProject" title="Project" onchange="onChangeProject(this)">
+                    <option value="" selected disabled>Project</option>
+
+                    @foreach (var listDDLProject in LIST_L_DROPDOWN_PROJECT)
+                    {
+                        <option value="@listDDLProject">@listDDLProject</option>
+                    }
+                </select>
+                @Html.HiddenFor(model => model.CoveragePanelModel.PROJECTNAME, new { @id = "CoveragePanelModel_PROJECTNAME", @value = "" })
+                <p class="clearfix"></p>
+            </div>
+        }
+        <p class="clearfix"></p>
+
+        @if (officer == "1")
+        {
+        <div class="col-sm-12 col-xs-12">
+            @Html.TextAreaFor(Model => Model.CoveragePanelModel.REMARK,
+                        new
+                        {
+                            @title = L_REMARK_OUT,
+                            @id = "CoveragePanelModel_REMARK",
+                            @class = "form-control",
+                            @maxlength = "4000",
+                            @placeholder = L_REMARK_OUT,
+                            @rows = "3",
+                            @cols = "50"
+                        })
+            <p class="clearfix"></p>
+        </div>
+            <p class="clearfix"></p>
+        }
+        <div class="col-sm-12 col-xs-12" style="display:none;">
+            <p class="clearfix" id="lbAddress"></p>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        @Html.HiddenFor(model => model.CoveragePanelModel.RESULT_ID)
+
+        <p class="clearfix page-header"></p>
+
+        <div class="col-md-12 text-center">
+
+            <button id="btnCoverageResult_Confirm" type="button" class="btn btn-success btn-for-xs pull-right">
+                &nbsp; @lBConfirm &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </button>
+        </div>
+
+        <p class="clearfix"></p>
+    </div>
+</div>
+
+@Html.HiddenFor(model => model.ForCoverageResult)
+
+<script>
+
+    var listDDLType = @Html.Raw(Json.Encode(LIST_L_DROPDOWN_TYPE))
+    var listDDLTech = @Html.Raw(Json.Encode(LIST_L_DROPDOWN_TECH))
+    var listDDLProject = @Html.Raw(Json.Encode(LIST_L_DROPDOWN_PROJECT))
+
+    $(function () {
+
+        $("#L_FIRST_NAME_PAGE12").inputmask('Regex', {
+            regex: "@Char_Not_on_Name",
+        });
+
+        $("#L_LAST_NAME_PAGE12").inputmask('Regex', {
+            regex: "@Char_Not_on_Name_LastName",
+        });
+
+        $("#L_CONTACT_PHONE_PAGE12").inputmask('Regex', {
+            regex: "@Input_Contact_Mobile",
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetCustomerTitle",
+            data: { 'customerCardType': 'R' },
+            dataType: "json",
+            success: function (data) {
+                var strBuilder = "<option value='' disabled selected>@L_TITLE</option>";
+                $.each(data, function (i, e) {
+                    var sl = "";
+                    if (e.DefaultValue != undefined)
+                        sl = "selected";
+
+                    var str = "<option value='" + e.Value + "' " + sl + ">" + e.Text + "</option>";
+                    strBuilder += str;
+                });
+                $('#COVERATE_RESULT_TITLE_CODE').append(strBuilder);
+                $('#COVERATE_RESULT_TITLE_CODE').select2();
+            }
+            });
+            
+
+        //Member get Member
+        if ($('#MemberGetMemberFlag').val() == 'Y') {
+            $('#L_FIRST_NAME_PAGE12').val($('#CoverageMemberGetMember_CustomerName').val());
+            $('#L_LAST_NAME_PAGE12').val($('#CoverageMemberGetMember_CustomerSurname').val());
+            $('#L_CONTACT_EMAIL_PAGE12').val($('#CoverageMemberGetMember_CustomerEmail').val());
+            $('#L_CONTACT_LINE_ID_PAGE12').val($('#CoverageMemberGetMember_CustomerLineId').val());
+        }
+        $('#btnCoverageResult_Confirm').click(function () {
+            // Update 17.4 Script Adobe Analytic
+            digitalData.customLinkName = "out-coverage:next-button";
+            console.log("custom-link-click : button btnCoverageResult_Confirm");
+            
+
+            onClick_CoverageResult_Confirm();
+        });
+    });
+
+    function onClick_CoverageResult_Confirm() {
+
+        var validatepage12 = new Array();
+        validatepage12.push({ id: "COVERATE_RESULT_TITLE_CODE" });
+        validatepage12.push({ id: "L_FIRST_NAME_PAGE12", condition: "Name" });
+        validatepage12.push({ id: "L_LAST_NAME_PAGE12", condition: "Name" });
+        validatepage12.push({ id: "L_CONTACT_PHONE_PAGE12", condition: "FreePhone" });
+        if ($("#L_CONTACT_EMAIL_PAGE12").val() != "") {
+            validatepage12.push({ id: "L_CONTACT_EMAIL_PAGE12", condition: "Email" });
+        }
+        var chk = ValidationProcessing(validatepage12, "errxvalidatepage12");
+        if (!chk) {
+
+        }
+        else {
+            if ('@chkCoverage' == "True") {
+                $("#CoveragePanelModel_L_CONTACT_PHONE").val($("#L_CONTACT_PHONE_PAGE12").val());
+                //sessionStorage.setItem("CoveragePanelModel_L_CONTACT_PHONE", $("#L_CONTACT_PHONE_PAGE12").val());
+                //console.log("Session: ", sessionStorage.getItem("CoveragePanelModel_L_CONTACT_PHONE"))
+            }
+            $("#ForCoverageResult").val(true);
+            $("#CoveragePanelModel_RESULT_ID").val($("#HdResultId").val());
+            $("#L_INSTALL_DATE").val("");
+            $("#iForm").submit();
+        }
+    }
+
+    function AddDetail() {
+
+        if ($("#CoveragePanelModel_CoverageResult").val() == "PLAN") {
+            $("#lbPlanSite").empty();
+
+            var temp = $("#ZTEPlanSite").val().split(',');
+            var year = '';
+            var monthofyear = '';
+            var datee = new Date(temp[1]).getFullYear();
+            if ($("#LanguagePage").val() == "1") {
+                year = (parseInt(datee) + 543).toString();
+                monthofyear = '@L_INSTALL_MONTH_OF_YEAR';
+            }
+            else {
+                year = datee.toString();
+                monthofyear = '@L_INSTALL_MONTH_OF_YEARENG'
+            }
+
+            var result = "@Html.Raw(L_RESULT_PLAN)".replace("{1}", monthofyear);
+            result = result.replace("{2}", year);
+            $("#lbPlanSite").append(result);
+
+        }
+        else if ($("#CoveragePanelModel_CoverageResult").val() == "NO") {
+            $("#lbPlanSite").empty();
+            $("#lbPlanSite").append("@Html.Raw(L_RESULT_NO)");
+        }
+    }
+
+    function loadAddress(hnum, bnum, floor, moo, soi, rd, tumbol, amphur, prov, zip) {
+        var htmlAddress = "";
+        var bnumVal = $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val(); bnumVal = bnumVal != "" ? bnumVal : "-";
+        var floorVal = $("#CoveragePanelModel_Address_L_FLOOR").val(); floorVal = floorVal != "" ? floorVal : "-";
+        var mooVal = $("#CoveragePanelModel_Address_L_MOO").val(); mooVal = mooVal != "" ? mooVal : "-";
+        var soiVal = $("#CoveragePanelModel_Address_L_SOI").val(); soiVal = soiVal != "" ? soiVal : "-";
+        var rdVal = $("#CoveragePanelModel_Address_L_ROAD").val(); rdVal = rdVal != "" ? rdVal : "-";
+        var tumbolVal = $("#COVERAGE_L_TUMBOL").val(); tumbolVal = tumbolVal != "" ? tumbolVal : "-";
+        var amphurVal = $('#COVERAGE_L_AMPHUR').val(); amphurVal = amphurVal != "" ? amphurVal : "-";
+        var provVal = $('#COVERAGE_L_PROVINCE').val(); provVal = provVal != "" ? provVal : "-";
+        var zipVal = $("#CoveragePanelModel_Address_L_ZIPCODE option:selected").text(); zipVal = zipVal != "" ? zipVal : "-";
+
+        htmlAddress += "@L_ADDRESS_COVERAGE" + ": " + $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val() + " " + hnum.slice(1) + " " + $("#CoveragePanelModel_Address_L_HOME_NUMBER_1").val() + " "
+                    + bnum + " " + bnumVal + " " + floor + " " + floorVal + " " + moo + " " + mooVal + " " + soi + " " + soiVal + " "
+                    + rd + " " + rdVal + "<br /> &emsp;&emsp;" + tumbol + " " + tumbolVal + " " + amphur + " " + amphurVal + " " + prov + " " + provVal + " " + zip + " " + zipVal;
+        //console.log(htmlAddress);
+        $("#lbAddress").empty();
+        $("#lbAddress").append(htmlAddress);
+
+        //R21.4 Out of Coverage Phase 2
+        $("#txtOutAddressBuildName").val($("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val());
+        $("#txtOutAddressHomeNumber").val($("#CoveragePanelModel_Address_L_HOME_NUMBER_1").val());
+        $("#txtOutAddressBuildNo").val(bnumVal);
+        $("#txtOutAddressfloor").val(floorVal);
+        $("#txtOutAddressMoo").val(mooVal);
+        $("#txtOutAddressSoi").val(soiVal);
+        $("#txtOutAddressRoad").val(rdVal);
+        $("#txtOutAddressTumbol").val(tumbolVal);
+        $("#txtOutAddressAmphur").val(amphurVal);
+        $("#txtOutAddressProvince").val(provVal);
+        $("#txtOutAddressZipcode").val(zipVal);
+
+        $("#txtOutAddressBuildName").attr("readonly", true);
+        $("#txtOutAddressHomeNumber").attr("readonly", true);
+        $("#txtOutAddressBuildNo").attr("readonly", true);
+        $("#txtOutAddressfloor").attr("readonly", true);
+        $("#txtOutAddressMoo").attr("readonly", true);
+        $("#txtOutAddressSoi").attr("readonly", true);
+        $("#txtOutAddressRoad").attr("readonly", true);
+        $("#txtOutAddressTumbol").attr("readonly", true);
+        $("#txtOutAddressAmphur").attr("readonly", true);
+        $("#txtOutAddressProvince").attr("readonly", true);
+        $("#txtOutAddressZipcode").attr("readonly", true);
+    }
+
+    function onChangeType() {
+        $('#CoveragePanelModel_ADDRESS_TYPE_DTL').val($('#ddlType :selected').val());
+    }
+
+    function onChangeTech() {
+        $('#CoveragePanelModel_TECHNOLOGY').val($('#ddlTech :selected').val());
+    }
+
+    function onChangeProject() {
+        $('#CoveragePanelModel_PROJECTNAME').val($('#ddlProject :selected').val());
+    }
+
+    function TestFromMapFlag2() {
+        var TransactionID = "2016042718312459277";
+        var language = "1";
+        //var siteCode = "SIAVP";
+        var siteCode = "FWA";
+        var buildingName = "PUNPUN";
+        var houseNo = "1";
+        var moo = "7";
+        var soi = "7";
+        var road = "ABC";
+        var subDistrict = "%E0%B8%AA%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%AA%E0%B8%99%E0%B9%83%E0%B8%99";
+        var district = "%E0%B8%9E%E0%B8%8D%E0%B8%B2%E0%B9%84%E0%B8%97";
+        var province = "%E0%B8%81%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B9%80%E0%B8%97%E0%B8%9E%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%99%E0%B8%84%E0%B8%A3";
+        var postCode = "10400";
+        var latitude = "13.78637946";
+        var longitude = "100.54655805";
+        var phoneFlag = "N";
+        var coverage = "Y";
+        var addressFlag = "1";
+        var TriplePlayFlag = "";
+        var SplitterList = "%3CSplitterList%3E%3CSplitter%3E%3CName%3EOB_TTCTC_A_01HW_SIAVP_P05_SP02_06_18%3C%2FName%3E%3CDistance%3E145.47%3C%2FDistance%3E%3CDistanceType%3E0%3C%2FDistanceType%3E%3C%2FSplitter%3E%3CSplitter%3E%3CName%3EOB_TTCTC_A_01HW_TTCT_A_P03_SP02_04_18%3C%2FName%3E%3CDistance%3E145.55%3C%2FDistance%3E%3CDistanceType%3E0%3C%2FDistanceType%3E%3C%2FSplitter%3E%3CSplitter%3E%3CName%3EOB_TTCTC_A_01HW_TTCT_A_P03_SP02_01_18%3C%2FName%3E%3CDistance%3E145.55%3C%2FDistance%3E%3CDistanceType%3E0%3C%2FDistanceType%3E%3C%2FSplitter%3E%3CSplitter%3E%3CName%3EOB_TTCTC_A_01HW_TTCT_A_P03_SP02_03_18%3C%2FName%3E%3CDistance%3E145.55%3C%2FDistance%3E%3CDistanceType%3E0%3C%2FDistanceType%3E%3C%2FSplitter%3E%3CSplitter%3E%3CName%3EOB_TTCTC_A_01HW_TTCT_A_P03_SP02_02_18%3C%2FName%3E%3CDistance%3E145.55%3C%2FDistance%3E%3CDistanceType%3E0%3C%2FDistanceType%3E%3C%2FSplitter%3E%3C%2FSplitterList%3E";
+        var FlowFlag = "2";
+
+        $.ajax({
+            type: "POST",
+            url: "/process/processregister",
+            data: { TransactionID: TransactionID, language: language, siteCode: siteCode, buildingName: buildingName, houseNo: houseNo, moo: moo, soi: soi, road: road, subDistrict: subDistrict, district: district, province: province, postCode: postCode, latitude: latitude, longitude: longitude, phoneFlag: phoneFlag, coverage: coverage, addressFlag: addressFlag, TriplePlayFlag: TriplePlayFlag, SplitterList: SplitterList, FlowFlag: FlowFlag },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+            }
+        });
+    }
+</script>

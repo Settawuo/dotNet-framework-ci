@@ -1,0 +1,394 @@
+﻿@*@model WBBEntity.PanelModels.FBBWebConfigModels.LastmileAndCPEReportModel*@
+@using WBBEntity.PanelModels;
+@{
+    string L_PAGE_CANCEL = "ล้างข้อมูล";
+    string L_PAGE_SEARCH = "ค้นหา";
+    string L_PAGE_EXPORT = "Export to Excel";
+    string L_PAGE_SEARCH_PANEL = "Search Panel";
+    string L_PAGE_NAME = "Report Name : FBB SLA Appointment Detail";
+
+    string L_GRID_ORDER_CREATE_DATE = "Order Create Date";
+    string L_GRID_SERVICE = "Service";
+    string L_GRID_LESS_6_HR = "< 6 HR";
+    string L_GRID_6_12_HR = "6-12 HR";
+    string L_GRID_12_18_HR = "12-18 HR";
+    string L_GRID_18_24_HR = "18-24 HR";
+    string L_GRID_24_48_HR = "24-48 HR";
+    string L_GRID_MORE_48_HR = "> 48 HR";
+    string L_GRID_ON_PROCESS = "On Process";
+    string L_GRID_TOTAL = "Total";
+
+    string L_PAGE_DATE_FROM = "Order Create From";
+    string L_PAGE_DATE_TO = "Order Create To";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_PAGE_NAME = configscreen.Any(f => f.Name == "LABEL_report_name") ? configscreen.First(f => f.Name == "LABEL_report_name").LovValue1 : "";
+
+        L_GRID_ORDER_CREATE_DATE = configscreen.Any(f => f.Name == "R_HEADER_order_create_dt") ? configscreen.First(f => f.Name == "R_HEADER_order_create_dt").LovValue1 : "";
+        L_GRID_SERVICE = configscreen.Any(f => f.Name == "R_HEADER_Service") ? configscreen.First(f => f.Name == "R_HEADER_Service").LovValue1 : "";
+        L_GRID_LESS_6_HR = configscreen.Any(f => f.Name == "R_HEADER_6hr") ? configscreen.First(f => f.Name == "R_HEADER_6hr").LovValue1 : "";
+        L_GRID_6_12_HR = configscreen.Any(f => f.Name == "R_HEADER_12hr") ? configscreen.First(f => f.Name == "R_HEADER_12hr").LovValue1 : "";
+        L_GRID_12_18_HR = configscreen.Any(f => f.Name == "R_HEADER_18hr") ? configscreen.First(f => f.Name == "R_HEADER_18hr").LovValue1 : "";
+        L_GRID_18_24_HR = configscreen.Any(f => f.Name == "R_HEADER_24hr") ? configscreen.First(f => f.Name == "R_HEADER_24hr").LovValue1 : "";
+        L_GRID_24_48_HR = configscreen.Any(f => f.Name == "R_HEADER_48hr") ? configscreen.First(f => f.Name == "R_HEADER_48hr").LovValue1 : "";
+        L_GRID_MORE_48_HR = configscreen.Any(f => f.Name == "R_HEADER_OverHr") ? configscreen.First(f => f.Name == "R_HEADER_OverHr").LovValue1 : "";
+        L_GRID_ON_PROCESS = configscreen.Any(f => f.Name == "R_HEADER_OnProcess") ? configscreen.First(f => f.Name == "R_HEADER_OnProcess").LovValue1 : "";
+        L_GRID_TOTAL = configscreen.Any(f => f.Name == "R_HEADER_Total") ? configscreen.First(f => f.Name == "R_HEADER_Total").LovValue1 : "";
+
+    }   
+    
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style>
+        .k-grid-header th.k-header > .k-link {
+            white-space: pre;
+        }
+        .k-grid-header th.k-header {
+            vertical-align: inherit;
+        }
+    </style>
+</head>
+<body>
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">@L_PAGE_NAME</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">    
+    
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">            
+        <div class="panel-heading">
+           <h3 class="panel-title">
+              <span>@L_PAGE_SEARCH_PANEL</span>
+              <a data-toggle="collapse" class="pull-right" href="#SearchPanel2" onclick="onPanelToggle(this);" id="SearchPanelHeader2"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow2"></i></a>
+           </h3>
+        </div>
+        <div id="SearchPanel2" class="panel-collapse collapse in">
+            <div class="panel-body" >                 
+                <div class="row">                   
+                    <div class="col-sm-4 col-md-4">
+                            <label>@L_GRID_SERVICE</label>
+                            <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DropDownList()
+                                .Name("ddtService")
+                                .DataTextField("LovValue1")
+                                .DataValueField("LovValue1")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("SelecTechnology", "SLAReport", new { type = "FBBPAYG_SCREEN", lovname = "R_DDL_Technology" });
+                                    });
+                                })
+                                )
+                            </div>
+                    </div> 
+
+                </div>
+                   <div id="Row1" class="row i-gap-top-1"> 
+                    <div class="col-sm-4 col-md-4">
+                            <label>@L_PAGE_DATE_FROM</label>
+                            <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900, 1, 1))
+                                 .Max(new DateTime(2099, 12, 31))
+                                 .Events(e => e.Change("ChangdtpDateFrom")))
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-dtpDateFrom"></div>
+                            <span class="k-invalid-msg" data-for="PickupDate"></span>
+                    </div>
+                    
+                    <div class="col-sm-4 col-md-4">
+                            <label>@L_PAGE_DATE_TO</label>
+                            <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900, 1, 1))
+                                 .Max(new DateTime(2099, 12, 31))
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Events(e => e.Change("ChangdtpDateTo")))
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-dtpDateTo"></div>
+                  </div>
+                   </div>              
+                @*end row1*@                  
+              <div id="row3" class="row i-gap-top-1">                   
+                   <div class="col-sm-6 col-md-6">       
+                       <div class="i-text-align-right">  
+                           </div>                              
+                    </div>
+                  <div class="col-sm-6 col-md-6 i-text-align-right">                                     
+                            
+                        <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@L_PAGE_CANCEL</a>            
+                        <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@L_PAGE_SEARCH</a>                                                                                                                                  
+                   </div>    
+              </div>                        
+            
+        </div> @*end SearchPanel2*@
+    </div>  
+    </div> 
+
+</div>
+</div>
+<div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12 " >
+                    
+                     @(Html.Kendo().Grid<FBBConfig.Models.AppointmentSummaryTableModel>()
+                        .Name("gridOverviewStatus")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.ORDER_CREATE_DATE).Title(@L_GRID_ORDER_CREATE_DATE).HtmlAttributes(new { style = "text-align:center;" }).Width(200);
+                            columns.Bound(p => p.SERVICE).Title(@L_GRID_SERVICE).HtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.SixHR).Title(@L_GRID_LESS_6_HR).HtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.TWHR).Title(@L_GRID_6_12_HR).HtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.ETHR).Title(@L_GRID_12_18_HR).HtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.TFHR).Title(@L_GRID_18_24_HR).HtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.FEHR).Title(@L_GRID_24_48_HR).HtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.OverHR).Title(@L_GRID_MORE_48_HR).HtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.ONPROCESS).Title(@L_GRID_ON_PROCESS).HtmlAttributes(new { style = "text-align:center;" });
+                            columns.Bound(p => p.TOTAL).Title(@L_GRID_TOTAL).HtmlAttributes(new { style = "text-align:center;" });
+                        })
+                        .ToolBar(toolbar => toolbar.Template("" +
+                            //disabled='disabled'
+        "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp;"+@L_PAGE_EXPORT+"</a>&nbsp;</div>"
+
+        ))
+                            .Scrollable(scrollable => scrollable.Height("auto"))                  
+                            .Pageable(pageable => pageable
+                            //.PageSizes(true)
+                            .Numeric(true)                            
+                            .PageSizes(new int[] {20, 50, 100})
+                            )
+                            .Sortable()
+                            .AutoBind(false)
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(20)
+                                //.ServerOperation(false)
+                                .Read(read => read.Action("AppointmentSummaryAsync", "SLAReport").Data("bindingValue"))
+                                )
+                            .Events(e => e.DataBound("onGridDataBound"))
+                                    )
+      </div>                
+</div>    
+</body>
+<script>
+
+    $(document).ready(function () {
+        $('#btnExport').attr("disabled", true);
+    });
+
+    function _ExportToExcel() {
+        var model = new defaultData();
+        window.open("/SLAReport/ExportAppointmentSummary?dataS=" + JSON.stringify(model));
+    }
+
+    function onGridDataBound() {
+        Loading(0);
+        itemCount = this.dataSource.view().length;
+        if (this.dataSource.view().length == 0) {
+            //insert empty row
+            
+            var colspan = this.thead.find("th").length;
+            //alert(colspan)
+            var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+            this.tbody.html(emptyRow);
+
+            //workarounds for IE lt 9
+            //this.table.width(800);
+            //$(".k-grid-content").width(2 * kendo.support.scrollbar());
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+        }
+        else
+        {
+            $(".k-grid-content").height("auto");
+        }
+
+        $('#btnExport').attr("disabled", !(this.dataSource.view().length != 0));
+    }
+
+
+
+    var AppointmentSummaryModel = function () {
+        service: "";
+        dateFrom: "";
+        dateTo: "";
+    }
+
+    function defaultData() {
+
+        var searchModel = new AppointmentSummaryModel();
+        searchModel.service = ($("#ddtService").val() == 'All') ? 'ALL' : $("#ddtService").val();
+        searchModel.dateFrom = formatDate(kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy"));
+        searchModel.dateTo = formatDate(kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy"));
+        return searchModel;
+
+    }
+
+    function _Clear() {
+        $("#ddtService").data("kendoDropDownList").select(0);
+        $("#gridOverviewStatus").data("kendoGrid").dataSource.data([]);
+
+        $("#dtpDateFrom").data("kendoDatePicker").value("");
+        $("#dtpDateTo").data("kendoDatePicker").value("");
+        //reset min, max.
+        $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+        $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+        $("#validatefor-dtpDateTo").html("");
+        $("#validatefor-dtpDateFrom").html("");
+
+    }
+
+    function _Search() {
+
+        var chk = ValidationDateValue();
+        if (chk) {
+
+            var model = defaultData();
+            var grid = $("#gridOverviewStatus").data("kendoGrid");
+            grid.dataSource.page(1);
+
+        }
+
+    }
+
+    function bindingValue() {
+        Loading();
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    function ChangdtpDateFrom() {
+
+        var endPicker = $("#dtpDateTo").data("kendoDatePicker"),
+        startDate = this.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            endPicker.min(startDate);
+        }
+
+    }
+
+    function ChangdtpDateTo() {
+        var startPicker = $("#dtpDateFrom").data("kendoDatePicker"),
+        endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            startPicker.max(endDate);
+        }
+
+    }
+
+    function ValidationDateValue() {
+
+        var chk = ValidationProcessing("dateselect");
+
+        if (chk) //check blank value
+        {
+            if ($.trim($("#dtpDateFrom").val()) == '') {
+                $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if ($.trim($("#dtpDateTo").val()) == '') {
+                $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check format
+        {
+            if (!kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if (!kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateTo").val() != "") {
+                    $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check Date From must be earlier than Date To
+        {
+            var startPicker = new Date(kendo.parseDate($("#dtpDateFrom").val(), "mm/dd/yyyy"));
+            var endPicker = new Date(kendo.parseDate($("#dtpDateTo").val(), "mm/dd/yyyy"));
+
+            if (startPicker > endPicker) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+            }
+        }
+
+        return chk;
+    }
+
+    function formatDate(OrderDate) {
+
+        if (OrderDate != null) {
+            var d = new Date(OrderDate);
+            //d.setUTCHours(17);
+            //var b = new Date(OrderDate + '+07:00');
+            var formatedOrderDate = kendo.format("{0:dd/MM/yyyy}", d);
+            //return String.format("{0}{1}{2}", d.getDay(), d.getMonth(), d.getYear());
+            return formatedOrderDate;
+        } else return "";
+
+    }
+
+    function formatDateTable(OrderDate) {
+
+        if (OrderDate != null) {
+            var d = new Date(OrderDate);
+            d.setUTCHours(-7);
+            d.setDate(d.getDate() + 1);
+            return kendo.format("{0:dd/MM/yyyy}", d);
+        } else return "";
+
+    }
+
+</script>
+</html>

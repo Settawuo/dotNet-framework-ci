@@ -1,0 +1,330 @@
+﻿@model WBBEntity.PanelModels.LovValueModel
+@{
+    string L_lov_id = "lov id";
+    string L_lov_type = "lov type";
+    string L_lov_name = "lov name";
+    string L_display_val = "Display Val";
+    
+    string L_Scm_contact_name_01 = "Scm Name 1";
+    string L_Scm_contact_name_02 = "Scm Name 2";
+    string L_Scm_contact_name_03 = "Scm Name 3";
+
+    string L_Scm_contact_tel_01 = "Tel";
+    string L_Scm_contact_tel_02 = "Tel";
+    string L_Scm_contact_tel_03 = "Tel";
+
+    string L_Scm_contact_Other = "Other";
+    string L_created_by = "created by";
+    string L_created_date = "created date";
+    string L_updated_by = "updated by";
+    string L_updated_date = "updated date";
+
+    string B_SAVE = "SAVE";
+    string B_CANCEL = "CANCEL";
+}
+<style>
+    .Text {
+        border: 1px solid #999999;
+        width: 100%;
+        margin: 5px 0;
+        padding: 3px;
+    }
+</style>
+ 
+<div class="row">
+    <div class="col-sm-12 col-md-4">
+        <label id="DisplayTitleValContact" class="k-header"></label>
+    </div>
+</div>
+<div class="row">
+
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_Scm_contact_name_01</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+        <input type="text" id="Scm_contact_name_01" maxlength="25"  name="Scm_contact_name_01" class="k-textbox form-control" />
+        <div class="i-fg-data-entry-validation" id="validatefor-Scm_contact_name_01"></div>
+    </div>
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_Scm_contact_tel_01</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+        <input type="text" id="Scm_contact_tel_01" maxlength="15" name="Scm_contact_tel_01" class="k-textbox form-control" />
+        <div class="i-fg-data-entry-validation" id="validatefor-Scm_contact_tel_01"></div>
+    </div>
+</div>
+<div class="row">
+
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_Scm_contact_name_02</label>
+        <input type="text" id="Scm_contact_name_02" maxlength="25"  name="Scm_contact_name_02" class="k-textbox form-control" />
+        <div class="i-fg-data-entry-validation" id="validatefor-Scm_contact_name_02"></div>
+    </div>
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_Scm_contact_tel_02</label>
+        <input type="text" id="Scm_contact_tel_02" maxlength="15"  name="Scm_contact_tel_02" class="k-textbox form-control" />
+        <div class="i-fg-data-entry-validation" id="validatefor-Scm_contact_tel_02"></div>
+    </div>
+</div>
+<div class="row">
+
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_Scm_contact_name_03</label>
+        <input type="text" id="Scm_contact_name_03" maxlength="25"  name="Scm_contact_name_03" class="k-textbox form-control" />
+        <div class="i-fg-data-entry-validation" id="validatefor-Scm_contact_name_03"></div>
+    </div>
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_Scm_contact_tel_03</label>
+        <input type="text" id="Scm_contact_tel_03" maxlength="15" name="Scm_contact_tel_03" class="k-textbox form-control" />
+        <div class="i-fg-data-entry-validation" id="validatefor-Scm_contact_tel_03"></div>
+    </div>
+</div>
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_Scm_contact_Other</label>
+        <input type="text" id="Scm_contact_Other" name="Scm_contact_Other" class="k-textbox form-control" />
+        <input type="hidden" id="lov_id_contact" name="lov_id_contact" class="k-textbox form-control" />
+    </div>
+</div>
+<div>&nbsp;</div>
+
+@*</div>
+    </div>*@
+<div class="row">
+    <div class="col-sm-6 col-md-3 i-text-align-right">
+        <a class="btn btn-info" id="saveConfigMLREmail" onclick="ConfigMLREmailContactConfirm();"><i class="fa fa-floppy-o fa-lg"></i>&nbsp;&nbsp;@B_SAVE</a>
+    </div>
+    <div class="col-sm-6 col-md-3 i-text-align-left">
+        <a class="btn btn-danger" onclick="CancelConfigMLREmailContact();"><i class="fa fa-times  fa-lg"></i>&nbsp;&nbsp;@B_CANCEL</a>
+    </div>
+</div>
+<script>
+    //$(document).ready(function () {
+
+    //    ClearValidationDateValueContactMLR();
+
+    //});
+    $(document).ready(function () {
+        ClearValidationDateValueContactMLR();
+        $("#Scm_contact_tel_01").keyup(function () {
+            CheckKeyUps("Scm_contact_tel_01", "[0-9-]");
+        });
+        $("#Scm_contact_tel_02").keyup(function () {
+            CheckKeyUps("Scm_contact_tel_02", "[0-9-]");
+        });
+
+        $("#Scm_contact_tel_03").keyup(function () {
+            CheckKeyUps("Scm_contact_tel_03", "[0-9-]");
+        });
+
+
+        $("#Scm_contact_name_01").keyup(function () {
+            CheckKeyUps("Scm_contact_name_01", "[^0-9-#/$!&*%_@@^()_+=]");
+        });
+        $("#Scm_contact_name_02").keyup(function () {
+            CheckKeyUps("Scm_contact_name_02", "[^0-9-#/$!&*%_@@^()_+=]");
+        });
+        $("#Scm_contact_name_03").keyup(function () {
+            CheckKeyUps("Scm_contact_name_03", "[^0-9-#/$!&*%_@@^()_+=]");
+        });
+    });
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+    function ClearValidationDateValueContactMLR() {
+        $("#validatefor-Scm_contact_name_01").html("");
+        $("#validatefor-Scm_contact_name_02").html("");
+        $("#validatefor-Scm_contact_name_03").html("");
+
+        $("#validatefor-Scm_contact_tel_01").html("");
+        $("#validatefor-Scm_contact_tel_02").html("");
+        $("#validatefor-Scm_contact_tel_03").html("");
+
+    }
+    function CancelConfigMLREmailContact() {
+        $("#EditConfiLMREmailContactPopup").data("kendoWindow").close();
+    }
+    function checkPhoneNumber(param) {
+        //console.log("param=" + param)
+        var ResultIndexTel = param.indexOf("0");
+        if (ResultIndexTel != 0) {
+            return false;
+        } else {
+            return  true;
+        }
+       
+    }
+    function ValidationDateValueContactMLR() {
+        // console.log("ValidationDateValueContactMLR");
+        ClearValidationDateValueContactMLR();
+        // -------------Scm 1
+        var Scm_contact_name_01 = $("#Scm_contact_name_01").val();
+        var Scm_contact_tel_01 = $("#Scm_contact_tel_01").val();
+        // -------------Scm 2
+        var Scm_contact_name_02 = $("#Scm_contact_name_02").val();
+        var Scm_contact_tel_02 = $("#Scm_contact_tel_02").val();
+        // -------------Scm 3
+        var Scm_contact_name_03 = $("#Scm_contact_name_03").val();
+        var Scm_contact_tel_03 = $("#Scm_contact_tel_03").val();
+        
+
+        // ------------Check-Scm 1
+        if (Scm_contact_name_01 == "" ||  Scm_contact_name_01 == " ") {
+         //   console.log("Scm_contact_name_01=null")
+            $("#validatefor-Scm_contact_name_01").html(ValidationIcon() + "This field is required.");
+            return false;
+        } else {
+            $("#validatefor-Scm_contact_name_01").html("");
+        }
+
+        if (Scm_contact_tel_01 == "" || Scm_contact_tel_01 == " ") {
+            $("#validatefor-Scm_contact_tel_01").html(ValidationIcon() + "This field is required.");
+            return false;
+        } else {
+
+            if (checkPhoneNumber(Scm_contact_tel_01)) {
+                $("#validatefor-Scm_contact_tel_01").html("");
+            } else {
+                $("#validatefor-Scm_contact_tel_01").html(ValidationIcon() + "This field is not formatch phone number.");
+                return false;
+            }
+         
+           
+        }
+        // ------------Check-Scm2 /
+        if (Scm_contact_name_02 == "" || Scm_contact_name_02 == " ") {
+            if (Scm_contact_tel_02 != "" && Scm_contact_tel_02 != " ") {
+                $("#validatefor-Scm_contact_name_02").html(ValidationIcon() + "This field is required.");
+                return false;
+            } else {
+                $("#validatefor-Scm_contact_name_02").html("");
+            }
+
+
+        } else if (Scm_contact_tel_02 == "" || Scm_contact_tel_02 == " ") {
+
+            if (Scm_contact_name_02 != "" && Scm_contact_name_02 != " ") {
+                $("#validatefor-Scm_contact_tel_02").html(ValidationIcon() + "This field is required.");
+                return false;
+            } else {
+                 $("#validatefor-Scm_contact_tel_02").html("");
+               
+            }
+        } else {
+
+            if (checkPhoneNumber(Scm_contact_tel_02)) {
+
+                $("#validatefor-Scm_contact_tel_02").html("");
+
+            } else {
+                $("#validatefor-Scm_contact_tel_02").html(ValidationIcon() + "This field is not formatch phone number.");
+                return false;
+            }
+
+         }
+
+        // ------------Check-Scm3 /
+        if (Scm_contact_name_03 == "" || Scm_contact_name_03 == " ") {
+            if (Scm_contact_tel_03 != "" && Scm_contact_tel_03 != " ") {
+                $("#validatefor-Scm_contact_name_03").html(ValidationIcon() + "This field is required.");
+                return false;
+            } else {
+                $("#validatefor-Scm_contact_name_03").html("");
+            }
+
+
+        } else if (Scm_contact_tel_03 == "" || Scm_contact_tel_03 == " ") {
+            if (Scm_contact_name_03 != "" && Scm_contact_name_03 != " ") {
+                $("#validatefor-Scm_contact_tel_03").html(ValidationIcon() + "This field is required.");
+                return false;
+            } else {
+                $("#validatefor-Scm_contact_tel_03").html(""); 
+            }
+        } else {
+
+            if (checkPhoneNumber(Scm_contact_tel_03)) {
+
+                $("#validatefor-Scm_contact_tel_03").html("");
+
+            } else {
+                $("#validatefor-Scm_contact_tel_03").html(ValidationIcon() + "This field is not formatch phone number.");
+                return false;
+            }
+         }
+        return true;
+    }
+    function ConfigMLREmailContactConfirm() {
+        
+         var chkContact = ValidationDateValueContactMLR();
+         // console.log("chkContact=" + chkContact);
+        if (chkContact) {
+            Loading(); 
+            var LovID = $("#lov_id").val();
+            var Text = "";
+            var Scm_contact_name_01 = $("#Scm_contact_name_01").val();
+            var Scm_contact_tel_01 = $("#Scm_contact_tel_01").val();
+            // -------------Scm 1
+            
+                Text += Scm_contact_name_01           
+                Text += " " + Scm_contact_tel_01
+           
+            // -------------Scm 2
+
+            var Scm_contact_name_02 = $("#Scm_contact_name_02").val();
+            var Scm_contact_tel_02 = $("#Scm_contact_tel_02").val();
+
+           
+                Text += ";" + Scm_contact_name_02        
+                Text += " " + Scm_contact_tel_02
+               
+            
+
+            // -------------Scm 3
+            var Scm_contact_name_03 = $("#Scm_contact_name_03").val();
+            var Scm_contact_tel_03 = $("#Scm_contact_tel_03").val();
+           
+                Text += ";" + Scm_contact_name_03
+                Text += " " + Scm_contact_tel_03         
+                
+            
+            // -------------Other
+            var Scm_contact_Other = $("#Scm_contact_Other").val();           
+                Text += ";" + Scm_contact_Other;
+                //Text += ";" + Scm_contact_Other.replace(/ /g, '').trim()
+            
+            // -------------
+
+            data = JSON.stringify({
+                'id': LovID, "Text": Text
+            });
+         
+           // console.log("data" + data)
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json',
+                url: "/ConfigurationLMREmail/UpdateLovLMREmail",
+                data: data,
+                async: false,
+                dataType: "json",
+                success: function (response) {
+                    if (response.Code === "0") {
+                        $("#EditConfiLMREmailContactPopup").data("kendoWindow").close();
+                        showFeedback("success", response.message, "System Information");
+                    }
+                    else {
+                        $("#EditConfiLMREmailContactPopup").data("kendoWindow").close();
+                        showFeedback("error", response.message, "System Information");
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+            $("#GridViewConfigEmail").data("kendoGrid").dataSource.read();
+        }
+        Loading(0);
+    }
+</script>

@@ -1,0 +1,105 @@
+﻿@model WBBEntity.PanelModels.LovValueModel
+@{
+    string L_lov_id = "lov id";
+    string L_lov_type = "lov type";
+    string L_lov_name = "lov name";
+    string L_display_val = "Display Val";
+    string L_created_by = "created by";
+    string L_created_date = "created date";
+    string L_updated_by = "updated by";
+    string L_updated_date = "updated date";
+
+    string B_SAVE = "SAVE";
+    string B_CANCEL = "CANCEL";
+}
+<style>
+    .Text {
+        border: 1px solid #999999;
+        width: 100%;
+        margin: 5px 0;
+        padding: 3px;
+    }
+</style>
+<div class="row">
+    <div class=" col-sm-12 col-md-9">
+        <label id="DisplayTitleVal" class="k-header"></label>
+        @Html.TextAreaFor(t => t.Text, new { @class = "k-textbox form-control Text", @Style = "width:100%;height:100%" })
+        <div class="i-fg-data-entry-validation" id="validatefor-ValidateDisplay_val"></div>
+        <input id="lov_id" name="lov_id" type="hidden" />
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-4 i-text-align-right">
+        <a class="btn btn-info" id="saveConfigMLREmail" onclick="ConfigMLREmailConfirm();"><i class="fa fa-floppy-o fa-lg"></i>&nbsp;&nbsp;@B_SAVE</a>
+    </div>
+    <div class="col-sm-6 col-md-4 i-text-align-left">
+        <a class="btn btn-danger" onclick="CancelConfigMLREmail();"><i class="fa fa-times fa-lg"></i>&nbsp;&nbsp;@B_CANCEL</a>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#validatefor-ValidateDisplay_val").html("");
+        
+    });
+
+
+    function ValidationDateValueLMR() {
+        var chk = false;
+        /// alert("ValidationBlankValue");
+        var Text = $("#Text").val().replace(" ", "");
+      
+        if (Text == "") {
+            $("#validatefor-ValidateDisplay_val").html(ValidationIcon() + "This field is required.");
+            chk = false;
+
+        } else {
+            $("#validatefor-ValidateDisplay_val").html("");
+            chk = true;
+        }
+
+        return chk;
+    }
+    function CancelConfigMLREmail() {
+        $("#EditConfiLMREmailPopup").data("kendoWindow").close();
+    }
+    function ConfigMLREmailConfirm() {
+        
+        var chk = ValidationDateValueLMR();
+
+        if (chk) {
+            Loading();
+            var LovID = $("#lov_id").val();
+            var Text = $("#Text").val();
+
+            data = JSON.stringify({
+                'id': LovID, "Text": Text
+            });
+
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json',
+                url: "/ConfigurationLMREmail/UpdateLovLMREmail",
+                data: data,
+                async: false,
+                dataType: "json",
+                success: function (response) {
+                    if (response.Code === "0") {
+                        $("#EditConfiLMREmailPopup").data("kendoWindow").close();
+                        showFeedback("success", response.message, "System Information");
+                    }
+                    else {
+                        $("#EditConfiLMREmailPopup").data("kendoWindow").close();
+                        showFeedback("error", response.message, "System Information");
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+            $("#GridViewConfigEmail").data("kendoGrid").dataSource.read();
+        }
+        Loading(0);
+    }
+
+</script>

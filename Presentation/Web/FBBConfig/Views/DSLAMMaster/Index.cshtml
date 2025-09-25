@@ -1,0 +1,703 @@
+﻿@using WBBEntity.PanelModels.FBBWebConfigModels;
+@Html.Partial("~/Views/Shared/_PartialPopupHistory.cshtml")
+
+@{
+    var o = (List<WBBEntity.PanelModels.Account.ComponentModel>)ViewBag.User.ComponentModel;
+    var g = (List<decimal>)ViewBag.User.Groups;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderBy(des => des.ReadOnlyFlag).ToList();
+    
+    string FBB_CFG002_1_ADD = "";
+    string FBB_CFG002_1_EDIT = "";
+    string FBB_CFG002_1_DELETE = "";
+    
+    if (o != null)
+    {
+        FBB_CFG002_1_ADD = o.Any(c => c.ComponentName == "FBB_CFG002_1_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG002_1_ADD").ReadOnlyFlag : "";
+        FBB_CFG002_1_EDIT = o.Any(c => c.ComponentName == "FBB_CFG002_1_EDIT") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG002_1_EDIT").ReadOnlyFlag : "";
+        FBB_CFG002_1_DELETE = o.Any(c => c.ComponentName == "FBB_CFG002_1_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG002_1_DELETE").ReadOnlyFlag : "";
+    }
+}
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">DSLAM Master</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @(Html.Kendo().Grid<GridDSLAMModel>()
+        .Name("GridDSLAMMaster")
+        .ToolBar(toolbar => toolbar.Template("<div class='pull-right'><a class='btn btn-default pull-right' onclick=\"showPopupHistoryLog('DSLAM Master')\"><i class='fa fa-history'></i>&nbsp; Show History</a>&nbsp;" +
+            "<a id='btnShowCardPanel' onclick='showCardPanel()' class='btn btn-default pull-left'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a></div>"))
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.Region).Title("Region").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.LotNo).Title("Lot").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.CurrentNo).Title("Current Number / Total / Total Lot").HtmlAttributes(new { @class = "i-text-align-center" }).ClientTemplate("#=CurrentNo#/#=CurrentCount#/#=TotalLot#");
+            columns.Command(command =>
+            {
+                if (FBB_CFG002_1_EDIT != "")
+                {
+                    command.Custom("Edit").Click("editDSLAMMaster").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; Edit");
+                }
+                if (FBB_CFG002_1_DELETE != "")
+                {
+                    command.Custom("Delete").Click("deleteDSLAMMaster").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete");
+                }
+            });
+        })
+        .Pageable(p => p.Input(true)
+            .Numeric(true)
+            .PageSizes(true)
+        )
+        .Reorderable(r => r.Columns(true))
+        .Groupable()
+        .Sortable()
+        .Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(5)
+            .Read(read => read.Action("ReadDSLAMMaster", "DSLAMMaster"))
+         )
+         .Events(e => e.DataBound("onGridDataBound"))
+    )
+    </div>
+</div>
+
+<div class="panel panel-success i-gap-top-1 i-hidden" id="CardPanel">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span>Card Model</span>
+            <a data-toggle="collapse" class="pull-right" href="#DSLAMMasterAddPanel" onclick="onPanelToggle(this);" id="DSLAMMasterAddPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="DSLAMMasterAddPanelHeaderArrow"></i></a>
+        </h3>
+    </div>
+    <div id="DSLAMMasterAddPanel" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3">
+                            <div class="form-group">
+                                <label>DSLAM Model <span id="requiredfor-DSLAMModel"></span></label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DropDownList()
+                                          .Name("DSLAMModel")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetDSLAMModel", "DSLAMMaster");
+                                              });
+                                          })
+                                          .Events(e => e.Change("onDSLAMModelChange"))
+                                    )
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-DSLAMModel"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-3">
+                            <div class="form-group">
+                                <label>Region <span id="requiredfor-Region"></span></label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DropDownList()
+                                          .Name("Region")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectLov", "MasterData", new { type = "REGION_CODE" });
+                                              });
+                                          })
+                                    )
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-Region"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-3">
+                            <div class="form-group">
+                                <label>Lot <span id="requiredfor-Lot"></span></label>
+                                <div class="i-fg-data-entry">
+                                    <input type="text" id="Lot" class="k-textbox form-control" maxlength="50"/>
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-Lot"\></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-3">
+                            <div class="form-group">
+                                <label>Number of DSLAM <span id="requiredfor-DSLAMNo"></span></label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().NumericTextBox()
+                                        .Name("DSLAMNo")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                        .Format("n0")
+                                        .Spinners(false)
+                                        .Min(1)
+                                        .Max(999)
+                                        )
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-DSLAMNo"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div id="binding">
+                        <button class="i-hidden" id="btnSaveCardModel" data-bind="click: addCardModel">Click</button>
+                        <div class="k-widget k-grid k-reorderable">
+
+                            <div class="k-toolbar k-grid-toolbar k-grid-top">
+                                <a onclick='onPopupCardModel()' id="btnAddCard" class='btn btn-default pull-right'><i class='fa fa-plus-circle fa-lg'></i>&nbsp;&nbsp;Add New Data</a>
+                            </div>
+
+
+                            <table id="cardModel" role="grid">
+                                <thead class="k-grid-header">
+                                    <tr role="row">
+                                        <th class="k-header i-grid-th">Number</th>
+                                        <th class="k-header i-grid-th">Card Model</th>
+                                        <th class="k-header i-grid-th">Card Type</th>
+                                        <th class="k-header i-grid-th">Reserve</th>
+                                        <th class="k-header i-grid-th"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody data-template="row-template" data-bind="source: cardModel">
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <script id="row-template" type="text/x-kendo-template">
+                                <tr>
+                                    <td data-bind="text: number" class="i-text-align-center xx"></td>
+                                    <td data-bind="text: model" class="i-text-align-center"></td>
+                                    <td data-bind="text: cardType" class="i-text-align-center"></td>
+                                    <td data-bind="text: reserve" class="i-text-align-center"></td>
+                                    <td><a class="btn btn-default" data-bind="click: deleteCardModel"><i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete</a></td>
+                                </tr>
+                        </script>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="i-enter-2"></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group pull-right">                        
+                        <a class="btn btn-default i-width-sm" onclick="hideCardPanel()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                        <a class="btn btn-success i-width-sm" onclick="onSave()"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Save</a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+@(Html.Kendo().Window()
+    .Name("AddCardModelPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Add Card Model")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Content(@<text>
+        <div class="row i-no-over" id="CardModelPanel">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Card Model <span id="requiredfor-C_Model"></span></label>
+                    <div class="i-fg-data-entry">
+                        @(Html.Kendo().DropDownList()
+                      .Name("C_Model")
+                      .HtmlAttributes(new Dictionary<string, Object> { { "class", "form-control i-form-control-extend" } })
+                      .DataTextField("DISPLAY_VAL")
+                      .DataValueField("LOV_NAME")
+                      .DataSource(source =>
+                      {
+                          source.Read(read =>
+                          {
+                              read.Action("GetCardModel", "DSLAMMaster");
+                          });
+                      })
+                      .Events(e => e.Change("onCardModelChange"))
+                )
+                    </div>
+                    <div class="i-fg-data-entry-validation" id="validatefor-C_Model"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Card Type <span id="requiredfor-C_Type"></span></label>
+                    <div class="i-fg-data-entry">
+                        <input type="text" class="k-textbox form-control" id="C_Type" readonly="readonly" />
+                    </div>
+                    <div class="i-fg-data-entry-validation" id="validatefor-C_Type"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Reserve <span id="requiredfor-C_Reserve"></span></label>
+                    <div class="i-fg-data-entry">
+                        @(Html.Kendo().DropDownList()
+                      .Name("C_Reserve")
+                      .HtmlAttributes(new Dictionary<string, Object> { { "class", "form-control i-form-control-extend" } })
+                      .DataTextField("DISPLAY_VAL")
+                      .DataValueField("LOV_NAME")
+                      .DataSource(source =>
+                      {
+                          source.Read(read =>
+                          {
+                              read.Action("SelectLov", "MasterData", new { type = "RESERVE_TECH" });
+                          });
+                      })
+                )
+                    </div>
+                    <div class="i-fg-data-entry-validation" id="validatefor-C_Reserve"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="btn-group pull-right i-gap-top-1">
+                <a class="btn btn-default i-width-sm-2" onclick="onCancel();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                <button class="btn btn-success i-width-sm-2" onclick="cascadeBtn()"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Save</button>
+                    </div>
+            </div>
+
+        </div>
+        </text>)
+)
+
+@(Html.Kendo().Window()
+    .Name("EditPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Edit DSLAM Master")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Content(@<text>
+        <div class="row i-no-over" id="EditPopupPanel">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Lot Number</label>
+                    <div class="i-fg-data-entry">
+                        <input type="text" class="k-textbox form-control" id="E_Lot" readonly="readonly" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Region</label>
+                    <div class="i-fg-data-entry">
+                        <input type="text" class="k-textbox form-control" id="E_Region" readonly="readonly" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Current Number <span id="requiredfor-E_CurrentNo"></span></label>
+                    <div class="i-fg-data-entry">
+                        @(Html.Kendo().NumericTextBox()
+                            .Name("E_CurrentNo")
+                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                            .Format("n0")
+                            .Spinners(false)   
+                            .Min(0)                         
+                            .Max(999)
+                        )
+                    </div>
+                    <div class="i-fg-data-entry-validation" id="validatefor-E_CurrentNo"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Total</label>
+                    <div class="i-fg-data-entry">
+                        <input type="text" class="k-textbox form-control" id="E_Total" readonly="readonly" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Total Lot</label>
+                    <div class="i-fg-data-entry">
+                        <input type="text" class="k-textbox form-control" id="E_TotalLot" readonly="readonly" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="btn-group pull-right i-gap-top-1">
+                <a class="btn btn-default i-width-sm-2" onclick="onCancels();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                <button class="btn btn-success i-width-sm-2" onclick="onSaveEdit()"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Save</button>
+                    </div>
+            </div>
+
+        </div>
+        </text>)
+)
+
+<input type="hidden" id="MaxSlot" />
+<input type="hidden" id="OldNo" />
+<input type="hidden" id="RC" />
+
+        <script>
+            var vm;
+
+            $(function () {
+                if ("@FBB_CFG002_1_ADD" == "") $("#btnShowCardPanel").hide();
+
+                if ("@Session["SaveFlag"]" == "1") {
+                    showFeedback("success", "Created Complete.");
+                }
+
+                var validateModel = [];
+                validateModel.push({ id: "DSLAMModel" });
+                validateModel.push({ id: "Region" });
+                validateModel.push({ id: "Lot" });
+                validateModel.push({ id: "DSLAMNo" });
+                SetRequired(validateModel);
+
+                checkMaxAdd();
+            });
+
+            function showCardPanel() {
+                $("#CardPanel").show("fast");
+                $("#btnShowCardPanel").attr("disabled", "disabled");
+            }
+
+            function hideCardPanel() {
+                window.location.href = "@Url.Action("Index", "DSLAMMaster")";
+                //$("#CardPanel").hide("fast");
+                //$("#btnShowCardPanel").removeAttr("disabled");
+            }
+
+            $(document).ready(function () {
+                var viewModel = kendo.observable({
+                    number: 0,
+                    model: "",
+                    cardType: "",
+                    reserve: "",
+                    addCardModel: function () {
+                        var chk = ValidationProcessing("CardModelPanel");
+                        if (chk) {
+                            var cardModel = this.get("cardModel");
+
+                            this.get("cardModel").push({
+                                number: cardModel.length + 1,
+                                model: $("#C_Model").data("kendoDropDownList").text(),
+                                cardType: $("#C_Type").val(),
+                                reserve: $("#C_Reserve").data("kendoDropDownList").value()
+                            });
+
+                            vm = this.get("cardModel");
+
+                            $("#AddCardModelPopup").data("kendoWindow").close();
+
+                            checkMaxAdd();
+                        }
+                        else {
+                            //not to do
+                        }
+
+                    },
+                    deleteCardModel: function (e) {
+                        var number = e.data;
+
+                        var cardModel = this.get("cardModel");
+
+                        var index = cardModel.indexOf(number);
+
+                        cardModel.splice(index, 1);
+
+                        reloadNumber();
+
+                        vm = this.get("cardModel");
+
+                        checkMaxAdd();
+                    },
+                    cardModel: []
+                    //,
+                    //cardModel: [
+                    //    { number: 1, model: "model", cardType: "cardType", reserve: "reserve" },
+                    //    { number: 2, model: "model", cardType: "cardType", reserve: "reserve" },
+                    //    { number: 3, model: "model", cardType: "cardType", reserve: "reserve" },
+                    //    { number: 4, model: "model", cardType: "cardType", reserve: "reserve" }
+                    //]
+                });
+
+                kendo.bind($("#binding"), viewModel);
+
+            });
+
+            function reloadNumber() {
+                $('.xx').each(function (i, e) {
+                    $(this).html(i + 1);
+                });
+            }
+
+            function onGridDataBound() {
+                clearPageScrollUp("#GridDSLAMMaster");
+                setButton();
+            }
+
+            function editDSLAMMaster(e) {
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                $("#RC").val(dataItem.RegionCode);                        
+                $("#E_CurrentNo").data("kendoNumericTextBox").value(dataItem.CurrentNo);                              
+                $("#OldNo").val(dataItem.CurrentNo);
+                $("#E_Total").val(dataItem.CurrentCount);
+                $("#E_TotalLot").val(dataItem.TotalLot);
+                $("#E_Lot").val(dataItem.LotNo);
+                $("#E_Region").val(dataItem.Region);
+
+                ClearTextValidation("EditPopupPanel");
+
+                var validateModel = [];
+                validateModel.push({ id: "E_CurrentNo" });
+                SetRequired(validateModel);
+
+                $("#EditPopup").data("kendoWindow").open();
+                $("#EditPopup").data("kendoWindow").center();
+            }
+
+            function deleteDSLAMMaster(e) {
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+                //var c = confirm("Are you sure you want to delete Lot " + dataItem.LotNo + " ?");
+                var c = confirm("Are you sure you want to delete?");
+                if (c) {
+                    Loading();
+                    $.ajax({
+                        url: '/DSLAMMaster/DeleteDSLAMMaster',
+                        data: { lot: dataItem.LotNo, regionCode: dataItem.RegionCode },
+                        dataType: "json",
+                        type: 'POST',
+                        success: function (data) {
+                            if (data == true) {
+                                $("#GridDSLAMMaster").data("kendoGrid").dataSource.read();
+                                Loading(0);
+                                showFeedback("success", "Deleted Complete.");
+                            }
+                            else if (data == "not") {
+                                Loading(0);
+                                showFeedback("warning", "Cannot delete, because some DSLAM available to another Region.");
+                            }
+                            else {
+                                Loading(0);
+                                showFeedback(data, err);
+                            }
+                        }
+                        , error: function (err) {
+                            Loading(0);
+                            showFeedback("error", err);
+                        }
+                    });
+                }
+
+            }
+
+            function onPopupCardModel() {
+                $("#C_Model").data("kendoDropDownList").value("");
+                $("#C_Type").val("");
+                $("#C_Reserve").data("kendoDropDownList").value("");
+
+                ClearTextValidation("AddCardModelPopup");
+
+                var validateModel = [];
+                validateModel.push({ id: "C_Model" });
+                validateModel.push({ id: "C_Type" });
+                validateModel.push({ id: "C_Reserve" });
+                SetRequired(validateModel);
+
+                $("#AddCardModelPopup").data("kendoWindow").open();
+                $("#AddCardModelPopup").data("kendoWindow").center();
+            }
+
+            function onCancel() {
+                $("#AddCardModelPopup").data("kendoWindow").close();
+            }
+
+            function onCancels() {
+                $("#EditPopup").data("kendoWindow").close();
+            }
+
+            function onSaveEdit() {
+                var chk = ValidationProcessing("EditPopupPanel");
+                if (chk) {
+                    Loading();
+
+                    $.ajax({
+                        url: '/DSLAMMaster/UpdateDSLAMMaster',
+                        data: { lot: $("#E_Lot").val(), regionCode: $("#RC").val(), oldNo: $("#OldNo").val(), newNo: $("#E_CurrentNo").val() },
+                        dataType: "json",
+                        type: 'POST',
+                        success: function (response) {
+                            if (response == true) {
+                                Loading(0);
+                                $("#EditPopup").data("kendoWindow").close();
+                                showFeedback("success", "Updated Complete.");
+                                $("#GridDSLAMMaster").data("kendoGrid").dataSource.read();
+                            }
+                            else if (response == "") {
+                                Loading(0);
+                                $("#EditPopup").data("kendoWindow").close();
+                            }
+                            else {
+                                Loading(0);
+                                $("#EditPopup").data("kendoWindow").close();
+                                showFeedback("error", err);
+                            }
+                        },
+                        error: function (err) {
+                            Loading(0);
+                            $("#EditPopup").data("kendoWindow").close();
+                            showFeedback("error", err);
+                        }
+                    });
+
+                }
+            }
+
+            function onSave() {
+                var chk = ValidationProcessing("DSLAMMasterAddPanel");
+                if (chk) {
+                    if ($('.xx').length == 0) {
+                        showFeedback("warning", "Please add Card Model at least one.");
+                    }
+                    else {
+                        Loading();
+
+                        var dslamMasterModel = new DSLAMMasterModel();
+                        dslamMasterModel.DSLAMModel = $("#DSLAMModel").val();
+                        dslamMasterModel.Region = $("#Region").val();
+                        dslamMasterModel.Lot = $("#Lot").val();
+                        dslamMasterModel.DSLAMNo = $("#DSLAMNo").val();
+                        dslamMasterModel.CardViewModel = vm;
+
+                        $.ajax({
+                            url: '/DSLAMMaster/CreateDSLAMMaster',
+                            data: { data: JSON.stringify(dslamMasterModel) },
+                            dataType: "json",
+                            type: 'POST',
+                            success: function (response) {
+                                if (response == true)
+                                    window.location.href = "@Url.Action("Index", "DSLAMMaster", new { saveFlag = "1" })";
+                                else if (response == "dup") {
+                                    Loading(0);
+                                    $("#AddCardModelPopup").data("kendoWindow").close();
+                                    showFeedback("warning", "Lot is duplicate, please try again.");
+                                }
+                                else {
+                                    Loading(0);
+                                    $("#AddCardModelPopup").data("kendoWindow").close();
+                                    showFeedback("error", response);
+                                }
+                            },
+                            error: function (err) {
+                                Loading(0);
+                                $("#AddCardModelPopup").data("kendoWindow").close();
+                                showFeedback("error", err);
+                            }
+                        });
+
+                }
+            }
+            else
+                showFeedback("warning", "Please correct the errors and try again.");
+        }
+
+        function cascadeBtn() {
+            $("#btnSaveCardModel").click();
+        }
+
+        function onCardModelChange() {
+            $("#C_Type").val($("#C_Model").val());
+        }
+
+        function onDSLAMModelChange() {
+            $.ajax({
+                url: '/DSLAMMaster/GetModelMaxSlot',
+                data: { model: $("#DSLAMModel").data("kendoDropDownList").value() },
+                dataType: "json",
+                type: 'POST',
+                success: function (data) {
+                    //get max slot
+                    if ($('.xx').length > data) {
+                        while (vm.length > 0) {
+                            vm.pop();
+                        }
+                        $("#cardModel tbody tr").remove();
+
+                    }
+
+                    $("#MaxSlot").val(data);
+                    checkMaxAdd();
+                }
+            });
+        }
+
+        function checkMaxAdd() {
+            if ($('.xx').length >= $("#MaxSlot").val() || $("#DSLAMModel").data("kendoDropDownList").value() == "")
+                $("#btnAddCard").attr("disabled", "disabled");
+            else
+                $("#btnAddCard").removeAttr("disabled");
+        }
+
+        var DSLAMMasterModel = function () {
+            DSLAMModel: "";
+            Region: "";
+            Lot: "";
+            DSLAMNo: "";
+            CardViewModel: null;
+        }
+
+        var CardViewModel = function () {
+            model: "";
+            cardType: "";
+            reserve: "";
+        }
+
+        function showPopupHistoryLog(panel) {
+            var title = panel;
+            var application = "FBB_CFG002_1";
+            var refKey = "";
+            var refName = "Lot";
+
+            onHistoryPopUp_Show(title, application, refKey, refName);
+        }
+
+        </script>

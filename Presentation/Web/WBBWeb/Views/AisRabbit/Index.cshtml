@@ -1,0 +1,253 @@
+﻿@using WBBEntity.PanelModels;
+@using System.Collections.Generic;
+
+@{    
+    Layout = null;
+
+    string L_RABBIT_REG_NOT_ALLOW = "";
+    string L_RABBIT_BACK_TO_HOMEPAGE = "";
+    string L_RABBIT_REG_SUCCESS = "";
+    string L_RABBIT_REG_DUPLICATE = "";    
+    
+    if (ViewBag.Lov != null)
+    {
+        var lov = (List<LovValueModel>)ViewBag.Lov;
+        L_RABBIT_REG_NOT_ALLOW = lov.Any(c => c.Name == "L_RABBIT_REG_NOT_ALLOW") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_REG_NOT_ALLOW").Text : "";
+        L_RABBIT_BACK_TO_HOMEPAGE = lov.Any(c => c.Name == "L_RABBIT_BACK_TO_HOMEPAGE") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_BACK_TO_HOMEPAGE").Text : "";
+        L_RABBIT_REG_SUCCESS = lov.Any(c => c.Name == "L_RABBIT_REG_SUCCESS") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_REG_SUCCESS").Text : "";
+        L_RABBIT_REG_DUPLICATE = lov.Any(c => c.Name == "L_RABBIT_REG_DUPLICATE") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_REG_DUPLICATE").Text : "";
+    }
+    
+}
+
+@Html.Partial("~/Views/AisRabbit/_HeaderRabbit.cshtml")
+
+<table align="center" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <img src="~/Content/images/rabbit/1-1_01.jpg" />
+        </td>
+        <td>
+            <img src="~/Content/images/rabbit/1-1_02.jpg" />
+        </td>
+        <td>
+            <img src="~/Content/images/rabbit/1-1_03.jpg" />
+        </td>
+    </tr>
+    <tr height="13">
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <table align="center" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="52%" valign="top">
+                        @Html.Partial("~/Views/AisRabbit/_LeftPane.cshtml")
+                    </td>
+                    @* border center *@
+                    <td align="center" width="6%">
+                        <img src="~/Content/images/rabbit/1-1_06.jpg" />
+                        <img src="~/Content/images/rabbit/1-1_22.jpg" style="margin-right: 8px;" />
+                        <img src="~/Content/images/rabbit/1-1_27.jpg" />
+                    </td>
+
+                    <td width="224" valign="top">
+                        @Html.Partial("~/Views/AisRabbit/_RightPane.cshtml")
+                    </td>
+                </tr>
+                @* footer *@
+                <tr height="20">
+                    <td colspan="3"></td>
+                </tr>
+                <tr height="80" style="background-color: #E1E5EE">
+                    <td colspan="3"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+@Html.Partial("~/Views/AisRabbit/_FooterRabbit.cshtml")
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content i-modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" data-dismiss="modal" aria-hidden="true" class="pull-right">
+                            <img src="~/Content/images/rabbit/1-3_04.jpg" /></a>
+                    </div>
+                </div>
+                <center>
+                <div class="row well i-content-popup">
+                    <div class="col-md-12">
+                        <p id="ic-pop" class="i-icon-msg"><i></i></p>
+                        <span id="lb-popup" class="i-popup-msg"></span>
+                    </div>
+                </div>
+                    
+                <div class="row i-gap-top-2">
+                    <a href="@L_RABBIT_BACK_TO_HOMEPAGE"><img src="~/Content/images/rabbit/1-3_17.jpg"/></a>
+                </div>
+                    </center>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <i class="fa-li fa fa-spinner fa-spin fa-5x i-loading"></i>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        $("#AirnetID").mask("9999999999");
+    });
+
+    function onCancel() {
+        //$("#AirnetID").val("");
+        //$("#IDCard").val("");
+        //$("#Email").val("");
+        window.location.href = "@Url.Action("Index", "AisRabbit")";
+    }
+
+    function onConfirm() {
+        var chkAirnetID = true;
+        var idCard = true;
+        var email = true;
+
+        //validate AirnetID
+        if ($.trim($("#AirnetID").val()) == "")
+            chkAirnetID = false;
+
+        if (!chkAirnetID) {
+            $("#errAirnetID").text("กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน");
+            $("#fAirnetID").addClass("has-error");
+            $("#fAirnetID i").addClass("i-red");
+        }
+        else {
+            $("#errAirnetID").text("");
+            $("#fAirnetID").addClass("has-success");
+            $("#fAirnetID").removeClass("has-error");
+            $("#fAirnetID i").removeClass("i-red");
+        }
+
+
+        //validate IDCard
+        if ($.trim($("#IDCard").val()) == "")
+            idCard = false;
+
+        else {
+            if (!validateIDCard($("#IDCard").val()))
+                idCard = false;
+        }
+
+        if (!idCard) {
+            $("#errIDCard").text("กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน");
+            $("#fIDCard").addClass("has-error");
+            $("#fIDCard i").addClass("i-red");
+        }
+        else {
+            $("#errIDCard").text("");
+            $("#fIDCard").addClass("has-success");
+            $("#fIDCard").removeClass("has-error");
+            $("#fIDCard i").removeClass("i-red");
+        }
+
+
+        //validate Email
+        if ($.trim($("#Email").val()) == "")
+            email = false;
+
+        else {
+            if (!validateEmail($("#Email").val()))
+                email = false;
+        }
+
+        if (!email) {
+            $("#errEmail").text("กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน");
+            $("#fEmail").addClass("has-error");
+            $("#fEmail i").addClass("i-red");
+        }
+        else {
+            $("#errEmail").text("");
+            $("#fEmail").addClass("has-success");
+            $("#fEmail").removeClass("has-error");
+            $("#fEmail i").removeClass("i-red");
+        }
+
+        //pass validate
+        if (chkAirnetID && idCard && email) {
+            Loading();
+            $.ajax({
+                type: "GET",
+                url: "/AisRabbit/Register",
+                data: { "airnetID": $("#AirnetID").val(), "idCard": $("#IDCard").val(), "email": $("#Email").val() },
+                dataType: "json",
+                success: function (data) {
+                    Loading(0);
+                    if (data == "succ")
+                        showDialog(data, "@L_RABBIT_REG_SUCCESS");
+
+                    else if (data == "dupp")
+                        showDialog(data, "@L_RABBIT_REG_DUPLICATE");
+
+                    else if (data == "err")
+                        showDialog(data, "@L_RABBIT_REG_NOT_ALLOW");
+
+                    else
+                        showDialog(data, "Error Application: กรุณาติดต่อเจ้าหน้าที่");
+
+                }, error: function (ex) {
+                    Loading(0);
+                    showDialog("err", ex);
+                }
+            });
+        }
+
+    }
+
+    function onAccept() {
+        if ($("#IAccept").prop("checked")) {
+            $("#btnDis").hide();
+            $("#btnConfirm").show();
+        }
+        else {
+            $("#btnConfirm").hide();
+            $("#btnDis").show();
+        }
+
+    }
+
+    function validateEmail(email) {
+        //var filter = /^(((([a-zA-Z0-9]{1})+([\w-\.]{0})+([\w]{0})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        var filter = /^(((([a-zA-Z0-9\_\-]{1,50})+(([\.]{1,50}[a-zA-Z0-9\_\-]{1,50}){0,50})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+
+        if (email.substr(0, 2) == "-@@" || email.substr(0, 2) == "_@@") {
+            return false;
+        }
+
+        if (filter.test(email)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateIDCard(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\_]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+</script>

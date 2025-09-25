@@ -1,0 +1,2910 @@
+﻿@using WBBWeb.Extension
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+
+@{
+    string language = Session[WebConstants.SessionKeys.CurrentUICulture] != null ? Session[WebConstants.SessionKeys.CurrentUICulture].ToString() : "";
+
+    string L_CHOOSE_PACKAGE = "";
+
+    string L_YOUR_INFORMATION = "";
+    string L_CUST_NAME = "";
+    string L_CUST_SURNAME = "";
+    string L_CARD_NUMBER = "";
+    string L_MOBILE_CONTACT = "";
+    string L_MOBILE_NO = "";
+    string L_RECEIPT_CHANNEL = "";
+    string L_RECEIPT_CHANNEL_DETAIL = "";
+    string L_GETTING_EBILL = "";
+    string L_ABOUT_EBILL = "";
+    string L_SMS_AND_MYAIS = "";
+    string L_SMS_AND_EMAIL = "";
+    string L_SMS_NON_SELECT = "";
+    string L_TERMS_AND_CONDITION_EBILL = "";
+    string L_ABOUT_EBILL_URL = "";
+    string L_BILLING_ADDRESS = "";
+    string L_SAME_AS_INSTALL_ADDRESS = "";
+    string L_HOME_NO = "";
+    string L_BUILDING_NAME = "";
+    string L_FLOOR = "";
+    string L_ROOM = "";
+    string L_MOO = "";
+    string L_MOOBAN = "";
+    string L_SOI = "";
+    string L_ROAD = "";
+    string L_SUB_DISTRICT = "";
+    string L_DISTRICT = "";
+    string L_PROVINCE = "";
+    string L_ZIP_CODE = "";
+    string L_RECEIPT_BILL_VIA_POSTAL = "";
+    string L_BLACKLIST_ERR = "";
+    string B_CLOSE = "";
+    string B_BACK = "";
+    string B_NEXT = "";
+
+    string L_FOR_OFFICER = "";
+    string L_LOCATION_CODE = "";
+    string L_ASC_CODE = "";
+    string L_EMPLOYEE_CODE = "";
+    string L_SALES_REP = "";
+    string L_POPUP_INVALID_LOC_ASC = "";
+    string L_POPUP_INVALID_EMP_CODE = "";
+    string L_POPUP_INVALID_CA = "";
+    string L_POPUP_CONTACT_US = "";
+    string L_POPUP_INCONSISTENCIES = "";
+    string ERROR_LOGIN_SCPE = "";
+
+    string L_C_CARD_NO = "";
+    string L_C_REGISTER_DATE = "";
+    string L_C_INSTALL_ADDRESS = "";
+    string L_C_INSTALL_DATE = "";
+    string L_C_PACKAGE = "";
+    string L_C_STATUS = "";
+    string B_CANCEL_ORDER = "";
+    string B_CANCEL_REGISTER = "";
+    string L_POPUP_CANCEL_ORDER = "";
+    string L_POPUP_CANCEL_REGISTER = "";
+    string B_CONFIRM = "";
+
+    string L_REMARK_CANCEL_ORDER = "";
+
+    string L_INSTALL_DATE = "";
+    string L_PLEASE_SELECT_TIMESLOT = "";
+
+    if (ViewBag.LabelFBBOR028 != null)
+    {
+        var LabelFBBOR028 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR028;
+        L_CHOOSE_PACKAGE = LabelFBBOR028.Any(c => c.Name == "L_CHOOSE_PACKAGE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_CHOOSE_PACKAGE").DisplayValue : "";
+
+        L_YOUR_INFORMATION = LabelFBBOR028.Any(c => c.Name == "L_YOUR_INFORMATION") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_YOUR_INFORMATION").DisplayValue : "";
+        L_CUST_NAME = LabelFBBOR028.Any(c => c.Name == "L_CUST_NAME") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_CUST_NAME").DisplayValue : "";
+        L_CUST_SURNAME = LabelFBBOR028.Any(c => c.Name == "L_CUST_SURNAME") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_CUST_SURNAME").DisplayValue : "";
+        L_CARD_NUMBER = LabelFBBOR028.Any(c => c.Name == "L_CARD_NUMBER") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_CARD_NUMBER").DisplayValue : "";
+        L_MOBILE_CONTACT = LabelFBBOR028.Any(c => c.Name == "L_MOBILE_CONTACT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_MOBILE_CONTACT").DisplayValue : "";
+        L_MOBILE_NO = LabelFBBOR028.Any(c => c.Name == "L_MOBILE_NO") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_MOBILE_NO").DisplayValue : "";
+
+        L_RECEIPT_CHANNEL = LabelFBBOR028.Any(c => c.Name == "L_RECEIPT_CHANNEL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_RECEIPT_CHANNEL").DisplayValue : "";
+        L_RECEIPT_CHANNEL_DETAIL = LabelFBBOR028.Any(c => c.Name == "L_RECEIPT_CHANNEL_DETAIL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_RECEIPT_CHANNEL_DETAIL").DisplayValue : "";
+        L_GETTING_EBILL = LabelFBBOR028.Any(c => c.Name == "L_GETTING_EBILL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_GETTING_EBILL").DisplayValue : "";
+        L_ABOUT_EBILL = LabelFBBOR028.Any(c => c.Name == "L_ABOUT_EBILL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ABOUT_EBILL").DisplayValue : "";
+        L_SMS_AND_MYAIS = LabelFBBOR028.Any(c => c.Name == "L_SMS_AND_MYAIS") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SMS_AND_MYAIS").DisplayValue : "";
+        L_SMS_AND_EMAIL = LabelFBBOR028.Any(c => c.Name == "L_SMS_AND_EMAIL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SMS_AND_EMAIL").DisplayValue : "";
+        L_SMS_NON_SELECT = LabelFBBOR028.Any(c => c.Name == "L_SMS_NON_SELECT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SMS_NON_SELECT").DisplayValue : "";
+        L_TERMS_AND_CONDITION_EBILL = LabelFBBOR028.Any(c => c.Name == "L_TERMS_AND_CONDITION_EBILL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_TERMS_AND_CONDITION_EBILL").DisplayValue : "";
+        L_ABOUT_EBILL_URL = LabelFBBOR028.Any(c => c.Name == "L_ABOUT_EBILL_URL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ABOUT_EBILL_URL").DisplayValue : "";
+        L_BILLING_ADDRESS = LabelFBBOR028.Any(c => c.Name == "L_BILLING_ADDRESS") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_BILLING_ADDRESS").DisplayValue : "";
+        L_SAME_AS_INSTALL_ADDRESS = LabelFBBOR028.Any(c => c.Name == "L_SAME_AS_INSTALL_ADDRESS") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SAME_AS_INSTALL_ADDRESS").DisplayValue : "";
+
+        L_HOME_NO = LabelFBBOR028.Any(c => c.Name == "L_HOME_NO") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_HOME_NO").DisplayValue : "";
+        L_BUILDING_NAME = LabelFBBOR028.Any(c => c.Name == "L_BUILDING_NAME") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_BUILDING_NAME").DisplayValue : "";
+        L_FLOOR = LabelFBBOR028.Any(c => c.Name == "L_FLOOR") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_FLOOR").DisplayValue : "";
+        L_ROOM = LabelFBBOR028.Any(c => c.Name == "L_ROOM") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ROOM").DisplayValue : "";
+        L_MOO = LabelFBBOR028.Any(c => c.Name == "L_MOO") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_MOO").DisplayValue : "";
+        L_MOOBAN = LabelFBBOR028.Any(c => c.Name == "L_MOOBAN") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_MOOBAN").DisplayValue : "";
+        L_SOI = LabelFBBOR028.Any(c => c.Name == "L_SOI") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SOI").DisplayValue : "";
+        L_ROAD = LabelFBBOR028.Any(c => c.Name == "L_ROAD") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ROAD").DisplayValue : "";
+        L_SUB_DISTRICT = LabelFBBOR028.Any(c => c.Name == "L_SUB_DISTRICT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SUB_DISTRICT").DisplayValue : "";
+        L_DISTRICT = LabelFBBOR028.Any(c => c.Name == "L_DISTRICT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_DISTRICT").DisplayValue : "";
+        L_PROVINCE = LabelFBBOR028.Any(c => c.Name == "L_PROVINCE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_PROVINCE").DisplayValue : "";
+        L_ZIP_CODE = LabelFBBOR028.Any(c => c.Name == "L_ZIP_CODE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ZIP_CODE").DisplayValue : "";
+        L_RECEIPT_BILL_VIA_POSTAL = LabelFBBOR028.Any(c => c.Name == "L_RECEIPT_BILL_VIA_POSTAL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_RECEIPT_BILL_VIA_POSTAL").DisplayValue : "";
+        L_BLACKLIST_ERR = LabelFBBOR028.Any(c => c.Name == "L_BLACKLIST_ERR") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_BLACKLIST_ERR").DisplayValue : "";
+        B_CLOSE = LabelFBBOR028.Any(c => c.Name == "B_CLOSE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        B_BACK = LabelFBBOR028.Any(c => c.Name == "B_BACK") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+        B_NEXT = LabelFBBOR028.Any(c => c.Name == "B_NEXT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+
+        L_FOR_OFFICER = LabelFBBOR028.Any(c => c.Name == "L_FOR_OFFICER") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_FOR_OFFICER").DisplayValue : "";
+        L_LOCATION_CODE = LabelFBBOR028.Any(c => c.Name == "L_LOCATION_CODE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_LOCATION_CODE").DisplayValue : "";
+        L_ASC_CODE = LabelFBBOR028.Any(c => c.Name == "L_ASC_CODE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ASC_CODE").DisplayValue : "";
+        L_EMPLOYEE_CODE = LabelFBBOR028.Any(c => c.Name == "L_EMPLOYEE_CODE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_EMPLOYEE_CODE").DisplayValue : "";
+        L_SALES_REP = LabelFBBOR028.Any(c => c.Name == "L_SALES_REP") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SALES_REP").DisplayValue : "";
+        L_POPUP_INVALID_LOC_ASC = LabelFBBOR028.Any(c => c.Name == "L_POPUP_INVALID_LOC_ASC") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_INVALID_LOC_ASC").DisplayValue : "";
+        L_POPUP_INVALID_EMP_CODE = LabelFBBOR028.Any(c => c.Name == "L_POPUP_INVALID_EMP_CODE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_INVALID_EMP_CODE").DisplayValue : "";
+        L_POPUP_INVALID_CA = LabelFBBOR028.Any(c => c.Name == "L_POPUP_INVALID_CA") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_INVALID_CA").DisplayValue : "";
+        L_POPUP_CONTACT_US = LabelFBBOR028.Any(c => c.Name == "L_POPUP_CONTACT_US") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_CONTACT_US").DisplayValue : "";
+        L_POPUP_INCONSISTENCIES = LabelFBBOR028.Any(c => c.Name == "L_POPUP_INCONSISTENCIES") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_INCONSISTENCIES").DisplayValue : "";
+        ERROR_LOGIN_SCPE = LabelFBBOR028.Any(c => c.Name == "ERROR_LOGIN_SCPE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "ERROR_LOGIN_SCPE").DisplayValue : "";
+
+        L_C_CARD_NO = LabelFBBOR028.Any(c => c.Name == "L_C_CARD_NO") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_C_CARD_NO").DisplayValue : "";
+        L_C_REGISTER_DATE = LabelFBBOR028.Any(c => c.Name == "L_C_REGISTER_DATE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_C_REGISTER_DATE").DisplayValue : "";
+        L_C_INSTALL_ADDRESS = LabelFBBOR028.Any(c => c.Name == "L_C_INSTALL_ADDRESS") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_C_INSTALL_ADDRESS").DisplayValue : "";
+        L_C_INSTALL_DATE = LabelFBBOR028.Any(c => c.Name == "L_C_INSTALL_DATE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_C_INSTALL_DATE").DisplayValue : "";
+        L_C_PACKAGE = LabelFBBOR028.Any(c => c.Name == "L_C_PACKAGE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_C_PACKAGE").DisplayValue : "";
+        L_C_STATUS = LabelFBBOR028.Any(c => c.Name == "L_C_STATUS") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_C_STATUS").DisplayValue : "";
+        B_CANCEL_ORDER = LabelFBBOR028.Any(c => c.Name == "B_CANCEL_ORDER") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_CANCEL_ORDER").DisplayValue : "";
+        B_CANCEL_REGISTER = LabelFBBOR028.Any(c => c.Name == "B_CANCEL_REGISTER") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_CANCEL_REGISTER").DisplayValue : "";
+        L_POPUP_CANCEL_ORDER = LabelFBBOR028.Any(c => c.Name == "L_POPUP_CANCEL_ORDER") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_CANCEL_ORDER").DisplayValue : "";
+        L_POPUP_CANCEL_REGISTER = LabelFBBOR028.Any(c => c.Name == "L_POPUP_CANCEL_REGISTER") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_CANCEL_REGISTER").DisplayValue : "";
+        B_CONFIRM = LabelFBBOR028.Any(c => c.Name == "B_CONFIRM") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_CONFIRM").DisplayValue : "";
+
+        L_REMARK_CANCEL_ORDER = LabelFBBOR028.Any(c => c.Name == "L_REMARK_CANCEL_ORDER") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_REMARK_CANCEL_ORDER").DisplayValue : "";
+
+        L_INSTALL_DATE = LabelFBBOR028.Any(c => c.Name == "L_INSTALL_DATE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_INSTALL_DATE").DisplayValue : "";
+        L_PLEASE_SELECT_TIMESLOT = LabelFBBOR028.Any(c => c.Name == "L_PLEASE_SELECT_TIMESLOT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_PLEASE_SELECT_TIMESLOT").DisplayValue : "";
+    }
+
+    string lTITLE = "";
+    string lCARD_TYPE = "";
+    string DISPLAY_TIMESLOT_SCPE = "";
+    string TERM_AND_CONDITION_EBILL_HEADER = "";
+    var listEbillCondition = new List<LovScreenValueModel>();
+
+    if (ViewBag.LabelFBBOR003 != null)
+    {
+        var LabelFBBOR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR003;
+
+        lTITLE = LabelFBBOR003.Any(c => c.Name == "L_TITLE") ? LabelFBBOR003.FirstOrDefault(c => c.Name == "L_TITLE").DisplayValue : "";
+        lCARD_TYPE = LabelFBBOR003.Any(c => c.Name == "L_CARD_TYPE") ? LabelFBBOR003.FirstOrDefault(c => c.Name == "L_CARD_TYPE").DisplayValue : "";
+        DISPLAY_TIMESLOT_SCPE = LabelFBBOR003.Any(c => c.Name == "DISPLAY_TIMESLOT_SCPE") ? LabelFBBOR003.FirstOrDefault(c => c.Name == "DISPLAY_TIMESLOT_SCPE").DisplayValue : "";
+
+        TERM_AND_CONDITION_EBILL_HEADER = LabelFBBOR003.Any(c => c.Name == "TERM_AND_CONDITION_EBILL_HEADER") ? LabelFBBOR003.FirstOrDefault(c => c.Name == "TERM_AND_CONDITION_EBILL_HEADER").DisplayValue : "";
+        var rowEbillCondition = LabelFBBOR003.Where(w => w.Name == "TERM_AND_CONDITION_EBILL_DETAIL").OrderBy(o => o.OrderByPDF).ToList();
+        if (rowEbillCondition != null && rowEbillCondition.Count > 0)
+        {
+            listEbillCondition = rowEbillCondition;
+        }
+    }
+
+    string FBB_Con_CharNotonName = "";
+    string FBB_Con_CharNotOnNameLastName = "";
+    string FBB_Con_Input_CERT_FOUND = "";
+    string FBB_Con_Input_EMB_LET = "";
+    string FBB_Con_Input_HILL_CARD = "";
+    string FBB_Con_Input_ID_CARD = "";
+    string FBB_Con_Input_IMM_CARD = "";
+    string FBB_Con_Input_MONK_CERT = "";
+    string FBB_Con_Input_PASSPORT = "";
+    string FBB_Con_Input_ROY_LET = "";
+    string FBB_Con_Input_STA_LET = "";
+    string FBB_Con_Input_TAX_ID = "";
+    string FBB_Con_Input_GOV_LET = "";
+    string FBB_Con_Input_Home_Number = "";
+    string FBB_Con_Input_Moo = "";
+    string FBB_Con_Input_Mooban = "";
+    string FBB_Con_Input_Building = "";
+    string FBB_Con_Input_Floor = "";
+    string FBB_Con_Input_Room = "";
+    string FBB_Con_Input_Soi = "";
+    string FBB_Con_Input_Road = "";
+    string FBB_Con_Input_HomePhone = "";
+    string FBB_Con_Input_ExtNumber = "";
+
+    string FBB_Con_Input_MobileNo = "";
+    string FBB_Con_MobileLength = "";
+
+    string FBB_Con_Length_Home_Number = "";
+    string FBB_Con_Length_Moo = "";
+    string FBB_Con_Length_Mooban = "";
+    string FBB_Con_Length_Building = "";
+    string FBB_Con_Length_Floor = "";
+    string FBB_Con_Length_Room = "";
+    string FBB_Con_Length_Soi = "";
+    string FBB_Con_Length_Road = "";
+    string FBB_Con_Length_ID_Card_Number_STA_LET = "";
+    string FBB_Con_Length_ID_Card_Number_ROY_LET = "";
+    string FBB_Con_Length_ID_Card_Number_EMB_LET = "";
+    string FBB_Con_Length_ID_Card_Number_CERT_FOUND = "";
+    string FBB_Con_Length_ID_Card_Number_TAX_ID = "";
+    string FBB_Con_Length_ID_Card_Number_PASSPORT = "";
+    string FBB_Con_Length_ID_Card_Number_GOV_LET = "";
+    string FBB_Con_LengthIDCardNumberHILL_CARD = "";
+    string FBB_Con_LengthIDCardNumberID_CARD = "";
+    string FBB_Con_LengthIDCardNumberIMM_CARD = "";
+    string FBB_Con_LengthIDCardNumberMONK_CERT = "";
+
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var LabelFbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_Con_CharNotonName = LabelFbbConstant.Any(f => f.Field == "Char Not on Name") ? LabelFbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        FBB_Con_CharNotOnNameLastName = LabelFbbConstant.Any(f => f.Field == "Char Not on Name LastName") ? LabelFbbConstant.First(f => f.Field == "Char Not on Name LastName").Validation : "";
+
+        FBB_Con_Input_CERT_FOUND = LabelFbbConstant.Any(f => f.Field == "Input CERT_FOUND") ? LabelFbbConstant.First(f => f.Field == "Input CERT_FOUND").Validation : "";
+        FBB_Con_Input_EMB_LET = LabelFbbConstant.Any(f => f.Field == "Input EMB_LET") ? LabelFbbConstant.First(f => f.Field == "Input EMB_LET").Validation : "";
+        FBB_Con_Input_HILL_CARD = LabelFbbConstant.Any(f => f.Field == "Input HILL_CARD") ? LabelFbbConstant.First(f => f.Field == "Input HILL_CARD").Validation : "";
+        FBB_Con_Input_ID_CARD = LabelFbbConstant.Any(f => f.Field == "Input ID_CARD") ? LabelFbbConstant.First(f => f.Field == "Input ID_CARD").Validation : "";
+        FBB_Con_Input_IMM_CARD = LabelFbbConstant.Any(f => f.Field == "Input IMM_CARD") ? LabelFbbConstant.First(f => f.Field == "Input IMM_CARD").Validation : "";
+        FBB_Con_Input_MONK_CERT = LabelFbbConstant.Any(f => f.Field == "Input MONK_CERT") ? LabelFbbConstant.First(f => f.Field == "Input MONK_CERT").Validation : "";
+        FBB_Con_Input_PASSPORT = LabelFbbConstant.Any(f => f.Field == "Input PASSPORT") ? LabelFbbConstant.First(f => f.Field == "Input PASSPORT").Validation : "";
+        FBB_Con_Input_ROY_LET = LabelFbbConstant.Any(f => f.Field == "Input ROY_LET") ? LabelFbbConstant.First(f => f.Field == "Input ROY_LET").Validation : "";
+        FBB_Con_Input_STA_LET = LabelFbbConstant.Any(f => f.Field == "Input STA_LET") ? LabelFbbConstant.First(f => f.Field == "Input STA_LET").Validation : "";
+        FBB_Con_Input_TAX_ID = LabelFbbConstant.Any(f => f.Field == "Input TAX_ID") ? LabelFbbConstant.First(f => f.Field == "Input TAX_ID").Validation : "";
+        FBB_Con_Input_GOV_LET = LabelFbbConstant.Any(f => f.Field == "Input GOV_LET") ? LabelFbbConstant.First(f => f.Field == "Input GOV_LET").Validation : "";
+
+        FBB_Con_Input_Home_Number = LabelFbbConstant.Any(f => f.Field == "Input_Home_Number") ? LabelFbbConstant.First(f => f.Field == "Input_Home_Number").Validation : "";
+        FBB_Con_Input_Moo = LabelFbbConstant.Any(f => f.Field == "Input_Moo") ? LabelFbbConstant.First(f => f.Field == "Input_Moo").Validation : "";
+        FBB_Con_Input_Mooban = LabelFbbConstant.Any(f => f.Field == "Input_Mooban") ? LabelFbbConstant.First(f => f.Field == "Input_Mooban").Validation : "";
+        FBB_Con_Input_Building = LabelFbbConstant.Any(f => f.Field == "Input_Building") ? LabelFbbConstant.First(f => f.Field == "Input_Building").Validation : "";
+        FBB_Con_Input_Floor = LabelFbbConstant.Any(f => f.Field == "Input_Floor") ? LabelFbbConstant.First(f => f.Field == "Input_Floor").Validation : "";
+        FBB_Con_Input_Room = LabelFbbConstant.Any(f => f.Field == "Input_Room") ? LabelFbbConstant.First(f => f.Field == "Input_Room").Validation : "";
+        FBB_Con_Input_Soi = LabelFbbConstant.Any(f => f.Field == "Input_Soi") ? LabelFbbConstant.First(f => f.Field == "Input_Soi").Validation : "";
+        FBB_Con_Input_Road = LabelFbbConstant.Any(f => f.Field == "Input_Road") ? LabelFbbConstant.First(f => f.Field == "Input_Road").Validation : "";
+        FBB_Con_Input_HomePhone = LabelFbbConstant.Any(f => f.Field == "Input_HomePhone") ? LabelFbbConstant.First(f => f.Field == "Input_HomePhone").Validation : "";
+        FBB_Con_Input_ExtNumber = LabelFbbConstant.Any(f => f.Field == "Input_ExtNumber") ? LabelFbbConstant.First(f => f.Field == "Input_ExtNumber").Validation : "";
+
+        FBB_Con_Input_MobileNo = LabelFbbConstant.Any(f => f.Field == "Input_MobileNo") ? LabelFbbConstant.First(f => f.Field == "Input_MobileNo").Validation : "";
+
+        FBB_Con_Length_Home_Number = LabelFbbConstant.Any(f => f.Field == "Length_Home_Number") ? LabelFbbConstant.First(f => f.Field == "Length_Home_Number").Validation : "";
+        FBB_Con_Length_Moo = LabelFbbConstant.Any(f => f.Field == "Length_Moo") ? LabelFbbConstant.First(f => f.Field == "Length_Moo").Validation : "";
+        FBB_Con_Length_Mooban = LabelFbbConstant.Any(f => f.Field == "Length_Mooban") ? LabelFbbConstant.First(f => f.Field == "Length_Mooban").Validation : "";
+        FBB_Con_Length_Building = LabelFbbConstant.Any(f => f.Field == "Length_Building") ? LabelFbbConstant.First(f => f.Field == "Length_Building").Validation : "";
+        FBB_Con_Length_Floor = LabelFbbConstant.Any(f => f.Field == "Length_Floor") ? LabelFbbConstant.First(f => f.Field == "Length_Floor").Validation : "";
+        FBB_Con_Length_Room = LabelFbbConstant.Any(f => f.Field == "Length_Room") ? LabelFbbConstant.First(f => f.Field == "Length_Room").Validation : "";
+        FBB_Con_Length_Soi = LabelFbbConstant.Any(f => f.Field == "Length_Soi") ? LabelFbbConstant.First(f => f.Field == "Length_Soi").Validation : "";
+        FBB_Con_Length_Road = LabelFbbConstant.Any(f => f.Field == "Length_Road") ? LabelFbbConstant.First(f => f.Field == "Length_Road").Validation : "";
+
+        FBB_Con_Length_ID_Card_Number_STA_LET = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number STA_LET") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number STA_LET").Validation : "";
+        FBB_Con_Length_ID_Card_Number_ROY_LET = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number ROY_LET") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number ROY_LET").Validation : "";
+        FBB_Con_Length_ID_Card_Number_EMB_LET = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number EMB_LET") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number EMB_LET").Validation : "";
+        FBB_Con_Length_ID_Card_Number_CERT_FOUND = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number CERT_FOUND") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number CERT_FOUND").Validation : "";
+        FBB_Con_Length_ID_Card_Number_TAX_ID = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number TAX_ID") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number TAX_ID").Validation : "";
+        FBB_Con_Length_ID_Card_Number_PASSPORT = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number PASSPORT") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number PASSPORT").Validation : "";
+        FBB_Con_Length_ID_Card_Number_GOV_LET = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number GOV LET") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number GOV LET").Validation : "";
+        FBB_Con_LengthIDCardNumberHILL_CARD = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number HILL_CARD") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number HILL_CARD").Validation : "";
+        FBB_Con_LengthIDCardNumberID_CARD = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number ID_CARD") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number ID_CARD").Validation : "";
+        FBB_Con_LengthIDCardNumberIMM_CARD = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number IMM_CARD") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number IMM_CARD").Validation : "";
+        FBB_Con_LengthIDCardNumberMONK_CERT = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number MONK_CERT") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number MONK_CERT").Validation : "";
+
+        FBB_Con_MobileLength = LabelFbbConstant.Any(f => f.Field == "Mobile Length") ? LabelFbbConstant.First(f => f.Field == "Mobile Length").Validation : "";
+    }
+
+    string FBB_Exc_1 = "";
+    string FBB_Exc_D = "";
+    string FBB_Exc_F = "";
+    string FBB_Exc_I = "";
+    string FBB_Exc_S = "";
+
+    if (ViewBag.FbbException != null)
+    {
+        var FbbException = (List<FbbConstantModel>)ViewBag.FbbException;
+        FBB_Exc_1 = FbbException.Any(f => f.Field == "1") ? FbbException.First(f => f.Field == "1").Validation : "";
+        FBB_Exc_D = FbbException.Any(f => f.Field == "D") ? FbbException.First(f => f.Field == "D").Validation : "";
+        FBB_Exc_F = FbbException.Any(f => f.Field == "F") ? FbbException.First(f => f.Field == "F").Validation : "";
+        FBB_Exc_I = FbbException.Any(f => f.Field == "I") ? FbbException.First(f => f.Field == "I").Validation : "";
+        FBB_Exc_S = FbbException.Any(f => f.Field == "S") ? FbbException.First(f => f.Field == "S").Validation : "";
+    }
+
+    LovValueModel TimeSlotConfigSelectDate = null;
+
+    if (ViewBag.TimeSlotConfigSelectDate != null)
+    {
+        TimeSlotConfigSelectDate = (LovValueModel)ViewBag.TimeSlotConfigSelectDate;
+    }
+}
+
+<div id="page3" class="container addrounded" style="display: none;">
+    <h4 class="page-header tgreen">@Html.Raw(L_YOUR_INFORMATION)</h4>
+    <p class="clearfix"></p>
+    <div id="divRegisterInfo" style="display: none;">
+        <div class="col-md-10 col-md-offset-1 col-xs-12">
+            <p class="clearfix"></p>
+            <div class="col-sm-4 col-xs-12">
+                <select class="select" style="width: 100%" id="TITLE_CODE"
+                        onchange="onChangeTITLE_CODE();" title="@Html.Raw(lTITLE)"></select>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-4 col-xs-12" id="divFirstName">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.L_FIRST_NAME,
+                new
+                {
+                    @title = L_CUST_NAME,
+                    @id = "L_FIRST_NAME",
+                    @class = "form-control",
+                    @maxlength = "50",
+                    @placeholder = L_CUST_NAME,
+                    @value = ""
+                })
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-4 col-xs-12" id="divLastName">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.L_LAST_NAME,
+                new
+                {
+                    @title = L_CUST_SURNAME,
+                    @id = "L_LAST_NAME",
+                    @class = "form-control",
+                    @maxlength = "50",
+                    @placeholder = L_CUST_SURNAME,
+                    @value = ""
+                })
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+            <div class="col-sm-4 col-xs-12">
+                <select class="select" style="width: 100%;" id="ID_CARD_NAME"
+                        onchange="onChangeID_CARD_NAME(this);" title="@lCARD_TYPE"></select>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.L_CARD_NO,
+                new
+                {
+                    @title = L_CARD_NUMBER,
+                    @id = "L_CARD_NO",
+                    @class = "form-control",
+                    @maxlength = "20",
+                    @placeholder = L_CARD_NUMBER,
+                })
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+            <div>
+                <div style="position: relative;">
+                    <div class="col-sm-4 col-xs-12">@L_MOBILE_CONTACT</div>
+                </div>
+                <div style="position: relative;">
+                    <div class="col-sm-4 col-xs-12">
+                        <div class="col-sm-12 col-xs-12 right-inner-addon" style="position: relative; z-index: 10; padding-left: 0 !important; padding-right: 0 !important">
+                            @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.L_MOBILE,
+                            new
+                            {
+                                @title = L_MOBILE_NO,
+                                @id = "L_MOBILE",
+                                @class = "form-control",
+                                @maxlength = FBB_Con_MobileLength,
+                                @placeholder = L_MOBILE_NO
+                            })
+                        </div>
+                    </div>
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+            <div id="divInstallDate">
+                <div style="position: relative;">
+                    <div class="col-sm-4 col-xs-12">@L_INSTALL_DATE</div>
+                </div>
+                <div style="position: relative;">
+                    <div class="col-sm-3 col-xs-12" id="divThDatePicker">
+                        <div class="col-sm-12 col-xs-12 right-inner-addon" style="position: relative; z-index: 10; padding-left: 0 !important; padding-right: 0 !important">
+                            <i class="fa fa-calendar"></i>
+                            <input id="dtpInstallDateTH_text" type="text" class="form-control" title="@L_INSTALL_DATE" readonly="readonly" autocomplete="off" />
+                        </div>
+                        <div style="position: absolute; width: 100%; height: 100%; z-index: -10;">
+                            <input type="text" class="form-control" id="dtpInstallDateTH" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-12 right-inner-addon" id="divEnDatePicker" style="display: none;">
+                        <i class="fa fa-calendar"></i>
+                        <input type="text" class="form-control"
+                               id="dtpInstallDateEN" title="@L_INSTALL_DATE" readonly="readonly" autocomplete="off" />
+                        <p class="clearfix"></p>
+                    </div>
+                    <p class="clearfix visible-xs"></p>
+                    <div id="divTimeFlag" class="col-sm-3 col-xs-12"></div>
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+                @Html.Hidden("hdTimeSlotRegisterHR")
+                @Html.Hidden("hdTimeSlotRegisterFlowActionNo")
+                <div id="divResponsiveTimeSLotWarning" class="text-center" style="display: none;">
+                    <img src="~/Content/Content2016/images/loading-icon.gif" />
+                </div>
+                <div id="divResponsiveTimeSLot" style="display: none;">
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="visible-sm visible-xs" style="left: 40%; top: 10%; position: absolute;" id="swipe">
+                            <img src="~/img/i-swipe.png">
+                        </div>
+                        <div class="table-responsive">
+                            <div id="divTimeSlot" style="margin-left: auto; margin-right: auto; width: 730px;">
+                            </div>
+                            <p class="clearfix"></p>
+                        </div>
+                        <div id="divTextSelectTimeSlot" class="center-block" style="max-width: 730px; height: 100%; color: #7fc71f;">
+                        </div>
+                        <p class="clearfix"></p>
+                        <div style="clear: both;"></div>
+                        <div id="divTimeSlotRemark">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-10 col-md-offset-1 col-xs-12">
+            <div id="divShowStaffSection">
+                <i class="fa fa-chevron-right tgreen"></i>
+                @Html.Raw(L_FOR_OFFICER)
+                <i class="fa fa-plus tgreen"></i>
+            </div>
+            <p class="clearfix"></p>
+            <div id="divStaffSection" style="display: none;">
+                <div class="col-sm-6 col-xs-12">
+                    @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.SCPE_LOC_CODE,
+                    new
+                    {
+                        @title = L_LOCATION_CODE,
+                        @id = "L_LOC_CODE",
+                        @class = "form-control",
+                        @maxlength = "50",
+                        @placeholder = L_LOCATION_CODE
+                    })
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.SCPE_ASC_CODE,
+                    new
+                    {
+                        @title = L_ASC_CODE,
+                        @id = "L_ASC_CODE",
+                        @class = "form-control",
+                        @maxlength = "50",
+                        @placeholder = L_ASC_CODE
+                    })
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-sm-6 col-xs-12">
+                    @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.L_STAFF_ID,
+                    new
+                    {
+                        @title = L_EMPLOYEE_CODE,
+                        @id = "L_STAFF_ID",
+                        @class = "form-control",
+                        @maxlength = "30",
+                        @placeholder = L_EMPLOYEE_CODE
+                    })
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.L_SALE_REP,
+                    new
+                    {
+                        @title = L_SALES_REP,
+                        @id = "L_SALE_REP",
+                        @class = "form-control",
+                        @maxlength = "30",
+                        @placeholder = L_SALES_REP
+                    })
+                </div>
+                <p class="clearfix"></p>
+            </div>
+        </div>
+        <p class="clearfix"></p>
+
+        <p class="clearfix page-header"></p>
+        <div class="col-md-12 text-center">
+            <button id="btnBackPageCustomerRegister" type="button" class="btn btn-default">&nbsp; @B_BACK &nbsp; </button>
+            <button id="btnNextPageCustomerRegister" type="button" class="btn btn-success">
+                &nbsp; @B_NEXT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </button>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    <div id="divOrderDup" style="display: none;">
+
+        <input type="hidden" id="chk_have_no" />
+        <input type="hidden" id="chk_count_yes" />
+        <input type="hidden" id="chk_count_order" />
+        <input type="hidden" id="OrderDupSerializer" />
+        <input type="hidden" id="msg_delete" />
+        <input type="hidden" id="msg_cancel" />
+        <input type="hidden" id="chk_del_itself" />
+        <input type="hidden" id="chk_old_id_card" />
+
+        <div class="col-md-10 col-md-offset-1 col-xs-12">
+            <p class="clearfix"></p>
+            <i class="fa fa-chevron-right tgreen"></i>@Html.Raw(L_YOUR_INFORMATION)
+            <p class="clearfix"></p>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped-ffb font12">
+                    <thead class="thead-bg-green" style="color: black">
+                        <tr>
+                            <th>*</th>
+                            <th>@L_C_CARD_NO          </th>
+                            <th>@L_C_REGISTER_DATE    </th>
+                            <th>@L_C_INSTALL_ADDRESS  </th>
+                            <th>@L_C_INSTALL_DATE     </th>
+                            <th>@L_C_PACKAGE          </th>
+                            <th>@L_C_STATUS           </th>
+                        </tr>
+                    </thead>
+                    <tbody id="temptt"></tbody>
+                </table>
+                @Html.Raw(L_REMARK_CANCEL_ORDER)
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix page-header"></p>
+            <div class="col-md-12 text-center">
+                <button id="btnShowPopupCancelDupOrder" type="button" class="btn btn-danger btn-for-xs">
+                    &nbsp; @B_CANCEL_REGISTER &nbsp;<i class="fa fa-ban"></i>
+                </button>
+                <button id="btnBackPageDupOrder" type="button" class="btn btn-default">&nbsp; @B_BACK &nbsp; </button>
+                <button id="btnNextPageDupOrder" type="button" class="btn btn-success">
+                    &nbsp; @B_NEXT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                </button>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+    <div id="divAddressSendDoc" style="display: none;">
+        <div style="" id="divReceiptEbillChannel" class="col-md-10 col-md-offset-1 col-xs-12">
+            <p class="clearfix"></p>
+            <div class="col-md-12">
+                <div style="float:left;">
+                    <i class="fa fa-chevron-right tgreen"></i>
+                    <img src="~/Content/images/tree_logo.png" width="121" height="35" style="vertical-align: bottom;" />
+                </div>
+                <div style="float:left;height:35px;vertical-align:bottom;margin-top:11px;">
+                    <span style="font-size: 22px; font-weight: bold;">&nbsp;@Html.Raw(L_RECEIPT_CHANNEL)</span>
+                </div>
+            </div>
+            <p class="clearfix"></p>
+            <div class="col-md-12">@Html.Raw(L_RECEIPT_CHANNEL_DETAIL)</div>
+            <p class="clearfix"></p>
+            <div class="col-md-12">
+                <a href="@L_ABOUT_EBILL_URL" class="tgreen" target="_blank">@Html.Raw(L_ABOUT_EBILL)</a>
+            </div>
+            <p class="clearfix"></p>
+            <div style="color: #666;" id="chkEbillType">
+                <div class="col-md-12">
+                    <div class="checkbox">
+                        <label for="chkReceiptEbill" style="font-weight: normal !important" class="checkbox-inline">
+                            <input name="R_EBILL_TYPE" id="chkReceiptEbill" onclick="onCkEbillChange();" value="L_GETTING_EBILL" type="checkbox">
+                            @Html.Raw(L_GETTING_EBILL)
+                        </label>
+                    </div>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-md-12 radio" style="padding-left: 60px !important;">
+                    <label class="radio-inline" for="R_SMS_AND_MYAIS" style="font-weight: normal !important; padding-right: 15px;">
+                        <input name="R_EBILL_TYPE_RADIO" id="R_SMS_AND_MYAIS" value="SMS_AND_MYAIS" onclick="onEbillChange();" type="radio">
+                        @Html.Raw(L_SMS_AND_MYAIS)
+                    </label>
+                    <p class="visible-xs"></p>
+                </div>
+                <div class="col-md-12 radio" style="padding-left: 60px !important;">
+                    <label class="radio-inline" for="R_SMS_AND_EMAIL" style="font-weight: normal !important; padding-right: 15px;">
+                        <input name="R_EBILL_TYPE_RADIO" id="R_SMS_AND_EMAIL" value="SMS_AND_EMAIL" onclick="onEbillChange();" type="radio">
+                        @Html.Raw(L_SMS_AND_EMAIL)
+                    </label>
+                    <p class="visible-xs"></p>
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-sm-4 col-xs-12" style="padding-left: 80px !important;">
+                    <input id="L_EMAIL_EBILL" name="R_EBILL_TYPE" placeholder="Email" class="form-control" maxlength="100" type="text">
+                    <p class="visible-xs"></p>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-md-12 radio" style="padding-left: 60px ! important; display: none;" id="divBillMsg">
+                <span class="tgreen">@L_RECEIPT_BILL_VIA_POSTAL</span>
+                <p class="visible-xs"></p>
+            </div>
+            <p class="clearfix"></p>
+            <div class="col-md-12">
+                <div class="col-sm-4 col-xs-6" style="margin-left: -15px !important;">
+                    <a onclick="$('#modalTermsEbill').modal('toggle');" class="tgreen" title="เงื่อนไขบริการ eBill" style="cursor: pointer;">@Html.Raw(L_TERMS_AND_CONDITION_EBILL)</a>
+                </div>
+            </div>
+        </div>
+        <div id="AddressSendDoc" class="col-md-10 col-md-offset-1 col-xs-12" style="display: none;">
+            <p class="clearfix"></p>
+            <i class="fa fa-chevron-right tgreen"></i><span style="font-size: 16px; font-weight: bold;">@Html.Raw(L_BILLING_ADDRESS)</span>
+            <p class="clearfix"></p>
+            <div class="col-md-12">
+                <div class="checkbox">
+                    <label for="chkSameAddress" style="font-weight: normal !important" class="checkbox-inline">
+                        <input name="chkSameAddress" id="chkSameAddress" onclick="onChkSameAddressChange();" type="checkbox">
+                        @Html.Raw(L_SAME_AS_INSTALL_ADDRESS)
+                    </label>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+            <div class="col-sm-3 col-xs-6">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_HOME_NUMBER_2,
+                new
+                {
+                    @title = L_HOME_NO,
+                    @id = "AddressPanelModelSendDoc_L_HOME_NUMBER_2",
+                    @class = "form-control",
+                    @maxlength = FBB_Con_Length_Home_Number,
+                    @placeholder = L_HOME_NO
+                })
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOO,
+                new
+                {
+                    @title = L_MOO,
+                    @id = "AddressPanelModelSendDoc_L_MOO",
+                    @class = "form-control",
+                    @maxlength = FBB_Con_Length_Moo,
+                    @placeholder = L_MOO
+                })
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOOBAN,
+                new
+                {
+                    @title = L_MOOBAN,
+                    @id = "AddressPanelModelSendDoc_L_MOOBAN",
+                    @class = "form-control",
+                    @maxlength = FBB_Con_Length_Mooban,
+                    @placeholder = L_MOOBAN
+                })
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+
+            <div class="col-sm-6 col-xs-12">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_BUILD_NAME,
+                new
+                {
+                    @title = L_BUILDING_NAME,
+                    @id = "AddressPanelModelSendDoc_L_BUILD_NAME",
+                    @class = "form-control",
+                    @maxlength = FBB_Con_Length_Building,
+                    @placeholder = L_BUILDING_NAME
+                })
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_FLOOR,
+                new
+                {
+                    @title = L_FLOOR,
+                    @id = "AddressPanelModelSendDoc_L_FLOOR",
+                    @class = "form-control",
+                    @maxlength = FBB_Con_Length_Floor,
+                    @placeholder = L_FLOOR
+                })
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROOM,
+                new
+                {
+                    @title = L_ROOM,
+                    @id = "AddressPanelModelSendDoc_L_ROOM",
+                    @class = "form-control",
+                    @maxlength = FBB_Con_Length_Room,
+                    @placeholder = L_ROOM
+                })
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+
+            <div class="col-sm-6 col-xs-12">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_SOI,
+                new
+                {
+                    @title = L_SOI,
+                    @id = "AddressPanelModelSendDoc_L_SOI",
+                    @class = "form-control",
+                    @maxlength = FBB_Con_Length_Soi,
+                    @placeholder = L_SOI
+                })
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROAD,
+                new
+                {
+                    @title = L_ROAD,
+                    @id = "AddressPanelModelSendDoc_L_ROAD",
+                    @class = "form-control",
+                    @maxlength = FBB_Con_Length_Road,
+                    @placeholder = L_ROAD
+                })
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+            <div class="col-sm-6 col-xs-12">
+                <select class="select" style="width: 100%"
+                        id="TumbonSendDoc" name="CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_TUMBOL" onchange="onChangeTumbon(this);" title="@L_SUB_DISTRICT">
+                    <option value='' disabled selected>@L_SUB_DISTRICT</option>
+                </select>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <select class="select" style="width: 100%"
+                        id="AmphurSendDoc" name="CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_AMPHUR" onchange="onChangeAmphur(this);" title="@L_DISTRICT">
+                    <option value='' disabled selected>@L_DISTRICT</option>
+                </select>
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+
+            <div class="col-sm-6 col-xs-12">
+                <select class="select" style="width: 100%"
+                        id="ProvinceSendDoc" name="CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_PROVINCE" onchange="onChangeProvince(this);" title="@L_PROVINCE"></select>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <select class="select" style="width: 100%"
+                        id="ZipCodeSendDoc" name="SendDocZipCode" onchange="onChangeZipCode();" title="@L_ZIP_CODE">
+                    <option value='' disabled selected>@L_ZIP_CODE</option>
+                </select>
+                @Html.HiddenFor(model => model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.ZIPCODE_ID, new { @id = "AddressPanelModelSendDoc_ZIPCODE_ID" })
+                @Html.HiddenFor(model => model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ZIPCODE, new { @id = "AddressPanelModelSendDoc_L_ZIPCODE" })
+                <p class="clearfix"></p>
+            </div>
+        </div>
+
+        <p class="clearfix page-header"></p>
+        <div class="col-md-12 text-center">
+            <button id="btnBackToAddressSetUp" type="button" class="btn btn-default">&nbsp; @B_BACK &nbsp; </button>
+            <button id="btnNextToVatOrPage" type="button" class="btn btn-success">
+                &nbsp; @B_NEXT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </button>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTermsEbill" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <h4 class="tgreen"><span class="hightlight">@TERM_AND_CONDITION_EBILL_HEADER</span></h4>
+                    <p class="clearfix"></p>
+                    <div style="padding: 0 10px 0 10px;">
+                        @foreach (var rowConEbill in listEbillCondition)
+                        {
+                            @Html.Raw(rowConEbill.DisplayValue)
+                        }
+                    </div>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" id="modalEBillTermsConditionBtn" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal003" tabindex="-1" role="dialog" aria-labelledby="modal003_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 class="text-center">
+                        @L_POPUP_CANCEL_REGISTER
+                    </h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-success" onclick="orderDupConfirm(1); $.modal.close();">&nbsp; @B_CONFIRM &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                        </button>
+                        &nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade cancel-sm-box" tabindex="-1" id="modal003_perorder" data-order-id="" role="dialog" aria-labelledby="modal003_perorder_label">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header" style="padding-bottom: 25px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+            </div>
+            <p class="clearfix"></p>
+            <h4 class="text-center">@L_POPUP_CANCEL_ORDER</h4>
+            <button type="button" class="btn btn-xs btn-default" onclick="DeleteOrder(); $.modal.close();">&nbsp; @B_CONFIRM &nbsp;</button>
+            <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">&nbsp; @B_CLOSE &nbsp; </button>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+@Html.JsMinify(
+    @<text>
+
+    var dayTimeslot = 7;
+
+    $(document).ready(function () {
+        getCustomerTitle();
+        getCustomerCardType();
+        set_idcardno_validation();
+        getProvinceTo("SendDoc");
+        onCkEbillChange();
+
+        $('#L_FIRST_NAME').inputmask('Regex', {
+            regex: "@FBB_Con_CharNotonName",
+        });
+
+        $('#L_LAST_NAME').inputmask('Regex', {
+            regex: "@FBB_Con_CharNotOnNameLastName",
+        });
+
+        $('#L_MOBILE').keyup(function () {
+            CheckKeyUp("L_MOBILE", "@FBB_Con_Input_MobileNo","M");
+        });
+
+        $('#AddressPanelModelSendDoc_L_HOME_NUMBER_2').keyup(function () {
+            CheckKeyUp("AddressPanelModelSendDoc_L_HOME_NUMBER_2", "@FBB_Con_Input_Home_Number");
+        });
+
+        $('#AddressPanelModelSendDoc_L_MOO').keyup(function () {
+            CheckKeyUp("AddressPanelModelSendDoc_L_MOO", "@FBB_Con_Input_Moo");
+        });
+
+        $('#AddressPanelModelSendDoc_L_MOOBAN').keyup(function () {
+            CheckKeyUp("AddressPanelModelSendDoc_L_MOOBAN", "@FBB_Con_Input_Mooban");
+        });
+
+        $('#AddressPanelModelSendDoc_L_BUILD_NAME').keyup(function () {
+            CheckKeyUp("AddressPanelModelSendDoc_L_BUILD_NAME", "@FBB_Con_Input_Building");
+        });
+
+        $('#AddressPanelModelSendDoc_L_FLOOR').keyup(function () {
+            CheckKeyUp("AddressPanelModelSendDoc_L_FLOOR", "@FBB_Con_Input_Floor");
+        });
+
+        $('#AddressPanelModelSendDoc_L_ROOM').keyup(function () {
+            CheckKeyUp("AddressPanelModelSendDoc_L_ROOM", "@FBB_Con_Input_Room");
+        });
+
+        $('#AddressPanelModelSendDoc_L_SOI').keyup(function () {
+            CheckKeyUp("AddressPanelModelSendDoc_L_SOI", "@FBB_Con_Input_Soi");
+        });
+
+        $('#AddressPanelModelSendDoc_L_ROAD').keyup(function () {
+            CheckKeyUp("AddressPanelModelSendDoc_L_ROAD", "@FBB_Con_Input_Road");
+        });
+
+        $('#divShowStaffSection').css("cursor", "pointer");
+        //$("#divStaffSection").slideToggle("fast");
+        $('#divShowStaffSection').click(function () {
+            $("#divStaffSection").slideToggle("fast");
+            $('i.fa.fa-plus').toggleClass('fa-minus');
+        });
+
+        $('#dtpInstallDateTH').datetimepicker({
+            format: 'd/m/Y',
+            lang: "th",
+            timepicker: false,
+            closeOnDateSelect: true,
+        });
+
+        $('#dtpInstallDateEN').datetimepicker({
+            format: 'd/m/Y',
+            lang: 'en',
+            timepicker: false,
+            closeOnDateSelect: true,
+        });
+
+        setInstallDate();
+
+    });
+
+    function setInstallDate() {
+        if ($("#LanguagePage").val() == "1") {
+            $("#divEnDatePicker").hide();
+            $("#divThDatePicker").show();
+        }
+        else {
+            $("#divThDatePicker").hide();
+            $("#divEnDatePicker").show();
+        }
+    }
+
+    $('#btnBackPageCustomerRegister').click(function () {
+
+        selectPage(2);
+        $('#L_FIRST_NAME').val("");
+        $('#L_LAST_NAME').val("");
+        $('#L_CARD_NO').val("");
+        $('#L_MOBILE').val("");
+
+        $('#L_LOC_CODE').val("");
+        $('#L_ASC_CODE').val("");
+        $('#L_STAFF_ID').val("");
+        $('#L_SALE_REP').val("");
+
+        $("#L_LOC_CODE").removeClass('form-control errorinput').addClass('form-control');
+        $("#L_ASC_CODE").removeClass('form-control errorinput').addClass('form-control');
+        $("#L_STAFF_ID").removeClass('form-control errorinput').addClass('form-control');
+
+        $('#page2').show();
+        $('#page3').hide();
+        $('#divRegisterInfo').hide();
+    });
+
+    $('#btnNextPageCustomerRegister').click(function () {
+        $("#CustomerRegisterPanelModel_EMP_NAME").val("");
+        var a = [];
+        a.push({ id: "L_FIRST_NAME" });
+        a.push({ id: "L_LAST_NAME" });
+        a.push({ id: "L_CARD_NO" });
+        a.push({ id: "L_MOBILE" });
+        $("#L_MOBILE").removeClass("errorinput");
+        $("#L_CARD_NO").removeClass("errorinput");
+        var chk = ValidationProcessing(a, "err001");
+        LockScreen(true, "");
+        if ($('#ID_CARD_NAME :selected').val() == "ID_CARD") {
+            var chkIdCard = validateIdCard($("#L_CARD_NO").val());
+            if (!chkIdCard) {
+                $("#L_CARD_NO").val('');
+                $("#L_CARD_NO")[0].className = "form-control errorinput";
+            }
+            chk = chk && chkIdCard;
+        }
+
+        var chkMobile = true;
+        if (!chkInputMobile($("#L_MOBILE").val())) {
+            $("#L_MOBILE").val('');
+            $("#L_MOBILE")[0].className = "form-control errorinput";
+            chkMobile = false;
+        }
+
+        if ($('#L_MOBILE').val().length != 10) {
+            $("#L_MOBILE")[0].className = "form-control errorinput";
+            chk = false;
+        }
+
+
+        if (chk && $("#REQUEST_SUB_FLAG").val() == "Y") {
+            if ($('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val() == "" && checkDateTimeSlot == false) {
+                PopupMessage('@Html.Raw(L_PLEASE_SELECT_TIMESLOT)');
+                $('#myModal').modal('show');
+                LockScreen(false);
+                return;
+            }
+        }
+
+        //18.6
+        $("#L_LOC_CODE").removeClass('form-control errorinput').addClass('form-control');
+        $("#L_ASC_CODE").removeClass('form-control errorinput').addClass('form-control');
+        $("#L_STAFF_ID").removeClass('form-control errorinput').addClass('form-control');
+
+        if ($('#L_LOC_CODE').val() != "" || $('#L_ASC_CODE').val() != "" || $('#L_STAFF_ID').val() != "" || $('#L_SALE_REP').val() != "") {
+
+            var chkStaffSection = true;
+            var aB = [];
+
+            if ($('#L_LOC_CODE').val() != "") {
+                if ($("#L_STAFF_ID").val() == "") {
+                    aB.push({ id: "L_ASC_CODE" });
+                }
+                if ($("#L_ASC_CODE").val() == "") {
+                    aB.push({ id: "L_STAFF_ID" });
+                }
+            }
+            else if ($("#L_STAFF_ID").val() != "") {
+                aB.push({ id: "L_LOC_CODE" });
+            }
+
+            chkStaffSection = ValidationProcessing(aB, "err001");
+            if (chkStaffSection) {
+                if ($("#L_STAFF_ID").val() != "") {
+                    if (!CheckEmpCode($('#L_STAFF_ID').val())) {
+                        $("#L_STAFF_ID").removeClass('form-control').addClass('form-control errorinput');
+                        PopupMessage('@Html.Raw(L_POPUP_INVALID_EMP_CODE)');
+                        $('#myModal').modal('show');
+                        LockScreen(false);
+                        return;
+                    }
+                }
+            }
+            else {
+                LockScreen(false);
+                return;
+            }
+
+            if ($("#L_STAFF_ID").val() != "" && $("#L_ASC_CODE").val() != "") {
+                $("#L_STAFF_ID").removeClass('form-control').addClass('form-control errorinput');
+                $("#L_ASC_CODE").removeClass('form-control').addClass('form-control errorinput');
+                PopupMessage('@Html.Raw(ERROR_LOGIN_SCPE)');
+                $('#myModal').modal('show');
+                LockScreen(false);
+                return;
+            }
+
+            if ($('#L_LOC_CODE').val() != "" || $('#L_ASC_CODE').val() != "" || $('#L_STAFF_ID').val() != "") {
+                if (!CheckSeibel()) {
+                    LockScreen(false);
+                    return;
+                }
+            }
+        }
+
+        //end 18.6
+
+        if (chk) {
+            // 18.6
+
+            $.ajax({
+                url: '/Scpe/CheckNewRegisProspect',
+                data: {
+                    idcardNo: $("#L_CARD_NO").val(),
+                    firstName: $("#L_FIRST_NAME").val(),
+                    lastName: $("#L_LAST_NAME").val(),
+                    locationCd: $('#L_LOC_CODE').val(),
+                    ascCd: $('#L_ASC_CODE').val(),
+                    TRANSACTION_ID: "|"
+                },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (response) {
+                    if (response.errorCode != null && response.errorCode != "") {
+                        if (response.errorCode == "EB2058") {
+                            PopupMessage('@Html.Raw(L_POPUP_INCONSISTENCIES)');
+                            $('#myModal').modal('show');
+                            LockScreen(false);
+                        }
+                        else {
+                            PopupMessage('@Html.Raw(L_POPUP_CONTACT_US)');
+                            $('#myModal').modal('show');
+                            LockScreen(false);
+                        }
+                    }
+                    else {
+                        if (response.blackListFlag == "N") {
+                            var checkCA = true;
+                            if (response.firstName == "N" && response.lastName == "N") {
+                                checkCA = false;
+                                PopupMessage('@Html.Raw(L_POPUP_INVALID_CA)');
+                                $('#myModal').modal('show');
+                            }
+
+                            if (checkCA && ((response.locationFlag != null && response.locationFlag != "") || (response.ascFlag != null && response.ascFlag != ""))) {
+                                if (response.locationFlag == "N") {
+                                    $('#CustomerRegisterPanelModel_SCPE_USE_LOC_CODE').val("Y");
+                                }
+                                else {
+                                    $('#CustomerRegisterPanelModel_SCPE_USE_LOC_CODE').val("N");
+                                }
+                                if (response.ascFlag == "N") {
+                                    $('#CustomerRegisterPanelModel_SCPE_USE_ASC_CODE').val("Y");
+                                }
+                                else {
+                                    $('#CustomerRegisterPanelModel_SCPE_USE_ASC_CODE').val("N");
+                                }
+                            }
+
+                            if (checkCA) {
+                                getOrderlist();
+                                bindPackageValueV2();
+
+                                if ($("#chk_count_order").val() != "0") {
+                                    BindGvOrder();
+                                    $("#divRegisterInfo").hide();
+                                    $("#divOrderDup").show();
+                                }
+                                else {
+                                    $('#divRegisterInfo').hide();
+                                    $('#divRegisterInfo').hide();
+                                    $('#page3').show();
+                                    $('#divAddressSendDoc').show();
+
+                                    //R20.5 Default eBill
+                                    $("#chkReceiptEbill").prop("checked", true);
+                                    onCkEbillChange();
+                                    //R20.6 Default eBill Hide Line Customer
+                                    $("#chkEbillType").hide();
+
+                                    //$("#chkReceiptEbill").prop("checked", false);
+                                    //onCkEbillChange();
+                                    //$("#chkSameAddress").prop("checked", true);
+                                    //copyAddress("SendDoc");
+                                }
+                            }
+                            LockScreen(false);
+                        }
+                        else {
+                            PopupMessage('@Html.Raw(L_BLACKLIST_ERR)');
+                            $('#myModal').modal('show');
+                            LockScreen(false);
+                        }
+                    }
+                }
+            });
+        }
+        LockScreen(false);
+    });
+
+    $('#btnShowPopupCancelDupOrder').click(function () {
+        showPopupCancelDup();
+    });
+
+    $('#btnBackPageDupOrder').click(function () {
+        $("#divOrderDup").hide();
+        $("#divRegisterInfo").show();
+        $("#divInstallDate").hide();
+        if ($("#REQUEST_SUB_FLAG").val() == "Y") {
+            setTimeSlotConfigSelectDate();
+            $("#divInstallDate").show();
+        }
+    });
+
+    $('#btnNextPageDupOrder').click(function () {
+        if ($("#chk_del_itself").val() == "ok") {
+            CancelDeleteOrderDup();
+            redirectForCancel();
+        } else {
+            if (parseInt(OrderDupmodelDel.length) != 0) {
+                $("#CustomerRegisterPanelModel_DeleteOrderNo").val(JSON.stringify(OrderDupmodelDel));
+            }
+            $("#divOrderDup").hide();
+            $('#divAddressSendDoc').show();
+
+            //R20.5 Default eBill
+            $("#chkReceiptEbill").prop("checked", true);
+            onCkEbillChange();
+            //R20.6 Default eBill Hide Line Customer
+            $("#chkEbillType").hide();
+            //$("#chkReceiptEbill").prop("checked", false);
+            //onCkEbillChange();
+            //copyAddress("SendDoc");
+        }
+    });
+
+    function CheckSeibel() {
+        var chkSeibel = false;
+        var location_code = $('#L_LOC_CODE').val();
+        var asc_code = $('#L_ASC_CODE').val();
+        $.ajax({
+            url: '/officer/CheckSeibel',
+            data: { LocationCode: location_code, ASCCode: asc_code },
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (response) {
+                if (response.outStatus == "Error" || response.outType == "" || response.outSubType == "") {
+                    $("#L_ASC_CODE").removeClass('form-control').addClass('form-control errorinput');
+                    PopupMessage('@Html.Raw(L_POPUP_INVALID_LOC_ASC)');
+                    $('#myModal').modal('show');
+                }
+                else {
+                    $("#CustomerRegisterPanelModel_outType").val(response.outType);
+                    $("#CustomerRegisterPanelModel_outSubType").val(response.outSubType);
+                    $("#CustomerRegisterPanelModel_outMobileNo").val(response.outMobileNo);
+                    $("#CustomerRegisterPanelModel_PartnerName").val(response.outPartnerName);
+                    chkSeibel = true;
+                }
+            }
+        });
+        return chkSeibel;
+    }
+
+    $('#btnBackToAddressSetUp').click(function () {
+        if ($("#chk_count_order").val() != "0") {
+            $('#divAddressSendDoc').hide();
+            $("#divOrderDup").show();
+        }
+        else {
+            $('#divAddressSendDoc').hide();
+            $('#divRegisterInfo').show();
+            $("#divInstallDate").hide();
+            if ($("#REQUEST_SUB_FLAG").val() == "Y") {
+                setTimeSlotConfigSelectDate();
+                $("#divInstallDate").show();
+            }
+        }
+    });
+
+    $('#btnNextToVatOrPage').click(function () {
+        var chkEmail = true;
+        var a = [];
+        if ($("#chkReceiptEbill").is(":checked")) {
+
+            var valEBillval = $("input[name=R_EBILL_TYPE_RADIO]:checked").val();
+
+            if (valEBillval == 'SMS_AND_MYAIS') {
+                $('#hdBillingMediaText').val('@L_SMS_AND_MYAIS');
+                $('#hdBillingMediaValue').val(valEBillval);
+                $('#hdBillingMediaEmail').val('');
+                $('#CustomerRegisterPanelModel_EStatmentFlag').val('Y');
+                $('#CustomerRegisterPanelModel_EBillFlag').val('1');
+            }
+            else if (valEBillval == 'SMS_AND_EMAIL') {
+                $('#hdBillingMediaText').val('@L_SMS_AND_EMAIL');
+                $('#hdBillingMediaValue').val(valEBillval);
+                $('#hdBillingMediaEmail').val($('#L_EMAIL_EBILL').val());
+                $('#CustomerRegisterPanelModel_EStatmentFlag').val('Y');
+                $('#CustomerRegisterPanelModel_EBillFlag').val('2');
+                a.push({ id: "L_EMAIL_EBILL" });
+                chkEmail = validateEmail($("#L_EMAIL_EBILL").val());
+            }
+            else {
+                $('#hdBillingMediaText').val('@L_SMS_NON_SELECT');
+                $('#hdBillingMediaValue').val('');
+                $('#hdBillingMediaEmail').val('');
+                $('#CustomerRegisterPanelModel_EStatmentFlag').val('N');
+                $('#CustomerRegisterPanelModel_EBillFlag').val('0');
+            }
+    }
+    else {
+        a.push({ id: "AddressPanelModelSendDoc_L_HOME_NUMBER_2" });
+        a.push({ id: "TumbonSendDoc" });
+        a.push({ id: "AmphurSendDoc" });
+        a.push({ id: "ProvinceSendDoc" });
+        a.push({ id: "ZipCodeSendDoc" });
+        $('#hdBillingMediaText').val('@L_SMS_NON_SELECT');
+            $('#hdBillingMediaValue').val('');
+            $('#hdBillingMediaEmail').val('');
+            $('#CustomerRegisterPanelModel_EStatmentFlag').val('N');
+            $('#CustomerRegisterPanelModel_ReceiveEmailFlag').val('N');
+            $('#CustomerRegisterPanelModel_EBillFlag').val('0');
+        }
+
+        var chk = ValidationProcessing(a, "err001");
+
+        if (chk) {
+            if (!chkEmail) {
+                var temp = "";
+                if ($("#LanguagePage").val() == "1")
+                    temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                else
+                    temp = "Please Fill In All Required Fields."
+
+                $("#L_EMAIL_EBILL")[0].className = "form-control errorinput";
+                toastrErrorMessage(temp);
+            }
+        }
+        if (chk && chkEmail) {
+            DataBindPage();
+            $('#page3').hide();
+            $('#divAddressSendDoc').hide();
+            $('#page4').show();
+        }
+    });
+
+    function bindPackageValue() {
+        var i = $("input[name=SelectPackage]:checked").val();
+        var RecurringChargeVAT = $("#RECURRING_CHARGE_VAT" + i).val();
+        var RecurringCharge = $("#RECURRING_CHARGE" + i).val();
+        var technologyDisplay = $("#TECHNOLOGY" + i).val();
+        $("#PayMentRecurringCharge").val(RecurringCharge);
+        $("#PayMentRecurringChargeVAT").val(RecurringChargeVAT);
+        $("#PayMentTechnologyDisplay").val(technologyDisplay);
+        $("#PayMentSelectPackage").val($("input[name=SelectPackage]:checked").val());
+        $("#PayMentSelectOptionSelectInstallRouter").val($("input[name=SelectOptionSelectInstallRouter]:checked").val());
+        $("#ACCESS_MODE_SELECT").val($("#ACCESS_MODE" + i).val());
+        $("#SERVICE_CODE_SELECT").val($("#SERVICE_CODE" + i).val());
+        $("#languageCulture").val($("#LanguagePage").val());
+        /// for blind to model
+
+        var indexlist = 0;
+        var mc = $("#MAPPING_CODE" + i).val();
+        var owner = $("#OWNER_PRODUCT" + i).val();
+        var key = "";
+        key = mc;
+
+        $('#CoveragePanelModel_AccessMode').val($("#ACCESS_MODE" + i).val());
+        $('#CoveragePanelModel_ServiceCode').val($("#SERVICE_CODE" + i).val());
+        /// Main Package
+        $("#listvas").html("");
+        appenArrayPackage(indexlist);
+        var sto_indexlist_1 = indexlist;
+        setTimeout(function () {
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_CODE']").val($("#PACKAGE_CODE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_CLASS']").val($("#PACKAGE_TYPE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_GROUP']").val($("#PACKAGE_GROUP" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PRODUCT_SUBTYPE']").val($("#PRODUCT_SUBTYPE_" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_NAME']").val($("#PACKAGE_NAME" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].TECHNOLOGY']").val($("#TECHNOLOGY" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].RECURRING_CHARGE']").val($("#RECURRING_CHARGE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].INITIATION_CHARGE']").val($("#INITIATION_CHARGE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].DISCOUNT_INITIATION_CHARGE']").val(toNumber($("#summVal2").text()));
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].SFF_PROMOTION_BILL_THA']").val($("#SFF_PROMOTION_BILL_THA" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].SFF_PROMOTION_BILL_ENG']").val($("#SFF_PROMOTION_BILL_ENG" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].DOWNLOAD_SPEED']").val($("#DOWNLOAD_SPEED" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].UPLOAD_SPEED']").val($("#UPLOAD_SPEED" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].OWNER_PRODUCT']").val($("#OWNER_PRODUCT" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].VOIP_IP']").val("");
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].IDD_FLAG']").val("");
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].FAX_FLAG']").val("");
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].TEMP_IA']").val($("#MAPPING_PRODUCT" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].SFF_PROMOTION_CODE']").val($("#SFF_PROMOTION_CODE" + i).val() + "|" + "");
+        }, 10 * indexlist);
+        indexlist++;
+
+        var findOntopSEP = $("[name=SelectOntopSP" + mc + owner + "]");
+
+        $.each(findOntopSEP, function (i, e) {
+            var that = this;
+            appenArrayPackage(indexlist);
+            var sto_indexlist_2 = indexlist;
+            setTimeout(function () {
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].PACKAGE_CODE']").val($("#PACKAGE_CODE" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].PACKAGE_CLASS']").val($("#PACKAGE_TYPE" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].PACKAGE_GROUP']").val($("#PACKAGE_GROUP" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].PRODUCT_SUBTYPE']").val($("#PRODUCT_SUBTYPE_" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].PACKAGE_NAME']").val($("#PACKAGE_NAME" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].TECHNOLOGY']").val($("#TECHNOLOGY" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].RECURRING_CHARGE']").val($("#RECURRING_CHARGE" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].INITIATION_CHARGE']").val($("#INITIATION_CHARGE" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].DISCOUNT_INITIATION_CHARGE']").val("0");
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].SFF_PROMOTION_BILL_THA']").val($("#SFF_PROMOTION_BILL_THA" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].SFF_PROMOTION_BILL_ENG']").val($("#SFF_PROMOTION_BILL_ENG" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].DOWNLOAD_SPEED']").val($("#DOWNLOAD_SPEED" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].UPLOAD_SPEED']").val($("#UPLOAD_SPEED" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].OWNER_PRODUCT']").val($("#OWNER_PRODUCT" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].VOIP_IP']").val("");
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].IDD_FLAG']").val("");
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].FAX_FLAG']").val("");
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].TEMP_IA']").val($("#MAPPING_PRODUCT" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].MOBILE_FORWARD']").val("");
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].SFF_PROMOTION_CODE']").val($("#SFF_PROMOTION_CODE" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].DISCOUNT_TYPE']").val($("#DISCOUNT_TYPE" + mc + "SP").val());
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].DISCOUNT_VALUE']").val(parseInt($("#DISCOUNT_VALUE" + mc + "SP").val()));
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_2 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_2 + "\\].DISCOUNT_DAY']").val(parseInt($("#DISCOUNT_DAY" + mc + "SP").val()));
+
+            }, 10 * indexlist);
+            indexlist++;
+        });
+    }
+
+    function appenArrayPackage(index) {
+        $("#listvas")
+            .append("<div id='sum_panel_packagelist_" + index + "'>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_CODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TEMP_IA'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_CLASS'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_GROUP'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRODUCT_SUBTYPE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_NAME'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TECHNOLOGY'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].RECURRING_CHARGE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].INITIATION_CHARGE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_INITIATION_CHARGE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_BILL_THA'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_BILL_ENG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DOWNLOAD_SPEED'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].UPLOAD_SPEED'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].OWNER_PRODUCT'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].VOIP_IP'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].IDD_FLAG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].FAX_FLAG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].MOBILE_FORWARD'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_TYPE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_VALUE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_DAY'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_CODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SERVICE_CODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].MAPPING_PRODUCT'/>" +
+                "</div>"
+                );
+    }
+
+    function bindPackageValueV2() {
+        var i = $("input[name=SelectPackage]:checked").val();
+        var RecurringChargeVAT = $("#PRICE_CHARGE_VAT" + i).val();
+        var RecurringCharge = $("#PRICE_CHARGE" + i).val();
+        var technologyDisplay = "";
+        if ('@language' == '1') {
+            technologyDisplay = $("#SFF_WORD_IN_STATEMENT_THA" + i).val();
+        }
+        else {
+            technologyDisplay = $("#SFF_WORD_IN_STATEMENT_ENG" + i).val();
+        }
+        $("#PayMentRecurringCharge").val(RecurringCharge);
+        $("#PayMentRecurringChargeVAT").val(RecurringChargeVAT);
+        $("#PayMentTechnologyDisplay").val(technologyDisplay);
+        $("#PayMentSelectPackage").val($("input[name=SelectPackage]:checked").val());
+        $("#PayMentSelectOptionSelectInstallRouter").val($("input[name=SelectOptionSelectInstallRouter]:checked").val());
+        $("#ACCESS_MODE_SELECT").val($("#ACCESS_MODE" + i).val());
+        $("#SERVICE_CODE_SELECT").val($("#SERVICE_CODE" + i).val());
+        $("#languageCulture").val($("#LanguagePage").val());
+        /// for blind to model
+
+        var indexlist = 0;
+        var mc = $("#MAPPING_CODE" + i).val();
+        var owner = $("#OWNER_PRODUCT" + i).val();
+        var key = "";
+        key = mc;
+
+        $('#CoveragePanelModel_AccessMode').val($("#ACCESS_MODE" + i).val());
+        $('#CoveragePanelModel_ServiceCode').val($("#SERVICE_CODE" + i).val());
+        /// Main Package
+        $("#listvas").html("");
+        appenArrayPackageV2(indexlist);
+        var sto_indexlist_1 = indexlist;
+        setTimeout(function () {
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].SFF_PROMOTION_CODE']").val($("#SFF_PROMOTION_CODE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].MAPPING_CODE']").val($("#MAPPING_CODE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_SERVICE_CODE']").val($("#PACKAGE_SERVICE_CODE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].SFF_PRODUCT_NAME']").val($("#SFF_PRODUCT_NAME" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_GROUP']").val($("#PACKAGE_GROUP" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_GROUP_DESC_THA']").val($("#PACKAGE_GROUP_DESC_THA" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_GROUP_DESC_ENG']").val($("#PACKAGE_GROUP_DESC_ENG" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_REMARK_THA']").val($("#PACKAGE_REMARK_THA" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_REMARK_ENG']").val($("#PACKAGE_REMARK_ENG" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PRICE_CHARGE']").val($("#PRICE_CHARGE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PRE_PRICE_CHARGE']").val($("#PRE_PRICE_CHARGE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].SFF_WORD_IN_STATEMENT_THA']").val($("#SFF_WORD_IN_STATEMENT_THA" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].SFF_WORD_IN_STATEMENT_ENG']").val($("#SFF_WORD_IN_STATEMENT_ENG" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_DISPLAY_THA']").val($("#PACKAGE_DISPLAY_THA" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_DISPLAY_ENG']").val($("#PACKAGE_DISPLAY_ENG" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].DOWNLOAD_SPEED']").val($("#DOWNLOAD_SPEED" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].UPLOAD_SPEED']").val($("#UPLOAD_SPEED" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_TYPE']").val($("#PACKAGE_TYPE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PACKAGE_TYPE_DESC']").val($("#PACKAGE_TYPE_DESC" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PRODUCT_SUBTYPE']").val($("#PRODUCT_SUBTYPE_" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].OWNER_PRODUCT']").val($("#OWNER_PRODUCT" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].ACCESS_MODE']").val($("#ACCESS_MODE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].SERVICE_CODE']").val($("#SERVICE_CODE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].PRODUCT_SUBTYPE3']").val($("#PRODUCT_SUBTYPE3_" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].DISCOUNT_TYPE']").val($("#DISCOUNT_TYPE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].DISCOUNT_VALUE']").val($("#DISCOUNT_VALUE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].DISCOUNT_DAY']").val($("#DISCOUNT_DAY" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].AUTO_MAPPING_PROMOTION_CODE']").val($("#AUTO_MAPPING_PROMOTION_CODE" + i).val());
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].VOIP_IP']").val("");
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].IDD_FLAG']").val("");
+            $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].FAX_FLAG']").val("");
+            if ('@language' == '1') {
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].TECHNOLOGY']").val($("#SFF_WORD_IN_STATEMENT_THA" + i).val());
+            }
+            else {
+                $("#listvas #sum_panel_packagelist_" + sto_indexlist_1 + " input[name='SummaryPanelModel.PackageModelList\\[" + sto_indexlist_1 + "\\].TECHNOLOGY']").val($("#SFF_WORD_IN_STATEMENT_ENG" + i).val());
+            }
+        }, 10 * indexlist);
+        indexlist++;
+    }
+
+    function appenArrayPackageV2(index) {
+        $("#listvas")
+            .append("<div id='sum_panel_packagelist_" + index + "'>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_CODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].MAPPING_CODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_SERVICE_CODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PRODUCT_NAME'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_GROUP'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_GROUP_DESC_THA'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_GROUP_DESC_ENG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_REMARK_THA'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_REMARK_ENG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRICE_CHARGE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRE_PRICE_CHARGE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_WORD_IN_STATEMENT_THA'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_WORD_IN_STATEMENT_ENG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_DISPLAY_THA'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_DISPLAY_ENG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DOWNLOAD_SPEED'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].UPLOAD_SPEED'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_TYPE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_TYPE_DESC'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRODUCT_SUBTYPE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].OWNER_PRODUCT'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].ACCESS_MODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SERVICE_CODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRODUCT_SUBTYPE3'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_TYPE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_VALUE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_DAY'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].AUTO_MAPPING_PROMOTION_CODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].VOIP_IP'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].IDD_FLAG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].FAX_FLAG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TECHNOLOGY'/>" +
+                "</div>"
+            );
+    }
+
+    function CheckBlackListIDCard(idCard) {
+        var checkIDCard = true;
+        $.ajax({
+            url: '/CustomerRegister/CheckBlackList',
+            data: { idcardNo: idCard },
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (response) {
+                if (response.ErrorMessage) {
+                    //$('#modalBlackList').modal();
+                    checkIDCard = false;
+
+                }
+                if (!response.ErrorMessage) {
+                    if (response.returnFlag != "N" && response.returnFlag != "I" && response.returnFlag != "O") {
+                        //$('#modalBlackList').modal();
+                        checkIDCard = false;
+                    }
+                }
+            }
+        });
+        return checkIDCard;
+    }
+
+    function getCustomerTitle() {
+        $('#TITLE_CODE').empty();
+
+        $.ajax({
+            type: "GET",
+            url: "/Scpe/GetCustomerTitle",
+            data: { 'customerCardType': 'R' },
+            dataType: "json",
+            success: function (data) {
+                var strBuilder = "";
+                var flagSelect = false;
+                var firstStr = "<option value='' disabled>" + "@lTITLE" + "</option>";
+                var firstStrSelect = "<option value='' disabled selected>" + "@lTITLE" + "</option>";
+                var flagT = false;
+                var flagT2 = false;
+                $.each(data, function (i, e) {
+
+                    var str = "";
+
+                    if (e.DefaultValue == 'R') {
+                        flagSelect = true;
+                        str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        $("#CustomerRegisterPanelModel_L_TITLE").val(e.Text);
+                        $("#CustomerRegisterPanelModel_L_TITLE_CODE").val(e.Value);
+                    }
+                    else {
+                        str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    }
+
+                    strBuilder += str;
+                });
+
+                if (flagSelect) {
+                    strBuilder = firstStr + strBuilder;
+                }
+                else {
+                    strBuilder = firstStrSelect + strBuilder;
+                }
+
+                $('#TITLE_CODE').append(strBuilder);
+                $('#TITLE_CODE').select2()
+            }
+        });
+    }
+
+    function getCustomerCardType() {
+
+        $('#ID_CARD_NAME').empty();
+
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetCustomerCardType",
+            data: { 'customerType': 'R' },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder = "";
+                var flagSelect = false;
+                var firstStr = "<option value='' disabled>" + "@lCARD_TYPE" + "</option>";
+                var firstStrSelect = "<option value='' disabled selected>" + "@lCARD_TYPE" + "</option>";
+
+                $.each(data, function (i, e) {
+                    var str = "";
+
+                    if (e.DefaultValue == 'R') {
+                        flagSelect = true;
+                        str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                    }
+                    else {
+                        str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    }
+
+                    strBuilder += str;
+                });
+
+                if (flagSelect) {
+                    strBuilder = firstStr + strBuilder;
+                }
+                else {
+                    strBuilder = firstStrSelect + strBuilder;
+                }
+
+                $('#ID_CARD_NAME').append(strBuilder);
+                $('#ID_CARD_NAME').select2();
+
+                $('#CustomerRegisterPanelModel_L_CARD_TYPE').val($('#ID_CARD_NAME :selected').text());
+
+            }
+        });
+
+
+    }
+
+    function onChangeTITLE_CODE() {
+        $("#CustomerRegisterPanelModel_L_TITLE").val($("#TITLE_CODE :selected").text());
+        $("#CustomerRegisterPanelModel_L_TITLE_CODE").val($("#TITLE_CODE :selected").val());
+    }
+
+    function onChangeID_CARD_NAME(idCardName) {
+
+        $('#CustomerRegisterPanelModel_L_CARD_TYPE').val($('#ID_CARD_NAME :selected').text());
+
+        $.ajax({
+            type: "GET",
+            url: "/CustomerRegister/GetCustomerSubCat",
+            data: { 'idCardName': idCardName.value },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $('#cust_subcat').val(data.LovValue4);
+                $('#CustomerRegisterPanelModel_SubCateType').val(data.LovValue5);
+            },
+        });
+
+        set_idcardno_validation();
+
+        if ($('#ID_CARD_NAME :selected').val() == "TAX_ID") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_TAX_ID");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "MONK_CERT") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_LengthIDCardNumberMONK_CERT");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "GOV_LET") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_GOV_LET");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "PASSPORT") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_PASSPORT");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "EMB_LET") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_EMB_LET");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "IMM_CARD") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_LengthIDCardNumberIMM_CARD");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "STA_LET") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_STA_LET");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "HILL_CARD") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_LengthIDCardNumberHILL_CARD");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "CERT_FOUND") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_CERT_FOUND");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "ID_CARD") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_LengthIDCardNumberID_CARD");
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "ROY_LET") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_ROY_LET");
+        }
+    }
+
+    function set_idcardno_validation() {
+        var cus_reg_idcardno_regex = "";
+
+        if ($('#ID_CARD_NAME :selected').val() == "TAX_ID") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_TAX_ID");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_TAX_ID";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "MONK_CERT") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_LengthIDCardNumberMONK_CERT");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_MONK_CERT";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "GOV_LET") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_GOV_LET");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_GOV_LET";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "PASSPORT") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_PASSPORT");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_PASSPORT";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "EMB_LET") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_EMB_LET");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_EMB_LET";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "IMM_CARD") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_LengthIDCardNumberIMM_CARD");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_IMM_CARD";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "STA_LET") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_STA_LET");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_STA_LET";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "HILL_CARD") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_LengthIDCardNumberHILL_CARD");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_HILL_CARD";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "CERT_FOUND") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_CERT_FOUND");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_CERT_FOUND";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "ID_CARD") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_LengthIDCardNumberID_CARD");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_ID_CARD";
+        }
+        else if ($('#ID_CARD_NAME :selected').val() == "ROY_LET") {
+            $('#L_CARD_NO').attr("maxlength", "@FBB_Con_Length_ID_Card_Number_ROY_LET");
+            cus_reg_idcardno_regex = "@FBB_Con_Input_ROY_LET";
+        }
+
+        $('#L_CARD_NO').inputmask('Regex', {
+            regex: cus_reg_idcardno_regex,
+        });
+    }
+
+    function onChangeTumbon(tumbon) {
+        var page = tumbon.id.toString().replace("Tumbon", "");
+
+        $('#ZipCode' + page).empty();
+
+        var strBuilder = "<option value='' disabled selected >" + "@L_ZIP_CODE" + "</option>";
+
+        //GetZipCode
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetZipCode",
+            data: { 'provinceFilter': $("#Province" + page + " :selected").text(), 'amphurFilter': $("#Amphur" + page + " :selected").text(), 'tumbonFilter': tumbon.value },
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, e) {
+                    var str = "";
+                    if (data.length == 1)
+                        str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                    else
+                        str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+
+                    strBuilder += str;
+                });
+                $('#ZipCode' + page).append(strBuilder);
+                $('#ZipCode' + page).select2();
+                $("#CustomerRegisterPanelModel_AddressPanelModel" + page + "_ZIPCODE_ID").val($("#ZipCode" + page + " :selected").val());
+            },
+        });
+    }
+
+    function onChangeAmphur(amphur) {
+        var page = amphur.id.toString().replace("Amphur", "");
+
+        $('#Tumbon' + page).empty();
+        $('#ZipCode' + page).empty();
+
+        $('#ZipCode' + page).append("<option value='' disabled selected >" + "@L_ZIP_CODE" + "</option>");
+
+        //GetTumbon
+        var strBuilder = "<option value='' disabled selected >" + "@L_SUB_DISTRICT" + "</option>";
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetTumbon",
+            data: { 'provinceFilter': $("#Province" + page + " :selected").text(), 'amphurFilter': amphur.value },
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+                $('#Tumbon' + page).append(strBuilder);
+                $('#Tumbon' + page).select2();
+            }
+        });
+    }
+
+    function onChangeProvince(province) {
+        var page = province.id.toString().replace("Province", "");
+
+        $('#ZipCode' + page).empty();
+        $('#Tumbon' + page).empty();
+        $('#Amphur' + page).empty();
+
+        $('#ZipCode' + page).append("<option value='' disabled selected >" + "@L_ZIP_CODE" + "</option>");
+        $('#Tumbon' + page).append("<option value='' disabled selected >" + "@L_SUB_DISTRICT" + "</option>");
+
+        var strBuilder = "<option value='' disabled selected >" + "@L_DISTRICT" + "</option>";
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetAmphur",
+            data: { 'provinceFilter': province.value },
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+                $('#Amphur' + page).append(strBuilder);
+                $('#Amphur' + page).select2();
+            }
+        });
+    }
+
+    function getProvinceTo(page) {
+        if ($("#Province" + page + " :selected").val()) {
+            return;
+        }
+        $("#Province" + page).empty();
+        //GetProvince
+        $.ajax({
+            type: "GET",
+            url: "/Scpe/GetProvince",
+            dataType: "json",
+            success: function (data) {
+                var strBuilder = "<option value='' disabled selected >" + "@L_PROVINCE" + "</option>";
+                $.each(data, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+                $("#Province" + page).append(strBuilder);
+                $("#Province" + page).select2();
+            }
+        });
+    }
+
+    function onCkEbillChange() {
+        $("#L_EMAIL_EBILL").removeClass("textFieldFalse").removeClass("form-control errorinput ").addClass("form-control");
+        // Check out  All
+        if ($("#chkReceiptEbill").is(":checked")) {
+            $("#R_SMS_AND_MYAIS").prop("checked", true);
+            $("#R_SMS_AND_EMAIL").prop("checked", false);
+            $("#R_SMS_AND_MYAIS,#R_SMS_AND_EMAIL").prop('disabled', false);
+            $("#L_EMAIL_EBILL").prop('disabled', true);
+            $("#chkEbillType").attr('style', 'color: #666;');
+            $("#divBillMsg").hide();
+            $("#AddressSendDoc").hide();
+            $("#chkSameAddress").prop("checked", false);
+            copyAddress("SendDoc");
+        }
+        else {
+            $("#R_SMS_AND_MYAIS").prop("checked", false);
+            $("#R_SMS_AND_EMAIL").prop("checked", false);
+            $("#R_SMS_AND_MYAIS,#R_SMS_AND_EMAIL").prop('disabled', true);
+            $('#L_EMAIL_EBILL').prop('disabled', true);
+            $("#chkEbillType").attr('style', 'color: #ccc;');
+            $("#divBillMsg").show();
+            $("#AddressSendDoc").show();
+            $("#chkSameAddress").prop("checked", true);
+            copyAddress("SendDoc");
+        }
+        $('#L_EMAIL_EBILL').val("");
+    }
+
+    function onEbillChange() {
+        $("#L_EMAIL_EBILL").removeClass("textFieldFalse").removeClass("form-control errorinput ").addClass("form-control");
+        // Check out  All
+        if ($('#R_SMS_AND_MYAIS').is(':checked')) {
+            $('#R_SMS_AND_EMAIL').prop("checked", false);
+            $('#L_EMAIL_EBILL').prop('disabled', true);
+        }
+        else {
+            $('#R_SMS_AND_MYAIS').prop("checked", false);
+            $('#L_EMAIL_EBILL').prop('disabled', false);
+        }
+        $('#L_EMAIL_EBILL').val("");
+    }
+
+    function onChkSameAddressChange() {
+        if ($('#chkSameAddress').is(':checked')) {
+            copyAddress("SendDoc");
+        }
+        else {
+            SetDefaultAddress("SendDoc");
+        }
+    }
+
+    function copyAddress(page) {
+
+        $('#Province' + page).empty();
+        $('#Amphur' + page).empty();
+        $('#Tumbon' + page).empty();
+        $('#ZipCode' + page).empty();
+
+        var SelectProvince = $('#COVERAGE_L_PROVINCE :selected').val();
+        var SelectAmphur = $('#COVERAGE_L_AMPHUR :selected').val();
+        var SelectTumbol = $('#COVERAGE_L_TUMBOL :selected').val();
+        var SelectZipCode = $('#CoveragePanelModel_Address_L_ZIPCODE :selected').val();
+        var SelectZipCodeText = $('#CoveragePanelModel_Address_L_ZIPCODE :selected').text();
+
+        $('#AddressPanelModel' + page + '_L_HOME_NUMBER_2').val($('#CoveragePanelModel_Address_L_HOME_NUMBER_1').val());
+        $('#AddressPanelModel' + page + '_L_MOO').val($('#CoveragePanelModel_Address_L_MOO').val());
+        $('#AddressPanelModel' + page + '_L_MOOBAN').val("");
+        $('#AddressPanelModel' + page + '_L_BUILD_NAME').val($('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').val() + " " + $('#CoveragePanelModel_Address_L_BUILD_NO_Hied').val());
+        $('#AddressPanelModel' + page + '_L_BUILD_NAME_Hied').val($('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').val());
+        $('#AddressPanelModel' + page + '_L_BUILD_NO_Hied').val($('#CoveragePanelModel_Address_L_BUILD_NO_Hied').val());
+        $('#AddressPanelModel' + page + '_L_FLOOR').val($('#CoveragePanelModel_Address_L_FLOOR').val());
+        $('#AddressPanelModel' + page + '_L_ROOM').val("");
+        $('#AddressPanelModel' + page + '_L_SOI').val($('#CoveragePanelModel_Address_L_SOI').val());
+        $('#AddressPanelModel' + page + '_L_ROAD').val($('#CoveragePanelModel_Address_L_ROAD').val());
+        $('#AddressPanelModel' + page + '_L_ZIPCODE').val(SelectZipCodeText);
+        $('#AddressPanelModel' + page + '_ZIPCODE_ID').val(SelectZipCode);
+
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetAddress",
+            data: { 'province': SelectProvince, 'amphur': SelectAmphur, 'tumbon': SelectTumbol },
+            dataType: "json",
+            success: function (data) {
+                var strProvince = "";
+                var strAumphur = "";
+                var strTumbon = "";
+                var strZipCode = "";
+
+                $.each(data.province, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    strProvince += str;
+                });
+
+                $.each(data.amphur, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    strAumphur += str;
+                });
+
+                $.each(data.tumbon, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    strTumbon += str;
+                });
+
+                $.each(data.zipcode, function (i, e) {
+                    var str = "";
+                    if (data.zipcode.length == 1)
+                        str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                    else
+                        str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+
+                    strZipCode += str;
+                });
+
+                $('#Province' + page).append(strProvince);
+                $('#Amphur' + page).append(strAumphur);
+                $('#Tumbon' + page).append(strTumbon);
+                $('#ZipCode' + page).append(strZipCode);
+
+                $('#Province' + page).val(SelectProvince);
+                $('#Amphur' + page).val(SelectAmphur);
+                $('#Tumbon' + page).val(SelectTumbol);
+                $('#ZipCode' + page).val(SelectZipCode);
+
+                $("#Province" + page).select2();
+                $('#Amphur' + page).select2();
+                $('#Tumbon' + page).select2();
+                $('#ZipCode' + page).select2();
+
+                $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_ZIPCODE_ID").val(SelectZipCode);
+                $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ZIPCODE").val(SelectZipCodeText);
+            }
+        });
+    }
+
+    function SetDefaultAddress(page) {
+        $("#Province" + page).empty();
+        $("#Amphur" + page).empty();
+        $("#Tumbon" + page).empty();
+        $("#ZipCode" + page).empty();
+
+        $('#AddressPanelModel' + page + '_L_HOME_NUMBER_2').val("");
+        $('#AddressPanelModel' + page + '_L_MOO').val("");
+        $('#AddressPanelModel' + page + '_L_MOOBAN').val("");
+        $('#AddressPanelModel' + page + '_L_BUILD_NAME').val("");
+        $('#AddressPanelModel' + page + '_L_FLOOR').val("");
+        $('#AddressPanelModel' + page + '_L_ROOM').val("");
+        $('#AddressPanelModel' + page + '_L_SOI').val("");
+        $('#AddressPanelModel' + page + '_L_ROAD').val("");
+
+        $.ajax({
+            type: "GET",
+            url: "/Scpe/GetProvince",
+            dataType: "json",
+            success: function (data) {
+                var strBuilder = "<option value='' disabled selected >" + "@L_PROVINCE" + "</option>";
+                $.each(data, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+                $("#Province" + page).append(strBuilder);
+                $("#Province" + page).select2();
+            }
+        });
+
+        $("#Amphur" + page).append("<option value='' disabled selected >" + "@L_SUB_DISTRICT" + "</option>");
+        $("#Tumbon" + page).append("<option value='' disabled selected >" + "@L_DISTRICT" + "</option>");
+        $("#ZipCode" + page).append("<option value='' disabled selected >" + "@L_ZIP_CODE" + "</option>");
+
+        $("#Amphur" + page).select2();
+        $("#Tumbon" + page).select2();
+        $("#ZipCode" + page).select2();
+
+        $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_ZIPCODE_ID").val("");
+    }
+
+    function validateEmail(email) {
+        var filter = /^(((([a-zA-Z0-9\_\-]{1,50})+(([\.]{1,50}[a-zA-Z0-9\_\-]{1,50}){0,50})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        if (email.substr(0, 2) == "-@@" || email.substr(0, 2) == "_@@") {
+            return false;
+        }
+        if (!(email.indexOf('@@') > -1)) {
+            return false;
+        }
+        if (filter.test(email)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateIdCard(idCardNo) {
+        var idcard = idCardNo;
+        var firstIdCard = idcard.substr(0, 1);
+        var flagResult = true;
+
+        if (firstIdCard == "1") {
+            if (idcard == "@FBB_Exc_1") {
+                return true;
+            }
+        }
+        else {
+            if (firstIdCard.toUpperCase() == "@FBB_Exc_D".substr(0, 1).toUpperCase() || firstIdCard.toUpperCase() == "@FBB_Exc_F".substr(0, 1).toUpperCase() || firstIdCard.toUpperCase() == "@FBB_Exc_I".substr(0, 1).toUpperCase() || firstIdCard.toUpperCase() == "@FBB_Exc_S".substr(0, 1).toUpperCase()) {
+                return true;
+            }
+        }
+
+        if (flagResult == true) {
+            if ($('#ID_CARD_NAME :selected').val() == "HILL_CARD") {
+                if (idcard.length != parseInt("@FBB_Con_LengthIDCardNumberHILL_CARD", 10)) {
+                    flagResult = false;
+                }
+                else {
+                    flagResult = true;
+                }
+            }
+            else if ($('#ID_CARD_NAME :selected').val() == "IMM_CARD") {
+                if (idcard.length != parseInt("@FBB_Con_LengthIDCardNumberIMM_CARD", 10)) {
+                    flagResult = false;
+                }
+                else {
+                    flagResult = true;
+                }
+            }
+            else if ($('#ID_CARD_NAME :selected').val() == "ID_CARD") {
+                if (idcard.length != parseInt("@FBB_Con_LengthIDCardNumberID_CARD", 10)) {
+                    flagResult = false;
+                }
+                else {
+                    flagResult = checkIdCard(idcard);
+                }
+            }
+            else if ($('#ID_CARD_NAME :selected').val() == "MONK_CERT") {
+                if (idcard.length != parseInt("@FBB_Con_LengthIDCardNumberMONK_CERT", 10)) {
+                    flagResult = false;
+                }
+                else {
+                    flagResult = checkIdCard(idcard);
+                }
+            }
+        }
+
+        return flagResult;
+    }
+
+    function checkIdCard(idcard) {
+        var num = strSplit(idcard); // function เพิ่มเติม
+        var sum = 0;
+        var total = 0;
+        var digi = 13;
+
+        for (i = 0; i < 12; i++) {
+            sum = sum + (num[i] * digi);
+            digi--;
+        }
+        total = ((11 - (sum % 11)) % 10);
+
+        if (total != num[12]) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function strSplit(f_string, f_split_length) {
+
+        f_string += '';
+        if (f_split_length == undefined) {
+            f_split_length = 1;
+        }
+        if (f_split_length > 0) {
+            var result = [];
+            while (f_string.length > f_split_length) {
+                result[result.length] = f_string.substring(0, f_split_length);
+                f_string = f_string.substring(f_split_length);
+            }
+            result[result.length] = f_string;
+            return result;
+        }
+        return false;
+    }
+
+    function onChangeZipCode() {
+        $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_ZIPCODE_ID").val($("#ZipCodeSendDoc :selected").val());
+    }
+
+    function chkInputMobile(MobileNo) {
+        var cchk = false;
+        var value = MobileNo;
+        var validmobile = validateMobileNumber(value);
+        if (validmobile == false) {
+            cchk = false;
+        } else {
+            $.ajax({
+                url: '/CustomerRegister/CheckInputMobileList',
+                data: {
+                    lMobile: value
+                },
+                dataType: 'json',
+                async: false,
+                type: 'POST',
+                success: function (data) {
+                    if (data) {
+                        cchk = false;
+                    }
+                    else {
+                        cchk = true;
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        return cchk;
+    }
+
+    function validateMobileNumber(value) {
+        if (value.length < 10) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function CheckEmpCode(EmpCode) {
+        var IsEmp = false;
+        $.ajax({
+            url: '/Campaign/CheckEmpCode',
+            data: { empCode: EmpCode },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.result1 != "") {
+                    IsEmp = true;
+                    $("#CustomerRegisterPanelModel_EMP_NAME").val(response.result1);
+                    //console.log("EmpName", response.result1);
+                }
+            }
+        });
+        return IsEmp;
+    }
+
+    var OrderDupModeInfo = function () {
+        CAN_DELETE: "";
+        ID_CARD_NO: "";
+        ORDER_CREATED_DTM: null;
+        CUSTOMER_ADDRESS: "";
+        INSTALL_DATE: null;
+        ORDER_STATUS: "";
+        PACKAGE_NAME: "";
+        ORDER_NO: "";
+    }
+    var OrderDupmodel = [];
+    var OrderDupmodelDel = [];
+
+    function getOrderlist() {
+        var newOrderDupmodel = [];
+        var checkcountorder = 0;
+        var check_load_new = "";
+        $("#chk_del_itself").val("");
+        $("#chk_have_no").val("");
+
+        $("#CustomerRegisterPanelModel_DeleteOrderNo").val("");
+        if ($("#chk_old_id_card").val() != $("#L_CARD_NO").val()) {
+            OrderDupmodel = [];
+            OrderDupmodelDel = [];
+        }
+        if ((OrderDupmodel.length == 0)) {
+            $("#chk_old_id_card").val($("#L_CARD_NO").val());
+
+            $("#OrderDupSerializer").val("");
+            $.ajax({
+                type: "POST",
+                url: "/CustomerRegister/GetOrderDup",
+                data: {
+                    "p_id_card": codefbb.fbbMessage($("#L_CARD_NO").val()),
+                },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $.each(data, function (i, e) {
+                        var tmpOrderDupModel = new OrderDupModeInfo();
+                        tmpOrderDupModel.CAN_DELETE = e.CAN_DELETE;
+                        tmpOrderDupModel.ID_CARD_NO = e.ID_CARD_NO;
+                        tmpOrderDupModel.ORDER_CREATED_DTM = e.ORDER_CREATED_DTM;
+                        tmpOrderDupModel.CUSTOMER_ADDRESS = e.CUSTOMER_ADDRESS;
+                        tmpOrderDupModel.INSTALL_DATE = e.INSTALL_DATE;
+                        tmpOrderDupModel.ORDER_STATUS = e.ORDER_STATUS;
+                        tmpOrderDupModel.PACKAGE_NAME = e.PACKAGE_NAME;
+                        tmpOrderDupModel.ORDER_NO = e.ORDER_NO;
+                        newOrderDupmodel.push(tmpOrderDupModel);
+                        checkcountorder += 1;
+                        check_load_new = "new";
+                    });
+
+                    OrderDupmodel = newOrderDupmodel;
+                    $("#chk_count_order").val(checkcountorder.toString());
+                }
+            });
+        }
+
+
+        /* Add new Order to list*/
+        var addr = "";
+        addr += $("#CoveragePanelModel_Address_L_HOME_NUMBER_1").val() + " ";
+
+        if ($("#L_BUILD_NAME").val() == "0") {
+            addr += selected_building_obj.building_name + " " +
+                $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val() + " " +
+                $("#CoveragePanelModel_Address_L_FLOOR").val();
+        }
+        else {
+            addr += $('#L_BUILD_NAME :selected').text() + " " +
+                $("#L_BUILD_NO").val() + " " +
+                $("#CoveragePanelModel_Address_L_FLOOR").val();
+        }
+
+        if ($("#CoveragePanelModel_Address_L_MOO").val() != "") {
+            addr += " @L_MOO " + $("#CoveragePanelModel_Address_L_MOO").val();
+        }
+        if ($("#CoveragePanelModel_Address_L_SOI").val() != "") {
+            addr += " @L_SOI " + $("#CoveragePanelModel_Address_L_SOI").val();
+        }
+        if ($("#CoveragePanelModel_Address_L_ROAD").val() != "") {
+            addr += " @L_ROAD " + $("#CoveragePanelModel_Address_L_ROAD").val();
+        }
+
+        addr += " " + $('#COVERAGE_L_TUMBOL :selected').text() + " " + $('#COVERAGE_L_AMPHUR :selected').text() + " " + $('#COVERAGE_L_PROVINCE :selected').text();
+        addr += " " + $("#CoveragePanelModel_Address_L_ZIPCODE :selected").text();
+
+        var insataldate = "";
+
+        var value = $("#L_INSTALL_DATE").val();
+        if ($("#LanguagePage").val() == 1) {
+            if (value != "") {
+                var temp = value.split("/");
+                temp[2] = temp[2] * 1 + 543;
+                value = temp[0] + "/" + temp[1] + "/" + temp[2];
+            }
+        }
+
+        insataldate = value + "  " + $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val();
+
+        var toDayDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day), parseInt(@DateTime.Now.Hour), parseInt(@DateTime.Now.Minute), parseInt(@DateTime.Now.Second), parseInt(@DateTime.Now.Millisecond));
+        var hh = toDayDate.getHours();
+        var mn = toDayDate.getMinutes();
+        var ss = toDayDate.getSeconds();
+        var toDayMonth = ((toDayDate.getMonth() + 1) < 10) ? '0' + (toDayDate.getMonth() + 1) : (toDayDate.getMonth() + 1);
+        var toDayDateString = toDayDate.getDate() + '/' + toDayMonth + '/' + toDayDate.getFullYear();
+        var createdatetime = toDateStringByLanguage(toDayDateString) + " " + hh.toString() + ":" + mn.toString() + ":" + ss.toString();
+
+        var i = $("input[name=SelectPackage]:checked").val();
+        var pg = $("#PACKAGE_GROUP" + i).val().split(' ')[0];
+        var downSp = $("#DOWNLOAD_SPEED" + i).val();
+        var upSp = $("#UPLOAD_SPEED" + i).val();
+        var d = downSp.split(' ')[0];
+        var u = upSp.split(' ')[0];
+        var concatPackage = pg + " Speed " + d + "/" + u;
+
+        if (check_load_new == "new") {
+            //Get current date time to ORDER_CREATED_DTM
+            var tmpOrderDupModel = new OrderDupModeInfo();
+            tmpOrderDupModel.CAN_DELETE = "N";
+            tmpOrderDupModel.ID_CARD_NO = $("#L_CARD_NO").val();
+            tmpOrderDupModel.ORDER_CREATED_DTM = createdatetime;
+            tmpOrderDupModel.CUSTOMER_ADDRESS = addr;
+            tmpOrderDupModel.INSTALL_DATE = insataldate;
+            tmpOrderDupModel.ORDER_STATUS = "New Register";
+            tmpOrderDupModel.PACKAGE_NAME = concatPackage;
+            tmpOrderDupModel.ORDER_NO = "New";
+            OrderDupmodel.push(tmpOrderDupModel);
+        } else {
+
+            $.each(OrderDupmodel, function (j, e) {
+                if (e.ORDER_NO == "New") {
+                    OrderDupmodel.pop();
+                }
+            });
+
+            var tmpOrderDupModel = new OrderDupModeInfo();
+            tmpOrderDupModel.CAN_DELETE = "N";
+            tmpOrderDupModel.ID_CARD_NO = $("#L_CARD_NO").val();
+            tmpOrderDupModel.ORDER_CREATED_DTM = createdatetime;
+            tmpOrderDupModel.CUSTOMER_ADDRESS = addr;
+            tmpOrderDupModel.INSTALL_DATE = insataldate;
+            tmpOrderDupModel.ORDER_STATUS = "New Register";
+            tmpOrderDupModel.PACKAGE_NAME = concatPackage;
+            tmpOrderDupModel.ORDER_NO = "New";
+            OrderDupmodel.push(tmpOrderDupModel);
+        }
+    }
+
+    function BindGvOrder() {
+        var have_no = "no";//no,ok
+        var count_yes = 0;
+        var strBuilder = "";
+        var strDeleteonclick = "";
+        $("#chk_count_yes").val("0");
+        $.each(OrderDupmodel, function (i, e) {
+
+            var bgColors = "bg002";
+            var classNew = "";
+            if (i % 2 == 0)
+                bgColors = "bg001";
+
+            if (e.ORDER_STATUS == "New Register") {
+                strBuilder += "<TR class='bg-info'>";
+            } else {
+                strBuilder += "<TR style='background-color: #FFFFFF;'>";
+            }
+
+            if (e.CAN_DELETE == "Y") {
+                strBuilder += "<TH><button button type='button' ctype='deler_dup_order' class='btn btn-xs btn-danger' onclick=DeleteOrder_ShowModal('" + e.ORDER_NO + "');>&nbsp; " + '@B_CANCEL_ORDER' + " &nbsp;</button></TH>";
+                strDeleteonclick = e.ORDER_NO;
+                count_yes += 1;
+            } else {
+                strBuilder += '<TD></TD>';
+                have_no = "ok";
+            }
+
+            strBuilder += '<TD>' + privacyInfoCard(e.ID_CARD_NO) + '</TD>';
+            strBuilder += '<TD>' + e.ORDER_CREATED_DTM + '</TD>';
+            strBuilder += '<TD>' + e.CUSTOMER_ADDRESS + '</TD>';
+            strBuilder += '<TD>' + e.INSTALL_DATE + '</TD>';
+            strBuilder += '<TD>' + e.PACKAGE_NAME + '</TD>';
+            strBuilder += '<TD>' + e.ORDER_STATUS + '</TD>';
+            strBuilder += '</TR>'
+        });
+
+        $("#chk_count_yes").val(count_yes.toString());
+        $("#chk_have_no").val(have_no);
+
+        if (count_yes.toString() == "1" && $("#chk_have_no").val() == "no") {
+            strBuilder = strBuilder.replace("deler_dup_order'", "deler_dup_order' disabled");
+            strBuilder = strBuilder.replace("onclick=DeleteOrder_ShowModal('" + strDeleteonclick + "');", "");
+        }
+        if (strBuilder != "") {
+            $("#temptt").empty();
+            $("#temptt").append(strBuilder);
+        }
+    }
+
+    function showPopupCancelDup() {
+        $("#modal003").modal();
+        var div1 = $("#simplemodal-container");
+        div1.css('width', '450px');
+        div1.css('height', '185px');
+    }
+
+    function orderDupConfirm(c) {
+        if (c == 1) {
+            CancelDeleteOrderDup();
+            $("#modal003").modal("hide")
+            redirectForCancel();
+        }
+    }
+
+    function CancelDeleteOrderDup() {
+        if (parseInt(OrderDupmodelDel.length) != 0) {
+            $("#CustomerRegisterPanelModel_DeleteOrderNo").val(JSON.stringify(OrderDupmodelDel));
+            $.ajax({
+                type: "GET",
+                url: "/Process/CancelOrder",
+                data: { "templist": $("#CustomerRegisterPanelModel_DeleteOrderNo").val(), "idcard": $("#L_CARD_NO").val() },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    OrderDupmodelDel = [];
+                    $("#chk_old_id_card").val("");
+                    OrderDupmodel = [];
+                }
+            });
+
+        } else {
+            $("#CustomerRegisterPanelModel_DeleteOrderNo").val("");
+        }
+        OrderDupmodelDel = [];
+        $("#chk_old_id_card").val("");
+        OrderDupmodel = [];
+    }
+
+    function redirectForCancel() {
+        window.location.href = '@Url.Action("Index", "Scpe")';
+    }
+
+    function DeleteOrder_ShowModal(order_id) {
+        $("#modal003_perorder").attr("data-order-id", order_id);
+        $("#modal003_perorder").modal();
+    }
+
+    function DeleteOrder() {
+        var order_id = $("#modal003_perorder").attr("data-order-id");
+        if (order_id == "New") {
+            $("#chk_del_itself").val("ok");
+        }
+        else {
+            OrderDupmodelDel.push(order_id);
+        }
+        var chkdel = "N";
+        if ($("#chk_have_no").val() == "ok") {
+            chkdel = "Y"
+        } else {
+            if ($("#chk_count_yes").val() == "1") {
+
+                alert('ไม่สามารถลบรายการได้');
+                chkdel = "N";
+            } else {
+                chkdel = "Y";
+            }
+        }
+
+        if (chkdel == "Y") {
+            var newOrderDupmodel = [];
+            $.each(OrderDupmodel, function (j, e) {
+                if (e.ORDER_NO != order_id) {
+                    newOrderDupmodel.push(OrderDupmodel[j]);
+                }
+            });
+            OrderDupmodel = newOrderDupmodel;
+        }
+        BindGvOrder();
+        $("#modal003_perorder").modal('hide');
+    }
+
+    function toDateStringByLanguage(dateString) {
+        var value = '';
+        if ($("#LanguagePage").val() == 1) {
+            if (dateString != "") {
+                var temp = dateString.split("/");
+                temp[2] = temp[2] * 1 + 543;
+                value = temp[0] + "/" + temp[1] + "/" + temp[2];
+            }
+        } else {
+            return dateString;
+        }
+
+        return value;
+    }
+
+    function setTimeSlotConfigSelectDate() {
+
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+        $('#L_INSTALL_DATE').val("");
+        $('#AppointmentDateSelect').val("");
+
+        var dateTime = new Date();
+
+        var timeSlotConfigSelectDate = "";
+        var minDate = "";
+        var maxDate = "";
+        var currentDate = "";
+        var currentDateTH = "";
+
+        timeSlotConfigSelectDate = @Html.Raw(Json.Encode(TimeSlotConfigSelectDate))
+        minDate = "";
+
+        if (timeSlotConfigSelectDate != "" && timeSlotConfigSelectDate != null && timeSlotConfigSelectDate != undefined) {
+
+            //TODO: Splitter Management Change
+            if ($("#L_SplitterFlagFirstTime").val() == "6" || $("#L_SplitterFlagFirstTime").val() == "5" ||
+                $("#L_SplitterFlagFirstTime").val() == "3" || $("#L_SplitterFlagFirstTime").val() == "2") {
+                $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+                $("#divInstallDate").hide();
+                $("#divResponsiveTimeSLot").hide();
+                return;
+            }
+
+            dayTimeslot = timeSlotConfigSelectDate.LovValue2;
+            $("#CustomerRegisterPanelModel_ASSIGN_RULE").val(timeSlotConfigSelectDate.LovValue5);
+
+            var minDayPlus = parseInt(timeSlotConfigSelectDate.LovValue1, 10) * 24;
+            var maxDayPlus = parseInt(timeSlotConfigSelectDate.DefaultValue, 10) * 24;
+
+            var defaultDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt(timeSlotConfigSelectDate.LovValue1, 10));
+            var month = defaultDate.getMonth() + 1;
+            var day = defaultDate.getDate();
+
+            //18.6
+            //sessionStorage.setItem('DefaultDateCompare', defaultDate.getDate().toString() + '/' + (defaultDate.getMonth() + 1).toString() + '/' + defaultDate.getFullYear().toString());
+
+            var minDateTH = (defaultDate.getFullYear() + 543) + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (day < 10 ? '0' : '') + day;
+
+            var minDateEN = defaultDate.getFullYear() + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (day < 10 ? '0' : '') + day;
+
+            currentDateTH = (day < 10 ? '0' : '') + day + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (defaultDate.getFullYear() + 543);
+
+            var currentDateEN = (day < 10 ? '0' : '') + day + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                defaultDate.getFullYear();
+
+            var defaultDateMax = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt(timeSlotConfigSelectDate.DefaultValue, 10));
+            var monthMax = defaultDateMax.getMonth() + 1;
+            var dayMax = defaultDateMax.getDate();
+
+            var maxDateTH = (defaultDateMax.getFullYear() + 543) + '/' +
+                (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                (dayMax < 10 ? '0' : '') + dayMax;
+
+            var maxDateEN = defaultDateMax.getFullYear() + '/' +
+                (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                (dayMax < 10 ? '0' : '') + dayMax;
+
+
+            minDate = minDateEN;
+            maxDate = maxDateEN;
+            currentDate = currentDateEN;
+
+            //R21.3 Timeslot Fix Hrs.
+            $("#hdTimeSlotRegisterHR").val(timeSlotConfigSelectDate.LovValue3);
+            $("#hdTimeSlotRegisterFlowActionNo").val(timeSlotConfigSelectDate.LovValue4);
+        }
+        else {
+            $("#CustomerRegisterPanelModel_ASSIGN_RULE").val("PUSH");
+
+            var defaultDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day));
+            var month = defaultDate.getMonth() + 1;
+            var day = defaultDate.getDate();
+
+            var minDateTH = (defaultDate.getFullYear() + 543) + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (day < 10 ? '0' : '') + day;
+
+            var minDateEN = defaultDate.getFullYear() + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (day < 10 ? '0' : '') + day;
+
+            currentDateTH = (day < 10 ? '0' : '') + day + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (defaultDate.getFullYear() + 543);
+
+            var currentDateEN = (day < 10 ? '0' : '') + day + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                defaultDate.getFullYear();
+
+            var defaultDateMax = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + 50);
+            var monthMax = defaultDateMax.getMonth() + 1;
+            var dayMax = defaultDateMax.getDate();
+
+            var maxDateTH = (defaultDateMax.getFullYear() + 543) + '/' +
+                (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                (dayMax < 10 ? '0' : '') + dayMax;
+
+            var maxDateEN = defaultDateMax.getFullYear() + '/' +
+                (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                (dayMax < 10 ? '0' : '') + dayMax;
+
+
+            minDate = minDateEN;
+            maxDate = maxDateEN;
+            currentDate = currentDateEN;
+        }
+
+        $('#dtpInstallDateTH').datetimepicker({
+            onGenerate: function (ct) {
+                jQuery(this).find('.xdsoft_disabled')
+                    .toggleClass('xdsoft_date');
+            },
+            onSelectDate: function (ct, $i) {
+                var ctTh = convertToThaiDate($('#dtpInstallDateTH').val());
+                $("#dtpInstallDateTH_text").val(ctTh);
+                getAppointment(ctTh, true, "divTimeSlot", "N");
+            },
+            minDate: minDate,
+            maxDate: maxDate,
+            value: currentDate
+        });
+
+        $("#dtpInstallDateTH_text").val(convertToThaiDate($('#dtpInstallDateTH').val()));
+        $("#dtpInstallDateTH_text").click(function () {
+            $("#dtpInstallDateTH").trigger('open.xdsoft');
+        });
+
+        $('#dtpInstallDateEN').datetimepicker({
+            onGenerate: function (ct) {
+                jQuery(this).find('.xdsoft_disabled')
+                    .toggleClass('xdsoft_date');
+            },
+            onSelectDate: function (ct, $i) {
+                var ctEN = $('#dtpInstallDateEN').val();
+                getAppointment(ctEN, false, "divTimeSlot", "N");
+            },
+            minDate: minDate,
+            maxDate: maxDate,
+            value: currentDate
+        });
+
+        if ($("#LanguagePage").val() == "1") {
+            getAppointment(currentDateTH, true, "divTimeSlot", "Y");
+        }
+        else {
+            getAppointment(currentDateEN, false, "divTimeSlot", "Y");
+        }
+
+    }
+
+    function getAppointment(e, isThai, timeSlotId, setDefault) {
+
+        $("#divResponsiveTimeSLot").hide();
+        $('#divTextSelectTimeSlot').html("");
+        $("#divTimeFlag").html("");
+        var i = $("input[name=SelectPackage]:checked").val();
+
+        var installDate = e;
+
+        $("#L_INSTALL_DATE").val("");
+
+        $.ajax({
+            type: "POST",
+            url: "/CustomerRegister/GetAppointment",
+            data: {
+                'installation_Date': installDate,
+                "access_Mode": $("#ACCESS_MODE" + i).val(),
+                "address_Id": $("#ZTEAddressID").val(),
+                "serviceCode": $("#ACCESS_MODE" + i).val(),
+                "district": $("#COVERAGE_L_AMPHUR :selected").text(),
+                "subDistrict": $("#COVERAGE_L_TUMBOL :selected").text(),
+                "province": $("#COVERAGE_L_PROVINCE :selected").text(),
+                "postalCode": $("#CoveragePanelModel_Address_L_ZIPCODE :selected").text(),
+                "lineSelect": 1,
+                "days": dayTimeslot,
+                "productSpecCode": $("#SERVICE_CODE" + i).val(),
+                "isThai": isThai,
+                "timeSlotId": timeSlotId,
+                "smallSize": false,
+                "SubAccessMode": $("#SUB_ACCESS_MODE").val(),
+                "AisAirNumber": "|",
+                "SetDefault": setDefault,
+                "taskType": "",
+                //R21.3 Timeslot Fix Hrs.
+                "timeSlotRegisterFlag": "Y",
+                "timeSlotRegisterHR": $("#hdTimeSlotRegisterHR").val(),
+                "timeSlotRegisterFlowActionNo": $("#hdTimeSlotRegisterFlowActionNo").val(),
+                //R20.5 Service Level
+                "serviceLevel": "",
+                "areaRegion": $("#CoveragePanelModel_Address_AreaRegion").val(),
+                "eventRule": "New",
+                "SpecialSkilL": "",
+                "configLineLOV": "_SCPE"
+            },
+            dataType: "json",
+            beforeSend: function () {
+                $("#" + timeSlotId).html("");
+                $("#divTimeSlotRemark").html("");
+                $("#divResponsiveTimeSLotWarning").show();
+            },
+            success: function (data) {
+                //debugger;
+                $("#" + timeSlotId).html(data.timeSlotData);
+                $("#divTimeSlotRemark").html(data.timeSlotRemark);
+
+                var dataCount = data.timeSlotData.toString().indexOf("List data = 0");
+                var dataNull = data.timeSlotData.toString().indexOf(" Data null");
+                var dataError = data.timeSlotData.toString().indexOf("Data error");
+
+                $("#dataCount").val(dataCount);
+                $("#dataNull").val(dataNull);
+                $("#dataError").val(dataError);
+
+                //set dllTimeFlage
+                if (data.dllTimeFlag != "") {
+                    $("#divTimeFlag").html(data.dllTimeFlag);
+                    $('#dll_TimeFlag').select2();
+                    $(".slot-m").hide();
+                    $(".slot-a").hide();
+                    if ($('#dll_TimeFlag :selected').val() == "M") {
+                        $(".slot-m").show();
+                    }
+                    else {
+                        $(".slot-a").show();
+                    }
+                }
+
+                    if (dataCount != "-1" || dataNull != "-1" || dataError != "-1") {
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val($("#" + timeSlotId).find("input[name='FBSSAppointmentDate']").val());
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val($("#" + timeSlotId).find("input[name='FBSSInstallationCapacity']").val());
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val($("#" + timeSlotId).find("input[name='FBSSTimeSlot']").val());
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val($("#" + timeSlotId).find("input[name='TimeSlotId']").val());
+                        $('#L_INSTALL_DATE').val($("#" + timeSlotId).find("input[name='FBSSInstallDate']").val());
+                        $('#AppointmentDateSelect').val($("#" + timeSlotId).find("input[name='FBSSAppointmentDate']").val());
+                    } else {
+                        $("#divResponsiveTimeSLot").show();
+
+                        if ($("#" + timeSlotId).find(".color-green").length > 0) {
+
+                            getDiv = $("#" + timeSlotId).find(".color-green").parent().parent();
+                            parentDiv = getDiv.parent();
+
+                            $(parentDiv).find(".select-header").show();
+                            $(parentDiv).find(".day-item").addClass("day-item-select");
+                            $(parentDiv).find(".day-footer").show();
+
+                            $(parentDiv).find(".header-label").hide();
+                            $(parentDiv).find(".header-label-hidden").show();
+
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val($(getDiv).find("input[name='FBSSAppointmentDate']").val());
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val($(getDiv).find("input[name='FBSSInstallationCapacity']").val());
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val($(getDiv).find("input[name='FBSSTimeSlot']").val());
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val($(getDiv).find("input[name='TimeSlotId']").val());
+                            $('#L_INSTALL_DATE').val($(getDiv).find("input[name='FBSSInstallDate']").val());
+                            if (setDefault == "Y" && data.firstInstallDate != "" && data.firstTimeSlot != "") {
+                                $('#CustomerRegisterPanelModel_FBSSTimeSlot_FirstInstallDate').val(data.firstInstallDate);
+                                $('#CustomerRegisterPanelModel_FBSSTimeSlot_FirstTimeSlot').val(data.firstTimeSlot);
+                            }
+                            else if (setDefault == "Y" && data.firstInstallDate == "" && data.firstTimeSlot == "") {
+                                $('#CustomerRegisterPanelModel_FBSSTimeSlot_FirstInstallDate').val("");
+                                $('#CustomerRegisterPanelModel_FBSSTimeSlot_FirstTimeSlot').val("");
+                            }
+                            checkDateTimeSlot = true;
+
+                            var textSelectTimeSlot = "@DISPLAY_TIMESLOT_SCPE";
+                            textSelectTimeSlot = textSelectTimeSlot.replace("{TIMESLOT}", $(getDiv).find("input[name='FBSSTimeSlot']").val());
+                            $('#divTextSelectTimeSlot').html(textSelectTimeSlot);
+                        }
+                        else {
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+                            $('#L_INSTALL_DATE').val("");
+
+                            checkDateTimeSlot = false;
+                        }
+
+                }
+                if (setDefault == "Y" && !checkDateTimeSlot) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/CustomerRegister/GetAppointmentFirstTimeSlot",
+                        data: {
+                            'installation_Date': installDate, "access_Mode": $("#ACCESS_MODE" + i).val(), "address_Id": $("#ZTEAddressID").val(),
+                            "serviceCode": $("#ACCESS_MODE" + i).val(), "district": $('#COVERAGE_L_AMPHUR :selected').text(),
+                            "subDistrict": $('#COVERAGE_L_TUMBOL :selected').text(), "province": $('#COVERAGE_L_PROVINCE :selected').text(),
+                            "postalCode": $("#CoveragePanelModel_Address_L_ZIPCODE :selected").text(), "lineSelect": 1,
+                            "days": dayTimeslot, "productSpecCode": $("#SERVICE_CODE" + i).val(), "isThai": isThai, "timeSlotId": timeSlotId, "smallSize": false,
+                            "SubAccessMode": $("#SUB_ACCESS_MODE").val(), "AisAirNumber": "|",
+                            //R21.3 Timeslot Fix Hrs.
+                            "timeSlotRegisterFlag": "Y", "timeSlotRegisterHR": $("#hdTimeSlotRegisterHR").val(), "timeSlotRegisterFlowActionNo": $("#hdTimeSlotRegisterFlowActionNo").val(),
+                        },
+                        dataType: "json",
+                        success: function (dataFirstTimeSlot) {
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_FirstInstallDate').val(dataFirstTimeSlot.FirstInstallDate);
+                            $('#CustomerRegisterPanelModel_FBSSTimeSlot_FirstTimeSlot').val(dataFirstTimeSlot.FirstTimeSlot);
+                        }
+                    });
+                }
+            },
+            complete: function () {
+                $("#divResponsiveTimeSLotWarning").hide();
+            }
+        });
+    }
+
+    function onDayItemClick(t, timeSlotId) {
+
+        var parentDiv = $(t).parent();
+
+        if ($(t).find(".color-red").length > 0) {
+            return;
+        }
+
+        $("#" + timeSlotId).find(".select-header").hide();
+        $("#" + timeSlotId).find(".day-item").removeClass("day-item-select");
+        $("#" + timeSlotId).find(".day-footer").hide();
+        $("#" + timeSlotId).find(".header-label").show();
+        $("#" + timeSlotId).find(".header-label-hidden").hide();
+        $('#divTextSelectTimeSlot').html("");
+
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+        $('#L_INSTALL_DATE').val("");
+        $('#AppointmentDateSelect').val("");
+
+        if ($(t).find(".color-green").length > 0) {
+            $(t).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+            checkDateTimeSlot = false;
+            return;
+        }
+        else if ($("#" + timeSlotId).find(".color-green").length > 0) {
+            $("#" + timeSlotId).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+        }
+
+        if ($(t).find(".color-gray").length > 0) {
+            $(parentDiv).find(".select-header").show();
+            $(parentDiv).find(".day-item").addClass("day-item-select");
+            $(parentDiv).find(".day-footer").show();
+
+            $(parentDiv).find(".header-label").hide();
+            $(parentDiv).find(".header-label-hidden").show();
+
+            $(t).find(".color-gray").removeClass("color-gray").addClass("color-green");
+
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val($(t).find("input[name='FBSSAppointmentDate']").val());
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val($(t).find("input[name='FBSSInstallationCapacity']").val());
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val($(t).find("input[name='FBSSTimeSlot']").val());
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val($(t).find("input[name='TimeSlotId']").val());
+            $('#L_INSTALL_DATE').val($(t).find("input[name='FBSSInstallDate']").val());
+            $('#AppointmentDateSelect').val($(t).find("input[name='FBSSAppointmentDate']").val());
+            checkDateTimeSlot = true;
+
+            var textSelectTimeSlot = "@DISPLAY_TIMESLOT_SCPE";
+            textSelectTimeSlot = textSelectTimeSlot.replace("{TIMESLOT}", $(t).find("input[name='FBSSTimeSlot']").val());
+            $('#divTextSelectTimeSlot').html(textSelectTimeSlot);
+        }
+    }
+
+    function onChangeTimeFlag(timeFlag, timeSlotId) {
+        if ($("#" + timeSlotId).find(".color-green").length > 0) {
+            $("#" + timeSlotId).find(".select-header").hide();
+            $("#" + timeSlotId).find(".day-item").removeClass("day-item-select");
+            $("#" + timeSlotId).find(".day-footer").hide();
+            $("#" + timeSlotId).find(".header-label").show();
+            $("#" + timeSlotId).find(".header-label-hidden").hide();
+            $("#" + timeSlotId).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+            $("#divTextSelectTimeSlot").html("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+            $('#L_INSTALL_DATE').val("");
+            $('#AppointmentDateSelect').val("");
+            checkDateTimeSlot = false;
+        }
+        $(".slot-m").hide();
+        $(".slot-a").hide();
+        if (timeFlag.value == "M") {
+            $(".slot-m").show();
+        }
+        else {
+            $(".slot-a").show();
+        }
+    }
+
+    function convertToThaiDate(englishDate) {
+        var dd = englishDate.substring('0', '2');
+        var MM = englishDate.substring('3', '5');
+        var yyyy = englishDate.substring('6', '10');
+        var year = parseInt(yyyy, 10) + 543;
+        return dd + "/" + MM + "/" + year;
+    }
+
+        </text>)
+</script>

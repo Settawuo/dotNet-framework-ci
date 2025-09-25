@@ -1,0 +1,396 @@
+﻿@model WBBContract.Queries.WebServices.SearchInterfaceLogQuery
+
+@{   
+    Layout = "~/Views/Fbbsaleportal/_Layout.cshtml";
+    
+}
+
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+       <div class="page-header i-header-fit">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">Log - Web Register</h3>
+            </div>
+        </div>
+    </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>Log - Web Register</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 135px;">
+                        <div id="row1" class="row rowFormat">
+                            <div class="col-sm-6 col-md-6">
+                                <label>*Created Date From</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DatePicker()
+                                        .Name("DateFrom")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend", onkeydown="javascript:return false;" })
+                                        .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                        .Format("dd/MM/yyyy")
+                                        .Min(DateTime.Today.AddDays(-Int32.Parse("30")))
+                                        .Max(DateTime.Today)
+                                        .Events(e => e.Change("ChangDateFrom"))
+                                    )
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-DateFrom"></div>
+                                <span class="k-invalid-msg" data-for="PickupDate"></span>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>*To</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DatePicker()
+                                        .Name("DateTo")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend", onkeydown="javascript:return false;" })
+                                        .Format("dd/MM/yyyy")
+                                        .Min(DateTime.Today.AddDays(-Int32.Parse("30")))
+                                        .Max(DateTime.Today)
+                                        .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                        .Events(e => e.Change("ChangDateTo")))
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-DateTo"></div>
+                            </div>
+                        </div>
+                        @*end row1*@
+
+                        <div id="row2" class="row rowFormat">
+                            <div class="col-sm-6 col-md-6">
+                                <label>IN_TRANSACTION_ID</label>
+                                @Html.TextBoxFor(t => t.TransactionId,"", new { maxlength = 100, @class = "dis k-textbox form-control" })
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>METHOD_NAME</label>
+                                 @(Html.Kendo().DropDownListFor(t => t.MethodName)
+                                .Name("MethodName")
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetMethodName", "LogRegister");
+                                    });
+                                })
+                                )
+                            </div>
+                        </div>
+                        @*end row2*@
+
+                        <div id="row3" class="row rowFormat">
+                            <div class="col-sm-6 col-md-6">
+                                <label>IN_ID_CARD_NO</label>
+                                @Html.TextBoxFor(t => t.IdCardNo,"", new { maxlength = 100, @class = "dis k-textbox form-control" })
+                            </div>
+                        </div>
+                        @*end row3*@
+
+                        <div id="row4" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                                
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Search</a>
+                            </div>
+                        </div>@*end row4*@
+
+                    </div>
+                    
+                </div>@*end SearchPanel*@
+
+            </div>
+        </div>
+    </div>
+
+    <div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12 ">
+            @(Html.Kendo().Grid<WBBEntity.PanelModels.WebServiceModels.SearchInterfaceLog>()
+                  .Name("GridInterfaceLog")
+                  .Columns(columns =>
+                  {
+                      columns.Bound(p => p.INTERFACE_ID).Title("INTERFACE_ID").HtmlAttributes(new { style = "text-align:center;" }).Width(75);
+                      columns.Bound(p => p.IN_TRANSACTION_ID).Title("IN_TRANSACTION_ID").HtmlAttributes(new { style = "text-align:left;" }).Width(100);
+                      columns.Bound(p => p.METHOD_NAME).Title("METHOD_NAME").HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                      columns.Bound(p => p.SERVICE_NAME).Title("SERVICE_NAME").HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                      columns.Bound(p => p.IN_ID_CARD_NO).Title("IN_ID_CARD_NO").HtmlAttributes(new { style = "text-align:left;" }).Width(85);
+                      columns.Bound(p => p.REQUEST_STATUS).Title("REQUEST_STATUS").HtmlAttributes(new { style = "text-align:left;" }).Width(85);
+                  })
+                  .Scrollable(scrollable => scrollable.Height("auto"))
+                  .ClientDetailTemplateId("template")
+                  .Pageable(pageable => pageable
+                      .Numeric(true)
+                      .PageSizes(new[] {20, 50, 100})
+                  )
+                  .Sortable()
+                  .AutoBind(false)                
+                  .Resizable(resize => resize.Columns(true))
+                  .DataSource(dataSource => dataSource
+                      .Ajax()             
+                      .Read(read => read.Action("ReadSearchLogRegisterData", "LogRegister").Data("bindingValue"))
+                      .PageSize(20)
+                      .Events(e => e.RequestEnd("checkTimeout"))
+
+                  )
+                  .Events(e => e.DataBound("onGridDataBound"))
+                  )
+        </div>
+       
+    </div>
+   
+</body>
+    
+
+<script id="template" type="text/kendo-tmpl">
+    @(Html.Kendo().TabStrip()
+            .Name("tabStrip_#=INTERFACE_ID#")
+            .SelectedIndex(0)
+            .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
+            .Items(items => items.Add().Text("Interface Detail").Content(
+                
+                "<div class='details'>" +
+                "<ul>" +
+                "<li><label>INTERFACE_ID :</label>#= INTERFACE_ID #</li>" +
+                "<li><label>IN_TRANSACTION_ID :</label>#= IN_TRANSACTION_ID #</li>" +
+                "<li><label>METHOD_NAME :</label>#= METHOD_NAME #</li>" +
+                "<li><label>SERVICE_NAME :</label>#= SERVICE_NAME #</li>" +
+                "<li><label>IN_ID_CARD_NO :</label>#= IN_ID_CARD_NO #</li>" +
+                "<li><label>OUT_RESULT :</label>#= OUT_RESULT #</li>" +
+                "<li><label>OUT_ERROR_RESULT :</label>#= OUT_ERROR_RESULT #</li>" +
+                "<li><label>REQUEST_STATUS :</label>#= REQUEST_STATUS #</li>" +
+                "<li><label>CREATED_DATE :</label>#= CREATED_DATE #</li>" +
+                "<li><label>UPDATED_DATE :</label>#= UPDATED_DATE #</li>" +
+                "<li><label>IN_XML_PARAM :</label><textarea readonly='readonly' style='height: 150px;width:100%'>#= IN_XML_PARAM #</textarea></li>" +
+                "<li><label>OUT_XML_PARAM :</label><textarea readonly='readonly' style='height: 150px;width:100%'>#= OUT_XML_PARAM #</textarea></li>" +
+                "<li class = 'i-text-align-right'><a class='btn btn-default' onclick='_Back(this);'><i class='fa fa-ban fa-lg'></i>&nbsp;&nbsp;Back</a></li>" +
+                "</ul>" +
+                "</div>"
+               
+                ))
+            .ToClientTemplate())
+</script>
+
+
+<script>
+    $(document).ready(function() {
+
+    });
+
+    function checkTimeout(e) {
+        if ('Timeout' == e.response.Errors) {
+            window.location.href = '@Url.Action("Login", "Fbbsaleportal")';
+        }
+    }
+
+        ////// Check Date Validation //////
+        function ValidationDateValue() {
+      
+            var chk = ValidationProcessing("dateselect");
+
+            if (chk) //check blank value
+            {
+                if ($.trim($("#DateFrom").val()) == '') {
+                    $("#validatefor-" + "DateFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "DateFrom").html("");
+                }
+
+                if ($.trim($("#DateTo").val()) == '') {
+                    $("#validatefor-" + "DateTo").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "DateTo").html("");
+                }
+            }
+
+            if (chk) //check format
+            {
+                if (!kendo.parseDate($("#DateFrom").val(), "dd/MM/yyyy")) {
+                    if ($("#DateFrom").val() != "") {
+                        $("#validatefor-" + "DateFrom").html(ValidationIcon() + "This field is not correct format.");
+                        chk = false;
+                    }
+                }
+                else {
+                    $("#validatefor-" + "DateFrom").html("");
+                }
+
+                if (!kendo.parseDate($("#DateTo").val(), "dd/MM/yyyy")) {
+                    if ($("#DateTo").val() != "") {
+                        $("#validatefor-" + "DateTo").html(ValidationIcon() + "This field is not correct format.");
+                        chk = false;
+                    }
+                }
+                else {
+                    $("#validatefor-" + "DateTo").html("");
+                }
+            }
+
+            if (chk) //check Date From must be earlier than Date To
+            {
+                var startPicker = new Date(kendo.parseDate($("#DateFrom").val(), "mm/dd/yyyy"));
+                var endPicker = new Date(kendo.parseDate($("#DateTo").val(), "mm/dd/yyyy"));
+
+                if (startPicker > endPicker) {
+                    if ($("#DateFrom").val() != "") {
+                        $("#validatefor-" + "DateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                        chk = false;
+                    }
+                    else {
+                        $("#validatefor-" + "DateFrom").html("");
+                    }
+                }
+            }
+
+            return chk;
+        }
+
+        var SearchModel = function () {
+            DateFrom: "";
+            DateTo: "";
+            TransactionId: "";
+            MethodName: "";
+            IdCardNo: "";
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS : JSON.stringify(model)
+            };
+        }
+
+        ///// Set Default Data //////
+        function defaultData() {
+            var searchResult = new SearchModel();
+            searchResult.DateFrom = kendo.toString($("#DateFrom").val(), "dd/MM/yyyy");
+            searchResult.DateTo = kendo.toString($("#DateTo").val(), "dd/MM/yyyy");
+            searchResult.TransactionID = $("#TransactionId").val().trim();
+            searchResult.MethodName = $("#MethodName").val();
+            searchResult.IdCardNo = $("#IdCardNo").val().trim();
+
+            return searchResult;
+        }
+        
+        function ChangDateFrom() {
+
+            var endPicker = $("#DateTo").data("kendoDatePicker"),
+            startDate = this.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate()); // + - ตรงนี้จ้า
+                endPicker.min(startDate);
+            }
+
+        }
+
+        function ChangDateTo() {
+            var startPicker = $("#DateFrom").data("kendoDatePicker"),
+            endDate = this.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate());
+                startPicker.max(endDate);
+            }
+
+        }
+
+        //function Chang_Request_Date() {
+        //    var requestDatePicker = $("#DateFrom").data("kendoDatePicker");
+        //}
+
+        function onGridDataBound() {
+            Loading(0);
+            //this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+
+        function _Search() {
+
+            var chk = ValidationDateValue();
+            if (chk) {
+                Loading(0);
+                var grid = $("#GridInterfaceLog").data("kendoGrid");
+                grid.dataSource.page(1);
+
+            }
+        }
+
+        ///// Clear Button - Reset Button //////
+        function _Clear() {
+            $("#DateFrom").data("kendoDatePicker").value("");
+            $("#DateTo").data("kendoDatePicker").value("");
+
+            $("#TransactionId").val("");
+            $("#IdCardNo").val("");
+            $("#MethodName").data("kendoDropDownList").select(0);
+            
+            //reset min, max.
+            $("#DateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+            $("#DateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+
+            $("#GridInterfaceLog").data("kendoGrid").dataSource.data([]);
+
+            $("#validatefor-DateTo").html("");
+            $("#validatefor-DateFrom").html("");
+        }
+
+        function _Back(args) {
+            var tr = $(args).closest("tr");
+            tr.hide();
+            tr.prev().find(".k-hierarchy-cell").find('.k-icon').removeClass('k-minus').addClass('k-plus');
+        }
+
+</script>
+
+<style>
+
+    .details ul
+    {
+        list-style:none;
+        font-style:italic;
+        margin: 15px;
+        padding: 0;
+    }
+    .details ul li
+    {
+        margin: 0;
+        line-height: 1.7em;
+    }
+
+    .details label
+    {
+        display:inline-block;
+        width:150px;
+        padding-right: 10px;
+        text-align: right;
+        font-style:normal;
+        font-weight:bold;
+    }
+
+    .rowFormat 
+    {
+        margin-bottom: 15px;
+    }
+
+</style>
+
+
+</html>

@@ -1,0 +1,94 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using WBBEntity.Extensions;
+
+@{
+    Layout = null;
+    string L_SELECT_VAS = "";
+    string L_MULTI_PLAYBOX_REMARK = "";
+    string WORDING = "";
+    
+    
+    var L_PLAYBOX_REMARK_DETAIL = new List<LovScreenValueModel>();
+
+    string B_BACK = "";
+    string B_NEXT = "";
+
+    if (ViewBag.LabelLovScreen != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.labelLovScreen;
+
+        L_SELECT_VAS = labelLovScreen.Any(c => c.Name == "L_SELECT_VAS") ? labelLovScreen.FirstOrDefault(c => c.Name == "L_SELECT_VAS").DisplayValue : "";
+        L_MULTI_PLAYBOX_REMARK = labelLovScreen.Any(c => c.Name == "L_MULTI_PLAYBOX_REMARK") ? labelLovScreen.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_REMARK").DisplayValue : "";
+        WORDING = labelLovScreen.Any(c => c.Name == "WORDING") ? labelLovScreen.FirstOrDefault(c => c.Name == "WORDING").DisplayValue : "";
+        
+        
+        L_PLAYBOX_REMARK_DETAIL = labelLovScreen.Where(w => w.Name == "L_PLAYBOX_REMARK_DETAIL").OrderBy(o => o.OrderByPDF).ToList();
+
+        B_BACK = labelLovScreen.Any(c => c.Name == "B_BACK") ? labelLovScreen.First(c => c.Name == "B_BACK").DisplayValue : "";
+        B_NEXT = labelLovScreen.Any(c => c.Name == "B_NEXT") ? labelLovScreen.First(c => c.Name == "B_NEXT").DisplayValue : "";
+
+    }
+
+}
+
+
+<div id="divChoosePlayBox" style="display: none;">
+    <div class="col-md-12 col-sm-12 col-xs-12 addrounded">
+        <p class="clearfix"></p>
+        <h4 class="page-header tgreen" id="lblSelectVas">@L_SELECT_VAS</h4>
+        <p class="clearfix"></p>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+            <div id="vasBox0" class="text-center add-rounded-green">
+                <img src="../img/play_box_old.png" class="img-responsive center-block"><p class="clearfix"></p>
+                <p class="clearfix visible-xs"></p>
+            </div>
+        </div>
+        <div id="divRemark" class="col-md-9 col-sm-9 col-xs-12">
+            <div class="add-rounded-gray">
+                <p class="clearfix"></p>
+                <b>@L_MULTI_PLAYBOX_REMARK</b>
+                <div id="divMutipleRemarkDatail">
+                    <ul style="list-style-type: decimal; padding-left: 40px;">
+                        @foreach (var remarkDatail in L_PLAYBOX_REMARK_DETAIL)
+                        {
+                            <li>@remarkDatail.DisplayValue</li>
+                            }
+                    </ul>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <div id="divResponsiveTimeSLot">
+            <div class="col-sm-12 col-xs-12">
+                <h4 class="tgreen">@WORDING</h4>
+                <p class="clearfix"></p>
+                <div class="visible-sm visible-xs" style="left: 40%; top: 10%; position: absolute;" id="swipe">
+                    <img src="~/img/i-swipe.png">
+                </div>
+                <div class="table-responsive">
+                    <div id="divTimeSlot" style="margin-left: auto; margin-right: auto; width: 730px;">
+                    </div>
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+                <div style="clear: both;"></div>
+                <div id="divTimeSlotRemark">
+                </div>
+            </div>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <div class="col-md-12 text-center wrapButton-total">
+            <button class="btn btn-success btn-for-xs btn-lg" style="background-image: none" type="button" onclick="changePageHeader(2); $('#divChoosePlayBox').hide(); $('#divChoosePackage').show();">@B_BACK</button>
+            <button id="btnNext" class="btn btn-success btn-for-xs btn-lg" style="background-image: none" type="button" onclick="NextToConfirmChangePkg();">@B_NEXT</button>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+</div>

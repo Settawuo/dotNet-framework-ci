@@ -1,0 +1,538 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using WBBWeb.Extension
+@{
+    Layout = null;
+
+    string L_CARD_NUMBER = "";
+    string L_TITLE_WEB = "";
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        L_CARD_NUMBER = LabelFBBTR001.Any(c => c.Name == "L_CARD_NUMBER") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_CARD_NUMBER").DisplayValue : "";
+        L_TITLE_WEB = LabelFBBTR001.Any(c => c.Name == "L_TITLE_WEB") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_TITLE_WEB").DisplayValue : "";
+    }
+
+    string L_WELCOME = "";
+    string L_WELCOME_1 = "";
+    string L_WELCOME_2 = "";
+    string L_WELCOME_3 = "";
+    string L_WELCOME_4 = "";
+    string L_WELCOME_5 = "";
+    string L_WELCOME_EOS = "";
+    string L_BUNDLING_CONDITION = "";
+    string L_BUNDLING_CONDITION_DETAIL = "";
+    string B_NEXT = "";
+
+
+    if (ViewBag.LabelFBBOR015 != null)
+    {
+        var LabelFBBOR015 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR015;
+        L_WELCOME = LabelFBBOR015.Any(c => c.Name == "L_WELCOME") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME").DisplayValue : "";
+        L_WELCOME_1 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_1") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_1").DisplayValue : "";
+        L_WELCOME_2 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_2") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_2").DisplayValue : "";
+        L_WELCOME_3 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_3") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_3").DisplayValue : "";
+        L_WELCOME_4 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_4") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_4").DisplayValue : "";
+        L_WELCOME_5 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_5") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_5").DisplayValue : "";
+        L_WELCOME_EOS = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_EOS") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_EOS").DisplayValue : "";
+        L_BUNDLING_CONDITION = LabelFBBOR015.Any(c => c.Name == "L_BUNDLING_CONDITION") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_BUNDLING_CONDITION").DisplayValue : "";
+        L_BUNDLING_CONDITION_DETAIL = LabelFBBOR015.Any(c => c.Name == "L_BUNDLING_CONDITION_DETAIL") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_BUNDLING_CONDITION_DETAIL").DisplayValue : "";
+        B_NEXT = LabelFBBOR015.Any(c => c.Name == "B_NEXT") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+
+    }
+
+    string FBB_Con_Length_ID_Card_Number_TAX_ID = "";
+    string FBB_Con_Input_TAX_ID = "";
+    string FBB_Con_RELATE_MOBILE_SEGMENT = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+
+        var LabelFbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_Con_Length_ID_Card_Number_TAX_ID = LabelFbbConstant.Any(f => f.Field == "Length ID Card Number TAX_ID") ? LabelFbbConstant.First(f => f.Field == "Length ID Card Number TAX_ID").Validation : "";
+        FBB_Con_Input_TAX_ID = LabelFbbConstant.Any(f => f.Field == "Input TAX_ID") ? LabelFbbConstant.First(f => f.Field == "Input TAX_ID").Validation : "";
+        FBB_Con_RELATE_MOBILE_SEGMENT = LabelFbbConstant.Any(f => f.Field == "RELATE_MOBILE_SEGMENT") ? LabelFbbConstant.First(f => f.Field == "RELATE_MOBILE_SEGMENT").Validation : "Non AIS";
+
+    }
+
+    string PromotionCode = "";
+
+    if(ViewBag.PromotionCode != null)
+    {
+        PromotionCode = ViewBag.PromotionCode;
+    }
+
+    string Language = "";
+
+    if (ViewBag.Language != null)
+    {
+        Language = ViewBag.Language;
+    }
+
+}
+
+<html class="no-js" lang="th">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10,9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0" />
+    <meta name="date" content="2016-03-12" />
+    <meta name="sitecode" content="TH" />
+
+    <title>@L_TITLE_WEB</title>
+
+    <meta name="description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์">
+    <meta name="KeyWords" content="ais, เอไอเอส, เน็ต, อินเทอร์เน็ต, ไฟเบอร์" />
+    <meta name="thumbnail" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+    <meta name="thumbnail_height" content="110">
+    <!--Fix ขนาดของความสูง ไว้เท่านี้ ไม่เปลี่ยน-->
+    <meta name="thumbnail_width" content="75">
+    <!--Fix ขนาดของความกว้าง ไว้เท่านี้ ไม่เปลี่ยน-->
+    <!-- Facebook Propertie แชร์ Facebook -->
+    <meta property="og:title" content="AIS Fibre Broadband ความเร็วสูง 1 Gbps" />
+    <meta property="og:description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์" />
+    <meta property="og:image" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+
+    <!-- Tweet Propertie แชร์ Tweet -->
+    <meta property="tw:description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์" />
+
+    <!-- Google Plus แชร์  Google -->
+    <meta itemprop="name" content="AIS Fibre Broadband ความเร็วสูง 1 Gbps">
+    <meta itemprop="description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์">
+    <meta itemprop="image" content="https://www.ais.co.th/fibre_postpaid/share.jpg">
+    <script src="//assets.adobedtm.com/75133ce79ba1f2c516f7d5f09b683f779a12ac39/satelliteLib-2756bab2480cb6c2674fb064e707912a7e9432b2-staging.js"></script>
+
+
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
+
+
+    @Styles.Render("~/bundles/css/2016")
+    @Styles.Render("~/Content/Content2016/fibrepostpaid")
+    @Styles.Render("~/Content/Content2016/helvetica")
+    @Styles.Render("~/bundles/css/2016plugin")
+    @Styles.Render("~/Content/css/bootsrapcss")
+
+    <style type="text/css">
+    @Html.CssMinify(
+        @<text>
+        .i-hidden {
+            display: none;
+        }
+
+        fieldset {
+            border: 2px solid #83ad47;
+            -webkit-border-radius: 5px;
+            -khtml-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+
+        #tbl-popup {
+            width: 100%;
+        }
+
+        .btnmodal {
+            padding: 10px 15px;
+            background-color: #58AA0C;
+            color: #fff !important;
+        }
+
+            .btnmodal:hover {
+                padding: 10px 15px;
+                background-color: #4a831c;
+                color: #fff;
+                text-decoration: none;
+            }
+
+        .btnP1, .btnP1:hover, .btnP2 {
+            background-color: #8dc63f;
+            color: #fff;
+        }
+
+        .modal-dialog-center {
+            margin-top: 10%;
+        }
+
+        .btnP1:hover {
+            cursor: not-allowed;
+        }
+
+        .btnP2:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .btnP3, .btnP3:hover {
+            color: #fff !important;
+        }
+
+        .btnP3 {
+            background-color: #ccc;
+        }
+
+            .btnP3:hover {
+                background-color: #aaa;
+                text-decoration: none;
+            }
+
+        .subheader-en, .subheader-th {
+            font-size: 34px;
+            font-family: db_helvethaicaais_x55_regular;
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAR4AAAAmCAYAAAASl/SiAAAFEElEQVR4nO2d3VIcNxCFz8z+wAaMnaq8DFfmqcwz8FZchadxEvNndudHuVCfUo/QwjoYbTDnq+qSWtJotLbnWN033YQQIN4f51dncwCtGVxLxh224ZoWwAGAudnC2mBzHO/tmZmN9wA27hw9gFt3lgHA3z/2y8RLuDi9rPKeeZW3iP8jcwArRHF4CcH2+gTgI4ATZ0cAjq39zdkKUai8Lc0WSMLlrUUUrBFA4/zezkHxGuxMXNPbWGtjA4DO+o3t92B70L+1dYP535BEcwRwDeC7vScAuAFwb3PB+tdu/sF8CvXa+cHec2MtrL13vy3Y++i/eSQ875fNT9qnRfyQR8SP4xuSsBxiKjJL157Y3AJJdOauXSAKi29b2/MYSXhmrt86awrtIZKQNXb+BlEY6QPAH4gfO4UG9n4/Rhuy/pD1Z7Z378Zo/RNGgaVQbqzlLfE7kjh1iOJ2b3PBxujT6Pe2vnPr4cZfnUahlhCiNrrxiL1xfnW2tO5/zTON9swS8TbTYHprYj6JodrarQGAO0zzS3du7w1iOCR25EfyQxIesU8oEi/ld8Qc04m1H6zv80tsD50xBGReiTkmn1tiOAekZHmLFHbRZ7jF3NGQ+QxHCUOexva6QxRG5n3+cc+MiEn2DimH9RXTsO2re7YH8Jc7Y2f7wfk37jxedEdUCLkUaom9cX51xtvKS+AeK6TENfNKKySBYX7pACnpvUASHp/YznNLFJ+TzM9zSw1STod+Y+dqnBHfz/NHsHcxXxQwzSmV8klMTs8wzSENru3ceOdaCiBzST6v9IAoTMwVrRHzRWukxPeDm6P5PJJPjI8SHiFEdfKYWgghXh0JjxCiOhIeIUR1JDxCiOpIeIQQ1ZHwCCGqI+ERQlRHwiOEqI6ERwhRHQmPEKI6Eh4hRHUkPEKI6kh4hBDVkfAIIaoj4RFCVEfCI4SojoRHCFEdCY8QojoSHiFEdSQ8QojqSHiEENWR8AghqiPhEUJUp/ny5+d9n0H8OqwwLVJHfOG+kLUsL+zHaYvMZ1E7FsYb3RhbYFoYz1fvLJ1tF556LhT64eL08rnyy++at1LC2Feb9P8IWOmxNHeAVM3Rz7WIHwjH/PzSrMnmG8Tqk202xjrcR4XxBqmipX+O/Y+YVqBkf4lY5ZJn8P+wj5D+zvIP+IPr80MMSBU0x2x8RBKK0oe6QrlqJStnDpn1hX5eyXJX6wpt3vf+Jhv3lTBZXbMmmz28803B+tB5aVXCEq3Nlv7Mjfl2gRTG+Y9q7uby8q8LN5fv68fY50eUr8v3zf3n1vHPocPj39U+sW9pn9KzDYDbLc95I7nAsB/w+JYAxJrYPR7fEkp+qR23+CNiqdp1tmYorBsKc6W+FzSWx83XDVueGQrzJcv/7F4b3XZ2QCWMhRDVeSuh1i/F+dXZzLp5GEie+9+A8/mNkG3A9IY1YHqr7ZwfEG8xnBvMFztwcXq57yO8SSQ8+4EC8TNYmR0W2kPE/I7v58a8lu8vXNsihjIMywNiKDe338D8DYVvYz6Fb40odAwf720eiGJ3g2mIdW3+6Pze+TdIoRx9HxreIYWUA2J4SKGmqPqQ0+dj+FvEK6NQaw+cX53xpvISeENhTs3bPOvTKEBzt2ae2azQHiMK02yLbct5fcL05pUn+/0ty3/0K6SkdJfNl5LWvNG12Xyfre0K80yuc97PbRCFyvsUyYBpknvI+j7ZzpxPuDi97CDwL/sTIT5apmjjAAAAAElFTkSuQmCC) right center no-repeat;
+            max-width: 405px;
+            margin-top: 30px;
+        }
+
+        .subheader-th {
+            color: #000;
+        }
+
+            .subheader-th span {
+                color: #8dc63f;
+            }
+
+        .subheader-en {
+            color: #000;
+        }
+
+            .subheader-en span {
+                color: #8dc63f;
+            }
+
+        .vertical-alignment-helper {
+            display: table;
+            height: 100%;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .vertical-align-center {
+            display: table-cell;
+            vertical-align: middle;
+            pointer-events: none;
+        }
+
+        .modal-content {
+            width: inherit;
+            height: inherit;
+            margin: 0 auto;
+            pointer-events: all;
+        }
+
+        .fa-6 {
+            font-size: 10em;
+        }
+
+    </text>)
+
+    </style>
+
+    @Scripts.Render("~/bundles/js/jquery")
+    @Scripts.Render("~/bundles/js/jquerymigrate")
+    @Scripts.Render("~/bundles/js/boostrapjs")
+    <script type="text/javascript">
+        $.salt = '978692';
+    </script>
+    @Scripts.RenderFormat("<script src='{0}' defer></script>", "~/bundles/js/fibrenet")
+    @Scripts.RenderFormat("<script src='{0}' defer></script>", "~/bundles/js/typeaheadjs")
+    @Scripts.RenderFormat("<script src='{0}' defer></script>", "~/bundles/js/responsivefibrejs")
+    @Scripts.Render("~/bundles/js/wbb")
+
+    <style>
+
+        #ais_topbar .topbar_ribbon {
+            padding-left: 10px;
+            float: left;
+            height: 60px;
+        }
+
+        #ribbonking {
+            width: 100%;
+            height: 60px;
+            background: url("/Images/bg1366.jpg") no-repeat center;
+            background-color: #000;
+        }
+
+        #ribbonking_wrapper {
+            height: 60px;
+            margin: 0 auto;
+            max-width: 1140px;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="ais_topbar">
+        <div id="divIdCardReaderPc" style="display: none; /*position: fixed;*/ top: 0; left: 0; width: 100%;">
+            <div class="modal-content" style="border: 0;">
+                <div class="progress" style="height: 4px; margin-bottom: 0px; background-color: #f5f5f5; border-radius: 0px;">
+                    <div id="barIdCardReaderPc" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:0%; background-color: #8dc63f">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_MenuTH")
+        }
+        else
+        {
+            @Html.Partial("_MenuEN")
+        }
+    </div>
+
+    <div id="fibre_container">
+        <form id="PrePostPaid" method="post" action="/FBBxEOS/LoadCheckCoverage">
+            @Html.Hidden("PromotionCode", PromotionCode)
+            @Html.Hidden("Language", Language)
+            <div id="container">
+                <div id="box1_holder">
+                    <div class="panel_ais paddingmedium">
+                        <div class="row_ais">
+                            <p class="clearfix"></p>
+                            <p class="clearfix"></p>
+                        </div>
+                        <div class="row_ais">
+                            <div class="column large-12">
+                                <div class="fibrelogo">
+                                    <img src="data:image/png;base64,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" alt="" />
+                                </div>
+                                <div class="welcometext">@L_WELCOME</div>
+                            </div>
+                        </div>
+                        <div class="row_ais">
+                            <div class="column large-4">
+                                <div id="welcome_msg" class="subheader">@L_WELCOME_1 <span>@L_WELCOME_2</span></div>
+                                <div class="detailtext">
+                                    @L_WELCOME_3<br>
+                                    @L_WELCOME_4<br>
+                                    @L_WELCOME_5
+                                </div>
+                            </div>
+                        </div>
+                        <div class="boxform">
+
+                            <div id="col-form">
+                                <div class="row_ais">
+                                    <div class="column large-5 medium-6 small-12">
+                                        <div class="labeltext">@(Html.Raw(L_WELCOME_EOS))</div>
+                                        <div class="mobile-number">
+                                            <input id="L_CARD_NOs" name="L_CARD_NOs" class="inputform" type="text" autocomplete="off" maxlength="10" placeholder="@L_CARD_NUMBER" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row_ais">
+                                    <div class="column large-5">
+                                        <div class="submit-manual">
+                                            <input id="Continue1" class="btnP1 btn btn-for-xs" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; " value="@B_NEXT" />
+                                            <input id="Continue2" class="btnP2 btn btn-for-xs i-hidden" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; display: none;" value="@B_NEXT" onclick="checkProcess()" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="boxfootshader">
+                        <div class="panel_ais">
+                            <div class="row_ais">
+                                <div class="column large-8">
+                                    <div class="foottext">
+                                        <div class="condition-head">@L_BUNDLING_CONDITION</div>
+                                        <ol>
+                                            <span class="t_inline">@(Html.Raw(L_BUNDLING_CONDITION_DETAIL))</span>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ProgressIcon" class="modal fade">
+                    <div class="vertical-alignment-helper">
+                        <div class="modal-dialog vertical-align-center">
+                            <div class="text-center" style="color: white;">
+                                <div>
+                                    <i class="fa fa-spinner fa-spin fa-6" style="position: inherit;"></i>
+                                </div>
+                                <div id="txtLoading" style="text-align: center;">
+                                    LOADING
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--start new design-->
+                <div style="clear: both;"></div>
+                <div id="aisfooter">
+                    @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+                    {
+                        @Html.Partial("_FooterTH")
+                    }
+                    else
+                    {
+                        @Html.Partial("_FooterEN")
+                    }
+                    <div class="footer_content" style="text-align: center;">
+                        <script type="text/javascript" src="https://lvs.truehits.in.th/datasecure/s0029135.js"></script>
+
+
+
+                        <script src='http://hits.truehits.in.th/data/s0029135.js'></script>
+                    </div>
+                </div>
+                <div class="truehits-bg">&nbsp;</div>
+
+                <!--end new design-->
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        var oldIE = false;
+
+        $(document).ready(function () {
+            if ("@Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString()" == "1") {
+                ais_interface_setup('mini-menu', 'postpaid', 'th', '', false);
+            } else {
+                ais_interface_setup('mini-menu', 'postpaid', 'en', '', false);
+            }
+
+            $("#L_CARD_NOs").attr("maxlength", "@FBB_Con_Length_ID_Card_Number_TAX_ID");
+            $("#L_CARD_NOs").keyup(function () {
+                CheckKeyUps("L_CARD_NOs", "@FBB_Con_Input_TAX_ID");
+                checkBeforeInputMobileNumber();
+            });
+
+            if ($('html').is('.lt-ie7, .lt-ie8, .lt-ie9')) {
+                oldIE = true;
+            }
+
+            if (oldIE) {
+                if (sessionStorage.getItem('detectedIE') != 'detected') {
+                    var oldIENoticeMassage = 'เว็ปไซต์สามารถใช้งานได้ดีกับ Microsoft Internet Explorer 9 ขึ้นไป หรือ Google Chrome / Firefox เวอร์ชั่นล่าสุด',
+                        oldIEBtnMessage = 'ตกลง';
+
+                    if (language == 'en') {
+                        oldIENoticeMassage = 'This site is best viewed using Internet Explorer 9, Chrome, Safari and browser later.';
+                        oldIEBtnMessage = 'Okay';
+                    }
+
+                    sessionStorage.setItem('detectedIE', 'detected');
+                    bootbox.dialog({
+                        message:
+                            "<p class='clearfix'></p>" +
+                            "<div class='add-border-rounded-green'>" +
+                            "<p class='clearfix'></p>" +
+                            "<h3 class='text-center'>" +
+                            oldIENoticeMassage +
+                            "</h3>" +
+                            "</div>" +
+                            "<p class='clearfix'></p>",
+                        buttons: {
+                            success: {
+                                label: oldIEBtnMessage,
+                                className: "btn-success",
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+
+        function checkBeforeInputMobileNumber() {
+            if ($("#L_CARD_NOs").val() != "" && $("#L_CARD_NOs").val().length == "@FBB_Con_Length_ID_Card_Number_TAX_ID") {
+                $("#Continue1").hide();
+                $("#Continue2").show();
+            }
+            else {
+                $("#Continue1").show();
+                $("#Continue2").hide();
+            }
+        }
+
+        function checkProcess() {
+                checkProcessCallback();
+        }
+
+        function checkProcessCallback() {
+            $("#Continue1").show();
+            $("#Continue2").hide();
+            sessionStorage.setItem("AisAirNumber", "");
+            sessionStorage.setItem("ID_CARD_NAMEs", '');
+            sessionStorage.setItem("L_CARD_NOs", $("#L_CARD_NOs").val());
+            sessionStorage.setItem("CoveragePanelModel_L_CONTACT_PHONE", "");
+            sessionStorage.setItem("CoveragePanelModel_MobileSegment", "");
+            sessionStorage.setItem("CoveragePanelModel_NetworkType", "");
+            sessionStorage.setItem("CoveragePanelModel_ChargeType", "");
+            sessionStorage.setItem("CustomerRegisterPanelModel_Project_name", "");
+            sessionStorage.setItem("CoveragePanelModel_P_PrePostpiad", "ProfilePrePostPaid");
+            sessionStorage.setItem("CustomerRegisterPanelModel_AccountCategory", "");
+            sessionStorage.setItem("CustomerRegisterPanelModel_CustomerSubtype", "");
+            sessionStorage.setItem("SffServiceYear", "0");
+            sessionStorage.setItem("SubNetworkType", "");
+            sessionStorage.setItem("vas_flag", "0");
+            sessionStorage.setItem("type", "NEW");
+            sessionStorage.setItem("AisAirNumber", "");
+            sessionStorage.setItem("CoveragePanelModel_Serenade_Flag", "N");
+            sessionStorage.setItem("CoveragePanelModel_L_CONTACT_PHONE", "");
+            sessionStorage.setItem("ShowRental", "false");
+            sessionStorage.setItem("CustomerRegisterPanelModel_RELATE_MOBILE_SEGMENT", "@FBB_Con_RELATE_MOBILE_SEGMENT");
+            sessionStorage.setItem("MobileStatus", "none");
+
+            $('#PrePostPaid').submit();
+        }
+
+        function CheckKeyUps(id, RexStr, checkMobile) {
+            var strKey = $("#" + id).val();
+            var strBuilder = "";
+            if (checkMobile == undefined || checkMobile != "M") {
+                var filter = new RegExp(RexStr);
+                for (var i = 0; i < strKey.length; i++) {
+                    if (filter.test(strKey.substr(i, 1))) {
+                        strBuilder += strKey.substr(i, 1);
+                    }
+                }
+            }
+            else {
+                var filterM = new RegExp(RexStr, "g");
+                if (strKey.match(filterM).length > 1) {
+                    strBuilder = strKey.match(filterM)[0];
+                    strBuilder += strKey.substr(strBuilder.length + 1)
+                }
+                else
+                    strBuilder = strKey.match(filterM)[0];
+            }
+            $("#" + id).val(strBuilder);
+        }
+
+        function LockScreen(x, txt) {
+            if (x) {
+                $('#txtLoading').html(txt);
+                $('#ProgressIcon').modal({
+                    backdrop: "static",
+                    keyboard: true,
+                    show: true
+                });
+            }
+            else {
+                $('#ProgressIcon').modal('hide');
+            }
+        }
+
+        function toastrErrorMessage(message) {
+            toastr.options.positionClass = "toast-top-center";
+            toastr.options.closeButton = true;
+            toastr.error(message);
+        }
+
+    </script>
+</body>
+</html>

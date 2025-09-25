@@ -1,0 +1,728 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using WBBEntity.Extensions;
+
+@{
+    Layout = null;
+
+    string B_BACK = "";
+    string B_NEXT = "";
+
+    if (ViewBag.LabelFBBTR000 != null)
+    {
+        var labelFBBConstant = (List<LovScreenValueModel>)ViewBag.LabelFBBTR000;
+
+        B_BACK = labelFBBConstant.Any(c => c.Name == "B_BACK") ? labelFBBConstant.First(c => c.Name == "B_BACK").DisplayValue : "";
+        B_NEXT = labelFBBConstant.Any(c => c.Name == "B_NEXT") ? labelFBBConstant.First(c => c.Name == "B_NEXT").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelLovScreen != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.labelLovScreen;
+
+        B_BACK = labelLovScreen.Any(c => c.Name == "B_BACK") ? labelLovScreen.First(c => c.Name == "B_BACK").DisplayValue : "";
+        B_NEXT = labelLovScreen.Any(c => c.Name == "B_NEXT") ? labelLovScreen.First(c => c.Name == "B_NEXT").DisplayValue : "";
+
+    }
+
+    var L_OVERRULE_STARTDATE = "";
+    var overruleDropdown = new List<DropdownModel>();
+    
+    if (ViewBag.LabelFBBTR016 != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.LabelFBBTR016;
+        L_OVERRULE_STARTDATE = labelLovScreen.Where(c => c.Name == "L_OVERRULE_STARTDATE").Select(t => t.DisplayValue).FirstOrDefault().ToSafeString();
+
+    }
+
+    var L_REMARK_CHANGE_IMMEDIATELY = "";
+    var L_ERR_CNDN = "";
+    string L_EXISTING_OTP_ERROR = "";
+    string L_EXISTING_OTP_ERROR_1 = "";
+    
+    if (ViewBag.LabelFBBOR016 != null)
+    {
+        var LabelFBBOR016 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR016;
+        L_REMARK_CHANGE_IMMEDIATELY = LabelFBBOR016.Where(c => c.Name == "L_REMARK_CHANGE_IMMEDIATELY").Select(t => t.DisplayValue).FirstOrDefault().ToSafeString();
+        L_ERR_CNDN = LabelFBBOR016.Where(c => c.Name == "L_ERR_CNDN").Select(t => t.DisplayValue).FirstOrDefault().ToSafeString();
+        L_EXISTING_OTP_ERROR = LabelFBBOR016.Any(c => c.Name == "L_EXISTING_OTP_ERROR") ? LabelFBBOR016.First(c => c.Name == "L_EXISTING_OTP_ERROR").DisplayValue : "";
+        L_EXISTING_OTP_ERROR_1 = LabelFBBOR016.Any(c => c.Name == "L_EXISTING_OTP_ERROR_1") ? LabelFBBOR016.First(c => c.Name == "L_EXISTING_OTP_ERROR_1").DisplayValue : "";
+    }
+
+    if (ViewBag.OverruleDropdown != null)
+    {
+        overruleDropdown = (List<DropdownModel>)ViewBag.OverruleDropDown;
+    }
+}
+
+<style>
+    .panel-heading a:after {
+        font-family: 'Glyphicons Halflings';
+        content: "\e114";
+        float: right;
+        color: grey;
+    }
+
+    .panel-heading a.collapsed:after {
+        content: "\e080";
+    }
+</style>
+
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<div id="divChoosePackage" style="display:none">
+    <div id="dynamicBody"></div>
+    <div id="div_overrule_condition">
+        <h2>
+            <strong>@L_OVERRULE_STARTDATE</strong>
+        </h2>
+        <select id="slt_OVERRULE" class="basic" data-placeholder-option="true">
+            <option value="" disabled="">@L_OVERRULE_STARTDATE</option>
+            @{
+                foreach (var overrule in overruleDropdown)
+                {
+                    <option value="@overrule.Value">@overrule.Text</option>
+                }
+            }
+        </select>
+        <p class="clearfix"></p>
+        <h4>
+            @Html.Raw(@L_REMARK_CHANGE_IMMEDIATELY)
+        </h4>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <div class="col-md-12 text-center wrapButton-total">
+        <button class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="changePageHeader(1); $('#divChoosePackage').hide(); $('#divPersonalInfo').show();">@B_BACK</button>
+        <button id="btnNext" class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="CheckChangePackageOntop();">@B_NEXT</button>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+
+</div>
+
+
+
+
+<div class="modal fade" id="modal_error_cndn" tabindex="-1" role="dialog" aria-labelledby="modal_cardreader_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p class="clearfix"></p>
+                <h3 class="text-center" id="MsgTextERR">
+                    
+                </h3>
+                <p class="clearfix"></p>
+                <div class="col-md-12 text-center">
+                    <p class="clearfix"></p>
+                    <button type="button" class="btn btn-success" onclick=" CloseModal();">
+                        &nbsp; OK &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                    </button>
+                    &nbsp;&nbsp;
+                  
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //Disabled next button Created by PatthamawadeeH. 6Jan2017
+    $("#btnNext").attr("disabled", true);
+
+    function chkIfPackageExist() {
+        var chkPackage = $("#dynamicBody").find('.promotionDetail2');
+        if (chkPackage.length > 0) {
+            $('#btnNext').prop("disabled", false);
+        } else {
+            $("#btnNext").attr("disabled", true);
+        }
+    }
+
+    function GetTablePackageListByChange() {
+        var owner_product = $("#outOwnerProduct").val();
+        var seranede_flag = $("#CoveragePanelModel_Serenade_Flag").val();
+        var fmpa_flag = ""
+        var cvm_flag = ""
+        var fmc_special_flag = ""
+        var existing_mobile_flag = ""
+        //var ref_row_id = $("#ref_row_id").val();
+        var non_mobile_no = $("#CoveragePanelModel_P_MOBILE").val();
+        var customer_type = $("#CATEGORY").val();
+        //var address_id = $("#CoveragePanelModel_Address_AddressId").val();
+        //var promocodeCurrent = $("#productCdUse").val();
+        //var statusOption = $("#checkHavePlayBox").val();
+        
+        var address_id = $('#addressID').val();
+        //var installAddress1 = $('#installAddress1').val();
+        var installAddress2 = $('#installAddress2').val();
+        var installAddress3 = $('#installAddress3').val();
+        var installAddress4 = $('#installAddress4').val();
+        //var installAddress5 = $('#installAddress5').val();
+        var flowFlag = $('#flowFlag').val();
+
+        //R22.04 WTTx
+        if (owner_product == "WTTx") {
+            address_id = $('#gridId').val();
+            installAddress2 = $('#outtumbol').val();
+            installAddress3 = $('#outAmphur').val();
+            installAddress4 = $('#outProvince').val();
+        }
+
+        //R20.6 ChangePromotionCheckRight
+        var outAccountNumber = $("#outAccountNumber").val();
+        var subNetworkType = $("#CoveragePanelModel_ChargeType").val();
+        var serenade_flag = $("#CoveragePanelModel_Serenade_Flag").val();
+        var relate_mobile = $("#outMobileNo").val();
+        var old_relate_mobile = $("#old_relate_mobile").val();
+
+        //R20.7 ChangePromotionCheckRight (non change relate mobile)
+        var mobile_checkright = $("#cur_mobile_checkright").val();
+        var mobile_get_benefit = $("#cur_mobile_get_benefit").val();
+
+        var saleChannel = "CUSTOMER";
+        var location_code = "";
+        var asc_code = "";
+        var employee_id = "";
+        var partner_type = "";
+        var partner_subtype = "";
+
+        //15.02.21
+        var distribution_channel = "";
+        var channel_sales_group = "";
+        var shop_segment = "";
+        //21.5 Pool Villa
+        var location_province = "";
+
+        if (window.parent.$("#isOfficer").length > 0 && window.parent.$("#isOfficer").val() == "Y") {
+
+            if (window.parent.$("#LcCode").length > 0) {
+                location_code = window.parent.$('#LcCode').val();
+            }
+
+            if (window.parent.$("#ASCCode").length > 0) {
+                asc_code = window.parent.$('#ASCCode').val();
+            }
+
+            if (window.parent.$("#EmployeeID").length > 0) {
+                employee_id = window.parent.$('#EmployeeID').val();
+            }
+
+            if (window.parent.$("#outType").length > 0) {
+                partner_type = window.parent.$('#outType').val();
+            }
+
+            if (window.parent.$("#outSubType").length > 0) {
+                partner_subtype = window.parent.$('#outSubType').val();
+            }
+
+            //15.02.21
+            if (window.parent.$("#outDistChn").length > 0) {
+                distribution_channel = window.parent.$('#outDistChn').val();
+            }
+
+            if (window.parent.$("#outChnSales").length > 0) {
+                channel_sales_group = window.parent.$('#outChnSales').val();
+            }
+
+            if (window.parent.$("#outOperatorClass").length > 0) {
+                shop_segment = window.parent.$('#outOperatorClass').val();
+            }
+            saleChannel = "OFFICER";
+
+            //21.5 Pool Villa
+            if (window.parent.$("#outLocationProvince").length > 0) {
+                location_province = window.parent.$("#outLocationProvince").val();
+            }
+        }
+        if (flowFlag == "3")
+            saleChannel = "BYOD";
+        else if (flowFlag == "5")
+            saleChannel = "SALE_ROUTER";
+
+        var penaltyFlag = packageResult.filter(function (entry) { if(entry.package_type_desc == "Ontop install penalty") return entry}).length > 0 ? "Y" : "N"
+        console.log('packageResult',packageResult);
+        var findPack = packageResult.filter(function (entry) {
+                    if (entry.package_type_desc == "Main") {
+                        if (entry.package_seq == 1) {
+                            return entry;
+                        }
+                    }
+                })
+        console.log('findPack', findPack);
+        var sffPromotionCodePackMain = '';
+
+        if (findPack != null && findPack != undefined && findPack.length > 0) {
+            sffPromotionCodePackMain = findPack[0].sff_promotion_code;
+        }
+
+        if (sffPromotionCodePackMain == '') {
+            LockScreen(false);
+            console.log("Main Pack Not Have Promotion Code");
+            return;
+        }
+        seranede_flag = sessionStorage.getItem('GetListSpecialOffer_seranede_flag');
+        fmpa_flag = sessionStorage.getItem('GetListSpecialOffer_fmpa_flag');
+        cvm_flag = sessionStorage.getItem('GetListSpecialOffer_cvm_flag');
+        fmc_special_flag = sessionStorage.getItem('GetListSpecialOffer_fmc_special_flag');
+        existing_mobile_flag = sessionStorage.getItem('GetListSpecialOffer_existing_mobile_flag');
+        $.ajax({
+            type: "POST",
+            url: "/ChangePromotion/GetTablePackageListByChange",
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            data: {
+                sale_channel: saleChannel,
+                owner_product: owner_product,
+                customer_type: customer_type,
+                partner_type: partner_type,
+                partner_subtype: partner_subtype,
+                location_code: location_code,
+                asc_code: asc_code,
+                employee_id: employee_id,
+                province: installAddress4,
+                district: installAddress3,
+                sub_district: installAddress2,
+                address_id: address_id,
+                seranede_flag: seranede_flag,
+                penalty_flag: penaltyFlag,
+                package_main: sffPromotionCodePackMain,
+                product_subtype: $("#v_package_subtype").val(),
+                non_mobile_no: non_mobile_no,
+                language: $("#LanguagePage").val(),
+                fmpa_flag: fmpa_flag,
+                cvm_flag: cvm_flag,
+                fmc_special_flag: fmc_special_flag,
+                existing_mobile_flag: existing_mobile_flag,
+                outAccountNumber: outAccountNumber,
+                subNetworkType: subNetworkType,
+                serenade_flag: seranede_flag,
+                relate_mobile: relate_mobile,
+                old_relate_mobile: old_relate_mobile,
+                mobile_checkright: mobile_checkright,
+                mobile_get_benefit: mobile_get_benefit,
+                //15.02.21
+                distribution_channel: distribution_channel,
+                channel_sales_group: channel_sales_group,
+                shop_segment: shop_segment,
+                //21.5
+                location_Province: location_province
+            },
+            success: function (data) {
+
+                var resulthtml = "";
+                $("#fmc_specail_flag").val("");
+                $("#existing_mobile_flag").val("");
+
+                if (data != null) {
+                    resulthtml = data.resulthtml;
+                    $("#fmc_specail_flag").val(fmc_specail_flag);
+                    $("#existing_mobile_flag").val(existing_mobile_flag);
+                    $("#CoveragePanelModel_Serenade_Flag").val(serenade_flag);
+                }
+
+                $("#dynamicBody").text("");
+                $("#dynamicBody").append(resulthtml);
+                $('input:radio[name=SelectPackage]').filter('[value=0]').prop('checked', true);
+                chkIfPackageExist();
+                var pkg_set = $('input[name=SelectPackage]:checked').val();
+                var checkSPB = $("#CHECK_SHOW_PLAYBOX" + pkg_set).val();
+                if (checkSPB == "Y") {
+                    $(".sod_list span[data-value='I']").hide()
+                    $(".sod_list span[data-value='I']").attr('class', 'sod_option  disabled');
+                }
+                else {
+                    $(".sod_list span[data-value='I']").show()
+                    $(".sod_list span[data-value='I']").attr('class', 'sod_option');
+                }
+                LockScreen(false);
+            },
+            error: function () {
+                LockScreen(false);
+            }
+        });
+    }
+
+
+
+    function CloseModal() {
+        $('#modal_error_cndn').modal('toggle');
+    }
+
+    function onBindingSelectPack(e) {
+        $('input:radio[name=SelectPackage]').filter('[value=' + e + ']').prop('checked', true);
+
+        var checkSPB = $("#CHECK_SHOW_PLAYBOX" + e).val();
+        if (checkSPB == "Y") {
+            $("#status_div").children("#status3_imgf").show();
+
+            $(".sod_list span[data-value='I']").hide()
+            $(".sod_list span[data-value='I']").attr('class', 'sod_option  disabled');
+            $(".sod_list span[data-value='B']").attr('class', 'sod_option active selected');
+            $(".sod_label").text($(".sod_list span[data-value='B']").text());
+            $("#slt_OVERRULE").val("B");
+        }
+        else {
+            $("#status_div").children("#status3_imgf").hide();
+
+            $(".sod_list span[data-value='I']").show()
+            $(".sod_list span[data-value='I']").attr('class', 'sod_option');
+        }
+
+        var optionVal = $('select[id=slt_OVERRULE]').val();
+        if (optionVal == "I") {
+            $(".sod_list span[data-value='I']").attr('class', 'sod_option active selected');
+            $(".sod_label").text($(".sod_list span[data-value='I']").text());
+            $("#slt_OVERRULE").val("I");
+        }
+
+    }
+
+    function CheckChangePackageOntop() {
+        LockScreen(true, "");
+        onBindingSelectPack($('input[name=SelectPackage]:checked').val());
+        var pkg_set = $('input[name=SelectPackage]:checked').val();
+        var checkSPB = $("#CHECK_SHOW_PLAYBOX" + pkg_set).val();
+        var optionVal = $('select[id=slt_OVERRULE]').val();
+        var non_mobile_no = $("#CoveragePanelModel_P_MOBILE").val();
+
+        if (optionVal == "I" && window.parent.$("#isOfficer").length == 0) {
+            $("#InputOTP").show();
+            var air_change_old_package_array = [];
+            $("#HiddenForPersonalPackage").find("div").each(function (i) {
+                var obj = { 'SFF_PROMOTION_CODE': $(this).find("input[name=productCd]").val(), 'startDt': $(this).find("input[name=startDt]").val(), 'endDt': $(this).find("input[name=endDt]").val(), 'PRODUCT_SEQ': $(this).find("input[name=productSeq]").val() };
+                air_change_old_package_array.push(obj);
+            });
+            var air_change_new_package_array = [];
+            var pkg_set = $('input[name=SelectPackage]:checked').val();
+            var objNew = { 'SFF_PROMOTION_CODE': $("#SFF_PROMOTION_CODE" + pkg_set).val(), 'startDt': '', 'endDt': '', 'PRODUCT_SEQ': $("#SEQ" + pkg_set).val() };
+            air_change_new_package_array.push(objNew)
+
+            $.ajax({
+                type: "POST",
+                url: "/ChangePromotion/CheckChangePackageOntop",
+                dataType: "text",
+                data: { non_mobile_no: non_mobile_no, air_change_old_package_array: JSON.stringify(air_change_old_package_array), air_change_new_package_array: JSON.stringify(air_change_new_package_array) },
+                success: function (data) {
+                    if (data == "Success") {
+                        if ($("#checkHavePlayBox").val() == "N" && checkSPB == "Y") {
+                            NextToSelectPlaybox();
+                        }
+                        else {
+                            NextToConfirmChangePkg();
+                        }
+                    }
+                    else {
+                        LockScreen(false);
+                        $('#MsgTextERR').text('@L_ERR_CNDN');
+                        $('#modal_error_cndn').modal('show');
+                    }
+
+                },
+                error: function () {
+                    LockScreen(false);
+                    $('#MsgTextERR').text('@L_ERR_CNDN');
+                    $('#modal_error_cndn').modal('show');
+                }
+            });
+        }
+        else {
+            $("#InputOTP").hide();
+            if ($("#checkHavePlayBox").val() == "N" && checkSPB == "Y") {
+                NextToSelectPlaybox();
+            }
+            else {
+                NextToConfirmChangePkg();
+            }
+        }
+    }
+
+    function NextToSelectPlaybox() {
+        getAppointment();
+        changePageHeader(3);
+        GetChangeTablePackageInfo();
+        $("#divChoosePackage").hide();
+        $("#divChoosePlayBox").show();
+    }
+
+    function NextToConfirmChangePkg() {
+        var pkg_set = $('input[name=SelectPackage]:checked').val();
+        var checkSPB = $("#CHECK_SHOW_PLAYBOX" + pkg_set).val();
+        $('#MobileSentOTP').val("");
+        $('#tmpMobileSentOTP').val("");
+
+        if (checkSPB == "N") {
+            GetServiceMobileNo($("#CoveragePanelModel_P_MOBILE").val());
+        }
+        else {
+            if ($('#AppointmentDate').val() == "") {
+                var temp = "";
+                if ($("#LanguagePage").val() == "1")
+                    temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                else
+                    temp = "Please Fill In All Required Fields."
+                toastrErrorMessage(temp);
+                return;
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/ChangePromotion/DATAILChangepro",
+                    data: {
+                        NON_MOBILE: $("#CoveragePanelModel_P_MOBILE").val(),
+                        BILL_CYCLE: $("#billCycle").val(),
+                        APPOINTMENT_DATE: $('#AppointmentDate').val(),
+                        TIME_SLOT: $('#TimeSlot').val()
+                    },
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data.RETURN_CODE != "-1") {
+                            $("#divChoosePlayBox").hide();
+                            $("#ChangePackageRemark").hide();
+                            $("#Wording4Msg").text(data.START_DATE);
+                            $("#Wording5Msg").text(data.INSTALL_DATE);
+                            $("#RemarkPlaybox").show();
+                        }
+                        LockScreen(false);
+                    },
+                    error: function () {
+                        LockScreen(false);
+                    }
+                });
+            }
+        }
+
+        //R20.6
+        GetListChangePackage();
+        //
+
+        //20.7 Change promotion Add Summary
+        GetTermConditions();
+
+        changePageHeader(4);
+
+        $("#divConfirm").show();
+    }
+
+    function GetListChangePackage() {
+        $("#lblChangePackRightCase").text("");
+        $("#lblChangePackRightCase").hide();
+        var non_mobile_no = $("#CoveragePanelModel_P_MOBILE").val();
+        var relate_mobile = $("#outMobileNo").val();
+        var old_relate_mobile = $("#old_relate_mobile").val();
+        var relateMobileAction = $("#relate_mobile_action").val();
+        var mobileNumberContact = $("#mobileNumberContact").val();
+        var project_name = $("#CustomerRegisterPanelModel_Project_name").val();
+        var network_type = $("#CoveragePanelModel_ChargeType").val();
+        var playBoxCode = $("#ServiceCodePBOX").val();
+        var project_name_opt = $("#cur_project_name_option").val();
+        var mobileCheckRight = $("#cur_mobile_checkright").val();
+        var mobileCheckRight_opt = $("#cur_mobile_checkright_option").val();
+        var mobileGetbenefit = $("#cur_mobile_get_benefit").val();
+        var mobileGetbenefit_opt = $("#cur_mobile_get_benefit_option").val();
+        var existingMobileFlag = $("#existing_mobile_flag").val();
+
+        var old_package = [];
+
+        $("#HiddenForPersonalPackage").find("div").each(function (i) {
+            var obj = { 'SFF_PROMOTION_CODE': $(this).find("input[name=productCd]").val(), 'startDt': $(this).find("input[name=startDt]").val(), 'endDt': $(this).find("input[name=endDt]").val(), 'PRODUCT_SEQ': $(this).find("input[name=productSeq]").val() };
+            old_package.push(obj);
+        });
+
+        var new_package = [];
+        var pkg_i = $('input[name=SelectPackage]:checked').val();
+        var objMain = { 'SFF_PROMOTION_CODE': $("#SFF_PROMOTION_CODE" + pkg_i).val(), 'startDt': null, 'endDt': null, 'PRODUCT_SEQ': $("#SEQ" + pkg_i).val() };
+        new_package.push(objMain)
+        var pkg_mapping = $("#MAPPING_CODE" + pkg_i).val();
+        if (pkg_mapping != "") {
+            $("#OntopPkg").find("tr[name=" + pkg_mapping + "]").each(function (i) {
+                var objOntop = { 'SFF_PROMOTION_CODE': $(this).find("input[name=SFF_PROMOTION_CODE]").val(), 'startDt': null, 'endDt': null, 'PRODUCT_SEQ': $(this).find("input[name=SEQ]").val() };
+                new_package.push(objOntop);
+            });
+            $("#OntopPBOXTPkg").find("tr[name=" + pkg_mapping + "]").each(function (i) {
+                var objOntop = { 'SFF_PROMOTION_CODE': $(this).find("input[name=SFF_PROMOTION_CODE]").val(), 'startDt': null, 'endDt': null, 'PRODUCT_SEQ': $(this).find("input[name=SEQ]").val() };
+                new_package.push(objOntop);
+            });
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/ChangePromotion/GetListChangePackage",
+            dataType: "json",
+            data: {
+                non_mobile_no: non_mobile_no,
+                relate_mobile: relate_mobile,
+                old_relate_mobile: old_relate_mobile,
+                project_name: project_name,
+                network_type: network_type,
+                old_package: JSON.stringify(old_package),
+                new_package: JSON.stringify(new_package),
+                mobileNumberContact: mobileNumberContact,
+                relateMobileAction: relateMobileAction,
+                project_name_opt: project_name_opt,
+                mobileCheckRight: mobileCheckRight,
+                mobileCheckRight_opt: mobileCheckRight_opt,
+                mobileGetbenefit: mobileGetbenefit,
+                mobileGetbenefit_opt: mobileGetbenefit_opt,
+                existingMobileFlag: existingMobileFlag,
+                checkHavePlayBox: playBoxCode,
+                language: $("#LanguagePage").val(),
+            },
+            success: function (dataResult) {
+                if (dataResult != null) {
+                    $('#hdnchangepro_pk').val(dataResult.GUIDKEY);
+                    if (dataResult.response != null && dataResult.response.length > 0 && dataResult.messageSummary != null && dataResult.messageSummary != undefined && dataResult.messageSummary != "") {
+
+                        var new_mobile = privacyMsisdn(dataResult.response[0].change_mobile_benefit_to);
+                        var old_mobile = privacyMsisdn(dataResult.response[0].change_mobile_benefit_from);
+
+                        var messageSummary = dataResult.messageSummary
+
+                        messageSummary = messageSummary.replace(new RegExp('{new_mobile}', 'g'), new_mobile);
+                        messageSummary = messageSummary.replace(new RegExp('{old_mobile}', 'g'), old_mobile);
+
+                        $("#lblChangePackRightCase").text(messageSummary);
+                        $("#lblChangePackRightCase").show();
+                    }
+                }   
+            }
+        });
+    }
+
+    function GetServiceMobileNo(NonMobile) {
+        if ($("#slt_OVERRULE :selected").val() == "I" && window.parent.$("#isOfficer").length == 0) {
+            $.ajax({
+                url: '/Process/evESeServiceQueryMassCommonAccountInfo',
+                data: {
+                    mobileNo: codefbb.fbbMessage(NonMobile),
+                    SubNetworkType: "PREPAID",
+                    idCardNo: $('#IDCardNo').val(),
+                    idCardType: $('#IDCardType').val()
+                },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                async: false,
+                success: function (response) {
+                    var data2 = response.data;
+                    if (data2.errorMessage == "") {
+                        $.ajax({
+                            url: '/Process/GetCheckProcess',
+                            data: { key: data2.GUIDKEY, },
+                            dataType: "json",
+                            type: 'POST',
+                            async: false,
+                            success: function (response) {
+                                var data2 = response.data;
+                                console.log("", data2.outserviceMobileNo)
+                                if (data2.outserviceMobileNo != "") {
+                                    $('#MobileSentOTP').val(data2.outserviceMobileNo);
+                                    $('#tmpMobileSentOTP').val(data2.outserviceMobileNo);
+                                    if (RequestOTPFunc(data2.outserviceMobileNo)) {
+                                        GetChangeTablePackageInfo();
+                                        $("#ChangePackageRemark").show();
+                                        $("#RemarkPlaybox").hide();
+                                        $("#divChoosePackage").hide();
+                                        LockScreen(false);
+                                    }
+                                    else {
+                                        GetChangeTablePackageInfo();
+                                        $("#ChangePackageRemark").show();
+                                        $("#RemarkPlaybox").hide();
+                                        $("#divChoosePackage").hide();
+                                        LockScreen(false);
+                                        $('#MsgTextERR').text('@L_EXISTING_OTP_ERROR_1');
+                                        $('#modal_error_cndn').modal('show');
+                                    }
+                                }
+                                else {
+                                    $('#MobileSentOTP').val("");
+                                    $('#tmpMobileSentOTP').val("");
+                                    LockScreen(false);
+                                    $('#MsgTextERR').text('@L_EXISTING_OTP_ERROR');
+                                    $('#modal_error_cndn').modal('show');
+                                    // ระบบมีปัญหา
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        LockScreen(false);
+                        $('#MsgTextERR').text('@L_EXISTING_OTP_ERROR');
+                        $('#modal_error_cndn').modal('show');
+                        // ระบบมีปัญหา
+                    }
+                }
+            });
+        }
+        else
+        {
+            GetChangeTablePackageInfo();
+            $("#ChangePackageRemark").show();
+            $("#RemarkPlaybox").hide();
+            $("#divChoosePackage").hide();
+            LockScreen(false);
+        }
+    }
+
+    function RequestOTPFunc(MobbileNo) {
+        var result = false;
+        var MobbileNoData = MobbileNo;
+        if (MobbileNo == "") {
+            MobbileNoData = $('#tmpMobileSentOTP').val();
+        }
+        $('#GSSO_transactionID').val("");
+        $.ajax({
+            url: '/Process/SendOneTimePW',
+            data: { msisdn: MobbileNoData, accountType: 'all' },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (data3) {
+                if (data3 != null) {
+                    if (data3.code == "000") {
+                        $('#GSSO_transactionID').val(data3.transactionID);
+                        result = true;
+                        if (MobbileNo == "") {
+                            LockScreen(false);
+                        }
+                    }
+                    else
+                    {
+                        if (MobbileNo == "") {
+                            LockScreen(false);
+                            $('#MsgTextERR').text('@L_EXISTING_OTP_ERROR_1');
+                            $('#modal_error_cndn').modal('show');
+                        }
+                    }
+                }
+                else
+                {
+                    if (MobbileNo == "") {
+                        LockScreen(false);
+                        $('#MsgTextERR').text('@L_EXISTING_OTP_ERROR_1');
+                        $('#modal_error_cndn').modal('show');
+                    }
+                }
+            },
+            error: function (jq, status, message) {
+                if (MobbileNo == "") {
+                    LockScreen(false);
+                    $('#MsgTextERR').text('@L_EXISTING_OTP_ERROR_1');
+                    $('#modal_error_cndn').modal('show');
+                }
+            }
+        });
+        return result;
+    }
+
+</script>

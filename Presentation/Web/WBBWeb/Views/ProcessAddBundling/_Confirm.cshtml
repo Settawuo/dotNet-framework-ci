@@ -1,0 +1,222 @@
+﻿@model WBBEntity.PanelModels.AddBundlingModels
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@{
+    Layout = null;
+
+    string B_DISCOUNT_NEXT = "";
+
+    string B_DISCOUNT_CONFIRM = "";
+    string B_DISCOUNT_CANCEL = "";
+    string B_DISCOUNT_BACK = "";
+
+    string L_DISCOUNT_PAGE_3 = "";
+    string L_DISCOUNT_PAGE_4 = "";
+
+    if (ViewBag.LabelFBBOR018 != null)
+    {
+        var labelFBBOR018 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR018;
+
+        B_DISCOUNT_NEXT = labelFBBOR018.Any(c => c.Name == "B_DISCOUNT_NEXT") ? labelFBBOR018.FirstOrDefault(c => c.Name == "B_DISCOUNT_NEXT").DisplayValue : "";
+
+        B_DISCOUNT_CONFIRM = labelFBBOR018.Any(c => c.Name == "B_DISCOUNT_CONFIRM") ? labelFBBOR018.FirstOrDefault(c => c.Name == "B_DISCOUNT_CONFIRM").DisplayValue : "";
+        B_DISCOUNT_CANCEL = labelFBBOR018.Any(c => c.Name == "B_DISCOUNT_CANCEL") ? labelFBBOR018.FirstOrDefault(c => c.Name == "B_DISCOUNT_CANCEL").DisplayValue : "";
+        B_DISCOUNT_BACK = labelFBBOR018.Any(c => c.Name == "B_DISCOUNT_BACK") ? labelFBBOR018.FirstOrDefault(c => c.Name == "B_DISCOUNT_BACK").DisplayValue : "";
+
+        L_DISCOUNT_PAGE_3 = labelFBBOR018.Any(c => c.Name == "L_DISCOUNT_PAGE_3") ? labelFBBOR018.FirstOrDefault(c => c.Name == "L_DISCOUNT_PAGE_3").DisplayValue : "";
+        L_DISCOUNT_PAGE_4 = labelFBBOR018.Any(c => c.Name == "L_DISCOUNT_PAGE_4") ? labelFBBOR018.FirstOrDefault(c => c.Name == "L_DISCOUNT_PAGE_4").DisplayValue : "";
+
+    }
+
+    string L_CHANGE_PACKAGE_REMARK = "";
+    string L_DEL_ONTOP = "";
+    string L_PROFILE_NEW_PACKAGE = "";
+
+    string L_ADD_BUNDLING_SUCCESS = "";
+    string L_CP_FAIL = "";
+
+    if (ViewBag.LabelFBBTR016 != null)
+    {
+        var labelFBBTR016 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR016;
+
+        L_CHANGE_PACKAGE_REMARK = labelFBBTR016.Any(c => c.Name == "L_CHANGE_PACKAGE_REMARK") ? labelFBBTR016.First(c => c.Name == "L_CHANGE_PACKAGE_REMARK").DisplayValue : "";
+        L_DEL_ONTOP = labelFBBTR016.Any(c => c.Name == "L_DEL_ONTOP") ? labelFBBTR016.First(c => c.Name == "L_DEL_ONTOP").DisplayValue : "";
+        L_PROFILE_NEW_PACKAGE = labelFBBTR016.Any(c => c.Name == "L_PROFILE_NEW_PACKAGE") ? labelFBBTR016.First(c => c.Name == "L_PROFILE_NEW_PACKAGE").DisplayValue : "";
+        L_ADD_BUNDLING_SUCCESS = labelFBBTR016.Any(c => c.Name == "L_ADD_BUNDLING_SUCCESS") ? labelFBBTR016.First(c => c.Name == "L_ADD_BUNDLING_SUCCESS").DisplayValue : "";
+        L_CP_FAIL = labelFBBTR016.Any(c => c.Name == "L_CP_FAIL") ? labelFBBTR016.First(c => c.Name == "L_CP_FAIL").DisplayValue : "";
+    }
+
+}
+
+<style>
+    .gusterbottom {
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+    }
+
+    .radius5 {
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .tab_red {
+        background-color: #E285AF;
+        color: #FFF;
+        padding: 10px 20px;
+    }
+
+        .tab_red span {
+            font-size: 2em;
+            line-height: 120%;
+            padding: 5px 0px;
+        }
+
+    .tab_green {
+        background-color: #8DC63F;
+        color: #FFF;
+        padding: 10px 20px;
+    }
+
+        .tab_green span {
+            font-size: 2em;
+            line-height: 120%;
+            padding: 5px 0px;
+        }
+
+    .row .row {
+        width: auto;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        max-width: none;
+    }
+
+    .columns {
+        position: relative;
+        float: left;
+    }
+
+    .large-1, .large-10, .large-11, .large-12, .large-2, .large-3, .large-4, .large-5, .large-6, .large-7, .large-8, .large-9 {
+        display: block;
+    }
+
+    .large-9 {
+        width: 75%;
+    }
+
+    .medium-9 {
+        width: 75%;
+    }
+
+    .small-8 {
+        width: 66.6667%;
+    }
+
+    .b_pad5 {
+        padding-bottom: 5px;
+    }
+
+    .large-12 {
+        width: 100%;
+    }
+
+    .border_bottom_gray {
+        border-bottom: 1px solid #E5E5E5;
+    }
+
+    .border_right_gray {
+        border-right: 1px solid #E5E5E5;
+    }
+
+    .font_green {
+        color: #8DC63F;
+    }
+
+    .box_padding15 {
+        padding: 15px;
+    }
+</style>
+
+<div id="divConfirm" style="display:none">
+    <p class="clearfix"></p>
+    <div class="gusterbottom">
+        <div class='panel panel-info'>
+            <div class='table-responsive'>
+                <table class='table'>
+                    <thead class='text-center promotionTitle'>
+                        <tr style='background-image: linear-gradient(to bottom, #F5F5F5 0px, #E8E8E8 100%); background-repeat: repeat-x; border-top-left-radius: 3px; border-top-right-radius: 3px;'>
+                            <th>
+                                <h3><strong>@L_DISCOUNT_PAGE_3</strong></h3>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class='text-center promotionDetail2' style='font-size: 18px;' id='dynamicRow0'>
+                        <tr class='promotionDetail-table'>
+                            <th>
+                                <h3><span id="SelectDetail"></span></h3>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <h4>@Html.Raw(L_DISCOUNT_PAGE_4)</h4>
+    <p class="clearfix"></p>
+    <div class="col-md-12 text-center wrapButton-total">
+        <button class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="changePageHeader(2); $('#divConfirm').hide(); $('#divChoosePackage').show();">@B_DISCOUNT_BACK</button>
+        <button class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="cancel()">@B_DISCOUNT_CANCEL</button>
+        <button class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="SubmitPackageChange();">@B_DISCOUNT_CONFIRM</button>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+</div>
+
+<script>
+    function cancel() {
+        var url = '@Url.Action("Index", "ProcessAddBundling")';
+        window.location.href = url;
+    }
+
+    function SubmitPackageChange() {
+        LockScreen(true, "");
+        var Mobile = $("#MobileNo").val();
+        var NonMobileNo = $("#NonMobileNo").val();
+        var ProductCD = $("#ProductCD").val();
+        var ProductOntopCD = $("#ProductOntopCD").val();
+        var HaveOnTopExtra = $("#HaveOnTopExtra").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/ProcessAddBundling/ConfirmChangBundling",
+            dataType: "text",
+            data: {
+                Mobile: Mobile,
+                NonMobile: NonMobileNo,
+                ProductMainCD: ProductCD,
+                ProductOntopCD: ProductOntopCD,
+                FlagDiscount: HaveOnTopExtra
+            },
+            traditional: true,
+            success: function (data) {
+                LockScreen(false);
+                strBuilder = ""
+                if (data == "Y") {
+                    strBuilder = '@Html.Raw(L_ADD_BUNDLING_SUCCESS)';
+                }
+                else {
+                    strBuilder = '@Html.Raw(L_CP_FAIL)';
+                    $("#ERROR_MSG").val(data.ERROR_MSG);
+                }
+                $("#basic-modal-content").find("#LastPopupMessage").html("");
+                $("#basic-modal-content").find("#LastPopupMessage").html("<h3 class='text-center'>" + strBuilder + "</h3>");
+                $('#basic-modal-content').modal();
+            },
+            error: function () {
+                LockScreen(false);
+                $("#basic-modal-content").find("#LastPopupMessage").html("");
+                $("#basic-modal-content").find("#LastPopupMessage").html("<h3 class='text-center'>No Response Data</h3>");
+                $('#basic-modal-content').modal();
+            }
+        });
+    }
+</script>

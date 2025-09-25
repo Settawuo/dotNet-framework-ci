@@ -1,0 +1,147 @@
+﻿@using WBBWeb.Extension
+@using WBBEntity.PanelModels;
+@model WBBWeb.Models.WelcomeAisModel
+@{
+    string W_CONTACT_1 = string.Empty;
+    string W_CONTACT_2 = string.Empty;
+    string W_CONTACT_3 = string.Empty;
+    string W_CONTACT_4 = string.Empty;
+    string W_CONTACT_5 = string.Empty;
+    string W_CONTACT_6 = string.Empty;
+    string W_CONTACT_7 = string.Empty;
+    string W_CONTACT_8 = string.Empty;
+    string W_CONTACT_9 = string.Empty;
+
+    if (ViewBag.LabelFBBOR051 != null)
+    {
+        var LabelFBBOR051 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR051;
+
+        W_CONTACT_1 = LabelFBBOR051.Where(d => d.Name == "W_CONTACT_1").Select(d => string.IsNullOrEmpty(d.DisplayValue) ? "" : d.DisplayValue).FirstOrDefault();
+        W_CONTACT_2 = LabelFBBOR051.Where(d => d.Name == "W_CONTACT_2").Select(d => string.IsNullOrEmpty(d.DisplayValue) ? "" : d.DisplayValue).FirstOrDefault();
+        W_CONTACT_3 = LabelFBBOR051.Where(d => d.Name == "W_CONTACT_3").Select(d => string.IsNullOrEmpty(d.DisplayValue) ? "" : d.DisplayValue).FirstOrDefault();
+        W_CONTACT_4 = LabelFBBOR051.Where(d => d.Name == "W_CONTACT_4").Select(d => string.IsNullOrEmpty(d.DisplayValue) ? "" : d.DisplayValue).FirstOrDefault();
+        W_CONTACT_5 = LabelFBBOR051.Where(d => d.Name == "W_CONTACT_5").Select(d => string.IsNullOrEmpty(d.DisplayValue) ? "" : d.DisplayValue).FirstOrDefault();
+        W_CONTACT_6 = LabelFBBOR051.Where(d => d.Name == "W_CONTACT_6").Select(d => string.IsNullOrEmpty(d.DisplayValue) ? "" : d.DisplayValue).FirstOrDefault();
+        W_CONTACT_7 = LabelFBBOR051.Where(d => d.Name == "W_CONTACT_7").Select(d => string.IsNullOrEmpty(d.DisplayValue) ? "" : d.DisplayValue).FirstOrDefault();
+        W_CONTACT_8 = LabelFBBOR051.Where(d => d.Name == "W_CONTACT_8").Select(d => string.IsNullOrEmpty(d.DisplayValue) ? "" : d.DisplayValue).FirstOrDefault();
+        W_CONTACT_9 = LabelFBBOR051.Where(d => d.Name == "W_CONTACT_9").Select(d => string.IsNullOrEmpty(d.DisplayValue) ? "" : d.DisplayValue).FirstOrDefault();
+
+    }
+
+    string URL_DIRECT_MYAIS_APP = string.Empty;
+    string URL_DIRECT_MYAIS_BROWSER = string.Empty;
+    string URL_DIRECT_CALL_CENTER = string.Empty;
+    string URL_DIRECT_AIS_SERVICE = string.Empty;
+    string URL_DIRECT_LINE = string.Empty;
+
+    string URL_DIRECT_MYAIS = string.Empty;
+
+    string hrefTel = string.Empty;
+    string targetHrefTel = string.Empty;
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        URL_DIRECT_MYAIS_APP = FbbConstant.Where(d => d.Field == "URL_DIRECT_MYAIS_APP").Select(d => string.IsNullOrEmpty(d.Validation) ? "" : d.Validation).FirstOrDefault();
+        URL_DIRECT_MYAIS_BROWSER = FbbConstant.Where(d => d.Field == "URL_DIRECT_MYAIS_BROWSER").Select(d => string.IsNullOrEmpty(d.Validation) ? "" : d.Validation).FirstOrDefault();
+        URL_DIRECT_CALL_CENTER = FbbConstant.Where(d => d.Field == "URL_DIRECT_CALL_CENTER").Select(d => string.IsNullOrEmpty(d.Validation) ? "" : d.Validation).FirstOrDefault();
+        URL_DIRECT_AIS_SERVICE = FbbConstant.Where(d => d.Field == "URL_DIRECT_AIS_SERVICE").Select(d => string.IsNullOrEmpty(d.Validation) ? "" : d.Validation).FirstOrDefault();
+        URL_DIRECT_LINE = FbbConstant.Where(d => d.Field == "URL_DIRECT_LINE").Select(d => string.IsNullOrEmpty(d.Validation) ? "" : d.Validation).FirstOrDefault();
+
+        var browser = Request.Browser;
+        if (!browser.IsMobileDevice)
+        {
+            URL_DIRECT_MYAIS = URL_DIRECT_MYAIS_BROWSER;
+            hrefTel = URL_DIRECT_CALL_CENTER;
+            targetHrefTel = "_blank";
+        }
+        else
+        {
+            URL_DIRECT_MYAIS = URL_DIRECT_MYAIS_APP;
+            hrefTel = "tel:1175";
+            targetHrefTel = string.Empty;
+        }
+    }
+}
+
+<div id="divContact" class="fbwe_p8_wrap" style="display:none;">
+    <div class="fbwe_p8_cont">
+        <div>
+            <picture>
+                <source media=" (min-width: 920px)" srcset="~/Content/ContentWelcome/images/contact/banner_960.png" />
+                <img src="~/Content/ContentWelcome/images/contact/banner.png" alt="welcometoaisfibre">
+            </picture>
+        </div>
+        <div class="fbwe_p8_area_sp1">
+            <div class="fbwe_p8_area_sp1_img1 pos"><img src="~/Content/ContentWelcome/images/contact/img1.png" width="" alt=""></div>
+            <div class="fbwe_p8_area_sp1_txt1 pos">@W_CONTACT_1<b>@W_CONTACT_2</b></div>
+            <div class="fbwe_p8_area_sp1_txt2 pos">@W_CONTACT_3</div>
+            <div class="fbwe_p8_area_sp1_txt3 pos">@W_CONTACT_4</div>
+            <img src="~/Content/ContentWelcome/images/contact/area_sp1.png" width="" alt="">
+        </div>
+        <div class="contact_kv"><img src="~/Content/ContentWelcome/images/contact/contact_kv.png" width="" alt=""></div>
+        <div class="fbwe_p8_box_wrap">
+            <div class="row">
+                <div class=" col-xs-12 col-contect-1">
+                    <div class="fbwe_p8_box">
+                        <a onclick="checkDeviceIsMobile('@URL_DIRECT_MYAIS_BROWSER', '@URL_DIRECT_MYAIS_APP')" class="fbwe_p8_btn pos">@W_CONTACT_5</a>
+                        <img src="~/Content/ContentWelcome/images/contact/box-myais.png" width="" alt="">
+                    </div>
+                </div>
+                <div class=" col-xs-12 col-contect-1">
+                    <div class="fbwe_p8_box">
+                        <a onclick="clickCallCenter()" href="#" target="" class="fbwe_p8_btn pos">@W_CONTACT_6</a>
+                        <img src="~/Content/ContentWelcome/images/contact/box-callcenter.png" width="" alt="">
+                    </div>
+                </div>
+                <div class=" col-xs-12 col-contect-1">
+                    <div class="fbwe_p8_box">
+                        <a href="@URL_DIRECT_AIS_SERVICE" target="_blank" class="fbwe_p8_btn pos">@W_CONTACT_7</a>
+                        <img src="~/Content/ContentWelcome/images/contact/box-ais_service.png" width="" alt="">
+                    </div>
+                </div>
+                <div class=" col-xs-12 col-contect-1">
+                    <div class="fbwe_p8_box">
+                        <a href="@URL_DIRECT_LINE" target="_blank" class="fbwe_p8_btn pos">@W_CONTACT_8</a>
+                        <img src="~/Content/ContentWelcome/images/contact/box-fibreline.png" width="" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fbwe_p6_btn_wrap">
+            <a onclick="backPage()" class="fbwe_btn_edit"><img src="~/Content/ContentWelcome/images/package/arr.png" width="" alt=""> @W_CONTACT_9</a>
+        </div>
+
+    </div>
+    <div class="fbwe_p6_bt_top">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+    function checkDeviceIsMobile(urlBrowser, urlApp) {
+        if (_isMobileDevice) {
+            window.open(`${urlApp}`, '_blank');
+        } else {
+            window.open(`${urlBrowser}`, '_blank');
+        }
+    }
+
+    function clickCallCenter() {
+        const urlDirectMyAisApp = '@URL_DIRECT_MYAIS_APP';
+        const urlDirectCallCenter = '@URL_DIRECT_CALL_CENTER';
+        const urlDirectMyAisBrowser = '@URL_DIRECT_MYAIS_BROWSER';
+        
+        if (_isMobileDevice) {
+            urlDirectMyAis = urlDirectMyAisApp;
+            window.location.href = 'tel:1175';
+        } else {
+            urlDirectMyAis = urlDirectMyAisBrowser;
+            window.open(urlDirectCallCenter, '_blank').focus();
+        }
+    }
+
+</script>

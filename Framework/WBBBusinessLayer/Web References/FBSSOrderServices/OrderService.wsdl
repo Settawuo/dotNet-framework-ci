@@ -1,0 +1,1908 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://oss.zsmart.ztesoft.com/om/webservice/types/" name="OrderService" targetNamespace="http://oss.zsmart.ztesoft.com/om/webservice/types/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://oss.zsmart.ztesoft.com/om/webservice/types/">
+      <xsd:simpleType name="contactNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="addressType">
+        <xsd:annotation>
+          <xsd:documentation>
+					Address Type
+					Value enumeration
+					Value – Value Description
+					B - Building
+					V – Village
+					O – Other(no building and village information)
+				</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="B" />
+          <xsd:enumeration value="V" />
+          <xsd:enumeration value="O" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="language">
+        <xsd:annotation>
+          <xsd:documentation>
+					language
+					E:English
+					T:Thai
+				</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="E" />
+          <xsd:enumeration value="T" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="yn">
+        <xsd:annotation>
+          <xsd:documentation>
+					Y:Yes
+					N:No
+				</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Y" />
+          <xsd:enumeration value="N" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="changAddressInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="LANGUAGE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ADDRESS_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="POSTAL_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ADDRESS_ID" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="BUILDING_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="BUILDING_NO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ACTION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUB_DISTRICT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ACCESS_MODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PARTNER_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SITE_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LATITUDE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LONGTITUDE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="FTTR_FLAG" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SPECIFIC_TEAM_1" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SPECIFIC_TEAM_2" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="attributeInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="FIELD_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="FIELD_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="FIELD_VALUE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="timeslot">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="APPOINTMENT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="TIME_SLOT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="INSTALLATION_CAPACITY" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="custInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="CUST_ID" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CUST_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CUST_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CERT_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CERT_NBR" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CERT_EFF_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CERT_EXP_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PARENT_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ADDRESS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CREATED_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="EMAIL" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LATITUDE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LONGTITUDE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="linkInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="CONTACT_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CONTACT_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CONTACT_MOBILE_PHONE" type="tns:contactNumber" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CONTACT_MOBILE_PHONE2" type="tns:contactNumber" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CONTACT_MOBILE_PHONE3" type="tns:contactNumber" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="timeslotInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="APPOINTMENT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="TIME_SLOT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="INSTALLATION_CAPACITY" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="prodAttrInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="ATTR_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ATTR_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="VALUE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="DESCRIPTION" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="prodAttrInfoList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="PROD_ATTR_VALUE_LIST" type="tns:prodAttrInfo" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="dependProductInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="PROD_ID" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PROD_SPEC_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PROD_SPEC_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="OPERATION_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PROD_ATTR_LIST" type="tns:prodAttrInfoList" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="productInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="PROD_ID" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PROD_SPEC_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PROD_SPEC_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="AREA_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="AREA_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APPOINTMENT_TIME" type="tns:timeslotInfo" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="VALUEADDED_PROD_LIST" type="tns:dependProductInfo" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PROD_ATTR_LIST" type="tns:prodAttrInfoList" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PREFIX" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ACC_NBR" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SERVICE_PWD" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ADDRESS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ADDRESS_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PROD_STATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUB_DISTRICT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="POST_CODE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="productOrder">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="ORDER_NBR" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="EVENT_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SERVICE_GRADE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="RFS_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="COMMENTS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="LINKMAN_LIST" type="tns:linkInfo" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APPOINTMENT_TIME" type="tns:timeslotInfo" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PRODUCT" type="tns:productInfo" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="OLD_PRODUCT" type="tns:productInfo" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="custOrderInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="CUST_ORDER_NBR" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="APPLY_DATE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CREATE_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ORG_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_CODE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CS_NOTE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUBCONTRACTOR_CODE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CUST" type="tns:custInfo" />
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="PRODUCT_ORDER_LIST" type="tns:productOrder" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="INSTALL_STAFF_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SPLIT_ORDER_LIST" type="tns:splitOrderList" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="RESERVED_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUBCONTRACTOR_REMARK">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="2000" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="RES_RESERVATION_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ASSIGN_CONDITION_LIST" type="tns:assCondiList" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="addressModeInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="ACCESS_MODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="LIST_OF_RESOURCES" type="tns:listResource" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="planSite">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="ACCESS_MODE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="INSERVICE_DATE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="feasibilityCheck">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="1" name="ADDRRESS_TYPE" type="tns:addressType" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="POSTAL_CODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="SUB_DISTRICT_NAME" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="LANGUAGE" type="tns:language" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="BUILDING_NAME" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="BUILDING_NO" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="PHONE_FLAG" type="tns:yn" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="FLOOR_NO" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="LATITUDE" type="xsd:decimal" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="LONGITUDE" type="xsd:decimal" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="UNIT_NO" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="feasibilityCheckResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="1" name="COVERAGE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ADDRESS_ID" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="ACCESS_MODE_LIST" type="tns:addressModeInfo" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="PLANNING_SITE" type="tns:planSite" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="IS_PARTNER" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="PARTNER_NAME" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="appointment">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="1" name="INSTALLATION_DATE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="PROD_SPEC_CODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ACCESS_MODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ADDRESS_ID" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="DAYS" type="xsd:long" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="EXT_ATTR" type="tns:attributeInfo" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="SUBDISTRICT" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="POSTCODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="SUB_ACCESS_MODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="TASK_TYPE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ASSIGN_CONDITION_LIST" type="tns:assCondiList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="appointmentResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="TIME_SLOT_LIST" type="tns:timeslot" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createOrder">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="CUST_ORDER" type="tns:custOrderInfo" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="cancelOrder">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="ORDER_NBR" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RETURN_REASON" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="NOTES" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="queryChangedBuilding">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="START_DATE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="END_DATE" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="queryChangedBuildingResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="ADDRESS_LIST" type="tns:changAddressInfo" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="generalResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="notificationException">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="1" name="faultcode" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="faultstring" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="queryCapability">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="Technology" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="Lang_Flag" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="Post_Code" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="Sub_District" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="Event_Start_Date" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="Event_End_Date" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="queryCapabilityResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="List_Subcontract" type="tns:subcontract" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="subcontract">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="Subcontract_Location_Code" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="Subcontract_Company_Name" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="Team" type="tns:Team" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Team">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="Subcontract_Team_Id" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="Subcontract_Team_Name" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="Staff" type="tns:Staff" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Staff">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="Staff_Code" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="Staff_Name" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="reserveCapability">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="Service_Option" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="List_Subcontract" type="tns:reserveSubcontract" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="reserveCapabilityResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="Error_Code" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="Error_Description" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="reserveSubcontract">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="Subcontract_Location_Code" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="Subcontract_Team_Id" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="Event_Date_From" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="Event_Date_To" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="Capacity_Amount" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="POST_CODE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="SUB_DISSTRICT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="Technology" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ENGINEERS" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="splitOrderList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="SPLIT_LIST" type="tns:splitList" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="splitList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="SPLIT_SEQ" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SPLIT_NO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SPLIT_DISTANCE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SPLIT_PORT" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="querySplitter2">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="ADDRESS_ID" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="querySplitter2Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="SPLITTER2_LIST" type="tns:SPLITTER2" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="SPLITTER2">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="SPLITTER2_NAME" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="CheckCPE">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="unbounded" name="CPE_SN_LIST" type="tns:CPE_SN_LIST" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CheckCPEResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="unbounded" name="CPE_INFO_LIST" type="tns:CPE_INFO_LIST" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="CPE_SN_LIST">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="SN" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CPE_INFO_LIST">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="CHECK_RESULT_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CHECK_RESULT_DESC" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="SN" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STATUS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STATUS_DESC" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_MAC_ADDR" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_MODEL_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_COMPANY_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_PLANT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_STORAGE_LOCATION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_MATERIAL_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="REGISTER_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SN_PATTERN" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SHIP_TO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="WARRANTY_START_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="WARRANTY_END_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="MAC_ADDRESS" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="UpdateCPE">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="ACTION" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="unbounded" name="CPE_LIST" type="tns:cpeList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateCPEResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="CASECODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="unbounded" name="RESULT_LIST" type="tns:resultList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryOrder">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="unbounded" name="FIBRENetID_List" type="tns:fibernetId" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="ORDER_TYPE" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryOrderResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="ORDER_DETAILS_LIST" type="tns:orderDetail" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="fibernetId">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="START_DATE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="END_DATE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="orderDetail">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="ORDER_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TRANSACTION_NUMBER" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="ORDER_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="EVENT" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="PRODUCT" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TRANSACTION_STATE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TRANSACTION_DATE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="APPOINTMENT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="APPOINTMENT_TIMESLOT" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TRANACTION_NOTE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CUSTOMER_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="SERVICE_PACKAGE_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="REMARK_FOR_SUBCONTRACT" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="REJECT_ORDER" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ACTIVITY_DETAILS" type="tns:activityDetail" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="REGION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CALL_GATEWAY_DETAILS" type="tns:callGateWayDetails" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="activityDetail">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="WORK_ORDER_NO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUBJECT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="WORK_ORDER_STATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ACTIVITY" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CREATED_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="WARNING_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="TIMEOUT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="COMPLETED_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="REMARKS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="HANDLE_ORG" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="HANDLE_JOB" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="HANDLE_STAFF" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="APPOINTMENT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="APPOINTMENT_TIMESLOT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="FOA_REJECT_REASON" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CURRENT_WORK_ORDER_FLAG" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="callGateWayDetails">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="CALLED_PHONE_NUMBER" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CALL_STATUS" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="ReservedTimeSlot">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="APPOINTMENT_DATE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="TIME_SLOT" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="ACCESS_MODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="PROD_SPEC_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="ADDRESS_ID" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="SUBDISTRICT" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="POSTCODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="ASSIGN_RULE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="SUB_ACCESS_MODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="TASK_TYPE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ASSIGN_CONDITION_LIST" type="tns:assCondiList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ReservedTimeSlotResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESERVED_ID" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ReleaseTimeSlot">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESERVED_ID" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ReleaseTimeSlotResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ResQuery">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="PRODUCT" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="LISTOFSPLITTER" type="tns:splitList" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="LISTOFDSLAM" type="tns:dslamList" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="PHONE_FLAG" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ADDRESS_ID" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ResQueryResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RETURN_CASECODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="RESULT_SPLITTERLIST" type="tns:resultSplitList" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="RESULT_DSLAMLIST" type="tns:resultDslamList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="dslamList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="DSLAM_SEQ" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="DSLAM_NO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="DSLAM_PORT" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="resultSplitList">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="SPLITTER_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_DESCRIPTION" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="resultDslamList">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="DSLAM_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_DESCRIPTION" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="ResReserved">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="PRODUCT" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="LISTOFSPLITTER" type="tns:splitList" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="LISTOFDSLAM" type="tns:dslamList" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="PHONE_FLAG" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ADDRESS_ID" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ResReservedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RETURN_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESCRIPTION" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RES_RESERVATION_ID" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ResRelease">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RES_RESERVATION_ID" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ResReleaseResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="RETURN_CODE" type="xsd:string" />
+            <xsd:element name="RESULT_DESCRIPTION" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="cpeList">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="SERIAL_NO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STATUS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SN_PATTERN" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PLANT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ACCESS_NO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SERVICE_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="DEVICE_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="DESCRIPTION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="MATERIAL" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CREATE_BY" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CREATE_DATE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="resultList">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="SERIAL_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="OPERATION_RESULT" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESCRIPTION" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="SelfServiceAppoint">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="APPOINTMENT_DATE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="TIME_SLOT" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="ASSIGN_RULE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="CHANNEL" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="INSTALL_STAFF_CODE" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SelfServiceAppointResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESCRIPTION" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="queryInstallationDetail">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENetID" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ORDER_NO" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="TROUBLE_TICKET_NO" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="queryInstallationDetailResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ORDER_INFO" type="tns:installOrdInfo" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="installOrdInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CUSTOMER_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="ORDER_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CUSTOMER_ORDER_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CURRENT_ACTIVITY" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="EVENT_FLOW" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Installation_Details_List" type="tns:istallDetailList" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="istallDetailList">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUBCONTRACTOR_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUBCONTRACTOR_ENGINEER" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUBCONTRACTOR_ENGINEER_PHONE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUBCONTRACTOR_MANAGER" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SUBCONTRACTOR_MANAGER_PHONE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="INSTALL_TASK_STATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="OPERATION_TIME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CHECK_IN_TIME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="TEAM_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="TEAM_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="TEAM_LOCATION_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="TEAM_SERVICE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="COMPANY_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="COMPANY_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="COMPANY_LOCATION_CODE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="SetCPEWarranty">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="OPTION" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="SERIAL_NO" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="WARRANTY_START_DATE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="DAY_WARRANTY" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="MONTH_WARRANTY" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="YEAR_WARRANTY" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="FIX_WARRANTY_END_DATE" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SetCPEWarrantyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_DESCRIPTION" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryFBBInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="fibrenetID" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="option" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryFBBInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="errorCode" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="errorMessage" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="fibrenetID" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="technology" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ownerProduct" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="addressID" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="deviceList" type="tns:device" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="lastNeName" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="lastPortID" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="lastPortNo" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="lastDropwireAvailableFlag" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="LastPortRunningState" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="LastPortServiceState" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="LastPortAvailableFlag" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="serviceStatus" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="device">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="SERIAL_NO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STATUS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STATUS_DESC" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_MODEL_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="COMPANY_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PLANT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STORAGE_LOCATION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="MATERIAL_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PENALTY" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PENALTY_PRODUCT_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="OPER_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_BRAND_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_GROUP_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="REGISTER_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPE_MODEL_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SN_PATTERN" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SHIP_TO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="WARRANTY_START_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="WARRANTY_END_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="MAC_ADDRESS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CPEServiceYear" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="listResource">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="ResourceName" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="queryDSLAM">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="ADDRESS_ID" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="queryDSLAMResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="DSLAM_LIST" type="tns:dslamArr" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="dslamArr">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="DSLAM_NAME" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="confirmInstallCompleted">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="ACTIVATION_ID" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="confirmInstallCompletedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESULT_DESCRIPTION" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="cancelAppointment">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="TRANSACTION_NUMBER" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="FAILED_REASON" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="REMARK_FOR_CS_NOTE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="FAILED_SUB_REASON" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="USER_NAME" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="cancelAppointmentResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetStaffProfile">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="SEARCH_KEY" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="SEARCH_VALUE" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetStaffProfileResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="ERROR_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="ERROR_DESCRIPTION" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="STAFF" type="tns:STAFF_INFO" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="INSTALL_ORDER_LIST" type="tns:INSTALL_ORDER" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="MA_ORDER_LIST" type="tns:MA_ORDER" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="STAFF_INFO">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_CODE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_PHONE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_EMAIL" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LATITUDE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LONGITUDE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_FIRST_DAY_WORKING" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_END_DAY_WORKING" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_ROLE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_PROFILE_PICTURE_FILENAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="COMPANY_LIST" type="tns:COMPANY" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="COMPANY">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="COMPANY_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="COMPANY_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="VENDOR_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STORAGE_LOCATION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TEAM_LIST" type="tns:TEAM_INFO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TEAM_INFO">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="TEAM_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TEAM_ID" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TEAM_SERVICE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="VENDOR_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STORAGE_LOCATION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SHIP_TO" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="INSTALL_ORDER">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="CUSTOMER_ORDER_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="CUSTOMER_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="INSTALLATION_ADDRESS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SERVICE_PACK" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="SERVICE_ONTOP" type="tns:SERVICE_ONTOP_INFO" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="APPOINTMENT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="APPOINTMENT_TIMESLOT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LIST" type="tns:STAFF_INFO" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LATEST_LIST" type="tns:INSTALL_STAFF_LATEST" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="INSTALL_STAFF_LATEST">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_CODE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_PHONE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_EMAIL" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LATITUDE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LONGITUDE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_FIRST_DAY_WORKING" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_END_DAY_WORKING" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_ROLE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_PROFILE_PICTURE_FILENAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="COMPANY_LIST" type="tns:INSTALL_COMPANY" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="INSTALL_COMPANY">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="COMPANY_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="COMPANY_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="VENDOR_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STORAGE_LOCATION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TEAM_LIST" type="tns:INSTALL_TEAM_INFO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="INSTALL_TEAM_INFO">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="TEAM_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TEAM_ID" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TEAM_SERVICE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="VENDOR_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STORAGE_LOCATION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SHIP_TO" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MA_ORDER">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="TROUBLE_TICKET_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="SIEBEL_REQUEST_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="COMMIT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ACCEPT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="COMPLAINT_TITLE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CUSTOMER_COMPLAINT_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CUSTOMER_COMPLAINT_MOBILE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="NOC_REMARK" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="DETAILS_FOR_RESOLVED" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="COMPLAINT_DESCRIPTION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="INSTALLATION_ADDRESS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="APPOINTMENT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="APPOINTMENT_TIMESLOT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LIST" type="tns:STAFF_INFO" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LATEST_LIST" type="tns:MA_STAFF_LATEST" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MA_STAFF_LATEST">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_CODE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_PHONE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_EMAIL" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LATITUDE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_LONGITUDE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_FIRST_DAY_WORKING" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_END_DAY_WORKING" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_ROLE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STAFF_PROFILE_PICTURE_FILENAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="COMPANY_LIST" type="tns:MA_COMPANY" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MA_COMPANY">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="COMPANY_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="COMPANY_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="VENDOR_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STORAGE_LOCATION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TEAM_LIST" type="tns:MA_TEAM_INFO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MA_TEAM_INFO">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="TEAM_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TEAM_ID" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TEAM_SERVICE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="VENDOR_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="STORAGE_LOCATION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SHIP_TO" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SERVICE_ONTOP_INFO">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="SERVICE_ONTOP" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GetListAccNo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_CODE" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetListAccNoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="ORDER_LIST" type="tns:orderList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="orderList">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="ORDER_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="ACC_NBR" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="JOB_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="APPOINT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="APPOINT_SLOT" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="EVENT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="REGION" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GetListAccNoDetail">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="STAFF_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="ACC_NBR" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetListAccNoDetailResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="ORDER_LIST" type="tns:orderListByAccNo" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="orderListByAccNo">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="ORDER_NO" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="ACC_NBR" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="JOB_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="APPOINT_DATE" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="APPOINT_SLOT" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="EVENT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SP2_ALIAS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SP2_PORT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SP2_STATUS" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SP2_LAT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SP2_LONG" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CUSTOMER_LAT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CUSTOMER_LONG" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="REGION" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ACTIVATION_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="OLT_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SP2_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="OLT_PON_PORT" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ONU_ID" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="FTTR_FLAG" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SERVICE_TYPE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="DSLAM_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="MDF_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="DSLAM_PORT" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="assCondiList">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="ASSIGN_CONDITION_ATTR" type="tns:assCondiAttr" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="assCondiAttr">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="ATTR_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="VALUE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="ReAppointment">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="FIBRENET_ID" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="REASON" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="SUB_REASON" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="REMARK_FOR_CS_NOTE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="FIRST_SAVE_FLAG" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="USER_NAME" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ReAppointmentResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PermissionuserACIM">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="ACTION" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="TRANSACTION_NO" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="unbounded" name="USERARRAY" type="tns:UserArray" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="UserArray">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="USER_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="FIRST_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LAST_NAME" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="EMAIL" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="ROLE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="ROLE_PAST" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PERIOD" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="START_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="END_DATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_CODE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="LOCATION_NAME" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="PermissionuserACIMResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RETURN_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RETURN_MSG" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="USERARRAY" type="tns:UserArrayResponse" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="UserArrayResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="USER_NAME" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="UpdateCustInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="OPTION" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="SOURCE_SYSTEM" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="INTERNET_NO" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="REQUEST_NO" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="unbounded" name="CUST_ORDER_LIST" type="tns:CustOrderList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="CustOrderList">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="ATTR_NAME" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="VALUE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="UpdateCustInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESCRIPTIOIN" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryPort">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESOURCE_NO" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESOURCE_TYPE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="SERVICE_STATE" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryPortResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DESC" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESOURCE_NO" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESOURCE_NAME" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESOURCE_ALIAS" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESOURCE_SITE_NO" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESOURCE_LATITUDE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="RESOURCE_LONGITUDE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="PORT_NO_LIST" type="tns:portNoList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="portNoList">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="PORT_NO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="PSTN" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="RELATE_DEVICE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="MDF_VOICE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="MDF_DATA" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="SERVICE_STATE" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="CUSTOMER_SERVICE_NO" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="REMARK" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="UpdatePort">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESOURCE_NO" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESOURCE_TYPE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="PORT_NO" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="SOURCE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="NEW_SERVICE_STATE" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="CUSTOMER_SERVICE_NO" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="REMARKS" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdatePortResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="RETURN_CODE" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="RESULT_DISCRIPTIOIN" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="ONU_ID" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="OLT_PON_PORT" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="PORT_NO" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="SVLAN_LIST" type="tns:svlanList" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="svlanList">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="VLAN" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="PURPOSE" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="cancelOrderRequest">
+    <wsdl:part name="parameters" element="tns:cancelOrder" />
+  </wsdl:message>
+  <wsdl:message name="cancelOrderResponse">
+    <wsdl:part name="parameters" element="tns:generalResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReleaseTimeSlotResponse">
+    <wsdl:part name="parameters" element="tns:ReleaseTimeSlotResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustInfoRequest">
+    <wsdl:part name="parameters" element="tns:UpdateCustInfo" />
+  </wsdl:message>
+  <wsdl:message name="PermissionuserACIMRequest">
+    <wsdl:part name="parameters" element="tns:PermissionuserACIM" />
+  </wsdl:message>
+  <wsdl:message name="ReservedTimeSlotResponse">
+    <wsdl:part name="parameters" element="tns:ReservedTimeSlotResponse" />
+  </wsdl:message>
+  <wsdl:message name="reserveCapabilityRequest">
+    <wsdl:part name="parameters" element="tns:reserveCapability" />
+  </wsdl:message>
+  <wsdl:message name="queryInstallationDetailResponse">
+    <wsdl:part name="parameters" element="tns:queryInstallationDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReAppointmentRequest">
+    <wsdl:part name="parameters" element="tns:ReAppointment" />
+  </wsdl:message>
+  <wsdl:message name="appointmentRequest">
+    <wsdl:part name="parameters" element="tns:appointment" />
+  </wsdl:message>
+  <wsdl:message name="SelfServiceAppointRequest">
+    <wsdl:part name="parameters" element="tns:SelfServiceAppoint" />
+  </wsdl:message>
+  <wsdl:message name="confirmInstallCompletedResponse">
+    <wsdl:part name="parameters" element="tns:confirmInstallCompletedResponse" />
+  </wsdl:message>
+  <wsdl:message name="confirmInstallCompletedRequest">
+    <wsdl:part name="parameters" element="tns:confirmInstallCompleted" />
+  </wsdl:message>
+  <wsdl:message name="createOrderResponse">
+    <wsdl:part name="parameters" element="tns:generalResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetListAccNoResponse">
+    <wsdl:part name="parameters" element="tns:GetListAccNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="SelfServiceAppointResponse">
+    <wsdl:part name="parameters" element="tns:SelfServiceAppointResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePortRequest">
+    <wsdl:part name="parameters" element="tns:UpdatePort" />
+  </wsdl:message>
+  <wsdl:message name="ResQueryResponse">
+    <wsdl:part name="parameters" element="tns:ResQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCPERequest">
+    <wsdl:part name="parameters" element="tns:UpdateCPE" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCPEResponse">
+    <wsdl:part name="parameters" element="tns:UpdateCPEResponse" />
+  </wsdl:message>
+  <wsdl:message name="feasibilityCheckRequest">
+    <wsdl:part name="parameters" element="tns:feasibilityCheck" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePortResponse">
+    <wsdl:part name="parameters" element="tns:UpdatePortResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetCPEWarrantyResponse">
+    <wsdl:part name="parameters" element="tns:SetCPEWarrantyResponse" />
+  </wsdl:message>
+  <wsdl:message name="queryCapabilityResponse">
+    <wsdl:part name="parameters" element="tns:queryCapabilityResponse" />
+  </wsdl:message>
+  <wsdl:message name="createOrderRequest">
+    <wsdl:part name="parameters" element="tns:createOrder" />
+  </wsdl:message>
+  <wsdl:message name="ResReleaseResponse">
+    <wsdl:part name="parameters" element="tns:ResReleaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetCPEWarrantyRequest">
+    <wsdl:part name="parameters" element="tns:SetCPEWarranty" />
+  </wsdl:message>
+  <wsdl:message name="ResReleaseRequest">
+    <wsdl:part name="parameters" element="tns:ResRelease" />
+  </wsdl:message>
+  <wsdl:message name="ResReservedResponse">
+    <wsdl:part name="parameters" element="tns:ResReservedResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryFBBInfoRequest">
+    <wsdl:part name="parameters" element="tns:QueryFBBInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetListAccNoDetailRequest">
+    <wsdl:part name="parameters" element="tns:GetListAccNoDetail" />
+  </wsdl:message>
+  <wsdl:message name="CheckCPEResponse">
+    <wsdl:part name="parameters" element="tns:CheckCPEResponse" />
+  </wsdl:message>
+  <wsdl:message name="reserveCapabilityResponse">
+    <wsdl:part name="parameters" element="tns:reserveCapabilityResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryOrderRequest">
+    <wsdl:part name="parameters" element="tns:QueryOrder" />
+  </wsdl:message>
+  <wsdl:message name="ReAppointmentResponse">
+    <wsdl:part name="parameters" element="tns:ReAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="querySplitter2Response">
+    <wsdl:part name="parameters" element="tns:querySplitter2Response" />
+  </wsdl:message>
+  <wsdl:message name="querySplitter2Request">
+    <wsdl:part name="parameters" element="tns:querySplitter2" />
+  </wsdl:message>
+  <wsdl:message name="queryChangedBuildingResponse">
+    <wsdl:part name="parameters" element="tns:queryChangedBuildingResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResQueryRequest">
+    <wsdl:part name="parameters" element="tns:ResQuery" />
+  </wsdl:message>
+  <wsdl:message name="ResReservedRequest">
+    <wsdl:part name="parameters" element="tns:ResReserved" />
+  </wsdl:message>
+  <wsdl:message name="GetListAccNoDetailResponse">
+    <wsdl:part name="parameters" element="tns:GetListAccNoDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="feasibilityCheckResponse">
+    <wsdl:part name="parameters" element="tns:feasibilityCheckResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryPortResponse">
+    <wsdl:part name="parameters" element="tns:QueryPortResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckCPERequest">
+    <wsdl:part name="parameters" element="tns:CheckCPE" />
+  </wsdl:message>
+  <wsdl:message name="queryChangedBuildingRequest">
+    <wsdl:part name="parameters" element="tns:queryChangedBuilding" />
+  </wsdl:message>
+  <wsdl:message name="queryDSLAMResponse">
+    <wsdl:part name="parameters" element="tns:queryDSLAMResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryFBBInfoResponse">
+    <wsdl:part name="parameters" element="tns:QueryFBBInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustInfoResponse">
+    <wsdl:part name="parameters" element="tns:UpdateCustInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="notificationFault">
+    <wsdl:part name="fault" element="tns:notificationException" />
+  </wsdl:message>
+  <wsdl:message name="cancelAppointmentResponse">
+    <wsdl:part name="parameters" element="tns:cancelAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="appointmentResponse">
+    <wsdl:part name="parameters" element="tns:appointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryPortRequest">
+    <wsdl:part name="parameters" element="tns:QueryPort" />
+  </wsdl:message>
+  <wsdl:message name="queryCapabilityRequest">
+    <wsdl:part name="parameters" element="tns:queryCapability" />
+  </wsdl:message>
+  <wsdl:message name="queryInstallationDetailRequest">
+    <wsdl:part name="parameters" element="tns:queryInstallationDetail" />
+  </wsdl:message>
+  <wsdl:message name="QueryOrderResponse">
+    <wsdl:part name="parameters" element="tns:QueryOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="queryDSLAMRequest">
+    <wsdl:part name="parameters" element="tns:queryDSLAM" />
+  </wsdl:message>
+  <wsdl:message name="PermissionuserACIMResponse">
+    <wsdl:part name="parameters" element="tns:PermissionuserACIMResponse" />
+  </wsdl:message>
+  <wsdl:message name="cancelAppointmentRequest">
+    <wsdl:part name="parameters" element="tns:cancelAppointment" />
+  </wsdl:message>
+  <wsdl:message name="GetListAccNoRequest">
+    <wsdl:part name="parameters" element="tns:GetListAccNo" />
+  </wsdl:message>
+  <wsdl:message name="GetStaffProfileRequest">
+    <wsdl:part name="parameters" element="tns:GetStaffProfile" />
+  </wsdl:message>
+  <wsdl:message name="ReleaseTimeSlotRequest">
+    <wsdl:part name="parameters" element="tns:ReleaseTimeSlot" />
+  </wsdl:message>
+  <wsdl:message name="ReservedTimeSlotRequest">
+    <wsdl:part name="parameters" element="tns:ReservedTimeSlot" />
+  </wsdl:message>
+  <wsdl:message name="GetStaffProfileResponse">
+    <wsdl:part name="parameters" element="tns:GetStaffProfileResponse" />
+  </wsdl:message>
+  <wsdl:portType name="OrderService">
+    <wsdl:operation name="feasibilityCheck">
+      <wsdl:input message="tns:feasibilityCheckRequest" />
+      <wsdl:output message="tns:feasibilityCheckResponse" />
+      <wsdl:fault name="fault" message="tns:notificationFault" />
+    </wsdl:operation>
+    <wsdl:operation name="appointment">
+      <wsdl:input message="tns:appointmentRequest" />
+      <wsdl:output message="tns:appointmentResponse" />
+      <wsdl:fault name="fault" message="tns:notificationFault" />
+    </wsdl:operation>
+    <wsdl:operation name="createOrder">
+      <wsdl:input message="tns:createOrderRequest" />
+      <wsdl:output message="tns:createOrderResponse" />
+      <wsdl:fault name="fault" message="tns:notificationFault" />
+    </wsdl:operation>
+    <wsdl:operation name="queryChangedBuilding">
+      <wsdl:input message="tns:queryChangedBuildingRequest" />
+      <wsdl:output message="tns:queryChangedBuildingResponse" />
+      <wsdl:fault name="fault" message="tns:notificationFault" />
+    </wsdl:operation>
+    <wsdl:operation name="queryCapability">
+      <wsdl:input message="tns:queryCapabilityRequest" />
+      <wsdl:output message="tns:queryCapabilityResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="reserveCapability">
+      <wsdl:input message="tns:reserveCapabilityRequest" />
+      <wsdl:output message="tns:reserveCapabilityResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="querySplitter2">
+      <wsdl:input message="tns:querySplitter2Request" />
+      <wsdl:output message="tns:querySplitter2Response" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckCPE">
+      <wsdl:input message="tns:CheckCPERequest" />
+      <wsdl:output message="tns:CheckCPEResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCPE">
+      <wsdl:input message="tns:UpdateCPERequest" />
+      <wsdl:output message="tns:UpdateCPEResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryOrder">
+      <wsdl:input message="tns:QueryOrderRequest" />
+      <wsdl:output message="tns:QueryOrderResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ReservedTimeSlot">
+      <wsdl:input message="tns:ReservedTimeSlotRequest" />
+      <wsdl:output message="tns:ReservedTimeSlotResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ReleaseTimeSlot">
+      <wsdl:input message="tns:ReleaseTimeSlotRequest" />
+      <wsdl:output message="tns:ReleaseTimeSlotResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ResQuery">
+      <wsdl:input message="tns:ResQueryRequest" />
+      <wsdl:output message="tns:ResQueryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ResReserved">
+      <wsdl:input message="tns:ResReservedRequest" />
+      <wsdl:output message="tns:ResReservedResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ResRelease">
+      <wsdl:input message="tns:ResReleaseRequest" />
+      <wsdl:output message="tns:ResReleaseResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SelfServiceAppoint">
+      <wsdl:input message="tns:SelfServiceAppointRequest" />
+      <wsdl:output message="tns:SelfServiceAppointResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="queryInstallationDetail">
+      <wsdl:input message="tns:queryInstallationDetailRequest" />
+      <wsdl:output message="tns:queryInstallationDetailResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCPEWarranty">
+      <wsdl:input message="tns:SetCPEWarrantyRequest" />
+      <wsdl:output message="tns:SetCPEWarrantyResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryFBBInfo">
+      <wsdl:input message="tns:QueryFBBInfoRequest" />
+      <wsdl:output message="tns:QueryFBBInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="queryDSLAM">
+      <wsdl:input message="tns:queryDSLAMRequest" />
+      <wsdl:output message="tns:queryDSLAMResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmInstallCompleted">
+      <wsdl:input message="tns:confirmInstallCompletedRequest" />
+      <wsdl:output message="tns:confirmInstallCompletedResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelAppointment">
+      <wsdl:input message="tns:cancelAppointmentRequest" />
+      <wsdl:output message="tns:cancelAppointmentResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStaffProfile">
+      <wsdl:input message="tns:GetStaffProfileRequest" />
+      <wsdl:output message="tns:GetStaffProfileResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetListAccNo">
+      <wsdl:input message="tns:GetListAccNoRequest" />
+      <wsdl:output message="tns:GetListAccNoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetListAccNoDetail">
+      <wsdl:input message="tns:GetListAccNoDetailRequest" />
+      <wsdl:output message="tns:GetListAccNoDetailResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ReAppointment">
+      <wsdl:input message="tns:ReAppointmentRequest" />
+      <wsdl:output message="tns:ReAppointmentResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PermissionuserACIM">
+      <wsdl:input message="tns:PermissionuserACIMRequest" />
+      <wsdl:output message="tns:PermissionuserACIMResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustInfo">
+      <wsdl:input message="tns:UpdateCustInfoRequest" />
+      <wsdl:output message="tns:UpdateCustInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryPort">
+      <wsdl:input message="tns:QueryPortRequest" />
+      <wsdl:output message="tns:QueryPortResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePort">
+      <wsdl:input message="tns:UpdatePortRequest" />
+      <wsdl:output message="tns:UpdatePortResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OrderServiceSOAP" type="tns:OrderService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="feasibilityCheck">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/feasibilityCheck" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault use="literal" name="fault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="appointment">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/appointment" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault use="literal" name="fault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createOrder">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/createOrder" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault use="literal" name="fault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="queryChangedBuilding">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/queryChangedBuilding" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault use="literal" name="fault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="queryCapability">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/queryCapability" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reserveCapability">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/reserveCapability" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="querySplitter2">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/querySplitter2" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckCPE">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/CheckCPE" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCPE">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/UpdateCPE" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryOrder">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/QueryOrder" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReservedTimeSlot">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/ReservedTimeSlot" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReleaseTimeSlot">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/ReleaseTimeSlot" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResQuery">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/ResQuery" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResReserved">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/ResReserved" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResRelease">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/ResRelease" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SelfServiceAppoint">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/SelfServiceAppoint" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryInstallationDetail">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/queryInstallationDetail" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCPEWarranty">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/SetCPEWarranty" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryFBBInfo">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/QueryFBBInfo" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryDSLAM">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/queryDSLAM" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmInstallCompleted">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/confirmInstallCompleted" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelAppointment">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/cancelAppointment" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStaffProfile">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/GetStaffProfile" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListAccNo">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/GetListAccNo" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListAccNoDetail">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/GetListAccNoDetail" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReAppointment">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/ReAppointment" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PermissionuserACIM">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/PermissionuserACIM" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustInfo">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/UpdateCustInfo" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryPort">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/QueryPort" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePort">
+      <soap:operation soapAction="http://oss.zsmart.ztesoft.com/om/webservice/types/UpdatePort" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OrderService">
+    <wsdl:port name="OrderServiceSOAP" binding="tns:OrderServiceSOAP">
+      <soap:address location="http://10.138.26.230:7105/axis2/services/OrderService/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

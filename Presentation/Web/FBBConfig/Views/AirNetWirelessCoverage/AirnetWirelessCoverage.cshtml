@@ -1,0 +1,1425 @@
+﻿@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.Models;
+@{
+    ViewBag.Title = "AirnetWirelessCoverage";
+
+    //var xxx = ViewBag.ttc;
+    //var yyy = ViewBag.ttt;
+    
+    
+}
+<style>      
+   
+    @@media
+     only screen and (max-width: 875px), 
+     only screen and (max-width: 320px),
+     only screen and (max-width: 360px),
+     only screen and (max-width: 768px),
+     only screen and (max-width: 800px),
+     only screen and (max-width: 980px){
+        .col-md-10 {
+        width:98.5%;
+        }
+       
+
+    }
+   
+</style>
+<script>
+    $(document).ready(function () {
+        $("#MainAll1").show();
+        $("#ApConfiguration").hide();
+        $("#gridresult").hide();
+        $("#ApInformation").hide();
+        
+       
+    });
+    function onGridDataBound() {
+        var total = $("#GridMyReport").data("kendoGrid").dataSource.total();        
+        $("#totalMyReport").text(total);
+    }
+
+    function customCommand() {
+        alert('Export to Excel');
+     }
+
+    function showDetails(e) {
+        e.preventDefault();
+     
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        alert(dataItem.REPORT_ID);
+    }
+    function goaddnew()
+    {
+        $("#temp").hide();
+        $("#temp2").hide();
+        $("#Apidforedit").hide();
+        $("#MainAll1").hide();
+        $("#deletepage2").hide();
+        $("#Resetall").show();
+        $("#ApConfiguration").show();
+        $("#Base").val("");
+        $("#Sitename").val("");
+        $("#Regiontext").val("");
+        $("#lat").val("");
+        $("#lon").val("");
+        $("#RegionAP").data("kendoDropDownList").select(0);
+        $("#ProvinceAP").data("kendoDropDownList").select(0);
+        $("#AumphurAP").data("kendoDropDownList").select(0);
+        $("#TumbonAP").data("kendoDropDownList").select(0);
+        $("#gridAPconfig").data("kendoGrid").dataSource.read();
+        $("#editornew").text("new");
+        $("#editornew").hide();
+        $("#SaveeditCoverageInfo").hide();
+        $("#addnewCoverageInfo").show();
+        $("#validatefor-lon").hide();
+        $("#validatefor-lat").hide();      
+        $("#validatefor-Sitename").hide();
+        $("#validatefor-Base").hide();
+
+        $("#requiredfor-Base").show();
+        $("#requiredfor-Sitename").show();
+        $("#requiredfor-lat").show();
+        $("#requiredfor-lon").show();
+          
+
+
+    }
+    function goedit(e) {        
+     
+        //$("#gridAPconfig").data("kendoGrid").dataSource.read({ id: "ss" })
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));        
+        var grid = $("#gridAPconfig").data("kendoGrid");
+        $("#temp").text(dataItem.site_id);
+        $("#temp2").text(dataItem.app_id);
+        $("#editornew").text("edit");
+        
+        
+        grid.dataSource.read({ dataS: $("#temp").text() })        
+       
+        $.ajax({
+            url: '/AirNetWirelessCoverage/DataInformation',
+            data: { dataS: $("#temp2").text() },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+
+                if (response) {
+                    $("#Base").val(response.Base);
+                    $("#Sitename").val(response.Sitename);                    
+                    $("#lat").val(response.lat);
+                    $("#lon").val(response.lon);                 
+                    $("#ProvinceAP").data("kendoDropDownList").value(response.province);                
+                    $("#AumphurAP").data("kendoDropDownList").value(response.aumphur);                    
+                    $("#TumbonAP").data("kendoDropDownList").value(response.tumbon);
+                    $("#RegionAP").data("kendoDropDownList").value(response.region);              
+                }
+                
+            },
+            failure: function (msg) {
+                alert(msg);
+            }
+        });
+        $("#deletepage2").show();
+        $("#Resetall").hide();
+        $("#Apidforedit").hide();
+        $("#editornew").hide();
+        $("#temp").hide();
+        $("#temp2").hide();
+        $("#MainAll1").hide();
+        $("#ApConfiguration").show();
+        $("#SaveeditCoverageInfo").show();
+        $("#addnewCoverageInfo").hide();
+    }
+   
+    function goimortexcel() {
+        //$("#MainAll1").hide();
+        //$("#ApConfiguration").show();        
+        aler("import excel");
+    }
+    function _ExportToExcel() {
+        var model = new defaultData();
+        window.open("/AirnetWirelessCoverage/ExportData?dataS=" + JSON.stringify(model) + "");
+           
+
+    }
+    function _Search()
+    {    
+      
+        var grid = $("#gridAirNetWirelessCoverage").data("kendoGrid");
+        grid.dataSource.page(1);
+        var model = defaultData();
+        if (model.APname == "" && model.aumphur == "" && model.tumbon == "" && model.province == "" && model.region == "") {
+            $("#gridresult").show();
+            showFeedback("error", "กรุณาเลือกอย่างน้อย 1 Cateria");
+        }
+        else {
+            $("#gridresult").show();
+            $.ajax({
+                url: '/AirNetWirelessCoverage/aa',
+                data: { dataS: JSON.stringify(model) },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+
+                    if (response) {
+                        $("#TotalCoverage").text(response.ttc);
+                        $("#TotalAP").text(response.ttp);
+
+                    }
+                    else {
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+        }
+       
+    }
+    function _Clear()
+    {
+        $("#Province").data("kendoDropDownList").dataSource.read({ regionCode: "" });
+        $("#Aumphur").data("kendoDropDownList").dataSource.read({ regionCode: "", province: ""});
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "", province: "" });
+        $("#Region").data("kendoDropDownList").select(0);
+        $("#Province").data("kendoDropDownList").select(0);
+        $("#Aumphur").data("kendoDropDownList").select(0);
+        $("#Tumbon").data("kendoDropDownList").select(0);
+        $("#APname").val("");
+        $("#TotalCoverage").text("");
+        $("#TotalAP").text("");
+        $("#gridresult").hide();
+    }
+    function _Back()
+    {
+        $("#MainAll1").show();
+        $("#ApConfiguration").hide();        
+        $("#ApInformation").hide();
+        
+    }
+  
+
+</script>
+<div id="MainAll1" class="row">
+  <div class="col-sm-12 col-md-12">
+    <div class="col-md-12">
+     <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="fa fa-info-circle" style="font-size: large;">&nbsp;Search AirNetWireless Coverage</i>
+            <a data-toggle="collapse" class="pull-right" href="#Searchpanel" onclick="onPanelToggle(this);" id="SearchCoveragePanelHeader">
+                <i class="fa fa-chevron-down" id="ArrowIconSearchCoverage"></i>
+            </a>
+        </h3>
+      </div>
+      <div id="Searchpanel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">  
+          <div class="row">
+              <div class="col-sm-6 col-md-6" >
+                  <div class=" panel panel-default">
+                      <div id="panelbody1" class="panel-body">
+                          <div id="row1" class="row">
+                              <div class="col-sm-6 col-md-6">
+                                   <label>ภาค</label>
+                                  @(Html.Kendo().DropDownList()
+                                      .Name("Region")
+                                      .DataTextField("DISPLAY_VAL")
+                                      .DataValueField("LOV_NAME")
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .DataSource(source =>
+                                      {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("SelectLov", "MasterData", new { type = "REGION_CODE" }); 
+                                            });
+                                       })
+                                       .Events(e => e.Change("onRegionChange"))
+                                      
+                                   )
+                              </div>
+                              <div class="col-sm-6 col-md-6">
+                                          <label>จังหวัด</label>
+                                        @(Html.Kendo().DropDownList()
+                                              .Name("Province")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              //        .BindTo(new List<SelectListItem>() {
+                                              //    //new SelectListItem() {
+                                              //    //    Text = "จังหวัด",
+                                              //    //    Value = ""
+                                              //    //},
+                                              //    new SelectListItem() {
+                                              //        Text = "กรุณาเลือก",
+                                              //        Value = ""
+                                              //    }
+                                              //})
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectProvince", "MasterData");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                            </div>
+                          </div> @*end row1*@
+                           <div id="row2" class="row i-gap-top-1">
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>อำเภอ</label>
+                                        @(Html.Kendo().DropDownList()
+                                              .Name("Aumphur")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              //.BindTo(new List<SelectListItem>() {
+                                              //    //new SelectListItem() {
+                                              //    //    Text = "อำเภอ",
+                                              //    //    Value = ""
+                                              //    //},
+                                              //    new SelectListItem() {
+                                              //        Text = "กรุณาเลือก",
+                                              //        Value = ""
+                                              //    }
+                                              //})
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAmphur", "MasterData");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onAumphurChange"))
+                                            )
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                          <label>ตำบล</span></label>
+                                        @(Html.Kendo().DropDownList()
+                                              .Name("Tumbon")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              //.BindTo(new List<SelectListItem>() {
+                                              //    //new SelectListItem() {
+                                              //    //    Text = "ตำบล",
+                                              //    //    Value = ""
+                                              //    //},
+                                              //    new SelectListItem() {
+                                              //        Text = "กรุณาเลือก",
+                                              //        Value = ""
+                                              //    }
+                                              //})
+                                              .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectTumbon", "MasterData");
+                                                    });
+                                                })
+                                                
+                                                )                                        
+                                    </div>
+                           </div>@*end row2*@
+                            <div id="row3" class="row i-gap-top-1">
+                                <div class="col-sm-6 col-md-6">
+                                     <label>AP Name</span></label>
+                                    <input type="text" id="APname" class="k-textbox form-control" placeholder="AP Name" />
+                                </div>
+                                <div class="col-sm-6 col-md-6 i-text-align-right">          
+                                          <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;ยกเลิก</a>            
+                                          <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;ค้นหา</a>                                                                                                             
+                                    </div>                                
+                            </div> @*end row3*@   
+                            
+                      </div> @*end panelbody1*@  
+                  </div>@*end paneldefault*@
+              </div>  @*end column*@  
+               <div class="col-sm-6 col-md-6 " >
+                    <div class=" panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-md-offset-1 col-sm-offset-1">
+                                    <img src="~/Images/wifi.png" alt="Image" width="50" height="50">
+                                </div>    
+                                <div class="col-sm-6 col-md-6 col-md-offset-4 col-sm-offset-4">
+                                <div class="btn btn-info i-total-box">
+                                    <div class="row">
+                                        <div class="col-md-4"><i class="fa fa-globe fa-4x"></i></div>
+                                        <div class="col-md-8 i-text-align-right">
+                                            <span class="i-f1" id="TotalCoverage">0</span><br />
+                                            <span class="i-f2">Total Coverage</span>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                               @* <div class="col-sm-6 col-md-6 col-md-offset-6 col-sm-offset-6">
+                                    <label>Total Coverage : </label>
+                                    <label id="TotalCoverage"></label>
+                                </div>       *@                                                        
+                            </div>     
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-md-offset-4 col-sm-offset-4">
+                                    <div class="btn btn-danger i-total-box">
+                                        <div class="row">
+                                            <div class="col-md-4"><i class="fa fa-share-alt fa-4x"></i></div>
+                                            <div class="col-md-8 i-text-align-right">
+                                                <span class="i-f1" id="TotalAP">0</span><br />
+                                                <span class="i-f2">Total AP</span>
+                                            </div>
+                                        </div>
+                                    </div>                                                              
+                               </div>
+                            </div>                             
+                            <div class="row" style="margin-top:76px;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>                   
+            </div>  @*end mainrow*@    
+            <div id="gridresult" class="row">
+                    <div class="col-sm-12 col-md-12 " >
+                     @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.AWCSearchlist>()
+                        .Name("gridAirNetWirelessCoverage")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.APname).Title("AP Name").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.province).Title("จังหวัด").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.aumphur).Title("อำเภอ").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.tumbon).Title("ตำบล").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.site_id).Title("infoid").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                            columns.Bound(p => p.app_id).Title("coverageid").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                            columns.Bound(p => p.updatedate).Title("update").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                            //columns.Command(command => command.Custom("<a class=k-button onclick='customCommand()'><i class='fa fa-cog'> Command</a>")).Title("Action");
+                            columns.Command(command => command.Custom("Config").Click("goedit").Text("<i class='fa fa-cog'></i> Config")).Title("Action").Width(100);
+                            
+                        })
+                        .ToolBar(toolBar =>
+                            {
+                                toolBar.Custom().Name("NewCoverExcel").Text("<i class='fa fa-file-excel-o'></i> New Coverage").HtmlAttributes(new { onclick = "goimortexcel();return false;" });
+                                toolBar.Custom().Name("NewCoverNormal").Text("<i class='fa fa-plus-circle fa-lg'></i> New Coverage").HtmlAttributes(new { onclick = "goaddnew();return false;" });
+                                toolBar.Custom().Text("<i class='fa fa-reply'></i> Export to Excel").HtmlAttributes(new { onclick = "_ExportToExcel();return false;" });                               
+                            }
+                            ).HtmlAttributes(new { style = "text-align:right;" })
+                            .Pageable(pageable => pageable                           
+                            .PageSizes(true)
+                            .Numeric(true)                            
+                            )
+                            .Sortable()   
+                            .AutoBind(false)                        
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(10)                 
+                                .Sort(sort => sort.Add("updatedate").Descending())              
+                                .Read(read => read.Action("ReadSearch", "AirNetWirelessCoverage").Data("bindingValue"))                               
+                                )
+                    )
+                  </div>                
+           </div>         
+        </div> @*end searchpanel*@ 
+       </div> 
+    </div>@*end maincolumn*@  
+  </div>
+</div>@*main all*@
+
+<div id ="ApConfiguration" class="row">
+      <div class="col-sm-12 col-md-12">     
+            <div class="col-sm-12 col-md-12">
+                <div class="btn-group">
+                   <a class='btn btn-default' onclick='_Back()' href='#'><i class="fa fa-arrow-circle-left fa-lg"></i>&nbsp;&nbsp;Back</a>
+                </div>
+                <div class="btn-group pull-right">
+                   <a class="btn btn-danger" id="deletepage2" onclick='DeleteAllconfig()'"><i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete</a>
+                </div>
+                <div class="row"> &nbsp;</div>
+            </div>           
+       </div>
+
+      <div class="col-sm-12 col-md-12">       
+        <div class="col-md-12">                      
+             <div class="panel panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-info-circle" style="font-size: large;">&nbsp;Coverage Information</i>
+                        <a data-toggle="collapse" class="pull-right" href="#CoverageInformation" onclick="onPanelToggle(this);" id="APconfigPanelHolder">
+                            <i class="fa fa-chevron-down" id="ArrowIconApconfigCoverage"></i>
+                        </a>
+                    </h3>
+                  </div>@*endpanel heading*@
+                  <div id="CoverageInformation" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">  
+                      <div class="row">
+                          <div class="col-sm-12 col-md-12" >
+                              <div class=" panel panel-default">
+                                    <div id="panelbodyCoverageIformation" class="panel-body">                                          
+                                        <div class="row">                                        
+                                            <div class="col-sm-6 col-md-3">
+                                                <label>Base L2  <span id="requiredfor-Base"></span><span id="validatefor-Base"></span></label>
+                                                <input type="text" id="Base" class="dis k-textbox form-control" maxlength="50" />
+                                            </div>
+                                            <div class="col-sm-6 col-md-3">    
+                                                    <label>Site Name  <span id="requiredfor-Sitename"></span><span id="validatefor-Sitename"></span></label>                                    
+                                                    <input type="text" id="Sitename" class="dis k-textbox form-control" maxlength="50" />                                  
+                                            </div>                                
+                                            <div class="col-sm-6 col-md-3"></div>                                    
+                                            <div class="col-sm-6 col-md-3"></div> 
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-3">
+                                                <label>Lat  <span id="requiredfor-lat"></span><span id="validatefor-lat"></span></label>
+                                                <input type="text" id="lat" onkeypress="return checkNumlat(event)" onChange="numlat(this)" class="dis k-textbox form-control" maxlength="50"/>
+                                            </div>
+                                            <div class="col-sm-6 col-md-3"> 
+                                                <label>Lon  <span id="requiredfor-lon"></span><span id="validatefor-lon"></span></label>
+                                                <input type="text" id="lon" onkeypress="return checkNumlon(event)" onChange="numlon(this)" class="dis k-textbox form-control" maxlength="50"/>
+                                            </div>                                                          
+                                            <div class="col-sm-6 col-md-3"></div> 
+                                            <div class="col-sm-6 col-md-3"></div> 
+                                        </div>
+                                        <div class="row i-gap-top-2">
+                                            <div class="col-sm-12 col-md-12">
+                                                <label>Area TH</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-sm-6 col-md-3">
+                                            <label>ภาค<span id="requiredfor-Region"></span></label>
+                                                        @(Html.Kendo().DropDownList()
+                                                  .Name("RegionAP")
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataSource(source =>
+                                                  {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action("SelectLov", "MasterData", new { type = "REGION_CODE" }); 
+                                                        });
+                                                   })
+                                                   .Events(e => e.Change("onRegionAPChange"))
+                                               )
+                                        </div>
+                                        <div class="col-sm-6 col-md-3">
+                                            <label>จังหวัด<span id="requiredfor-province"></span></label>
+                                            @(Html.Kendo().DropDownList()
+                                                  .Name("ProvinceAP")   
+                                                  .HtmlAttributes(new { style = "width:100%" })                                           
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  //.BindTo(new List<SelectListItem>() {
+                                                  //    //new SelectListItem() {
+                                                  //    //    Text = "ตำบล",
+                                                  //    //    Value = ""
+                                                  //    //},
+                                                  //    new SelectListItem() {
+                                                  //        Text = "กรุณาเลือก",
+                                                  //        Value = "0"
+                                                  //    }
+                                                  //})
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectProvince", "MasterData").Data("getTHCulture");
+                                                      });
+                                                  })
+                                                  .Events(e => e.Change("onProvinceAPChange"))
+                                            )
+                                        </div>
+                                        <div class="col-sm-6 col-md-3">
+                                            <label>อำเภอ<span id="requiredfor-aumphur"></span></label>
+                                            @(Html.Kendo().DropDownList()
+                                                  .Name("AumphurAP")
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  //.BindTo(new List<SelectListItem>() {
+                                                  //    //new SelectListItem() {
+                                                  //    //    Text = "ตำบล",
+                                                  //    //    Value = ""
+                                                  //    //},
+                                                  //    new SelectListItem() {
+                                                  //        Text = "กรุณาเลือก",
+                                                  //        Value = "0"
+                                                  //    }
+                                                  //})
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectAmphur", "MasterData");
+                                                      });
+                                                     
+                                                  })
+                                                  .Events(e => e.Change("onAumphurAPChange"))
+                                              )
+                                        </div>
+                                        <div class="col-sm-6 col-md-3">
+                                            <label>ตำบล<span id="requiredfor-tumbon"></span></label>
+                                            @(Html.Kendo().DropDownList()
+                                                  .Name("TumbonAP")
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  //.BindTo(new List<SelectListItem>() {
+                                                  //    //new SelectListItem() {
+                                                  //    //    Text = "ตำบล",
+                                                  //    //    Value = ""
+                                                  //    //},
+                                                  //    new SelectListItem() {
+                                                  //        Text = "กรุณาเลือก",
+                                                  //        Value = "0"
+                                                  //    }
+                                                  //})
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectTumbon", "MasterData");
+                                                      }); 
+                                                  })
+                                                 
+                                            )
+                                        </div>                                                            
+                                    
+                                    </div>                                
+
+                                  </div>
+                              </div>                     
+                          </div>
+                      </div>@*end row1*@
+                  </div>@*end apconfig*@
+             </div>@*end panel*@
+        </div>@*End Column12*@
+      </div> @*Coverage Information*@
+      <div class="col-sm-12 col-md-12">
+        <div class="col-md-12">
+             <div class="panel panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-info-circle" style="font-size: large;">&nbsp;AP Config</i>
+                        <a data-toggle="collapse" class="pull-right" href="#APConfig" onclick="onPanelToggle(this);" id="APconfigPanelHolder2">
+                            <i class="fa fa-chevron-down" id="ArrowIconApconfigCoverage2"></i>
+                        </a>
+                    </h3>
+                  </div>@*endpanel heading*@
+                  <div id="APConfig" class="row">                   
+                       <div class="col-sm-12 col-md-12 " >
+                            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.AWCconfig>()
+                            .Name("gridAPconfig")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.AP_Name).Title("AP Name").HtmlAttributes(new { style = "text-align:left;" });
+                                columns.Bound(p => p.Sector).Title("Sector").HtmlAttributes(new { style = "text-align:left;" });
+                                columns.Bound(p => p.AP_ID).Title("Sector").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                columns.Bound(p => p.updatedate).Title("update").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                columns.Command(command => command.Custom("Delete").Click("Deleteingrid").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete")).Width(100);
+                                columns.Command(command => command.Custom("Config").Click("EditApconfig").Text("<i class='fa fa-pencil-square-o'></i> Edit").HtmlAttributes(new { style = "align:left;" })).Width(100);                                    
+                                    
+                              
+                            })
+                            .ToolBar(toolbar =>
+                                    {
+                                        toolbar.Custom().Name("NewApconfig").Text("<i class='fa fa-plus'></i> New AP").HtmlAttributes(new { onclick = "addNewAP();return false;" }); 
+                                                            
+                                    }).HtmlAttributes(new { style = "text-align:right;" })                       
+                            .Pageable(pageable => pageable                           
+                            .PageSizes(true)
+                            .Numeric(true)                            
+                            )
+                            .Sortable()
+                            .Scrollable()    
+                            .AutoBind(false)                     
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(10)
+                                .Sort(sort => sort.Add("updatedate").Descending())
+                                .Events(events => events.Error("error_handler"))                            
+                                .Read(read => read.Action("DataConfig", "AirNetWirelessCoverage"))          
+                                
+                                )
+                        )
+                       </div>           
+                  </div>@*end apconfig*@
+             </div>@*end panel*@
+        </div>@*End Column12*@
+        <div id ="ApInformation" class="row">  
+      <div class="col-sm-12 col-md-12">
+        <div class="col-md-12">
+             <div class="panel panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-info-circle" style="font-size: large;">&nbsp;AP Information</i>
+                        <a data-toggle="collapse" class="pull-right" href="#APInformation" onclick="onPanelToggle(this);" id="APInformationPanelHolder">
+                            <i class="fa fa-chevron-down" id="ArrowIconApconfiginformation"></i>
+                        </a>
+                    </h3>
+                  </div>@*endpanel heading*@
+                  <div id="APInformation" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">  
+                      <div class="row">
+                          <div class="col-sm-12 col-md-12" >
+                              <div class=" panel panel-default">
+                                    <div id="panelbodyAPIformation" class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-3">
+                                                 <label>AP Name</label>                                    
+                                                 <input type="text" id="APnameinfo" class="dis k-textbox form-control" maxlength="255" />          
+                                            </div> 
+                                            <div class="col-sm-6 col-md-3">
+                                                 <label>Sector</label>
+                                            @(Html.Kendo().DropDownList()
+                                                  .Name("SectorpInfo")
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectLov", "MasterData");
+                                                      });
+                                                  })
+                                                  .AutoBind(false)
+                                            )       
+                                            </div> 
+                                            <div class="col-sm-6 col-md-3"></div>                                     
+                                            <div class="col-sm-6 col-md-3"></div>                                   
+                                        </div>
+                                        <div class="row">          
+                                                <div class="row"> &nbsp;</div>                                                                   
+                                                <div class="col-sm-6 col-md-3 i-text-align-left"> 
+                                                    <a class="btn btn-success" onclick="_Cancel()">
+                                                    <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Cancel</a>                                                    
+                                                    <a class="btn btn-success" id="addap" onclick="AddnewAPtobase()">
+                                                    <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Add</a>     
+                                                    <a class="btn btn-success" id="savenewap" onclick="updateEditAP()">
+                                                    <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Save</a>                                  
+                                                </div>
+                                        </div>
+                                    </div>
+                              </div>
+                         </div>
+                     </div>
+                  </div>
+          </div>
+       </div>
+    </div>
+</div>                         
+      </div>
+                   
+      <div class="col-sm-12 col-md-12">
+        <div class="col-sm-6 col-md-3"></div>
+        <div class="col-sm-6 col-md-3"></div> 
+        <div class="col-sm-6 col-md-3"></div> 
+        <div class="col-sm-6 col-md-3 i-text-align-right">
+            <a class="btn btn-default" id="Resetall" onclick="resetall()">
+            <i class="fa fa-ban fa-lg""></i>&nbsp;&nbsp;Cancel</a> 
+            <a class="btn btn-success" id="addnewCoverageInfo" onclick="AddnewCoverageinfotobase()">
+            <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Add</a>    
+            <a class="btn btn-success" id="SaveeditCoverageInfo" onclick="Updateall()">
+            <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Save</a>                                       
+        </div>
+          <label id="temp"></label>
+          <label id="temp2"></label>
+          <label id="editornew"></label>
+           <label id="Apidforedit"></label>
+      </div>
+  
+</div>@*end APConfig*@
+
+<script>
+    $(function () {
+               
+
+        var validateModel = [];
+        validateModel.push({ id: "Base" });
+        validateModel.push({ id: "Sitename" });
+        validateModel.push({ id: "Region" });
+        validateModel.push({ id: "lat" });
+        validateModel.push({ id: "lon" });
+        validateModel.push({ id: "province" });
+        validateModel.push({ id: "aumphur" });
+        validateModel.push({ id: "tumbon" });       
+        SetRequired(validateModel);       
+       
+    });
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+    function filterProvinceTH() {
+        return {
+            currentCulture: 1,
+            provinceFilter: $("#ProvinceAP").val()
+        };
+    }
+
+    function filterAmphurTH() {
+        return {
+            currentCulture: 1,
+            provinceFilter: $("#ProvinceAP").val(),
+            amphurFilter: $("#AumphurAP").val()
+        };
+    }
+
+    function filterProvinceMainTH() {       
+        
+        return {
+            currentCulture: 1,
+            provinceFilter: $("#Province").val()
+        };
+    }
+
+    function filterAmphurMainTH() {
+        return {
+            currentCulture: 1,
+            provinceFilter: $("#Province").val(),
+            amphurFilter: $("#Aumphur").val()
+        };
+    }
+
+    function filterRegionMainTH() {
+        return {
+            currentCulture: 1, // 1 = th : 2 = En
+            Regioncode: $("#Region").val()
+        }
+    }
+    
+    function getTHCulture() {
+        return {
+            currentCulture: 1 // 1 = th : 2 = En
+        }
+    }
+    function getENCulture() {
+        return {
+            currentCulture: 2 // 1 = th : 2 = En
+        }
+    }
+
+    function onRegionChange() {
+        $("#Province").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").val() });
+        $("#Aumphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").val(), province: $("#Province").val() });
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").val(), province: $("#Province").val(), aumphur: $("#Aumphur").val() });
+    }
+
+    function onProvinceChange() {
+        $("#Aumphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").val(), province: $("#Province").val() });
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").val(), province: $("#Province").val(), aumphur: $("#Aumphur").val() });
+    }
+
+    function onAumphurChange() {        
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").val(), province: $("#Province").val(), aumphur: $("#Aumphur").val() });
+    }
+   
+    function onRegionAPChange() {
+        $("#ProvinceAP").data("kendoDropDownList").dataSource.read({ regionCode: $("#RegionAP").val() });
+        $("#AumphurAP").data("kendoDropDownList").dataSource.read({ regionCode: $("#RegionAP").val(), province: $("#ProvinceAP").val() });
+        $("#TumbonAP").data("kendoDropDownList").dataSource.read({ regionCode: $("#RegionAP").val(), province: $("#ProvinceAP").val(), aumphur: $("#AumphurAP").val() });
+    }
+
+    function onProvinceAPChange() {
+        $("#AumphurAP").data("kendoDropDownList").dataSource.read({ regionCode: $("#RegionAP").val(), province: $("#ProvinceAP").val() });
+        $("#TumbonAP").data("kendoDropDownList").dataSource.read({ regionCode: $("#RegionAP").val(), province: $("#ProvinceAP").val(), aumphur: $("#AumphurAP").val() });
+    }
+
+    function onAumphurAPChange() {
+        $("#TumbonAP").data("kendoDropDownList").dataSource.read({ regionCode: $("#RegionAP").val(), province: $("#ProvinceAP").val(), aumphur: $("#AumphurAP").val() });
+    }
+    function numlat(e) {
+        debugger
+        var decimal = /^[-+]?[0-9]+\.[0-9]+$/;
+        if (e.value.match(decimal)) {
+            var len = document.getElementById("lat").value.length;
+            var check = document.getElementById("lat").value.toString();
+            var index = document.getElementById("lat").value.indexOf('.');
+            if (index > 0) {
+                var CharAfterdot = (len - (index + 1));
+                if (CharAfterdot == 6) {
+                    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                    return true;
+                }
+                else {
+                    showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                    e.value = '';
+                    e.focus();
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+            e.value = '';
+            e.focus();
+            return false;
+        }
+    }
+    function numlon(e)
+    {
+        var decimal = /^[-+]?[0-9]+\.[0-9]+$/;
+        if (e.value.match(decimal))
+        {
+            var len = document.getElementById("lon").value.length;
+            var check = document.getElementById("lon").value.toString();
+            var index = document.getElementById("lon").value.indexOf('.');
+            if (index > 0) {
+                var CharAfterdot = (len - (index + 1));
+                if (CharAfterdot == 6) {
+                    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                    return true;
+                }
+                else {
+                    showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                    e.value = '';
+                    e.focus();
+                    return false;
+                }
+            }
+
+        }
+        else {
+            showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+            e.value = '';
+            e.focus();
+            return false;
+        }
+    }
+    function checkNumlat(e) {
+             
+         var unicode = (typeof e.which == "number") ? e.which : e.keyCode
+         if ((unicode < 49 || unicode > 57) && unicode != 46 && unicode != 8)
+         { //if the key isn't the backspace key (which we should allow)
+             return false;
+         }
+         else
+         {
+             if (unicode == 8 || unicode == 46) {//if not a number
+                 return true //disable key press
+             }
+        //var decimal = /^[-+]?[0-9]+\.[0-9]+$/;         
+        //if(x.value.match(decimal))   
+        //{           
+            var len = document.getElementById("lat").value.length;
+            var check = document.getElementById("lat").value.toString();
+
+            if (check.indexOf(".") > -1) {
+                var index = document.getElementById("lat").value.indexOf('.');
+                if (index > 0) {
+                    var CharAfterdot = (len - (index + 1));
+                    if (CharAfterdot < 6) {
+                        //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                        return true;
+                    }
+                    else {
+                        //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                        //x.value = '';
+                        //x.focus();
+                        return false;
+                    }
+                }
+
+            }
+           
+        }  
+        //else  
+        //{   
+        //    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+        //    //e.value = '';
+        //    //e.focus();
+        //    return false;  
+        //}  
+
+        
+        
+    }
+   
+    function checkNumlon(e) {
+      
+
+        var unicode = (typeof e.which == "number") ? e.which : e.keyCode
+        if ((unicode < 49 || unicode > 57) && unicode != 46 && unicode != 8) { //if the key isn't the backspace key (which we should allow)
+            return false;
+        }
+        else {
+            if (unicode == 8 || unicode == 46) {//if not a number
+                return true //disable key press
+            }
+            //var decimal = /^[-+]?[0-9]+\.[0-9]+$/;         
+            //if(x.value.match(decimal))   
+            //{           
+            var len = document.getElementById("lon").value.length;
+            var check = document.getElementById("lon").value.toString();
+
+            if (check.indexOf(".") > -1) {
+                var index = document.getElementById("lat").value.indexOf('.');
+                if (index > 0) {
+                    var CharAfterdot = (len - (index + 1));
+                    if (CharAfterdot < 6) {
+                        //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                        return true;
+                    }
+                    else {
+                        //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                        //x.value = '';
+                        //x.focus();
+                        return false;
+                    }
+                }
+
+            }
+
+        }
+        
+    }
+    var AWCaddInfomationModel = function () {
+        Base_L2 = "";
+        Site_Name = "";
+        Aumphur = "";
+        Tumbon = "";
+        Province = "";
+        Zone = "";
+        Lat = "";
+        Lon = "";
+        APP_ID = "";
+        
+    }
+
+    var AWCaddconfigModel = function () {
+        AP_Name = "";
+        Sector = "";
+        Site_id = "";
+    }
+    
+
+   
+    var AWCModel = function () {
+
+        region: "";
+        province: "";
+        aumphur: "";
+        tumbon: "";
+        APname: "";      
+        
+    }
+
+    function bindingValue() {
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    function defaultaddCoverageInfoData() {
+
+        var searchModelawc = new AWCaddInfomationModel();
+       
+        searchModelawc.Base_L2 = $.trim($("#Base").val());
+        searchModelawc.Site_Name = $.trim($("#Sitename").val());
+        searchModelawc.Aumphur = $("#AumphurAP").data("kendoDropDownList").value();
+        searchModelawc.Tumbon = $("#TumbonAP").data("kendoDropDownList").value();
+        searchModelawc.Province = $("#ProvinceAP").data("kendoDropDownList").value();       
+        searchModelawc.Zone = $("#RegionAP").data("kendoDropDownList").value();
+        searchModelawc.Lat = $.trim($("#lat").val());
+        searchModelawc.Lon = $.trim($("#lon").val());
+        if ($("#editornew").text() == "edit") {            
+            searchModelawc.APP_ID = $("#temp").text();
+        }
+        else {
+            searchModelawc.APP_ID = "0";
+        }
+        
+
+
+        return searchModelawc;
+    }
+    function defaultaddconfigData() {
+
+        var searchModelawc = new AWCaddconfigModel();
+        //alert($.trim($('#APnameinfo').val()));
+        searchModelawc.AP_Name = $.trim($('#APnameinfo').val());
+        searchModelawc.Sector = $("#SectorpInfo").data("kendoDropDownList").value();
+        if ($("#editornew").text() == "edit") {
+            //alert($("#temp").text());
+            searchModelawc.Site_id = $("#temp").text();
+        }
+        else {
+            searchModelawc.Site_id = "0";
+        }
+        
+       
+        return searchModelawc;
+    }
+    
+
+    function defaultData() {
+
+        var searchModelawc = new AWCModel();
+        searchModelawc.region = $("#Region").data("kendoDropDownList").value();
+        searchModelawc.province = $("#Province").data("kendoDropDownList").value();
+        searchModelawc.aumphur = $("#Aumphur").data("kendoDropDownList").value();
+        searchModelawc.tumbon = $("#Tumbon").data("kendoDropDownList").value();
+        searchModelawc.APname = $.trim($("#APname").val());
+       
+        return searchModelawc;
+    }
+
+    function EditApconfig(e) {
+       
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $("#Apidforedit").text(dataItem.AP_ID);
+        $("#SectorpInfo").data("kendoDropDownList").dataSource.read({ type: "SECTOR" });
+        $("#SectorpInfo").data("kendoDropDownList").value(dataItem.Sector);
+        $("#APnameinfo").val(dataItem.AP_Name);
+        $("#savenewap").show();
+        $("#addap").hide();
+        $("#ApInformation").show();
+        
+    }
+    function _Cancel() {
+        $("#ApInformation").hide();
+        $("#APnameinfo").val("");
+        $("#SectorpInfo").data("kendoDropDownList").select(0);
+    }
+
+    function addNewAP() {
+        _Cancel();
+        $("#SectorpInfo").data("kendoDropDownList").dataSource.read({ type: "SECTOR" });
+        $("#addap").show();
+        $("#savenewap").hide();
+        $("#ApInformation").show();
+       
+    }
+    function DeleteAllconfig() {
+   
+        
+        var grid = $("#gridAPconfig").data("kendoGrid");
+        grid.dataSource.read({ dataS: $("#temp").text() });      
+        var count = grid.dataSource.total();        
+        var c = confirm("Are you sure you want to delete All of this ?");
+        if (c)
+        {           
+            count = grid.dataSource.total();  
+            test(count);
+        }
+    }
+    function test(count) {
+
+        if (count <= 0) {
+           
+            $.ajax({
+                url: '/AirNetWirelessCoverage/DeleteInfo',
+                data: { ID: $("#temp2").text() },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+
+                    $("#gridAPconfig").data("kendoGrid").dataSource.read({ dataS: $("#temp2").text() });
+                    showFeedback("success", "ทำการลบสำเร็จแล้ว");
+                    $("#MainAll1").show();
+                    $("#ApConfiguration").hide();
+                    $("#gridresult").hide();
+                    $("#ApInformation").hide();
+                    _Search();
+
+                }              
+            });
+        }
+        else if (count > 0) {
+          
+            showFeedback("error", "You have to delete all item in AP Config Panel");
+        }
+
+    }
+    function Deleteingrid(e) {
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var c = confirm("Are you sure you want to delete" + dataItem.AP_Name + "?");
+
+        if (c) {
+
+            $.ajax({
+                url: '/AirNetWirelessCoverage/DeleteAPConfig',
+                data: { ID: dataItem.AP_ID },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    if ($("#editornew").text() == "edit") {
+                        $("#gridAPconfig").data("kendoGrid").dataSource.read({ dataS: $("#temp").text() });
+                        showFeedback("success", "Deleted Complete");
+                    }
+                    else {
+                        $("#gridAPconfig").data("kendoGrid").dataSource.read({ dataS: 0 });
+                        showFeedback("success", "ทำการลบสำเร็จแล้ว");
+                    }
+                    }
+
+                , error: function (err) {
+                    Loading(0);
+                    showFeedback("error", err);
+                }
+            });
+
+        }
+    }
+    function resetall() {
+        _Cancel();
+        $("#Base").val("");
+        $("#Sitename").val("");        
+        $("#lat").val("");
+        $("#lon").val("");
+        $("#ProvinceAP").data("kendoDropDownList").select(0);
+        $("#AumphurAP").data("kendoDropDownList").select(0);
+        $("#TumbonAP").data("kendoDropDownList").select(0);
+        $("#RegionAP").data("kendoDropDownList").select(0);
+       
+
+        $.ajax({
+            url: '/AirNetWirelessCoverage/DeletetempAP',
+            data: { },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                var grid = $("#gridAPconfig").data("kendoGrid");
+                grid.dataSource.read();
+
+            }
+               
+                , error: function (err) {
+
+                    showFeedback("error", err);
+                }
+        });
+
+    }
+    function AddnewAPtobase() {
+        
+        var model = defaultaddconfigData();
+        if (model.AP_Name == "" || model.Sector == "") {
+            showFeedback("warning", "กรุณากรอกข้อมูลให้ครบทุกช่อง");
+        }
+        else {
+            $.ajax({
+                url: '/AirNetWirelessCoverage/AddAPconfig',
+                data: { data: JSON.stringify(model) },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    if (response == true) {
+                        if ($("#editornew").text() == "edit") {
+                            $("#gridAPconfig").data("kendoGrid").dataSource.read({ dataS: $("#temp2").text() });
+                            $("#ApInformation").hide();
+                            _Cancel();
+                        }
+                        else {
+                            $("#gridAPconfig").data("kendoGrid").dataSource.read({ dataS: 0 });
+                            $("#ApInformation").hide();
+                            _Cancel();
+                        }
+                        showFeedback("success", "Saved Complete");
+                    }
+                    else if (response == "dup") {
+                        showFeedback("warning", "ไม่สามารถเพิ่มได้เพราะมีชื่อ " + $('#APnameinfo').val() + " นี้แล้วในฐานช้อมูล");
+                    }
+
+
+                }
+
+                    , error: function (err) {
+
+                        showFeedback("error", err);
+                    }
+            });
+        }
+        
+    }
+    
+    function validate() {
+        
+        var chk = true;
+        if($("#Base").val()=="")             
+        {         
+            $("#validatefor-Base").html(ValidationIcon() + "This field is required.");
+            
+            $("#validatefor-Base").show();
+            $("#requiredfor-Base").hide();
+            chk = false;
+        }        
+        if($('#Sitename').val()=="")             
+        {
+            $("#validatefor-Sitename").html(ValidationIcon() + "This field is required.");
+            
+            $("#validatefor-Sitename").show();
+            $("#requiredfor-Sitename").hide();
+            chk = false;
+        }
+        if($('#lat').val()=="")             
+        {
+            $("#validatefor-lat").html(ValidationIcon() + "This field is required.");
+           
+            $("#validatefor-lat").show();
+            $("#requiredfor-lat").hide();
+            chk = false;
+        }
+        if($('#lon').val()=="")             
+        {
+            $("#validatefor-lon").html(ValidationIcon() + "This field is required.");
+            $("#validatefor-lon").show();
+            $("#requiredfor-lon").hide();
+            chk = false;
+        }
+        //if($("#AumphurAP").data("kendoDropDownList").value()=="" && $("#ProvinceAP").data("kendoDropDownList").value()=="" && $("#TumbonAP").data("kendoDropDownList").value()=="")
+        //{
+        //    chk = false;
+        //}
+        return chk;
+       
+    }
+    function AddnewCoverageinfotobase() {
+        
+        var model = defaultaddCoverageInfoData();        
+        var ck = validate();
+            
+        if (ck)
+        {
+            var grid = $("#gridAPconfig").data("kendoGrid");
+            grid.dataSource.read();
+            var count = grid.dataSource.total();
+            if (count <= 0) {
+                showFeedback("error", "กรุณาเพิ่ม AP อย่าน้อย 1 อันจึงจะสามารถเพิ่มเสาได้");
+            }
+            else {
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/AddCoverageInfo',
+                    data: { data: JSON.stringify(model) },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        if (response == true) {
+                            showFeedback("success", "Saved Complete");
+                            _Cancel();
+                            $("#RegionAP").data("kendoDropDownList").dataSource.read({type : "REGION_CODE"});
+                            $("#ProvinceAP").data("kendoDropDownList").dataSource.read({ regionCode: "" });
+                            $("#AumphurAP").data("kendoDropDownList").dataSource.read({ regionCode: "", province:"" });
+                            $("#TumbonAP").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "", aumphur: "" });
+                            $("#ProvinceAP").data("kendoDropDownList").select(0);
+                            $("#AumphurAP").data("kendoDropDownList").select(0);
+                            $("#TumbonAP").data("kendoDropDownList").select(0);
+                            $("#RegionAP").data("kendoDropDownList").select(0);
+                            $("#ApConfiguration").hide();                            
+                            $("#MainAll1").show();
+                            _Search();
+                        }
+                        else if (response == "dup") {
+                            showFeedback("warning", "ไม่สามารถเพิ่มได้เพราะมีข้อมูล " + $('#Base').val() + " นี้แล้วในฐานช้อมูล");
+                        }
+
+                        $("#gridAPconfig").data("kendoGrid").dataSource.read({ dataS: $("#temp2").text() });
+
+
+                    }
+
+                        , error: function (err) {
+                            
+                            showFeedback("error", err);
+                        }
+                });
+            }
+        }
+
+        else {
+            showFeedback("error", "กรุณากรอกข้อมูลให้ครบทุกช่อง");
+        }    
+
+    }
+    function updateEditAP() {        
+     
+        var apname = $("#APnameinfo").val();
+        var sector = $("#SectorpInfo").data("kendoDropDownList").value();
+        var apid = $("#Apidforedit").text();
+
+        if (apname == "" && sector == "") {
+            showFeedback("error", "กรุณากรอกข้อมูลให้ครบทุกช่อง");
+        }
+        else {
+            $.ajax({
+                url: '/AirNetWirelessCoverage/SaveAPConfig',
+                data: { ID: apid, apname: apname, sector: sector },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    if (response == true) {
+                        $("#gridAPconfig").data("kendoGrid").dataSource.read({ dataS: $("#temp2").text() });
+                        showFeedback("success", "Saved Complete");
+                        _Cancel();
+                        $("#ApConfiguration").show();
+                    }
+                    else if (response == "dup") {
+                        showFeedback("warning", "ไม่สามารถเพิ่มได้เพราะมีข้อมูล " + $('#APnameinfo').val() + " นี้แล้วในฐานช้อมูล");
+                    }
+                }
+
+                    , error: function (err) {
+
+                        showFeedback("error", err);
+                    }
+            });
+        }
+    }
+    function Updateall() {
+
+        var model = defaultaddCoverageInfoData();       
+
+        if (model.Base_L2 == "" && model.Site_Name == "" && model.Aumphur == "" && model.Tumbon == ""
+            && model.Province == "" && model.Zone == "" && model.Lat == "" && model.Lon == "") {           
+            showFeedback("error", "กรุณากรอกข้อมูลให้ครบทุกช่อง");
+        }
+        else {
+            $.ajax({
+                url: '/AirNetWirelessCoverage/SaveInfo',
+                data: { data: JSON.stringify(model) },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    if (response == true) {
+                        showFeedback("success", "Saved Complete");
+                        _Cancel();
+                        $("#RegionAP").data("kendoDropDownList").dataSource.read({ type: "REGION_CODE" });
+                        $("#ProvinceAP").data("kendoDropDownList").dataSource.read({ regionCode: "" });
+                        $("#AumphurAP").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "" });
+                        $("#TumbonAP").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "", aumphur: "" });
+                        $("#ProvinceAP").data("kendoDropDownList").select(0);
+                        $("#AumphurAP").data("kendoDropDownList").select(0);
+                        $("#TumbonAP").data("kendoDropDownList").select(0);
+                        $("#RegionAP").data("kendoDropDownList").select(0);
+                        $("#ApConfiguration").hide();
+                        $("#MainAll1").show();
+                        _Search();
+                    }
+                    else if (response == "dup") {
+                        showFeedback("warning", "ไม่สามารถเพิ่มได้เพราะมีข้อมูล " + $('#Base').val() + " นี้แล้วในฐานช้อมูล");
+                    }
+
+                }
+
+                    , error: function (err) {
+
+                        showFeedback("error", err);
+                    }
+            });
+        }
+
+    }
+</script>
+
+          

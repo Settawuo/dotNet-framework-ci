@@ -1,0 +1,193 @@
+﻿@{
+    string B_CONFIRM = "CONFIRM";
+    string B_CLOSE = "CLOSE";
+    string L_STATUS = "Update Status To";
+}
+
+<div style="padding: 15px;">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <label>@L_STATUS <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label style="color:red;font-size:15px">*</label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DropDownList()
+                      .Name("ddlFAPOWorkFlowStatusReCalByFile")
+                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                      .DataTextField("DISPLAY_VAL")
+                      .DataValueField("LOV_VAL1")
+                      .DataSource(source =>
+                      {
+                          source.Read(read =>
+                          {
+                              read.Action("FapoRecalByFile", "LastMileByDistance");
+
+                          });
+
+                      }).SelectedIndex(0)
+                      
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-ddlFAPOWorkFlowStatusReCalByFile"></div>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    <div class="row">
+        <label>Import File</label>
+        @(Html.Kendo().Upload()
+              .Name("RecalfapoLastMilefile")
+              .HtmlAttributes(new
+              {
+                  accept = ".csv, text/csv, application/csv"
+              })
+              .Async(a => a
+                          .Save("ReCalDistanceFapoLastMilefile_Save", "LastMileByDistance")
+                          .Remove("ReCalDistanceFapoLastMilefile_Remove", "LastMileByDistance")
+                  .AutoUpload(true))
+              .Multiple(false)
+              .Events(e => e.Success("onReCalFapoLastMilefileSuccess"))
+              .Events(e => e.Error("onReCalFapoLastMilefileError"))
+        )
+        <div class="i-fg-data-entry-validation" id="validatefor-RecalfapoLastMilefile"></div>
+    </div>
+    <div class="row i-gap-top-1">
+        <div class="i-text-align-center">
+            <a id="btnCancelReCalFAPOStatusByFile" class="btn btn-danger"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLOSE</a>
+            <a id="btnExportTemplateRecal" onclick="Exptemplate()" class="btn btn-info"><i class="fa fa-file-excel-o fa-lg"></i>&nbsp;&nbsp;Export CSV Template</a>
+            <a id="btnConfirmReCalFAPOStatusByFile" class="btn btn-success"><i class="fa fa-check-square-o fa-lg"></i>&nbsp;&nbsp;@B_CONFIRM</a>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#ddlFAPOWorkFlowStatusReCalByFile").data('kendoDropDownList').select(0);
+        $("#btnConfirmReCalFAPOStatusByFile").on('click', function () {
+            submitReCalSCMStatusByFile();
+        });
+        // console.log("ddlFAPOWorkFlowStatusReCalByFile=" + $("#ddlFAPOWorkFlowStatusReCalByFile").val())
+        $("#btnCancelReCalFAPOStatusByFile").on('click', function () {
+            resetReCalFapoStatusByFile();
+        });
+         $("#btnExportTemplateRecal").attr("disabled", false);
+         
+    });
+    function resetReCalFapoStatusByFile() {
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $("#validatefor-RecalfapoLastMilefile").html("");
+        $("#validatefor-ddlFAPOWorkFlowStatusReCalByFile").html("");
+        $("#ddlFAPOWorkFlowStatusReCalByFile").data('kendoDropDownList').select(0);
+        $("#ReCalDistanceByFileBy").data("kendoWindow").close();
+    }
+
+    function submitReCalSCMStatusByFile() {
+
+
+        if (!validateFAPOWorkFlowStatusReCalByFile()) { return; }
+        if (!ValidationReCalFapoStatusbyFileValue()) { return; }
+
+
+        var status = $("#ddlFAPOWorkFlowStatusReCalByFile").val();
+        var data = JSON.stringify({
+            "status": status,
+            "fileName": $(".k-filename").text()
+        });
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            url: "/LastMileByDistance/LastMileByDistanceReCalByFile",
+            data: data,
+            async: false,
+            dataType: "json",
+            success: function (response) {
+                if (response) {
+                    resetReCalFapoStatusByFile();
+                    if (response.Code == 0) {
+                        //    $("#ReCalDistanceByFileBy").data("kendoWindow").close();
+                        showFeedback("success", response.message, "System Information");
+                    } else {
+                        //    $("#ReCalDistanceByFileBy").data("kendoWindow").close();
+                        showFeedback("error", response.message, "System Information");
+                    }
+                    // $("#"+getGridName()).data("kendoGrid").dataSource.read();
+                    var grid = getGridName();
+                    grid.dataSource.read();
+                }
+            },
+            failure: function (msg) {
+                $("#validatefor-RecalfapoLastMilefile").html(ValidationIcon() + msg);
+            }
+
+        });
+    }
+
+    function onReCalFapoLastMilefileSuccess(e) {
+        $(".k-filename").text(e.response.fileName);
+        if (!e.response.status) {
+            $("#validatefor-RecalfapoLastMilefile").html(ValidationIcon() + e.response.message);
+        } else {
+            $("#validatefor-RecalfapoLastMilefile").html("");
+        }
+    };
+
+    function onReCalFapoLastMilefileError(e) {
+        if (!e.response.status) {
+            $("#validatefor-RecalfapoLastMilefile").html(ValidationIcon() + e.response.message);
+        }
+    };
+
+    function ValidationReCalFapoStatusbyFileValue() {
+        var error = true;
+        if ($("#validatefor-RecalfapoLastMilefile").html()) {
+            error = false;
+        }
+
+        if (!$(".k-filename").text()) {
+            $("#validatefor-RecalfapoLastMilefile").html(ValidationIcon() + "Please upload file.");
+            error = false;
+        }
+
+        return error;
+    }
+
+    function validateFAPOWorkFlowStatusReCalByFile() {
+        var chk = false;
+
+        if ($("#ddlFAPOWorkFlowStatusReCalByFile").val() == '' || $("#ddlFAPOWorkFlowStatusReCalByFile").val() == 'ALL') {
+            $("#validatefor-ddlFAPOWorkFlowStatusReCalByFile").html(ValidationIcon() + "This field is required.");
+            chk = false;
+
+        }
+        else {
+            $("#validatefor-ddlFAPOWorkFlowStatusReCalByFile").html("");
+            chk = true;
+        }
+        return chk;
+    }
+    //function ddlWorkstatusonChangeDropDown(e) {
+    //    var dataItem = e.sender.dataItem();
+    //    var resultItem = dataItem.LOV_VAL1;
+    //    var result = ReplaceDataValueWrokStatus(resultItem);
+       
+    //    if (result == "RECHECK" || result == "Completed" ) {
+    //        $("#btnExportTemplateRecal").attr("disabled", false);
+    //    } else if (result == "DISPUTE") {
+    //        $("#btnExportTemplateRecal").attr("disabled", false);
+          
+    //    } else {
+    //        $("#btnExportTemplateRecal").attr("disabled", true);
+    //    }
+
+    //}
+    function ReplaceDataValueWrokStatus(result) {
+        var Reresult = result.trim().toUpperCase().replace(/ /g, '');
+        return Reresult;
+    }
+    function Exptemplate() {
+        var FlowStatus = $("#ddlFAPOWorkFlowStatusReCalByFile").val();
+        var result = ReplaceDataValueWrokStatus(FlowStatus);
+        var url = '@Url.Action("ExportTemplate", "LastMileByDistance")?type=' + result;
+        window.open(url, '_blank');
+    }
+
+</script>

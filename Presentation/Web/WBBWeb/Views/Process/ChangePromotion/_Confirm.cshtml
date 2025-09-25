@@ -1,0 +1,968 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@{
+    Layout = null;
+
+    string WORDING_4 = "";
+    string WORDING_5 = "";
+    string B_BACK = "";
+    string B_CANCEL = "";
+    string B_CONFIRM = "";
+    if (ViewBag.LabelLovScreen != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.labelLovScreen;
+
+        WORDING_4 = labelLovScreen.Any(c => c.Name == "WORDING_4") ? labelLovScreen.First(c => c.Name == "WORDING_4").DisplayValue : "";
+        WORDING_5 = labelLovScreen.Any(c => c.Name == "WORDING_5") ? labelLovScreen.First(c => c.Name == "WORDING_5").DisplayValue : "";
+        B_BACK = labelLovScreen.Any(c => c.Name == "B_BACK") ? labelLovScreen.First(c => c.Name == "B_BACK").DisplayValue : "";
+        B_CANCEL = labelLovScreen.Any(c => c.Name == "B_CANCEL") ? labelLovScreen.First(c => c.Name == "B_CANCEL").DisplayValue : "";
+        B_CONFIRM = labelLovScreen.Any(c => c.Name == "B_CONFIRM") ? labelLovScreen.First(c => c.Name == "B_CONFIRM").DisplayValue : "";
+    }
+
+    string FLAG_REPLACE = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        FLAG_REPLACE = FbbConstant.Any(f => f.Field == "FLAG_REPLACE") ? FbbConstant.First(f => f.Field == "FLAG_REPLACE").Validation : "";
+    }
+
+    string L_CHANGE_PACKAGE_REMARK = "";
+    string L_DEL_ONTOP = "";
+    string L_PROFILE_NEW_PACKAGE = "";
+    string L_CP_SUCCESS = "";
+    string L_CP_FAIL = "";
+    string L_EXISTING_CHANGE_PROMOTION = "";
+    string L_CHANGE_PROMOTION_INPUT_OTP = "";
+    string L_EXISITNG_SHOW_PASSWORD = "";
+    string L_EXISTING_REQUEST_PASSWORD = "";
+    string L_EXISTING_OTP = "";
+    string L_EXISTING_CONFIG_ERROR = "";
+    string L_EXISTING_POPUP_ERROR = "";
+    string L_EXISTING_OTP_PASSWORD = "";
+    string L_EXISTING_OTP_ERROR_2 = "";
+    //20.7 Change promotion Add Summary
+    string L_TERM_AND_CONDITION_CP_HEAD_01 = "";
+    string L_TERM_AND_CONDITION_CP_HEAD_02 = "";
+    string L_TERM_AND_CONDITION_CP_HEAD_03 = "";
+    if (ViewBag.LabelFBBTR016 != null)
+    {
+        var labelFBBTR016 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR016;
+
+        L_CHANGE_PACKAGE_REMARK = labelFBBTR016.Any(c => c.Name == "L_CHANGE_PACKAGE_REMARK") ? labelFBBTR016.First(c => c.Name == "L_CHANGE_PACKAGE_REMARK").DisplayValue : "";
+        L_DEL_ONTOP = labelFBBTR016.Any(c => c.Name == "L_DEL_ONTOP") ? labelFBBTR016.First(c => c.Name == "L_DEL_ONTOP").DisplayValue : "";
+        L_PROFILE_NEW_PACKAGE = labelFBBTR016.Any(c => c.Name == "L_PROFILE_NEW_PACKAGE") ? labelFBBTR016.First(c => c.Name == "L_PROFILE_NEW_PACKAGE").DisplayValue : "";
+        L_CP_SUCCESS = labelFBBTR016.Any(c => c.Name == "L_CP_SUCCESS") ? labelFBBTR016.First(c => c.Name == "L_CP_SUCCESS").DisplayValue : "";
+        L_CP_FAIL = labelFBBTR016.Any(c => c.Name == "L_CP_FAIL") ? labelFBBTR016.First(c => c.Name == "L_CP_FAIL").DisplayValue : "";
+        L_EXISTING_CHANGE_PROMOTION = labelFBBTR016.Any(c => c.Name == "L_EXISTING_CHANGE_PROMOTION") ? labelFBBTR016.First(c => c.Name == "L_EXISTING_CHANGE_PROMOTION").DisplayValue : "";
+        L_CHANGE_PROMOTION_INPUT_OTP = labelFBBTR016.Any(c => c.Name == "L_CHANGE_PROMOTION_INPUT_OTP") ? labelFBBTR016.First(c => c.Name == "L_CHANGE_PROMOTION_INPUT_OTP").DisplayValue : "";
+        L_EXISITNG_SHOW_PASSWORD = labelFBBTR016.Any(c => c.Name == "L_EXISITNG_SHOW_PASSWORD") ? labelFBBTR016.First(c => c.Name == "L_EXISITNG_SHOW_PASSWORD").DisplayValue : "";
+        L_EXISTING_REQUEST_PASSWORD = labelFBBTR016.Any(c => c.Name == "L_EXISTING_REQUEST_PASSWORD") ? labelFBBTR016.First(c => c.Name == "L_EXISTING_REQUEST_PASSWORD").DisplayValue : "";
+        L_EXISTING_OTP = labelFBBTR016.Any(c => c.Name == "L_EXISTING_OTP") ? labelFBBTR016.First(c => c.Name == "L_EXISTING_OTP").DisplayValue : "";
+        L_EXISTING_CONFIG_ERROR = labelFBBTR016.Any(c => c.Name == "L_EXISTING_CONFIG_ERROR") ? labelFBBTR016.First(c => c.Name == "L_EXISTING_CONFIG_ERROR").DisplayValue : "";
+        L_EXISTING_POPUP_ERROR = labelFBBTR016.Any(c => c.Name == "L_EXISTING_POPUP_ERROR") ? labelFBBTR016.First(c => c.Name == "L_EXISTING_POPUP_ERROR").DisplayValue : "";
+        L_EXISTING_OTP_PASSWORD = labelFBBTR016.Any(c => c.Name == "L_EXISTING_OTP_PASSWORD") ? labelFBBTR016.First(c => c.Name == "L_EXISTING_OTP_PASSWORD").DisplayValue : "";
+        L_EXISTING_OTP_ERROR_2 = labelFBBTR016.Any(c => c.Name == "L_EXISTING_OTP_ERROR_2") ? labelFBBTR016.First(c => c.Name == "L_EXISTING_OTP_ERROR_2").DisplayValue : "";
+        //20.7 Change promotion Add Summary
+        L_TERM_AND_CONDITION_CP_HEAD_01 = labelFBBTR016.Any(c => c.Name == "TERM_AND_CONDITION_CP_HEAD_01") ? labelFBBTR016.First(c => c.Name == "TERM_AND_CONDITION_CP_HEAD_01").DisplayValue : "";
+        L_TERM_AND_CONDITION_CP_HEAD_02 = labelFBBTR016.Any(c => c.Name == "TERM_AND_CONDITION_CP_HEAD_02") ? labelFBBTR016.First(c => c.Name == "TERM_AND_CONDITION_CP_HEAD_02").DisplayValue : "";
+        L_TERM_AND_CONDITION_CP_HEAD_03 = labelFBBTR016.Any(c => c.Name == "TERM_AND_CONDITION_CP_HEAD_03") ? labelFBBTR016.First(c => c.Name == "TERM_AND_CONDITION_CP_HEAD_03").DisplayValue : "";
+    }
+
+}
+
+<style>
+    .gusterbottom {
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+    }
+
+    .radius5 {
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .tab_red {
+        background-color: #E285AF;
+        color: #FFF;
+        padding: 10px 20px;
+    }
+
+        .tab_red span {
+            font-size: 2em;
+            line-height: 120%;
+            padding: 5px 0px;
+        }
+
+    .tab_green {
+        background-color: #8DC63F;
+        color: #FFF;
+        padding: 10px 20px;
+    }
+
+        .tab_green span {
+            font-size: 2em;
+            line-height: 120%;
+            padding: 5px 0px;
+        }
+
+    .row .row {
+        width: auto;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        max-width: none;
+    }
+
+    .columns {
+        position: relative;
+        float: left;
+    }
+
+    .large-1, .large-10, .large-11, .large-12, .large-2, .large-3, .large-4, .large-5, .large-6, .large-7, .large-8, .large-9 {
+        display: block;
+    }
+
+    .large-9 {
+        width: 75%;
+    }
+
+    .medium-9 {
+        width: 75%;
+    }
+
+    .small-8 {
+        width: 66.6667%;
+    }
+
+    .b_pad5 {
+        padding-bottom: 5px;
+    }
+
+    .large-12 {
+        width: 100%;
+    }
+
+    .border_bottom_gray {
+        border-bottom: 1px solid #E5E5E5;
+    }
+
+    .border_right_gray {
+        border-right: 1px solid #E5E5E5;
+    }
+
+    .font_green {
+        color: #8DC63F;
+    }
+
+    .box_padding15 {
+        padding: 15px;
+    }
+</style>
+
+<div id="divConfirm" style="display:none">
+    <p class="clearfix"></p>
+    <div class="gusterbottom">
+        <div class="radius5">
+            <div class="">
+                <div class="tab_green"> <div class="row"> <div class="columns large-9 medium-9 small-8"> <span>@L_PROFILE_NEW_PACKAGE</span> </div> </div> </div> <div class="row">
+                    <div class="large-12 columns b_pad5">
+                        <table class="border_bottom_gray" border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tbody id="CHANGE_PACKAGE_INFO_CONTENT"></tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                    <h3 id="lblChangePackRightCase" style="font-weight: inherit; color: red;">@Html.Raw(L_CHANGE_PACKAGE_REMARK)</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="clearfix"></p>
+    <div id="RemarkPlaybox">
+        <div class="col-md-12 col-xs-12">
+            <div class="col-md-2 col-xs-2">
+            </div>
+            <div class="col-md-10 col-xs-10">
+                <h3>@WORDING_4 : <span id="Wording4Msg"></span></h3>
+            </div>
+        </div>
+        <div class="col-md-12 col-xs-12">
+            <div class="col-md-2 col-xs-2">
+            </div>
+            <div class="col-md-10 col-xs-10">
+                <h3>@WORDING_5 : <span id="Wording5Msg"></span></h3>
+            </div>
+        </div>
+    </div>
+    <p class="clearfix"></p>
+    <h4 id="ChangePackageRemark">@Html.Raw(L_CHANGE_PACKAGE_REMARK)</h4>
+    <p class="clearfix"></p>
+    <div id="DelOntopDiv" style="display: none">
+        <h4 class="font_green">
+            @L_DEL_ONTOP
+            <div id="DelOntopDesc">
+            </div>
+            <div id="DelOntopNewDesc">
+            </div>
+        </h4>
+    </div>
+    <p class="clearfix"></p>
+    <div id="InputOTP" style="display: none;">
+        <div class="row_ais">
+            <div class="column large-5 medium-6 small-12">
+                <div class="labeltext">@(Html.Raw(L_EXISTING_CHANGE_PROMOTION))</div>
+                <div class="mobile-number">
+                    <input id="MobileSentOTP" class="inputform" type="text" onkeydown="return false;" readonly style="background-color: #eee">
+                </div>
+
+            </div>
+        </div>
+        <div class="row_ais">
+            <div class="column large-5 medium-6 small-12">
+                <div class="labeltext">@(Html.Raw(L_CHANGE_PROMOTION_INPUT_OTP))</div>
+                <div class="mobile-number">
+                    <input id="OTPPass" class="inputform" type="password" autocomplete="off" maxlength="10" placeholder="@L_EXISTING_OTP_PASSWORD">
+                </div>
+
+            </div>
+        </div>
+        <div class="row_ais">
+            <div class="column large-5">
+                <div class="submit-manual">
+                    <input type="checkbox" id="chkShowPass"> @L_EXISITNG_SHOW_PASSWORD | <span style="cursor: pointer;" onclick="LockScreen(true, ''); RequestOTPFunc('');">
+                        @L_EXISTING_REQUEST_PASSWORD
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*20.7 Change promotion Add Summary*@
+    <p class="clearfix"></p>
+    <div id="summarytab1">
+        <div class="col-xs-12 add-border-rounded-green">
+            <h4 class="tgreen"><span class="hightlight" style="@(string.IsNullOrEmpty(L_TERM_AND_CONDITION_CP_HEAD_01) ? "background: transparent;" : "")">@(Html.Raw(L_TERM_AND_CONDITION_CP_HEAD_01))</span></h4>
+            <div id="summaryTable1" style="overflow-x: auto; height: 100%; max-height: 120px; margin-bottom: 24px;" onscroll="CheckTermConScrolled('summaryTable1')">
+                <span id="TermCon1"></span>
+            </div>
+            <h4 class="tgreen"></h4>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+    <p class="clearfix"></p>
+    <div id="summarytab2">
+        <div class="col-xs-12 add-border-rounded-green">
+            <h4 class="tgreen"><span class="hightlight" style="@(string.IsNullOrEmpty(L_TERM_AND_CONDITION_CP_HEAD_02) ? "background: transparent;" : "")">@(Html.Raw(L_TERM_AND_CONDITION_CP_HEAD_02))</span></h4>
+            <div id="summaryTable2" style="overflow-x: auto; height: 100%; max-height: 190px; margin-bottom: 15px; margin-top: 10px;" onscroll="CheckTermConScrolled('summaryTable2')">
+                <span id="TermCon2"></span>
+            </div>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+    <p class="clearfix"></p>
+    <div id="summarytab3">
+        <div class="col-xs-12 add-border-rounded-green">
+            <h4 class="tgreen"><span class="hightlight" style="@(string.IsNullOrEmpty(L_TERM_AND_CONDITION_CP_HEAD_03) ? "background: transparent;" : "")">@(Html.Raw(L_TERM_AND_CONDITION_CP_HEAD_03))</span></h4>
+            <div style="overflow-x: auto; height: 100%; max-height: 190px; display: flex; margin-bottom: 10px;">
+                <input name="checkboxTermCon" type="checkbox" id="checkboxTermCon" style="transform: scale(1.5); margin: 8px 16px 24px 5px; " disabled="" onchange="EnableSummit(this.checked)">
+                <span id="TermCon3"></span>
+            </div>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+
+    <p class="clearfix"></p>
+    <div class="col-md-12 text-center wrapButton-total">
+        <button class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="ConfirmBack();">@B_BACK</button>
+        <button class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="window.location.href = window.location.href;">@B_CANCEL</button>
+        <button id="btnConfirm" class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" disabled="true" onclick="SubmitPackageChange();">@B_CONFIRM</button>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+</div>
+<script>
+    @functions{
+ public string GetAntiForgeryToken()
+ {
+ string cookieToken, formToken;
+ AntiForgery.GetTokens(null, out cookieToken, out formToken);
+ return cookieToken + "," + formToken;
+ }
+ }
+</script>
+<input type="hidden" id="forgeryToken" value="@GetAntiForgeryToken()" />
+
+<script>
+
+    //AWARE_R20.02
+    $(document).ready(function () {
+        sessionStorage.setItem("ChangePackagePromotion-InternetNo", "");
+        sessionStorage.setItem("ChangePackagePromotion-CardType", "");
+        sessionStorage.setItem("ChangePackagePromotion-CardNo", "");
+    });
+
+    function ConfirmBack() {
+        var pkg_set = $('input[name=SelectPackage]:checked').val();
+        var checkSPB = $("#CHECK_SHOW_PLAYBOX" + pkg_set).val();
+
+        if (checkSPB == "N") {
+            var optionVal = $('select[id=slt_OVERRULE]').val();
+            if (optionVal == "I")
+            {
+                $(".sod_list span[data-value='I']").attr('class', 'sod_option active selected');
+                $(".sod_label").text($(".sod_list span[data-value='I']").text());
+                $("#slt_OVERRULE").val("I");
+            }
+            changePageHeader(2);
+            $('#divChoosePackage').show();
+        }
+        else {
+            changePageHeader(3);
+            $('#divChoosePlayBox').show();
+        }
+        $('#divConfirm').hide();
+    }
+
+    function GetChangeTablePackageInfo() {
+
+        var non_mobile_no = $("#CoveragePanelModel_P_MOBILE").val();
+        var relate_mobile = $("#outMobileNo").val();
+        var owner_product = $("#outOwnerProduct").val();
+        var serenate_flag = $("#CoveragePanelModel_Serenade_Flag").val();
+        var ref_row_id = $("#ref_row_id").val();
+        var air_change_package_array = [];
+        var pkg_i = $('input[name=SelectPackage]:checked').val();
+        var objMain = { 'SFF_PROMOTION_CODE': $("#SFF_PROMOTION_CODE" + pkg_i).val(), 'startDt': '', 'endDt': '', 'PRODUCT_SEQ': $("#SEQ" + pkg_i).val(), 'promotionName': $("#PACKAGE_NAME" + pkg_i).val() };
+        air_change_package_array.push(objMain)
+        var pkg_mapping = $("#MAPPING_CODE" + pkg_i).val();
+        if (pkg_mapping != "") {
+            $("#OntopPkg").find("tr[name=" + pkg_mapping + "]").each(function (i) {
+                var objOntop = { 'SFF_PROMOTION_CODE': $(this).find("input[name=SFF_PROMOTION_CODE]").val(), 'startDt': '', 'endDt': '', 'PRODUCT_SEQ': $(this).find("input[name=SEQ]").val(), 'promotionName': $(this).find("input[name=PACKAGE_NAME]").val() };
+                air_change_package_array.push(objOntop);
+            });
+            $("#OntopPBOXTPkg").find("tr[name=" + pkg_mapping + "]").each(function (i) {
+                var objOntop = { 'SFF_PROMOTION_CODE': $(this).find("input[name=SFF_PROMOTION_CODE]").val(), 'startDt': '', 'endDt': '', 'PRODUCT_SEQ': $(this).find("input[name=SEQ]").val(), 'promotionName': $(this).find("input[name=PACKAGE_NAME]").val() };
+                air_change_package_array.push(objOntop);
+            });
+        }
+
+        var checkSPB = $("#CHECK_SHOW_PLAYBOX" + pkg_i).val();
+        var checkHavePlayBox = $("#checkHavePlayBox").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/ChangePromotion/GetTableChangePackageInfo",
+            dataType: "text",
+            data: { non_mobile_no: non_mobile_no, relate_mobile: relate_mobile, ref_row_id: ref_row_id, owner_product: owner_product, serenate_flag: serenate_flag, checkHavePlayBox: checkHavePlayBox, oldPackage: $("#productCdUse").val(), air_change_package_array: JSON.stringify(air_change_package_array), ShowPlaybox: checkSPB },
+            traditional: true,
+            success: function (data) {
+                $("#CHANGE_PACKAGE_INFO_CONTENT").text("");
+                $("#CHANGE_PACKAGE_INFO_CONTENT").append(data);
+
+                if ($("#PersonalOntop").val() != undefined) {
+                    $("#DelOntopDesc").text("");
+                    $("#PersonalOntop").find("div").each(function () {
+                        var delontopContent = $(this).text();
+                        $("#DelOntopDesc").append(delontopContent + "<br />");
+                    });
+                }
+                else {
+                    $("#DelOntopDesc").text("");
+                }
+
+                if ($("#PersonalOntopNew").val() != undefined) {
+                    $("#DelOntopNewDesc").text("");
+                    $("#PersonalOntopNew").find("div").each(function () {
+                        var delontopContent = $(this).text();
+                        $("#DelOntopNewDesc").append(delontopContent + "<br />");
+                    });
+                }
+                else {
+                    $("#DelOntopNewDesc").text("");
+                }
+
+                if ($("#PersonalOntop").val() != undefined || $("#PersonalOntopNew").val() != undefined) {
+                    $("#DelOntopDiv").show();
+                }
+                else {
+                    $("#DelOntopDiv").hide();
+                }
+
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    function ConfirmOneTimePW() {
+        var result = false;
+            $.ajax({
+                url: '/Process/ConfirmOneTimePW',
+                data: { msisdn: $.trim($("#tmpMobileSentOTP").val()), pwd: $('#OTPPass').val(), transactionID: $('#GSSO_transactionID').val() },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (data) {
+                    if (data != null) {
+                        if (data.code == "000" && data.transactionID == $('#GSSO_transactionID').val()) {
+                            result = true;
+                        }
+                    }
+                }
+            });
+            return result;
+    }
+
+    function SubmitPackageChange() {
+        $("#btnConfirm").hide();
+        var chkOneTimePW = true;
+        LockScreen(true, "");
+        if ($("#slt_OVERRULE :selected").val() == "I" && window.parent.$("#isOfficer").length == 0) {
+            chkOneTimePW = ConfirmOneTimePW();
+        }
+
+        if (chkOneTimePW) {
+            var project_name = $("#CustomerRegisterPanelModel_Project_name").val();
+            var non_mobile_no = $("#CoveragePanelModel_P_MOBILE").val();
+            var relate_mobile = $("#outMobileNo").val();
+            var old_relate_mobile = $("#old_relate_mobile").val();
+            var relateMobileAction = $("#relate_mobile_action").val();
+            var mobileNumberContact = $("#mobileNumberContact").val();
+            var LANQUAGE_SCREEN = "E";
+
+            if ($("#LanguagePage").val() == "1") {
+                LANQUAGE_SCREEN = "T";
+            }
+
+            var locationCd = "";
+            var ascCode = "";
+            var employee_id = "";
+            var employee_name = "";
+            if (window.parent.$("#isOfficer").length > 0 && window.parent.$("#isOfficer").val() == "Y") {
+                if (window.parent.$("#LcCode").length > 0) {
+                    locationCd = window.parent.$('#LcCode').val();
+                }
+
+                if (window.parent.$("#ASCCode").length > 0) {
+                    ascCode = window.parent.$('#ASCCode').val();
+                }
+
+                if (window.parent.$("#EmployeeID").length > 0) {
+                    employee_id = window.parent.$('#EmployeeID').val();
+                }
+
+                if (window.parent.$("#outEmpName").length > 0) {
+                    employee_name = window.parent.$('#outEmpName').val();
+                }
+            }
+
+            //R23.05 Max E-app term & condition log
+           $.ajax({
+                type: "POST",
+                url: "/ChangePromotion/InsertFbbConsentLog",
+                data: {
+                    internet_no: non_mobile_no,
+                    contact_mobile: relate_mobile,
+                    location_code: locationCd,
+                    asc_code: ascCode,
+                    employee_id: employee_id,
+                    employee_name: employee_name,
+                    ip_address: $("#hdIPaddress").val(),
+                    type_flag: "CHANGE_PRO_CONSENT_FLAG"
+                },
+                dataType: "json",
+                async: false,
+                success: function (data) { console.log(data); },
+                error: function (err) { console.log(err); }
+            });
+            //end R23.05 Max E-app term & condition log
+
+            var old_package = [];
+
+            $("#HiddenForPersonalPackage").find("div").each(function (i) {
+                var obj = { 'SFF_PROMOTION_CODE': $(this).find("input[name=productCd]").val(), 'startDt': $(this).find("input[name=startDt]").val(), 'endDt': $(this).find("input[name=endDt]").val(), 'PRODUCT_SEQ': $(this).find("input[name=productSeq]").val() };
+                old_package.push(obj);
+            });
+
+            var new_package = [];
+            var pkg_i = $('input[name=SelectPackage]:checked').val();
+            var objMain = { 'SFF_PROMOTION_CODE': $("#SFF_PROMOTION_CODE" + pkg_i).val(), 'startDt': null, 'endDt': null, 'PRODUCT_SEQ': $("#SEQ" + pkg_i).val() };
+            new_package.push(objMain)
+            var pkg_mapping = $("#MAPPING_CODE" + pkg_i).val();
+            if (pkg_mapping != "") {
+                $("#OntopPkg").find("tr[name=" + pkg_mapping + "]").each(function (i) {
+                    var objOntop = { 'SFF_PROMOTION_CODE': $(this).find("input[name=SFF_PROMOTION_CODE]").val(), 'startDt': null, 'endDt': null, 'PRODUCT_SEQ': $(this).find("input[name=SEQ]").val() };
+                    new_package.push(objOntop);
+                });
+                $("#OntopPBOXTPkg").find("tr[name=" + pkg_mapping + "]").each(function (i) {
+                    var objOntop = { 'SFF_PROMOTION_CODE': $(this).find("input[name=SFF_PROMOTION_CODE]").val(), 'startDt': null, 'endDt': null, 'PRODUCT_SEQ': $(this).find("input[name=SEQ]").val() };
+                    new_package.push(objOntop);
+                });
+            }
+            var isBundle = "N";
+            if (project_name == "" && pkg_mapping != "") {
+                isBundle = "Y";
+            }
+            var network_type = $("#CoveragePanelModel_ChargeType").val();
+            var overrule = $("#slt_OVERRULE :selected").val();
+
+            var forgeryId = $("#forgeryToken").val();
+            if ($('#AppointmentDate').val() != "" && $('#TimeSlot').val() != "") {
+                $.ajax({
+                    type: "POST",
+                    url: "/ChangePromotion/ReserveTimeslot",
+                    data: {
+                        NON_MOBILE: $("#CoveragePanelModel_P_MOBILE").val(),
+                        ID_CARD: $("#IDCardNo").val(),
+                        APPOINTMENT_DATE: $('#AppointmentDate').val(),
+                        TIME_SLOT: $('#TimeSlot').val(),
+                        LANQUAGE_SCREEN: LANQUAGE_SCREEN,
+                        P_ADDRESS_ID: $('#addressID').val(),
+                        INSTALL_ADDRESS_1: $('#installAddress1').val(),
+                        INSTALL_ADDRESS_2: $('#installAddress2').val(),
+                        INSTALL_ADDRESS_3: $('#installAddress3').val(),
+                        INSTALL_ADDRESS_4: $('#installAddress4').val(),
+                        INSTALL_ADDRESS_5: $('#installAddress5').val()
+                    },
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data.RESULT == "0") {
+                            $("#RESERVED_ID").val(data.RESERVED_ID);
+                            $.ajax({
+                                type: "POST",
+                                url: "/ChangePromotion/ConfirmChange",
+                                dataType: "json",
+                                headers: {
+                                    'VerificationToken': forgeryId
+                                },
+                                data: {
+                                    non_mobile_no: non_mobile_no,
+                                    relate_mobile: relate_mobile,
+                                    old_relate_mobile: old_relate_mobile,
+                                    project_name: project_name,
+                                    network_type: network_type,
+                                    old_package: JSON.stringify(old_package),
+                                    new_package: JSON.stringify(new_package),
+                                    isBundle: isBundle,
+                                    mobileNumberContact: mobileNumberContact,
+                                    relateMobileAction: relateMobileAction,
+                                    overrule: overrule,
+                                    locationCd: locationCd,
+                                    ascCode: ascCode,
+                                    employee_id: employee_id,
+                                    accessMode: $("#ACCESS_MODE_PLAYBOX" + pkg_i).val(),
+                                    playBoxCode: $("#ServiceCodePBOX").val(),
+                                    appointmentDate: $("#AppointmentDate").val(),
+                                    timeSlot: $("#TimeSlot").val(),
+                                    RESERVED_ID: data.RESERVED_ID,
+                                    employee_name: employee_name,
+                                    checkHavePlayBox: $('#checkHavePlayBox').val(),
+                                    changepro_pk: $('#hdnchangepro_pk').val()
+                                },
+                                traditional: true,
+                                success: function (data) {
+                                    LockScreen(false);
+                                    strBuilder = ""
+                                    if (data.VALIDATE_FLAG == "Y") {
+                                        if ($('#checkHavePlayBox').val() != "N") {
+                                            //R22.03 Topup Replace
+                                            if ('@FLAG_REPLACE' == "Y") {
+                                                if (data.GOTO_TOPUP_REPLACE == "Y") {
+                                                    submitSendRedirectTopupReplace();
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            //AWARE_R20.02
+                                            if (data.GOTO_TOPUP == "Y") {
+                                                submitSendRedirect();
+                                                return;
+                                            }
+                                        }
+                                        strBuilder = '@Html.Raw(L_CP_SUCCESS)'
+                                    }
+                                    else {
+                                        strBuilder = '@L_CP_FAIL';
+                                        //20.6
+                                        if (data.VALIDATE_FLAG == "TIMEOUT") {
+                                            strBuilder = data.ERROR_MSG;
+                                        }
+                                        $("#ERROR_MSG").val(data.ERROR_MSG);
+                                    }
+                                    $("#forgeryToken").val("@GetAntiForgeryToken()")
+                                    $("#basic-modal-content").find("#LastPopupMessage").html("");
+                                    $("#basic-modal-content").find("#LastPopupMessage").html("<h3 class='text-center'>" + strBuilder + "</h3>");
+                                    $('#basic-modal-content').modal();
+                                },
+                                error: function () {
+                                    LockScreen(false);
+                                    $("#forgeryToken").val("@GetAntiForgeryToken()")
+                                    $("#basic-modal-content").find("#LastPopupMessage").html("");
+                                    $("#basic-modal-content").find("#LastPopupMessage").html("<h3 class='text-center'>No Response Data</h3>");
+                                    $('#basic-modal-content').modal();
+                                }
+                            });
+                        }
+                        else if (data.RESULT == "-2") {
+                            $("#RESERVED_ID").val("");
+                            ConfirmBack();
+                            LockScreen(false);
+                            $("#btnConfirm").show();
+                        }
+                        else {
+                            $("#RESERVED_ID").val("");
+                            ConfirmBack();
+                            LockScreen(false);
+                            $("#btnConfirm").show();
+                        }
+
+                    },
+                    error: function () {
+                        $("#RESERVED_ID").val("");
+                        ConfirmBack();
+                        LockScreen(false);
+                        $("#btnConfirm").show();
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/ChangePromotion/ConfirmChange",
+                    dataType: "json",
+                    headers: {
+                        'VerificationToken': forgeryId
+                    },
+                    data: {
+                        non_mobile_no: non_mobile_no,
+                        relate_mobile: relate_mobile,
+                        old_relate_mobile: old_relate_mobile,
+                        project_name: project_name,
+                        network_type: network_type,
+                        old_package: JSON.stringify(old_package),
+                        new_package: JSON.stringify(new_package),
+                        isBundle: isBundle,
+                        mobileNumberContact: mobileNumberContact,
+                        relateMobileAction: relateMobileAction,
+                        overrule: overrule,
+                        locationCd: locationCd,
+                        ascCode: ascCode,
+                        employee_id: employee_id,
+                        employee_name: employee_name,
+                        checkHavePlayBox: $('#checkHavePlayBox').val(),
+                        changepro_pk: $('#hdnchangepro_pk').val()
+                    },
+                    traditional: true,
+                    success: function (data) {
+                        LockScreen(false);
+                        strBuilder = ""
+                        if (data.VALIDATE_FLAG == "Y") {
+                            if ($('#checkHavePlayBox').val() != "N") {
+                                //R22.03 Topup Replace
+                                if ('@FLAG_REPLACE' == "Y") {
+                                    if (data.GOTO_TOPUP_REPLACE == "Y") {
+                                        submitSendRedirectTopupReplace();
+                                        return;
+                                    }
+                                }
+                            }
+                            else {
+                                 //AWARE_R20.02
+                                if (data.GOTO_TOPUP == "Y") {
+                                    submitSendRedirect();
+                                    return;
+                                }
+                            }
+                            strBuilder = '@Html.Raw(L_CP_SUCCESS)'
+                        }
+                        else {
+                            strBuilder = '@L_CP_FAIL';
+                            $("#ERROR_MSG").val(data.ERROR_MSG);
+                            //20.6
+                            if (data.VALIDATE_FLAG == "TIMEOUT") {
+                                strBuilder = data.ERROR_MSG;
+                            }
+                            if (data.ERROR_MSG == "@L_EXISTING_CONFIG_ERROR") {
+                                strBuilder = '@L_EXISTING_POPUP_ERROR';
+                            }
+                        }
+                        $("#forgeryToken").val("@GetAntiForgeryToken()")
+                        $("#basic-modal-content").find("#LastPopupMessage").html("");
+                        $("#basic-modal-content").find("#LastPopupMessage").html("<h3 class='text-center'>" + strBuilder + "</h3>");
+                        $('#basic-modal-content').modal();
+                    },
+                    error: function () {
+                        LockScreen(false);
+                        $("#forgeryToken").val("@GetAntiForgeryToken()")
+                        $("#basic-modal-content").find("#LastPopupMessage").html("");
+                        $("#basic-modal-content").find("#LastPopupMessage").html("<h3 class='text-center'>No Response Data</h3>");
+                        $('#basic-modal-content').modal();
+                    }
+                });
+            }
+        }
+        else {
+            LockScreen(false);
+            $('#MsgTextERR').text('@L_EXISTING_OTP_ERROR_2');
+            $('#modal_error_cndn').modal('show');
+            $('#OTPPass').val("");
+            $('#OTPPass').focus();
+            $("#btnConfirm").show();
+        }
+    }
+
+    //AWARE_R20.02
+    function submitSendRedirect() {
+        sessionStorage.setItem("ChangePackagePromotion-InternetNo", "");
+        sessionStorage.setItem("ChangePackagePromotion-CardType", "");
+        sessionStorage.setItem("ChangePackagePromotion-CardNo", "");
+
+        var iframe = window.parent.document.getElementById("frameMain");
+        if (iframe != null && iframe != undefined) {
+            window.parent.$('#menu-7').trigger('click'); //menu-7 = existing mesh : Topup
+        }
+        else {
+            var internetNo = $('#CoveragePanelModel_P_MOBILE').val();
+            var cardType = $('#IDCardType').val();
+            var cardNo = $('#IDCardNo').val();
+            var billCycle = $('#billCycle').val();
+            sessionStorage.setItem("ChangePackagePromotion-InternetNo", internetNo);
+            sessionStorage.setItem("ChangePackagePromotion-CardType", cardType);
+            sessionStorage.setItem("ChangePackagePromotion-CardNo", cardNo);
+            window.location.href = "@Url.Action("Topup","Process")";
+        }
+    }
+
+    function submitSendRedirectTopupReplace() {
+        sessionStorage.setItem("ChangePackagePromotion-InternetNo", "");
+        sessionStorage.setItem("ChangePackagePromotion-CardType", "");
+        sessionStorage.setItem("ChangePackagePromotion-CardNo", "");
+
+        var iframe = window.parent.document.getElementById("frameMain");
+        if (iframe != null && iframe != undefined) {
+            window.parent.$('#menu-12').trigger('click'); //menu-12 = existing TopupReplace
+        }
+        else {
+            var internetNo = $('#CoveragePanelModel_P_MOBILE').val();
+            var cardType = $('#IDCardType').val();
+            var cardNo = $('#IDCardNo').val();
+            var billCycle = $('#billCycle').val();
+            sessionStorage.setItem("ChangePackagePromotion-InternetNo", internetNo);
+            sessionStorage.setItem("ChangePackagePromotion-CardType", cardType);
+            sessionStorage.setItem("ChangePackagePromotion-CardNo", cardNo);
+            window.location.href = "@Url.Action("TopupReplace","Process")";
+        }
+    }
+
+    function GetTermConditions() {
+        GetTermConditionData1();
+        GetTermConditionData2();
+        GetTermConditionData3();
+    }
+
+    function GetTermConditionData1() {
+        var ProSubType = "Existing_Service_Condition";
+        $('#TermCon1').html("");
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetTermCon?LovType=" + ProSubType,
+            dataType: "json",
+            success: function (data) {
+
+                var strBuilder = '<table id="tbTermCon1" class="tbl">';
+
+                var r = 1;
+                $.each(data, function (i, e) {
+                    if ($("#LanguagePage").val() == "2") {
+                        var str = e.LovValue2;
+                    }
+                    else {
+                        var str = e.LovValue1;
+                    }
+
+                    if (!!e.Text)
+                        var numb = e.Text
+                    else
+                        var numb = "";
+
+                    strBuilder += '<tr>';
+                    if (numb.toString().indexOf(".") > 0)
+                        strBuilder += ' <td style="vertical-align:top; padding-left:1em;">';
+                    else if (numb == "")
+                        strBuilder += '<td style="vertical-align:top;" colspan = "2" >';
+                    else
+                        strBuilder += '<td style="vertical-align:top; padding-left: 0em;" colspan = "2">';
+
+                    if (numb == "")
+                        strBuilder += str;
+                    else if (numb.toString().indexOf(".") < 0) {
+                        strBuilder += numb;
+                        strBuilder += (" " + str);
+                    }
+                    else
+                        strBuilder += numb;
+                    strBuilder += ' </td>';
+
+                    if (numb != "" && numb.toString().indexOf(".") > 0) {
+                        strBuilder += '<td>';
+                        strBuilder += str;
+                        strBuilder += '</td>';
+                    }
+                    strBuilder += '</tr>';
+                    r++;
+                });
+                strBuilder += '</table>';
+
+                $('#TermCon1').append(strBuilder);
+            }
+        });
+    }
+
+    function GetTermConditionData2() {
+        var ProSubType = "Existing_Legal_Condition";
+        $('#TermCon2').html("");
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetTermCon?LovType=" + ProSubType,
+            dataType: "json",
+            success: function (data) {
+
+                var strBuilder = '<table id="tbTermCon2" class="tbl">';
+
+                var r = 1;
+                $.each(data, function (i, e) {
+                    if ($("#LanguagePage").val() == "2") {
+                        var str = e.LovValue2;
+                    }
+                    else {
+                        var str = e.LovValue1;
+                    }
+
+                    if (!!e.Text)
+                        var numb = e.Text
+                    else
+                        var numb = "";
+
+                    strBuilder += '<tr>';
+                    if (numb.toString().indexOf(".") > 0)
+                        strBuilder += ' <td style="vertical-align:top; padding-left:1em;">';
+                    else if (numb == "")
+                        strBuilder += '<td style="vertical-align:top;" colspan = "2" >';
+                    else
+                        strBuilder += '<td style="vertical-align:top; padding-left: 0em;" colspan = "2">';
+
+                    if (numb == "")
+                        strBuilder += str;
+                    else if (numb.toString().indexOf(".") < 0) {
+                        strBuilder += numb;
+                        strBuilder += (" " + str);
+                    }
+                    else
+                        strBuilder += numb;
+                    strBuilder += ' </td>';
+
+                    if (numb != "" && numb.toString().indexOf(".") > 0) {
+                        strBuilder += '<td>';
+                        strBuilder += str;
+                        strBuilder += '</td>';
+                    }
+                    strBuilder += '</tr>';
+                    r++;
+                });
+                strBuilder += '</table>';
+
+                $('#TermCon2').append(strBuilder);
+            }
+        });
+    }
+
+    function GetTermConditionData3() {
+        var ProSubType = "Existing_Confirm_Condition";
+        $('#TermCon3').html("");
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetTermCon?LovType=" + ProSubType,
+            dataType: "json",
+            success: function (data) {
+
+                var strBuilder = '<table id="tbTermCon3" class="tbl">';
+
+                var r = 1;
+                $.each(data, function (i, e) {
+                    if ($("#LanguagePage").val() == "2") {
+                        var str = e.LovValue2;
+                    }
+                    else {
+                        var str = e.LovValue1;
+                    }
+
+                    if (!!e.Text)
+                        var numb = e.Text
+                    else
+                        var numb = "";
+
+                    strBuilder += '<tr>';
+                    if (numb.toString().indexOf(".") > 0)
+                        strBuilder += ' <td style="vertical-align:top; padding-left:1em;">';
+                    else if (numb == "")
+                        strBuilder += '<td style="vertical-align:top;" colspan = "2" >';
+                    else
+                        strBuilder += '<td style="vertical-align:top; padding-left: 0em;" colspan = "2">';
+
+                    if (numb == "")
+                        strBuilder += str;
+                    else if (numb.toString().indexOf(".") < 0) {
+                        strBuilder += numb;
+                        strBuilder += (" " + str);
+                    }
+                    else
+                        strBuilder += numb;
+                    strBuilder += ' </td>';
+
+                    if (numb != "" && numb.toString().indexOf(".") > 0) {
+                        strBuilder += '<td>';
+                        strBuilder += str;
+                        strBuilder += '</td>';
+                    }
+                    strBuilder += '</tr>';
+                    r++;
+                });
+                strBuilder += '</table>';
+
+                $('#TermCon3').append(strBuilder);
+            }
+        });
+    }
+
+    //R23.05 Max E-app term & condition
+    var termTable1Scrolled = false;
+    var termTable2Scrolled = false;
+    function CheckTermConScrolled(termConId) {
+        const termElement = document.getElementById(termConId);
+        const termPosition = Math.round(termElement.scrollTop + termElement.offsetHeight + 1);
+
+        if (termPosition >= termElement.scrollHeight) {
+            switch (termConId.slice(-1)) {
+                case "1": termTable1Scrolled = true; break;
+                case "2": termTable2Scrolled = true; break;
+                default: break;
+            }
+            if (termTable1Scrolled & termTable2Scrolled) {
+                document.getElementById("checkboxTermCon").disabled = false;
+            }
+        }
+    }
+
+    function EnableSummit(status) {
+        document.getElementById("btnConfirm").disabled = !status;
+    }
+    //end R23.05 Max E-app term & condition
+</script>

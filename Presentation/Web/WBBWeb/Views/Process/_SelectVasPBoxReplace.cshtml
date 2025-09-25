@@ -1,0 +1,2056 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension;
+@{
+    string language = Session[WebConstants.SessionKeys.CurrentUICulture] != null ? Session[WebConstants.SessionKeys.CurrentUICulture].ToString() : "";
+
+    string VAS = "";
+    string OWNER_PRODUCT = "";
+    string ADDRESS_ID = "";
+    string PACKAGE_CODE = "";
+    string ContactMobileNo = "";
+    decimal SFF_CHKPROFILE_ID = 0;
+    decimal SffProfileLogID = 0;
+    string existingFlag = "";
+    string B_OK = "";
+    string TopUp = "";
+
+    if (null != ViewBag.SffProfileLogID)
+    {
+        SffProfileLogID = ViewBag.SffProfileLogID;
+    }
+
+    if (ViewBag.ContactMobileNo != null)
+    {
+        ContactMobileNo = ViewBag.ContactMobileNo;
+    }
+
+    if (ViewBag.Vas != null)
+    {
+        VAS = ViewBag.Vas;
+    }
+
+    if (ViewBag.OwnerProduct != null)
+    {
+        OWNER_PRODUCT = ViewBag.OwnerProduct;
+    }
+
+    if (ViewBag.AddressID != null)
+    {
+        ADDRESS_ID = ViewBag.AddressID;
+    }
+
+    if (ViewBag.PackageCode != null)
+    {
+        PACKAGE_CODE = ViewBag.PackageCode;
+    }
+
+    if (ViewBag.SffProfileLogID != null)
+    {
+        SFF_CHKPROFILE_ID = ViewBag.SffProfileLogID;
+    }
+
+    if (ViewBag.TopUp != null)
+    {
+        TopUp = ViewBag.TopUp;
+    }
+
+    string L_SUM_INSTALL_RATE = "";
+    string L_SUM_MAINTEN_RATE = "";
+    string L_VAS_DATAIL = "";
+    string L_SELECT_VAS = "";
+    string L_LIST = "";
+    string L_CHARGE = "";
+    string L_INSTALL_RATE = "";
+    string L_INSTALL_RATE_VALUE = "";
+    string L_MAINTEN_FEE = "";
+    string L_MAINTEN_FEE_VALUE = "";
+    string L_BAHT_MIN = "";
+    string L_BAHT_MONTH = "";
+    string L_CALL_IN_RATE = "";
+    string L_CALL_IN_RATE_VALUE = "";
+    string L_BAHT_TIME = "";
+    string L_CALL_OUT_RATE = "";
+    string L_CALL_OUT_RATE_VALUE = "";
+    string L_CALL_FREE = "";
+    string L_MINUTE = "";
+    string L_CALLING_RATE = "";
+    string L_PER_MIN = "";
+    string L_PER_TIME = "";
+    string L_FREE_FIXEDLINE = "";
+    string L_UNLIMITED = "";
+    string L_CALL_IN_AIS = "";
+    string L_CALL_IN_AIS_VALUE = "";
+    string L_CALL_OUT_AIS = "";
+    string L_CALL_OUT_AIS_VALUE = "";
+    string L_REMARK_VOICE_RATE = "";
+
+    string SHOW_ICON_FIXEDLINE_CUST_REGISTER = "";
+    string SHOW_ICON_FIXEDLINE_SSO_REGISTER = "";
+    string SHOW_ICON_FIXEDLINE_CUST_VAS = "";
+    string SHOW_ICON_FIXEDLINE_SSO_VAS = "";
+
+    string SHOW_ICON_PLAYBOX_CUST_REGISTER = "";
+    string SHOW_ICON_PLAYBOX_SSO_REGISTER = "";
+    string SHOW_ICON_PLAYBOX_CUST_VAS = "";
+    string SHOW_ICON_PLAYBOX_SSO_VAS = "";
+
+    string DEFAULT_ICON_PLAYBOX_CUST_REGISTER = "";
+    string DEFAULT_ICON_PLAYBOX_SSO_REGISTER = "";
+    string DEFAULT_ICON_PLAYBOX_CUST_VAS = "";
+    string DEFAULT_ICON_PLAYBOX_SSO_VAS = "";
+
+    string L_AIS_PLAYBOX = "";
+    string L_INTERNET_TV = "";
+    string L_FIXEDLINE_VOIP = "";
+    string L_FIXEDLINE_DES = "";
+    string L_CLICK_CHECKBOX = "";
+    string L_SUM_DISCOUNT_INSTALL_RATE = "";
+
+    //TODO: Mutiple Playbox
+    string L_NUMBER_OF_PLAYBOX = "0";
+    string L_MULTI_PLAYBOX_CLICK_DROPDOWN = "";
+    string L_MULTI_PLAYBOX_LABEL_DROPDOWN = "";
+    string L_MULTI_PLAYBOX_INITIATIONS_FEE = "";
+    string L_MULTI_PLAYBOX_REMARK = "";
+    var L_MULTI_PLAYBOX_REMARK_DETAIL = new List<LovScreenValueModel>();
+    string M_MOBILE_FORWARD = "";
+    string L_MULTI_PLAYBOX_MAX_SPEED_WARNING = "";
+    string L_MULTI_PLAYBOX_MAX_SPEED_LINK = "";
+    string L_MULTI_PLAYBOX_SUMM_DETAIL = "";
+    string L_INSTALLATION_DATE = "";
+    string DISPLAY_TIMESLOT_PBOX_JOIN = "";
+    string DISPLAY_TIMESLOT_PBOX_MA = "";
+    string L_MESSAGE_NOT_PLAYBOX = "";
+    string L_NEW_CUST_NOT_FOUND2 = "";
+    string WORDIND_MESH = "";
+    string L_PLAYBOX_HEADER_1 = "";
+    string L_PLAYBOX_DETAIL_1 = "";
+    string L_PLAYBOX_REMARK_1 = "";
+    var L_PLAYBOX_HEADER_LIST_1 = new List<LovScreenValueModel>();
+    var L_PLAYBOX_DETAIL_LIST_1 = new List<LovScreenValueModel>();
+    var L_PLAYBOX_REMARK_LIST_1 = new List<LovScreenValueModel>();
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        L_NUMBER_OF_PLAYBOX = LabelFBBTR001.Any(c => c.Name == "L_NUMBER_OF_PLAYBOX") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_NUMBER_OF_PLAYBOX").DisplayValue : "0";
+        L_NEW_CUST_NOT_FOUND2 = LabelFBBTR001.Any(c => c.Name == "L_NEW_CUST_NOT_FOUND2") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_NEW_CUST_NOT_FOUND2").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var LabelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        L_MULTI_PLAYBOX_CLICK_DROPDOWN = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_CLICK_DROPDOWN") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_CLICK_DROPDOWN").DisplayValue : "";
+        L_MULTI_PLAYBOX_LABEL_DROPDOWN = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_LABEL_DROPDOWN") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_LABEL_DROPDOWN").DisplayValue : "";
+        L_MULTI_PLAYBOX_INITIATIONS_FEE = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_INITIATIONS_FEE") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_INITIATIONS_FEE").DisplayValue : "";
+        L_MULTI_PLAYBOX_REMARK = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_REMARK") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_REMARK").DisplayValue : "";
+        L_MULTI_PLAYBOX_MAX_SPEED_WARNING = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_MAX_SPEED_WARNING") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_MAX_SPEED_WARNING").DisplayValue : "";
+        L_MULTI_PLAYBOX_MAX_SPEED_LINK = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_MAX_SPEED_LINK") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_MAX_SPEED_LINK").DisplayValue : "";
+        L_MULTI_PLAYBOX_SUMM_DETAIL = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_SUMM_DETAIL") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_SUMM_DETAIL").DisplayValue : "";
+        L_MULTI_PLAYBOX_REMARK_DETAIL = LabelFBBTR003.Where(w => w.Name == "L_MULTI_PLAYBOX_REMARK_DETAIL").OrderBy(o => o.OrderByPDF).ToList();
+        L_INSTALLATION_DATE = LabelFBBTR003.Any(c => c.Name == "L_INSTALLATION_DATE") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_INSTALLATION_DATE").DisplayValue : "";
+        DISPLAY_TIMESLOT_PBOX_JOIN = LabelFBBTR003.Any(c => c.Name == "DISPLAY_TIMESLOT_PBOX_JOIN") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "DISPLAY_TIMESLOT_PBOX_JOIN").DisplayValue : "";
+        DISPLAY_TIMESLOT_PBOX_MA = LabelFBBTR003.Any(c => c.Name == "DISPLAY_TIMESLOT_PBOX_MA") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "DISPLAY_TIMESLOT_PBOX_MA").DisplayValue : "";
+        WORDIND_MESH = LabelFBBTR003.Any(c => c.Name == "WORDIND_MESH") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "WORDIND_MESH").DisplayValue : "";
+        L_PLAYBOX_HEADER_1 = LabelFBBTR003.Any(c => c.Name == "L_PLAYBOX_HEADER_1") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_PLAYBOX_HEADER_1").DisplayValue : "";
+        L_PLAYBOX_DETAIL_1 = LabelFBBTR003.Any(c => c.Name == "L_PLAYBOX_DETAIL_1") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_PLAYBOX_DETAIL_1").DisplayValue : "";
+        L_PLAYBOX_REMARK_1 = LabelFBBTR003.Any(c => c.Name == "L_PLAYBOX_REMARK_1") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_PLAYBOX_REMARK_1").DisplayValue : "";
+        L_PLAYBOX_HEADER_LIST_1 = LabelFBBTR003.Where(w => w.Name == "L_PLAYBOX_HEADER_LIST_1").OrderBy(o => o.OrderByPDF).ToList();
+        L_PLAYBOX_DETAIL_LIST_1 = LabelFBBTR003.Where(w => w.Name == "L_PLAYBOX_DETAIL_LIST_1").OrderBy(o => o.OrderByPDF).ToList();
+        L_PLAYBOX_REMARK_LIST_1 = LabelFBBTR003.Where(w => w.Name == "L_PLAYBOX_REMARK_LIST_1").OrderBy(o => o.OrderByPDF).ToList();
+    }
+
+    if (ViewBag.LabelFBBTR010 != null)
+    {
+        var LabelFBBTR010 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR010;
+        L_SUM_INSTALL_RATE = LabelFBBTR010.Any(c => c.Name == "L_SUM_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SUM_INSTALL_RATE").DisplayValue : "";
+        L_SUM_MAINTEN_RATE = LabelFBBTR010.Any(c => c.Name == "L_SUM_MAINTEN_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SUM_MAINTEN_RATE").DisplayValue : "";
+        L_VAS_DATAIL = LabelFBBTR010.Any(c => c.Name == "L_VAS_DATAIL") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_VAS_DATAIL").DisplayValue : "";
+        L_SELECT_VAS = LabelFBBTR010.Any(c => c.Name == "L_SELECT_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SELECT_VAS").DisplayValue : "";
+
+        L_LIST = LabelFBBTR010.Any(c => c.Name == "L_LIST") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_LIST").DisplayValue : "";
+        L_CHARGE = LabelFBBTR010.Any(c => c.Name == "L_CHARGE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CHARGE").DisplayValue : "";
+        L_INSTALL_RATE = LabelFBBTR010.Any(c => c.Name == "L_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_INSTALL_RATE").DisplayValue : "";
+        L_INSTALL_RATE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_INSTALL_RATE").LovValue3 : "";
+        L_MAINTEN_FEE = LabelFBBTR010.Any(c => c.Name == "L_MAINTEN_FEE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MAINTEN_FEE").DisplayValue : "";
+        L_MAINTEN_FEE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_MAINTEN_FEE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MAINTEN_FEE").LovValue3 : "";
+        L_BAHT_MIN = LabelFBBTR010.Any(c => c.Name == "L_BAHT_MIN") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_BAHT_MIN").DisplayValue : "";
+        L_BAHT_MONTH = LabelFBBTR010.Any(c => c.Name == "L_BAHT_MONTH") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_BAHT_MONTH").DisplayValue : "";
+        L_CALL_IN_RATE = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_RATE").DisplayValue : "";
+        L_CALL_IN_RATE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_RATE").LovValue3 : "";
+        L_BAHT_TIME = LabelFBBTR010.Any(c => c.Name == "L_BAHT_TIME") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_BAHT_TIME").DisplayValue : "";
+        L_CALL_OUT_RATE = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_RATE").DisplayValue : "";
+        L_CALL_OUT_RATE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_RATE").LovValue3 : "";
+        L_CALL_IN_AIS = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_AIS").DisplayValue : "";
+        L_CALL_IN_AIS_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_AIS").LovValue3 : "";
+        L_CALL_OUT_AIS = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_AIS").DisplayValue : "";
+        L_CALL_OUT_AIS_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_AIS").LovValue3 : "";
+        L_FREE_FIXEDLINE = LabelFBBTR010.Any(c => c.Name == "L_FREE_FIXEDLINE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_FREE_FIXEDLINE").DisplayValue : "";
+        L_UNLIMITED = LabelFBBTR010.Any(c => c.Name == "L_UNLIMITED") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_UNLIMITED").DisplayValue : "";
+        L_PER_MIN = LabelFBBTR010.Any(c => c.Name == "L_PER_MIN") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_PER_MIN").DisplayValue : "";
+        L_PER_TIME = LabelFBBTR010.Any(c => c.Name == "L_PER_TIME") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_PER_TIME").DisplayValue : "";
+        L_CALLING_RATE = LabelFBBTR010.Any(c => c.Name == "L_CALLING_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALLING_RATE").DisplayValue : "";
+        L_REMARK_VOICE_RATE = LabelFBBTR010.Any(c => c.Name == "L_REMARK_VOICE_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_REMARK_VOICE_RATE").DisplayValue : "";
+        L_CALL_FREE = LabelFBBTR010.Any(c => c.Name == "L_CALL_FREE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_FREE").DisplayValue : "";
+        L_MINUTE = LabelFBBTR010.Any(c => c.Name == "L_MINUTE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MINUTE").DisplayValue : "";
+
+        SHOW_ICON_FIXEDLINE_CUST_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_REGISTER").DisplayValue : "";
+        SHOW_ICON_FIXEDLINE_SSO_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_REGISTER").DisplayValue : "";
+        SHOW_ICON_FIXEDLINE_CUST_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_VAS").DisplayValue : "";
+        SHOW_ICON_FIXEDLINE_SSO_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_VAS").DisplayValue : "";
+
+        SHOW_ICON_PLAYBOX_CUST_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER").DisplayValue : "";
+        SHOW_ICON_PLAYBOX_SSO_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER").DisplayValue : "";
+        SHOW_ICON_PLAYBOX_CUST_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS").DisplayValue : "";
+        SHOW_ICON_PLAYBOX_SSO_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS").DisplayValue : "";
+
+        DEFAULT_ICON_PLAYBOX_CUST_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER").DefaultValue : "";
+        DEFAULT_ICON_PLAYBOX_SSO_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER").DefaultValue : "";
+        DEFAULT_ICON_PLAYBOX_CUST_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS").DefaultValue : "";
+        DEFAULT_ICON_PLAYBOX_SSO_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS").DefaultValue : "";
+
+        L_AIS_PLAYBOX = LabelFBBTR010.Any(c => c.Name == "L_AIS_PLAYBOX") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_AIS_PLAYBOX").DisplayValue : "";
+        L_INTERNET_TV = LabelFBBTR010.Any(c => c.Name == "L_INTERNET_TV") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_INTERNET_TV").DisplayValue : "";
+        L_FIXEDLINE_VOIP = LabelFBBTR010.Any(c => c.Name == "L_FIXEDLINE_VOIP") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_FIXEDLINE_VOIP").DisplayValue : "";
+        L_FIXEDLINE_DES = LabelFBBTR010.Any(c => c.Name == "L_FIXEDLINE_DES") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_FIXEDLINE_DES").DisplayValue : "";
+        L_CLICK_CHECKBOX = LabelFBBTR010.Any(c => c.Name == "L_CLICK_CHECKBOX") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CLICK_CHECKBOX").DisplayValue : "";
+        L_SUM_DISCOUNT_INSTALL_RATE = LabelFBBTR010.Any(c => c.Name == "L_SUM_DISCOUNT_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SUM_DISCOUNT_INSTALL_RATE").DisplayValue : "";
+        M_MOBILE_FORWARD = LabelFBBTR010.Any(c => c.Name == "M_MOBILE_FORWARD") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "M_MOBILE_FORWARD").DisplayValue : "";
+        L_MESSAGE_NOT_PLAYBOX = LabelFBBTR010.Any(c => c.Name == "L_MESSAGE_NOT_PLAYBOX") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MESSAGE_NOT_PLAYBOX").DisplayValue : "";
+
+        B_OK = LabelFBBTR010.Any(c => c.Name == "B_OK") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "B_OK").DisplayValue : "";
+    }
+
+    string B_VAS_CONFIRM_SKIP = "";
+
+    if (ViewBag.LabelFBBORV11 != null)
+    {
+        var LabelFBBORV11 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV11;
+        B_VAS_CONFIRM_SKIP = LabelFBBORV11.Any(c => c.Name == "B_VAS_CONFIRM_SKIP") ? LabelFBBORV11.FirstOrDefault(c => c.Name == "B_VAS_CONFIRM_SKIP").DisplayValue : "";
+    }
+
+    string B_NEXT = "";
+    string B_BACK = "";
+    string L_CLOSE = "";
+    string L_CHOOSE_TOPUP = "";
+    string B_OPEN = "";
+    string L_PLEASE_CHOOSE_VAS_SERVICE = "";
+
+    if (ViewBag.LabelFBBTR004 != null)
+    {
+        var LabelFBBTR004 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR004;
+        B_OPEN = LabelFBBTR004.Any(c => c.Name == "B_OPEN") ? LabelFBBTR004.FirstOrDefault(c => c.Name == "B_OPEN").DisplayValue : "";
+        L_PLEASE_CHOOSE_VAS_SERVICE = LabelFBBTR004.Any(c => c.Name == "L_PLEASE_CHOOSE_VAS_SERVICE") ? LabelFBBTR004.FirstOrDefault(c => c.Name == "L_PLEASE_CHOOSE_VAS_SERVICE").DisplayValue : "";
+    }
+
+    if (ViewBag.labelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR000;
+        B_NEXT = labelFBBTR000.Any(c => c.Name == "B_NEXT") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+        B_BACK = labelFBBTR000.Any(c => c.Name == "B_BACK") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+        L_CLOSE = labelFBBTR000.Any(c => c.Name == "B_CLOSE") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        L_CHOOSE_TOPUP = labelFBBTR000.Any(c => c.Name == "L_CHOOSE_TOPUP") ? labelFBBTR000.FirstOrDefault(c => c.Name == "L_CHOOSE_TOPUP").DisplayValue : "";
+
+    }
+
+    string sffProductName = "";
+    string sffServiceYear = "";
+
+    if (ViewBag.SFFProductName != null) { sffProductName = ViewBag.SFFProductName; }
+    if (ViewBag.SFFServiceYear != null) { sffServiceYear = ViewBag.SFFServiceYear; }
+
+    string L_SUMMARY = "";
+    string L_SUMM_DETAIL1 = "";
+    string L_SUMM_DETAIL_WireBB = "";
+    string L_SUMM_DETAIL_FTTx = "";
+    string L_SUMM_DETAIL5 = "";
+    string L_SUMM_DETAIL8 = "";
+    string L_SUMM_DETAIL9 = "";
+    string L_SUMM_DETAIL11 = "";
+    string L_SUMM_DETAIL13 = "";
+    string L_SUMM_DETAIL14 = "";
+    string L_SUMM_DETAIL15 = "";
+    string L_SUMM_DETAIL12 = "";
+    string L_BAHT = "";
+    string L_ONTOP_PLAYBOX_BPL = "";
+
+    string L_BUNDLING_DISCOUNT_DTL = "";
+    string L_DISCOUNT_DTL = "";
+
+    if (ViewBag.LabelFBBTR002 != null)
+    {
+        var labelFBBTR002 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR002;
+        L_SUMMARY = labelFBBTR002.Any(c => c.Name == "L_SUMMARY") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMMARY").DisplayValue : "";
+        L_SUMM_DETAIL1 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL1") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL1").DisplayValue : "";
+        L_SUMM_DETAIL_WireBB = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL_WireBB") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL_WireBB").DisplayValue : "";
+        L_SUMM_DETAIL_FTTx = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL_FTTx") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL_FTTx").DisplayValue : "";
+        L_SUMM_DETAIL8 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL8") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL8").DisplayValue : "";
+        L_SUMM_DETAIL9 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL9") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL9").DisplayValue : "";
+        L_SUMM_DETAIL11 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL11") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL11").DisplayValue : "";
+        L_SUMM_DETAIL13 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL13") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL13").DisplayValue : "";
+        L_SUMM_DETAIL14 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL14") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL14").DisplayValue : "";
+        L_SUMM_DETAIL15 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL15") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL15").DisplayValue : "";
+        L_SUMM_DETAIL12 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL12") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL12").DisplayValue : "";
+        L_BAHT = labelFBBTR002.Any(c => c.Name == "L_BAHT") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_BAHT").DisplayValue : "";
+        L_ONTOP_PLAYBOX_BPL = labelFBBTR002.Any(c => c.Name == "L_ONTOP_PLAYBOX_BPL") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_BPL").DisplayValue : "";
+        L_BUNDLING_DISCOUNT_DTL = labelFBBTR002.Any(c => c.Name == "L_BUNDLING_DISCOUNT_DTL") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_BUNDLING_DISCOUNT_DTL").DisplayValue : "";
+        L_DISCOUNT_DTL = labelFBBTR002.Any(c => c.Name == "L_DISCOUNT_DTL") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_DISCOUNT_DTL").DisplayValue : "";
+
+    }
+
+    string L_ONTOP_PLAYBOX_PRE_INITIATION = "";
+    string L_ONTOP_PLAYBOX_PROMOTION = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_INITIATION = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_FREE_TV = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_HOOQ = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTH = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTHS = "";
+    string L_ONTOP_PLAYBOX_FREE = "";
+    string L_ONTOP_PLAYBOX_VALUE = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_KARAOKE = "";
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        L_ONTOP_PLAYBOX_PRE_INITIATION = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_PRE_INITIATION") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_PRE_INITIATION").DisplayValue : "";
+        L_ONTOP_PLAYBOX_PROMOTION = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_PROMOTION") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_PROMOTION").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_INITIATION = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_INITIATION") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_INITIATION").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_FREE_TV = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_FREE_TV") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_FREE_TV").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_HOOQ = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTH = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTH") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTH").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTHS = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTHS") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTHS").DisplayValue : "";
+        L_ONTOP_PLAYBOX_FREE = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_FREE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_FREE").DisplayValue : "";
+        L_ONTOP_PLAYBOX_VALUE = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_VALUE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_VALUE").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_KARAOKE = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_KARAOKE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_KARAOKE").DisplayValue : "";
+        L_SUMM_DETAIL5 = labelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_INITIATIONS") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_INITIATIONS").DisplayValue : "";
+    }
+
+    string ERROR_ARORDER = "";
+    string ERROR_TECHNOLOGY = "";
+    string ERROR_SELECT_PACKAGE = "";
+    if (ViewBag.LabelFBBORV41 != null)
+    {
+        var LabelFBBORV41 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV41;
+        ERROR_ARORDER = LabelFBBORV41.Any(c => c.Name == "ERROR_ARORDER") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "ERROR_ARORDER").DisplayValue : "";
+        ERROR_TECHNOLOGY = LabelFBBORV41.Any(c => c.Name == "ERROR_TECHNOLOGY") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "ERROR_TECHNOLOGY").DisplayValue : "";
+        ERROR_SELECT_PACKAGE = LabelFBBORV41.Any(c => c.Name == "ERROR_SELECT_PACKAGE") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "ERROR_SELECT_PACKAGE").DisplayValue : "";
+    }
+
+    /*R22.03 TopupReplace*/
+    string WORDING_PRICE_ORDER_FEE = "";//ค่าบริการเปลี่ยนกล่อง AIS PLAYBOX
+    string WORDING_PRICE_CONTRACT = "";//ค่าติดตั้งและอุปกรณ์
+    string WORDING_SUMMARY_ORDER_FEE = "";//รวมรายการที่ต้องชำระ
+    string L_REPLACE_PLAYBOX_LABEL_DROPDOWN = "";
+    string PIC_REPLACE_ATV = "";
+    string L_ATV_INITIATIONS_FEE = "";
+
+    string L_ATV_DETAIL_HEADER = "";
+    string L_ATV_CONDITION_HEADER = "";
+    string L_ATV_REMARK_HEADER = "";
+    var L_ATV_DETAIL_LIST = new List<LovScreenValueModel>();
+    var L_ATV_CONDITION_LIST = new List<LovScreenValueModel>();
+    var L_ATV_REMARK_LIST = new List<LovScreenValueModel>();
+    if (ViewBag.LabelFBBOR050 != null)
+    {
+        var LabelFBBOR050 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR050;
+        WORDING_PRICE_ORDER_FEE = LabelFBBOR050.Any(c => c.Name == "WORDING_PRICE_ORDER_FEE") ? LabelFBBOR050.FirstOrDefault(c => c.Name == "WORDING_PRICE_ORDER_FEE").DisplayValue : "";
+        WORDING_PRICE_CONTRACT = LabelFBBOR050.Any(c => c.Name == "WORDING_PRICE_CONTRACT") ? LabelFBBOR050.FirstOrDefault(c => c.Name == "WORDING_PRICE_CONTRACT").DisplayValue : "";
+        WORDING_SUMMARY_ORDER_FEE = LabelFBBOR050.Any(c => c.Name == "WORDING_SUMMARY_ORDER_FEE") ? LabelFBBOR050.FirstOrDefault(c => c.Name == "WORDING_SUMMARY_ORDER_FEE").DisplayValue : "";
+        L_REPLACE_PLAYBOX_LABEL_DROPDOWN = LabelFBBOR050.Any(c => c.Name == "L_REPLACE_PLAYBOX_LABEL_DROPDOWN") ? LabelFBBOR050.FirstOrDefault(c => c.Name == "L_REPLACE_PLAYBOX_LABEL_DROPDOWN").DisplayValue : "";
+        PIC_REPLACE_ATV = LabelFBBOR050.Any(c => c.Name == "PIC_REPLACE_ATV") ? LabelFBBOR050.FirstOrDefault(c => c.Name == "PIC_REPLACE_ATV").Blob : "";
+        L_ATV_INITIATIONS_FEE = LabelFBBOR050.Any(c => c.Name == "L_ATV_INITIATIONS_FEE") ? LabelFBBOR050.FirstOrDefault(c => c.Name == "L_ATV_INITIATIONS_FEE").DisplayValue : "";
+
+        L_ATV_DETAIL_HEADER = LabelFBBOR050.Any(c => c.Name == "L_ATV_DETAIL_HEADER") ? LabelFBBOR050.FirstOrDefault(c => c.Name == "L_ATV_DETAIL_HEADER").DisplayValue : "";
+        L_ATV_CONDITION_HEADER = LabelFBBOR050.Any(c => c.Name == "L_ATV_CONDITION_HEADER") ? LabelFBBOR050.FirstOrDefault(c => c.Name == "L_ATV_CONDITION_HEADER").DisplayValue : "";
+        L_ATV_REMARK_HEADER = LabelFBBOR050.Any(c => c.Name == "L_ATV_REMARK_HEADER") ? LabelFBBOR050.FirstOrDefault(c => c.Name == "L_ATV_REMARK_HEADER").DisplayValue : "";
+        L_ATV_DETAIL_LIST = LabelFBBOR050.Where(c => c.Name == "L_ATV_DETAIL_LIST").OrderBy(o => o.OrderByPDF).ToList();
+        L_ATV_CONDITION_LIST = LabelFBBOR050.Where(c => c.Name == "L_ATV_CONDITION_LIST").OrderBy(o => o.OrderByPDF).ToList();
+        L_ATV_REMARK_LIST = LabelFBBOR050.Where(c => c.Name == "L_ATV_REMARK_LIST").OrderBy(o => o.OrderByPDF).ToList();
+    }
+
+    string FBB_Con_CHECK_CHANNEL_PB = "";
+    string FBB_Con_CONDITION_TIME_SLOT_PB = "";
+    List<string> LIST_OUT_CHANNEL_SALE = null;
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        FBB_Con_CHECK_CHANNEL_PB = FbbConstant.Any(f => f.Field == "CHECK_CHANNEL_PB") ? FbbConstant.First(f => f.Field == "CHECK_CHANNEL_PB").Validation : "";
+        FBB_Con_CONDITION_TIME_SLOT_PB = FbbConstant.Any(f => f.Field == "CONDITION_TIME_SLOT_PB") ? FbbConstant.First(f => f.Field == "CONDITION_TIME_SLOT_PB").Validation : "";
+        LIST_OUT_CHANNEL_SALE = FbbConstant.Where(f => f.Field == "OUT_CHANNEL_SALE").Select(f => f.Validation).ToList();
+    }
+
+    string count_atv = "";
+    if (ViewBag.count_atv != null)
+    {
+        count_atv = ViewBag.count_atv;
+    }
+
+    string sympton_code_pbreplace = "";
+    if (ViewBag.sympton_code_pbreplace != null)
+    {
+        sympton_code_pbreplace = ViewBag.sympton_code_pbreplace;
+    }
+
+    string AccessModeByPass = "";
+    if (ViewBag.AccessModeByPass != null)
+    {
+        AccessModeByPass = ViewBag.AccessModeByPass;
+    }
+    string AisAirNumberByPass = "";
+    if (ViewBag.AisAirNumberByPass != null)
+    {
+        AisAirNumberByPass = ViewBag.AisAirNumberByPass;
+    }
+
+    //---------------------
+
+    string viewBagShowIconPB = "";
+    string viewBagShowIconFL = "";
+    string viewBagAddPB = "";
+
+    if (ViewBag.v_icon_pb != null)
+    {
+        viewBagShowIconPB = ViewBag.v_icon_pb;
+    }
+
+    if (ViewBag.v_check_pb != null)
+    {
+        viewBagShowIconFL = ViewBag.v_check_pb;
+    }
+
+    if (ViewBag.v_add_playbox != null)
+    {
+        viewBagAddPB = ViewBag.v_add_playbox;
+    }
+
+    if (null != ViewBag.ExistingFlag)
+    {
+        existingFlag = ViewBag.ExistingFlag;
+    }
+
+    string MyAISBypass = "";
+    if (ViewBag.MyAISBypass != null)
+    {
+        MyAISBypass = ViewBag.MyAISBypass;
+    }
+
+    string tempV2ByPass = "";
+    if (ViewBag.tempV2ByPass != null)
+    {
+        tempV2ByPass = ViewBag.tempV2ByPass;
+    }
+}
+
+<div id="page2_1" style="display: none;">
+    <div id="none_playbox" class="container col-lg-12 col-md-12 col-xs-12">
+        <div class="col-md-8 col-sm-8 col-xs-12 addrounded">
+            <p class="clearfix"></p>
+            <h4 class="page-header tgreen" id="lblSelectVas">@L_SELECT_VAS</h4>
+            @L_MULTI_PLAYBOX_CLICK_DROPDOWN
+            <p class="clearfix"></p>
+            <div id="divVasBoxDynamic" class="row-border"></div>
+            <div style="padding-top: 10px;">
+                <p class="clearfix"></p>
+                <div id="divRemark" class=" col-xs-12 ">
+                    <div class="add-rounded-gray">
+                        <p class="clearfix"></p>
+                        <b>@L_ATV_DETAIL_HEADER</b>
+                        <ul style="list-style-type: disc; padding-left: 40px;">
+                            @foreach (var detailList1 in L_ATV_DETAIL_LIST)
+                            {
+                                <li>@detailList1.DisplayValue</li>
+                            }
+                        </ul>
+                        <b>@L_ATV_CONDITION_HEADER</b>
+                        <ul style="list-style-type: disc; padding-left: 40px;">
+                            @foreach (var conditionList1 in L_ATV_CONDITION_LIST)
+                            {
+                                <li>@conditionList1.DisplayValue</li>
+                            }
+                        </ul>
+                        <b>@L_ATV_REMARK_HEADER</b>
+                        <ul style="list-style-type: disc; padding-left: 40px;">
+                            @foreach (var remarkList1 in L_ATV_REMARK_LIST)
+                            {
+                                <li>@remarkList1.DisplayValue</li>
+                            }
+                        </ul>
+                        <p class="clearfix"></p>
+                    </div>
+                </div>
+                <p class="clearfix"></p>
+                <div id="divInstallDateVas">
+                    <p class="clearfix"></p>
+                    <i class="fa fa-chevron-right tgreen"></i>&nbsp;@L_INSTALLATION_DATE
+                    <p class="clearfix"></p>
+                    <div style="position: relative;">
+                        <div class="col-sm-6 col-xs-12" id="divThDatePickerVas">
+                            <div class="col-sm-12 col-xs-12 right-inner-addon" style="position: relative; z-index: 10; padding-left: 0 !important; padding-right: 0 !important">
+                                <i class="fa fa-calendar"></i>
+                                <input id="dtpInstallDateTHVas_text" type="text" class="form-control" title="@L_INSTALLATION_DATE" readonly="readonly" autocomplete="off" />
+                            </div>
+                            <div style="position: absolute; width: 100%; height: 100%; z-index: -10;">
+                                <input type="text" class="form-control" id="dtpInstallDateTHVas" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12 right-inner-addon" id="divEnDatePickerVas" style="display: none;">
+                            <i class="fa fa-calendar"></i>
+                            <input type="text" class="form-control"
+                                   id="dtpInstallDateENVas" title="@L_INSTALLATION_DATE" readonly="readonly" autocomplete="off" />
+                            <p class="clearfix"></p>
+                        </div>
+                        <p class="clearfix visible-xs"></p>
+                        <div id="divTimeFlag" class="col-sm-6 col-xs-12"></div>
+                        <p class="clearfix"></p>
+                    </div>
+                    @Html.Hidden("hdTimeSlotRegisterHR")
+                    @Html.Hidden("hdTimeSlotRegisterFlowActionNo")
+                    @Html.Hidden("hdCurrentDateTime")
+                    <div id="divResponsiveTimeSLotWarning" class="text-center">
+                        <img src="~/Content/Content2016/images/loading-icon.gif" />
+                    </div>
+                    <div id="divResponsiveTimeSLotVas">
+                        <div class="col-sm-12 col-xs-12">
+                            <div class="visible-sm visible-xs" style="left: 40%; top: 10%; position: absolute;" id="swipe">
+                                <img src="~/img/i-swipe.png">
+                            </div>
+                            <div class="table-responsive">
+                                <div id="divTimeSlotVas" style="margin-left: auto; margin-right: auto; width: 730px;">
+                                </div>
+                                <p class="clearfix"></p>
+                            </div>
+                            <p class="clearfix"></p>
+                            <div id="divTextSelectTimeSlot" class="center-block" style="max-width: 730px; height: 100%; color: #7fc71f;">
+                            </div>
+                            <p class="clearfix"></p>
+                            <div style="clear: both;"></div>
+                            <div id="divTimeSlotVasRemark">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-4 col-xs-6 text-center"></div>
+            <p class="clearfix"></p>
+            <p class="clearfix page-header"></p>
+            <div class="col-md-12 text-center">
+                    <button type="button"
+                            @if (existingFlag == "PLAYBOXREPLACE:MENU" || MyAISBypass == "Y") { <text> class="btn btn-default btn-for-xs hide" </text>  } else { <text> class="btn btn-default btn-for-xs" </text> }
+                            id="btnVasBackPage" onclick=" onBtnVasBackPage_Click() ">
+                        &nbsp; @B_BACK &nbsp;
+                    </button>
+                    <button type="button" class="btn btn-success btn-for-xs" id="btnVasNextPage" onclick="onBtnVasNextPageV2_Click()">
+                        &nbsp; @B_NEXT &nbsp;<i class="fa fa-arrow-circle-o-right "></i>
+                    </button>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        <div id="divSelectValFormSummaryDetail">
+            <div class="col-md-4 col-sm-4 col-xs-12 addrounded pull-right hidden-xs">
+                <br />
+                <br />
+                <h4 class="greenheader page-header twhite" id="lblSumHeaderVas"></h4>
+                <div class="page-dot">
+                    <i class="fa fa-chevron-right tgreen"></i>
+                    <span class="tgreen" id="o2VasMultiServiceReplacePlayBox"></span>
+                    <p class="clearfix"></p>
+                    <div id="trServiceReplacePlayBox">
+                    </div>
+                    <strong>
+                        <span class="col-xs-8" id="o2Vas"></span>
+                        <span class="col-xs-4 text-right"><span id="summTotal1VasMultiPlaybox"></span> @L_BAHT</span>
+                    </strong>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="page-dot">
+                    <i class="fa fa-chevron-right tgreen"></i>
+                    <span class="tgreen" id="o4VasMultiInstallReplacePlayBox"></span>
+                    <p class="clearfix"></p>
+                    <div id="trInstallReplacePlayBox">
+                    </div>
+                    <strong>
+                        <span class="col-xs-8" id="o4Vas"></span>
+                        <span class="col-xs-4 text-right"><span id="summTotal1Vas"></span> @L_BAHT</span>
+                    </strong>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="page-dot">
+                    <i class="fa fa-chevron-right tgreen"></i>
+                    <span class="tgreen" id="o5Vas"></span>
+                    <p class="clearfix"></p>
+                    @*<span class="col-xs-8"><span id="o62Vas"></span></span>
+                    <span class="col-xs-4 text-right"><span id="sumProrateVas"></span> @L_BAHT</span>*@
+                    <p class="clearfix"></p>
+                    <strong>
+                        <span class="col-xs-8"><span id="o42Vas"></span></span>
+                        <span class="col-xs-4 text-right"><span id="sumTotalProrateVas"></span> @L_BAHT</span>
+                    </strong>
+                    <p class="clearfix"></p>
+                    <strong>
+                        <span class="col-xs-8"><span id="vatVas"></span></span>
+                    </strong>
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+        <input type="hidden" id="ZTEVasAddressID" value="@ADDRESS_ID" />
+        <input type="hidden" id="ContactMobileNo" value="@ContactMobileNo" />
+        <input type="hidden" id="idPlayboxCheckBox" value="" />
+        <input type="hidden" id="count_atv" value="@count_atv" />
+        <input type="hidden" id="sympton_code_pbreplace" value="@sympton_code_pbreplace" />
+    </div>
+    <div id="listMulitPlaybox"></div>
+</div>
+
+<table style="display: none; border-color: red;" id="tempV2" border="1"></table>
+
+<div class="modal fade" id="myModalSpeedWarning" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <p class="clearfix"></p>
+                    <h4 id="modal001txt" class="text-center">
+                        <span id="LastPopupMessage">@Html.Raw(L_MULTI_PLAYBOX_MAX_SPEED_WARNING)</span>
+                    </h4>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-right" style="padding-top: 10px">
+                        <p class="clearfix"></p>
+                        <button type="button" id="btn02" class="btn btn-success" data-dismiss="modal" onclick="onRedirectToFirstPage()">&nbsp; @L_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalMsgNonRegis" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalMsgNonRegis_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="modalMsgNonRegistxt" class="text-center">
+                        @(Html.Raw(L_MESSAGE_NOT_PLAYBOX))
+                    </h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" id="modalMsgNonRegisbtn" class="btn btn-default" data-dismiss="modal" onclick="onBtnVasBackPage_Click();">&nbsp; @B_OK &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalMyAisBypassMsg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalMyAisBypassMsg_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="modalMyAisBypassMsgtxt" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" id="modalMyAisBypassMsgbtn" class="btn btn-default" data-dismiss="modal" onclick="">&nbsp; @B_OK &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .existsTopupNonPlaybox {
+        height: 100%;
+        min-height: 0px;
+        line-height: 150px;
+        text-align: center;
+        font-size: 16px;
+        block-size: 0px;
+    }
+
+    .headtopic {
+        height: 100%;
+        min-height: 0px;
+        text-align: left;
+        font-size: 20px;
+        block-size: 0px;
+        border-bottom: 40px solid #8dc63f;
+        color: white;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var validateInstallDate = new Array();
+    var dayTimeslot = 3;
+    var checkDateTimeSlot = false;
+    
+    var list_out_channel_sale = @Html.Raw(Json.Encode(LIST_OUT_CHANNEL_SALE));
+
+    $(function () {
+        $('#dtpInstallDateTHVas').watermark("@L_INSTALLATION_DATE");
+        $('#dtpInstallDateENVas').watermark("@L_INSTALLATION_DATE");
+
+        $('#dtpInstallDateTHVas').datetimepicker({
+            format: 'd/m/Y',
+            lang: "th",
+            timepicker: false,
+            closeOnDateSelect: true
+        });
+
+        $('#dtpInstallDateENVas').datetimepicker({
+            format: 'd/m/Y',
+            lang: 'en',
+            timepicker: false,
+            closeOnDateSelect: true
+        });
+
+        onLoadLine2Page2();
+        changePageHeader_Vas(2);
+    });
+
+    function setVasReplacePlayboxForSelect() { /************/
+        var strBuilder = "";
+        $('#divVasBoxDynamic').empty();
+
+        GetDetailOrderFeeTopupReplace();
+        GetListDeviceContractOnlineQuery();
+
+        sessionStorage.removeItem('serial_no');
+        var findPBoxReplace = $("[name=SelectVasPBoxReplace]");
+        var serial_no = "";
+        $.each(findPBoxReplace, function (i, e) {
+            var tmp_serial_no = $("#SERIAL_NO" + e.value).val();
+            if (i == 0) serial_no += tmp_serial_no;
+            else serial_no += "," + tmp_serial_no;
+        });
+        sessionStorage.setItem("serial_no", serial_no);
+        
+        // Create div Replace Playbox Dropdownlist
+        var runNumber = 0;
+        var lReplacePlayboxLabelDropdown = "@Html.Raw(@L_REPLACE_PLAYBOX_LABEL_DROPDOWN)";
+        var imgbase64PicReplace = "@Html.Raw(PIC_REPLACE_ATV)";
+
+        var count_atv = $("#count_atv").val();
+        strBuilder += "<div id='vasBoxPB' class='col-sm-4 col-xs-12 text-center add-rounded-green'>";
+        strBuilder += "<img src='data:image/png;base64," + imgbase64PicReplace + "' class='img-responsive center-block'>";
+        strBuilder += "<p class='clearfix'></p>";
+        strBuilder += lReplacePlayboxLabelDropdown;
+        strBuilder += "<div class='checkbox'>";
+        strBuilder += "<label class='hidden'><input type='checkbox'  vasid='vasBoxPB' id='vasBoxPB_chkbox'> @L_CHOOSE_TOPUP </label>";
+        strBuilder += "<select name='ddlReplacePlaybox' onchange='onVasBoxV2Change(this.value,vasBoxPB)' style='width:50px;' >";
+        strBuilder += "";
+
+        var selectDdl = 'selected="selected"';
+        while (parseInt(count_atv) > runNumber) {
+            strBuilder += "<option " + selectDdl + " value=" + (runNumber + 1) + ">" + (runNumber + 1) + "</option>";
+            selectDdl = "";
+            runNumber++;
+        }
+
+        strBuilder += "</select>";
+        strBuilder += "<p class='clearfix visible-xs'></p>";
+        
+        onVasBoxV2Change("1", "", "pageload"); //bindSummaryV2
+
+        $('#divVasBoxDynamic').append(strBuilder);
+    }
+    
+    function setFormSummaryLine2() { /************/
+
+        $('#summTotal1VasMultiPlaybox').text('0');
+        $('#summTotal1Vas').text('0');
+        $('#sumProrateVas').text('0');
+        $('#sumTotalProrateVas').text('0');
+        $('#lblSumHeaderVas').text("@L_SUMMARY");
+        $('#o2VasMultiServiceReplacePlayBox').text("@WORDING_PRICE_ORDER_FEE");//ค่าบริการเปลี่ยนกล่อง AIS PLAYBOX
+        $('#o2Vas').text("@WORDING_SUMMARY_ORDER_FEE");//รวมรายการที่ต้องชำระ
+        $('#o4VasMultiInstallReplacePlayBox').text("@WORDING_PRICE_CONTRACT");//ค่าติดตั้งและอุปกรณ์
+        $('#o4Vas').text("@WORDING_SUMMARY_ORDER_FEE");//รวมรายการที่ต้องชำระ
+        $('#o5Vas').text("@L_SUMM_DETAIL13");
+        $('#o42Vas').text("@L_SUMM_DETAIL15");
+        $('#o62Vas').text("@L_SUMM_DETAIL14");
+        $('#vatVas').text("@L_SUMM_DETAIL12");
+    }
+    
+    function BindSummaryDatailV2() { /************/
+        var lBath = " @L_BAHT";
+        var appendTableInstall = "";
+        var sumServicePlus = 0;
+        var sumInstallPlus = 0;
+        var strWORDIND_MESH = "";
+        var runNumber = 0;
+
+        var value = $('select[name=ddlReplacePlaybox]').val();
+        var numberCountPBOXReplace = parseInt(value);
+
+        // summary page SelectVasPBoxReplace
+        $('#tblMultiPlayboxSummary').empty();
+        
+        // summary page RegisterSummaryPboxReplace
+
+        // ค่าบริการเปลี่ยนกล่อง AIS PLAYBOX
+        //appendTableInstall += '<tr><th><span>' + $('#o2VasMultiServiceReplacePlayBox').text() + '</span></th></tr>';
+        appendTableInstall += '<tr><th><span>' + '@L_ATV_INITIATIONS_FEE' + '</span></th></tr>';
+
+        if (tmpDetailOrderFeeTopupReplace.length > 0 && value != "")
+        {
+            if (numberCountPBOXReplace == 1) {
+                
+                appendTableInstall += '<tr><td><span>'
+                    + tmpDetailOrderFeeTopupReplace[0].DISPLAY_ORDER_FEE + '</span></td>'
+                    + '<td class="text-right"><span>'
+                    + toNumber(tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE)
+                    + '</span>&nbsp;<span>'
+                    + lBath + '</span></td></tr>';
+
+                sumServicePlus = sumServicePlus + (tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE == "" ? 0 : parseInt(tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE));
+
+            }
+            else {
+                while (numberCountPBOXReplace > runNumber) {
+                    strWORDIND_MESH = "@WORDIND_MESH";
+                    strWORDIND_MESH = strWORDIND_MESH.replace("{x}", (runNumber + 1).toString());
+                    
+                    appendTableInstall += '<tr><td><span>'
+                        + tmpDetailOrderFeeTopupReplace[0].DISPLAY_ORDER_FEE + " " + strWORDIND_MESH + '</span></td>'
+                        + '<td class="text-right"><span>'
+                        + toNumber(tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE)
+                        + '</span>&nbsp;<span>'
+                        + lBath + '</span></td></tr>';
+
+                    sumServicePlus = sumServicePlus + (tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE == "" ? 0 : parseInt(tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE));
+
+                    runNumber++;
+                }
+            }
+        }
+
+        // summary ค่าบริการเปลี่ยนกล่อง AIS PLAYBOX
+        @*appendTableInstall += '<tr><td><span>' + $('#o2Vas').text() + '</span></td>'
+            + '<td class="text-right"><span>' + sumServicePlus
+            + '</span>&nbsp;<span> @L_BAHT</span></td></tr>';*@
+
+        // ค่าติดตั้งและอุปกรณ์
+        //appendTableInstall += '<tr><th><span>' + $('#o4VasMultiInstallReplacePlayBox').text() + '</span></th></tr>';
+        if (tmpPackageDataDeviceContract != undefined)
+        {
+            var installPricePB = 0;
+            var installDiscountPB = 0;
+            var tmpstrPlayboxInstall = "";
+            var tmpstrPlayboxDisInstall = "";
+            var flagContractDevicePlaybox = false;
+
+            if (tmpPackageDataDeviceContract.ContractDeviceList != undefined && tmpPackageDataDeviceContract.ContractDeviceList.length > 0) {
+                var tmpContractDeviceList = tmpPackageDataDeviceContract.ContractDeviceList.filter(function (elem) {
+                    return elem.PRODUCT_SUBTYPE.indexOf("PBOX") !== -1;
+                });
+                if (tmpContractDeviceList != undefined && tmpContractDeviceList.length > 0) {
+                    flagContractDevicePlaybox = true;
+                    $.each(tmpContractDeviceList, function (i, e) {
+                        installPricePB = parseFloat(e.PENALTY_CHARGE);//Install
+                        installDiscountPB = parseFloat(e.PENALTY_CHARGE);//Discount Install
+                        durationByMonth = e.DURATION_BY_MONTH;
+                        if ('@language' == "1") {
+                            tmpstrPlayboxInstall = e.CONTRACT_DISPLAY_TH_1;
+                            tmpstrPlayboxDisInstall = e.CONTRACT_DISPLAY_TH_2;
+                        }
+                        else {
+                            tmpstrPlayboxInstall = e.CONTRACT_DISPLAY_EN_1;
+                            tmpstrPlayboxDisInstall = e.CONTRACT_DISPLAY_EN_2;
+                        }
+                    });
+                }
+            }
+
+            if (flagContractDevicePlaybox == true) {
+                if (numberCountPBOXReplace == 1) {
+                    
+                    appendTableInstall += '<tr><td><span>'
+                        + tmpstrPlayboxInstall + '</span></td>'
+                        + '<td class="text-right"><span>'
+                        + toNumber(installPricePB)
+                        + '</span>&nbsp;<span>'
+                        + lBath + '</span></td></tr>';
+
+                    appendTableInstall += '<tr><td><span>'
+                        + tmpstrPlayboxDisInstall + '</span></td>'
+                        + '<td class="text-right"><span>'
+                        + toNumber(installDiscountPB)
+                        + '</span>&nbsp;<span>'
+                        + lBath + '</span></td></tr>';
+
+                    sumInstallPlus = sumInstallPlus + (installPricePB - installDiscountPB);
+                }
+                else {
+                    runNumber = 0;
+                    strWORDIND_MESH = "";
+                    while (numberCountPBOXReplace > runNumber) {
+                        strWORDIND_MESH = "@WORDIND_MESH";
+                        strWORDIND_MESH = strWORDIND_MESH.replace("{x}", (runNumber + 1).toString());
+                        
+                        appendTableInstall += '<tr><td><span>'
+                            + tmpstrPlayboxInstall + ' ' + strWORDIND_MESH + '</span></td>'
+                            + '<td class="text-right"><span>'
+                            + toNumber(installPricePB)
+                            + '</span>&nbsp;<span>'
+                            + lBath + '</span></td></tr>';
+
+                        appendTableInstall += '<tr><td><span>'
+                            + tmpstrPlayboxDisInstall + ' ' + strWORDIND_MESH + '</span></td>'
+                            + '<td class="text-right"><span>'
+                            + toNumber(installDiscountPB)
+                            + '</span>&nbsp;<span>'
+                            + lBath + '</span></td></tr>';
+
+                        sumInstallPlus = sumInstallPlus + (installPricePB - installDiscountPB);
+
+                        runNumber++;
+                    }
+                }
+                
+            } 
+        } 
+        //-----------------------------------------
+        
+        // summary ค่าติดตั้งและอุปกรณ์
+
+        @*appendTableInstall += '<tr><td><span>' + $('#o2Vas').text() + '</span></td>'
+            + '<td class="text-right"><span>' + sumInstallPlus
+            + '</span>&nbsp;<span> @L_BAHT</span></td></tr>';*@
+
+        appendTableInstall += '<tr><td><span>' + $('#o2Vas').text() + '</span></td>'
+            + '<td class="text-right"><span>' + toNumber(sumServicePlus,sumInstallPlus)
+            + '</span>&nbsp;<span> @L_BAHT</span></td></tr>';
+        
+        var appendTableAverage = ''
+            + '<tr><td><span style="font-weight: bold">' + $('#o42Vas').text()
+            + ' </span></td><td class="text-right"><span style="font-weight: bold">' + $('#sumTotalProrateVas').text()
+            + '</span>&nbsp;<span style="font-weight: bold"> @L_BAHT</span></td></tr>'
+            + '<tr><td><span style="font-weight: bold">' + $('#vatVas').text() + ' </span></td><td class="text-right"></td></tr>';
+
+
+        $('#tblMultiPlayboxSummary').append(appendTableInstall + appendTableAverage);
+    }
+
+    function bindSummaryV2(value, type) { /************/
+        var lBath = " @L_BAHT";
+        var strBuilderService = "";
+        var strBuilderInstall = "";
+        var sumServicePlus = 0;
+        var sumInstallPlus = 0;
+        var strWORDIND_MESH = "";
+        var runNumber = 0;
+        var divTrServiceReplacePlayBox = document.getElementById('trServiceReplacePlayBox');
+        var divTrInstallReplacePlayBox = document.getElementById('trInstallReplacePlayBox');
+
+        if (type == "pageload") { value = "1"; }
+        var numberCountPBOXReplace = parseInt(value);
+
+        // ค่าบริการเปลี่ยนกล่อง AIS PLAYBOX
+        if (tmpDetailOrderFeeTopupReplace.length > 0 && value != "") {
+            
+            if (numberCountPBOXReplace == 1) {
+                strBuilderService += "<span class='col-xs-8'>" + tmpDetailOrderFeeTopupReplace[0].DISPLAY_ORDER_FEE + "</span>";
+                strBuilderService += "<span class='col-xs-4 text-right'><span>" + toNumber(tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE) + "</span>" + lBath + "</span>";
+                strBuilderService += "<p class='clearfix'></p>";
+
+                sumServicePlus = sumServicePlus + (tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE == "" ? 0 : parseInt(tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE));
+
+            }
+            else {
+                while (numberCountPBOXReplace > runNumber) {
+                    strWORDIND_MESH = "@WORDIND_MESH";
+                    strWORDIND_MESH = strWORDIND_MESH.replace("{x}", (runNumber + 1).toString());
+
+                    strBuilderService += "<span class='col-xs-8'>" + tmpDetailOrderFeeTopupReplace[0].DISPLAY_ORDER_FEE + " " + strWORDIND_MESH + "</span>";
+                    strBuilderService += "<span class='col-xs-4 text-right'><span>" + toNumber(tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE) + "</span>" + lBath + "</span>";
+                    strBuilderService += "<p class='clearfix'></p>";
+
+                    sumServicePlus = sumServicePlus + (tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE == "" ? 0 : parseInt(tmpDetailOrderFeeTopupReplace[0].PRICE_ORDER_FEE));
+
+                    runNumber++;
+                }
+            }
+            
+            divTrServiceReplacePlayBox.innerHTML = strBuilderService;
+        }
+        else {
+            divTrServiceReplacePlayBox.innerHTML = "";
+        }
+        
+        // ค่าติดตั้งและอุปกรณ์
+        if (tmpPackageDataDeviceContract != undefined)
+        {
+            var installPricePB = 0;
+            var installDiscountPB = 0;
+            var tmpstrPlayboxInstall = "";
+            var tmpstrPlayboxDisInstall = "";
+            var flagContractDevicePlaybox = false;
+
+            if (tmpPackageDataDeviceContract.ContractDeviceList != undefined && tmpPackageDataDeviceContract.ContractDeviceList.length > 0) {
+                var tmpContractDeviceList = tmpPackageDataDeviceContract.ContractDeviceList.filter(function (elem) {
+                    return elem.PRODUCT_SUBTYPE.indexOf("PBOX") !== -1;
+                });
+                if (tmpContractDeviceList != undefined && tmpContractDeviceList.length > 0) {
+                    flagContractDevicePlaybox = true;
+                    $.each(tmpContractDeviceList, function (i, e) {
+                        installPricePB = parseFloat(e.PENALTY_CHARGE);//Install
+                        installDiscountPB = parseFloat(e.PENALTY_CHARGE);//Discount Install
+                        durationByMonth = e.DURATION_BY_MONTH;
+                        if ('@language' == "1") {
+                            tmpstrPlayboxInstall = e.CONTRACT_DISPLAY_TH_1;
+                            tmpstrPlayboxDisInstall = e.CONTRACT_DISPLAY_TH_2;
+                        }
+                        else {
+                            tmpstrPlayboxInstall = e.CONTRACT_DISPLAY_EN_1;
+                            tmpstrPlayboxDisInstall = e.CONTRACT_DISPLAY_EN_2;
+                        }
+                    });
+                }
+            }
+
+            if (flagContractDevicePlaybox == true) {
+                if (numberCountPBOXReplace == 1) {
+                    strBuilderInstall += "<span class='col-xs-8'>" + tmpstrPlayboxInstall + "</span>";
+                    strBuilderInstall += "<span class='col-xs-4 text-right'><span>" + toNumber(installPricePB) + "</span>" + lBath + "</span>";
+                    strBuilderInstall += "<p class='clearfix'></p>";
+
+                    strBuilderInstall += "<span class='col-xs-8'>" + tmpstrPlayboxDisInstall + "</span>";
+                    strBuilderInstall += "<span class='col-xs-4 text-right'><span>" + toNumber(installDiscountPB) + "</span>" + lBath + "</span>";
+                    strBuilderInstall += "<p class='clearfix'></p>";
+
+                    sumInstallPlus = sumInstallPlus + (installPricePB - installDiscountPB);
+                }
+                else {
+                    runNumber = 0;
+                    strWORDIND_MESH = "";
+                    while (numberCountPBOXReplace > runNumber) {
+                        strWORDIND_MESH = "@WORDIND_MESH";
+                        strWORDIND_MESH = strWORDIND_MESH.replace("{x}", (runNumber + 1).toString());
+
+                        strBuilderInstall += "<span class='col-xs-8'>" + tmpstrPlayboxInstall + " " + strWORDIND_MESH + "</span>";
+                        strBuilderInstall += "<span class='col-xs-4 text-right'><span>" + toNumber(installPricePB) + "</span>" + lBath + "</span>";
+                        strBuilderInstall += "<p class='clearfix'></p>";
+
+                        strBuilderInstall += "<span class='col-xs-8'>" + tmpstrPlayboxDisInstall + " " + strWORDIND_MESH + "</span>";
+                        strBuilderInstall += "<span class='col-xs-4 text-right'><span>" + toNumber(installDiscountPB) + "</span>" + lBath + "</span>";
+                        strBuilderInstall += "<p class='clearfix'></p>";
+
+                        sumInstallPlus = sumInstallPlus + (installPricePB - installDiscountPB);
+
+                        runNumber++;
+
+                    }
+                }
+
+                divTrInstallReplacePlayBox.innerHTML = strBuilderInstall;
+            } else {
+                divTrInstallReplacePlayBox.innerHTML = "";
+            }
+        } else {
+            divTrInstallReplacePlayBox.innerHTML = "";
+        }
+        //-----------------------------------------
+
+        // ค่าบริการเปลี่ยนกล่อง AIS PLAYBOX
+        var summTotal1VasMultiPlaybox = document.getElementById('summTotal1VasMultiPlaybox');
+        summTotal1VasMultiPlaybox.innerHTML = toNumber(sumServicePlus);
+        // ค่าติดตั้งและอุปกรณ์
+        var spanSummTotal1Vas = document.getElementById('summTotal1Vas');
+        spanSummTotal1Vas.innerHTML = toNumber(sumInstallPlus);
+        
+        var priceService = $('#summTotal1VasMultiPlaybox').text() != "" && $('#summTotal1VasMultiPlaybox').text() != undefined ? parseFloat($('#summTotal1VasMultiPlaybox').text().replace(',', '')) : 0;
+        var priceInstall = $('#summTotal1Vas').text() != "" && $('#summTotal1Vas').text() != undefined ? parseFloat($('#summTotal1Vas').text().replace(',', '')) : 0;
+        
+        // Prorate
+        //var sumTotal2 = 0;
+        //var sumProrate = 0;
+        //var daysInMonth = new Date().getDaysInMonth();
+        //sumProrate = (sumTotal2 / daysInMonth) * 1;
+
+        var sumTotalProrate = priceService + priceInstall;
+
+        //$('#sumProrateVas').text(accounting.formatNumber(sumProrate, 2));
+        $('#sumTotalProrateVas').text(accounting.formatNumber(sumTotalProrate, 2));
+    }
+    
+    var tmpDetailOrderFeeTopupReplace;/************/
+    function GetDetailOrderFeeTopupReplace() {
+        var LanguagePage = '@language' == "1" ? "T" : "E";
+        $.ajax({
+            type: "GET",
+            url: "/SelectPackage/GetDetailOrderFeeTopupReplace",
+            data: {
+                AisAirNumber: sessionStorage.getItem("AisAirNumber"),
+                Lang: LanguagePage
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                tmpDetailOrderFeeTopupReplace = data;
+            }
+        });
+    }
+
+    var tmpPackageDataDeviceContract;/************/
+    var objPromotionCodeforGetDeviceArry = [];
+    function GetListDeviceContractOnlineQuery() {
+        objPromotionCodeforGetDeviceArry = [];
+        objPromotionCodeforGetDeviceArry.push({ SFF_PROMOTION_CODE: "P21104257" });
+
+        //R22.08 Edit Add Parameter GetListDeviceContract OnlineQuery
+        objPromotionCodeforGetDeviceArry.push({ SFF_PROMOTION_CODE: '@Model.v_sff_main_promotionCD' });
+
+        if (objPromotionCodeforGetDeviceArry.length > 0) {
+            $.ajax({
+                type: "GET",
+                url: "/SelectPackage/GetListDeviceContractOnlineQuery",
+                data: {
+                    "AisAirNumber": sessionStorage.getItem("AisAirNumber"),
+                    "P_CHANNEL": "WEB",
+                    "P_EVENT": "Existing",
+                    "PROMOTION_CODE_ARRAY": JSON.stringify(objPromotionCodeforGetDeviceArry),
+                    //R22.07 Edit Add Parameter GetListDeviceContract OnlineQuery
+                    "P_PRODUCT_SUBTYPE": '@Model.v_package_subtype', //sessionStorage.getItem("P_PRODUCT_SUBTYPE"),
+                    "P_OWNER_PRODUCT": '@Model.v_owner_product', //sessionStorage.getItem("P_OWNER_PRODUCT"),
+                    "P_SALE_CHANNEL": sessionStorage.getItem("P_SALE_CHANNEL"),
+                    "accessMode": "",
+                    "isPartner": "",
+                    "partnerName": "",
+                    "addressId": ""
+                    //-------------------------------
+                },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    tmpPackageDataDeviceContract = data;
+                }
+            });
+        }
+    }
+
+    function onVasBoxV2Change(value, divId, type) { /************/
+        if (value == "") {
+            $("#" + divId.id).removeClass("add-rounded-green");
+            $("#" + divId.id + "_chkbox").prop('checked', false);
+
+        } else {
+            $("#" + divId.id).addClass("add-rounded-green");
+            $("#" + divId.id + "_chkbox").prop('checked', true);
+        }
+
+        bindSummaryV2(value, type);
+    }
+    
+    function onBtnVasNextPageV2_Click() { /************/
+
+        var temp = "";
+
+        if (!checkDateTimeSlot) {
+            var temp = "";
+            if ($("#LanguagePage").val() == "1") {
+                temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน";
+            }
+            else {
+                temp = "Please Fill In All Required Fields.";
+            }
+            toastrErrorMessage(temp);
+            return;
+        }
+        else {
+            BindSummaryDatailV2();
+            
+            $('#page2_1').hide();
+            onLoadPage2_2();
+
+            // Update 17.4 Script Adobe Analytic
+            var lang = $("#LanguagePage").val() == 1 ? "th" : "en";
+            digitalData.page = {
+                pageInfo: {
+                    pageName: "newfibre:" + lang + ":vasSummary",
+                    site: "newfibre",
+                    language: lang
+                }
+            }
+            console.log("page load vasSummary : ", lang);
+            
+
+            // Update 17.4 Script Adobe Analytic
+            digitalData.customLinkName = "add-on:next-button";
+            console.log("custom-link-click : button btnVasNextPage");
+            
+        }
+        
+        $('#divPlayBoxPage').show();
+        $('#divInstallDateVas').show();
+        $('#divContactPhone').show();
+
+        SumNextPage();
+    }
+
+    function onLoadPage2_2() {
+
+        if ("@TopUp" == "1") {
+            //line 2
+            $("#divLogoLine1").addClass("i-hidden");
+            $("#divLogoLine2").removeClass("i-hidden");
+
+            //R20.1 setInstallDate,setTimeSlot
+            if ($('select[name=ddlReplacePlaybox]').val() == "" || $('select[name=ddlReplacePlaybox]').val() == null || $('select[name=ddlReplacePlaybox]').val() == undefined) {
+                setInstallDateVasSum();
+                setTimeSlotConfigSelectDateVas();
+            }
+            getMobileNumber();
+        }
+        else {
+            //Line 1
+            $("#divLogoLine1").removeClass("i-hidden");
+            $("#divLogoLine2").addClass("i-hidden");
+        }
+
+        $("#lblVasSumSelectVas").text($("#lblSelectVas").text()); //header form summary1
+        $("#btnVasSumNextPage").html($("#btnVasNextPage").html());
+        $("#btnVasSumBackPage").html($("#btnVasBackPage").html());
+        $("#divVasSumFormSummaryDetail").html($("#divSelectValFormSummaryDetail").html());
+        $("#divPromotionDetailVasSum").html($("#divPromotionDetail").html());
+
+    }
+
+    function SumNextPage() {
+        if ($("#hdGetVoip").val() == "1" && $("#hdGetMultiPlayBox").val() == "1" && !$('#divVoipPage').is(':visible')) {
+            $('#divPlayBoxPage').hide();
+            $('#divVoipPage').show();
+            $('#divContactPhone').show();
+            $('#divInstallDateVas').show();
+        }
+
+        DataBindPage();
+        //$('#page2_2').hide();
+        $('#page4').show();
+    }
+    
+    function onBtnVasBackPage_Click() { /************/
+        if ("@TopUp" == "1")
+            window.location.href = "@Url.Action("TopUpReplace", "Process")";
+        else
+            window.location.href = "@Url.Action("SearchProfile", "Process")";
+
+        // Update 17.4 Script Adobe Analytic
+        digitalData.customLinkName = "add-on:cancel-button";
+        console.log("custom-link-click : button btnVasBackPage");
+        
+    }
+    
+    function onLoadLine2Page2() { /************/
+        $('#page2_1').show();
+        $('#divStepLogoLine1').hide();
+        $('#divStepLogoLine2').show();
+        $('#divPromotionDetailSum').hide();
+
+        $('.wrapSwitchLanguage').hide();
+        setFormSummaryLine2();
+
+        $("#tempV2").empty();
+            
+        if ('@MyAISBypass' == 'Y') {
+            $('#tempV2').html("@Html.Raw(tempV2ByPass)");
+        }
+        else {
+            var tempV2 = sessionStorage.getItem("tempV2");
+            $('#tempV2').append(tempV2);
+        }
+
+        if ($('#tempV2 tr').length != 0) {
+            if ('@MyAISBypass' == 'Y') {
+                GetPostalCodeJson();
+                sessionStorage.setItem("ServiceLevel", '@Model.outServiceLevel');
+            }
+            var tmpAreaRegion = sessionStorage.getItem("AreaRegion").toString();
+            $("#CoveragePanelModel_Address_AreaRegion").val(tmpAreaRegion);
+            var tmpServiceLevel = sessionStorage.getItem("ServiceLevel").toString();
+            $("#ServiceLevel").val(tmpServiceLevel);
+            
+            setVasReplacePlayboxForSelect();
+            sessionStorage.setItem('SERVICE_CODE', "P21104257");
+            setInstallDateVasSum();
+            setTimeSlotConfigSelectDateVas();
+        }
+        else {
+            $('#modalMyAisBypassMsgtxt').text('Does not have a VAS.');
+            $('#modalMyAisBypassMsg').modal();
+        }
+    }
+
+    function getMobileNumber() { /************/
+        var value = "";
+
+        $.ajax({
+            url: '/Process/GetOtherInformation',
+            data: { mobileno: $('#CoveragePanelModel_P_MOBILE').val(), caid: $('#CoveragePanelModel_CA_ID').val(), baid: $('#CoveragePanelModel_BA_ID').val(), selectvalue: 'CONTACT' },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+
+                if (response != "") {
+                    var arrayRespon = response.split(',');
+                    $("#txtVasSumHomePhone").val(arrayRespon[0]);
+                    $("#txtVasSumHomePhoneTo").val(arrayRespon[1]);
+                    $("#VasSumL_MOBILE").val(arrayRespon[2]);
+                    $("#VasSumL_OR").val(arrayRespon[3]);
+                    $('#CustomerRegisterPanelModel_L_CONTACT_PHONE').val(arrayRespon[2]);
+                    $("#txtfor_L_HOME_PHONE").html(arrayRespon[2]);
+                }
+            }
+        });
+
+        value = $('#CustomerRegisterPanelModel_L_EMAIL').val(); if (value != "") { $('#txtfor_L_EMAIL2').text(value); }
+    }
+
+    function GetPostalCodeJson() { /************/
+        $.ajax({
+            type: "POST",
+            url: "/Process/GetPostalCodeJson",
+            data: {
+                "outPostalCode": '@Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ZIPCODE',
+                "outTumbol": '@Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_TUMBOL',
+                "outAmphur": '@Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_AMPHUR',
+                "outProvince": '@Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_PROVINCE',
+            },
+            dataType: "json",
+            async: false,
+            success: function (response) {
+                var data = response.result;
+                sessionStorage.setItem("AddrZipID", data);
+                Get_Region(data);
+            }
+        })
+    }
+
+    function Get_Region(AddrZipID) { /************/
+        $.ajax({
+            url: '/CheckCoverage/Get_Region',
+            data: { rowid: AddrZipID },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (data) {
+                sessionStorage.setItem("AreaRegion", data);
+            }
+        });
+    }
+
+    function setInstallDateVasSum() { /************/
+
+        if ($("#LanguagePage").val() == "1") {
+            $("#divEnDatePickerVas").hide();
+            $("#divThDatePickerVas").show();
+
+            $("#divEnDatePickerVas").hide();
+            $("#divThDatePickerVas").show();
+        }
+        else {
+            $("#divThDatePickerVas").hide();
+            $("#divEnDatePickerVas").show();
+
+            $("#divThDatePickerVas").hide();
+            $("#divEnDatePickerVas").show();
+        }
+
+        var daySelect = $('#ddlDayInstallVasSum :selected').val();
+        var monthSelect = $('#ddlMonthInstallVasSum :selected').val();
+        var yearSelect = $('#ddlYearInstallVasSum :selected').val();
+        var numOfDay = chkNumOfDayVasSum(daySelect, monthSelect, yearSelect);
+
+        $('#ddlDayInstallVasSum').empty();
+        $('#ddlMonthInstallVasSum').empty();
+        $('#ddlYearInstallVasSum').empty();
+
+        var currentMonth = new Date().getMonth() + 1;
+        var tomorrowDay = new Date().getDate() + 1;
+        var currentYear = new Date().getFullYear();
+
+        if ($("#LanguagePage").val() == "1")
+            currentYear += 543;
+
+        if (yearSelect == currentYear) {
+        }
+        else {
+            currentMonth = 1;
+        }
+
+        if (monthSelect == currentMonth && yearSelect == currentYear) {
+        }
+        else {
+            tomorrowDay = 1;
+        }
+
+        $('#ddlDayInstallVasSum').append(getDayVasSum(daySelect, "@L_INSTALLATION_DATE", tomorrowDay, numOfDay, false, false));
+        $('#ddlMonthInstallVasSum').append(getMonthVasSum(monthSelect, "เดือน", currentMonth, 12, false, false));
+        $('#ddlYearInstallVasSum').append(getYearVasSum(yearSelect, "ปี", 0, -1, false, false));
+    }
+
+    function chkNumOfDayVasSum(daySelect, monthSelect, yearSelect) { /************/
+        var numOfDay = 0;
+
+        if (monthSelect == "2") {
+            if (yearSelect != "" && yearSelect != undefined) {
+                var isleap = (yearSelect % 4 == 0 && (yearSelect % 100 != 0 || yearSelect % 400 == 0));
+                if (isleap == false) {
+                    numOfDay = 28;
+                }
+                else {
+                    numOfDay = 29;
+                }
+            }
+            else {
+                numOfDay = 29;
+            }
+        }
+        else if (monthSelect == "4" || monthSelect == "6" || monthSelect == "9" || monthSelect == "11") {
+            numOfDay = 30;
+        }
+        else {
+            numOfDay = 31;
+        }
+
+        return numOfDay;
+    }
+
+    function getYearVasSum(yearSelect, label, yearLimitLow, yearLimitHigh, defaultFromSFF, disableFirstRow) { /************/
+        var currentYear = new Date().getFullYear();
+
+        if ($("#LanguagePage").val() == "1")
+            currentYear += 543;
+
+        var limitLowYear = currentYear - yearLimitLow;
+        var limitHighYear = currentYear - yearLimitHigh;
+
+        var strBuilder = "";
+
+        if (disableFirstRow) {
+            strBuilder = "<option value='' disabled selected >" + label + "</option>";
+        }
+        else {
+            strBuilder = "<option value='' selected >" + label + "</option>";
+        }
+
+        for (var i = limitLowYear; i <= limitHighYear; i++) {
+            if ((i == $("#tYY").val() && defaultFromSFF == true) || i == yearSelect)
+                strBuilder += "<option value='" + i + "' selected>" + i + "</option>";
+            else
+                strBuilder += "<option value='" + i + "' >" + i + "</option>";
+        }
+
+        return strBuilder;
+    }
+
+    function getMonthVasSum(monthSelect, label, monthLimitLow, monthLimitHigh, defaultFromSFF, disableFirstRow) { /************/
+
+        var strBuilder = "";
+
+        if (disableFirstRow) {
+            strBuilder = "<option value='' disabled selected >" + label + "</option>";
+        }
+        else {
+            strBuilder = "<option value='' selected >" + label + "</option>";
+        }
+
+        var arrayMonth;
+
+        if ($("#LanguagePage").val() == "1") {
+            arrayMonth = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+        }
+        else {
+            arrayMonth = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        }
+
+        monthLimitLow--;
+        monthLimitHigh--;
+
+        for (var i = monthLimitLow; i <= monthLimitHigh; i++) {
+            var value = i + 1;
+            if (value == $("#tMM").val() && defaultFromSFF == true) {
+                strBuilder += "<option value='" + value + "' selected>" + arrayMonth[i] + "</option>";
+                $("#tMM").val("");
+            }
+            else if (value == monthSelect)
+                strBuilder += "<option value='" + value + "' selected>" + arrayMonth[i] + "</option>";
+            else
+                strBuilder += "<option value='" + value + "' >" + arrayMonth[i] + "</option>";
+        }
+
+        return strBuilder;
+    }
+
+    function getDayVasSum(daySelect, label, dayLimitLow, dayLimitHigh, defaultFromSFF, disableFirstRow) { /************/
+        var strBuilder = "";
+
+        if (disableFirstRow) {
+            strBuilder = "<option value='' disabled selected >" + label + "</option>";
+        }
+        else {
+            strBuilder = "<option value='' selected >" + label + "</option>";
+        }
+
+        for (var i = dayLimitLow; i <= dayLimitHigh; i++) {
+            if ($("#tDD").val() == i && defaultFromSFF == true) {
+                strBuilder += "<option value='" + i + "' selected>" + i + "</option>";
+                $("#tDD").val("");
+            }
+            else if (daySelect == i)
+                strBuilder += "<option value='" + i + "' selected>" + i + "</option>";
+            else
+                strBuilder += "<option value='" + i + "' >" + i + "</option>";
+        }
+
+        return strBuilder;
+    }
+
+    function setTimeSlotConfigSelectDateVas() { /************/
+
+        var isBillCycleConfig = false;
+        var billCycle = $('#BillCycle').val();
+        var billCycleHave2MainFlag = $('#BillCycleHave2MainFlag').val();
+        var billCycleTimeSlotStartDate = $('#BillCycleTimeSlotStartDate').val();
+        var billCycleTimeSlotDayAdd = $('#BillCycleTimeSlotDayAdd').val();
+        var billCycleTimeSlotDtpLenght = $('#BillCycleTimeSlotDtpLenght').val();
+        var billCycleTimeSlotDayLenght = $('#BillCycleTimeSlotDayLenght').val();
+
+        if (billCycle != undefined && billCycle != null && billCycle != "" && billCycleHave2MainFlag == "Y") {
+            isBillCycleConfig = true;
+        }
+        
+        var accessMode = "";
+        if (sessionStorage.getItem('ACCESS_MODE') == null) {
+            accessMode = "@AccessModeByPass";
+            sessionStorage.setItem('ACCESS_MODE', accessMode);
+        }
+        else {
+            accessMode = sessionStorage.getItem('ACCESS_MODE');
+        }
+        if (accessMode == "" || accessMode == null || accessMode == undefined) {
+            accessMode = "PBOX";
+        }
+
+        //R21.10
+        var timeSlotPBOldFlag = "N";
+        var FlagCall_TIME_SLOT_PB = false;
+        //Step1. Check BillCycle
+        if (isBillCycleConfig) {
+            timeSlotPBOldFlag = "Y";
+        }
+        else {
+            //Step4. Check CHANNEL = OFFICER
+            var tmp_P_SALE_CHANNEL = sessionStorage.getItem('P_SALE_CHANNEL');
+            var tmp_CHECK_CHANNEL_PB = "@FBB_Con_CHECK_CHANNEL_PB";
+            var PBChnSalesFlag;
+            if (timeSlotPBOldFlag == "N" && tmp_P_SALE_CHANNEL == tmp_CHECK_CHANNEL_PB) {
+                //Step5. Check OUT_CHANNEL_SALE
+                var tmp_outChnSales = sessionStorage.getItem('outChnSales');
+                if (list_out_channel_sale.indexOf(tmp_outChnSales) > -1) {
+                    timeSlotPBOldFlag = "Y";
+                    PBChnSalesFlag = true;
+                }
+                else {
+                    PBChnSalesFlag = false; //timeSlotPBOldFlag = "N";
+                }
+            }
+            else {
+                PBChnSalesFlag = false;
+            }
+
+            //Step6. Check CONDITION_TIME_SLOT_PB ("Y" => Call 'TIME_SLOT_PB' , "N" => call 'TIME_SLOT_BY_SUBTYPE_HR')
+            var tmp_CONDITION_TIME_SLOT_PB = "@FBB_Con_CONDITION_TIME_SLOT_PB";
+            if (PBChnSalesFlag == false && timeSlotPBOldFlag == "N" && tmp_CONDITION_TIME_SLOT_PB == "N") { timeSlotPBOldFlag = "Y"; }
+            
+        }
+        FlagCall_TIME_SLOT_PB = timeSlotPBOldFlag == "N" ? true : false;
+        sessionStorage.setItem('timeSlotPBOldFlag', timeSlotPBOldFlag);
+        //-----End R21.10-----
+
+        $.ajax({
+            type: "GET",
+            url: "/CustomerRegister/GetTimeSlotConfigSelectDate",
+            data: {
+                'technology': accessMode,
+                'subtype': 'PBOX-MA',
+                'timeSlotRegisterFlag': 'Y',
+                'timeSlotPBOldFlag': timeSlotPBOldFlag
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+
+                var minDate = "";
+                var maxDate = "";
+                var currentDate = "";
+                var currentDateTH = "";
+
+                if (data != "" && data != null && data != undefined) {
+                    if (isBillCycleConfig) {
+                        data.LovValue1 = billCycleTimeSlotDayAdd;
+                        data.LovValue2 = billCycleTimeSlotDayLenght;
+                        data.DefaultValue = billCycleTimeSlotDtpLenght;
+                    }
+
+                    dayTimeslot = data.LovValue2;
+
+                    if (data.LovValue5 == "PULL" || data.LovValue5 == "PUSH")
+                        $("#CustomerRegisterPanelModel_ASSIGN_RULE").val(data.LovValue5);
+                    else
+                        $("#CustomerRegisterPanelModel_ASSIGN_RULE").val("PUSH");
+                    
+                    //R21.10
+                    var defaultDate;
+                    if (FlagCall_TIME_SLOT_PB) {
+                        var tmpInstallationDateLovValue1 = data.LovValue1.split('-');
+                        defaultDate = new Date(parseInt(tmpInstallationDateLovValue1[0]), parseInt(tmpInstallationDateLovValue1[1] - 1), parseInt(tmpInstallationDateLovValue1[2]));
+
+                        //Case Flag CONDITION_TIME_SLOT_PB = Y and LovValue1 < DateTimeNow
+                        var dateTimeNow = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day));
+                        if (defaultDate.getTime() <= dateTimeNow.getTime())
+                            defaultDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt(data.OrderBy, 10));
+                    }
+                    else {
+                        //var defaultDate = new Date(new Date().getTime() + minDayPlus * 60 * 60 * 1000);
+                        defaultDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt(data.LovValue1, 10));
+                    }
+                    //End R21.10--------
+
+                    var month = defaultDate.getMonth() + 1;
+                    var day = defaultDate.getDate();
+
+                    //18.6
+                    sessionStorage.setItem('DefaultDateCompare', defaultDate.getDate().toString() + '/' + (defaultDate.getMonth() + 1).toString() + '/' + defaultDate.getFullYear().toString());
+
+                    var minDateTH = (defaultDate.getFullYear() + 543) + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (day < 10 ? '0' : '') + day;
+
+                    var minDateEN = defaultDate.getFullYear() + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (day < 10 ? '0' : '') + day;
+
+                    currentDateTH = (day < 10 ? '0' : '') + day + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (defaultDate.getFullYear() + 543);
+
+                    var currentDateEN = (day < 10 ? '0' : '') + day + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        defaultDate.getFullYear();
+
+                    //R21.10
+                    var defaultDateMax;
+                    if (FlagCall_TIME_SLOT_PB) {
+                        var tmp2InstallationDateLovValue1 = data.LovValue1.split('-');
+                        defaultDateMax = new Date(parseInt(tmp2InstallationDateLovValue1[0]), parseInt(tmp2InstallationDateLovValue1[1] - 1), parseInt(tmp2InstallationDateLovValue1[2]) + parseInt(data.DefaultValue, 10));
+
+                        //Case Flag CONDITION_TIME_SLOT_PB = Y and LovValue1 < DateTimeNow
+                        var tmp3InstallationDateLovValue1 = data.LovValue1.split('-');
+                        var tmpDateLovValue1 = new Date(parseInt(tmp3InstallationDateLovValue1[0]), parseInt(tmp3InstallationDateLovValue1[1] - 1), parseInt(tmp3InstallationDateLovValue1[2]));
+                        var dateTimeNow = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day));
+                        if (tmpDateLovValue1.getTime() <= dateTimeNow.getTime())
+                            defaultDateMax = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt(data.OrderBy, 10) + parseInt(data.DefaultValue, 10));
+                    }
+                    else {
+                        //var defaultDateMax = new Date(new Date().getTime() + maxDayPlus * 60 * 60 * 1000);
+                        defaultDateMax = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt(data.DefaultValue, 10));
+                    }
+                    //End R21.10--------
+                    
+                    var monthMax = defaultDateMax.getMonth() + 1;
+                    var dayMax = defaultDateMax.getDate();
+
+                    var maxDateTH = (defaultDateMax.getFullYear() + 543) + '/' +
+                       (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                       (dayMax < 10 ? '0' : '') + dayMax;
+
+                    var maxDateEN = defaultDateMax.getFullYear() + '/' +
+                        (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                        (dayMax < 10 ? '0' : '') + dayMax;
+
+                    minDate = minDateEN;
+                    maxDate = maxDateEN;
+                    currentDate = currentDateEN;
+                    
+                    $("#hdTimeSlotRegisterHR").val(data.LovValue3);
+                    $("#hdTimeSlotRegisterFlowActionNo").val(data.LovValue4);
+
+                    if ($("#LanguagePage").val() == "1") {
+                        $("#hdCurrentDateTime").val(currentDateTH);
+                     }
+                    else {
+                        $("#hdCurrentDateTime").val(currentDateEN);
+                     }
+                }
+                else {
+
+                    $("#CustomerRegisterPanelModel_ASSIGN_RULE").val("PUSH");
+                    var defaultDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day));
+                    var month = defaultDate.getMonth() + 1;
+                    var day = defaultDate.getDate();
+
+                    var minDateTH = (defaultDate.getFullYear() + 543) + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (day < 10 ? '0' : '') + day;
+
+                    var minDateEN = defaultDate.getFullYear() + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (day < 10 ? '0' : '') + day;
+
+                    currentDateTH = (day < 10 ? '0' : '') + day + '/' +
+                      (month < 10 ? '0' : '') + month + '/' +
+                      (defaultDate.getFullYear() + 543);
+
+                    var currentDateEN = (day < 10 ? '0' : '') + day + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        defaultDate.getFullYear();
+                    
+                    var defaultDateMax = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + 50);
+                    var monthMax = defaultDateMax.getMonth() + 1;
+                    var dayMax = defaultDateMax.getDate();
+
+                    var maxDateTH = (defaultDateMax.getFullYear() + 543) + '/' +
+                       (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                       (dayMax < 10 ? '0' : '') + dayMax;
+
+                    var maxDateEN = defaultDateMax.getFullYear() + '/' +
+                        (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                        (dayMax < 10 ? '0' : '') + dayMax;
+                    
+                    minDate = minDateEN;
+                    maxDate = maxDateEN;
+                    currentDate = currentDateEN;
+                    
+                }
+
+                $('#dtpInstallDateTHVas').datetimepicker({
+                    onGenerate: function (ct) {
+                        jQuery(this).find('.xdsoft_disabled')
+                            .toggleClass('xdsoft_date');
+                    },
+                    onSelectDate: function (ct, $i) {
+                        var ctTh = convertToThaiDate($('#dtpInstallDateTHVas').val());
+                        $("#dtpInstallDateTHVas_text").val(ctTh);
+                        getAppointment(ctTh, true, "divTimeSlotVas", "N");
+                    },
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    value: currentDate
+                });
+
+                $("#dtpInstallDateTHVas_text").val(convertToThaiDate($('#dtpInstallDateTHVas').val()));
+                $("#dtpInstallDateTHVas_text").click(function () {
+                    $("#dtpInstallDateTHVas").trigger('open.xdsoft');
+                });
+
+                $('#dtpInstallDateENVas').datetimepicker({
+                    onGenerate: function (ct) {
+                        jQuery(this).find('.xdsoft_disabled')
+                            .toggleClass('xdsoft_date');
+                    },
+                    onSelectDate: function (ct, $i) {
+                        var ctEN = $('#dtpInstallDateENVas').val();
+                        getAppointment(ctEN, false, "divTimeSlotVas", "N");
+                    },
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    value: currentDate
+                });
+
+                if ($("#LanguagePage").val() == "1") {
+                    getAppointment(currentDateTH, true, "divTimeSlotVas", "Y");
+                }
+                else {
+                    getAppointment(currentDateEN, false, "divTimeSlotVas", "Y");
+                }
+            },
+        });
+    }
+
+    function onChangeTimeFlag(timeFlag, timeSlotId) { /************/
+        if ($("#" + timeSlotId).find(".color-green").length > 0) {
+            $("#" + timeSlotId).find(".select-header").hide();
+            $("#" + timeSlotId).find(".day-item").removeClass("day-item-select");
+            $("#" + timeSlotId).find(".day-footer").hide();
+            $("#" + timeSlotId).find(".header-label").show();
+            $("#" + timeSlotId).find(".header-label-hidden").hide();
+            $("#" + timeSlotId).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+            $("#divTextSelectTimeSlot").html("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+            $('#L_INSTALL_DATE').val("");
+            checkDateTimeSlot = false;
+        }
+        $(".slot-m").hide();
+        $(".slot-a").hide();
+        if (timeFlag.value == "M") {
+            $(".slot-m").show();
+        }
+        else {
+            $(".slot-a").show();
+        }
+    }
+
+    function convertToThaiDate(englishDate) { /************/
+        var dd = englishDate.substring('0', '2');
+        var MM = englishDate.substring('3', '5');
+        var yyyy = englishDate.substring('6', '10');
+        var year = parseInt(yyyy, 10) + 543;
+        return dd + "/" + MM + "/" + year;
+    }
+
+    function getAppointment(e, isThai, timeSlotId, setDefault) { /************/
+        $("#divResponsiveTimeSLotVas").hide();
+        $('#divTextSelectTimeSlot').html("");
+        $("#divTimeFlag").html("");
+
+        //R20.1
+        var accessMode = "";
+        var serviceCode = "";
+        var tasktype = "MA";
+
+        serviceCode = sessionStorage.getItem('SERVICE_CODE');
+
+        if (sessionStorage.getItem('ACCESS_MODE') == null) {
+            accessMode = "@AccessModeByPass";
+            sessionStorage.setItem('ACCESS_MODE', accessMode);
+        }
+        else {
+            accessMode = sessionStorage.getItem('ACCESS_MODE');
+        }
+        
+        var subDistrict = $("#CustomerRegisterPanelModel_installAddress2").val();
+        var postalCode = $("#CustomerRegisterPanelModel_installAddress5").val();
+
+        var eventRule = "";
+        var serviceLevel = sessionStorage.getItem("ServiceLevel");
+        var areaRegion = "";
+        var PlayBoxCountOld = "0";
+        var PlayBoxCountNew = "0";
+        var configLineLOV = "_PBOX_MA";
+
+        if (accessMode == "" || accessMode == null || accessMode == undefined) {
+            accessMode = "PBOX";
+        }
+
+        var installDate = e;
+        var tmpAisAirNumber = "";
+        if (sessionStorage.getItem("AisAirNumber") == null) {
+            tmpAisAirNumber = '@AisAirNumberByPass';
+            sessionStorage.setItem("AisAirNumber", tmpAisAirNumber);
+        }
+        else {
+            tmpAisAirNumber = sessionStorage.getItem("AisAirNumber");
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/CustomerRegister/GetAppointment",
+            data: {
+                'installation_Date': installDate,
+                'productSpecCode': serviceCode,
+                'access_Mode': accessMode,
+                'address_Id': $("#ZTEVasAddressID").val(),
+                'days':dayTimeslot,
+                'subDistrict': subDistrict,
+                'postalCode': postalCode,
+                'SubAccessMode': "",
+                'taskType': tasktype,
+                'lineSelect': 2,
+                'isThai': isThai, 'timeSlotId': timeSlotId, 'smallSize': true,
+                'timeSlotRegisterFlag': "Y",
+                'timeSlotRegisterHR': $("#hdTimeSlotRegisterHR").val(),
+                'timeSlotRegisterFlowActionNo': $("#hdTimeSlotRegisterFlowActionNo").val(),
+                'installation_DateTimeNow': $("#hdCurrentDateTime").val(),
+                'AisAirNumber': tmpAisAirNumber,
+                //R20.5 Service Level
+                "serviceLevel": serviceLevel,
+                "areaRegion": areaRegion,
+                "eventRule": eventRule,
+                "PlayBoxCountOld": PlayBoxCountOld,
+                "PlayBoxCountNew": PlayBoxCountNew,
+                "SpecialSkilL": "",
+                "configLineLOV": configLineLOV,
+                "symptonCodePBreplace": $("#sympton_code_pbreplace").val()
+            },
+            dataType: "json",
+            beforeSend: function () {
+                $("#" + timeSlotId).html("");
+                $("#divTimeSlotVasRemark").html("");
+                $("#divResponsiveTimeSLotWarning").show();
+            },
+            success: function (data) {
+
+                $("#" + timeSlotId).html(data.timeSlotData);
+                $("#divTimeSlotVasRemark").html(data.timeSlotRemark);
+
+                var dataCount = data.timeSlotData.toString().indexOf("List data = 0");
+                var dataNull = data.timeSlotData.toString().indexOf(" Data null");
+                var dataError = data.timeSlotData.toString().indexOf("Data error");
+
+                //set dllTimeFlage
+                if (data.dllTimeFlag != "") {
+                    $("#divTimeFlag").html(data.dllTimeFlag);
+                    $('#dll_TimeFlag').select2();
+                    $(".slot-m").hide();
+                    $(".slot-a").hide();
+                    if ($('#dll_TimeFlag :selected').val() == "M") {
+                        $(".slot-m").show();
+                    }
+                    else {
+                        $(".slot-a").show();
+                    }
+                }
+
+                if (dataCount != "-1" || dataNull != "-1" || dataError != "-1") {
+
+                    // set format AppointmentDate
+                    var tmpFBSSAppointmentDateData = $("#" + timeSlotId).find("input[name='FBSSAppointmentDate']").val();
+                    var p = tmpFBSSAppointmentDateData.split('/');
+                    var tmp_appointment_date = p[0] + "/" + p[1] + "/" + p[2];
+
+                    $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val(tmp_appointment_date);
+                    $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val($("#" + timeSlotId).find("input[name='FBSSInstallationCapacity']").val());
+                    $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val($("#" + timeSlotId).find("input[name='FBSSTimeSlot']").val());
+                    $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val($("#" + timeSlotId).find("input[name='TimeSlotId']").val());
+                    $('#L_INSTALL_DATE').val($("#" + timeSlotId).find("input[name='FBSSInstallDate']").val());
+
+                    checkDateTimeSlot = true;
+                } else {
+                    $("#divResponsiveTimeSLotVas").show();
+                    var getDiv = "";
+                    var parentDiv = "";
+
+                    // Check Set Default and Check Show Time Slot
+
+                    console.log("------------------------------------------------------------------------");
+                    console.log($("#" + timeSlotId).find(".color-green").length);
+                    console.log(!$("#" + timeSlotId).is(":hidden"));
+                    console.log($("#" + timeSlotId).find(".color-green").length > 0 && !$("#" + timeSlotId).is(":hidden"));
+                    console.log(!$("#divResponsiveTimeSLot").is(":hidden"));
+                    console.log("------------------------------------------------------------------------");
+
+                    if ($("#" + timeSlotId).find(".color-green").length > 0) {
+
+                        getDiv = $("#" + timeSlotId).find(".color-green").parent().parent();
+                        parentDiv = getDiv.parent();
+
+                        $(parentDiv).find(".select-header").show();
+                        $(parentDiv).find(".day-item").addClass("day-item-select");
+                        $(parentDiv).find(".day-footer").show();
+
+                        $(parentDiv).find(".header-label").hide();
+                        $(parentDiv).find(".header-label-hidden").show();
+
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val($(getDiv).find("input[name='FBSSAppointmentDate']").val());
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val($(getDiv).find("input[name='FBSSInstallationCapacity']").val());
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val($(getDiv).find("input[name='FBSSTimeSlot']").val());
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val($(getDiv).find("input[name='TimeSlotId']").val());
+                        $('#L_INSTALL_DATE').val($(getDiv).find("input[name='FBSSInstallDate']").val());
+
+                        checkDateTimeSlot = true;
+
+                        var textSelectTimeSlot = "@DISPLAY_TIMESLOT_PBOX_MA"; //กล่อง 2,3
+                        textSelectTimeSlot = textSelectTimeSlot.replace("{TIMESLOT}", $(getDiv).find("input[name='FBSSTimeSlot']").val());
+                        $('#divTextSelectTimeSlot').html(textSelectTimeSlot);
+                    }
+                    else {
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+                        $('#L_INSTALL_DATE').val("");
+
+                        checkDateTimeSlot = false;
+                    }
+
+                }
+
+            },
+            complete: function () {
+                $("#divResponsiveTimeSLotWarning").hide();
+            }
+        });
+    }
+
+    function onDayItemClick(t, timeSlotId) { /************/
+        var parentDiv = $(t).parent();
+
+        if ($(t).find(".color-red").length > 0) {
+            return;
+        }
+
+        $("#" + timeSlotId).find(".select-header").hide();
+        $("#" + timeSlotId).find(".day-item").removeClass("day-item-select");
+        $("#" + timeSlotId).find(".day-footer").hide();
+        $("#" + timeSlotId).find(".header-label").show();
+        $("#" + timeSlotId).find(".header-label-hidden").hide();
+        $('#divTextSelectTimeSlot').html("");
+
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+        $('#L_INSTALL_DATE').val("");
+
+        if ($(t).find(".color-green").length > 0) {
+            $(t).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+            checkDateTimeSlot = false;
+            return;
+        }
+        else if ($("#" + timeSlotId).find(".color-green").length > 0) {
+            $("#" + timeSlotId).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+        }
+
+        if ($(t).find(".color-gray").length > 0) {
+            $(parentDiv).find(".select-header").show();
+            $(parentDiv).find(".day-item").addClass("day-item-select");
+            $(parentDiv).find(".day-footer").show();
+
+            $(parentDiv).find(".header-label").hide();
+            $(parentDiv).find(".header-label-hidden").show();
+
+            $(t).find(".color-gray").removeClass("color-gray").addClass("color-green");
+
+            if ($("#PlugAndPlayFlow").val() != "Y") {
+                $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val($(t).find("input[name='FBSSAppointmentDate']").val());
+                $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val($(t).find("input[name='FBSSInstallationCapacity']").val());
+                $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val($(t).find("input[name='FBSSTimeSlot']").val());
+                $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val($(t).find("input[name='TimeSlotId']").val());
+                $('#L_INSTALL_DATE').val($(t).find("input[name='FBSSInstallDate']").val());
+
+                checkDateTimeSlot = true;
+                
+                var textSelectTimeSlot = "@DISPLAY_TIMESLOT_PBOX_MA"; //กล่อง 2,3
+                textSelectTimeSlot = textSelectTimeSlot.replace("{TIMESLOT}", $(t).find("input[name='FBSSTimeSlot']").val());
+                $('#divTextSelectTimeSlot').html(textSelectTimeSlot);
+            }
+        }
+    }
+
+</script>

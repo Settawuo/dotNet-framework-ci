@@ -1,0 +1,513 @@
+﻿@using WBBEntity.PanelModels.FBBWebConfigModels;
+@Html.Partial("~/Views/Shared/_PartialPopupHistory.cshtml")
+
+@{
+    var o = (List<WBBEntity.PanelModels.Account.ComponentModel>)ViewBag.User.ComponentModel;
+    var g = (List<decimal>)ViewBag.User.Groups;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderByDescending(des => des.ReadOnlyFlag).ToList();
+    
+    string FBB_CFG001_1_ADD = "";
+    string FBB_CFG001_1_EXPORT_EXCEL = "";
+    string FBB_CFG001_1_CONFIG = "";
+    
+    if (o != null)
+    {
+        FBB_CFG001_1_ADD = o.Any(c => c.ComponentName == "FBB_CFG001_1_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_1_ADD").ReadOnlyFlag : "";
+        FBB_CFG001_1_EXPORT_EXCEL = o.Any(c => c.ComponentName == "FBB_CFG001_1_EXPORT_EXCEL") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_1_EXPORT_EXCEL").ReadOnlyFlag : "";
+        FBB_CFG001_1_CONFIG = o.Any(c => c.ComponentName == "FBB_CFG001_1_CONFIG") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_1_CONFIG").ReadOnlyFlag : "";
+    }
+}
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Main Page</h3>
+            <ol class="breadcrumb">
+                <li class="active">Main Page</li>
+            </ol>
+        </div>
+    </div>
+</div>
+ 
+<div class="row">
+    <div class="col-md-8">
+        @LeftPane()
+    </div>
+
+    <div class="col-md-4">
+        @RightPane()
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @(Html.Kendo().Grid<CoverageAreaPanel>()
+        .Name("GridMain")
+        .ToolBar(toolbar => toolbar.Template("<div class='pull-right'>" +
+        "<a id='btnAddNewCoverage' onclick='onAdd()' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a>&nbsp;" +
+        "<a onclick='exportExcel()' id='btnExport' disabled='disabled' class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp; Export to Excel</a>&nbsp;" +
+        "<a onclick=\"showPopupHistoryLog('Coverage')\" class='btn btn-default'><i class='fa fa-history'></i>&nbsp; Show History</a></div>"))
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.IpRanSiteCode).Title("SITE").ClientTemplate("#=IpRanSiteCode#<br/>#=CondoCode#<br/>#=Status#<br/> #if(OnTargetDateIn == null){# # # #}else{# #=kendo.toString(OnTargetDateIn,'dd/MM/yyyy')# #}#");
+            columns.Bound(p => p.NodeNameTH).Title("Node Name").ClientTemplate("#=NodeType#<br/>#=NodeNameTH#<br/>#=NodeNameEN#</br>#=ContactNumber#");
+            columns.Bound(p => p.MooTH).Title("Address 1").ClientTemplate("หมู่ #if(MooTH == 0){# # # #}else{# #=MooTH# #}#<br/>ซอย #=SoiTH#<br/>ถนน #=RoadTH#<br/>รหัสไปรษณีย์ #=ZipCodeTH#");
+
+            columns.Bound(p => p.TumbonTH).Title("Address 2").ClientTemplate("#=TumbonTH#<br/>#=AmphurTH#<br/>#=ProvinceTH#<br/>#=RegionCode#");
+            columns.Command(command =>
+            {                
+                if (FBB_CFG001_1_CONFIG != "")
+                {
+                    command.Custom("Config").Click("onConfig").Text("<i class='fa fa-cog fa-lg'></i>&nbsp; Config");
+                }
+            });
+        })
+        .Pageable(p => p.Input(true)
+            .Numeric(true)
+            .PageSizes(true)
+        )
+        .Reorderable(r => r.Columns(true))
+        .Sortable()
+        .Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(10)
+            .Read(read => read.Action("Read", "Coverage_Search").Data("onDataBind"))
+         )
+         .AutoBind(false)
+         .Events(e => e.DataBound("onGridDataBound"))
+    )
+    </div>
+</div>
+
+@helper LeftPane()
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Search Panel</span>                
+                <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+            </h3>
+        </div>
+        <div id="SearchPanel" class="panel-collapse collapse in">
+            <div class="panel-body" style="min-height: 235px;">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Region</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("Region")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectLov", "MasterData", new { type = "REGION_CODE" });
+                                              });
+                                          })
+                                          .Events(e => e.Change("onRegionChange"))
+                                    )
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Province</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("Province")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectProvince", "MasterData");
+                                              });
+                                          })
+                                          .Events(e => e.Change("onProvinceChange"))
+                                    )
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Amphur</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("Amphur")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectAmphur", "MasterData");
+                                              });
+                                          })
+                                    )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                              .Name("Status")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectLov", "MasterData", new { type = "COVERAGESTATUS" });
+                                                  });
+                                              })
+                                        )
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Node Name</label>
+                            <div class="i-fg-data-entry">
+                                <input type="text" id="ProjectName" class="k-textbox form-control" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Port Utilization</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                              .Name("PortUtilization")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_VAL1")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectLov", "MasterData", new { type = "PORT_UTILIZATION" }).Data("onPortUtilization");
+                                                  });
+                                              })
+                                        )
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>IPRAN Code</label>
+                            <div class="i-fg-data-entry">
+                                <input type="text" id="IPRANCode" class="k-textbox form-control" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Condo Code</label>
+                            <div class="i-fg-data-entry">
+                                <input type="text" id="CondoCode" class="k-textbox form-control" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <label></label>
+                        <div class="i-fg-data-entry">                            
+                            <div class="btn-group pull-right">
+                                <a class="btn btn-default i-width-sm" onclick="onCancel();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>                            
+                                <a onclick="onSearch()" class="btn btn-info i-width-sm"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Search</a>                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>    
+}
+
+@helper RightPane()
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Summary</span>
+                <a data-toggle="collapse" class="pull-right" href="#Summary" onclick="onPanelToggle(this);" id="SummaryHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SummaryHeaderArrow"></i></a>
+            </h3>
+        </div>
+        <div id="Summary" class="panel-collapse collapse in">
+            <div class="panel-body" style="min-height: 235px;">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-primary i-total-box-2">
+                                    <div class="row">
+                                        <div class="col-md-12 i-text-align-center">
+                                            <span class="i-f1" id="L_TotalSite">0</span><br />
+                                            <span class="i-f2">Total Site</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-primary i-total-box-2">
+                                    <div class="row">
+                                        <div class="col-md-12 i-text-align-center">
+                                            <span class="i-f1" id="L_TotalCoverage">0</span><br />
+                                            <span class="i-f2">Total Coverage</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-primary i-total-box-2">
+                                    <div class="row">
+                                        <div class="col-md-12 i-text-align-center">
+                                            <span class="i-f1" id="L_TotalPort">0</span><br />
+                                            <span class="i-f2">Total Port</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row i-gap-top-1">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-primary i-total-box-2">
+                                    <div class="row">
+                                        <div class="col-md-12 i-text-align-center">
+                                            <span class="i-f1" id="L_PortAvailable">0</span><br />
+                                            <span class="i-f2">Port Available</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-primary i-total-box-2">
+                                    <div class="row">
+                                        <div class="col-md-12 i-text-align-center">
+                                            <span class="i-f1" id="L_PortActive">0</span><br />
+                                            <span class="i-f2">Port Active</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-primary i-total-box-2">
+                                    <div class="row">
+                                        <div class="col-md-12 i-text-align-center">
+                                            <span class="i-f1" id="L_PortReserve">0</span><br />
+                                            <span class="i-f2">Port Reserve</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row i-gap-top-1">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-primary i-total-box-2">
+                                    <div class="row">
+                                        <div class="col-md-12 i-text-align-center">
+                                            <span class="i-f1" id="L_PortOutOfService">0</span><br />
+                                            <span class="i-f2">Port Out Of Service</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-primary i-total-box-2">
+                                    <div class="row">
+                                        <div class="col-md-12 i-text-align-center">
+                                            <span class="i-f1" id="L_PortPendingTerminate">0</span><br />
+                                            <span class="i-f2">Port Pending Terminate</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4"></div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>    
+}
+
+<script>
+
+    $(function () {
+        if ("@FBB_CFG001_1_ADD" == "") $("#btnAddNewCoverage").hide();
+        if ("@FBB_CFG001_1_EXPORT_EXCEL" == "") $("#btnExport").hide();        
+    });
+
+    function onDataBind() {
+        return {
+            amphur: $.trim($("#Amphur").data("kendoDropDownList").value()),
+            ipranCode: $.trim($("#IPRANCode").val()),
+            locationCode: $.trim($("#CondoCode").val()),
+            nodeName: $.trim($("#ProjectName").val()),
+            nodeStatus: $.trim($("#Status").data("kendoDropDownList").value()),
+            port: $.trim($("#PortUtilization").data("kendoDropDownList").value()),
+            province: $.trim($("#Province").data("kendoDropDownList").value()),
+            regionCode: $.trim($("#Region").data("kendoDropDownList").value())
+        };
+    }
+
+    function showPopupHistoryLog(panel) {
+        var title = panel;
+        var application = "";
+        var refKey = $("#Coverage_NodeNameTH").val();
+        var refName = "Node Name TH";
+  
+        application = "FBB_CFG001_2_SiteInformation";       
+        //application = "FBB_CFG001_2_Coverage";        
+
+        onHistoryPopUp_Show(title, application, refKey, refName);
+    }
+
+    function onGridDataBound() {
+        setButton();        
+        Loading(0);
+        clearPageScrollUp("#GridMain");
+    }
+
+    function onAdd() {
+        window.location.href = "@Url.Action("Index", "Coverage_Manage")";
+    }
+
+    function onConfig(e) {
+        Loading();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        window.location.href = "/Coverage_Manage/Index?contactId=" + dataItem.ContactId;
+    }
+
+    function exportExcel() {
+        window.location.href = "@Url.Action("ExportExcel", "Coverage_Search")";
+    }
+
+    function onSearch() {
+        Loading();
+        $("#GridMain").data("kendoGrid").dataSource.read();
+        getSummary();
+    }
+
+    function onCancel() {
+        window.location.href = "@Url.Action("Index", "Coverage_Search")";
+    }
+
+    function onRegionChange() {
+        $("#Province").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value() });
+        $("#Amphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: "" });
+    }
+
+    function onProvinceChange() {
+        $("#Amphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value() });
+    }
+
+    function onPortUtilization() {
+        $.ajax({
+            url: "/MasterData/SelectLovDefaultValue",
+            data: { type: "PORT_UTILIZATION" },
+            dataType: "json",
+            type: 'post',
+            success: function (data) {
+                Loading();
+                $("#PortUtilization").data("kendoDropDownList").value(data.LOV_VAL1);
+                $("#GridMain").data("kendoGrid").dataSource.read({ port: data.LOV_VAL1 });
+                getSummary();
+            }
+        });
+    }
+
+    function getSummary() {
+        $.ajax({
+            url: "/Coverage_Search/GetSummary",
+            dataType: "json",
+            type: 'post',
+            success: function (data) {
+                $("#L_TotalSite").text(data.TotalSite);
+                $("#L_TotalCoverage").text(data.TotalCoverage);
+                $("#L_TotalPort").text(data.TotalPort);
+                $("#L_PortAvailable").text(data.Available);
+                $("#L_PortActive").text(data.Active);
+                $("#L_PortReserve").text(data.Reserve);
+                $("#L_PortOutOfService").text(data.OutOfService);
+                $("#L_PortPendingTerminate").text(data.PendingTerminate);
+
+                if (data.TotalSite > 0)
+                    $("#btnExport").removeAttr("disabled");
+                else
+                    $("#btnExport").attr("disabled", "disabled");
+            }
+
+        });
+    }
+</script>

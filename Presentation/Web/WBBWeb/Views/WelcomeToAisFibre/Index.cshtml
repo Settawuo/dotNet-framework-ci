@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutWelcomeToAisFibre.cshtml";
+}
+
+@Html.Partial("~/Views/Shared/_DataPrivacy.cshtml")
+@Html.Partial("~/Views/Shared/_MobileDevice.cshtml")
+
+@Html.Partial("~/Views/WelcomeToAisFibre/_inputAisAirNumber.cshtml")
+@Html.Partial("~/Views/WelcomeToAisFibre/_pdpaConfirm.cshtml")
+@Html.Partial("~/Views/WelcomeToAisFibre/_Main.cshtml")
+@Html.Partial("~/Views/WelcomeToAisFibre/_cookiePrivacy.cshtml")
+
+<div id="ProgressIcon" class="modal fade">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="text-center" style="color: white;">
+                <div>
+                    <i class="fa fa-spinner fa-spin fa-6" style="position: inherit;"></i>
+                </div>
+                <div id="txtLoading" style="text-align: center;">
+                    LOADING
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#AisAirNumber").val("");
+        $("#MobileNo").val("");
+        $("#lblServiceMobileNo").html("");
+        $("#passOTP").val("");
+        $("#lblWelcomeName").html("");
+
+        $('#fbwe_p1_step_mobile').hide();
+        $('#fbwe_p1_step_otp').hide();
+        $('.fbwe_p1_pos1').show();
+
+        $('input[name=privilege]').prop('checked', false);
+        $('input[name=service]').prop('checked', false);
+
+        $("#btnContinue1").show();
+        $("#btnContinue2").hide();
+        $("#btnContinue3").show();
+        $("#btnContinue4").hide();
+
+        $("#divInputAisAirNumber").show();
+        $("#divPdpaConfirm").hide();
+        $("#divMian").hide();
+        $("#divCookiePivacy").show();
+    });
+
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+</script>

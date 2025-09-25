@@ -1,0 +1,155 @@
+﻿
+@* // ... Details PopUp Editing. (Kiakez) -- Advicer: P'Sam, P'Yeen, P'Boy ... //*@
+
+@model WBBEntity.PanelModels.FBBWebConfigModels.DSLAMModels
+
+<style>
+    .popupTextBox {
+        width:170px;
+    }
+    .popupTDLabel {
+        margin-left:25px;
+        width:150px;
+    }
+</style>
+
+    <table class="table" style="width:100%;">
+        <tr> @*// ... DSLAM Model Column, maxlength:50 ...//*@
+            <td class="popupDSLabel">
+                @*<span>DSLAM Model</span>*@
+                <label> DSLAM Model <span id="requiredfor-DSLAMModel"></span></label>
+                <div class="i-fg-data-entry">
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-DSLAMModel"></div>
+                            
+            </td>
+           
+            <td>
+                @Html.TextBoxFor(Model => Model.MODEL, 
+                     new {
+                        @onkeypress="$('#txthd').val($('#txtCode').val())", 
+                        @data_bind = "value:MODEL",
+                        @placeholder = "DSLAM Model", //Watermark ลายน้ำ
+                        @title = "Input DSLAM Model", //Description
+                        @type = "text",
+                        @id = "txtCode",
+                        @class = "k-textbox form-control",
+                        @maxlength = 50 })
+            </td>
+        </tr>
+        
+        <tr> @*// ... Brand Column, maxlength:50 ... //*@
+            <td class="popupDSLabel">
+                @*<span>Brand</span>*@
+                <label> Brand <span id="requiredfor-BRAND"></span></label>
+                <div class="i-fg-data-entry">
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-BRAND"></div>
+
+            </td>
+            
+            <td>
+               @Html.TextBoxFor(Model => Model.BRAND, 
+                     new { 
+                        @data_bind = "value:BRAND",
+                        @placeholder = "Brand", //Watermark ลายน้ำ
+                        @title = "Input Brand", //Description
+                        @type = "text",
+                        @id = "txtCode",
+                        @class = "k-textbox form-control",
+                        @maxlength = 50 })
+
+            </td>
+        </tr>
+
+        <tr> @*// ... Brand คำย่อ, maxlength:20 ... //*@
+            <td class="popupDSLabel">
+                @*<span>Brand-คำย่อ</span>*@
+                <label> Brand-คำย่อ <span id="requiredfor-SH_BRAND"></span></label>
+                <div class="i-fg-data-entry">
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-SH_BRAND"></div>
+
+            </td>
+            
+            <td>
+               @Html.TextBoxFor(Model => Model.SH_BRAND, 
+                     new { 
+                        @data_bind = "value:SH_BRAND",
+                        @placeholder = "Brand-คำย่อ", //Watermark ลายน้ำ
+                        @title = "Input Brand-คำย่อ", //Description
+                        @type = "text",
+                        @id = "txtCode",
+                        @class = "k-textbox form-control",
+                        @maxlength = 20 })
+
+            </td>
+        </tr>
+
+        <tr> @*// ... Start Index: Min:0 && Max:9 ... //*@
+            <td class="popupDSLabel">
+                @*<span>Start Index</span>*@
+                <label> Start Index <span id="requiredfor-STARTINDEX"></span></label>
+                <div class="i-fg-data-entry">
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-STARTINDEX"></div>
+
+            </td>
+            
+            <td>
+                @(Html.Kendo().NumericTextBox()
+                        .Name("SLOTSTARTINDEX")
+                        .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                        .Format("n0") //Number does not have decimal point.
+                        .Spinners(false) //Spinner Numberic
+                        .Min(0) //Minimum Number
+                        .Max(9) //Maximum Number
+                        )
+            </td>
+        </tr>
+        
+        <tr> @*// ... Start Index: Min:1 && Max:99 ... //*@
+            <td class="popupDSLabel">
+                @*<span>Max Slot</span>*@
+                <label> Max Slot <span id="requiredfor-MAXSLOT"></span></label>
+                <div class="i-fg-data-entry">
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-MAXSLOT"></div>
+            </td>
+            <td>
+
+                @(Html.Kendo().NumericTextBox()
+                        .Name("MAXSLOT")
+                        .HtmlAttributes(new { @class = "form-control i-form-control-extend"})
+                        .Format("n0") //Number does not have decimal point.
+                        .Spinners(false) //Spinner Numberic
+                        .Value(1) //Case Start Not "0"
+                        .Min(1) //Minimum Number
+                        .Max(99) //Maximum Number
+                        )
+            </td>
+        </tr>
+                 
+@*        <tr>
+            <td></td>
+        </tr>*@
+
+    </table>
+
+    <script>
+        $(function () {
+            var validateModel = [];
+            validateModel.push({ id: "DSLAMModel" });
+            validateModel.push({ id: "BRAND" });
+            validateModel.push({ id: "SH_BRAND" });
+            validateModel.push({ id: "STARTINDEX" });
+            validateModel.push({ id: "MAXSLOT" });
+            SetRequired(validateModel);
+        });
+    </script>
+
+@*@{
+    ViewBag.Title = "PopupDSLAMModel";
+}
+
+<h2>PopupDSLAMModel</h2>*@

@@ -1,0 +1,587 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutVerification.cshtml";
+
+    //var lbl_otp_en = "Please enter your OTP received via SMS to login.";
+    //var lbl_otp_th = "ระบุรหัส OTP ที่ได้รับทาง SMS เพื่อเข้าสู่ระบบ";
+    //var lbl_h_number_th = "ระบุหมายเลขอินเน็ต<br />เพื่อยืนยันเข้าใช้บริการแอปพลิเคชันบนมือถือ";
+    //var lbl_h_number_en = "Enter your internet number to login mobile application";
+
+}
+
+<style>
+    body {
+        background: none;
+        height: 100%;
+        margin: 0;
+    }
+
+    .fibrelogo {
+        max-width: 95%;
+    }
+
+    .foottext {
+        padding-left: inherit;
+    }
+
+    .row_ais:first-child {
+        margin-bottom: 1em;
+    }
+
+    .row_ais:nth-child(2) {
+        width: 100%;
+    }
+
+    .row_ais {
+        /*margin-bottom: 1em;*/
+        color: gray;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #input-internet-no::placeholder {
+        color: lightgray;
+    }
+
+    input[type="button"] {
+        background-color: #B2D265;
+        color: gray;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+    }
+
+        input[type="button"]:hover {
+            background-color: #7CB342;
+        }
+
+    input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #B2D265;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+        color: gray;
+        border-radius: 10px;
+    }
+
+        input[type="text"]:hover {
+            border-color: #B2D265;
+        }
+
+    input[type="password"] {
+        padding: 10px;
+        border: 1px solid #B2D265;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+        color: gray;
+        border-radius: 10px;
+        letter-spacing: 3px;
+        color: #B2D265;
+        font-weight: bold;
+        /*font-size: 36px;*/
+    }
+
+
+        input[type="password"]:hover {
+            border-color: #B2D265;
+        }
+
+        input[type="password"]::placeholder {
+            letter-spacing: 0px;
+            font-size: 14px;
+            margin: auto;
+        }
+
+        input[type="password"]::-webkit-input-placeholder {
+            text-align: justify;
+            margin-top: 100px;
+            font-size: 14px;
+        }
+
+        input[type="password"]:-moz-placeholder {
+            text-align: justify;
+            margin-top: 100px;
+            font-size: 14px;
+        }
+
+    .countdown {
+        text-align: center;
+        margin-top: 1px;
+    }
+
+    .time_expired {
+        text-align: center;
+        color: #deebbb;
+        font-size: 11px;
+    }
+
+    #session {
+        text-align: center;
+        margin-top: 1px;
+    }
+</style>
+
+<body>
+
+    <div class="container-fluid" id="content1">
+        <div class="row_ais">
+            <div class="column large-12">
+                <div class="foottext" style="text-align:center;" id="h_number_th">
+                </div>
+            </div>
+        </div>
+        <div class="row_ais">
+            <div class="column large-12">
+                <div class="foottext" style="text-align:center;" id="h_number_en">
+                </div>
+            </div>
+        </div>
+
+        <div class="row_ais">
+            <div class="column large-12">
+                <div class="form-group">
+                    <input type="text" id="input-internet-no" name="InternetNo" class="form-control" placeholder="หมายเลขอินเทอร์เน็ต 10 หลัก / 10 digits internet number" required="" autofocus="">
+                    <strong id="MessageEror" style="color: red; font-weight: 100; font-size: 13px"></strong>
+                </div>
+            </div>
+        </div>
+        <div class="row_ais">
+            <div class="column large-12">
+                <div class="button-container">
+                    <input type="button" value="ถัดไป / Next" onclick="check_internetno();" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid" id="content2" style="display:none">
+        <div class="row_ais">
+            <div class="column large-12">
+                <div class="foottext" style="text-align:center;" id="otp_th"></div>
+            </div>
+        </div>
+
+        <div class="row_ais">
+            <div class="column large-12">
+                <div class="foottext" style="text-align:center;" id="otp_en"></div>
+            </div>
+        </div>
+
+        <div class="row_ais">
+            <div class="column large-12">
+                <div class="form-group">
+                    <input type="text" id="veri_InternetNo" name="InternetNo" class="form-control" required="" autofocus=""> @*placeholder="หมายเลขอินเทอร์เน็ต 10 หลัก / 10 digits internet number"*@
+                </div>
+            </div>
+        </div>
+
+        <div class="row_ais">
+            <div class="column large-12">
+                <div class="form-group">
+                    <input type="text" id="veri_MobileNo" name="MobileNo" class="form-control" required="" autofocus="" disabled> @*placeholder="08xxxx1234"*@
+                    <strong id="lblErrorSendOTP" style="color: red; font-weight: 100; font-size: 13px"></strong>
+                </div>
+            </div>
+        </div>
+
+        <div id="sub-content2_1">
+            <div class="row_ais">
+                <div class="column large-12">
+                    <div class="button-container">
+                        <input type="button" value="ขอรหัส OTP / Request OTP" onclick="GetOTP();" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="sub-content2_2">
+            <div class="row_ais">
+                <div class="column large-12">
+                    <div class="form-group">
+                        <div class="custom-input-container">
+                            <input type="password" id="veri_OTP" name="otp" class="form-control customPlace" placeholder="รหัส OTP / OTP" required="" autofocus="">
+                        </div>
+                        <strong id="lblErrorComfirmOTP" style="color: red; font-weight: 100; font-size: 13px"></strong>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row_ais" id="session">
+                <div class="foottext">
+                    <div class="t_inline" id="sessionTimeOut">
+                    </div>
+                </div>
+            </div>
+            <div class="row_ais" id="countdown">
+                <div class="foottext countdown">
+                    <div class="t_inline" id="timercountdown">
+                    </div>
+                </div>
+            </div>
+            <div class="row_ais" id="expired">
+                <div class="column large-12">
+                    <div class="foottext time_expired">
+                        <div id="txt_expired">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row_ais">
+                <div class="column large-12" style="text-align:center;">
+                    <strong id="lblCustomerVerification" style="color: lightslategray; font-weight: 100; font-size: 11px"></strong>
+                </div>
+            </div>
+
+            <div class="row_ais">
+                <div class="column large-12">
+                    <div class="button-container">
+                        <input type="button" id="btn_VerificationOTP" value="ตกลง / OK" onclick="setInfo();">
+                        <input type="button" id="btn_VerificationOTP_No" value="ตกลง / OK" style="cursor: no-drop;background-color: #B1B3AD;">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="transactionID" hidden></div>
+    <div id="internetNo" hidden></div>
+    <div id="MobileNo" hidden></div>
+
+    <div id="session_transactionID" hidden></div>
+    <div id="session_email" hidden></div>
+
+</body>
+
+
+<script type="text/javascript">
+    var startTime;
+    $(document).ready(function () {
+        var session_transactionID = @Html.Raw(Json.Encode(ViewData["session_transactionID"]));
+        $("#session_transactionID").val(session_transactionID);
+        var session_email = @Html.Raw(Json.Encode(ViewData["session_email"]));
+        $("#session_email").val(session_email);
+
+        $("#transactionID").val("");
+        $("#internetNo").val("");
+        $("#MobileNo").val("");
+        $("#btn_VerificationOTP_No").hide();
+
+        $('#h_number_th').html("<span class='t_inline'>ระบุหมายเลขอินเทอร์เน็ต<br />เพื่อยืนยันเข้าใช้บริการแอปพลิเคชันบนมือถือ</span>");
+        $('#h_number_en').html("<span class='t_inline'>Enter your internet number to login mobile application</span>");
+
+        $("#input-internet-no").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+
+        });
+        $("#input-internet-no").keypress(function (e) {
+            var length = this.value.length;
+            if (length >= 10) {
+                e.preventDefault();
+            }
+        });
+
+        $("#veri_OTP").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+
+        });
+        $("#veri_OTP").keypress(function (e) {
+            var length = this.value.length;
+            if (length >= 4) {
+                e.preventDefault();
+            }
+        });
+
+    });
+
+    function check_internetno() {
+        if ($("#input-internet-no").val().length == 10 || $("#input-internet-no").val().length == 9) {
+            $('#timercountdown').html('');
+            $.ajax({
+                url: '/IPCamera/CheckInternetNo',
+                data: {
+                    internetNo: $("#input-internet-no").val(),
+                    option: "4"
+                },
+                dataType: "json",
+                type: 'POST',
+                async: false,
+                success: function (response) {
+                    if (response.data.errorMessage === "") {
+                        $("#content1").hide()
+                        $("#content2").show();
+                        $("#sub-content2_1").show();
+                        $("#sub-content2_2").hide();
+
+                        //$('#otp_th').html("<span class='t_inline'>ระบุหมายเลขอินเทอร์เน็ต<br />เพื่อยืนยันเข้าใช้บริการแอปพลิเคชันบนมือถือ</span>");
+                        //$('#otp_en').html("<span class='t_inline'>Enter your internet number to login mobile application</span>");
+                        $('#otp_th').html("<span class='t_inline'>รหัส OTP จะส่งไปยังหมายเลขติดต่อของคุณเ</span>");
+                        $('#otp_en').html("<span class='t_inline'>OTP code will be sent to your contact number.</span>");
+
+                        $("#veri_InternetNo").val(response.data.hideinternetNo);
+                        $("#veri_MobileNo").val(response.data.hideMobileNo);
+                        $("#internetNo").val(response.data.internetNo);
+                        $("#MobileNo").val(response.data.MobileNo);
+
+                    }
+                    else {
+                        $("#MessageEror").text(response.data.errorMessage);
+                    }
+                },
+                error: function (err) {
+                    console.log('Error in Operation')
+                }
+            });
+        } else {
+            $("#MessageEror").html("กรุณาระบุหมายเลขอินเทอร์เน็ต 10 หลัก");
+        }
+
+    }
+
+    function GetOTP() {
+        $("#lblErrorComfirmOTP").hide();
+
+        //$('#otp_th').html("<span class='t_inline'>ระบุรหัส OTP ที่ได้รับทาง SMS เพื่อเข้าสู่ระบบ รหัสจะส่งไปยังหมายเลขติดต่อของคุณ</span>");
+        //$('#otp_en').html("<span class='t_inline'>Please enter your OTP received via SMS to login.<br />OTP will be sent to your contact mobile number.</span>");
+        $('#otp_th').html("<span class='t_inline'>ระบุรหัส OTP ที่ได้รับทาง SMS เพือเข้าสู่ระบบ</span>");
+        $('#otp_en').html("<span class='t_inline'>Please enter your OTP received via SMS to login.</span>");
+
+        $.ajax({
+            url: '/IPCamera/SendOneTimePW',
+            data: {
+                internetNo: $("#MobileNo").val(),
+                nonMobile: $("#veri_MobileNo").val(),
+                transactionID: $("#session_transactionID").val()
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.data.errorMessage === "") {
+                    $("#lblErrorSendOTP").hide();
+                    $("#sub-content2_1").hide();
+                    $("#sub-content2_2").show();
+                    $("#veri_OTP").val("");
+                    $("#session").hide();
+                    $("#timercountdown").show();
+                    $("#expired").show();
+                    //$("#veri_InternetNo").val(response.data.hideinternetNo);
+                    //$("#veri_MobileNo").val(response.data.hideMobileNo);
+                    $("#transactionID").val(response.data.transactionID);
+                    //$("#internetNo").val(response.data.internetNo);
+                    //$("#MobileNo").val(response.data.MobileNo);
+
+                    var ltxt_exp = "<div class='t_inline' id='txt_expired'>(รหัสผ่านมีอายุการใช้งาน 5 นาที / OTP is valid for 5 minutes)</div>";
+                    $("#txt_expired").html(ltxt_exp);
+                    var fiveMinutes = 60 * response.data.timer,
+                        display = $('#timercountdown');
+                    startTimer(fiveMinutes, display);
+
+                }
+                else {
+                    $("#lblErrorSendOTP").text(response.data.errorMessage);
+                    $("#lblErrorSendOTP").show();
+                }
+            },
+            error: function (err) {
+                console.log('Error in Operation')
+            }
+        });
+    }
+
+    function setInfo() {
+        $("#btn_VerificationOTP").hide();
+        $("#btn_VerificationOTP_No").show();
+        var timeOut = $("#txtresend").text();
+        if (timeOut != "Resend") {
+            $.ajax({
+                url: '/IPCamera/OTPVerification',
+                data: {
+                    nonMobile: $("#internetNo").val(),
+                    msisdn: $("#MobileNo").val(),
+                    pwd: $('#veri_OTP').val(),
+                    transactionID: $('#transactionID').val()
+                },
+                dataType: "json",
+                type: 'POST',
+                async: false,
+                success: function (response) {
+                    $("#timercountdown").show();
+                    var data = response.data;
+                    if (data.errorMessage == "" && data.status == true) {
+                        $("#lblErrorComfirmOTP").hide();
+                        $("#hdEnServiceMobileNo").val("");
+                        $("#GSSO_transactionID").val(data.transactionID);
+                        $("#MobileNo").val(data.MobileNo);
+
+                        getUserAccount();
+
+
+                    }
+                    else {
+                        $("#lblErrorComfirmOTP").text(data.errorMessage);
+                        $("#lblErrorComfirmOTP").show();
+                        $("#btn_VerificationOTP").show();
+                        $("#btn_VerificationOTP_No").hide();
+                        if (data.resendNewOTP != undefined && data.resendNewOTP!='') {
+                            clearInterval(startTime);
+                            $("#timercountdown").hide();
+                            $("#expired").hide();
+                            $('#session').html("<span id='txtresend' style='text-decoration: underline;color: #337ab7;font-weight: bold;' onclick='showContent1();'>" + data.resendNewOTP + "</span>");
+                            $("#session").show();
+                        } else {
+                            $("#timercountdown").show();
+                            $("#expired").show();
+                            $("#session").hide();
+                        }
+                    }
+                },
+                error: function (err) {
+                    console.log('Error in Operation');
+                    $("#btn_VerificationOTP").show();
+                    $("#btn_VerificationOTP_No").hide();
+                }
+            });
+        }
+        //else {
+        //    $("#lblErrorComfirmOTP").text(data.errorMessage);
+        //    $("#lblErrorComfirmOTP").show();
+        //}
+
+
+    }
+    function showContent1() {
+        $("#content1").show()
+        $("#content2").hide();
+        $("#sub-content2_1").hide();
+        $("#sub-content2_2").hide();
+    }
+
+    function getUserAccount() {
+        $.ajax({
+            url: '/IPCamera/getUserAccount',
+            data: {
+                mobileNo: $("#internetNo").val(),
+                transactionID: $("#session_transactionID").val(),
+                email: $("#session_email").val()
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                var dataResponse = response.data;
+                var obj = JSON.stringify(response.data);
+
+                if (dataResponse.result == "SUCCESS") {
+                    $("#lblCustomerVerification").text("Successfully.");
+                    $("#lblErrorComfirmOTP").hide();
+                } else {
+                    $("#lblErrorComfirmOTP").text(dataResponse.errorMessage);
+                    $("#lblErrorComfirmOTP").show();
+                }
+
+
+                setUserInfo(obj)
+            },
+            error: function (err) {
+                console.log('Error in Operation')
+            }
+        });
+    }
+
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        startTime = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.text(minutes + ":" + seconds);
+
+            if (--timer < 0) {
+                timer = duration;
+            }
+            else if (timer == 0) {
+                clearInterval(startTime);
+                $('#timercountdown').html("<span id='txtresend' style='text-decoration: underline;color: #337ab7;' onclick='check_internetno();'>Resend</span>");
+                var ltxt_exp = "<div class='t_inline' id='txt_expired'>(รหัสผ่านมีอายุการใช้งาน 5 นาที / OTP is valid for " + duration + " minutes) </div >";
+
+                $("#txt_expired").html(ltxt_exp);
+
+                var otpExp = '{"result": "FAIL","code": "408","payload": {"status": "Request Timeout"}}';
+
+                console.log(JSON.parse(otpExp));
+                setUserInfo(otpExp);
+            }
+        }, 1000);
+    }
+
+    function setUserInfo(parameter) {
+        var OsType = getOS();
+        if (OsType == "Android") {
+            JsBridgeAndroid.setUserInfo(parameter);
+        } else if (OsType == "iOS") {
+            window.webkit.messageHandlers.setUserInfo.postMessage(parameter)
+        } else {
+            console.log(OsType, ":", parameter)
+        }
+    }
+
+    function getOS() {
+        var userAgent = window.navigator.userAgent,
+            platform = window.navigator?.userAgentData?.platform || window.navigator.platform,
+            macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+            windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+            iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+            os = null;
+
+        if (macosPlatforms.indexOf(platform) !== -1) {
+            os = 'Mac OS';
+        } else if (iosPlatforms.indexOf(platform) !== -1) {
+            os = 'iOS';
+        } else if (windowsPlatforms.indexOf(platform) !== -1) {
+            os = 'Windows';
+        } else if (/Android/.test(userAgent)) {
+            os = 'Android';
+        } else if (/Linux/.test(platform)) {
+            os = 'Linux';
+        }
+
+        return os;
+    }
+</script>

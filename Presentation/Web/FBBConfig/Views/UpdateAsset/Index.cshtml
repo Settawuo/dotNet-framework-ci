@@ -1,0 +1,357 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.UpdateAssetModel
+@using WBBEntity.PanelModels;
+@{
+
+    string L_BROWSE_FILE = "";
+    string L_FILE = "";
+
+
+    string L_ACCESS_NO = "";
+    string L_SERIAL_NUMBER = "";
+    string L_ASSET_CODE = "";
+    string L_MAT_DOC = "";
+    string L_DOC_YEAR = "";
+
+    string B_UPD_CONFIRM = "";
+
+
+    if (ViewBag.SearchListScreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.SearchListScreen;
+        L_BROWSE_FILE = configscreen.Any(f => f.Name == "L_BROWSE_FILE") ? configscreen.FirstOrDefault(f => f.Name == "L_BROWSE_FILE").LovValue1 : "";
+        L_FILE = configscreen.Any(f => f.Name == "L_FILE") ? configscreen.FirstOrDefault(f => f.Name == "L_FILE").LovValue1 : "";
+
+        L_ACCESS_NO = configscreen.Any(f => f.Name == "L_ACCESS_NO") ? configscreen.FirstOrDefault(f => f.Name == "L_ACCESS_NO").LovValue1 : "";
+        L_SERIAL_NUMBER = configscreen.Any(f => f.Name == "L_SERIAL_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "L_SERIAL_NUMBER").LovValue1 : "";
+        L_ASSET_CODE = configscreen.Any(f => f.Name == "L_ASSET_CODE") ? configscreen.FirstOrDefault(f => f.Name == "L_ASSET_CODE").LovValue1 : "";
+        L_MAT_DOC = configscreen.Any(f => f.Name == "L_MAT_DOC") ? configscreen.FirstOrDefault(f => f.Name == "L_MAT_DOC").LovValue1 : "";
+        L_DOC_YEAR = configscreen.Any(f => f.Name == "L_DOC_YEAR") ? configscreen.FirstOrDefault(f => f.Name == "L_DOC_YEAR").LovValue1 : "";
+
+        B_UPD_CONFIRM = configscreen.Any(f => f.Name == "B_UPD_CONFIRM") ? configscreen.FirstOrDefault(f => f.Name == "B_UPD_CONFIRM").LovValue1 : "";
+
+
+    }
+}
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabelUPdAssetFromFile" aria-hidden="true" id="modal_confirmUpdAssetFromFile">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+                <h4 class="modal-title" id="myModalLabel">Confirm Update Asset</h4>
+            </div>
+            <p class="clearfix"></p>
+            <p class="text-center" id="text-content-messageFromfile"></p>
+
+            @*<div class="modal-footer">*@
+
+            <button class="btn btn-success btn-sx ReverseAsset-confirm fa fa-check-circle-o" type="button" onclick="ConfirmUpdateAssetFromFile();">&nbsp; Ok &nbsp;</button>
+            <button class="btn btn-default btn-sx ReverseAsset-cancel  fa fa-ban" type="button" data-dismiss="modal" onclick="ConfirmUpdateAssetFromFileCancel();">&nbsp; Cancel &nbsp; </button>
+            <p class="clearfix">&nbsp;</p>
+
+            @*</div>*@
+        </div>
+    </div>
+</div>
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Update Asset</h3>
+        </div>
+    </div>
+</div>
+@*-------------*@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Browse File Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#UpdateAssetPanel" onclick="onPanelToggle(this);" id="UpdateAssetPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="UpdateAssetPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="UpdateAssetPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div class="row ">
+                        <div class="col-sm-2 col-md-2">
+                            <label>@L_FILE:  </label>
+                        </div>
+                    </div>
+                    <div class="row i-gap-top-1"> 
+                        <div class="col-sm-10 col-md-4">
+                            @(Html.Kendo().Upload()
+                                           .Name("UpdateAssetfile")
+
+                                          .HtmlAttributes(new
+                                          {
+                                              accept = ".xlsx,.xls"
+                                          })
+                                           .Messages(m => m.Select(@L_BROWSE_FILE))
+
+                                          .Async(a => a
+                                          .Save("ImportFileUpd_Save", "UpdateAsset")
+                                          .Remove("ImportFileUpd_Remove", "UpdateAsset")
+                                                          .AutoUpload(true))
+                                          .Multiple(false)
+                                           .Events(e => e.Select("resetUpdateAssetByFile"))
+                                          .Events(e => e.Success("onUpdateAssetfileSuccess"))
+                                          .Events(e => e.Error("onUpdateAssetfileError"))
+
+                            )
+                            <div class="i-fg-data-entry-validation" id="validatefor-UpdateAssetfile"></div>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <a id="btnExportTemplateUpdateAsset" onclick="ExportTemplateUpdateAsset()" class="btn btn-default"><i class="fa fa-file-excel-o small"></i>&nbsp;&nbsp;Export Template UpdateAsset</a>
+                        </div>
+                        @*//--------------*@
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-success" id="Result_Panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Result Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#ResultUpdateAssetPanel" onclick="onPanelToggle(this);" id="ResultUpdateAssetPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="ResultUpdateAssetPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="ResultUpdateAssetPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div class="row i-gap-top-1  ">
+                        <div class="row i-gap-top-1  ">
+                            <div class="col-sm-12 col-md-12 i-gap-top-1">
+
+                                @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.UpdateAssetModel>()
+                                             .Name("gridSendUpdateAsset")
+
+                                            .Columns(columns =>
+                                            {
+ 
+                                                columns.Bound(p => p.Access_No).Title(@L_ACCESS_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(280);
+                                                columns.Bound(p => p.Serial_Number).Title(@L_SERIAL_NUMBER).HtmlAttributes(new { style = "text-align:left;" }).Width(280);
+                                                columns.Bound(p => p.Asset_Code).Title(@L_ASSET_CODE).HtmlAttributes(new { style = "text-align:left;" }).Width(280);
+                                                columns.Bound(p => p.Mat_Doc).Title(@L_MAT_DOC).HtmlAttributes(new { style = "text-align:left;" }).Width(280);
+                                                columns.Bound(p => p.Doc_Year).Title(@L_DOC_YEAR).HtmlAttributes(new { style = "text-align:left;" }).Width(280);
+
+
+                                            })
+
+                                                          .ToolBar(toolbar => toolbar.Template("<div class='pull-right'><a    onClick='ConfirmUpdateAsseFromFileShowModal()' id='btnConfirmUpdateAsset'  class='btn btn-info'><i class='fa fa-reply fa-lg'></i>&nbsp; " + @B_UPD_CONFIRM + " </a></div>"))
+                                                 .Scrollable(scrollable => scrollable.Height("auto"))
+                                                  .Resizable(resize => resize.Columns(true))
+                                                  .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                                                  .AutoBind(false)
+                                                  .DataSource(dataSource => dataSource
+                                                  .Ajax()
+                                                  .PageSize(20)
+                                                   .Read(read => read.Action("GetUpdateAssetDataFromExcel", "UpdateAsset").Data("bindingValue"))
+                                            ).Events(e => e.DataBound("onGridDataBound"))
+                                )
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    FileNameXls = "";
+
+    $(document).ready(function () {
+     
+        $("#btnConfirmUpdateAsset").attr('disabled', true);
+
+        resetUpdateAssetByFile();
+        ConfirmUpdateAssetFromFileCancel();
+    });
+    var UpdateAssetModel = function () {
+        ACCESS_NUMBER: "";
+        SERIAL_NUMBER: "";
+        ASSET_CODE: "";
+        MAT_DOC: "";
+        DOC_YEAR: "";
+        FILE_NAME: "";
+
+        PAGE_INDEX: 1;
+        PAGE_SIZE: 20;
+    }
+
+    function defaultData() {
+
+
+        var UpdResult = new UpdateAssetModel();
+
+        UpdResult.ACCESS_NUMBER = $("#ACCESS_NUMBER").val();
+        UpdResult.SERIAL_NUMBER = $("#SERIAL_NUMBER").val();
+        UpdResult.ASSET_CODE = $("#ASSET_CODE").val();
+        UpdResult.MAT_DOC = $("#MAT_DOC").val();
+        UpdResult.DOC_YEAR = $("#DOC_YEAR").val();
+
+        UpdResult.FILE_NAME = FileNameXls;
+        return UpdResult;
+
+    }
+    function bindingValue() {
+        Loading();
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+    function onGridDataBound(e) {
+        Loading(0);
+        if (this.dataSource.view().length == 0) {
+            //insert empty row
+            var colspan = this.thead.find("th").length;
+            var emptyRow = "<tr style='height:auto; text-align:center' ><td colspan='" + colspan + "'>  </td></tr>";
+            this.tbody.html(emptyRow);
+
+            $("#btnConfirmUpdateAsset").attr('disabled', true);
+
+            this.table.width(800);
+            $(".k-grid-content").height(2 * kendo.support.scrollbar());
+        }
+        else {
+            $('.k-grid-content').css("min-height", "100px");
+            $('.k-grid-content').height("auto");
+            $('.k-grid-content').css("max-height", "300px");
+
+        }
+    }
+    function resetUpdateAssetByFile() {
+
+        $(".k-upload-selected").remove();
+        $(".k-upload-files .k-reset").find("li").remove();
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $(".k-upload.k-header").addClass("k-upload-empty");
+        $(".k-upload-button").removeClass("k-state-focused");
+        $("#validatefor-UpdateAssetfile").html("");
+
+    }
+    function onUpdateAssetfileSuccess(e) {
+         
+        if (e.operation == 'upload') {
+            if (e.response.data != '') {
+               
+                $('.k-upload-files.k-reset').each(function () {
+                    
+                    FileNameXls = e.response.fileName;
+                    var ckdata = e.response.ckdata;
+
+                    if (!e.response.status) {
+                        $("#validatefor-UpdateAssetfile").html(ValidationIcon() + e.response.message);
+                    } else {
+
+                        $("#validatefor-UpdateAssetfile").html("");
+
+                        
+                    } 
+                    if (ckdata) {
+                        $("#btnConfirmUpdateAsset").attr('disabled', false);
+                    } else {
+                        $("#btnConfirmUpdateAsset").attr('disabled', true);
+                    }
+
+                });
+
+            }
+        } else {
+          
+            $("#gridSendUpdateAsset").data('kendoGrid').dataSource.data([]);
+             
+        }
+        var grid = $("#gridSendUpdateAsset").data("kendoGrid");
+        grid.dataSource.page(1);
+         
+    }
+    function ConfirmUpdateAsseFromFileShowModal() {
+
+        $("#modal_confirmUpdAssetFromFile").modal('show');
+        $("#text-content-messageFromfile").html("File Name :" + FileNameXls)
+    }
+
+    function ConfirmUpdateAssetFromFile() {
+        $("#modal_confirmUpdAssetFromFile").modal('hide');
+        Loading();
+
+        $.ajax({
+
+            contentType: 'application/json',
+            url: "/UpdateAsset/ConfirmUpdateAssetFromFile",
+            data: JSON.stringify({ dataSModel: null }),
+            async: false,
+            dataType: "json",
+            type: "POST",
+            success: function (response) {
+                Loading(0);
+                if (response) {
+                    if (response["Code"] == "0") {
+                        var responsetext = "<span style='font-weight: normal;'><b>Data Total :</b> " + response["DataTotal"].toLocaleString('en') + " asset. <br/> <b>Update Asset Success : </b>" + response["SuccessCount"].toLocaleString('en') + " asset.<br/> <b>Update Asset Error : </b>" + response["ErrorCount"].toLocaleString('en') + " asset.  </span>"
+
+                         showFeedback("success", responsetext, "Notify Information");
+                         ConfirmUpdateAssetFromFileCancel();
+                         $("#gridSendUpdateAsset").data('kendoGrid').dataSource.data([]);
+                         resetUpdateAssetByFile();
+                    } else {
+                        showFeedback("error", response["message"], "Notify Information");
+                    }
+                }
+            },
+            failure: function (msg) {
+                Loading(0);
+               
+            }
+
+        });
+
+        Loading(0);
+    }
+    function ConfirmUpdateAssetFromFileCancel() {
+        
+        $.ajax({
+
+            contentType: 'application/json',
+            url: "/UpdateAsset/ImportFileUpd_Remove",
+            data:null,
+            async: true,
+            dataType: "json",
+            type: "POST",
+            success: function (response) {
+                $("#gridSendUpdateAsset").data('kendoGrid').dataSource.data([]);
+                resetUpdateAssetByFile();
+              
+            },
+            failure: function (msg) {
+             
+            }
+
+        });
+       
+     
+         
+    }
+    function onUpdateAssetfileError(e) {
+        ConfirmUpdateAssetFromFileCancel();
+        if (!e.response.status) {
+            $("#validatefor-UpdateAssetfile").html(ValidationIcon() + e.response.message);
+             
+        } else {
+            $("#validatefor-UpdateAssetfile").html("");
+        }
+
+    }
+    //R19.05
+    function ExportTemplateUpdateAsset() {
+        var url = '@Url.Action("ExportTemplateUpdateAsset", "UpdateAsset")';
+        window.open(url, '_blank');
+    }
+</script>

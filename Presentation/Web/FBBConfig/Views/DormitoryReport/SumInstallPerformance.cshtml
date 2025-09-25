@@ -1,0 +1,402 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.CusNotRegisModel
+@using WBBEntity.PanelModels;
+@{
+    string L_PAGE_DATE_FROM = "Date From";
+    string L_PAGE_DATE_TO = "Date To";
+    string L_GRID_ITEM_NO = "Item No.";
+    string L_GRID_INSTALL_DATE = "วันที่ติดตั้ง";
+    string L_GRID_DORM_NAME = "ชื่อหอพัก";
+    string L_GRID_SUBCONTACT = "Sub contact";
+    string L_GRID_TOTAL_ORDER = "จำนวน Order";
+    string L_GRID_COMPETE_INSTALL = "ติดตั้งสำเร็จ";
+    string L_GRID_INCOMPLETE_INSTALL = "ติดตั้งไม่สำเร็จ";
+    string L_GRID_CANCEL_INSTALL = "%ติดตั้ง";
+    string L_PAGE_CANCEL = "ยกเลิก";
+    string L_PAGE_SEARCH = "ค้นหา";
+    string L_PAGE_EXPORT = "Export to Excel";
+    string L_PAGE_SEARCH_PANEL = "Search Panel";
+    string L_PAGE_NAME = "Summary Dormitory Installation Performance Report";
+
+
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_GRID_ITEM_NO = configscreen.Any(f => f.Name == "ITEM_NO") ? configscreen.First(f => f.Name == "ITEM_NO").LovValue1 : "";
+        L_GRID_INSTALL_DATE = configscreen.Any(f => f.Name == "INSTALL_DATE") ? configscreen.First(f => f.Name == "INSTALL_DATE").LovValue1 : "";
+        L_GRID_DORM_NAME = configscreen.Any(f => f.Name == "DORMITORY_NAME") ? configscreen.First(f => f.Name == "DORMITORY_NAME").LovValue1 : "";
+        L_GRID_SUBCONTACT = configscreen.Any(f => f.Name == "SUB_CONTACT") ? configscreen.First(f => f.Name == "SUB_CONTACT").LovValue1 : "";
+        L_GRID_TOTAL_ORDER = configscreen.Any(f => f.Name == "ORDER") ? configscreen.First(f => f.Name == "ORDER").LovValue1 : "";
+        L_GRID_COMPETE_INSTALL = configscreen.Any(f => f.Name == "INSTALL_COMPLETE") ? configscreen.First(f => f.Name == "INSTALL_COMPLETE").LovValue1 : "";
+        L_GRID_INCOMPLETE_INSTALL = configscreen.Any(f => f.Name == "INSTALL_NOT_COMPLETE") ? configscreen.First(f => f.Name == "INSTALL_NOT_COMPLETE").LovValue1 : "";
+        L_GRID_CANCEL_INSTALL = configscreen.Any(f => f.Name == "INSTALL_TOT") ? configscreen.First(f => f.Name == "INSTALL_TOT").LovValue1 : "";
+    }
+    
+    
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Summary Dormitory Installation Performance Report</h3>
+            <ol class="breadcrumb">
+                <li class="active">Main Page</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">            
+        <div class="panel-heading">
+           <h3 class="panel-title">
+              <span>@L_PAGE_SEARCH_PANEL</span>
+              <a data-toggle="collapse" class="pull-right" href="#SearchPanel2" onclick="onPanelToggle(this);" id="SearchPanelHeader2"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow2"></i></a>
+           </h3>
+        </div>
+        <div id="SearchPanel2" class="panel-collapse collapse in">
+            <div class="panel-body" style="min-height: 135px;"> 
+                <div id="dateselect" class="row">
+                    <div class="col-sm-6 col-md-6">
+                            <label>@L_PAGE_DATE_FROM</label>
+                            <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .Events(e => e.Change("Change_dtpDateFrom")))
+                                <div class="i-fg-data-entry-validation" id="validatefor-dtpDateFrom"></div>
+                            </div>                            
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                            <label>@L_PAGE_DATE_TO</label>
+                            <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .Events(e => e.Change("Change_dtpDateTo")))
+                                <div class="i-fg-data-entry-validation" id="validatefor-dtpDateTo"></div>
+                            </div>                            
+                  </div>
+               </div> @*end row1*@    
+                <div id="row2" class="row i-gap-top-1">
+                    <div class="col-sm-6 col-md-6">
+                            
+                    </div>
+                   <div class="col-sm-6 col-md-6 i-text-align-right">          
+                            <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@L_PAGE_CANCEL</a>            
+                            <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@L_PAGE_SEARCH</a>        
+                                                                                                                          
+                    </div>                                
+              </div> @*end row2*@                           
+            </div>
+        </div> @*end SearchPanel2*@
+    </div> 
+    </div>
+</div>
+<div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12 " >
+                     @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.SumInstallPerformanceList>()
+                        .Name("gridSumInstallPer")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.Item_no).Title(@L_GRID_ITEM_NO).HtmlAttributes(new { style = "text-align:center;" }).Width(100);
+                            columns.Bound(p => p.install_dt).Title(@L_GRID_INSTALL_DATE).HtmlAttributes(new { style = "text-align:center;" }).Format("{0:dd/MM/yyyy}").Width(200);
+                            columns.Bound(p => p.dorm_name).Title(@L_GRID_DORM_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(300);
+                            columns.Bound(p => p.Sub_contact).Title(@L_GRID_SUBCONTACT).HtmlAttributes(new { style = "text-align:left;" }).Width(300);
+                            columns.Bound(p => p.Order_cnt).Title(@L_GRID_TOTAL_ORDER).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.install_complete).Title(@L_GRID_COMPETE_INSTALL).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.install_not_complete).Title(@L_GRID_INCOMPLETE_INSTALL).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.install_tot).Title(@L_GRID_CANCEL_INSTALL).HtmlAttributes(new { style = "text-align:center;" }).Width(150);       
+                            
+                        })
+                        .ToolBar(toolbar => toolbar.Template("" +
+                            //disabled='disabled'
+        "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp;" + @L_PAGE_EXPORT + "</a>&nbsp;</div>"
+         
+        ))
+                        //.ToolBar(toolBar =>
+                        //    {
+                        //        toolBar.Custom().Name("NewCoverExcel").Text("<i class='fa fa-file-excel-o'></i> New Coverage").HtmlAttributes(new { onclick = "goimortexcel();return false;" });
+                        //        toolBar.Custom().Name("NewCoverNormal").Text("<i class='fa fa-plus-circle fa-lg'></i> New Coverage").HtmlAttributes(new { onclick = "goaddnew();return false;" });
+                        //        toolBar.Custom().Text("<i class='fa fa-reply'></i> Export to Excel").HtmlAttributes(new { onclick = "_ExportToExcel();return false;" });                               
+                        //    }
+                        //    )
+                            .Scrollable(scrollable => scrollable.Height("auto"))
+                            .Pageable(pageable => pageable                           
+                            //.PageSizes(true)
+                            .Numeric(true)   
+                            .PageSizes(new int[] {20, 50, 100})                         
+                            )
+                            .Sortable()   
+                            .AutoBind(false) 
+                            //.Filterable()                       
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(20)                 
+                                //.Sort(sort => sort.Add("updatedate").Descending())              
+                                .Read(read => read.Action("ReadSearchRpt08", "DormitoryReport").Data("bindingValue"))                               
+                                )
+                            .Events(e => e.DataBound("onGridDataBound"))
+                            )
+      </div>                
+</div> 
+</body>        
+    
+<script>
+    /* $(function () {
+ 
+         var validateModel = [];
+         validateModel.push({ id: "Date_To" });
+         validateModel.push({ id: "Date_From" });
+ 
+         SetRequired(validateModel);
+     });*/
+
+    $(document).ready(function () {
+        //debugger
+        /*var grid = $("#gridOverviewStatus").data("kendoGrid");
+        grid.dataSource.page(1); */
+        $('#btnExport').attr("disabled", true);
+
+        /*var count = grid.dataSource.total()
+        if (count == 0)
+        {
+            $('#btnExport').attr("disabled", true);
+        }
+        else
+        {
+            $('#btnExport').attr("disabled", false);
+        }     */
+    });
+
+    function post(path, params, method) {
+
+        method = method || "post"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function _ExportToExcel() {
+        var model = new defaultData();
+        window.open("/DormitoryReport/ExportSumInstallRegisData?dataS=" + JSON.stringify(model) + "");
+    }
+
+
+    function onGridDataBound()
+    {
+        Loading(0);
+
+        if (this.dataSource.view().length == 0) {
+            //insert empty row
+
+            var colspan = this.thead.find("th").length;
+            //alert(colspan)
+            var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+            this.tbody.html(emptyRow);
+
+            //workarounds for IE lt 9
+            //this.table.width(800);
+            //$(".k-grid-content").width(2 * kendo.support.scrollbar());
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+        }
+        else {
+            $(".k-grid-content").height("auto");
+        }
+    }
+
+
+
+    function _Search() {
+        var model = defaultData();
+        var chk = ValidationDateValue();
+        if (chk)
+        {
+            Loading();
+            var grid = $("#gridSumInstallPer").data("kendoGrid");
+            grid.dataSource.page(1);
+            $.ajax({
+                url: '/DormitoryReport/ReadSearchSumInstall',
+                data: { dataS: JSON.stringify(model) },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    $('#btnExport').attr("disabled", true);
+                    if (response) {
+
+                        if (response.item == "0") {
+                            $('#btnExport').attr("disabled", true);
+                        }
+                        else {
+                            $('#btnExport').attr("disabled", false);
+                        }
+                    }
+                },
+                failure: function (msg) {
+                    $('#btnExport').attr("disabled", true);
+                }
+            });           
+
+        }
+
+    }
+
+    function ValidationDateValue(model) {
+
+        var chk = ValidationProcessing("dateselect");
+
+        if (chk) //check blank value
+        {
+            if ($.trim($("#dtpDateFrom").val()) == '') {
+                $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if ($.trim($("#dtpDateTo").val()) == '') {
+                $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check format
+        {
+            if (!kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if (!kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateTo").val() != "") {
+                    $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check Date From must be earlier than Date To
+        {
+            var startPicker = new Date(kendo.parseDate($("#dtpDateFrom").val(), "mm/dd/yyyy"));
+            var endPicker = new Date(kendo.parseDate($("#dtpDateTo").val(), "mm/dd/yyyy"));
+
+            if (startPicker > endPicker) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+            }
+        }
+
+        return chk;
+    }
+
+    function bindingValue() {
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    function defaultData() {
+
+        var searchResult = new CusNotRegisModel();
+        searchResult.dateFrom = kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy");
+        searchResult.dateTo = kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy");
+
+        return searchResult;
+    }
+
+    var CusNotRegisModel = function () {
+
+        dateFrom: "";
+        dateTo: "";
+    }
+
+    function _Clear() {
+        //$("#gridSumInstallPer").data("kendoGrid").dataSource.read();
+        //$('#btnExport').attr("disabled", true);
+
+        $("#dtpDateFrom").data("kendoDatePicker").value("");
+        $("#dtpDateTo").data("kendoDatePicker").value("");
+        //reset min, max.
+        $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+        $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+
+        $('#btnExport').attr("disabled", true);
+        $("#gridSumInstallPer").data("kendoGrid").dataSource.data([]);
+
+        $("#validatefor-dtpDateTo").html("");
+        $("#validatefor-dtpDateFrom").html("");
+    }
+
+
+    function Change_dtpDateFrom() {
+
+        var endPicker = $("#dtpDateTo").data("kendoDatePicker"),
+     startDate = this.value();
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            endPicker.min(startDate);
+        }
+
+    }
+
+    function Change_dtpDateTo() {
+
+        var startPicker = $("#dtpDateFrom").data("kendoDatePicker"),
+          endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            startPicker.max(endDate);
+        }
+
+    }
+</script>
+</html>

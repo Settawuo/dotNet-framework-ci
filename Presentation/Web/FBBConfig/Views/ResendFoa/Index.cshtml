@@ -1,0 +1,434 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Resend FOA</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Resend FOA Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#ResendFOAPanel" onclick="onPanelToggle(this);" id="ResendFOAPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="ResendFOAPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="ResendFOAPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div class="row i-gap-top-1  ">
+                        <div class="col-sm-12 col-md-2">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-12 col-md-10">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <label>Resend FOA XML</label>
+                                    <div class="i-fg-data-entry">
+                                        @Html.TextArea("ResendFoaXMLText", null, new { @class = "k-textbox form-control", @rows = 8 })
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6" style="padding-top: 135px;">
+                                    <br><br>
+
+                                    <input type="checkbox" id="InstallationCostFlag" name="installationCost">
+                                    <label style="font-weight:lighter;"> Installation Cost </label><br>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6" style="text-align:center;">
+                                    <label>&nbsp;</label>
+                                    <div class="i-fg-data-entry">
+                                        <a id="btnResendFoa" class="btn btn-success" onclick="ResendTextXML()"><i class="fa fa-check-circle-o"></i>&nbsp;&nbsp;Resend FOA</a>
+                                        <a id="btnResendFoaAll" class="btn btn-info" onclick="ResendTextXMLAll()"><i class="fa fa-check-circle-o"></i>&nbsp;&nbsp;Resend FOA All</a>
+                                        <a id="btnResendFoaAll" class="btn btn-danger" onclick="ClearFoaXmlText()"><i class="fa fa-ban"></i>&nbsp;&nbsp;Clear</a>
+                                    </div>
+                                    <br />
+                                    <div id="DivResendTextAlll">
+
+                                        <div class="panel panel-success">
+                                            <div class="panel-heading" style="text-align:left;">Result</div>
+                                            <div class="panel-body">
+                                                <div class="demo-section k-content">
+
+                                                    @(Html.Kendo().ProgressBar()
+                                                      .Name("progressBar")
+                                                      .ShowStatus(true)
+                                                      .Min(0)
+                                                      .Max(100)
+                                                      .Type(ProgressBarType.Percent)
+                                                      .Events(e =>
+                                                      {
+                                                          e.Change("onChange");
+                                                          e.Complete("onComplete");
+                                                      })
+                                                    )
+
+                                                </div>
+
+                                                <div id="responseText" style="text-align:left;"></div>
+                                                <br />
+                                                <div id="responseTextSession" style="text-align:left;color:red"></div>
+
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        @*//--------------*@
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<style type="text/css">
+    #progressBar {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .ResendFoa-message {
+        width: 450px;
+        min-height: 50px;
+        padding-left: 5px;
+        padding-top: 15px;
+        text-align: center;
+    }
+</style>
+<script>
+    function onChange(e) {
+    }
+
+    function onComplete(e) {
+        $("#startProgress").text("Restart Progress").removeClass("k-state-disabled");
+    }
+</script>
+
+<script id="ResendFoa-confirmation" type="text/x-kendo-template">
+    <p class="ResendFoa-message" id="ResendFoa-message">
+        Do you want to Resend FOA  All ?
+    </p>
+    <div class="col-sm-9 col-md-9 ">
+        <div class="row">
+            <div class="col-sm-2 col-md-2 col-xs-2">
+                &nbsp;
+            </div>
+            <div class="col-sm-4 col-md-3 col-xs-3">
+                <button class="btn btn-success btn-sx ResendFoa-confirm fa fa-check-circle-o" type="button"> Confirm</button>
+            </div>
+            <div class="col-sm-3 col-md-3 col-xs-3">
+                <button class="btn btn-default btn-sx ResendFoa-cancel  fa fa-ban" type="button"> Cancel</button>
+            </div>
+            <div class="col-sm-2 col-md-2 col-xs-2">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
+    var ResendFoaXMLText = "";
+    var InstallationCostFlag = false;
+    var TotalResend = 0;
+    var ErrorResend = 0;
+    var CountPercen = 1;
+
+
+    function ResendTextXML() {
+        $("#responseText").text("");
+        $("#responseTextSession").text("");
+        $("#DivResendTextAlll").hide();
+
+        Loading();
+        setTimeout(function () {
+            ResendFoaXMLText = $("#ResendFoaXMLText").val();
+            InstallationCostFlag = $("#InstallationCostFlag").prop("checked");
+            if (ResendFoaXMLText == "") {
+                showFeedback("info", "Please input XML tag.", "Notify Information");
+
+            } else {
+                //   console.log(JSON.stringify({ ResendFoaXMLText: ResendFoaXMLText }));
+                $.ajax({
+
+                    contentType: 'application/json',
+                    url: "/ResendFoa/ResendFoaConfirm",
+                    data: JSON.stringify({ ResendFoaXMLText: ResendFoaXMLText, InstallationCostFlag: InstallationCostFlag }),
+                    async: false,
+                    cache: false,
+                    dataType: "json",
+                    type: "POST",
+                    success: function (response) {
+                        if (response) {
+                            Loading(0);
+                            if (response["Code"] == "0") {
+
+                                var responsetext = 'Resend FOA Success.';
+                                showFeedback("success", responsetext, "Notify Information");
+                                ResendFoaXMLText = "";
+                                $('#MessageFeedbackPopUp').on('hidden.bs.modal', function () {
+
+                                    $("#ResendFoaXMLText").val("");
+                                })
+
+                            } else {
+
+                                var responsetext = response["message"];
+                                showFeedback("error", responsetext, "Notify Information");
+                                $('#MessageFeedbackPopUp').on('hidden.bs.modal', function () {
+
+                                    $("#ResendFoaXMLText").val(ResendFoaXMLText);
+                                })
+                            }
+                        }
+                    },
+                    failure: function (msg) {
+
+
+                    }
+
+
+                });
+            }
+            Loading(0);
+        }, 0);
+
+
+    }
+
+    function ResendTextXMLAll() {
+        responseText = "";
+        responseTextSession = "";
+        $("#DivResendTextAlll").show();
+
+        $("#ResendFoaXMLText").val("");
+        ResendFoaXMLText = "";
+
+        var kendoWindow = $("<div />").kendoWindow({
+            title: "Resend FOA Confirmation",
+            resizable: false,
+            modal: true
+        });
+
+        $("#ResendFoa-message").text("Do you want to Resend FOA All  ?")
+        kendoWindow.data("kendoWindow").content($("#ResendFoa-confirmation").html()).center().open();
+        kendoWindow.find(".ResendFoa-confirm,.ResendFoa-cancel").click(function () {
+            kendoWindow.data("kendoWindow").close();
+            $("#DivResendTextAlll").hide();
+
+            if ($(this).hasClass("ResendFoa-confirm")) {
+                $("#DivResendTextAlll").show();
+                $("#responseText").text("Data Counting....");
+                var pb = $("#progressBar").data("kendoProgressBar");
+                TotalResend = 0;
+                ErrorResend = 0;
+                CountPercen = 1;
+                pb.value(0);
+
+                Loading();
+                setTimeout(function () {
+
+                    GetDataFOALog();
+                    // ConfirmResendFOAXMLAll();
+                }, 0);
+            }
+        }).end()
+
+
+    }
+    $(document).ready(function () {
+
+        $("#responseText").text("");
+        $("#responseTextSession").text("");
+        $("#DivResendTextAlll").hide();
+        ResendFoaXMLText = "";
+        $("#ResendFoaXMLText").val("");
+
+
+
+    });
+    function GetDataFOALog() {
+        // console.log("GetDataFOALog");
+
+
+        $.ajax({
+            contentType: 'application/json',
+            url: "/ResendFoa/GetDataResendFOALog",
+            async: false,
+            dataType: "json",
+            type: "POST",
+            cache: false,
+            success: function (response) {
+                if (response["Code"] == "0") {
+                    setTimeout(function () {
+                        LoopExcuteData(response);
+                        // ConfirmResendFOAXMLAll();
+                    }, 0);
+                } else {
+                    Loading(0);
+                    showFeedback("error", "Data Not Found.", "Notify Information");
+                   
+                }
+            },
+            failure: function (msg) {
+                // console.log("GetDataFOALog :" + msg);
+            }
+        });
+
+
+    }
+
+
+    function LoopExcuteData(response) {
+
+        var total = response.Dataresponse.length;
+        $("#responseText").text("Data Total:" + total.toLocaleString('en'));
+
+
+        var resultReturn = false;
+        var CountResult = 0;
+        var CountResultPercen = 0;
+        var loopArrayResponse = response.Dataresponse;
+        var x = 0;
+        if (total > 0) {
+
+            var loopArray = function (loopArrayResponse) {
+                // call itself
+                //total
+                startRun(loopArrayResponse[x]["IN_XML_FOA"], loopArrayResponse[x]["ACCESS_NUMBER"], total, x, function () {
+                    // set x to next item
+                    x++;
+                    // any more items in array?
+                    // if (x < 6) {
+                    if ($("#responseTextSession").text() == "") {
+                        if (x < loopArrayResponse.length) {
+                            loopArray(loopArrayResponse);
+                        }
+                    } else {
+                        return;
+                    }
+
+                });
+            }
+            setTimeout(function () {
+
+                var resultReturn = loopArray(loopArrayResponse);
+                //   console.log("resultReturn=" + resultReturn)
+
+            }, 100);
+        } else {
+            Loading(0);
+            showFeedback("error", "Data Not Found.", "Notify Information");
+          
+        }
+
+    }
+    function startRun(IN_XML_FOA, ACCESS_NUMBER, total, x, callback) {
+
+        var resultSetTimeout = setTimeout(function () {
+            var resultReturn = ResendFoaXMLALL(IN_XML_FOA, ACCESS_NUMBER, total, x);
+
+        }, 100);
+
+        // console.log("resultSetTimeout=" + resultSetTimeout)
+        setTimeout(callback, 100);
+
+    }
+
+    function ResendFoaXMLALL(TextXML, ACCESS_NUMBER, total, x) {
+        // debugger;
+        //$("#responseText").text("");
+        var Code = "";
+        InstallationCostFlag = $("#InstallationCostFlag").prop("checked");
+        
+        $.ajax({
+            contentType: 'application/json',
+            url: "/ResendFoa/ResendFoaConfirmALL",
+            data: JSON.stringify({ ResendFoaXMLText: TextXML, Access_No_text: ACCESS_NUMBER, InstallationCostFlag: InstallationCostFlag }),
+            async: false,
+            cache: false,
+            dataType: "json",
+            type: "POST",
+            success: function (response) {
+                if (response) {
+                    if (response["Code"] == "0") {
+                        Code = response["Code"];
+                        TotalResend += response["TotalResend"];
+                        $("#responseTextSession").text("");
+                    } else if (response["Code"] == "-2") {
+                        Code = response["Code"];
+                        ErrorResend += response["ErrorResend"];
+                        var responsetext = response["message"];
+                        responsetext += "<br/> กรุณากดปุ่ม ResendTextXMLAll เพื่อดำเนินการต่อให้ครบ 100 %"
+
+                        $("#responseTextSession").html(responsetext);
+
+                    } else {
+                        Code = response["Code"];
+                        ErrorResend += response["ErrorResend"];
+                        var responsetext = response["message"];
+                    }
+                }
+            },
+            failure: function (msg) {
+            }
+        });
+
+        var responsetext = "<h5 style='font-weight: bold;'></h5><span style='font-weight: normal;'><b>Data Total :</b> " + total.toLocaleString('en') + " rows.    <br/>  <b>Resend Success : </b>" + TotalResend.toLocaleString('en') + " rows.<br/>   <b>Error Resend : </b>" + ErrorResend.toLocaleString('en') + " rows.  </span>"
+
+        $("#responseText").html(responsetext);
+
+
+        var pb = $("#progressBar").data("kendoProgressBar");
+        var CountResultPercen = Math.round((CountPercen * 100) / total);
+        CountPercen += 1;
+        // console.log("CountResultPercen=" + CountResultPercen);
+        pb.value(CountResultPercen);
+
+
+        if (CountPercen >= total) {
+            Loading(0);
+            showFeedback("success", "Resend FOA  Success.", "Notify Information");
+        }
+
+        if (Code == 0) {
+            return true;
+        } else if (Code == -2) {
+            Loading(0);
+            return false;
+        }
+        else { 
+            return false;
+        }
+    }
+
+    function ClearFoaXmlText() {
+
+        $("#ResendFoaXMLText").val("");
+        ResendFoaXMLText = "";
+
+
+        $("#responseText").text("");
+        $("#responseTextSession").text("");
+
+        $("#DivResendTextAlll").hide();
+    }
+</script>

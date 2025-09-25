@@ -1,0 +1,402 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.LastMileByDistanceModel
+@{
+    string L_RECAL = "RECAL ตามหัวข้อที่กำหนด";
+    string L_VALIDATE_DIS = "Validate Distanct";
+    string L_REASON = "Reason";
+    string L_REMARK = "Remark";
+    string L_OLD_VALIDATE_DIS = "Existing Distance";
+    string B_SAVE = "SAVE";
+    string B_CANCEL = "CANCEL";
+}
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+        <div>
+            <label>@L_RECAL</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class=" col-sm-12 col-md-9">
+        <div id="cal_radio" class="form-inline">
+            <input type="radio" value="price" id="cal_radio3" name="cal_radio" onclick="SwitchPartial(this);" checked> ราคา (Rule Id)
+            &emsp;&emsp;
+            <input type="radio" value="distance" id="cal_radio4" name="cal_radio" onclick="SwitchPartial(this);"> ระยะทาง (Distance)
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-12 col-md-4">
+            <label>@L_OLD_VALIDATE_DIS</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+            <input type="text" id="oldRequestDistance2" maxlength="500" value="" disabled="disabled" class="k-textbox form-control" />
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <label>@L_VALIDATE_DIS</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+            @Html.TextBoxFor(t => t.VALIDATE_DIS, new { maxlength = 6, @class = "k-textbox form-control", @id = "VALIDATE_DIS2" })
+            <div class="i-fg-data-entry-validation" id="validatefor-ValidateDistanct2"></div>
+        </div>
+
+        <input id="OrderNoForRecal2" name="OrderNoForRecal2" type="hidden" />
+    </div>
+</div>
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_REASON <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label style="color:red;font-size:15px">*</label>
+        <div class="i-fg-data-entry">
+            @(Html.Kendo().DropDownList()
+                                  .Name("ddlReason2")
+                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                  .DataTextField("DISPLAY_VAL")
+                                  .DataValueField("LOV_VAL1")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("SelectReason", "LastMileByDistance");
+
+                                      });
+
+                                  })
+                                               .Events(e => e.Change("FAPOChangeDropDown2"))
+            )
+        </div>
+        <div class="i-fg-data-entry-validation" id="validatefor-ddlReason2"></div>
+    </div>
+    <div id="_OtherReason2" class=" col-sm-12 col-md-4" style="display:none">
+        <label>ระบุเหตุผล</label>
+        <input type="text" id="ddlreason2other" maxlength="500" value="" class="k-textbox form-control" />
+    </div>
+</div>
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_REMARK</label>
+        @Html.TextArea("REMARK2_Recal", new { maxlength = 500, @rows = 3, @style = "resize:none; width:437px", @class = "k-textbox form-control", @id = "REMARK2_Recal" })
+    </div>
+</div>
+<div class="row">
+    <br />
+</div>
+<div class="row i-text-align-center">
+
+    <a class="btn btn-info" id="saveFapo2" onclick="FAPOConfirmPaid2();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+    <a class="btn btn-info" id="saveChkFapo2" onclick="CheckBoxFAPOConfirmPaid2();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+
+    <a class="btn btn-info" onclick="CancelEditFAPOConfig2();"><i class="fa fa-times"></i>&nbsp;&nbsp;@B_CANCEL</a>
+
+</div>
+<script>
+    function CancelEditFAPOConfig2() {
+        $("#EditConfigPopupWithRadioBtn").data("kendoWindow").close();
+        $("#ddlReason2").data('kendoDropDownList').value("จ่ายตามระยะจริง");
+        $("#ddlReason2other").val("");
+        $("#VALIDATE_DIS2").val("");
+        $("#REMARK2_Recal").val("");
+        $("#_OtherReason2").attr("style", "display:none");
+    }
+    $("#VALIDATE_DIS2").keyup(function () {
+        CheckKeyUps("VALIDATE_DIS2", "[0-9.]");
+
+    });
+    $(document).ready(function () {
+        //  $('#ddlReason2other').attr("disabled", true);
+        $("#ddlReason2other").val("");
+        $("#_OtherReason2").attr("style", "display:none");
+        //  alert($("#ddlReason2").val());
+    });
+    function FAPOChangeDropDown2() {
+        var ddlReason2 = $("#ddlReason2").val();
+        if (ddlReason2 == "อื่นๆ")
+        {
+            //  $('#ddlReason2other').attr("visibled", true);
+            $("#_OtherReason2").attr("style", "display:normal");
+        }
+        else {
+            $("#_OtherReason2").val("");
+            $("#_OtherReason2").attr("style", "display:none");
+        }
+
+
+    }
+    function ValidationDateValue2() {
+        $("#validatefor-ValidateDistanct2").html("");
+        $("#validatefor-ddlReason2").html("");
+        var chk = ValidationProcessing("dateselect");
+
+        //  alert("SCMValidation");
+        if (chk) //check blank value
+        {
+            /// alert("ValidationBlankValue");
+            if ($("#ddlReason2").val() == "ALL" || $("#ddlReason2").val() == '') {
+                $("#validatefor-ddlReason2").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+                $("#validatefor-ddlReason2").html("");
+            }
+            if ($("#VALIDATE_DIS2").val() == "ALL" || $("#VALIDATE_DIS2").val() == '') {
+                $("#validatefor-ValidateDistanct2").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+                $("#validatefor-ValidateDistanct2").html("");
+            }
+        }
+        return chk;
+    }
+    var AccessList = function () {
+        ACCESS_NUMBER = "";
+        ORDER_NO = "";
+        NEW_RULE_ID = "";
+        REMARK = "";
+        FLAG_RECAL = "";
+        DISTANCE = "";
+        REASON = "";
+    }
+    function FAPOConfirmPaid2(checked) {
+
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateValue2();
+        if (chk) {
+
+            var AccNO = $("#accNo").val();
+            var user = "";
+            var IntF = "";
+            //SCM VALUE
+            var status = "";
+            var InvNo = "";
+            var InvDate = "";
+            var IrDoc = "";
+            var remark = $("#REMARK2_Recal").val();
+            var remarksub = "";
+            //FAPO Value
+            var ValDis = $("#VALIDATE_DIS2").val();
+            var checkreason = $("#ddlReason2").val();
+            var Reason;
+            if (checkreason == "อื่นๆ") {
+                Reason = $("#ddlReason2other").val();
+            }
+            else {
+                Reason = $("#ddlReason2").val();
+            }
+
+            var dbk_ORD_NO = $("#OrderNoForRecal2").val();
+            var res = dbk_ORD_NO.split("_");
+
+            var TranDT = "";
+
+            var AccessListModel = new AccessList();
+            console.log($("#accNo").val());
+            AccessListModel.ACCESS_NUMBER = $("#accNo").val();
+            AccessListModel.NEW_RULE_ID = "";
+            AccessListModel.REMARK = remark;
+            AccessListModel.ORDER_NO = res[0];
+            AccessListModel.FLAG_RECAL = "DISPUTE";
+            AccessListModel.DISTANCE = $("#VALIDATE_DIS2").val();
+            AccessListModel.REASON = Reason;
+            idsToSend.push(AccessListModel);
+
+            // console.log(checked);
+            console.log("Not checkbox");
+            index++;
+
+            data = JSON.stringify({
+                'LastMileRecalList': idsToSend, "AccNO": AccNO, 'new_ruid': "", 'remark': remark
+            });
+
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json',
+                url: "/LastMileByDistance/RecalDistanceByOrder",
+                data: data,
+                async: true,
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.Code === "0") {
+
+                        $("#ddlReason2").data('kendoDropDownList').value("จ่ายตามระยะจริง");
+
+                        $("#REMARK2_Recal").val("");
+                        $("#VALIDATE_DIS2").val("");
+                        $("#EditConfigPopupWithRadioBtn").data("kendoWindow").close();
+
+                        //  $('#FAPOView').data('kendoGrid').refresh();
+
+                        showFeedback("success", response.message, "System Information");
+                    }
+                    else {
+                        $("#EditConfigPopupWithRadioBtn").data("kendoWindow").close();
+                        showFeedback("error", response.message, "System Information");
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+            $("#FAPOView").data("kendoGrid").dataSource.read();
+        }
+
+
+        hidepanel();
+    }
+    function CheckBoxFAPOConfirmPaid2(checked) {
+        $("#chk").val("False");
+
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateValue2();
+
+        if (chk) {
+
+            var AccNO = $("#accNo").val();
+            var user = "";
+            var IntF = "";
+            //SCM VALUE
+            var status = "";
+            var InvNo = "";
+            var InvDate = "";
+            var IrDoc = "";
+            var remark = $("#REMARK2_Recal").val();
+            var remarksub = "";
+            //FAPO Value
+            var ValDis = $("#VALIDATE_DIS2").val();
+            var checkreason = $("#ddlReason2").val();
+            var Reason;
+            if (checkreason == "อื่นๆ") {
+                Reason = $("#ddlReason2other").val();
+            }
+            else {
+                Reason = $("#ddlReason2").val();
+            }
+
+
+            var TranDT = "";
+
+            if (checked != null) {
+
+                data = JSON.stringify({
+                    'AccNOList': checked, 'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+                });
+                console.log("FAPOConfirmPaidcheckbox");
+
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/LastMileByDistance/UpdateByOrder",
+                    data: data,
+                    async: true,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response === "Update success.") {
+
+                            $("#ddlReason2").data('kendoDropDownList').value("จ่ายตามระยะจริง");
+
+                            $("#REMARK2_Recal").val("");
+                            $("#VALIDATE_DIS2").val("");
+                            $("#EditConfigPopupWithRadioBtn").data("kendoWindow").close();
+
+                            //  $('#FAPOView').data('kendoGrid').refresh();
+                            showFeedback("success", response, "System Information");
+                        }
+                        else {
+                            $("#EditConfigPopupWithRadioBtn").data("kendoWindow").close();
+                            showFeedback("error", response, "System Information");
+                        }
+                    },
+                    failure: function (msg) {
+                    }
+                });
+                $("#FAPOView").data("kendoGrid").dataSource.read();
+            }
+            else {
+
+            }
+
+        }
+        hidepanel();
+    }
+
+
+
+    function CheckBoxAllFAPOConfirmPaid() {
+        $("#chk").val("False");
+        $("#chkall").val("False");
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateValue2();
+
+        if (chk) {
+
+            var AccNO = $("#accNo").val();
+            var user = "";
+            var IntF = "";
+            //SCM VALUE
+            var status = "";
+            var InvNo = "";
+            var InvDate = "";
+            var IrDoc = "";
+            var remark = $("#REMARK2_Recal").val();
+            var remarksub = "";
+            //FAPO Value
+            var ValDis = $("#VALIDATE_DIS2").val();
+            var checkreason = $("#ddlReason2").val();
+            var Reason;
+            if (checkreason == "อื่นๆ") {
+                Reason = $("#ddlReason2other").val();
+            }
+            else {
+                Reason = $("#ddlReason2").val();
+            }
+
+
+            var TranDT = "";
+
+
+            data = JSON.stringify({
+                'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+            });
+            console.log("FAPOConfirmPaidcheckbox");
+
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json',
+                url: "/LastMileByDistance/UpdateAllByOrder",
+                data: data,
+                async: false,
+                dataType: "json",
+                success: function (response) {
+
+                    if (response === "Update success.") {
+
+                        $("#ddlReason2").data('kendoDropDownList').value("จ่ายตามระยะจริง");
+
+                        $("#REMARK2_Recal").val("");
+                        $("#VALIDATE_DIS2").val("");
+                        $("#EditConfigPopupWithRadioBtn").data("kendoWindow").close();
+
+                        //  $('#FAPOView').data('kendoGrid').refresh();
+                        showFeedback("success", response, "System Information");
+                    }
+                    else {
+                        $("#EditConfigPopupWithRadioBtn").data("kendoWindow").close();
+                        showFeedback("error", response, "System Information");
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+            $("#FAPOView").data("kendoGrid").dataSource.read();
+
+
+        }
+        hidepanel();
+    }
+</script>

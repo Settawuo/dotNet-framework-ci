@@ -1,0 +1,426 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.TrackingCompetitorRptModel
+@using WBBEntity.PanelModels;
+
+
+@{
+    string L_REPORT_NAME = "";
+    string L_SEARCH_PANEL = "";
+    string L_DATE_FROM = "";
+    string L_DATE_TO = "";
+    string L_ORDER_STATUS = "";
+
+    string G_LOCATION_CODE = "";
+    string G_ASC_CODE = "";
+    string G_EMPLOYEE_ID = "";
+    string G_FBB_ID = "";
+    string G_PACKAGE = "";
+    string G_ISP = "";
+    string G_REGISTERDATE = "";
+    string G_ACTIVEDATE = "";
+
+    string B_CANCEL = "";
+    string B_SEARCH = "";
+    string B_EXPORT = "";
+
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_REPORT_NAME = configscreen.Any(f => f.Name == "L_REPORT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_REPORT_NAME").LovValue1 : "";
+        L_SEARCH_PANEL = configscreen.Any(f => f.Name == "L_SEARCH_PANEL") ? configscreen.FirstOrDefault(f => f.Name == "L_SEARCH_PANEL").LovValue1 : "";
+        L_DATE_FROM = configscreen.Any(f => f.Name == "L_DATE_FROM") ? configscreen.FirstOrDefault(f => f.Name == "L_DATE_FROM").LovValue1 : "";
+        L_DATE_TO = configscreen.Any(f => f.Name == "L_DATE_TO") ? configscreen.FirstOrDefault(f => f.Name == "L_DATE_TO").LovValue1 : "";
+        L_ORDER_STATUS = configscreen.Any(f => f.Name == "L_ORDER_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "L_ORDER_STATUS").LovValue1 : "";
+        
+        G_LOCATION_CODE = configscreen.Any(f => f.Name == "G_LOCATION_CODE") ? configscreen.FirstOrDefault(f => f.Name == "G_LOCATION_CODE").LovValue1 : "";
+        G_ASC_CODE = configscreen.Any(f => f.Name == "G_ASC_CODE") ? configscreen.FirstOrDefault(f => f.Name == "G_ASC_CODE").LovValue1 : "";
+        G_EMPLOYEE_ID = configscreen.Any(f => f.Name == "G_EMPLOYEE_ID") ? configscreen.FirstOrDefault(f => f.Name == "G_EMPLOYEE_ID").LovValue1 : "";
+        G_FBB_ID = configscreen.Any(f => f.Name == "G_FBB_ID") ? configscreen.FirstOrDefault(f => f.Name == "G_FBB_ID").LovValue1 : "";
+        G_PACKAGE = configscreen.Any(f => f.Name == "G_PACKAGE") ? configscreen.FirstOrDefault(f => f.Name == "G_PACKAGE").LovValue1 : "";
+        G_ISP = configscreen.Any(f => f.Name == "G_ISP") ? configscreen.FirstOrDefault(f => f.Name == "G_ISP").LovValue1 : "";
+        G_REGISTERDATE = configscreen.Any(f => f.Name == "G_REGISTERDATE") ? configscreen.FirstOrDefault(f => f.Name == "G_REGISTERDATE").LovValue1 : "";
+        G_ACTIVEDATE = configscreen.Any(f => f.Name == "G_ACTIVEDATE") ? configscreen.FirstOrDefault(f => f.Name == "G_ACTIVEDATE").LovValue1 : "";
+        
+        B_CANCEL = configscreen.Any(f => f.Name == "B_CANCEL") ? configscreen.FirstOrDefault(f => f.Name == "B_CANCEL").LovValue1 : "";
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue1 : "";
+        B_EXPORT = configscreen.Any(f => f.Name == "B_EXPORT") ? configscreen.FirstOrDefault(f => f.Name == "B_EXPORT").LovValue1 : "";
+    }   
+    
+}
+
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+       <div class="page-header i-header-fit">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">@L_REPORT_NAME</h3>
+            </div>
+        </div>
+    </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@L_SEARCH_PANEL</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 135px;">
+                        <div id="row1" class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_DATE_FROM</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .Events(e => e.Change("ChangdtpDateFrom")))
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-dtpDateFrom"></div>
+                                <span class="k-invalid-msg" data-for="PickupDate"></span>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_DATE_TO</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .Format("dd/MM/yyyy")
+                                  .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Events(e => e.Change("ChangdtpDateTo")))
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-dtpDateTo"></div>
+                            </div>
+                        </div>
+                        @*end row1*@
+                         <div id="row2" class="row">
+                        <div class="col-sm-4 col-md-4">
+                        <label>@L_ORDER_STATUS</label>
+                                <div class="i-fg-data-entry">
+                            @(Html.Kendo().DropDownList()
+                                .Name("ddlOrderStatus")
+                                .DataTextField("LOV_NAME")
+                                .DataValueField("LOV_VAL1")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("SelectLovNoIndex0DDL", "MasterData", new { type = "ORDER_STATUS" });
+                                    });
+                                })
+                                 .SelectedIndex(0)
+                                )
+ 
+                               </div>
+                            </div>
+                        </div>@*end row2*@
+
+                        <div id="row3" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                                
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CANCEL</a>
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                            </div>
+                        </div>@*end row3*@
+
+                    </div>
+                    
+                </div>@*end SearchPanel*@
+
+            </div>
+        </div>
+    </div>
+
+    <div id="gridresult" class="row">
+            <div class="col-sm-12 col-md-12 ">
+            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.TrackingCompetitorRptList>()
+                        .Name("gridTrackingCompetitor")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.LOCATION_CODE).Title(@G_LOCATION_CODE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.ASC_CODE).Title(@G_ASC_CODE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.EMPLOYEE_ID).Title(@G_EMPLOYEE_ID).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.FBB_ID).Title(@G_FBB_ID).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.PACKAGE).Title(@G_PACKAGE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.ISP).Title(@G_ISP).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.REGISTERDATE).Title(@G_REGISTERDATE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.ACTIVEDATE).Title(@G_ACTIVEDATE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                        })
+                        .ToolBar(toolbar => toolbar.Template("" +
+        "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp; " + @B_EXPORT + "</a>&nbsp;</div>"
+                        ))
+                            .Scrollable(scrollable => scrollable.Height("auto"))
+                            .Pageable(pageable => pageable
+                            //.PageSizes(true)
+                            .Numeric(true)
+                            .PageSizes(new int[] {20, 50, 100})
+                            )
+                            .Sortable()
+                            .AutoBind(false)
+                    //.Filterable()                 
+                            .Resizable(resize => resize.Columns(true))
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                //.Sort(sort => sort.Add(p => p.Item_no).Ascending())              
+                                .Read(read => read.Action("ReadSearchTrackingCompetitorRpt02", "MarketingReport").Data("bindingValue"))
+                                .PageSize(20)
+                                )
+                            .Events(e => e.DataBound("onGridDataBound"))
+                            )
+          </div>
+       
+    </div>
+</body>
+    
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('#btnExport').attr("disabled", true);
+
+        });
+
+        function post(path, params, method) {
+
+            method = method || "post"; // Set method to post by default if not specified.
+
+            // The rest of this code assumes you are not using a library.
+            // It can be made less wordy if you use one.
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+
+        ////// Check Date Validation //////
+        function ValidationDateValue(model) {
+      
+            var chk = ValidationProcessing("dateselect");
+
+            if (chk) //check blank value
+            {
+                if ($.trim($("#dtpDateFrom").val()) == '') {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+
+                if ($.trim($("#dtpDateTo").val()) == '') {
+                    $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateTo").html("");
+                }
+            }
+
+            if (chk) //check format
+            {
+                if (!kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy")) {
+                    if ($("#dtpDateFrom").val() != "") {
+                        $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                        chk = false;
+                    }
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+
+                if (!kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy")) {
+                    if ($("#dtpDateTo").val() != "") {
+                        $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is not correct format.");
+                        chk = false;
+                    }
+                }
+                else {
+                    $("#validatefor-" + "dtpDateTo").html("");
+                }
+            }
+
+            if (chk) //check Date From must be earlier than Date To
+            {
+                var startPicker = new Date(kendo.parseDate($("#dtpDateFrom").val(), "mm/dd/yyyy"));
+                var endPicker = new Date(kendo.parseDate($("#dtpDateTo").val(), "mm/dd/yyyy"));
+
+                if (startPicker > endPicker) {
+                    if ($("#dtpDateFrom").val() != "") {
+                        $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                        chk = false;
+                    }
+                    else {
+                        $("#validatefor-" + "dtpDateFrom").html("");
+                    }
+                }
+            }
+
+            return chk;
+        }
+
+        var TrackingCompetitorRptModel = function() {
+            DateFrom: "";
+            DateTo: "";
+            OrderStatus: "";
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS : JSON.stringify(model)
+            };
+        }
+
+        ///// Set Default Data //////
+        function defaultData() {
+
+            var searchResult = new TrackingCompetitorRptModel();
+            searchResult.DateFrom = kendo.toString($("#dtpDateFrom").val(), "dd/MM/yyyy"); 
+            searchResult.DateTo = kendo.toString($("#dtpDateTo").val(), "dd/MM/yyyy");
+            searchResult.OrderStatus = $("#ddlOrderStatus").val();
+
+            return searchResult;
+        }
+        
+        function ChangdtpDateFrom() {
+
+            var endPicker = $("#dtpDateTo").data("kendoDatePicker"),
+            startDate = this.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate());
+                endPicker.min(startDate);
+            }
+
+        }
+
+        function ChangdtpDateTo() {
+            var startPicker = $("#dtpDateFrom").data("kendoDatePicker"),
+            endDate = this.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate());
+                startPicker.max(endDate);
+            }
+
+        }
+
+        function Chang_Request_Date() {
+            var requestDatePicker = $("#dtpDateFrom").data("kendoDatePicker")
+        }
+
+        function _ExportToExcel() {
+            var model = new defaultData();
+            window.open("/MarketingReport/ExportTrackingCompetitorData?dataS=" + JSON.stringify(model) + "");
+        }
+
+        function onGridDataBound() {
+            Loading(0);
+            //itemCount = this.dataSource.view().length;
+            //insert empty row
+            if (this.dataSource.view().length == 0) {
+
+                var colspan = this.thead.find("th").length;
+                var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+                this.tbody.html(emptyRow);
+
+                $(".k-grid-content").height(3 * kendo.support.scrollbar());
+            }
+            else {
+                $(".k-grid-content").height("auto");
+            }
+            $('#btnExport').attr("disabled", !(this.dataSource.view().length != 0));
+        }
+
+        function _Search() {
+
+            var model = defaultData();
+            var chk = ValidationDateValue();
+            if (chk) {
+                Loading(0);
+                var grid = $("#gridTrackingCompetitor").data("kendoGrid");
+                grid.dataSource.page(1);
+                $.ajax({
+                    url: '/MarketingReport/ReadSearchTrackingCompetitorRpt',
+                    //url: '/MarketingReport/ReadSearchTrackingCompetitorRpt02',
+                    data: { dataS: JSON.stringify(model) },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        if (response) {
+
+                            if (response.itemDataS == "0") {
+                                $('#btnExport').attr("disabled", true);
+                            }
+                            else {
+                                $('#btnExport').attr("disabled", false);
+                            }
+
+                        }
+                    },
+                    failure: function (msg) {
+                    }
+                });
+             
+                
+
+            }
+        }
+
+        ///// Clear Button - Reset Button //////
+        function _Clear() {
+            var today = new Date();
+            $("#dtpDateFrom").data("kendoDatePicker").value("");
+            $("#dtpDateTo").data("kendoDatePicker").value("");
+            $("#ddlOrderStatus").data("kendoDropDownList").select(0);
+
+            //reset min, max.
+            $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+            $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+
+            $('#btnExport').attr("disabled", true);
+            $("#gridTrackingCompetitor").data("kendoGrid").dataSource.data([]);
+
+            $("#validatefor-dtpDateTo").html("")
+            $("#validatefor-dtpDateFrom").html("")
+        }
+
+    </script>
+
+
+</html>

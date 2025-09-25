@@ -1,0 +1,189 @@
+﻿@{
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Image Demo</title>
+
+    <!-- Bootstrap core CSS -->
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">*@
+    @Styles.Render("~/Content/css/bootsrapcss")
+</head>
+
+<body>
+
+    <style>
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 5px;
+        }
+    </style>
+
+    <canvas id="canvas_id"></canvas>
+
+    <table id="table0"></table>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Image Popup</h4>
+                </div>
+                <div id="modalBody" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/js/jquery")
+
+    @Scripts.Render("~/bundles/js/boostrapjs")
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js" type="text/javascript"></script>
+
+    <script>
+
+        //https://basicuse.net//content/download/1413/6796/file/nature1.jpg
+        //https://basicuse.net//content/download/1414/6798/file/nature2.jpg
+        //https://basicuse.net//content/download/1416/6802/file/nature3.jpg
+        //https://basicuse.net//content/download/1417/6804/file/nature4.jpg
+        //https://basicuse.net//content/download/1418/6806/file/nature5.jpg
+
+        //var randomName = faker.name.findName(); // Caitlyn Kerluke
+        //var randomEmail = faker.internet.email(); // Rusty@arne.info
+        //var randomCard = faker.helpers.createCard(); // random contact card containing many properties
+        //var image = faker.image.city();
+
+        //var imageFromNAS = ["https://basicuse.net//content/download/1413/6796/file/nature1.jpg", "https://basicuse.net//content/download/1414/6798/file/nature2.jpg",
+        //    "https://basicuse.net//content/download/1416/6802/file/nature3.jpg", "https://basicuse.net//content/download/1417/6804/file/nature4.jpg"];
+
+        var listImage = [];
+
+        (async () => {
+
+            for (var j = 0; j < 10; j++) {
+                console.groupCollapsed("======= Round " + j + " =======");
+                console.time("======= End Round " + j + " =======");
+
+                var tr = document.createElement('tr');
+                document.getElementById('table0').appendChild(tr);
+
+                //Random Name
+                var td = document.createElement('td');
+                td.appendChild(document.createTextNode(faker.name.findName()));
+                tr.appendChild(td);
+
+                //Random Email
+                td = document.createElement('td');
+                td.appendChild(document.createTextNode(faker.internet.email()));
+                tr.appendChild(td);
+
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                var randomImage = Math.floor(Math.random() * 5) + 1;
+                var imageFromNAS = [];
+                for (var k = 0; k < randomImage; k++) {
+                    imageFromNAS.push(faker.random.image());
+                    //imageFromNAS.push(faker.image.dataUri);
+                }
+
+                listImage.push(imageFromNAS);
+                var factor = ((randomImage + 1) / randomImage) / 2;
+                console.info("randomImage: ", randomImage)
+                console.info("factor: ", factor)
+
+                var isError = -1;
+                for (var i = 0; i < imageFromNAS.length;) {
+
+                    var imageObj = new Image();
+                    if (isError == -1)
+                        imageObj.src = imageFromNAS[i];
+                    else {
+                        imageObj.src = "https://basicuse.net//content/download/1413/6796/file/nature1.jpg";
+                        imageFromNAS[i] = imageObj.src;
+                    }
+
+                    var collapsePoint = (i * Math.ceil(60 / imageFromNAS.length)) / 100;
+
+                    await new Promise((resolve, reject) => {
+                        imageObj.onload = function () {
+                            console.log("drawing: " + i);
+                            console.log("imageObj.src: ", imageObj.src)
+
+                            context.drawImage(imageObj, canvas.width * collapsePoint, canvas.height * collapsePoint, canvas.width * factor, canvas.height * factor);
+                            isError = -1;
+                            i++;
+                            resolve();
+                        };
+                        imageObj.onerror = function () {
+                            console.log("drawing: " + i + " :: ERROR Image not valid");
+                            console.log("imageObj.src: ", imageObj.src)
+                            isError = i;
+                            resolve();
+                        }
+                    });
+
+                }
+                if (imageFromNAS.length > 1) {
+                    context.fillStyle = '#ff0';
+                    context.font = "20px Georgia";
+                    var width = context.measureText(imageFromNAS.length + " files").width;
+                    context.fillRect(canvas.width * 0.4, canvas.height * 0.8, width, parseInt(20, 10));
+                    /// text color
+                    context.fillStyle = '#f00';
+                    context.fillText(imageFromNAS.length + " files", canvas.width * 0.4, canvas.height * 0.9);
+                }
+
+                td = document.createElement('td');
+                canvas.id = j;
+                td.appendChild(canvas);
+                tr.appendChild(td);
+
+                console.timeEnd("======= End Round " + j + " =======");
+                console.groupEnd();
+            }
+
+            $("#table0 td canvas").click(function () {
+                $('#myModal').modal('show');
+                var imgHTML = "";
+
+                for (var i = 0; i < listImage[$(this).attr('id')].length; i++) {
+                    imgHTML += "<img src=" + listImage[$(this).attr('id')][i] + " width='500' height='100%'>"
+
+                }
+
+                $("#modalBody").html(imgHTML)
+
+            });
+
+        })();
+
+    </script>
+</body>
+
+</html>

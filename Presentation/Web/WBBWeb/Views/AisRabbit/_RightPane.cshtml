@@ -1,0 +1,77 @@
+﻿@using WBBEntity.PanelModels;
+
+@{
+    string L_RABBIT_INPUT_HEADER = "";
+    string L_RABBIT_AIRNET_NO = "";
+    string L_RABBIT_EMAIL = "";
+    string L_RABBIT_EMAIL_NOTI = "";
+    string L_RABBIT_AGGREMENT_HEADER = "";
+    string L_RABBIT_AGGREMENT_FLAG = "";
+    string L_RABBIT_CARD_NO = "";
+    string L_RABBIT_CARD_NOTI = "";
+
+    if (ViewBag.Lov != null)
+    {
+        var lov = (List<LovValueModel>)ViewBag.Lov;
+        L_RABBIT_INPUT_HEADER = lov.Any(c => c.Name == "L_RABBIT_INPUT_HEADER") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_INPUT_HEADER").Text : "";
+        L_RABBIT_AIRNET_NO = lov.Any(c => c.Name == "L_RABBIT_AIRNET_NO") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_AIRNET_NO").Text : "";
+        L_RABBIT_EMAIL = lov.Any(c => c.Name == "L_RABBIT_EMAIL") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_EMAIL").Text : "";
+        L_RABBIT_EMAIL_NOTI = lov.Any(c => c.Name == "L_RABBIT_EMAIL_NOTI") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_EMAIL_NOTI").Text : "";
+        L_RABBIT_AGGREMENT_HEADER = lov.Any(c => c.Name == "L_RABBIT_AGGREMENT_HEADER") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_AGGREMENT_HEADER").Text : "";
+        L_RABBIT_AGGREMENT_FLAG = lov.Any(c => c.Name == "L_RABBIT_AGGREMENT_FLAG") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_AGGREMENT_FLAG").Text : "";
+        L_RABBIT_CARD_NO = lov.Any(c => c.Name == "L_RABBIT_CARD_NO") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_CARD_NO").Text : "";
+        L_RABBIT_CARD_NOTI = lov.Any(c => c.Name == "L_RABBIT_CARD_NOTI") ? lov.FirstOrDefault(c => c.Name == "L_RABBIT_CARD_NOTI").Text : "";
+    }    
+}
+
+<div class="i-right-pane">
+    <h3 class="i-size-lg i-text-center">@L_RABBIT_INPUT_HEADER</h3>
+    <div style="margin-left: 40px;">
+        <div class="i-form">
+
+            <div class="input-group" id="fAirnetID">
+                <span id="iAirnetID" class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                <input id="AirnetID" type="text" class="form-control" placeholder="@L_RABBIT_AIRNET_NO" title="@L_RABBIT_AIRNET_NO" maxlength="10">
+            </div>
+            <div class="i-error" id="errAirnetID"></div>
+
+            <div class="input-group i-gap-top-3" id="fIDCard">
+                <span id="iIDCard" class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input id="IDCard" type="text" class="form-control" placeholder="@L_RABBIT_CARD_NO" title="@L_RABBIT_CARD_NO" maxlength="30">
+            </div>
+            <div class="i-error" id="errIDCard"></div>
+            <div class="i-sub-text">@L_RABBIT_CARD_NOTI</div>
+
+            <div class="input-group i-gap-top-2" id="fEmail">
+                <span id="iEmail" class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input id="Email" type="text" class="form-control" placeholder="@L_RABBIT_EMAIL" title="@L_RABBIT_EMAIL" maxlength="30">
+            </div>
+            <div class="i-error" id="errEmail"></div>
+            <div class="i-sub-text">@L_RABBIT_EMAIL_NOTI</div>
+
+            <div style="margin-left: -40px;" class="i-gap-top-3">
+                <span class="i-green i-size-nm-2">@L_RABBIT_AGGREMENT_HEADER</span>
+                <div class="i-accept i-gap-top-2">
+                    <table>
+                        <tr>
+                            <td width="20" valign="top">
+                                <input type="checkbox" id="IAccept" onclick="onAccept()" /></td>
+                            <td>@L_RABBIT_AGGREMENT_FLAG</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="i-gap-top-2 i-text-center">
+                    <a id="btnCancel" onclick="onCancel()">
+                        <img src="~/Content/images/rabbit/1-1_37.jpg" /></a>
+                    <span class="i-gap-line-4"></span>
+                    <img src="~/Content/images/rabbit/1-1_39dis.jpg" id="btnDis" />
+                    <a id="btnConfirm" onclick="onConfirm()" class="i-hidden">
+                        <img src="~/Content/images/rabbit/1-1_39.jpg" /></a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

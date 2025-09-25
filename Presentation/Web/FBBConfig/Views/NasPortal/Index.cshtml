@@ -1,0 +1,847 @@
+﻿@using WBBEntity.PanelModels;
+@using FBBConfig.Models;
+@{
+    /**/
+
+
+}
+
+<style>
+    #gridSearchPatch .k-grid-content {
+        max-height: 350px;
+    }
+
+    #gridSearchOrder .k-grid-content {
+        max-height: 350px;
+    }
+
+    input[readonly] {
+        cursor: pointer !important;
+    }
+
+    .loader {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-40%, -50%);
+        animation: effect 1s linear infinite;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+    }
+
+    @@keyframes effect {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+
+    /* position to center */
+
+    .loader {
+        position: absolute;
+        top: calc(50% - 2.5em);
+        left: calc(50% - 2.5em);
+    }
+
+
+    /**
+        * disable background
+        */
+
+    .loader-mask {
+        position: fixed;
+        z-index: 9998;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .5);
+        display: table;
+        transition: opacity .3s ease;
+    }
+
+
+    /*----------------------------------------------------------*/
+    .thumb-image {
+        float: left;
+        width: 100px;
+        position: relative;
+        padding: 5px;
+    }
+
+    .k-button:focus {
+        outline: none;
+        box-shadow: none;
+    }
+    .k-filename {
+        position: relative;
+        display: inline-block;
+        min-width: 80em !important;
+        max-width: 16.667em;
+        vertical-align: middle;
+        margin-left: 1em;
+        padding-bottom: .167em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .k-filename.font-size{
+        font-size: 14px !important;
+    }
+    .k-file.invalid-file .k-filename {
+        color: red !important;
+    }
+</style>
+
+<body>
+    <div id="example">
+        <div class="demo-section k-content">
+            <br />
+            <div class="page-header i-header-fit">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <h3 style="margin-top: 0"><b>NAS Portal</b></h3>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="i-fg-data-entry">
+                            @(Html.Kendo().DropDownList()
+                            .Name("txtStatus")
+                            .HtmlAttributes(new { style = "width:100%" })
+                            .DataTextField("LOV_NAME")
+                            .DataValueField("LOV_VAL1")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("SetDDLNasPortals", "NasPortal");
+                                });
+                            }).Events(e =>
+                            {
+
+                                e.Change("dropdownOnChange")/*.Select("select")*/;
+                            })
+                            )
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabstrip">
+
+                <ul>
+                    <li class="k-state-active" id="Download">
+                        @*@T_Search_Order*@
+                        Download
+                    </li>
+                    <li id="Upload">
+                        @*@T_Patch_SN*@
+                        Upload
+                    </li>
+                </ul>
+
+                <div>
+                    <br />
+                    <div class="page-header i-header-fit">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <h3 style="margin-top: 0"><b>Export File</b></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-success">
+                        <div id="DownloadPanel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div>
+                                    <label class="search-label" for="searchBox">Search Grid:</label>
+                                    <input type="text" id="searchBox" class="k-textbox" style="width: 250px" onkeyup="setUpdateSearchText(this)" />
+                                    <input type="button" id="btnSearch" class="k-button" value="Search" onclick="BindingGridDownload()" />
+                                    <input type="button" id="btnReset" class="k-button" value="Reset" onclick="clearTextSearch()" />
+                                </div><br />
+                                <div id="downloadGrid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <br />
+                    <div class="page-header i-header-fit">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <h3 style="margin-top: 0"><b>Upload File</b></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div id="UploadPanel" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="alert alert-warning" role="alert" id="selectPathWarning" style="margin:15px;">
+                                        Please select Path!
+                                    </div>
+                                    <div style="padding: 15px;" id="formUploadFilesPanel">
+                                        <div class="form-group">
+                                            <label>Select Files</label>
+                                            <div class="row">
+                                                <div class="col-md-12" style="width:98%">
+                                                    @(Html.Kendo().Upload()
+                                                    .Name("NasFile")
+                                                    .Async(a => a
+                                                        .Save("NasFile_Save", "NasPortal")
+                                                        .Remove("NasFile_Remove", "NasPortal")
+                                                        .AutoUpload(false))
+                                                    .Events(e => e.Success("onSubmitSuccess"))
+                                                      .Events(e => e.Upload("onUpload"))
+                                                    .Events(e => e.Select("onSelect"))
+                                                    .Events(e => e.Error("onSubmitError"))
+                                                    .Events(e => e.Complete("complete"))
+                                                    .Events(e => e.Cancel("onCancel"))
+                                                )
+                                                    <div class="i-fg-data-entry-validation" id="validatefor-Patchbyfile"></div>
+                                                    <div class="i-fg-data-entry-validation" id="validatefor-Patchbyfile2"></div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row i-gap-top-1">
+                                            <div class="i-text-align-center">
+                                                <a id="clearAll" class="btn btn-danger"><i class="fa fa-ban fa-md"></i>&nbsp;&nbsp;Clear</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="resultMessage">
+    <input type="hidden" id="searchGridValue" />
+    <input type="hidden" id="pathfullname" />
+    <input type="hidden" id="resultUpload" />
+</body>
+<div id="resultDialog" class="i-gap-popup">
+    <div style="padding: 15px;">
+        <div class="form-group">
+            <div class="row">
+                <h4 id=resultDialogTitle>Upload completed.</h4>
+                <label id="resultDialogMessage"></label>
+            </div>
+        </div>
+        <div class="row i-gap-top-1">
+            <div class="i-text-align-center">
+                <a id="btnDialogClose" onclick="onClose();" class="btn btn-default">&nbsp;&nbsp;Close</a>
+                <a id="btnDialogOk" onclick="onOk();" class="btn btn-success">&nbsp;&nbsp;List Files</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmDeleteDialog" class="i-gap-popup">
+    <div style="padding: 15px;">
+        <div class="form-group">
+            <div class="row">
+                <p>Do you want delete file </p>
+                <label id="fileNameDeleteHidden"></label>?
+            </div>
+        </div>
+        <div class="row i-gap-top-1">
+            <div class="i-text-align-center">
+                <a id="btnConfirmDeleteDialogClose" onclick="onConfirmDeleteClose();"
+                   class="btn btn-default">Cancel</a>
+                <a id="btnConfirmDeleteDialogOk" onclick="onConfirmDeleteOk();" class="btn btn-success">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="deleteErrorDialog" class="i-gap-popup">
+    <div style="padding: 15px;">
+        <div class="form-group">
+            <div class="row">
+                <h4 id=deleteErrorDialogTitle class="text-danger">Delete failed.</h4>
+                <label id="deleteErrorMessage" class="text-danger"></label>
+            </div>
+        </div>
+        <div class="row i-gap-top-1">
+            <div class="i-text-align-center">
+                <a id="btnDeleteErrorClose" onclick="onDeleteErrorClose();"
+                   class="btn btn-default">&nbsp;&nbsp;Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="confirmDialog"></div>
+
+<script>
+
+    var filesizemax = 0;
+    if (window.performance) {
+        screenLoader_Global();
+        console.info("window.performance work's fine on this browser");
+    }
+
+    window.addEventListener('load', function () {
+        remove_screenLoader_Global();
+    });
+
+    function dropdownOnChange(e) {
+        //console.log('sap has been changed');
+        BindingGridDownload();
+        var dataItem = this.dataItem(this.select());
+        var item = dataItem.LOV_VAL3.split('|');
+        filesizemax = +item[1];
+        $("#NasFile").attr("accept", item[0]);
+        // เช็ค property EXISTS จาก data ที่เลือก
+        var exists = dataItem.EXISTS;
+
+        if (exists === false || exists === "false") {
+            $("#Upload").hide();
+            $("#clearAll").click();
+            $('#searchBox').val('');
+        } else {
+            $("#clearAll").click();
+            $("#Upload").show();
+            $('#searchBox').val('');
+            $(".k-filename").val('');
+        }
+        
+        // Focus on Download tab
+        $("#tabstrip").data("kendoTabStrip").select(0);
+    }
+
+    $(document).ready(function () {
+
+        //--------------------------------------
+        if ($("#txtStatus").val() != 0) {
+            $('#tabstrip').show();
+            BindingGridDownload();
+        } else {
+            $('#tabstrip').hide();
+        }
+
+        //---------------------------------------
+      
+        $("#tabstrip").kendoTabStrip({
+            animation: {
+                open: {
+                    effects: "fadeIn"
+                }
+            },
+            select: onTabSelect
+        });
+        function onTabSelect(e) {
+            if ($(e.item).find("> .k-link").text().trim() == 'Download') {
+                BindingGridDownload();
+            } else {
+                $("#validatefor-Patchbyfile").html("");
+            }
+        }
+        $("#clearAll").on('click', function (e) {
+            e.preventDefault();
+            resetResendUpload();
+        });
+
+        $("#resultDialog").kendoWindow({
+            width: 520,
+            visible: false,
+            modal: true
+        }).data("kendoWindow").center();
+
+        $("#deleteErrorDialog").kendoWindow({
+            width: 520,
+            visible: false,
+            modal: true
+        }).data("kendoWindow").center();
+
+        $("#confirmDeleteDialog").kendoWindow({
+            width: 520,
+            visible: false,
+            modal: true
+        }).data("kendoWindow").center();
+    });
+    function resetResendUpload() {
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $("#validatefor-Searchbyfile").html("");
+        $(".k-upload-selected").remove();
+        $("#validatefor-Patchbyfile").html("");
+    }
+
+    function deleteFile(obj, filename) {
+        //if (!confirm('Are you confirm delete file: ' + filename)) {
+        //    return false;
+        //}
+        screenLoader_Global();
+
+        var selectedPath = $("#txtStatus").val();
+        var pathSplited = selectedPath.split('|');
+        var path = pathSplited[0];
+
+        if (path == '0') {
+            $("#txtStatus").focus();
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            data: { "fileName": obj },
+            url: "/NasPortal/DeleteFile",
+            async: true,
+            success: function (result) {
+
+                const arrfiles = filename.split("/");
+                var filelength = arrfiles.length - 1;
+                if (result.success) {
+
+
+                    $('#deleteErrorDialogTitle').html($('#fileNameDeleteHidden').text() + " was deleted.");
+                    $('#deleteErrorDialogTitle').removeClass('text-danger');
+                    $('#deleteErrorDialogTitle').addClass('text-success');
+                    $('#deleteErrorMessage').text('');
+                    $("#deleteErrorDialog").data("kendoWindow").open();
+                    $("#deleteErrorDialog").data("kendoWindow").center();
+                    BindingGridDownload();
+
+                    $('#fileNameDeleteHidden').text('');
+                    $('#pathfullname').text('');
+                } else {
+
+                    $('#deleteErrorDialogTitle').html($('#fileNameDeleteHidden').text() + " delete failed.");
+                    $('#deleteErrorDialogTitle').removeClass('text-success');
+                    $('#deleteErrorDialogTitle').addClass('text-danger');
+                    $('#deleteErrorMessage').text(result.message);
+                    $("#deleteErrorDialog").data("kendoWindow").open();
+                    $("#deleteErrorDialog").data("kendoWindow").center();
+                    BindingGridDownload();
+                    $('#fileNameDeleteHidden').text('');
+                    $('#pathfullname').text('');
+
+                }
+            },
+            error: function (err) {
+                remove_screenLoader_Global();
+            }
+        });
+    }
+
+    function downloadFile(filename) {
+        screenLoader_Global();
+        $.ajax({
+            type: "POST",
+            data: { "fileName": filename },
+            url: "/NasPortal/DownloadFile",
+            async: true,
+            success: function (result) {
+                remove_screenLoader_Global();
+            },
+            error: function (err) {
+                console.log(err.statusText);
+                remove_screenLoader_Global();
+            }
+        });
+    }
+
+    function removeItemFromList(param, index) {
+        console.log(index);
+    }
+    function onUpload(e) {
+        // เคลียร์กล่อง validate ทุกครั้งที่เริ่มอัปโหลด
+        const $box = $("#validatefor-Patchbyfile2");
+        $box.removeAttr("role aria-live").empty();
+    }
+    function BindingGridDownload() {
+        $("#downloadGrid").empty();
+        var selectedPath = $("#txtStatus").val();
+        var pathSplited = selectedPath.split('|');
+        var path = pathSplited[0];
+        var nasConnection = pathSplited[1];
+
+
+        if (path == '0') {
+            $('#tabstrip').hide();
+            $('#selectPathWarning').show();
+            $('#formUploadFilesPanel').hide();
+            $("#txtStatus").data("kendoDropDownList").focus();
+
+            return;
+        } else {
+            $('#tabstrip').show();
+        }
+
+        $('#selectPathWarning').hide();
+        $('#formUploadFilesPanel').show();
+
+        screenLoader_Global();
+
+        var dataSource;
+        $.ajax({
+            type: "POST",
+            data: { "Path": path, "NasConnection": nasConnection, "NasDisplayVal": $("#txtStatus").data("kendoDropDownList").text(), "TextSearch": $("#searchBox").val() },
+            url: "/NasPortal/ListFiles",
+            async: false,
+            success: function (result) {
+                const output = JSON.stringify(result).replace(/((^")|("$))/g, "").trim();
+                dataSource = JSON.parse(output);
+                remove_screenLoader_Global();
+            },
+            error: function (err) {
+
+                remove_screenLoader_Global();
+            }
+        });
+        dataSource.forEach(item => {
+            if (item.DateModified) {
+                let [date, time] = item.DateModified.split(' ');
+                let [dd, mm, yyyy] = date.split('-');
+                item.DateModified = new Date(`${yyyy}-${mm}-${dd}T${time}`);
+            }
+        });
+
+        $("#downloadGrid").kendoGrid({
+     
+
+
+            //height: 400,
+            dataSource: {
+                data: dataSource,
+                pageSize: 20,
+                serverPaging: false,
+                serverSorting: false,
+                sort: { field: "DateModified", dir: "desc" }
+             
+            },
+            groupable: false,
+           // sortable: true,
+            sortable: {
+                mode: "single", 
+                allowUnsort: false  
+            },
+        
+            pageable: {
+                refresh: false,
+                pageSizes: [20, 50, 100],
+                buttonCount: 5,
+                numeric: true
+            },
+            resizable: {
+                columns: true
+            },
+            columns: [
+                {
+                    field: "Name",
+                    title: "Name",
+                    width: "50%",
+                    headerAttributes: { style: "text-align:left", },
+                    attributes: { class: "text-left" },
+                    template: "<a href='/NasPortal/DownloadFile?fileName=#: Name #'>#: Name #</a>",
+                },
+                {
+                    field: "DateModified",
+                    title: "Date Modified",
+                    width: "20%",
+
+                    headerAttributes: { style: "text-align:center" },
+                    attributes: { class: "text-center" },
+                    template: "#= kendo.toString(DateModified, 'dd-MM-yyyy HH:mm:ss') #",
+
+                },
+                {
+                    field: "FileSize",
+                    title: "File Size (byte)",
+                    width: "20%",
+                    headerAttributes: { style: "text-align:center" },
+                    attributes: { class: "text-center" },
+                },
+                {
+                    field: "ACTION",
+                    title: "Action",
+                    width: "10%",
+                    sortable: false,
+                    headerAttributes: { style: "text-align:center" },
+                    attributes: { class: "text-center" },
+                    template: "<button class='btn btn-danger' onclick='javascript:confirmDeleteFile(\"#: Name #\",\"#: FullPath #\");'><i class='fa fa-trash-o'></i></button>",
+                }],
+        });
+    }
+
+    function screenLoader_Global() {
+        $('<div class="loader-mask"><div class="loader"></div></div>').appendTo('body');
+    }
+
+    function remove_screenLoader_Global() {
+        $('.loader-mask').remove();
+    }
+
+    function clearTextSearch() {
+        $('#searchBox').val('');
+        $('#searchGridValue').val('');
+    }
+
+    function setUpdateSearchText(param) {
+        $('#searchGridValue').val($(param).val());
+    }
+
+    function onOk() {
+        $("#resultDialog").data("kendoWindow").close();
+        $("#clearAll").click();
+        $("#tabstrip").data("kendoTabStrip").select(0);
+    }
+
+    function onClose() {
+        $("#resultDialog").data("kendoWindow").close();
+    }
+
+    function onDeleteErrorClose() {
+        $("#deleteErrorDialog").data("kendoWindow").close();
+    }
+
+    function confirmDeleteFile(filename, fullName) {
+
+        $('#fileNameDeleteHidden').text(filename);
+        $('#pathfullname').text(fullName);
+        $("#confirmDeleteDialog").data("kendoWindow").open();
+    }
+
+    function onConfirmDeleteOk() {
+        var filename = $('#fileNameDeleteHidden').text();
+        var fullname = $('#pathfullname').text();
+        $("#confirmDeleteDialog").data("kendoWindow").close();
+
+        deleteFile(filename, fullname);
+    }
+
+    function onConfirmDeleteClose() {
+        $('#fileNameDeleteHidden').text('');
+        $('#pathfullname').text('');
+        $("#confirmDeleteDialog").data("kendoWindow").close();
+    }
+
+    function onSubmitSuccess(e) {
+        $(".k-filename").text(e.response.fileName);
+        if (!e.response.status) {
+            if (e.response.message != "") {
+                $('#resultUpload').text("false")
+                //$("#validatefor-Patchbyfile").html(ValidationIcon() + "Upload failed");
+                var files = e.files;
+                for (var i = 0; i < files.length; i++) {
+                    var uid = files[i].uid;
+                    var entry = $(".k-file[data-uid='" + uid + "']").removeClass("k-file-success");
+                    entry.addClass("k-file-error");
+                    //if (entry.length == 0) {
+                    $(entry).find('.k-filename').html(e.response.message);
+                    //}
+                }
+            }
+        } else {
+          console.log(e.response);
+            $('#resultUpload').text("true")
+            $("#validatefor-Patchbyfile").html("");
+        }
+    }
+    function onCancel(e) {
+
+        //$("#resultDialog_wnd_title").text('Cancel Upload').css('color', '#090909');
+        //$("#resultDialogTitle").html('Cancel Success.'); 
+        //$("#btnDialogOk").remove();
+        
+        ////$("#NasFile").data("kendoUpload").clearAllFiles();
+        ////$("#btnDialogOk").text('Close').off("click").on("click", function () {
+        ////    console.log("Upload canceled.");
+        ////    $("#resultDialog").data("kendoWindow").close();
+        ////});
+
+        //$("#resultDialog").data("kendoWindow").center().open();
+
+
+        // Clear files safely
+  
+
+        $('#resultUpload').text("false");
+    }
+
+    function onSubmitError(e) {
+        //console.log("Error :" + e.XMLHttpRequest);
+        try {
+            var files = e.files;
+            for (var i = 0; i < files.length; i++) {
+                var uid = files[i].uid;
+                var entry = $(".k-file[data-uid='" + uid + "']");
+                if (entry.length > 0) {
+                    $(entry).find('.k-filename').html(e.XMLHttpRequest.responseText);
+                }
+            }
+            $("#validatefor-Patchbyfile").html(ValidationIcon() + "Upload failed");
+            $(".k-upload-files").remove();
+            $(".k-upload-status").remove();
+            $("#validatefor-Searchbyfile").html("");
+            $(".k-upload-selected").remove();
+            $("#validatefor-Patchbyfile").html("");
+            $('#resultDialogTitle').html('Operation Failed.');
+            $('#resultUpload').text("false");
+        } catch {
+           $('#resultUpload').text("false");
+        } finally {
+            // remover btnDialogOk
+            // k-window-titlebar k-header color red
+            $("#resultDialogTitle").removeClass("k-window-titlebar k-header");
+            $("#resultDialogTitle").addClass("text-danger");
+            $("#btnDialogOk").remove();
+            $("#resultDialog").data("kendoWindow").open();
+            $("#resultDialog").data("kendoWindow").center();
+        }
+       
+    }
+    function onSelect(e) {
+
+       const allowedExtensions = $("#NasFile")
+        .attr("accept")
+        ?.split(',')
+        .map(ext => ext.trim().toLowerCase()) || [];
+        
+            if (allowedExtensions.length === 0) {
+                alert("No file types are allowed for upload.");
+                e.preventDefault();
+                return;
+        }
+        var maxSizeInBytes = 25 * 1024 * 1024;
+        var maxFileSize =   maxSizeInBytes  ;
+
+        const invalidFiles = [];
+
+        for (var i = 0; i < e.files.length; i++) {
+            let fileName = e.files[i].name;
+            let fileExt = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+            var uid = e.files[i].uid;
+
+            if (e.files[i].size > maxFileSize) {
+                 
+                invalidFiles.push({
+                    uid: uid,
+                    name: fileName,
+                   reason: `Unable to upload this file because it exceeds the maximum file size limit.`
+                    
+                });
+            }
+
+   
+
+
+
+            //if (!allowedExtensions.includes(fileExt)) {
+            //     invalidFiles.push({
+            //        uid: uid,
+            //        name: fileName,
+            //        reason: `File type not allowed. Allowed: ${allowedExtensions.join(', ')}`
+            //    });
+            //}
+
+
+           //if (invalidFiles.length > 0) {
+           //     e.preventDefault();
+
+           //     //var htmlFileError = "";
+           //     //invalidFiles.forEach(file => {
+           //     //    var entry = $(".k-file[data-uid='" + file.uid + "']");
+           //     //    console.log(entry);
+           //     //    if (entry.length > 0) {
+           //     //        $(entry).find('.k-filename').html(file.reason);
+           //     //        entry.removeClass("k-file-success").addClass("k-file-error");
+           //     //    }
+           //     //    htmlFileError += `<div class="k-file-error" style="font-size: 0.58em; color: #a94442;"><span class="k-filename">${file.name} ${file.reason}</span></div>`;
+           //     //    htmlFileError += `<div class="k-file-separator" style="border-top: 1px solid #eee; margin: 5px 0;"></div>`;
+           //     //});
+
+         
+
+
+           //     $('#resultDialog_wnd_title').text('').css('color', '#090909');
+           //     $('#resultDialogTitle').html(htmlFileError);
+
+           //     $("#resultDialog").data("kendoWindow").open();
+           //     $("#resultDialog").data("kendoWindow").center();
+           //     $('#btnDialogOk').remove();
+           //    //  $("#validatefor-Patchbyfile").html(ValidationIcon() + "Upload failed"); 
+
+
+           // } 
+
+
+            if (invalidFiles.length > 0) {
+                e.preventDefault();
+
+                // ป้องกัน XSS จากชื่อไฟล์/ข้อความ
+                const encode = (s) => $('<div/>').text(s ?? '').html();
+
+                // ทำให้รายการไฟล์บน Kendo Upload เป็นสถานะ error (ถ้ามี)
+                invalidFiles.forEach(f => {
+                    const entry = $(".k-file[data-uid='" + f.uid + "']");
+                    if (entry.length) {
+                        entry.removeClass("k-file-success").addClass("k-file-error");
+                        entry.find('.k-filename').html(`${encode(f.name)} — ${encode(f.reasonMsg)}`);
+                    }
+                });
+
+                // สร้าง HTML สำหรับแสดงทุก error ใน validatefor-Patchbyfile
+                const html = invalidFiles.map(f => `
+<ul class="k-upload-files k-reset"><li class="k-file k-file-error" data-uid="53ea8bc2-f8bc-4dbf-81a6-c6079e42b16f">
+<span class="k-progress" style="width: 100%;">
+</span><span class="k-icon k-i-dat">uploaded</span>
+<span class="k-filename font-size" title=" ${encode(f.name)}" style="min-width: 300em;">
+${encode(f.name)} ${encode(f.reason)}
+</span><strong class="k-upload-status" style="display: none;">
+<span class="k-upload-pct">100%</span><button type="button" class="k-button k-button-bare k-upload-action"><span class="k-icon k-i-close k-delete" title="Remove"></span></button></strong></li></ul>
+
+    `).join("");
+
+
+                const $box = $("#validatefor-Patchbyfile2");
+                $box.attr({ "role": "alert", "aria-live": "polite" }).html(html);
+
+                $box[0]?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                return;
+            }
+
+
+
+        }
+    }
+
+    function complete(e) {
+        var check_result_upload = $('#resultUpload').text();
+
+        $('.k-upload-status').hide();
+        $('.k-file-error').each(function () {
+            $(this).find('.k-filename').css('min-width', '300em');
+        });
+        $('.k-file-success').each(function () {
+            $("#validatefor-Patchbyfile").html("");
+            check_result_upload = "true";
+        });
+        if (check_result_upload == "true") {
+            $('#resultDialogTitle').html('Operation completed.');
+            $("#resultDialog").data("kendoWindow").open();
+            $("#resultDialog").data("kendoWindow").center();
+        }
+    }
+
+</script>

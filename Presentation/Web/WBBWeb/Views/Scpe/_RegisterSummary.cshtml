@@ -1,0 +1,1211 @@
+﻿@using WBBWeb.Extension
+@using WBBEntity.PanelModels
+
+@{
+
+    string L_TERM_AND_CONDITION = "";
+    string L_SUMMARY = "";
+    string L_INPUT_CAPTCHA = "";
+    string L_ACCEPTED = "";
+    string L_ACCEPTED_PAPER_BY_EMAIL = "";
+    string L_EMAIL = "";
+    string L_CAPTCHA_ERR = "";
+
+    string L_PAY_ADVANCE = "";
+    string L_PAY_BY_CREDIT_CARD = "";
+    string L_PAY_BY_DEBIT_CARD = "";
+    string L_PAY_BY_QR_CODE = "";
+    string L_POPUP_PLEASE_SELECT_PAYMENT_METHOD = "";
+    string L_POPUP_PAYMENT_QR_CODE_ERROR = "";
+    string L_POPUP_PAYMENT_ALREADY = "";
+
+    string B_BACK = "";
+    string B_NEXT = "";
+    string B_SUBMIT = "";
+
+    if (ViewBag.LabelFBBOR028 != null)
+    {
+        var LabelFBBOR028 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR028;
+        L_TERM_AND_CONDITION = LabelFBBOR028.Any(c => c.Name == "L_TERM_AND_CONDITION") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_TERM_AND_CONDITION").DisplayValue : "";
+        L_SUMMARY = LabelFBBOR028.Any(c => c.Name == "L_SUMMARY") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SUMMARY").DisplayValue : "";
+        L_INPUT_CAPTCHA = LabelFBBOR028.Any(c => c.Name == "L_INPUT_CAPTCHA") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_INPUT_CAPTCHA").DisplayValue : "";
+        L_ACCEPTED = LabelFBBOR028.Any(c => c.Name == "L_ACCEPTED") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ACCEPTED").DisplayValue : "";
+        L_ACCEPTED_PAPER_BY_EMAIL = LabelFBBOR028.Any(c => c.Name == "L_ACCEPTED_PAPER_BY_EMAIL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ACCEPTED_PAPER_BY_EMAIL").DisplayValue : "";
+        L_EMAIL = LabelFBBOR028.Any(c => c.Name == "L_EMAIL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_EMAIL").DisplayValue : "";
+        L_CAPTCHA_ERR = LabelFBBOR028.Any(c => c.Name == "L_CAPTCHA_ERR") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_CAPTCHA_ERR").DisplayValue : "";
+
+        L_PAY_ADVANCE = LabelFBBOR028.Any(c => c.Name == "L_PAY_ADVANCE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_PAY_ADVANCE").DisplayValue : "";
+        L_PAY_BY_CREDIT_CARD = LabelFBBOR028.Any(c => c.Name == "L_PAY_BY_CREDIT_CARD") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_PAY_BY_CREDIT_CARD").DisplayValue : "";
+        L_PAY_BY_DEBIT_CARD = LabelFBBOR028.Any(c => c.Name == "L_PAY_BY_DEBIT_CARD") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_PAY_BY_DEBIT_CARD").DisplayValue : "";
+        L_PAY_BY_QR_CODE = LabelFBBOR028.Any(c => c.Name == "L_PAY_BY_QR_CODE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_PAY_BY_QR_CODE").DisplayValue : "";
+        L_POPUP_PLEASE_SELECT_PAYMENT_METHOD = LabelFBBOR028.Any(c => c.Name == "L_POPUP_PLEASE_SELECT_PAYMENT_METHOD") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_PLEASE_SELECT_PAYMENT_METHOD").DisplayValue : "";
+
+        B_BACK = LabelFBBOR028.Any(c => c.Name == "B_BACK") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+        B_NEXT = LabelFBBOR028.Any(c => c.Name == "B_NEXT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+        B_SUBMIT = LabelFBBOR028.Any(c => c.Name == "B_SUBMIT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_SUBMIT").DisplayValue : "";
+
+        L_POPUP_PAYMENT_QR_CODE_ERROR = LabelFBBOR028.Any(c => c.Name == "L_POPUP_PAYMENT_QR_CODE_ERROR") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_PAYMENT_QR_CODE_ERROR").DisplayValue : "";
+        L_POPUP_PAYMENT_ALREADY = LabelFBBOR028.Any(c => c.Name == "L_POPUP_PAYMENT_ALREADY") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_PAYMENT_ALREADY").DisplayValue : "";
+    }
+
+    string L_RECEIVING_CHANNEL_EBILL = "";
+    string L_BILLING_ADDRESS = "";
+
+    if (ViewBag.LabelFBBTR004 != null)
+    {
+        var labelFBBTR004 = (List<LovScreenValueModel>)ViewBag.labelFBBTR004;
+        L_RECEIVING_CHANNEL_EBILL = labelFBBTR004.Any(c => c.Name == "L_RECEIVING_CHANNEL_EBILL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_RECEIVING_CHANNEL_EBILL").DisplayValue : "";
+        L_BILLING_ADDRESS = labelFBBTR004.Any(c => c.Name == "L_BILLING_ADDRESS") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_BILLING_ADDRESS").DisplayValue : "";
+    }
+
+    string SHOW_PAYMENT_PAGE = "";
+    string CALL_SUPER_DUPER_FLAG = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var LabelFbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        SHOW_PAYMENT_PAGE = LabelFbbConstant.Any(f => f.Field == "SHOW_PAYMENT_PAGE") ? LabelFbbConstant.First(f => f.Field == "SHOW_PAYMENT_PAGE").Validation : "";
+        CALL_SUPER_DUPER_FLAG = LabelFbbConstant.Any(f => f.Field == "CALL_SUPER_DUPER_FLAG") ? LabelFbbConstant.First(f => f.Field == "CALL_SUPER_DUPER_FLAG").Validation : "";
+
+    }
+}
+
+<div id="page4" class="container addrounded" style="display: none;">
+        <h4 class="page-header tgreen">@L_SUMMARY</h4>
+        <p class="clearfix"></p>
+
+        <div id="summarytab6" >
+            <div class="col-xs-10 col-xs-offset-1 add-border-rounded-green">
+                <h4 class="tgreen"><span class="hightlight">@L_TERM_AND_CONDITION</span></h4>
+                <div class="table-responsive" style="overflow-x: auto; height: 190px; margin-bottom: 10px">
+                    <table class="table-non-border">
+                        <tr>
+                            <td><span id="TermCon"></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+        </div>
+
+        <div id="summarytabCaptcha" >
+            <div class="col-xs-10 col-xs-offset-1 add-border-rounded-green">
+                <h4 class="tgreen"><span class="hightlight">@L_INPUT_CAPTCHA</span></h4>
+                <p class="clearfix"></p>
+                <p class="clearfix"></p>
+                <div class="col-sm-4 col-xs-12 text-center">
+                    <input type="text" id="defaultReal" name="defaultReal" class="form-control">
+                </div>
+                <p class="clearfix"></p>
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+        </div>
+
+        <p class="clearfix page-header"></p>
+        <div class="col-md-12 text-center">
+            <p class="clearfix"></p>
+            <div id="conditions1">
+                <div class="col-md-12 text-center">
+                    <button id="btnBackRegisterSummary" type="button" class="btn btn-default btn-for-xs" >&nbsp; @B_BACK &nbsp; </button>
+                    <p class="clerfix visible-xs"></p>
+                    <button id="btnNextRegisterSummary" type="button" class="btn btn-success btn-for-xs" >
+                        &nbsp; @B_NEXT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                    </button>
+
+                </div>
+                <p class="clearfix"></p>
+            </div>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+<div id="preprint" class="container addrounded" style="display: none;">
+        <div class="table-responsive">
+            <table style="width: 80%; margin: 5% auto;">
+                <tbody>
+                    <tr>
+                        <td style="width: 80%; font-weight: bold;" colspan="9" id="bindData_AWN_NAME"></td>
+                        <td style="width: 20%;" colspan="4" rowspan="2" align=right><img src="~/Images/aisFibre.JPG" alt="" border=0 height=55 width=106 /></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%; font-weight: bold;" colspan="12" id="bindData_AWN_ADDRESS"></td>
+                    </tr>
+                    <tr bgcolor="#66CC00">
+                        <td style="text-align: center; width: 100%; font-weight: bold;" colspan="12" id="bindData_APPLICATION_FORM"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%; font-weight:bold;" colspan="6" id="bindData_SUBSCRIBER"></td>
+                        <td style="width: 50%;" colspan="6" id="bindData_DATE"></td>
+                    </tr>
+                    <tr style="vertical-align: top;">
+                        <td style="width: 25%;" colspan="3" id="bindData_NAME"></td>
+                        <td style="width: 25%;" colspan="3" id="bindData_NAME_DATA"></td>
+                        <td style="width: 30%;" colspan="3" id="bindData_CARD_TYPE"></td>
+                        <td style="width: 25%;" colspan="3" id="bindData_CARD_NO"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;" colspan="3" id="bindData_MOBILE_NO"></td>
+                        <td style="width: 25%;" colspan="3" id="bindData_MOBILE_NO_DATA"></td>
+                        <td style="width: 25%;" colspan="3" id="bindData_TELEPHONE_NO"></td>
+                        <td style="width: 25%;" colspan="3" id="bindData_TELEPHONE_NO_DATA"></td>
+                    </tr>
+
+                    <tr bgcolor="#C0C0C0" style="vertical-align: top;">
+                        <td style="width: 100%; font-weight: bold;" colspan="12" id="bindData_INSTALLATION_ADDRESS"></td>
+                    </tr>
+                    <tr style="vertical-align: top;">
+                        <td style="width: 100%;" colspan="12" id="bindData_INSTALLATION_ADDRESS_DATA"></td>
+                    </tr>
+                    @* Update 18.2 *@
+                    <tr id="trEBill1" bgcolor="#C0C0C0" style="vertical-align: top;">
+                        <td style="width: 100%; font-weight: bold;" colspan="12" id="">@L_RECEIVING_CHANNEL_EBILL</td>
+                    </tr>
+                    <tr id="trEBill2" style="vertical-align: top;">
+                        <td style="width: 100%;" colspan="12" id="bindData_BILLING_MEDIA_EBILL"></td>
+                    </tr>
+                    <tr id="trBillingAddress1" bgcolor="#C0C0C0" style="vertical-align: top;">
+                        <td style="width: 100%; font-weight: bold;" colspan="12" id="">
+                            @L_BILLING_ADDRESS
+                        </td>
+                    </tr>
+                    <tr id="trBillingAddress2" style="vertical-align: top;">
+                        <td style="width: 100%;" colspan="12" id="bindData_BILLING_ADDRESS_DATA"></td>
+                    </tr>
+                    <tr bgcolor="#C0C0C0" style="vertical-align: top;">
+                        <td style="width: 100%; font-weight: bold;" colspan="12" id="bindData_FOR_REQUEST_SERVICE"><b></b></td>
+                    </tr>
+                    <tr style="vertical-align: top;">
+                        <td style="width: 100%;" colspan="12" id="bindData_REQUEST_SERVICE"></td>
+                    </tr>
+                    <tr style="vertical-align: top;">
+                        <td style="width: 50%;" colspan="3" id="bindData_PACKAGE"></td>
+                        <td style="width: 25%;" colspan="3" id="bindData_MONTHLY_FEE"></td>
+                        <td style="width: 25%;" colspan="3" id="bindData_MONTHLY_FEE_DATA"></td>
+                    </tr>
+                   
+                    <tr>
+                        @*R18.1 FTTB Sell Router*@
+                        <td style="width: 100%; padding-top: 1em;" colspan="12" id="bindData_SELL_ROUTER_REMARK"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%; padding-top: 1em;" colspan="12" id="bindData_CERTIFY"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%; text-align: right;" colspan="5" id="bindData_SIGN"></td>
+                        <td style="width: 30%; text-align: Center;" colspan="4" id="bindData_SIGN_DATA"><canvas id="signaturePrePrint-pad" class="signaturePrePrint-pad-open" onclick="$('#modalSignaturePrePrint').modal()"></canvas></td>
+                        <td style="width: 20%;" colspan="3" id="bindData_SIGN_2"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12">
+            <div>
+                <div class="checkbox text-center">
+                    <label>
+                        <input id="ChkConPrePrint" type="checkbox" value="" />
+                        @L_ACCEPTED
+                    </label>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-md-12" style="padding-left: 100px !important;">@L_ACCEPTED_PAPER_BY_EMAIL</div>
+                <p class="clearfix"></p>
+                <div class="col-sm-4 col-xs-12" style="padding-left: 100px !important;">
+                    <input id="L_EMAIL_EBILL_NEW" name="" placeholder="@L_EMAIL" class="form-control" type="text">
+                    <p class="visible-xs"></p>
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-md-12 text-center" style="padding-top:10px;">
+                    <button id="btnBackToSummary" type="button" class="btn btn-default btn-for-xs">&nbsp; @B_BACK &nbsp; </button>
+                    <p class="clerfix visible-xs"></p>
+                    <button id="btnNoAcceptPrePrint" disabled type="button" class="btn btn-success btn-for-xs">
+                        &nbsp; @B_SUBMIT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                    </button>
+                    <p class="clerfix visible-xs"></p>
+                    <button id="btnSubmitPrePrint" style="display:none" type="button" class="btn btn-success btn-for-xs">
+                        &nbsp; @B_SUBMIT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                    </button>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+        </div>
+    </div>
+<div id="divPayMent" style="display: none;">
+    <div class="col-md-10 col-md-offset-1 col-xs-12">
+        <p class="clearfix"></p>
+        <i class="fa fa-chevron-right tgreen"></i>@Html.Raw(L_PAY_ADVANCE)
+        <p class="clearfix"></p>
+        <div id="divPayMentType" class="col-md-12 col-xs-12">
+            @if (!string.IsNullOrEmpty(L_PAY_BY_CREDIT_CARD))
+            {
+                <div class="col-md-12 radio">
+                    <label class="radio-inline" for="rdoPaymentMethod1" style="font-weight: normal !important; padding-right: 15px;">
+                        <input name="SelectOptionPaymentMethod" id="rdoPaymentMethod1" value="4" onclick="" type="radio">
+                        @Html.Raw(L_PAY_BY_CREDIT_CARD)
+                    </label>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(L_PAY_BY_DEBIT_CARD))
+            {
+                <div class="col-md-12 radio">
+                    <label class="radio-inline" for="rdoPaymentMethod2" style="font-weight: normal !important; padding-right: 15px;">
+                        <input name="SelectOptionPaymentMethod" id="rdoPaymentMethod2" value="4" onclick="" type="radio">
+                        @Html.Raw(L_PAY_BY_DEBIT_CARD)
+                    </label>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(L_PAY_BY_QR_CODE))
+            {
+                <div class="col-md-12 radio">
+                <label class="radio-inline" for="rdoPaymentMethod3" style="font-weight: normal !important; padding-right: 15px;">
+                    <input name="SelectOptionPaymentMethod" id="rdoPaymentMethod3" value="5" onclick="" type="radio">
+                    @Html.Raw(L_PAY_BY_QR_CODE)
+                </label>
+            </div>
+            }
+
+            <p class="clearfix page-header"></p>
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-12 text-center">
+            @*<button id="btnBackPagePayMent" type="button" class="btn btn-default">&nbsp; @B_BACK &nbsp; </button>*@
+            <button id="btnNextPagePayMent" type="button" class="btn btn-success">
+                &nbsp; @B_NEXT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </button>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+</div>
+<script src="@Url.Content("~/signalr/hubs")"></script>
+<script type="text/javascript">
+
+     @functions{
+         public string GetAntiForgeryToken()
+         {
+             string cookieToken, formToken;
+             AntiForgery.GetTokens(null, out cookieToken, out formToken);
+             return cookieToken + "," + formToken;
+         }
+        }
+
+    $(document).ready(function () {
+        GetCondition();
+        $('#defaultReal').realperson({
+            length: 5,
+            regenerate: 'Change',
+            dot: '*',
+            dots: $.realperson.defaultDots,
+            chars: $.realperson.alphanumeric
+        });
+    });
+
+    function waitForPayQrCode() {
+        var chat = $.connection.baseHub;
+        // Create a function that the hub can call back to display messages.
+        chat.client.addNewMessageToPage = function (orderId, tranId) {
+            if (orderId == $("#PayMentOrderID").val()) {
+                $('#LastPopupCheckPaidQR').html('@Html.Raw(L_POPUP_PAYMENT_ALREADY)');
+                $('#modolCheckPaidQR').modal('show');
+            }
+        };
+
+        $.connection.hub.start().done(function () {
+            //alert($("#TransactionId").val());
+        });
+
+    }
+
+    function stopWaitForPayQrCode() {
+        $.connection.hub.stop();
+    }
+
+    $('#btnBackRegisterSummary').click(function () {
+        $('#page3').show();
+        $('#divAddressSendDoc').show();
+        $('#page4').hide();
+    });
+
+    $('#btnNextRegisterSummary').click(function () {
+        if (validateCaptcha()) {
+            $('#page4').hide();
+            SetAddress();
+            GeneratePrePrintForm();
+            $('#preprint').show();
+            selectPage(4);
+        }
+    });
+
+    $('#btnBackToSummary').click(function () {
+        $('#page4').show();
+        $('#preprint').hide();
+    });
+
+    $('#btnSubmitPrePrint').click(function () {
+
+        var i = $("input[name=SelectPackage]:checked").val();
+        var tmp1 = $("#ACCESS_MODE" + i).val();
+
+        var chkEmail = true;
+
+        $("#btnSubmitPrePrint").hide();
+        $("#btnNoAcceptPrePrint").show();
+
+        if ($("#L_EMAIL_EBILL_NEW").val() != "") {
+            chkEmail = validateEmail($("#L_EMAIL_EBILL_NEW").val());
+            if (chkEmail) {
+                $('#CustomerRegisterPanelModel_ReceiveEmailFlag').val('N');
+                $('#SummaryPanelModel_L_SEND_EMAIL').val(false);
+                if ($("#L_EMAIL_EBILL_NEW").val() != '') {
+                    $("#CustomerRegisterPanelModel_L_EMAIL").val($("#L_EMAIL_EBILL_NEW").val());
+                    $('#SummaryPanelModel_L_SEND_EMAIL').val(true);
+                    $('#CustomerRegisterPanelModel_ReceiveEmailFlag').val('Y');
+                }
+            }
+        }
+
+        var flowFlagData = $("#CoveragePanelModel_L_FLOWFLAG").val();
+
+        if (chkEmail) {
+            LockScreen(true, "");
+            if (tmp1 == "VDSL"
+                    && ($("#L_SplitterFlag").val() == "1"
+                         || $("#L_SplitterFlag").val() == "7"
+                        )
+                    ) {
+                ReservedDslamManagement();
+            }
+            GetCancelOrder();
+            if ('@SHOW_PAYMENT_PAGE' == 'Y' && $("input[name=SelectOptionSelectInstallRouter]:checked").val() == '3') {
+                ReservedTimeSlot("2");
+                $.ajax({
+                    type: 'POST',
+                    url: '/Scpe/SavePreRegisterCustomer',
+                    data: $('form').serialize(),
+                    success: function(data) {
+                        LockScreen(false, "");
+                        $('#PayMentOrderID').val(data);
+                        $('#preprint').hide();
+                        $("#divPayMent").show();
+                        $('#divPayMentType').show();
+                    }
+                });
+            } else {
+                ReservedTimeSlot("1");
+            }
+        } else {
+            LockScreen(false, "");
+            var temp = "";
+            if ($("#LanguagePage").val() == "1")
+                temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน";
+            else
+                temp = "Please Fill In All Required Fields.";
+
+            $("#L_EMAIL_EBILL_NEW")[0].className = "form-control errorinput";
+            toastrErrorMessage(temp);
+            $("#btnSubmitPrePrint").show();
+            $("#btnNoAcceptPrePrint").hide();
+        }
+    });
+
+    $("#ChkConPrePrint").change(function() {
+
+        $("#CustomerRegisterPanelModel_L_BIRTHDAY").val("01/01/1987");
+        if ($("#LanguagePage").val() == "1") {
+            $("#CustomerRegisterPanelModel_L_BIRTHDAY").val("01/01/2530");
+        }
+
+        $("#CustomerRegisterPanelModel_JOB_ORDER_TYPE").val("U");
+        $("#CustomerRegisterPanelModel_ASSIGN_RULE").val("PUSH");
+        $('#CustomerRegisterPanelModel_L_OLD_ISP').val("");
+
+        if (this.checked) {
+            $("#btnSubmitPrePrint").show();
+            $("#btnNoAcceptPrePrint").hide();
+        } else {
+            $("#btnSubmitPrePrint").hide();
+            $("#btnNoAcceptPrePrint").show();
+        }
+    });
+
+    //$('#btnBackPagePayMent').click(function () {
+    //    $('#preprint').show();
+    //    $("#divPayMent").hide();
+    //    $('#divPayMentType').hide();
+    //    $("#btnSubmitPrePrint").show();
+    //    $("#btnNoAcceptPrePrint").hide();
+    //});
+
+    $('#btnNextPagePayMent').click(function() {
+        var i = $("input[name=SelectPackage]:checked").val();
+        var tmp1 = $("#ACCESS_MODE" + i).val();
+
+        var SelectOptionPaymentMethod = $("input[name=SelectOptionPaymentMethod]:checked").val();
+        $("#PayMentMethod").val(SelectOptionPaymentMethod);
+
+       // debugger;
+        //check order already payment
+      
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetOrderPayment", "Scpe")',
+            data: {
+                "orderId": $("#PayMentOrderID").val(),
+            },
+            dataType: "json",
+            async: true,
+            success: function(data) {
+                if (data != null && data == 'Y') {
+                    PopupMessage('@Html.Raw(L_POPUP_PAYMENT_ALREADY)');
+                    $('#myModal').modal('show');
+                } else {
+                    
+                    if ((SelectOptionPaymentMethod == null) || (SelectOptionPaymentMethod == "")) {
+                        toastrErrorMessage('@Html.Raw(L_POPUP_PLEASE_SELECT_PAYMENT_METHOD)');
+                    }
+                    else if (SelectOptionPaymentMethod == "5") {
+                        LockScreen(true, "");
+                        submitWays("3");
+                    }
+                    else {
+                        LockScreen(true, "");
+                        submitWays("2");
+                    }
+                }
+            },
+            complete: function (xhr, textStatus) {
+            }
+        });
+     
+
+    });
+
+    function GetCondition() {
+        removeTable('tbTermCon');
+
+        var strTermConRouter = "";
+        strTermConRouter += getTermConRouter();
+
+        // "ข้อตกลงและเงื่อนไขการให้บริการ" --เดิม--
+        $.ajax({
+            type: "GET",
+            url: "/Scpe/GetTermCon?LovType=TERM_AND_CONDITION_WIRE",
+            dataType: "json",
+            success: function (data) {
+
+                var strBuilder = '<table id="tbTermCon" class="tbl">';
+
+                var r = 1;
+                $.each(data, function (i, e) {
+                    if ($("#LanguagePage").val() == "2") {
+                        var str = e.LovValue2;
+                    }
+                    else {
+                        var str = e.LovValue1;
+                    }
+
+                    if (!!e.Text)
+                        var numb = e.Text
+                    else
+                        var numb = "";
+
+                    strBuilder += '<tr>';
+                    if (numb.toString().indexOf(".") > 0)
+                        strBuilder += ' <td style="vertical-align:top; padding-left:1em;">';
+                    else if (numb == "")
+                        strBuilder += '<td style="vertical-align:top;" colspan = "2" >';
+                    else
+                        strBuilder += '<td style="vertical-align:top; padding-left:0em;" colspan = "2">';
+
+                    if (numb == "")
+                        strBuilder += str;
+                    else if (numb.toString().indexOf(".") < 0) {
+                        strBuilder += numb;
+                        strBuilder += (" " + str);
+                    }
+                    else
+                        strBuilder += numb;
+                    strBuilder += ' </td>';
+
+                    if (numb != "" && numb.toString().indexOf(".") > 0) {
+                        strBuilder += '<td>';
+                        strBuilder += str;
+                        strBuilder += '</td>';
+                    }
+                    strBuilder += '</tr>';
+                    r++;
+                });
+
+                strBuilder += strTermConRouter;
+
+                strBuilder += '</table>';
+
+                $('#TermCon').append(strBuilder);
+            }
+        });
+
+
+        // "ข้อตกลงและเงื่อนไขการให้บริการ" --eApp--
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/MasterData/GetTermConEapp",
+        //    dataType: "json",
+        //    success: function (data) {
+
+        //        var strBuilder = '<table id="tbTermCon" class="tbl">';
+
+        //        $.each(data, function (i, row) {
+        //            const td = row;
+        //            strBuilder += td;
+        //        });
+
+        //        strBuilder += '</table>';
+
+        //        $('#TermCon').append(strBuilder);
+        //    }
+        //});
+    }
+
+    function getTermConRouter() {
+        var strRouterRemark = "<tr><td style='vertical-align:top;' colspan='2'><div><p class='clearfix'></p>";
+
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetConditionLov",
+            data: {
+                lovType: 'TERM_AND_CONDITION_ROUTER',
+                lovName: 'CONDITION_ROUTER'
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                var strRouterBuilder = '';
+
+                $.each(data, function (i, e) {
+                    if ($("#LanguagePage").val() == "2") {
+                        var str = e.LovValue2;
+                    }
+                    else {
+                        var str = e.LovValue1;
+                    }
+                    strRouterBuilder += str;
+                });
+                strRouterRemark += strRouterBuilder;
+            }
+        });
+
+        strRouterRemark += "</div></td></tr>";
+
+        return strRouterRemark;
+    }
+
+    function removeTable(id) {
+        var tbl = document.getElementById(id);
+        if (tbl) tbl.parentNode.removeChild(tbl);
+    }
+
+    function validateCaptcha() {
+        var chkValidateCaptcha = false;
+        $.ajax({
+            url: '/Process/ValidateCaptcha',
+            data: { inputUser: $('#defaultReal').val(), inputHash: $('#defaultReal').realperson('getHash') },
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (response) {
+                if (!response) {
+                    toastrErrorMessage("@L_CAPTCHA_ERR");
+                    $("#defaultReal").removeClass('form-control').addClass('form-control errorinput');
+                } else {
+                    chkValidateCaptcha = true;
+                    $("#defaultReal").removeClass('form-control errorinput').addClass('form-control');
+                }
+            }
+        });
+
+        return chkValidateCaptcha;
+    }
+
+    function SetAddress() {
+
+        var tmp1 = $('#COVERAGE_L_PROVINCE').val();
+        var tmp2 = $('#COVERAGE_L_TUMBOL').val();
+        var tmp3 = $('#COVERAGE_L_AMPHUR').val();
+        var tmp4 = $('#CoveragePanelModel_Address_L_HOME_NUMBER_1').val();
+        var tmp5 = $('#CoveragePanelModel_Address_L_MOO').val();
+        var tmp6 = $('#CoveragePanelModel_Address_L_SOI').val();
+        var tmp7 = $('#CoveragePanelModel_Address_L_ROAD').val();
+        var tmp8 = $("#CoveragePanelModel_Address_L_ZIPCODE :selected").text();
+        var tmp9 = $('#CoveragePanelModel_Address_L_FLOOR').val();
+        var tmp10 = $('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').val();
+        var tmp11 = $('#CoveragePanelModel_Address_L_BUILD_NO_Hied').val();
+        var tmp12 = $('#CoveragePanelModel_Address_ZIPCODE_ID').val();
+
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_PROVINCE').val(tmp1);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_TUMBOL').val(tmp2);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_AMPHUR').val(tmp3);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_HOME_NUMBER_1').val(tmp4);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOO').val(tmp5);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_SOI').val(tmp6);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROAD').val(tmp7);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_ZIPCODE').val(tmp8);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_HOME_NUMBER_2').val(tmp4);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_FLOOR').val(tmp9);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NAME').val(tmp10);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NAME_Hied').val(tmp10);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NO_Hied').val(tmp11);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSetup_ZIPCODE_ID').val(tmp12);
+
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_PROVINCE').val(tmp1);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_TUMBOL').val(tmp2);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_AMPHUR').val(tmp3);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_HOME_NUMBER_1').val(tmp4);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_MOO').val(tmp5);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_SOI').val(tmp6);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_ROAD').val(tmp7);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_ZIPCODE').val(tmp8);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_HOME_NUMBER_2').val(tmp4);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_FLOOR').val(tmp9);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_BUILD_NAME').val(tmp10);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_BUILD_NAME_Hied').val(tmp10);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_BUILD_NO_Hied').val(tmp11);
+        $('#CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_ZIPCODE_ID').val(tmp12);
+
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_PROVINCE').val(tmp1);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_TUMBOL').val(tmp2);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_AMPHUR').val(tmp3);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_HOME_NUMBER_1').val(tmp4);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_MOO').val(tmp5);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_SOI').val(tmp6);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_ROAD').val(tmp7);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_ZIPCODE').val(tmp8);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_HOME_NUMBER_2').val(tmp4);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_FLOOR').val(tmp9);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NAME').val(tmp10);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NAME_Hied').val(tmp10);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NO_Hied').val(tmp11);
+        $('#CustomerRegisterPanelModel_AddressPanelModelVat_ZIPCODE_ID').val(tmp12);
+
+    }
+
+    function GeneratePrePrintForm() {
+        $.ajax({
+            type: "GET",
+            url: "/PrePrint/GetPrePrintForm",
+            dataType: "json",
+            async: false,
+            success: function(data) {
+
+                var dataDate = findElementDisplay(data, "Name", "DATE");
+                $.ajax({
+                    type: "GET",
+                    url: "/PrePrint/getToday",
+                    data: {
+                        language: $("#LanguagePage").val()
+                    },
+                    dataType: "json",
+                    async: false,
+                    success: function(data) {
+                        dataDate = dataDate.substring(0, dataDate.indexOf("{Sysdate}"));
+                        dataDate = dataDate + data.today;
+                        $("#bindData_DATE").html(dataDate);
+                    }
+                });
+
+                var tmp1 = $('#CoveragePanelModel_Address_L_HOME_NUMBER_1').val();
+                var tmp2 = $('#CoveragePanelModel_Address_L_MOO').val();
+                var tmp3 = $('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').val();
+                var tmp4 = $('#CoveragePanelModel_Address_L_SOI').val();
+                var tmp5 = $('#CoveragePanelModel_Address_L_ROAD').val();
+                var tmp6 = $('#COVERAGE_L_TUMBOL').val();
+                var tmp7 = $('#COVERAGE_L_AMPHUR').val();
+                var tmp8 = $('#COVERAGE_L_PROVINCE').val();
+                var tmp9 = $("#CoveragePanelModel_Address_L_ZIPCODE :selected").text();
+
+                var tmp10 = $("#summVal3").text();
+                var tmp11 = $('#L_CARD_NO').val();
+                var tmp12 = $("#TechnologyDisplay").val().replace(/\|/g, '<br>');
+
+                var address = "";
+
+                address = address + findElementDisplay(data, "Name", "HOUSE_NO") + " " + tmp1 + " ";
+                if (tmp2 != "")
+                    address = address + findElementDisplay(data, "Name", "MOO") + " " + tmp2 + " ";
+
+                address = address + findElementDisplay(data, "Name", "BUILDING") + " " + tmp3 + " "
+                    + $('#CoveragePanelModel_Address_L_BUILD_NO_Hied').val() + " ";
+
+                if (tmp4 != "")
+                    address = address + findElementDisplay(data, "Name", "LANE") + " " + tmp4 + " ";
+                if (tmp5 != "")
+                    address = address + findElementDisplay(data, "Name", "ROAD") + " " + tmp5 + " ";
+
+                address = address + findElementDisplay(data, "Name", "SUB_DISTRICT") + " " + tmp6 + " ";
+                address = address + findElementDisplay(data, "Name", "DISTRICT") + " " + tmp7 + " ";
+                address = address + findElementDisplay(data, "Name", "PROVINCE") + " " + tmp8 + " ";
+                address = address + findElementDisplay(data, "Name", "POSTAL_CODE") + " " + tmp9 + " ";
+
+
+                var sendDocAddress = "";
+                sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "HOUSE_NO") + " " + $('#AddressPanelModelSendDoc_L_HOME_NUMBER_2').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_MOO').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "MOO") + " " + $('#AddressPanelModelSendDoc_L_MOO').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_MOOBAN').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "VILLAGE") + " " + $('#AddressPanelModelSendDoc_L_MOOBAN').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_BUILD_NAME').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "BUILDING") + " " + $('#AddressPanelModelSendDoc_L_BUILD_NAME').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_SOI').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "LANE") + " " + $('#AddressPanelModelSendDoc_L_SOI').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_ROAD').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "ROAD") + " " + $('#AddressPanelModelSendDoc_L_ROAD').val() + " ";
+                if ($('#TumbonSendDoc').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "SUB_DISTRICT") + " " + $('#TumbonSendDoc').val() + " ";
+                sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "DISTRICT") + " " + $('#AmphurSendDoc').val() + " ";
+                sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "PROVINCE") + " " + $('#ProvinceSendDoc').val() + " ";
+                sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "POSTAL_CODE") + " " + $("#ZipCodeSendDoc :selected").text() + " ";
+
+                $("#bindData_AWN_NAME").html(findElementDisplay(data, "Name", "AWN_NAME"));
+                $("#bindData_AWN_ADDRESS").html(findElementDisplay(data, "Name", "AWN_ADDRESS"));
+                $("#bindData_APPLICATION_FORM").html(findElementDisplay(data, "Name", "APPLICATION_FORM"));
+                $("#bindData_SUBSCRIBER").html(findElementDisplay(data, "Name", "SUBSCRIBER_INDIVIDUAL"));
+                $("#bindData_NAME").html(findElementDisplay(data, "Name", "INDIVIDUAL_NAME"));
+                var indName = $("#TITLE_CODE option:selected").text() + " " + $("#L_FIRST_NAME").val() + " " + $("#L_LAST_NAME").val();
+                $("#bindData_NAME_DATA").html(indName);
+                $("#bindData_CARD_TYPE").html(findElementDisplay(data, "Name", "INDIVIDUAL_CARD_TYPE"));
+                $("#bindData_CARD_NO").html(tmp11);
+
+                var telephoneNo = $("#L_MOBILE").val();
+
+                $("#bindData_MOBILE_NO").html(findElementDisplay(data, "Name", "MOBILE_NO"));
+                $("#bindData_MOBILE_NO_DATA").html(telephoneNo);
+                $("#bindData_TELEPHONE_NO").html("");
+                $("#bindData_TELEPHONE_NO_DATA").html("");
+                $("#bindData_INSTALLATION_ADDRESS").html(findElementDisplay(data, "Name", "INSTALLATION_ADDRESS"));
+                $("#bindData_INSTALLATION_ADDRESS_DATA").html(address);
+                $("#bindData_BILLING_ADDRESS").html(findElementDisplay(data, "Name", "BILLING_ADDRESS"));
+                $("#bindData_BILLING_ADDRESS_DATA").html(sendDocAddress);
+
+                $("#bindData_FOR_REQUEST_SERVICE").html(findElementDisplay(data, "Name", "FOR_REQUEST_SERVICE"));
+
+                var monthlyFee = findElementDisplay(data, "Name", "MONTHLY_FEE");
+                var monthlyFeeData = tmp10 + " " + monthlyFee.substring(monthlyFee.indexOf("{RecurringCharge}") + "{RecurringCharge}".length);
+
+                $("#bindData_PACKAGE").html(findElementDisplay(data, "Name", "PACKAGE") + tmp12);
+                $("#bindData_MONTHLY_FEE").html(monthlyFee.substring(0, monthlyFee.indexOf("{RecurringCharge}")));
+                $("#bindData_MONTHLY_FEE_DATA").html(monthlyFeeData);
+
+                //18.1 FTTB Sell Router
+
+                $("#bindData_REQUEST_SERVICE").show();
+
+                //18.2 Ebill
+                var hdBillingMediaText = $('#hdBillingMediaText').val();
+                var hdBillingMediaEmail = $('#hdBillingMediaEmail').val();
+                if (hdBillingMediaText != "undefined" && hdBillingMediaText != '') {
+                    $("#bindData_BILLING_MEDIA_EBILL").html(hdBillingMediaText);
+                }
+                if (hdBillingMediaEmail != "undefined" && hdBillingMediaEmail != '') {
+                    $("#L_EMAIL_EBILL_NEW").val(hdBillingMediaEmail);
+                    $('#L_EMAIL_EBILL_NEW').prop('disabled', true);
+                } else {
+                    $("#L_EMAIL_EBILL_NEW").val('');
+                    $('#L_EMAIL_EBILL_NEW').prop('disabled', false);
+                }
+
+                //R18.1 FTTB Sell Router
+                $("#bindData_SELL_ROUTER_REMARK").html("");
+                if ($("input[name=SelectOptionSelectInstallRouter]:checked").val() == "3") {
+                    $("#bindData_SELL_ROUTER_REMARK").html(getSellRouterRemark("BYOD_REMARK"));
+                } else {
+                    $("#bindData_SELL_ROUTER_REMARK").html(getSellRouterRemark("SELL_ROUTER_REMARK"));
+                }
+
+                $("#bindData_CERTIFY").html("&emsp;" + findElementDisplay(data, "Name", "CERTIFY"));
+                var signTemp = findElementDisplay(data, "Name", "SIGN");
+                $("#bindData_SIGN").html(signTemp.substring(0, signTemp.indexOf("{Sign}")));
+                $("#bindData_SIGN_2").html(signTemp.substring(signTemp.indexOf("{Sign}") + "{Sign}".length));
+                if ($("#Register_device").val() != "MOBILE APP") {
+                    $("#bindData_SIGN_DATA").html($("#L_FIRST_NAME").val() + " " + $("#L_LAST_NAME").val());
+                }
+
+            }
+        });
+    }
+
+    function getSellRouterRemark(name) {
+
+        var strRouterRemark = "<div>";
+
+        $.ajax({
+            type: "GET",
+            url: "/Scpe/GetConditionLov",
+            data: {
+                lovType: 'PRE_PRINT_FORM',
+                lovName: name
+            },
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                var strRouterBuilder = '';
+
+                $.each(data, function(i, e) {
+                    if ($("#LanguagePage").val() == "2") {
+                        var str = e.LovValue2;
+                    } else {
+                        var str = e.LovValue1;
+                    }
+                    strRouterBuilder += str;
+                });
+                strRouterRemark += strRouterBuilder;
+            }
+        });
+
+        strRouterRemark += "</div>";
+
+        return strRouterRemark;
+    }
+
+    function findElementDisplay(arr, propName, propValue) {
+        for (var i = 0; i < arr.length; i++)
+            if (arr[i][propName] == propValue)
+                return arr[i]["DisplayValue"];
+
+        // will return undefined if not found; you could return a default instead
+    }
+
+    function ReservedTimeSlot(submitType) {
+        var i = $("input[name=SelectPackage]:checked").val();
+        var tmp1 = $("input[name=SelectOptionSelectInstallRouter]:checked").val();
+        var tmp2 = $("#ACCESS_MODE" + i).val();
+        var tmp3 = $("#SERVICE_CODE" + i).val();
+        var tmp4 = $('#COVERAGE_L_TUMBOL :selected').text();
+        var tmp5 = $("#CoveragePanelModel_Address_L_ZIPCODE :selected").text();
+        var datetemp = $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val();
+
+        var sentdata = {
+            ACCESS_MODE: tmp2,
+            PROD_SPEC_CODE: tmp3,
+            ADDRESS_ID: $("#ZTEAddressID").val(),
+            LOCATION_CODE: $("#L_LOC_CODE").val(),
+            SUBDISTRICT: tmp4,
+            POSTAL_CODE: tmp5,
+            ASSIGN_RULE: $("#CustomerRegisterPanelModel_ASSIGN_RULE").val(),
+            AISAIRNUMBER: "|",
+            SUB_ACCESS_MODE: $("#SUB_ACCESS_MODE").val(),
+            TASK_TYPE: "",
+            //R20.5 Service Level
+            SERVICE_LEVEL: "",
+            AREA_REGION: $("#CoveragePanelModel_Address_AreaRegion").val(), //
+            EVENT_RULE: "New",
+            SPECIAL_SKILL: ""
+        };
+
+        var tmpYear = datetemp.split('/')[0].toString();
+        var tmpMonth = datetemp.split('/')[1].toString();
+        if (tmpMonth.length == 1) {
+            tmpMonth = "0" + tmpMonth;
+        }
+        var tmpDay = datetemp.split('/')[2].toString();
+        if (tmpDay.length == 1) {
+            tmpDay = "0" + tmpDay;
+        }
+
+        sentdata.APPOINTMENT_DATE = tmpYear + "-" + tmpMonth + "-" + tmpDay;
+        sentdata.TIME_SLOT = $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val();
+
+        if (($("#CustomerRegisterPanelModel_CPE_Info_0__SN").val() != undefined && $("#CustomerRegisterPanelModel_CPE_Info_0__SN").val() != "") || tmp1 == "3" || $("#REQUEST_SUB_FLAG").val() == "Y") {
+            if ($("#L_SplitterFlagFirstTime").val() != "5"
+                && $("#L_SplitterFlagFirstTime").val() != "3"
+                && $("#L_SplitterFlagFirstTime").val() != "2") {
+                if (/Safari|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    ReservedTimeslotUsePromise(sentdata).then(function(text) { // ได้จาก resolved
+                        if (submitType == "1")
+                            submitWays(submitType);
+                    }).catch(function(error) { // ได้จาก reject
+                        if (submitType == "1")
+                            submitWays(submitType);
+                    })
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "/CustomerRegister/ReservedTimeslot",
+                        data: sentdata,
+                        dataType: "json",
+                        async: false,
+                        success: function(data) {
+                            if (data.RESULT == "0") {
+                                $("#SummaryPanelModel_RESERVED_ID").val(data.RESERVED_ID);
+                            } else if (data.RESULT == "-2") {
+                                $("#SummaryPanelModel_RESERVED_ID").val("");
+                            } else {
+                                $("#SummaryPanelModel_RESERVED_ID").val("");
+                            }
+                            if (submitType == "1")
+                                submitWays(submitType);
+
+                        },
+                        error: function() {
+                            $("#SummaryPanelModel_RESERVED_ID").val("");
+                            if (submitType == "1")
+                                submitWays(submitType);
+                        }
+                    });
+                }
+            } else {
+                $("#SummaryPanelModel_RESERVED_ID").val("");
+                if (submitType == "1")
+                    submitWays(submitType);
+            }
+        }
+    }
+
+    function ReservedTimeslotUsePromise(sendData) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                type: "GET",
+                url: "/CustomerRegister/ReservedTimeslot",
+                data: sendData,
+                dataType: "json",
+                async: false,
+                success: function(data) {
+                    if (data.RESULT == "0") {
+                        $("#SummaryPanelModel_RESERVED_ID").val(data.RESERVED_ID);
+                    } else if (data.RESULT == "-2") {
+                        $("#SummaryPanelModel_RESERVED_ID").val("");
+                    } else {
+                        $("#SummaryPanelModel_RESERVED_ID").val("");
+                    }
+                    resolve("ok");
+                },
+                error: function() {
+                    $("#SummaryPanelModel_RESERVED_ID").val("");
+                    reject("error");
+                }
+            });
+        });
+    }
+   
+
+    function submitWays(wayNO) {
+        if (wayNO == "1") {
+            $("#iForm").submit();
+        } else if (wayNO == "2") {
+            if ('@CALL_SUPER_DUPER_FLAG' == "Y") {
+                // SuperDuper
+                $("#SuperDuperProductName").val("BYOD");
+                $("#SuperDuperServiceName").val("Payment Order");
+                $('#iForm').attr('action', '@Url.Action("PaymentToSuperDuper", "Process")');
+            }
+            else {
+                $('#iForm').attr('action', '@Url.Action("PaymentToMPayGateway", "Scpe")');
+            }
+            $('#iForm').submit();
+        }
+        else if (wayNO == "3") {
+            if ('@CALL_SUPER_DUPER_FLAG' == "Y") {
+                // QRCode SuperDuper
+                $("#SuperDuperProductName").val("BYOD");
+                $("#SuperDuperServiceName").val("Generate QR");
+
+                $("#CustomerRegisterPanelModel_L_CARD_NO").val($("#L_CARD_NO").val());
+                getPaymentQRCodeToSuperDuper();
+            }
+            else {
+                getPaymentToMerchantQrCode();
+            }
+        }
+        else {
+            $("#iForm").submit();
+        }
+    }
+
+    function getPaymentQRCodeToSuperDuper() {
+        LockScreen(true);
+
+        $.ajax({
+            type: 'POST',
+            url: '/Process/PaymentQRCodeToSuperDuper',
+            data: $('form').serialize(),
+            success: function (data) {
+                LockScreen(false, "");
+
+                if (data != null) {
+                    if (data.qr_code != null && data.qr_code.length > 0) {
+                        //var tmpqr_code = data.qr_code.replace(/\r/g, '\\r');
+                        $("#qrCodeStr").val(data.qr_code);
+                        $("#qrCodeStr").text(data.qr_code);
+                        makeCode();
+
+                        //20.8 Add by Aware : Atipon -> set remark from controller
+                        $("#pageQrCode").find("#lblFooterRemark").html(data.message_remark);
+
+                        $('#divPayMent').hide();
+                        $('#pageQrCode').show();
+                        var qrCharge = convertStringToMoneyFormat(data.amount);
+                        $("#lblFooter").text(qrCharge);
+                        waitForPayQrCode();
+                    }
+                    else {
+                        PopupMessage('@Html.Raw(L_POPUP_PAYMENT_QR_CODE_ERROR)');
+                        $('#myModal').modal('show');
+                    }
+                }
+            }
+        });
+    }
+
+    function getPaymentToMerchantQrCode() {
+        LockScreen(true);
+       
+        var payMentOrderId = $("#PayMentOrderID").val();
+        var payMentRecurringChargeVat = $("#PayMentRecurringChargeVAT").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Scpe/GetPaymentToMerchantQrCode",
+            data: {
+                "payMentOrderId": payMentOrderId,
+                "payMentRecurringChargeVat": payMentRecurringChargeVat
+            },
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                if (data != null) {
+                    if (data.RespCode == "0000") {
+                        $("#qrCodeStr").val(data.QrCodeStr);
+                        $("#qrCodeStr").text(data.QrCodeStr);
+                        makeCode();
+                        $('#divPayMent').hide();
+                        $('#pageQrCode').show();
+                        var qrCharge = convertStringToMoneyFormat(payMentRecurringChargeVat);
+                        $("#lblFooter").text(qrCharge);
+                        waitForPayQrCode();
+                    }
+                    else {
+                        PopupMessage('@Html.Raw(L_POPUP_PAYMENT_QR_CODE_ERROR)');
+                        $('#myModal').modal('show');
+                    }
+                }
+            },
+            complete: function(xhr, textStatus) {
+                LockScreen(false);
+            }
+        });
+    }
+
+    function DataBindPage() {
+
+        var tmp1 = $("input[name=SelectOptionSelectInstallRouter]:checked").val();
+        var tmp2 = $("input[name=SelectPackage]:checked").val();
+
+        $('#CustomerRegisterPanelModel_Plug_and_play_flag').val(tmp1);
+
+        if ($('#CustomerRegisterPanelModel_Plug_and_play_flag').val() == "5") {
+            $('#CustomerRegisterPanelModel_L_EVENT_CODE').val("EVENT_SALE_ROUTER");
+        }
+        else if ($('#CustomerRegisterPanelModel_Plug_and_play_flag').val() == "3") {
+            $('#CustomerRegisterPanelModel_L_EVENT_CODE').val("EVENT_BYOD");
+        }
+
+        $('#CustomerRegisterPanelModel_CateType').val("R");
+        $('#SummaryPanelModel_VAS_FLAG').val("8");
+
+        $('#CustomerRegisterPanelModel_L_CONTACT_PERSON').val($('#L_FIRST_NAME').val() + " " + $('#L_LAST_NAME').val());
+        $('#CustomerRegisterPanelModel_L_NATIONALITY').val('THAI');
+
+        $('#SummaryPanelModel_PackageModel_SelectVas_Flag').val("");
+        $('#SummaryPanelModel_PackageModel_SelectPlayBox_Flag').val("");
+        $('#SummaryPanelModel_PackageModel_SelectPlayPBL_Flag').val("");
+
+        $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_TUMBOL").val($("#COVERAGE_L_TUMBOL :selected").val());
+        $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_AMPHUR").val($("#COVERAGE_L_AMPHUR :selected").val());
+        $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_PROVINCE").val($("#COVERAGE_L_PROVINCE :selected").val());
+        if ($("#HdResultId").val() != "") {
+            $("#CoveragePanelModel_RESULT_ID").val($("#HdResultId").val());
+        }
+    }
+
+    function ReservedDslamManagement() {
+        var phoneFlag = "";
+        var i = $("input[name=SelectPackage]:checked").val();
+        var tmp1 = $("input[name=SelectOptionSelectInstallRouter]:checked").val();
+        var tmp2 = $("#ACCESS_MODE" + i).val();
+
+        phoneFlag = $("#CoveragePanelModel_L_HAVE_FIXED_LINE").val();
+
+        if (phoneFlag == "" || phoneFlag == undefined)
+            phoneFlag = "N";
+        
+        if (($("#CustomerRegisterPanelModel_CPE_Info_0__SN").val() != undefined && $("#CustomerRegisterPanelModel_CPE_Info_0__SN").val() != "") || tmp1 == "3") {
+            $.ajax({
+                type: "GET",
+                url: "/CustomerRegister/ReservedDslamManagement",
+                data: {
+                    'accessMode': tmp2
+                    , 'dslamList': $("#tempDslamJson").val()
+                    , 'phoneFlag': phoneFlag
+                    , 'TransactionId': "|"
+                    , 'InCaseCode': $("#L_SplitterFlag").val()
+                    , "AddressId": $("#CoveragePanelModel_Address_AddressId").val()
+                },
+                dataType: "json",
+                async: false,
+                cache: false,
+                timeout: 30000,
+                success: function (data) {
+                    $('#L_ReservationId').val(data.ReservationIdResult);
+                },
+                complete: function (xhr, textStatus) {
+                    console.log("ReservedDslamManagement " + xhr.status + " " + textStatus);
+                    var buildLogger = "status:" + xhr.status + ";" + textStatus + " Reservation:" + $('#L_ReservationId').val();
+
+                    var forgeryId = "@GetAntiForgeryToken()";
+
+                    $.ajax({
+                        url: "/Process/writelog",
+                        type: 'POST',
+                        headers: {
+                            'VerificationToken': forgeryId,
+                            'isLog': true
+                        },
+                        data: {
+                            message: buildLogger,
+                            AisAirNumber: $("#L_MOBILE").val(),
+                            method: "_RegisterSummary",
+                            service: "ReservedDslamManagement"
+                        },
+                        success: function (result) {
+                        }
+                    });
+
+                    console.log("Logged");
+
+                }
+            });
+        }
+    }
+
+    function GetCancelOrder() {
+        $.ajax({
+            type: "POST",
+            url: "/CustomerRegister/GetCancelOrder",
+            data: {
+                'templist': $('#CustomerRegisterPanelModel_DeleteOrderNo').val(),
+                'idcard': $('#CustomerRegisterPanelModel_L_CARD_NO').val()
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+            },
+            error: function () {
+            }
+        });
+    }
+
+</script>

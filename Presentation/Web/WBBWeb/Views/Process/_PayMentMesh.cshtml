@@ -1,0 +1,530 @@
+﻿@using WBBWeb.Extension
+@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBWeb.Controllers;
+@{
+
+    string L_PAY_ADVANCE = "";
+    string L_PAY_WITH_CREDIT_CARD = "";
+    string L_PAY_WITH_QR_CODE = "";
+    string L_PAY_WITH_QR_CODE_INSTALL = "";
+    string L_PAY_WITH_AIS_POINT = "";
+    string L_PAY_WITH_AIS_POINT_MOBILE = "";
+    string L_PAY_WITH_AIS_POINT_FIBRE = "";
+    string L_PAYMENT_MESH_REMARK = "";
+    string L_POPUP_PAYMENT_ALREADY = "";
+    string L_POPUP_PLEASE_SELECT_PAYMENT_METHOD = "";
+    string L_POPUP_PAYMENT_QR_CODE_ERROR = "";
+    string L_CONFIRM_PAY_WITH_AIS_POINT = "";
+    string L_AIS_POINT_INSUFFICIENT = "";
+    string CONFIG_CHANNEL = "";
+    string B_NEXT = "";
+    string B_CLOSE = "";
+    string B_OK = "";
+    string B_CONFIRM = "";
+
+    var controller = DependencyResolver.Current.GetService<ProcessController>();
+
+    if (ViewBag.LabelFBBORV41 != null)
+    {
+        var LabelFBBOR041 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV41;
+        L_PAY_ADVANCE = LabelFBBOR041.Any(c => c.Name == "L_PAY_ADVANCE") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_PAY_ADVANCE").DisplayValue : "";
+        L_PAY_WITH_CREDIT_CARD = LabelFBBOR041.Any(c => c.Name == "L_PAY_WITH_CREDIT_CARD") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_PAY_WITH_CREDIT_CARD").DisplayValue : "";
+        L_PAY_WITH_QR_CODE = LabelFBBOR041.Any(c => c.Name == "L_PAY_WITH_QR_CODE") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_PAY_WITH_QR_CODE").DisplayValue : "";
+        L_PAY_WITH_QR_CODE_INSTALL = LabelFBBOR041.Any(c => c.Name == "L_PAY_WITH_QR_CODE_INSTALL") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_PAY_WITH_QR_CODE_INSTALL").DisplayValue : "";
+        L_PAY_WITH_AIS_POINT = LabelFBBOR041.Any(c => c.Name == "L_PAY_WITH_AIS_POINT") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_PAY_WITH_AIS_POINT").DisplayValue : "<font color='black'><b>AIS Customer : ใช้ 200 พอยท์ แลก AIS Fibre Mesh WiFi</b></font>";
+        L_PAY_WITH_AIS_POINT_MOBILE = LabelFBBOR041.Any(c => c.Name == "L_PAY_WITH_AIS_POINT_MOBILE") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_PAY_WITH_AIS_POINT_MOBILE").DisplayValue : "<font color='black'>ใช้ Point ของ Mobile Contact <span id='pointMobile'></span> พอยท์</font>";
+        L_PAY_WITH_AIS_POINT_FIBRE = LabelFBBOR041.Any(c => c.Name == "L_PAY_WITH_AIS_POINT_FIBRE") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_PAY_WITH_AIS_POINT_FIBRE").DisplayValue : "<font color='black'>ใช้ Point ของ AIS Fibre <span id='pointFibre'></span> พอยท์</font>";
+        L_PAYMENT_MESH_REMARK = LabelFBBOR041.Any(c => c.Name == "L_PAYMENT_MESH_REMARK") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_PAYMENT_MESH_REMARK").DisplayValue : "หมายเหตุ: เมื่อชำระค่าอุปกรณ์หรือบริการแล้ว ขอสงวนสิทธิ์การคืนเงินทุกกรณี";
+        L_POPUP_PAYMENT_ALREADY = LabelFBBOR041.Any(c => c.Name == "L_POPUP_PAYMENT_ALREADY") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_POPUP_PAYMENT_ALREADY").DisplayValue : "";
+        L_POPUP_PLEASE_SELECT_PAYMENT_METHOD = LabelFBBOR041.Any(c => c.Name == "L_POPUP_PLEASE_SELECT_PAYMENT_METHOD") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_POPUP_PLEASE_SELECT_PAYMENT_METHOD").DisplayValue : "";
+        L_POPUP_PAYMENT_QR_CODE_ERROR = LabelFBBOR041.Any(c => c.Name == "L_POPUP_PAYMENT_QR_CODE_ERROR") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_POPUP_PAYMENT_QR_CODE_ERROR").DisplayValue : "";
+        L_PAY_WITH_QR_CODE = LabelFBBOR041.Any(c => c.Name == "L_PAY_WITH_QR_CODE") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_PAY_WITH_QR_CODE").DisplayValue : "";
+        L_CONFIRM_PAY_WITH_AIS_POINT = LabelFBBOR041.Any(c => c.Name == "L_CONFIRM_PAY_WITH_AIS_POINT") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_CONFIRM_PAY_WITH_AIS_POINT").DisplayValue : "";
+        L_AIS_POINT_INSUFFICIENT = LabelFBBOR041.Any(c => c.Name == "L_AIS_POINT_INSUFFICIENT") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "L_AIS_POINT_INSUFFICIENT").DisplayValue : "";
+        B_NEXT = LabelFBBOR041.Any(c => c.Name == "B_NEXT") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+        B_CLOSE = LabelFBBOR041.Any(c => c.Name == "B_CLOSE") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        B_OK = LabelFBBOR041.Any(c => c.Name == "B_OK") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "B_OK").DisplayValue : "";
+        B_CONFIRM = LabelFBBOR041.Any(c => c.Name == "B_CONFIRM") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "B_CONFIRM").DisplayValue : "";
+    }
+
+    string L_USE_POINT = "0";
+    string CALL_SUPER_DUPER_FLAG = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        L_USE_POINT = FbbConstant.Any(f => f.Field == "L_USE_POINT") ? FbbConstant.First(f => f.Field == "L_USE_POINT").Validation : "";
+        CALL_SUPER_DUPER_FLAG = FbbConstant.Any(f => f.Field == "CALL_SUPER_DUPER_FLAG") ? FbbConstant.First(f => f.Field == "CALL_SUPER_DUPER_FLAG").Validation : "";
+
+    }
+
+    string Channel = "";
+
+    if (ViewBag.Channel != null)
+    {
+        Channel = ViewBag.Channel;
+    }
+
+    string ExpireTimeQRPayment = controller.GetExpireTimeQRPayment("MESH", "Generate QR");
+
+    if (!string.IsNullOrEmpty(ExpireTimeQRPayment))
+    {
+        L_PAY_WITH_QR_CODE = L_PAY_WITH_QR_CODE.Replace("{0}", ExpireTimeQRPayment);
+    }
+}
+<div id="divPayMent" style="display: none;">
+    <div class="col-md-10 col-md-offset-1 col-xs-12">
+        <p class="clearfix"></p>
+        <i class="fa fa-chevron-right tgreen"></i>@Html.Raw(L_PAY_ADVANCE)
+        <p class="clearfix"></p>
+        <div id="divPayMentType" class="col-md-12 col-xs-12">
+            @if (!string.IsNullOrEmpty(L_PAY_WITH_CREDIT_CARD))
+            {
+                <div id="divPayCreditCard" class="col-md-12 radio">
+                    <label class="radio-inline" for="rdoPaymentMethod1" style="font-weight: normal !important; padding-right: 15px;">
+                        <input name="SelectOptionPaymentMethod" id="rdoPaymentMethod1" value="4" onclick="PaymentMethodChange()" type="radio">
+                        @Html.Raw(L_PAY_WITH_CREDIT_CARD)
+                    </label>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(L_PAY_WITH_QR_CODE))
+            {
+                <div class="col-md-12 radio">
+                    <label class="radio-inline" for="rdoPaymentMethod2" style="font-weight: normal !important; padding-right: 15px;">
+                        <input name="SelectOptionPaymentMethod" id="rdoPaymentMethod2" value="5" onclick="PaymentMethodChange()" type="radio">
+                        @Html.Raw(L_PAY_WITH_QR_CODE)
+                    </label>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(L_PAY_WITH_QR_CODE_INSTALL))
+            {
+                <div id="divSentSMS" class="col-md-12 radio" style="display: none;">
+                    <label class="radio-inline" for="rdoPaymentMethod3" style="font-weight: normal !important; padding-right: 15px;">
+                        <input name="SelectOptionPaymentMethod" id="rdoPaymentMethod3" value="" onclick="PaymentMethodChange()" type="radio">
+                        @Html.Raw(L_PAY_WITH_QR_CODE_INSTALL)
+                    </label>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(L_PAY_WITH_AIS_POINT))
+            {
+                <div id="divPaymentMethod4" class="col-md-12">
+                    <label class="radio-inline" for="rdoPaymentMethod4" style="font-weight: normal !important; padding-right: 15px;">
+                        <input name="SelectOptionPaymentMethod" id="rdoPaymentMethod4" value="PayPoint" onclick="PaymentMethodChange('PayPoint')" type="radio">
+                        <span id="lblPayPoint">@Html.Raw(L_PAY_WITH_AIS_POINT)</span>
+                    </label>
+                </div>
+                <div id="divSubPaymentMethod4" class="col-md-12" style="display: none;">
+                    @if (!string.IsNullOrEmpty(L_PAY_WITH_AIS_POINT_MOBILE))
+                    {
+                        <div class="col-md-12">
+                            <label class="radio-inline" for="rdoPaymentMethod4-1" style="font-weight: normal !important; padding-right: 15px;">
+                                <input name="SelectOptionPaymentMethodSub4" id="rdoPaymentMethod4-1" value="1" onclick="" type="radio">
+                                @Html.Raw(L_PAY_WITH_AIS_POINT_MOBILE)
+                            </label>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(L_PAY_WITH_AIS_POINT_FIBRE))
+                    {
+                        <div class="col-md-12">
+                            <label class="radio-inline" for="rdoPaymentMethod4-2" style="font-weight: normal !important; padding-right: 15px;">
+                                <input name="SelectOptionPaymentMethodSub4" id="rdoPaymentMethod4-2" value="2" onclick="" type="radio">
+                                @Html.Raw(L_PAY_WITH_AIS_POINT_FIBRE)
+                            </label>
+                        </div>
+                    }
+                </div>
+            }
+
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <div class="col-md-12">
+                @Html.Raw(L_PAYMENT_MESH_REMARK)
+            </div>
+            <p class="clearfix page-header"></p>
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-12 text-center">
+            <button id="btnNextPagePayMent" type="button" class="btn btn-success">
+                &nbsp; @B_NEXT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </button>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_paypoint" tabindex="-1" role="dialog" aria-labelledby="modal_close_label" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="modal_paypoint_txt" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" id="modal_paypoint_btn" class="btn btn-default" data-dismiss="modal" onclick="">&nbsp; @B_OK &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupMessageMyModal" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modolCheckPaidQR" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupCheckPaidQR" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button id="btnCloseCheckPaidQR" type="button" class="btn btn-default" data-dismiss="modal" onclick="Reload();">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/signalr/hubs")"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ("@Channel" == "@CONFIG_CHANNEL") {
+            $('#btnCloseCheckPaidQR').removeAttr('onclick');
+        }
+    });
+
+    function waitForPayQrCode() {
+        var chat = $.connection.baseHub;
+        // Create a function that the hub can call back to display messages.
+        chat.client.addNewMessageToPage = function (orderId, tranId) {
+            if (orderId == $("#PayMentOrderID").val()) {
+                $('#LastPopupCheckPaidQR').html('@Html.Raw(L_POPUP_PAYMENT_ALREADY)');
+                $('#modolCheckPaidQR').modal('show');
+            }
+        };
+
+        $.connection.hub.start().done(function () {
+            //alert($("#TransactionId").val());
+        });
+
+    }
+
+    function stopWaitForPayQrCode() {
+        $.connection.hub.stop();
+    }
+
+    $('#btnNextPagePayMent').click(function () {
+        var i = $("input[name=SelectPackage]:checked").val();
+        var tmp1 = $("#ACCESS_MODE" + i).val();
+
+        var SelectOptionPaymentMethod = $("input[name=SelectOptionPaymentMethod]:checked").val();
+        $("#PayMentMethod").val(SelectOptionPaymentMethod);
+
+        // debugger;
+        //check order already payment
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetOrderPayment", "Scpe")',
+            data: {
+                "orderId": $("#PayMentOrderID").val(),
+            },
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                if (data != null && data == 'Y') {
+                    PopupMessage('@Html.Raw(L_POPUP_PAYMENT_ALREADY)');
+                    $('#myModal').modal('show');
+                } else {
+                    if (SelectOptionPaymentMethod == null) {
+                        toastrErrorMessage('@Html.Raw(L_POPUP_PLEASE_SELECT_PAYMENT_METHOD)');
+                    }
+                    else if (SelectOptionPaymentMethod == "4") {
+                        LockScreen(true, "");
+                        submitWays("2");
+                    }
+                    else if (SelectOptionPaymentMethod == "5") {
+                        LockScreen(true, "");
+                        submitWays("3");
+                    }
+                    else if (SelectOptionPaymentMethod == "PayPoint") {
+                        var SelectOptionPaymentMethodSub4 = $("input[name=SelectOptionPaymentMethodSub4]:checked").val();
+                        if (SelectOptionPaymentMethodSub4 == null) {
+                            toastrErrorMessage('@Html.Raw(L_POPUP_PLEASE_SELECT_PAYMENT_METHOD)');
+                        }
+                        else {
+                            submitWays("5");
+                        }
+                    }
+                    else {
+                        LockScreen(true, "");
+                        submitWays("4");
+                    }
+                }
+            },
+            complete: function (xhr, textStatus) {
+            }
+        });
+    });
+
+    function submitWays(wayNO) {
+        if (wayNO == "1") {
+            $("#iForm").submit();
+        } else if (wayNO == "2") {
+            if ('@CALL_SUPER_DUPER_FLAG' == "Y") {
+                $("#SuperDuperProductName").val("MESH");
+                $("#SuperDuperServiceName").val("Payment Order");
+                $('#iForm').attr('action', '@Url.Action("PaymentToSuperDuper", "Process")');
+            }
+            else {
+                $('#iForm').attr('action', '@Url.Action("PaymentToMPayGateway", "Process")');
+            }
+            $('#iForm').submit();
+        }
+        else if (wayNO == "3") {
+            if ('@CALL_SUPER_DUPER_FLAG' == "Y") {
+                // QRCode SuperDuper
+                $("#SuperDuperProductName").val("MESH");
+                $("#SuperDuperServiceName").val("Generate QR");
+                getPaymentQRCodeToSuperDuper();
+            }
+            else {
+                getPaymentToMerchantQrCode();
+            }
+        }
+        else if (wayNO == "4") {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendLinkMeshSMS", "Process")',
+                data: {
+                    "Data": $('#tmpDataSendSMS').val()
+                },
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data.data == "Y") {
+                        $('#iForm').attr('action', '@Url.Action("PayWithSMS", "Process")');
+                        $('#iForm').submit();
+                    }
+                    else {
+                        toastrErrorMessage("Can't Send SMS");
+                    }
+                }
+            });
+        }
+        else if (wayNO == "5") {
+            var SelectOptionPaymentMethodSub4 = $("input[name=SelectOptionPaymentMethodSub4]:checked").val();
+            $('#PayMentPointType').val(SelectOptionPaymentMethodSub4);
+            var usePoints = parseInt('@Html.Raw(L_USE_POINT)', 10);
+            var mobilePoint = parseInt($('#MobilePoints').val(), 10);
+            var internetPoint = parseInt($('#InternetPoints').val(), 10);
+            if (SelectOptionPaymentMethodSub4 == "1") {
+                if (mobilePoint >= usePoints) {
+                    var confirm_pay_with_ais_point_msg = '@Html.Raw(L_CONFIRM_PAY_WITH_AIS_POINT)';
+                    confirm_pay_with_ais_point_msg = confirm_pay_with_ais_point_msg.replace("<No>", $("#CustomerRegisterPanelModel_L_CONTACT_PHONE").val());
+                    $('#modal_paypoint_txt').html(confirm_pay_with_ais_point_msg);
+                    $('#modal_paypoint_btn').removeAttr('onclick');
+                    $('#modal_paypoint_btn').attr('onClick', 'PayPoint();');
+                    $('#modal_paypoint_btn').text("@B_CONFIRM");
+                    $('#modal_paypoint').modal();
+                }
+                else {
+                    var ais_point_insufficient_msg = '@Html.Raw(L_AIS_POINT_INSUFFICIENT)';
+                    ais_point_insufficient_msg = ais_point_insufficient_msg.replace("<No>", $('#CustomerRegisterPanelModel_L_CONTACT_PHONE').val());
+                    $('#modal_paypoint_txt').html(ais_point_insufficient_msg);
+                    $('#modal_paypoint_btn').removeAttr('onclick');
+                    $('#modal_paypoint_btn').text("@B_OK");
+                    $('#modal_paypoint').modal();
+                }
+            }
+            else if (SelectOptionPaymentMethodSub4 == "2") {
+                if (internetPoint >= usePoints) {
+                    var confirm_pay_with_ais_point_msg = '@Html.Raw(L_CONFIRM_PAY_WITH_AIS_POINT)';
+                    confirm_pay_with_ais_point_msg = confirm_pay_with_ais_point_msg.replace("<No>", $("#CoveragePanelModel_P_MOBILE").val());
+                    $('#modal_paypoint_txt').html(confirm_pay_with_ais_point_msg);
+                    $('#modal_paypoint_btn').removeAttr('onclick');
+                    $('#modal_paypoint_btn').attr('onClick', 'PayPoint();');
+                    $('#modal_paypoint_btn').text("@B_CONFIRM");
+                    $('#modal_paypoint').modal();
+                }
+                else {
+                    var ais_point_insufficient_msg = '@Html.Raw(L_AIS_POINT_INSUFFICIENT)';
+                    ais_point_insufficient_msg = ais_point_insufficient_msg.replace("<No>", $('#CoveragePanelModel_P_MOBILE').val());
+                    $('#modal_paypoint_txt').html(ais_point_insufficient_msg);
+                    $('#modal_paypoint_btn').removeAttr('onclick');
+                    $('#modal_paypoint_btn').text("@B_OK");
+                    $('#modal_paypoint').modal();
+                }
+            }
+        }
+        else {
+            $("#iForm").submit();
+        }
+    }
+
+    function PayPoint() {
+        LockScreen(true, "");
+        $('#iForm').attr('action', '@Url.Action("PaymentWithPoint", "Process")');
+        $('#iForm').submit();
+    }
+
+    function getPaymentQRCodeToSuperDuper() {
+        LockScreen(true);
+        $.ajax({
+            type: 'POST',
+            url: '/Process/PaymentQRCodeToSuperDuper',
+            data: $('form').serialize(),
+            async: true,
+            success: function (data) {
+                if (data != null) {
+                    if (data.qr_code != null && data.qr_code.length > 0) {
+                        //var tmpqr_code = data.qr_code.replace(/\r/g, '\\r');
+                        $("#qrCodeStr").val(data.qr_code);
+                        $("#qrCodeStr").text(data.qr_code);
+                        makeCode();
+
+                        //20.8 Add by Aware : Atipon -> set remark from controller
+                        $("#divQrCode h5").html(data.message_remark);
+
+                        $('#divPayMent').hide();
+                        $('#divQrCode').show();
+                        var qrCharge = convertStringToMoneyFormat(data.amount);
+                        $("#lblFooter").text(qrCharge);
+                        waitForPayQrCode();
+                    }
+                    else {
+                        PopupMessage('@Html.Raw(L_POPUP_PAYMENT_QR_CODE_ERROR)');
+                        $('#myModal').modal('show');
+                    }
+                }
+            },
+            complete: function (xhr, textStatus) {
+                LockScreen(false);
+            }
+        });
+    }
+
+    function getPaymentToMerchantQrCode() {
+        LockScreen(true);
+
+        var payMentOrderId = $("#PayMentOrderID").val();
+        var payMentRecurringChargeVat = $("#PayMentRecurringChargeVAT").val();
+        var nonMobile = $("#CoveragePanelModel_P_MOBILE").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Process/GetPaymentToMerchantQrCode",
+            data: {
+                "payMentOrderId": payMentOrderId,
+                "payMentRecurringChargeVat": payMentRecurringChargeVat,
+                "nonMobile": nonMobile
+            },
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                if (data != null) {
+                    if (data.RespCode == "0000") {
+                        $("#qrCodeStr").val(data.QrCodeStr);
+                        $("#qrCodeStr").text(data.QrCodeStr);
+                        makeCode();
+                        $('#divPayMent').hide();
+                        $('#divQrCode').show();
+                        var qrCharge = convertStringToMoneyFormat(payMentRecurringChargeVat);
+                        $("#lblFooter").text(qrCharge);
+                        waitForPayQrCode();
+                    }
+                    else {
+                        PopupMessage('@Html.Raw(L_POPUP_PAYMENT_QR_CODE_ERROR)');
+                        $('#myModal').modal('show');
+                    }
+                }
+            },
+            complete: function (xhr, textStatus) {
+                LockScreen(false);
+            }
+        });
+    }
+
+    function PaymentMethodChange(PayType) {
+        $('#divSubPaymentMethod4').hide();
+        $("#pointMobile").text("");
+        $("#pointFibre").text("");
+        $("#MobilePoints").val("");
+        $("#InternetPoints").val("");
+        if (PayType == 'PayPoint') {
+            CheckPrivilegePoint();
+        }
+    }
+
+    function CheckPrivilegePoint() {
+        var payMentOrderId = $("#PayMentOrderID").val();
+        var nonMobile = $("#CoveragePanelModel_P_MOBILE").val();
+        var mobileNo = $("#CustomerRegisterPanelModel_L_CONTACT_PHONE").val();
+        $.ajax({
+            url: '/SelectPackage/CheckPrivilegePoint',
+            data: { InternetNo: nonMobile, MobileNo: mobileNo, PaymentOrderID: payMentOrderId },
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (data) {
+                console.log(data);
+                $("#pointMobile").text(data.MobileNoPoint);
+                $("#pointFibre").text(data.InternetNoPiont);
+                $("#MobilePoints").val(data.MobileNoPoint);
+                $("#InternetPoints").val(data.InternetNoPiont);
+                $('#divSubPaymentMethod4').show();
+            }
+        });
+    }
+
+    function PopupMessage(msg) {
+        $('#LastPopupMessageMyModal').html(msg);
+    }
+
+</script>

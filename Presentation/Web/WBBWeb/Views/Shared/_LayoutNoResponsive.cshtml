@@ -1,0 +1,376 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutReferencesNoResponsive.cshtml";
+    Logger.Info("Hello World");
+
+    var VasDatalala22 = "";
+    var Version = "Ver. R15.9.29.290915";
+
+    if (ViewBag.Vas22 != null)
+    {
+        VasDatalala22 = ViewBag.Vas22;
+
+    }
+
+    if (ViewBag.Version != null)
+    {
+        Version = Version + "-" + ViewBag.Version;
+    }
+
+}
+
+<div class="main">
+    <div class="wrapSwitchLanguage" style="padding-left:79%;">
+        <table width="50%">
+            <tr>
+                <td width="100">
+                    <a href="/WBB/ChangeCurrentCulture?culture=2" id="btnTh">
+                        <img src="~/Content/src/thai.png" alt="" border="0" />
+                    </a>
+                </td>
+                <td width="100">
+                    <a href="/WBB/ChangeCurrentCulture?culture=1" class="i-hidden" id="btnEn">
+                        <img src="~/Content/src/eng.png" alt="" border="0" />
+                    </a>
+                </td>
+                @if (VasDatalala22 == "Logout")
+                {
+                    <td width="100">
+                        <a class="greenButtonBBlogout" href="/AccountService/Logout" style="padding-top: -6px; margin-left: -5px;">
+                            <i class="fa fa-power-off" style="text-align: left; margin-top: 7px; margin-left: 10px;"></i>
+                        </a>
+                    </td>
+                }
+                else
+                {
+
+
+
+                }
+            </tr>
+
+        </table>
+    </div>
+
+    <input type="hidden" id="LanguagePage" />
+
+    @RenderBody()
+
+    <footer>
+        <div style="margin-top:-4px; float:right; color:white; font-size:small;">
+            @Version
+        </div>
+    </footer>
+    <!--footer-->
+
+</div>
+<script>
+    function configScreenPage() {
+        window.scrollTo(0, 0);
+        $("#silder").css("visibility", "hidden");
+        $("body").css("overflow-y", "hidden");
+    }
+
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/WBB/GetCurrentCulture",
+            dataType: "json",
+            async: false,
+            success: function (x) {
+                $("#LanguagePage").val(x);
+
+            }
+
+        });
+
+        changeLanguage();
+        var language = "";
+        if ($("#LanguagePage").val() == 1)
+            language = "th";
+        else
+            language = "en";
+
+    });
+
+    function changeLanguage() {
+        if ($("#LanguagePage").val() == "1") {
+            $("#btnTh").show();
+            $("#btnEn").hide();
+
+            $(".display-th").show();
+            $(".display-en").hide();
+        }
+        else {
+            $("#btnTh").hide();
+            $("#btnEn").show();
+
+            $(".display-th").hide();
+            $(".display-en").show();
+
+        }
+
+    }
+
+    function ValidationProcessing(validateModel, err) {
+        var chk = true;
+        var error = "#" + err;
+        var temp = "";
+        $(error).html(temp);
+        $(validateModel).each(function (index, e) {
+            if (e.id == undefined) {
+                var vgroup = e.vgroup;
+                if (vgroup != undefined) {
+                    var tempkid = "";
+                    var vchk = false;
+
+                    $.each(vgroup, function (j, k) {
+
+                        var kid = "#" + k.id;
+                        var kvalue = $(kid).val();
+                        if (j == 0) tempkid = $(kid);
+
+                        if ($.trim(kvalue) != "")
+                            vchk = true;
+                    });
+
+                    if (vchk) {
+                        $(tempkid)[0].className = "textField";
+                    }
+                    else {
+                        chk = false;
+                        $(tempkid)[0].className = "textFieldFalse";
+
+
+                        if ($("#LanguagePage").val() == "1")
+                            temp = "<li>กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน</li>"
+                        else
+                            temp = "<li>Please fill in all required fields.</li>"
+                    }
+                }
+            } else {
+                var id = "#" + e.id;
+                var value = $(id).val();
+                var lb = $(id)[0].placeholder;
+                var cond = e.condition;
+                var required = e.required;
+                if (required == undefined) required = true;
+
+                if ($.trim(value) == "" && required) {
+                    if ($(id).parent()[0].className == "styled") {
+                        $(id).parent()[0].className = "styledFalse";
+                        $(id)[0].className = "";
+                    }
+                    else if ($(id)[0].className == "textFieldDatePicker" || $(id)[0].className == "textFieldDatePickerFalse" ||
+                        $(id)[0].className == "textFieldDatePicker hasDatepicker") {
+                        $(id)[0].className = "textFieldDatePickerFalse";
+                    }
+                    else {
+                        $(id)[0].className = "textFieldFalse";
+                    }
+
+                    if ($("#LanguagePage").val() == "1") {
+                        //temp += "<li>กรุณาระบุข้อมูล " + lb + "</li>";
+                        temp = "<li>กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน</li>"
+                    }
+                    else {
+                        //temp += "<li>" + lb + " field is required</li>";
+                        temp = "<li>Please fill in all required fields.</li>"
+                    }
+
+                    chk = false;
+                }
+                else if (cond != undefined) {
+
+                    var cchk = true;
+
+                    if ((!required && value != "") || required) {
+
+                        if (cond == "IDCard")
+                            cchk = validateIdCard(value);
+
+                        else if (cond == "Email")
+                            cchk = validateEmail(value);
+
+                        else if (cond == "Birthday")
+                            cchk = validateBirthDay(value);
+
+                        else if (cond == "Place")
+                            cchk = validatePlace(value);
+
+                        else if (cond == "HomeNo")
+                            cchk = validateHomeNumber(value);
+
+                        else if (cond == "LatLong")
+                            cchk = validateLatLong(value);
+
+                        else if (cond == "Number")
+                            cchk = validateNumber(value);
+
+                        else if (cond == "Name")
+                            cchk = validateName(value);
+
+                        else if (cond == "FreePhone")
+                            cchk = validateFreePhone(value);
+
+                        else if (cond == "MobileNumber")
+                            cchk = validateMobileNumber(value);
+                    }
+
+                    if (!cchk) {
+                        $(id)[0].className = "textFieldFalseX";
+                        chk = false;
+
+                        if ($("#LanguagePage").val() == "1")
+                            temp = "<li>กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน</li>"
+                        else
+                            temp = "<li>Please fill in all required fields.</li>"
+                    }
+                    else {
+                        if ($(id)[0].className == "textFieldDatePicker" || $(id)[0].className == "textFieldDatePickerFalse" ||
+                        $(id)[0].className == "textFieldDatePicker hasDatepicker") {
+                            $(id)[0].className = "textFieldDatePicker";
+                        }
+                        else
+                            $(id)[0].className = "textField";
+                    }
+                }
+                else {
+                    if ($(id).parent()[0].className == "styledFalse") {
+                        $(id).parent()[0].className = "styled";
+                    }
+                    else if ($(id)[0].className == "textFieldDatePickerFalse") {
+                        $(id)[0].className = "textFieldDatePicker";
+                    }
+                    else {
+                        $(id)[0].className = "textField";
+                    }
+                }
+            }
+        });
+        $(error).html(temp);
+
+        return chk;
+    }
+
+    function validateEmail(email) {
+        //var filter = /^(((([a-zA-Z0-9]{1})+([\w-\.]{0})+([\w]{0})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        var filter = /^(((([a-zA-Z0-9\_\-]{1,50})+(([\.]{1,50}[a-zA-Z0-9\_\-]{1,50}){0,50})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+
+        if (email.substr(0, 2) == "-@@" || email.substr(0, 2) == "_@@") {
+            return false;
+        }
+
+        if (filter.test(email)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateHomeNumber(value) {
+        var rex = /^[0-9/\-]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumber(value) {
+        //var rex = /^[[0]{1}[0-9/]{9}]+$/;
+        //if (rex.test(value)) {
+        //    return true;
+        //}
+        //else {
+        //    return false;
+        //}
+        if (value.length < 10) {
+            return false
+        }
+        else {
+            return true;
+        }
+    }
+
+    function validatePlace(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\/\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateLatLong(value) {
+        var rex = /^(-)?[0-9]*[.]{1}[0-9]{6}$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateNumber(value) {
+        var rex = /^[0-9]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateName(value) {
+        var rex = /^[ก-๙a-zA-Z\.\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateFreePhone(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumberOR(id, error) {
+
+        var temp = "";
+        var iid = "#" + id;
+        if ($(iid).val() != "") {
+            if ($(iid).val().length < 10) {
+
+                $(iid)[0].className = "textFieldFalseX";
+
+                if ($("#LanguagePage").val() == "1")
+                    temp = "<li>กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน</li>"
+                else
+                    temp = "<li>Please fill in all required fields.</li>"
+
+                $("#" + error).html(temp);
+                return false
+            }
+            else {
+                $(iid)[0].className = "textField";
+                $("#" + error).html(temp);
+                return true;
+            }
+        }
+        else {
+            $(iid)[0].className = "textField";
+            $("#" + error).html(temp);
+            return true;
+        }
+    }
+</script>

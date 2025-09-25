@@ -1,0 +1,76 @@
+﻿@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.Models;
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">My Report <span class="badge" id="totalMyReport" style="font-size: 75%">0</span></h3>
+        </div>
+    </div>
+</div>
+
+
+<div class="well">    
+    @(Html.Kendo().Grid<FBB_RPT_LOG>()
+        .Name("GridMyReport")        
+        .Columns(columns =>
+        {            
+            columns.Bound(p => p.CREATED_DATE).Title("Created Date").Format("{0:dd/MM/yyyy HH:mm:ss}");
+            columns.Bound(p => p.CREATED_BY).Title("Created By");
+           
+            columns.Bound(p => p.REPORT_NAME).Title("Report Name")
+               
+                   
+                .ClientTemplate(
+                    "# if (REPORT_STATUS == 'COMPLETED') { #" +
+                    "<a href='" + Url.Action("download", "Report") + "?filename=#= FILE_NAME #'" + ">" +          
+                        "<strong>" +
+                            "#=avoidNull(REPORT_NAME)#" +
+                        "</strong>" +
+                    "</a>"+
+                    "# } else { #" +
+                     "<strong>" +
+                        "#=avoidNull(REPORT_NAME) #" +
+                      "</strong>" +
+                    "# } #"
+                
+                );
+           
+            columns.Bound(p => p.REPORT_STATUS).Title("Status");
+        })
+        .Pageable(p => p.Input(true)
+            .Numeric(true)
+            .PageSizes(true)                        
+        )          
+        .Reorderable(r => r.Columns(true))
+        .Groupable()  
+        .Sortable()
+        .Filterable()
+        .Selectable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(10)
+            .Read(read => read.Action("ReadMyReport", "Report"))                        
+         )
+         .Events(e => e.DataBound("onGridDataBound"))
+    )
+</div>
+@*<label id="temppath" class="i-hidden">@ViewBag.filepath</label>*@
+
+<script>
+   
+    function onGridDataBound() {
+        var total = $("#GridMyReport").data("kendoGrid").dataSource.total();        
+        $("#totalMyReport").text(total);
+    }
+    function avoidNull(text) {
+        try {
+            if (text != null && text != -1 && text != '-1')
+                return text;
+        }
+        catch (ex) {
+            return "-";
+        }
+        return "-";
+    }    
+</script>

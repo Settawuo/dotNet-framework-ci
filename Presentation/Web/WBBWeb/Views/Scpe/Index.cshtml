@@ -1,0 +1,512 @@
+﻿@using WBBWeb.Extension
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_LayoutScpe.cshtml";
+
+    string L_POPUP_THANK_YOU = "";
+    string L_POPUP_ERROR_CPE = "";
+    string L_THK = "";
+    string L_TIMEOUT_MSG = "";
+    string B_CLOSE = "";
+    string L_POPUP_PAYMENT_ERROR = "";
+
+    if (ViewBag.LabelFBBOR028 != null)
+    {
+        var LabelFBBOR028 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR028;
+        L_POPUP_THANK_YOU = LabelFBBOR028.Any(c => c.Name == "L_POPUP_THANK_YOU") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_THANK_YOU").DisplayValue : "";
+        L_POPUP_ERROR_CPE = LabelFBBOR028.Any(c => c.Name == "L_POPUP_ERROR_CPE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_ERROR_CPE").DisplayValue : "";
+        L_THK = LabelFBBOR028.Any(c => c.Name == "L_THK") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_THK").DisplayValue : "";
+        L_TIMEOUT_MSG = LabelFBBOR028.Any(c => c.Name == "L_TIMEOUT_MSG") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_TIMEOUT_MSG").DisplayValue : "ทำรายการเลยเวลาที่กำหนด";
+        B_CLOSE = LabelFBBOR028.Any(c => c.Name == "B_CLOSE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        L_POPUP_PAYMENT_ERROR = LabelFBBOR028.Any(c => c.Name == "L_POPUP_PAYMENT_ERROR") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_PAYMENT_ERROR").DisplayValue : "";
+    }
+
+    string L_TIMEOUT_VALUE = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var LabelFbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        L_TIMEOUT_VALUE = LabelFbbConstant.Any(f => f.Field == "L_TIMEOUT_VALUE") ? LabelFbbConstant.First(f => f.Field == "L_TIMEOUT_VALUE").Validation : "60";
+    }
+
+    string SaveStatus = "";
+
+    if (ViewBag.SaveStatus != null)
+    {
+        SaveStatus = ViewBag.SaveStatus;
+    }
+
+    string CoverageResultSaveStatus = "";
+
+    if (ViewBag.CoverageResultSaveStatus != null)
+    {
+        CoverageResultSaveStatus = ViewBag.CoverageResultSaveStatus;
+    }
+
+    string GatewayResult = "";
+
+    if (ViewBag.GatewayResult != null)
+    {
+        GatewayResult = ViewBag.GatewayResult;
+    }
+
+    string BackFromPaymentMsg = "";
+    if (ViewBag.BackFromPaymentMsg != null)
+    {
+        BackFromPaymentMsg = ViewBag.BackFromPaymentMsg;
+    }
+
+    string BackFromPaymentMsgErrorSPDP = "";
+    if (ViewBag.BackFromPaymentMsgErrorSPDP != null)
+    {
+        BackFromPaymentMsgErrorSPDP = ViewBag.BackFromPaymentMsgErrorSPDP;
+
+        ViewBag.BackFromPaymentMsgErrorSPDP = null;
+    }
+}
+
+@using (Html.BeginForm("Index", "Scpe", FormMethod.Post, new { id = "iForm", enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    @*//R20.04 Data Privacy*@
+    @Html.Partial("~/Views/Shared/_DataPrivacy.cshtml");
+
+    @Html.Partial("~/Views/Scpe/_SelectModel.cshtml");
+    @Html.Partial("~/Views/Scpe/_CheckCoverage.cshtml");
+    @Html.Partial("~/Views/Scpe/_SelectPackage.cshtml");
+    @Html.Partial("~/Views/Scpe/_CustomerRegister.cshtml");
+    @Html.Partial("~/Views/Scpe/_RegisterSummary.cshtml");
+
+    @Html.Partial("~/Views/Scpe/_CoverageResult.cshtml");
+    @Html.Partial("~/Views/Scpe/_MPayQrCode.cshtml");
+
+    @Html.HiddenFor(Model => Model.CheckXDSL, new { @id = "CheckXDSL" })
+    @Html.HiddenFor(model => model.ForCoverageResult)
+    @Html.HiddenFor(model => model.PayMentTranID)
+    @Html.HiddenFor(model => model.PayMentOrderID)
+    @Html.HiddenFor(model => model.PayMentRecurringCharge)
+    @Html.HiddenFor(model => model.PayMentRecurringChargeVAT)
+    @Html.HiddenFor(model => model.PayMentTechnologyDisplay)
+    @Html.HiddenFor(model => model.PayMentMethod)
+    @Html.HiddenFor(model => model.PayMentSelectPackage)
+    @Html.HiddenFor(model => model.PayMentSelectOptionSelectInstallRouter)
+    @Html.HiddenFor(model => model.ACCESS_MODE_SELECT)
+    @Html.HiddenFor(model => model.SERVICE_CODE_SELECT)
+    @Html.HiddenFor(model => model.AppointmentDateSelect)
+
+    @Html.HiddenFor(Model => Model.Register_device, new { @id = "Register_device" })
+    @Html.HiddenFor(model => model.PlugAndPlayFlow, new { @id = "PlugAndPlayFlow" })
+    @Html.HiddenFor(Model => Model.Browser_type, new { @id = "Browser_type" })
+
+    @Html.HiddenFor(Model => Model.FlowFlag, new { @id = "CoveragePanelModel_L_FLOWFLAG" })
+    @Html.HiddenFor(Model => Model.SplitterFlagFirstTime, new { @id = "L_SplitterFlagFirstTime" })
+    @Html.HiddenFor(Model => Model.SplitterFlag, new { @id = "L_SplitterFlag" })
+    @Html.HiddenFor(Model => Model.ReservationId, new { @id = "L_ReservationId" })
+
+    @Html.HiddenFor(model => model.CoveragePanelModel.BuildingType, new { @id = "CoveragePanelModel_BuildingType" })
+    @Html.HiddenFor(model => model.CoveragePanelModel.PRODUCT_SUBTYPE, new { @id = "CoveragePanelModel_PRODUCT_SUBTYPE" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.L_HAVE_FIXED_LINE, new { @id = "CoveragePanelModel_L_HAVE_FIXED_LINE" })
+
+    @Html.HiddenFor(model => model.DisplayPackagePanelModel.Prorate, new { @id = "DisplayPackagePanelModel_Prorate" })
+    @Html.HiddenFor(model => model.DisplayPackagePanelModel.TotalProrate, new { @id = "DisplayPackagePanelModel_TotalProrate" })
+
+    @Html.HiddenFor(a => a.CoveragePanelModel.CVRID, new { @id = "CoveragePanelModel_CVRID" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.CVR_NODE, new { @id = "CoveragePanelModel_CVR_NODE" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.CVR_TOWER, new { @id = "CoveragePanelModel_CVR_TOWER" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.CoverageResult, new { @id = "CoveragePanelModel_CoverageResult" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.P_FTTX_VENDOR, new { @id = "CoveragePanelModel_P_FTTX_VENDOR" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.Address.AddressId, new { @id = "CoveragePanelModel_Address_AddressId" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.RESULT_ID, new { @id = "CoveragePanelModel_RESULT_ID" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.AccessMode, new { @id = "CoveragePanelModel_AccessMode" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.ServiceCode, new { @id = "CoveragePanelModel_ServiceCode" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.Address.Region, new { @id = "CoveragePanelModel_Address_AreaRegion" }) @*R20.5 Service Level*@
+
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.EMP_NAME, new { @id = "CustomerRegisterPanelModel_EMP_NAME" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_TITLE, new { @id = "CustomerRegisterPanelModel_L_TITLE" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_TITLE_CODE, new { @id = "CustomerRegisterPanelModel_L_TITLE_CODE" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_CONTACT_PERSON, new { @id = "CustomerRegisterPanelModel_L_CONTACT_PERSON" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_NATIONALITY, new { @id = "CustomerRegisterPanelModel_L_NATIONALITY" })
+
+
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_EVENT_CODE, new { @id = "CustomerRegisterPanelModel_L_EVENT_CODE" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.Plug_and_play_flag, new { @id = "CustomerRegisterPanelModel_Plug_and_play_flag" })
+
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.REQUEST_SUB_FLAG, new { @id = "REQUEST_SUB_FLAG" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.SUB_ACCESS_MODE, new { @id = "SUB_ACCESS_MODE" })
+
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_PROVINCE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_PROVINCE" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_TUMBOL, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_TUMBOL" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_AMPHUR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_AMPHUR" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOOBAN, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOOBAN" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_HOME_NUMBER_1, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_HOME_NUMBER_1" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOO, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOO" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_SOI, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_SOI" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROAD, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROAD" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ZIPCODE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_ZIPCODE" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_HOME_NUMBER_2, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_HOME_NUMBER_2" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_FLOOR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_FLOOR" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROOM, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROOM" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_BUILD_NAME, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NAME" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_BUILD_NAME_Hied, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NAME_Hied" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_BUILD_NO_Hied, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NO_Hied" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.ZIPCODE_ID, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_ZIPCODE_ID" })
+
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_PROVINCE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_PROVINCE" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_TUMBOL, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_TUMBOL" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_AMPHUR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_AMPHUR" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_MOOBAN, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_MOOBAN" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_HOME_NUMBER_1, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_HOME_NUMBER_1" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_MOO, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_MOO" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_SOI, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_SOI" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_ROAD, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_ROAD" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_ZIPCODE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_ZIPCODE" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_HOME_NUMBER_2, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_HOME_NUMBER_2" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_FLOOR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_FLOOR" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_ROOM, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_ROOM" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_BUILD_NAME, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_BUILD_NAME" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_BUILD_NAME_Hied, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_BUILD_NAME_Hied" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.L_BUILD_NO_Hied, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_L_BUILD_NO_Hied" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDocIDCard.ZIPCODE_ID, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDocIDCard_ZIPCODE_ID" })
+
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_PROVINCE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_PROVINCE" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_TUMBOL, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_TUMBOL" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_AMPHUR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_AMPHUR" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_MOOBAN, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_MOOBAN" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_HOME_NUMBER_1, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_HOME_NUMBER_1" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_MOO, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_MOO" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_SOI, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_SOI" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_ROAD, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_ROAD" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_ZIPCODE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_ZIPCODE" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_HOME_NUMBER_2, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_HOME_NUMBER_2" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_FLOOR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_FLOOR" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_ROOM, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_ROOM" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_BUILD_NAME, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NAME" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_BUILD_NAME_Hied, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NAME_Hied" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_BUILD_NO_Hied, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NO_Hied" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.ZIPCODE_ID, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_ZIPCODE_ID" })
+
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_INSTALL_DATE, new { @id = "L_INSTALL_DATE", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_SPECIFIC_TIME, new { @id = "CustomerRegisterPanelModel_L_SPECIFIC_TIME" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.AppointmentDate, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.InstallationCapacity, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.TimeSlot, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.TimeSlotId, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.FirstInstallDate, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_FirstInstallDate", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.FirstTimeSlot, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_FirstTimeSlot", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.EStatmentFlag, new { @id = "CustomerRegisterPanelModel_EStatmentFlag" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.ReceiveEmailFlag, new { @id = "CustomerRegisterPanelModel_ReceiveEmailFlag" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.EBillFlag, new { @id = "CustomerRegisterPanelModel_EBillFlag" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.JOB_ORDER_TYPE, new { @id = "CustomerRegisterPanelModel_JOB_ORDER_TYPE" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ASSIGN_RULE, new { @id = "CustomerRegisterPanelModel_ASSIGN_RULE" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_OLD_ISP, new { @id = "CustomerRegisterPanelModel_L_OLD_ISP" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CateType, new { @id = "CustomerRegisterPanelModel_CateType" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.SubCateType, new { @id = "CustomerRegisterPanelModel_SubCateType" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_CARD_TYPE, new { @id = "CustomerRegisterPanelModel_L_CARD_TYPE" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.p_dev_project_code, new { @id = "CustomerRegisterPanelModel_p_dev_project_code" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.p_dev_bill_to, new { @id = "CustomerRegisterPanelModel_p_dev_bill_to" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.p_dev_price, new { @id = "CustomerRegisterPanelModel_p_dev_price" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.PO_NO, new { @id = "CustomerRegisterPanelModel_PO_NO" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_EMAIL, new { @id = "CustomerRegisterPanelModel_L_EMAIL" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_BIRTHDAY, new { @id = "CustomerRegisterPanelModel_L_BIRTHDAY" })
+
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.outType, new { @id = "CustomerRegisterPanelModel_outType" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.outSubType, new { @id = "CustomerRegisterPanelModel_outSubType" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.outMobileNo, new { @id = "CustomerRegisterPanelModel_outMobileNo" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.PartnerName, new { @id = "CustomerRegisterPanelModel_PartnerName" })
+
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.RESERVED_ID, new { @id = "SummaryPanelModel_RESERVED_ID" })
+    @Html.HiddenFor(model => model.SummaryPanelModel.VAS_FLAG, new { @id = "SummaryPanelModel_VAS_FLAG" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.L_SEND_EMAIL, new { @id = "SummaryPanelModel_L_SEND_EMAIL" })
+    @Html.HiddenFor(model => model.SummaryPanelModel.PackageModel.PACKAGE_TYPE, new { @id = "SummaryPanelModel_PackageModel_PACKAGE_TYPE" })
+    @Html.HiddenFor(model => model.SummaryPanelModel.PackageModel.TECHNOLOGY, new { @id = "SummaryPanelModel_PackageModel_TECHNOLOGY" })
+
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.DeleteOrderNo, new { @id = "CustomerRegisterPanelModel_DeleteOrderNo", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.SCPE_USE_LOC_CODE, new { @id = "CustomerRegisterPanelModel_SCPE_USE_LOC_CODE", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.SCPE_USE_ASC_CODE, new { @id = "CustomerRegisterPanelModel_SCPE_USE_ASC_CODE", @value = "" });
+
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ServiceLevel, new { @id = "CustomerRegisterPanelModel_ServiceLevel", @value = "" }); @*R20.5 Service Level*@
+
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CHECK_FRAUD_INFO.FLAG_GO_NOGO, new { @id = "CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FLAGGONOGO", @value = "" }); @*R24.04 Edit Case SaveOrder parameter loss*@
+
+    @Html.HiddenFor(model => model.CoveragePanelModel.L_LAT, new { @id = "CoveragePanelModel_L_LAT" })
+    @Html.HiddenFor(model => model.CoveragePanelModel.L_LONG, new { @id = "CoveragePanelModel_L_LONG" })
+
+    @Html.HiddenFor(model => model.HdResultId);
+    @Html.Hidden("HdCheckXDSL")
+    @Html.Hidden("HdFunctionCoverageResult")
+    @Html.Hidden("ZTEAccessModeFWA")
+    @Html.Hidden("ZTECoverage")
+    @Html.Hidden("ZTEPlanSite")
+    @Html.HiddenFor(model => model.ZTEAddressID);
+    @Html.Hidden("ZTEIsPartner")
+    @Html.Hidden("ZTEPartnerName")
+    @Html.Hidden("ZTEAccessModeSerializer")
+    @Html.Hidden("ZTEInterfaceLogID")
+
+    @Html.Hidden("P_Region")
+    @Html.Hidden("P_addrtype")
+    @Html.Hidden("P_build_name")
+    @Html.Hidden("P_build_no")
+    @Html.Hidden("CheckCPEInfo", "N")
+
+    @Html.Hidden("hdBillingMediaValue")
+    @Html.Hidden("hdBillingMediaEmail")
+    @Html.Hidden("hdBillingMediaText")
+
+    @Html.Hidden("TechnologyDisplay")
+    @Html.Hidden("HdPackage_Group_Name")
+    @Html.Hidden("HdFunctionSubProduct")
+
+    @Html.Hidden("cust_subcat")
+    @Html.Hidden("ShowScan")
+    @Html.Hidden("BlackListAddressId")
+
+    @Html.Hidden("selected_building_address_id")
+    @Html.Hidden("selected_building_AccessMode")
+    @Html.HiddenFor(model => model.languageCulture, new { @id = "languageCulture" });
+
+    @Html.HiddenFor(model => model.SuperDuperProductName, new { @id = "SuperDuperProductName" });
+    @Html.HiddenFor(model => model.SuperDuperServiceName, new { @id = "SuperDuperServiceName" });
+
+    <div id="DIV_CPE_INFO" style="display: none"></div>
+    <table style="display: none" id="tempOntopSEP" border="1"></table>
+    <div id="listvas"></div>
+
+    @Html.Hidden("fromVDSL", false)
+    @Html.HiddenFor(model => model.tempDslamJson);
+    <div id="tempDslam"></div>
+
+
+    //20.8 Add by Aware : Atipon
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_CARD_NO, new { @id = "CustomerRegisterPanelModel_L_CARD_NO" })
+}
+
+@*Fullmoddol*@
+@*<style>
+        #modolPayMent .modal {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow: hidden;
+    }
+
+     #modolPayMent .modal-dialog {
+      position: fixed;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+    }
+
+     #modolPayMent .modal-content {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border: 0;
+      box-shadow: none;
+    }
+
+     #modolPayMent .modal-body {
+      position: absolute;
+      top: 50px;
+      bottom: 60px;
+      width: 100%;
+      font-weight: 300;
+      overflow: auto;
+    }
+    </style>*@
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupMessage" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modolTimeout" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupTimeoutMessage" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="Reload();">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modolCheckPaidQR" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupCheckPaidQR" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="Reload();">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalErrorSPDP" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupMessageErrorSPDP" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="Reload()">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#SUB_ACCESS_MODE").val("SCPE");
+
+        if ('@SaveStatus' == "N" || '@SaveStatus' == "Y") {
+                PopupMessage('@Html.Raw(L_POPUP_THANK_YOU)');
+            $('#myModal').modal('show');
+        }
+        else if ('@SaveStatus' == "D") {
+            PopupMessage('@Html.Raw(L_POPUP_ERROR_CPE)');
+            $('#myModal').modal('show');
+        }
+        if ('@CoverageResultSaveStatus' != "") {
+            PopupMessage('@Html.Raw(L_THK)');
+            $('#myModal').modal('show');
+        }
+        chk_BrowserType();
+
+        $('#page0').show();
+
+        if ('@BackFromPaymentMsg' != "") {
+
+            PopupMessage('@Html.Raw(BackFromPaymentMsg)');
+            $('#myModal').modal('show');
+        }
+
+        if ('@BackFromPaymentMsgErrorSPDP' != "") {
+
+            if ('@BackFromPaymentMsgErrorSPDP' == "ErrorSPDP") {
+
+                $('#LastPopupMessageErrorSPDP').html('@Html.Raw(L_POPUP_PAYMENT_ERROR)');
+                $('#myModalErrorSPDP').modal('show');
+            }
+        }
+
+    });
+
+    function ShowTimeout() {
+        $('#LastPopupTimeoutMessage').html('@Html.Raw(L_TIMEOUT_MSG)');
+        $('#modolTimeout').modal('show');
+    }
+
+    function Reload() {
+        window.location.href = "/Scpe";
+    }
+
+    function CheckKeyUp(id, RexStr, checkMobile) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        if (checkMobile == undefined || checkMobile != "M") {
+            var filter = new RegExp(RexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+        }
+        else {
+            var filterM = new RegExp(RexStr, "g");
+            strBuilder = strKey.match(filterM);
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function PopupMessage(msg) {
+        $('#LastPopupMessage').html(msg);
+    }
+
+    function chk_BrowserType() {
+        if ((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1) {
+            $("#Browser_type").val('Opera');
+        }
+        else if (navigator.userAgent.indexOf("Chrome") != -1) {
+            $("#Browser_type").val('Chrome');
+        }
+        else if (navigator.userAgent.indexOf("Safari") != -1) {
+            $("#Browser_type").val('Safari');
+        }
+        else if (navigator.userAgent.indexOf("Firefox") != -1) {
+            $("#Browser_type").val('Firefox');
+        }
+        else if ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true)) //IF IE > 10
+        {
+            $("#Browser_type").val('IE');
+        }
+        else {
+            $("#Browser_type").val('unknown');
+        }
+    }
+</script>

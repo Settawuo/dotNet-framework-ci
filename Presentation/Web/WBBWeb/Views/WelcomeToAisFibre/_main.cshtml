@@ -1,0 +1,324 @@
+﻿@using WBBWeb.Extension
+@using WBBEntity.PanelModels;
+@model WBBWeb.Models.WelcomeAisModel
+@{
+    string W_MAIN_1 = "";
+    string W_MAIN_2 = "";
+    string W_MAIN_3 = "";
+    string W_MAIN_4 = "";
+    string W_MAIN_5 = "";
+    string W_MAIN_6 = "";
+    string W_MAIN_7 = "";
+    string W_MAIN_8 = "";
+    string W_MAIN_9 = "";
+    string W_MAIN_10 = "";
+
+    if (ViewBag.LabelFBBOR051 != null)
+    {
+        var LabelFBBOR051 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR051;
+
+        W_MAIN_1 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_1").DisplayValue : "";
+        W_MAIN_2 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_2") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_2").DisplayValue : "";
+        W_MAIN_3 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_3") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_3").DisplayValue : "";
+        W_MAIN_4 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_4") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_4").DisplayValue : "";
+        W_MAIN_5 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_5") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_5").DisplayValue : "";
+        W_MAIN_6 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_6") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_6").DisplayValue : "";
+        W_MAIN_7 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_7") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_7").DisplayValue : "";
+        W_MAIN_8 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_8") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_8").DisplayValue : "";
+        W_MAIN_9 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_9") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_9").DisplayValue : "";
+        W_MAIN_10 = LabelFBBOR051.Any(c => c.Name == "W_MAIN_10") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_MAIN_10").DisplayValue : "";
+    }
+
+    string URL_DIRECT_PROFILE = "";
+    string URL_DIRECT_PACKAGE = "";
+    string URL_DIRECT_SERVICE = "";
+    string URL_DIRECT_PRIVILEGE = "";
+    string URL_DIRECT_CONTACT = "";
+
+    int L_TIMEOUT_VALUE_WELCOME = 0;
+
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        URL_DIRECT_PROFILE = FbbConstant.Any(f => f.Field == "URL_DIRECT_PROFILE") ? FbbConstant.First(f => f.Field == "URL_DIRECT_PROFILE").Validation : "";
+        URL_DIRECT_PACKAGE = FbbConstant.Any(f => f.Field == "URL_DIRECT_PACKAGE") ? FbbConstant.First(f => f.Field == "URL_DIRECT_PACKAGE").Validation : "";
+        URL_DIRECT_SERVICE = FbbConstant.Any(f => f.Field == "URL_DIRECT_SERVICE") ? FbbConstant.First(f => f.Field == "URL_DIRECT_SERVICE").Validation : "";
+        URL_DIRECT_PRIVILEGE = FbbConstant.Any(f => f.Field == "URL_DIRECT_PRIVILEGE") ? FbbConstant.First(f => f.Field == "URL_DIRECT_PRIVILEGE").Validation : "";
+        URL_DIRECT_CONTACT = FbbConstant.Any(f => f.Field == "URL_DIRECT_CONTACT") ? FbbConstant.First(f => f.Field == "URL_DIRECT_CONTACT").Validation : "";
+
+        string validation = FbbConstant.Where(d => d.Field == "L_TIMEOUT_VALUE_WELCOME").Select(d => d.Validation).FirstOrDefault();
+        int.TryParse(validation, out L_TIMEOUT_VALUE_WELCOME);
+    }
+}
+
+<style>
+    body {
+        padding-top: unset
+    }
+</style>
+
+<div id="divFormMain">
+    @Html.Partial("~/Views/WelcomeToAisFibre/_profile.cshtml")
+    @Html.Partial("~/Views/WelcomeToAisFibre/_package.cshtml")
+    @Html.Partial("~/Views/WelcomeToAisFibre/_services.cshtml")
+    @Html.Partial("~/Views/WelcomeToAisFibre/_privileges.cshtml")
+    @Html.Partial("~/Views/WelcomeToAisFibre/_contact.cshtml")
+
+    <div>
+
+        @Html.Hidden("MobileNo", "")
+        @Html.HiddenFor(model => model.LanguagePage, new { @id = "LanguagePage" })
+        @Html.HiddenFor(model => model.outPrimaryContactFirstName, new { @id = "outPrimaryContactFirstName" })
+        @Html.HiddenFor(model => model.outContactLastName, new { @id = "outContactLastName" })
+        @Html.HiddenFor(model => model.outAmphur, new { @id = "outAmphur" })
+        @Html.HiddenFor(model => model.outBuildingName, new { @id = "outBuildingName" })
+        @Html.HiddenFor(model => model.outFloor, new { @id = "outFloor" })
+        @Html.HiddenFor(model => model.outHouseNumber, new { @id = "outHouseNumber" })
+        @Html.HiddenFor(model => model.outMoo, new { @id = "outMoo" })
+        @Html.HiddenFor(model => model.outMooban, new { @id = "outMooban" })
+        @Html.HiddenFor(model => model.outProvince, new { @id = "outProvince" })
+        @Html.HiddenFor(model => model.outRoom, new { @id = "outRoom" })
+        @Html.HiddenFor(model => model.outSoi, new { @id = "outSoi" })
+        @Html.HiddenFor(model => model.outStreetName, new { @id = "outStreetName" })
+        @Html.HiddenFor(model => model.outBillLanguage, new { @id = "outBillLanguage" })
+        @Html.HiddenFor(model => model.outTumbol, new { @id = "outTumbol" })
+        @Html.HiddenFor(model => model.outBirthDate, new { @id = "outBirthDate" })
+        @Html.HiddenFor(model => model.outEmail, new { @id = "outEmail" })
+        @Html.HiddenFor(model => model.outAccountName, new { @id = "outAccountName" })
+        @Html.HiddenFor(model => model.outAccountNumber, new { @id = "outAccountNumber" })
+        @Html.HiddenFor(model => model.outServiceAccountNumber, new { @id = "outServiceAccountNumber" })
+        @Html.HiddenFor(model => model.outBillingAccountNumber, new { @id = "outBillingAccountNumber" })
+        @Html.HiddenFor(model => model.outProductName, new { @id = "outProductName" })
+        @Html.HiddenFor(model => model.outDayOfServiceYear, new { @id = "outDayOfServiceYear" })
+        @Html.HiddenFor(model => model.cardType, new { @id = "outcardType" })
+        @Html.HiddenFor(model => model.outAccountSubCategory, new { @id = "outAccountSubCategory" })
+        @Html.HiddenFor(model => model.outPostalCode, new { @id = "outPostalCode" })
+        @Html.HiddenFor(model => model.outTitle, new { @id = "outTitle" })
+        @Html.HiddenFor(model => model.OwnerProduct, new { @id = "OwnerProduct" })
+        @Html.HiddenFor(model => model.PackageCode, new { @id = "PackageCode" })
+        @Html.HiddenFor(model => model.outFullAddress, new { @id = "outFullAddress" })
+        @Html.HiddenFor(model => model.outAccountCategory, new { @id = "outAccountCategory" })
+        @Html.HiddenFor(model => model.outparameter1, new { @id = "outparameter1" })
+        @Html.HiddenFor(model => model.outparameter2, new { @id = "outparameter2" })
+        @Html.HiddenFor(model => model.vatAddress1, new { @id = "vatAddress1" })
+        @Html.HiddenFor(model => model.vatAddress2, new { @id = "vatAddress2" })
+        @Html.HiddenFor(model => model.vatAddress3, new { @id = "vatAddress3" })
+        @Html.HiddenFor(model => model.vatAddress4, new { @id = "vatAddress4" })
+        @Html.HiddenFor(model => model.vatAddress5, new { @id = "vatAddress5" })
+        @Html.HiddenFor(model => model.vatPostalCd, new { @id = "vatPostalCd" })
+        @Html.HiddenFor(model => model.vatAddressFull, new { @id = "vatAddressFull" })
+
+    </div>
+</div>
+
+<div id="divMian" class="fbwe_p3_wrap" style="display:none;">
+    <div class="fbwe_p3_cont">
+        <div class="fbwe_p3_area">
+            <div class="fbwe_p3_area_img2 pos">
+                <img src="~/Content/ContentWelcome/images/main/logo_ais_fibre.png" width="" alt="">
+            </div>
+            <div class="fbwe_p3_area_img1 pos">
+                <picture>
+                    <source media=" (min-width: 920px)" srcset="~/Content/ContentWelcome/images/main/img1-pc.png" />
+                    <img src="~/Content/ContentWelcome/images/main/img1.png" width="640" alt="welcometoaisfibre">
+                </picture>
+            </div>
+            <div class="fbwe_p3_area_txt1 pos">
+                @W_MAIN_6 <br>
+                <span class="font_green">@W_MAIN_10</span>
+            </div>
+            <div class="fbwe_p3_area_txt4 pos">@W_MAIN_7</div>
+            <div class="fbwe_p3_area_txt5 pos">'@W_MAIN_8' <span>@W_MAIN_9</span></div>
+            <picture>
+                <source media=" (min-width: 920px)" srcset="~/Content/ContentWelcome/images/main/fbwe_main_sp-pc.png" />
+                <img src="~/Content/ContentWelcome/images/main/fbwe_main_sp.png" alt="welcometoaisfibre">
+            </picture>
+        </div>
+        <div class="fbwe_p3_area_txt6">
+            @W_MAIN_1 <br>
+            <label id="lblWelcomeName"></label><br>
+            @W_MAIN_3
+        </div>
+        <div class="fbwe_p3_banner_wrap">
+            <div class="row">
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p3_banner fbwe_p3_banner1">
+                            <a onclick="nextPage(4)" class="fbwe_p3_btn pos">@W_MAIN_5</a>
+                            <img src="~/Content/ContentWelcome/images/welcome/main_profile.png" width="" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p3_banner fbwe_p3_banner1">
+                            <a onclick="nextPage(5)" class="fbwe_p3_btn pos">@W_MAIN_5</a>
+                            <img src="~/Content/ContentWelcome/images/welcome/main_package.png" width="" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p3_banner fbwe_p3_banner1">
+                            <a onclick="nextPage(6)" class="fbwe_p3_btn pos">@W_MAIN_5</a>
+                            <img src="~/Content/ContentWelcome/images/welcome/main_service.png" width="" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-profile">
+                    <div class="panel_profile">
+                        <div class="fbwe_p3_banner fbwe_p3_banner1">
+                            <a onclick="nextPage(7)" class="fbwe_p3_btn pos">@W_MAIN_5</a>
+                            <img src="~/Content/ContentWelcome/images/welcome/main_priviledge.png" width="" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-profile col-centered">
+                    <div class="panel_profile">
+                        <div class="fbwe_p3_banner fbwe_p3_banner1">
+                            <a onclick="nextPage(8)" class="fbwe_p3_btn pos">@W_MAIN_5</a>
+                            <img src="~/Content/ContentWelcome/images/welcome/main_contact.png" width="" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fbwe_logout">
+                <a onclick="logOut()">
+                    @W_MAIN_4
+                    <div class="fbwe_logout-img">
+                        <img src="~/Content/ContentWelcome/images/welcome/logout_icon.png" width="" alt="">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function nextPage(i) {
+        if (i == 4) {
+            $("#divMian").hide();
+            $("#divProfile").show();
+            $("#divPackage").hide();
+            $("#divServices").hide();
+            $("#divPrivileges").hide();
+            $("#divContact").hide();
+        }
+        else if (i == 5) {
+            $("#divMian").hide();
+            $("#divProfile").hide();
+            $("#divPackage").show();
+            $("#divServices").hide();
+            $("#divPrivileges").hide();
+            $("#divContact").hide();
+
+            setHeightBackground();
+        }
+        else if (i == 6) {
+            $("#divMian").hide();
+            $("#divProfile").hide();
+            $("#divPackage").hide();
+            $("#divServices").show();
+            $("#divPrivileges").hide();
+            $("#divContact").hide();
+        }
+        else if (i == 7) {
+            $("#divMian").hide();
+            $("#divProfile").hide();
+            $("#divPackage").hide();
+            $("#divServices").hide();
+            $("#divPrivileges").show();
+            $("#divContact").hide();
+        }
+        else if (i == 8) {
+            $("#divMian").hide();
+            $("#divProfile").hide();
+            $("#divPackage").hide();
+            $("#divServices").hide();
+            $("#divPrivileges").hide();
+            $("#divContact").show();
+        }
+        else {
+            $("#divMian").show();
+            $("#divProfile").hide();
+            $("#divPackage").hide();
+            $("#divServices").hide();
+            $("#divPrivileges").hide();
+            $("#divContact").hide();
+        }
+
+        window.scrollTo(0, 0);
+    }
+
+    function backPage() {
+        $("#divMian").show();
+        $("#divProfile").hide();
+        $("#divPackage").hide();
+        $("#divServices").hide();
+        $("#divPrivileges").hide();
+        $("#divContact").hide();
+        setScrollMainMenu();
+    }
+
+    function setScrollMainMenu() {
+        
+        let divOffsetTop = document.querySelector(".fbwe_p3_banner_wrap").offsetTop;
+        
+        window.scroll({
+            top: divOffsetTop,
+            behavior: 'smooth'
+        });
+    }
+
+    function logOut() {
+        //clear all
+        $("#AisAirNumber").val("");
+        $("#MobileNo").val("");
+        $("#lblServiceMobileNo").html("");
+        $("#passOTP").val("");
+        $("#lblWelcomeName").html("");
+
+        $('#fbwe_p1_step_mobile').hide();
+        $('#fbwe_p1_step_otp').hide();
+        $('.fbwe_p1_pos1').show();
+
+        $('input[name=privilege]').prop('checked', false);
+        $('input[name=service]').prop('checked', false);
+
+        $("#btnContinue1").show();
+        $("#btnContinue2").hide();
+        $("#btnContinue3").show();
+        $("#btnContinue4").hide();
+
+        $("#divInputAisAirNumber").show();
+        $("#divPdpaConfirm").hide();
+        $("#divMian").hide();
+
+        removeHeightBackground();
+    }
+
+    let timer = 0;
+    $(document).on('click', function () {
+        if (timer) {
+            clearTimeout(timer);
+            timer = 0;
+        }
+        let timeoutValue = 60000 * parseInt(30);
+        if (@L_TIMEOUT_VALUE_WELCOME > 0) {
+            timeoutValue = 60000 * parseInt(@L_TIMEOUT_VALUE_WELCOME);
+        }
+        timer = setTimeout(function () {
+            sessionStorage.clear();
+            localStorage.clear();
+            logOut();
+            window.location.href = '@Url.Action("Index", "WelcomeToAisFibre")';
+        }, timeoutValue);
+    });
+
+</script>

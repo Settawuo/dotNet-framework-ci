@@ -1,0 +1,19 @@
+﻿using System.Collections.Generic;
+using WBBEntity.PanelModels;
+
+namespace WBBContract.Queries.FBBWebConfigQueries
+{
+
+
+    public class SelectMainVDLSPanelQuery : IQuery<List<Vdsl_fbb_PanelModel>>
+    {
+        public string region { get; set; }
+        public string province { get; set; }
+        public string tumbon { get; set; }
+        public string aumphur { get; set; }
+        public string ResultCheckData { get; set; }
+        public string GROUP_AMPHUR { get; set; }
+
+
+    }
+}

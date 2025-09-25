@@ -1,0 +1,54 @@
+﻿@model  List<WBBEntity.PanelModels.FBBWebConfigModels.SubNameData>
+@using WBBEntity.PanelModels;
+@{
+    string SubContactIndex = ViewBag.SubContactIndex;
+
+    string G_ENGINEER_NAME = "";
+    string G_ENGINEER_NAME_ENABLE = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        G_ENGINEER_NAME = configscreen.Any(f => f.Name == "G_ENGINEER_NAME") ? configscreen.First(f => f.Name == "G_ENGINEER_NAME").LovValue1 : "";
+        G_ENGINEER_NAME_ENABLE = configscreen.Any(f => f.Name == "G_ENGINEER_NAME") ? configscreen.First(f => f.Name == "G_ENGINEER_NAME").Text : "N";
+
+    }
+}
+@if(Model != null)
+{
+    <table class="table table-bordered" id="span-subname">
+        <thead>
+            <tr>
+                <th class="col-sm-1 col-md-1 text-center"></th>
+                <th class="col-sm-5 col-md-5">@G_ENGINEER_NAME</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td class="text-center">
+                        @Html.CheckBox("SubNameList[" + i + "].sub_name_select", @Model[i].sub_name_select, new { @class = "SubCheck" })
+                        @Html.Hidden("SubNameList[" + i + "].sub_name_select_old", @Model[i].sub_name_select_old)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x[i].sub_name, new { @class = "k-textbox form-control" })
+                        @Html.Hidden("SubNameList[" + i + "].sub_name", @Model[i].sub_name)
+                        @Html.Hidden("SubNameList[" + i + "].sub_name_id", @Model[i].sub_name_id)
+                    </td>
+                </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table table-bordered" id="span-subname">
+        <thead>
+            <tr>
+                <th class="col-sm-5 col-md-5">No Data</th>
+            </tr>
+        </thead>
+    </table>
+}

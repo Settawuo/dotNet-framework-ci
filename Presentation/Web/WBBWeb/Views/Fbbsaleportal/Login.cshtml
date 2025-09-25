@@ -1,0 +1,110 @@
+﻿@model WBBEntity.PanelModels.LoginPanelModel
+@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+    string L_PAGE_SALE_PORTAL_TITLE = "";
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+        L_PAGE_SALE_PORTAL_TITLE = configscreen[0].LovValue1.ToString();
+    }
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="icon" href="~/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @*fix CSS device*@
+    <title>Fixed Broadband Web Config</title>
+
+    @Scripts.Render("~/bundles/js/jquery")
+
+    @Scripts.Render("~/bundles/js/kendo")
+
+    @Scripts.Render("~/bundles/js/login")
+    @Styles.Render("~/bundles/css/login")
+    <link rel="stylesheet" href="~/Content/Content2016/fonts/helvetica.css" />
+
+    <style>
+        #ais_topbar {
+        display: block;
+    }
+
+    #ais_topbar .topbar_ribbon {
+	    padding-left:10px;
+        float: left;
+        height: 60px;
+    }
+
+    #ribbonking{ width:100%; height:60px;  background: url("/Images/bg1366.jpg") no-repeat center;  background-color:#000;}
+    #ribbonking_wrapper{height:60px; margin: 0 auto; max-width: 1140px;}
+    </style>
+    
+</head>
+<body id="login">
+
+    <div class="background-top"></div>
+    <div class="background-bottom"></div>
+    <div class="header">
+        @*<div id="ribbonking">
+	    <div id="ribbonking_wrapper">
+    	    <div class="topbar_ribbon"><img src="~/Images/iconribbon.png" alt="ais logo"></div>
+        </div>*@
+    </div>
+    </div>
+    <div class="content">
+      
+        <div class="panel-login">
+            @using (Html.BeginForm(new { returnUrl = ViewBag.ReturnUrl, }))
+            {
+               
+                <div class="title-image_en"> <img src="~/Content/Images/logo-ais.png" /></div> <div class="title-login">@L_PAGE_SALE_PORTAL_TITLE</div>
+                <div class="field-group">
+                    <div class="field field-inline" id="field-username">
+                        <div class="caption">Username</div>
+                        <div class="input"><input type="text" maxlength="50" @Html.TextBoxFor(m => m.UserName) ></div>
+
+                        <div class="clear"></div>
+                    </div>
+                    <div class="field field-inline" id="field-password">
+                        <div class="caption">Password</div>
+                        
+                        <div class="input" ><input type="password" maxlength="50" @Html.PasswordFor(m => m.Password) ></div>
+                        <!-- bug in IE7 - the left space of input under div element -->
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="msg-error" id="errorMsg">
+                    @Html.ValidationSummary()
+                    @*@Html.ValidationMessageFor(m => m.UserName)
+                        @Html.ValidationMessageFor(m => m.Password)*@
+                    @*@Html.ValidationMessage("V01-003")*@
+                </div>
+                @*<button class="btn" type="submit" onclick="return checkPassword(document.getElementById('Password').value);">Login</button>*@
+                <button class="btn" type="submit">Login</button>
+            }
+        </div>
+    </div>
+    <div class="footer"></div>
+    <script type="text/javascript">
+
+        function checkPassword(password) {
+            //alert(password);
+            var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/);
+            if (pattern.test(password)) {
+                $("#errorMsg").html("Please only use standard alphanumerics");
+                return false;
+            }
+            else {
+                $("#errorMsg").html("");
+                return true;
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+
+

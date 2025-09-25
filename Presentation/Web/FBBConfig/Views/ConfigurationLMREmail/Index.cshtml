@@ -1,0 +1,263 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationLMREmailModel
+@using WBBEntity.PanelModels;
+@{
+    string L_lov_id = "lov id";
+    string L_sender_information = "sender information";
+    string L_lov_name = "name";
+    string L_detail_val = "detail";
+    string L_updated_by = "updated by";
+    string L_updated_date = "updated date";
+}
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Config Lastmile Email Info</h3>
+        </div>
+    </div>
+</div>
+<div id="_ConfigLMREmailLis" class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Config Lastmile Email Info List</span>
+                    <a data-toggle="collapse" class="pull-right" href="#ConfigLMREmailLis" onclick="onPanelToggle(this);" id="ConfigLMREmailLisHeader"><i class="fa fa-chevron-circle-down fa-lg" id="ConfigLMREmailLisHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="ConfigLMREmailLis" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div class="col-sm-12 col-md-12 ">
+                        <div id="GridConfigLMREmailLis" class="row">
+                            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationLMREmailModel>()
+                          .Name("GridViewConfigEmail")
+                 .Selectable(selectable => selectable.Enabled(true).Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
+          .Columns(columns =>
+          {
+              columns.Bound(p => p.Name).Title(@L_lov_name).Hidden().HtmlAttributes(new { style = "text-align:left;" }).Width(60);
+              columns.Bound(p => p.LovValue3).Title(@L_sender_information).HtmlAttributes(new { style = "text-align:left;" }).Width(60);
+              columns.Bound(p => p.Text).Title(@L_detail_val).HtmlAttributes(new { style = "text-align:left;" }).Width(180);
+              columns.Bound(p => p.Update_by).Title(@L_updated_by).HtmlAttributes(new { style = "text-align:left;" }).Width(50);
+              columns.Bound(p => p.Update_date_text).Title(@L_updated_date).HtmlAttributes(new { style = "text-align:center;" }).Width(50);
+              columns.Bound(p => p.Id).Title(@L_lov_id).HtmlAttributes(new { style = "text-align:left;" }).Width(120).Hidden();
+              columns.Command(command =>
+              {
+                  command.Custom("Edit").Click("EditConfigEmail").Text("<i class='fa fa-pencil-square-o fa-lg'></i>");
+                  //  command.Custom("Add").Click("AddConfigEmail").Text("<i class='fa fa-plus-square-o fa-lg'></i>");
+
+              }).Title("ACTION").HtmlAttributes(new { style = "text-align:center;" }).Width(80);
+          })
+                                    //.ToolBar(toolBar => toolBar.Save()).HtmlAttributes(new { style = "text-align:right;" })
+            .Scrollable(scrollable => scrollable.Height("auto"))
+                                    // .Editable(editable => editable.Mode(GridEditMode.InCell))
+            .Resizable(resize => resize.Columns(true))
+            .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+            .AutoBind(true)
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                        .Model(model =>
+                        {
+                            model.Field(p => p.Id).Editable(false);
+                            model.Field(p => p.LovValue5).Editable(false);
+                        })
+                .PageSize(20)
+                                .Read(read => read.Action("DisplayConfigList", "ConfigurationLMREmail").Data("bindingValueMRL"))
+                                    //  .Update(update => update.Action("UpdateSCMOrderList", "LastMileByDistance"))
+            )
+                                   .Events(e => e.DataBound("onGridViewConfigEmailDataBound"))
+                            )
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="_usertype" value="@ViewBag.UserGroupCHK" />
+@(Html.Kendo().Window()
+       .Name("EditConfiLMREmailPopup")
+      .HtmlAttributes(new { @class = "i-gap-popup" })
+          .Title("Edit Config Lastmile Email Info")
+      .Width(620)
+      .Draggable()
+      .Visible(false)
+      .Modal(true)
+      .Content(@<text>
+        @Html.Partial("_PartialEditConfiLMREmail")
+    </text>)
+)
+@(Html.Kendo().Window()
+           .Name("EditConfiLMREmailContactPopup")
+      .HtmlAttributes(new { @class = "i-gap-popup" })
+          .Title("Edit Config Lastmile Email Info")
+      .Width(620)
+      .Draggable()
+      .Visible(false)
+      .Modal(true)
+      .Content(@<text>
+        @Html.Partial("_PartialEditConfiLMREmailContact")
+    </text>)
+)
+<script type="text/javascript">
+    var ConfigLMREmailModel = function () {
+        Name: "";
+        LovValue5: "";
+        Text: "";
+        Id: "";
+        PAGE_INDEX: 1;
+        PAGE_SIZE: 20;
+    }
+    function defaultDataLMR() {
+        var grid = $("#GridViewConfigEmail").data("kendoGrid");
+        var ConfigLMREmailModelResult = new ConfigLMREmailModel();
+        return ConfigLMREmailModelResult;
+    }
+    var model;
+    function bindingValueMRL() {
+        model = defaultDataLMR();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+    function EditConfigEmail(e) {
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        //  console.log(dataItem);
+        $("#Text").val(dataItem.Text);
+        $("#lov_id").val(dataItem.Id);
+        $("#lov_id_contact").val(dataItem.Id);
+
+        ///
+        //console.log(dataItem.Name);
+        var statusName = dataItem.Name;
+        
+       // var DisplayTitleValContact = "";
+        var DisplayTitleVal = ""; 
+        DisplayTitleVal = dataItem.LovValue3;
+
+
+        $("#DisplayTitleValContact").html(DisplayTitleVal);
+        $("#DisplayTitleVal").html(DisplayTitleVal);
+
+        // console.log("statusName=" + statusName);
+        if (statusName === 'SCM_CONTACT') {
+            //console.log(dataItem.Text);
+            //------------------Clear Data-------------
+            var ControlID = 1;
+
+            for (var i = 0; i < 3; i++) {
+
+                $("#Scm_contact_name_0" + ControlID).val("");
+                $("#Scm_contact_tel_0" + ControlID).val("")
+                //console.log("#Scm_contact_name_0" + ControlID);
+                //  console.log("#Scm_contact_tel_0" + ControlID);
+                $("#Scm_contact_Other").val("");
+                ControlID++;
+            }
+            ClearValidationDateValueContactMLR();
+
+            //-------------------------------
+            var ScmTextStr = dataItem.Text;
+            var resultSplit = ScmTextStr.split(";");
+            //  console.log("resultSplit=" + resultSplit)
+            ControlID = 1;
+            // console.log("resultSplit.length=" + resultSplit.length)
+            //if (resultSplit.length >3) {
+
+            //}
+            for (var i = 0; i < resultSplit.length; i++) {
+                //   console.log("i=" + i  );
+                // if (resultSplit.length <  3) {
+                // var ResultReplaceSpace = resultSplit[i].replace(/ /g, '');
+                var StrName = "";
+                var StrTel = "";
+
+                var ResultIndexTel = resultSplit[i].indexOf("0");
+
+                if (ResultIndexTel > -1) {
+                    StrName = resultSplit[i].substring(0, ResultIndexTel - 1);
+                    StrTel = resultSplit[i].substring(ResultIndexTel);
+                    //console.log("StrTel=" + StrTel);
+                    //console.log("StrName=" + StrName);
+
+                    if (StrName != "" && StrName != " ") {
+                        $("#Scm_contact_name_0" + ControlID).val(StrName.replace(/ /g, '').trim())
+
+                        if (resultSplit.length >= 2) {
+                            if (StrTel != "" && StrTel != " ") {
+                                $("#Scm_contact_tel_0" + ControlID).val(StrTel.replace(/ /g, '').trim())
+                            }
+                        } else {
+                            $("#Scm_contact_tel_01").val(StrTel.replace(/ /g, '').trim())
+                        }
+                    } else {
+                        $("#Scm_contact_Other").val(resultSplit[i]);
+                    }
+
+
+                } else {
+                    $("#Scm_contact_Other").val(resultSplit[i]);
+                }
+
+                ControlID++;
+            }
+            // console.log("resultSplit=" + resultSplit[3])
+            //console.log("resultSplit=" + resultSplit.length)
+            if (resultSplit.length > 3) {
+                if (resultSplit[3] != "" && resultSplit[3] != " ") {
+                    $("#Scm_contact_Other").val(resultSplit[3])
+                    //$("#Scm_contact_Other").val(resultSplit[3].replace(/ /g, '').trim())
+                }
+            }
+
+
+            $("#EditConfiLMREmailContactPopup").data("kendoWindow").open();
+            var dialog = $("#EditConfiLMREmailContactPopup").data("kendoWindow");
+            dialog.center();
+        } else {
+            $("#validatefor-ValidateDisplay_val").html("");
+            $("#EditConfiLMREmailPopup").data("kendoWindow").open();
+            var dialog = $("#EditConfiLMREmailPopup").data("kendoWindow");
+            dialog.center();
+        }
+
+
+    }
+    //function AddConfigEmail() {
+    //    console.log("test");
+    //}
+    function onGridViewConfigEmailDataBound() {
+        Loading(0);
+
+        var grid = this;
+        //fix kendo grid width
+        if (this.dataSource.view().length === 0) {
+
+            var colspan = this.thead.find("th").length;
+            var emptyRow = "<tr style='height:auto; text-align:Left' ><td colspan='" + colspan + "'>&nbsp;&nbsp;&nbsp;&nbsp;No Data Found  </td></tr>";
+
+            this.tbody.html(emptyRow);
+            this.table.width(800);
+            $(".k-grid-content").height(50);
+        }
+        else {
+            grid.tbody.find("tr[role='row']").each(function () {
+
+                var model = grid.dataItem(this);
+                if ($("#_usertype").val() == "SCM") {
+                    $(this).find(".k-grid-Edit").show();
+                } else {
+                    $(this).find(".k-grid-Edit").hide();
+                } $(this).find(".k-grid-Add").hide();
+               
+                 
+            });
+
+            $('.k-grid-content').height("auto");
+            $('.k-grid-content').css("max-height", "300px");
+        }
+    }
+    function CancelEditConfiLMREmailPopup() {
+        $("#EditConfiLMREmailPopup").data("kendoWindow").close();
+    }
+
+
+</script>

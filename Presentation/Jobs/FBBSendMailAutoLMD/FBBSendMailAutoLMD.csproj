@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CB9A65F9-6040-4A89-AAE5-1F2347F6ACDE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>FBBSendMailAutoLMD</RootNamespace>
+    <AssemblyName>FBBSendMailAutoLMD</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EPPlus, Version=3.1.2.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EPPlus.3.1.2\lib\net35\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Excel, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Excel.1.0.0\lib\dotnet\Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\log4net.1.2.11\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=4.0.8.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\SimpleInjector.4.0.8\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Code\WcfServiceCommandHandlerProxy.cs" />
+    <Compile Include="Code\WcfServiceQueryHandlerProxy.cs" />
+    <Compile Include="CompositionRoot\Bootstrapper.cs" />
+    <Compile Include="CompositionRoot\DebugLogger.cs" />
+    <Compile Include="CompositionRoot\DynamicQueryProcessor.cs" />
+    <Compile Include="CompositionRoot\Impersonator.cs" />
+    <Compile Include="Connected Services\CommandService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\QueryService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="CrossCuttingConcerns\FromWcfFaultTranslatorCommandHandlerDecorator.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SendMailAutoLMD.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\CommandService\" />
+    <WCFMetadataStorage Include="Connected Services\QueryService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CommandService\CommandService.wsdl" />
+    <None Include="Connected Services\CommandService\CommandService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService15.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService16.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService18.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService19.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService20.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\CommandService9.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CommandService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CommandService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CommandService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\QueryService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\QueryService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\QueryService\QueryService1.wsdl" />
+    <None Include="Connected Services\QueryService\QueryService131.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService132.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService133.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService134.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService135.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService136.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService137.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService138.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService139.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService140.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService141.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService142.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService143.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService144.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService145.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService146.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService147.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService148.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService149.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService150.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService151.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService152.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService153.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService154.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService155.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService156.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService157.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService158.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService159.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService160.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService161.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService162.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService163.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService164.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService165.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService166.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService167.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService168.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService169.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService170.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService171.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService172.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService173.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\QueryService44.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\QueryService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Framework\AIRNETEntity\AIRNETEntity.csproj">
+      <Project>{c39cd420-64d2-42e1-ac13-23e4a22bc61e}</Project>
+      <Name>AIRNETEntity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\WBBBusinessLayer\WBBBusinessLayer.csproj">
+      <Project>{89b88516-c7e4-4442-9734-c94b627b32b4}</Project>
+      <Name>WBBBusinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\WBBContract\WBBContract.csproj">
+      <Project>{b2b6ac71-9b7d-4e71-b5fa-fa453bacda3f}</Project>
+      <Name>WBBContract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\WBBData\WBBData.csproj">
+      <Project>{394421e5-d152-418a-a5b4-843658a4719b}</Project>
+      <Name>WBBData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\WBBEntity\WBBEntity.csproj">
+      <Project>{41681256-03e6-4034-a050-146bd09adf2d}</Project>
+      <Name>WBBEntity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CommandService\CommandService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\QueryService\QueryService1.disco" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,133 @@
+﻿@using WBBEntity.PanelModels.Account;
+
+@{   
+    Layout = "~/Views/Fbbsaleportal/_LayoutReference.cshtml";
+
+    UserModel userModel = new UserModel();
+    if (ViewBag.User != null)
+    {
+        userModel = ViewBag.User;
+    }
+}
+
+<style>
+    .breadcrumb > li + li:before {
+        content: ">> ";
+    }
+
+    .errorinput {
+        border: 2px solid #ff988a !important;
+    }
+
+    .add-border-rounded-green {
+        border-radius: 8px;
+        border: 2px solid #8DC63F; /*before color #74A333*/
+        background: #fff;
+    }
+
+        .add-border-rounded-green > h4 {
+            margin-left: 20px;
+            margin-top: -14px;
+        }
+
+        .add-border-rounded-green .hightlight {
+            background: #fff;
+            padding: 5px;
+        }
+</style>
+
+<script type="text/kendo-template" id="errorMessage">
+  <div class='k-block k-error-colored' style='margin: 0.5em; display: block; width: 100%;'>
+		<span class='k-icon k-warning'> </span> #=message#
+	</div>
+</script>
+
+<script type="text/kendo-template" id="successMessage">
+	<div class='k-block k-success-colored' style='margin: 0.5em; display: block; width: 100%;'>
+		<span class='k-icon k-warning'> </span> #=message#
+	</div>
+</script>
+
+<script>
+    $(function () {
+        $("#submitAction").show();
+        $("[id*=lbAc]").hide();
+        $("#closeSubMenu").click();
+        $("#closeSubReportMenu").click();
+
+    });
+
+    // popup kendo ui  
+    function modePopup(mode) {
+        $('#modepopup').val(mode);
+    }
+
+    function changeTitlePopup(e) {
+        if ($('#modepopup').val() == 'add') {
+            $(".k-window-title").text("Add");//title
+            $("a.k-grid-update")[0].innerHTML = "<span class='k-icon k-update'></span>Add";//button
+        } else {
+            $(".k-window-title").text("Edit");//title
+            $("a.k-grid-update")[0].innerHTML = "<span class='k-icon k-update'></span>Update";//button
+        }
+    }
+    // popup kendo ui
+</script>
+<!-- popup kendo ui -->
+<input type="hidden" id="modepopup" value="add" />
+<!-- popup kendo ui -->
+
+<div class="i-enter-8"></div>
+
+<div class="container-fluid i-gap-body-left">
+
+    <div class="alert alert-danger alert-dismissable i-hidden" id="error-box-bar">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <span id="error-msg-bar"></span>
+    </div>
+
+    <div class="alert alert-success alert-dismissable i-hidden" id="success-box-bar">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <span id="success-msg-bar"></span>
+    </div>
+
+    @RenderBody()
+</div>
+
+<div class="i-enter-6"></div>
+
+
+<div class="modal fade" id="MessageFeedbackPopUp" tabindex="-1" role="dialog" aria-labelledby="MessageFeedbackPopUpLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="headerMessageFeedback">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="MessageFeedbackPopUpLabel">Notification</h4>
+            </div>
+            <div class="modal-body">
+                <label id="lbMessageFeedback"></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+@(Html.Kendo().Window()
+    .Name("PopupLoading")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title(false)
+    .Modal(true)
+    .Visible(false)
+    .Content(@<text>
+<div style="margin: 0 80px;"><font size="4">Loading &nbsp;<i class="fa fa-refresh fa-spin"></i></font></div>
+</text>)
+    )
+
+<script type="text/javascript">
+
+    function toastrErrorMessage(message) {
+        toastr.options.positionClass = "toast-top-center";
+        toastr.options.closeButton = true;
+        toastr.error(message)
+    }
+
+</script>

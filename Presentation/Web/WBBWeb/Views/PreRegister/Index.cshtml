@@ -1,0 +1,1802 @@
+﻿@model WBBEntity.PanelModels.PreregisterModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@{
+    Layout = "~/Views/Shared/_LayoutPreregister.cshtml";
+    var isSaveCommplete = false;
+    var isSaveFail = false;
+    var languagePages = "";
+    var loginstatus = false;
+    string Year = "";
+    string month = "";
+    string day = "";
+    DateTime DateStart;
+    string lFIRST_NAME = "";
+    string lLAST_NAME = "";
+    string lTEL = "";
+    string lUSER_NAME = "";
+    string lPREPAID_INTERNET_NO = "";
+    string lCARD_TYPE = "";
+    string lCARD_NO = "";
+    string lDORMITARY_Name = "";
+    string lDORMITARY_ROOM = "";
+    string lFloor = "";
+    string lAPPOINTMENT_DATE = "";
+    string lTIME = "";
+    string lSUBCONTRACT_NAME = "";
+    string lSUCCESS = "";
+    string lFAIL = "";
+
+
+    string lNONSUCCESS = "";
+    string lSERVICE_STATUS = "";
+
+    string bSUBMIT = "";
+    string bCONFIRM = "";
+    string bCLEAR = "";
+    string bClear = "";
+    string bCLOSE = "";
+    string bLogout = "";
+
+    
+    if (ViewBag.labelFBBDORM008 != null)
+    {
+        var labelFBBDORM008 = (List<LovScreenValueModel>)ViewBag.labelFBBDORM008;
+        lFIRST_NAME = labelFBBDORM008.Any(c => c.Name == "L_FName") ? labelFBBDORM008.First(c => c.Name == "L_FName").DisplayValue : "";
+        lLAST_NAME = labelFBBDORM008.Any(c => c.Name == "L_LName") ? labelFBBDORM008.First(c => c.Name == "L_LName").DisplayValue : "";
+        lTEL = labelFBBDORM008.Any(c => c.Name == "L_TEL") ? labelFBBDORM008.First(c => c.Name == "L_TEL").DisplayValue : "";
+        lUSER_NAME = labelFBBDORM008.Any(c => c.Name == "L_USERNAME") ? labelFBBDORM008.First(c => c.Name == "L_USERNAME").DisplayValue : "";
+        lPREPAID_INTERNET_NO = labelFBBDORM008.Any(c => c.Name == "L_P_INTERNET_NO") ? labelFBBDORM008.First(c => c.Name == "L_P_INTERNET_NO").DisplayValue : "";
+        lCARD_TYPE = labelFBBDORM008.Any(c => c.Name == "L_C_TYPE") ? labelFBBDORM008.First(c => c.Name == "L_C_TYPE").DisplayValue : "";
+        lCARD_NO = labelFBBDORM008.Any(c => c.Name == "L_C_NO") ? labelFBBDORM008.First(c => c.Name == "L_C_NO").DisplayValue : "";
+        lDORMITARY_Name = labelFBBDORM008.Any(c => c.Name == "L_DORM_NAME") ? labelFBBDORM008.First(c => c.Name == "L_DORM_NAME").DisplayValue : "";
+        lDORMITARY_ROOM = labelFBBDORM008.Any(c => c.Name == "L_DORM_ROOM") ? labelFBBDORM008.First(c => c.Name == "L_DORM_ROOM").DisplayValue : "";
+        lFloor = labelFBBDORM008.Any(c => c.Name == "L_FLOOR_NO") ? labelFBBDORM008.First(c => c.Name == "L_FLOOR_NO").DisplayValue : "";
+        lAPPOINTMENT_DATE = labelFBBDORM008.Any(c => c.Name == "L_APPOINTMENT_DATE") ? labelFBBDORM008.First(c => c.Name == "L_APPOINTMENT_DATE").DisplayValue : "";
+        lTIME = labelFBBDORM008.Any(c => c.Name == "L_TIME") ? labelFBBDORM008.First(c => c.Name == "L_TIME").DisplayValue : "";
+        lSUBCONTRACT_NAME = labelFBBDORM008.Any(c => c.Name == "L_SUBCONTRACT_NAME") ? labelFBBDORM008.First(c => c.Name == "L_SUBCONTRACT_NAME").DisplayValue : "";
+        bSUBMIT = labelFBBDORM008.Any(c => c.Name == "B_SUBMIT") ? labelFBBDORM008.First(c => c.Name == "B_SUBMIT").DisplayValue : "";
+        lSUCCESS = labelFBBDORM008.Any(c => c.Name == "A_PR_Suss") ? labelFBBDORM008.First(c => c.Name == "A_PR_Suss").DisplayValue : "";
+        lNONSUCCESS = labelFBBDORM008.Any(c => c.Name == "L_NONSUCCESS") ? labelFBBDORM008.First(c => c.Name == "L_NONSUCCESS").DisplayValue : "";
+        lSERVICE_STATUS = labelFBBDORM008.Any(c => c.Name == "L_SERVICE_STATUS") ? labelFBBDORM008.First(c => c.Name == "L_SERVICE_STATUS").DisplayValue : "";
+        bCONFIRM = labelFBBDORM008.Any(c => c.Name == "B_CHA_CONFIRM") ? labelFBBDORM008.First(c => c.Name == "B_CHA_CONFIRM").DisplayValue : "";
+        lFAIL = labelFBBDORM008.Any(c => c.Name == "ALERT_Failure") ? labelFBBDORM008.First(c => c.Name == "ALERT_Failure").DisplayValue : "";
+        bCLOSE = labelFBBDORM008.Any(c => c.Name == "B_CHA_CLOSE") ? labelFBBDORM008.First(c => c.Name == "B_CHA_CLOSE").DisplayValue : "";
+        bClear = labelFBBDORM008.Any(c => c.Name == "B_CLEAR") ? labelFBBDORM008.First(c => c.Name == "B_CLEAR").DisplayValue : "";
+        bLogout = labelFBBDORM008.Any(c => c.Name == "B_LOG_OUT") ? labelFBBDORM008.First(c => c.Name == "B_LOG_OUT").DisplayValue : "";        
+    }
+    string INPUT_ID_CARD = "";
+    string INPUT_MONK_CERT = "";
+    string INPUT_PASSPORT = "";
+    string INPUT_IMM_CARD = "";
+    string INPUT_HILL_CARD = "";
+    var FBB_Input_MobileNo = "";
+
+    string FBB_Con_LengthIDCardNumberHILL_CARD = "";
+    string FBB_Con_LengthIDCardNumberID_CARD = "";
+    string FBB_Con_LengthIDCardNumberIMM_CARD = "";
+    string FBB_Con_LengthIDCardNumberMONK_CERT = "";
+    string FBB_Con_Length_ID_Card_Number_PASSPORT = "";
+    string FBB_Con_CharNotonName = "";
+    //   string FBB_Con_CharNotOnNameLastName = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        INPUT_HILL_CARD = FbbConstant.Any(f => f.Field == "Input HILL_CARD") ? FbbConstant.First(f => f.Field == "Input HILL_CARD").Validation : "";
+        INPUT_ID_CARD = FbbConstant.Any(f => f.Field == "Input ID_CARD") ? FbbConstant.First(f => f.Field == "Input ID_CARD").Validation : "";
+        INPUT_IMM_CARD = FbbConstant.Any(f => f.Field == "Input IMM_CARD") ? FbbConstant.First(f => f.Field == "Input IMM_CARD").Validation : "";
+        INPUT_MONK_CERT = FbbConstant.Any(f => f.Field == "Input MONK_CERT") ? FbbConstant.First(f => f.Field == "Input MONK_CERT").Validation : "";
+        INPUT_PASSPORT = FbbConstant.Any(f => f.Field == "Input PASSPORT") ? FbbConstant.First(f => f.Field == "Input PASSPORT").Validation : "";
+        FBB_Con_LengthIDCardNumberHILL_CARD = FbbConstant.Any(f => f.Field == "Length ID Card Number HILL_CARD") ? FbbConstant.First(f => f.Field == "Length ID Card Number HILL_CARD").Validation : "";
+        FBB_Con_LengthIDCardNumberID_CARD = FbbConstant.Any(f => f.Field == "Length ID Card Number ID_CARD") ? FbbConstant.First(f => f.Field == "Length ID Card Number ID_CARD").Validation : "";
+        FBB_Con_LengthIDCardNumberIMM_CARD = FbbConstant.Any(f => f.Field == "Length ID Card Number IMM_CARD") ? FbbConstant.First(f => f.Field == "Length ID Card Number IMM_CARD").Validation : "";
+        FBB_Con_LengthIDCardNumberMONK_CERT = FbbConstant.Any(f => f.Field == "Length ID Card Number MONK_CERT") ? FbbConstant.First(f => f.Field == "Length ID Card Number MONK_CERT").Validation : "";
+        FBB_Con_Length_ID_Card_Number_PASSPORT = FbbConstant.Any(f => f.Field == "Length ID Card Number PASSPORT") ? FbbConstant.First(f => f.Field == "Length ID Card Number PASSPORT").Validation : "";
+        INPUT_HILL_CARD = FbbConstant.Any(f => f.Field == "Input HILL_CARD") ? FbbConstant.First(f => f.Field == "Input HILL_CARD").Validation : "";
+        FBB_Con_CharNotonName = FbbConstant.Any(f => f.Field == "Char Not on Name") ? FbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        FBB_Input_MobileNo = FbbConstant.Any(f => f.Field == "Input_MobileNo") ? FbbConstant.First(f => f.Field == "Input_MobileNo").Validation : "";
+
+
+    }
+
+    string FBB_Exc_1 = "";
+    string FBB_Exc_D = "";
+    string FBB_Exc_F = "";
+    string FBB_Exc_I = "";
+    string FBB_Exc_S = "";
+    if (ViewBag.FbbException != null)
+    {
+        var FbbException = (List<FbbConstantModel>)ViewBag.FbbException;
+        FBB_Exc_1 = FbbException.Any(f => f.Field == "1") ? FbbException.First(f => f.Field == "1").Validation : "";
+        FBB_Exc_D = FbbException.Any(f => f.Field == "D") ? FbbException.First(f => f.Field == "D").Validation : "";
+        FBB_Exc_F = FbbException.Any(f => f.Field == "F") ? FbbException.First(f => f.Field == "F").Validation : "";
+        FBB_Exc_I = FbbException.Any(f => f.Field == "I") ? FbbException.First(f => f.Field == "I").Validation : "";
+        FBB_Exc_S = FbbException.Any(f => f.Field == "S") ? FbbException.First(f => f.Field == "S").Validation : "";
+    }
+    string lLOCATION_CODE = "";
+    string lASC_CODE = "";
+    string lINPUT_CAPTCHA = "";
+    string bLOGIN = "";
+
+    string Input_Location_Code = "";
+    string Input_ASC_Code = "";
+    string Length_Location_Code = "";
+    string Length_ASC_Code = "";
+
+    string L_CAPTCHA_ERR = "";
+
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        L_CAPTCHA_ERR = labelFBBTR003.Any(c => c.Name == "L_CAPTCHA_ERR") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_CAPTCHA_ERR").DisplayValue : "";
+    }
+
+
+    if (ViewBag.labelFBBORV00 != null)
+    {
+        var labelFBBORV00 = (List<LovScreenValueModel>)ViewBag.labelFBBORV00;
+        lLOCATION_CODE = labelFBBORV00.Any(c => c.Name == "L_LOCATION_CODE") ? labelFBBORV00.First(c => c.Name == "L_LOCATION_CODE").DisplayValue : "";
+        lASC_CODE = labelFBBORV00.Any(c => c.Name == "L_ASCCODE") ? labelFBBORV00.First(c => c.Name == "L_ASCCODE").DisplayValue : "";
+        lINPUT_CAPTCHA = labelFBBORV00.Any(c => c.Name == "L_INPUT_CAPTCHA") ? labelFBBORV00.First(c => c.Name == "L_INPUT_CAPTCHA").DisplayValue : "";
+        bCLEAR = labelFBBORV00.Any(c => c.Name == "B_CLEAR") ? labelFBBORV00.First(c => c.Name == "B_CLEAR").DisplayValue : "";
+        bLOGIN = labelFBBORV00.Any(c => c.Name == "B_LOGIN") ? labelFBBORV00.First(c => c.Name == "B_LOGIN").DisplayValue : "";
+    }
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        Input_Location_Code = FbbConstant.Any(f => f.Field == "Input_Location_Code") ? FbbConstant.First(f => f.Field == "Input_Location_Code").Validation : "";
+        Input_ASC_Code = FbbConstant.Any(f => f.Field == "Input_ASC_Code") ? FbbConstant.First(f => f.Field == "Input_ASC_Code").Validation : "";
+        Length_Location_Code = FbbConstant.Any(f => f.Field == "Length_Location_Code") ? FbbConstant.First(f => f.Field == "Length_Location_Code").Validation : "";
+        Length_ASC_Code = FbbConstant.Any(f => f.Field == "Length_ASC_Code") ? FbbConstant.First(f => f.Field == "Length_ASC_Code").Validation : "";
+    }
+    if (null != ViewBag.SaveSuccess)
+    {
+        isSaveCommplete = ViewBag.SaveSuccess;
+    }
+
+    if (null != ViewBag.SaveFail)
+    {
+        isSaveFail = ViewBag.SaveFail;
+    }
+
+    if (null != ViewBag.LanguagePage)
+    {
+        languagePages = ViewBag.LanguagePage;
+    }
+
+    if (null != ViewBag.LoginEnd)
+    {
+        loginstatus = ViewBag.LoginEnd;
+    }
+
+    string Loginname = "";
+
+    if (null != ViewBag.LoginName)
+    {
+        Loginname = ViewBag.LoginName;
+
+    }
+
+    DateTime DateNow = DateTime.Now;
+    if (@ViewBag.Language == "TH")
+    {
+        Year = (DateNow.AddYears(-543)).ToString();
+    }
+    else
+    {
+        Year = (DateNow.Year).ToString();
+    }
+    if (DateNow.Hour > 16)
+    {
+
+
+        day = (DateNow.Day ).ToString();
+        month = (DateNow.Month-1).ToString();
+        DateStart = DateTime.Parse(DateNow.Year + "/" + DateNow.Month + "/" + day);
+    }
+    else
+    {
+         day = (DateNow.Day).ToString();
+         month = (DateNow.Month-1).ToString();
+        DateStart = DateTime.Parse(DateNow.Year + "/" + DateNow.Month + "/" + day);
+    }
+
+    string lRegion = "";
+    string lProvince = "";
+
+    if (ViewBag.LabelFBBProvince != null)
+    {
+        var labelFBBProvince = (List<LovScreenValueModel>)ViewBag.LabelFBBProvince;
+        lProvince = labelFBBProvince.Any(c => c.Name == "L_PROVINCE") ? labelFBBProvince.First(c => c.Name == "L_PROVINCE").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBRegion != null)
+    {
+        var labelFBBRegion = (List<LovScreenValueModel>)ViewBag.LabelFBBRegion;
+        lRegion = labelFBBRegion.Any(c => c.Name == "G_REGION") ? labelFBBRegion.First(c => c.Name == "G_REGION").DisplayValue : "";
+    }
+}
+
+<div id="PageRegister">
+    <p class="clearfix"></p>
+    <div class="container addrounded">
+        <h4 class="page-header tgreen">Pre-Register</h4>
+        <p class="clearfix"></p>
+        <form id="PreregisterPage" method="post" action="/PreRegister/InsertPreregister" style="margin-top: -5px;">
+            <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 add-border-rounded-green">
+                <div class="col-sm-3"><img src="~/img/logo-fibre.jpg" width="100" height="100" class="center-block pull-left "> </div>
+                <div class="col-sm-9">
+                    <p class="clearfix"></p>
+                    <span class="pull-right">
+                        <span>@lUSER_NAME :</span> &nbsp; &nbsp;
+                        <span id="Partnername">@Loginname</span> &nbsp; &nbsp;
+                        <a href="/PreRegister/Index">@bLogout</a>
+                    </span>
+                </div>
+                <p class="clearfix"></p>
+                <p class="clearfix"></p>
+                <div class="col-sm-6 col-xs-12">
+                    <input type="text" id="txtName" name="Pre_Cust_name" class="form-control" maxlength=" 50" placeholder="@lFIRST_NAME" />
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <input type="text" id="txtSurName" name="Pre_Cus_surname" class="form-control" maxlength="50" placeholder="@lLAST_NAME" />
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-sm-6 col-xs-12">
+                    <input type="text" class="form-control" id="Tel" name="Pre_TEL" maxlength="10" placeholder="@lTEL">
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <input type="text" class="form-control" id="txtNonMobile" name="Pre_prepaid_non_mobile" maxlength="10" placeholder="@lPREPAID_INTERNET_NO">
+
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+
+                <div class="col-sm-6 col-xs-12">
+                    <select id="ddlID_CARD_NAME" name="Pre_Card_Type" onchange="onChangeddlIDCardType(this);"
+                            class="select" style="width: 100%;"> </select>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <input type="text" class="form-control" id="txtCARD_NO" name="Pre_Cus_ID" placeholder="@lCARD_NO">
+                    <p class="clearfix"></p>
+                </div>
+
+                <p class="clearfix"></p>
+                <div class="col-sm-6 col-xs-12">
+                    <select id="ddlRegion" name="Pre_Region_Name" class="select" style="width: 100%;"></select>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <select id="ddlProvince" name="Pre_Province" class="select" style="width: 100%;"></select>
+                    <p class="clearfix"></p>
+                </div>
+
+                <p class="clearfix"></p>
+                <div class="col-sm-6 col-xs-12">
+                    <select id="ddlDORMITARY_Name" name="Pre_Dorm_Name" class="select" style="width: 100%;"></select>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <select id="ddlFloor" name="Pre_Dorm_Floor" class="select" style="width: 100%;"></select>
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-sm-6 col-xs-12">
+                    <select id="ddlDORMITARY_ROOM" name="Pre_Dorm_Room" class="select" style="width: 100%;"></select>
+                    <p class="clearfix"></p>
+                </div>
+                     <p class="clearfix"></p>
+                <div style="position: relative;">
+                      <div id="divInstallDate">
+                    <div class="col-sm-6 col-xs-12" id="divThDatePicker">
+                        <div class="col-sm-12 col-xs-12 right-inner-addon" style="position: relative; z-index: 10; padding-left: 0 !important; padding-right: 0 !important">
+                            <i class="fa fa-calendar"></i>
+                            <input id="dtpInstallDatesTH_text" type="text" class="form-control" name="Pre_AppointmentDateTH" placeholder="@lAPPOINTMENT_DATE" readonly="readonly" autocomplete="off" />
+                        </div>
+                        <div style="position: absolute; width: 100%; height: 100%; z-index: -10;">
+                            <input type="text" class="form-control" id="dtpInstallDatesTH" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12 right-inner-addon" id="divEnDatePicker" style="display: none;">
+                        <i class="fa fa-calendar"></i>
+                        <input type="text" class="form-control"
+                           id="dtpInstallDateEN" placeholder="@lAPPOINTMENT_DATE" name="Pre_AppointmentDateEN" readonly="readonly" autocomplete="off" />
+                        <p class="clearfix"></p>
+                    </div>
+            </div>
+                    </div>
+             @*   <div class="col-sm-6 col-xs-12 right-inner-addon">
+                    <i class="fa fa-calendar"></i>
+                    <div id="divThDatePicker">
+                        <input type="text" class="form-control" id="dtpInstallDatesTH" name="Pre_AppointmentDateTH"
+                               placeholder="@lAPPOINTMENT_DATE">
+                    </div>
+                    <div id="divEnDatePicker" style="display: none;">
+                        <input type="text" class="form-control" id="dtpInstallDateEN" name="Pre_AppointmentDateEN"
+                               placeholder="@lAPPOINTMENT_DATE" />
+                    </div>
+                    <p class="clearfix"></p>
+                </div>*@
+                <div class="col-sm-6 col-xs-12">
+                    <select id="ddlContactTime" class="select" style="width: 100%;"></select>
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-sm-6 col-xs-12">
+                    <select id="ddlSUBCONTRACT_NAME" name="Pre_Subcontract" class="select" style="width: 100%;"></select>
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+                <p class="clearfix"></p>
+
+                <p class="clearfix"></p>
+                <div class="col-xs-12  text-center">
+                    <button type="button" id="btnNoAccept" onclick="Clear()" class="btn btn-default btn-for-xs">&nbsp; @bClear &nbsp; </button>
+                    <button type="button" id="bSUBMIT" onclick="SavePregister()" class="btn btn-success btn-for-xs" disabled>&nbsp; @bSUBMIT &nbsp;</button>
+                </div>
+                <p class="clearfix"></p>
+                <input type="hidden" id="hd_dromname" />
+                <input type="hidden" id="hd_dromfloor" />
+                <input type="hidden" id="hd_dromno" />
+                <input type="hidden" id="hd_AddressName" name="Pre_AddressName" />
+                <input type="hidden" id="hd_Appointdate" />
+                <input type="hidden" id="hd_Timeslot" name="Pre_ContactTime" />
+                <input type="hidden" id="hd_AddressID" name="Pre_AddressId" />
+                <input type="hidden" id="hd_SubcontractId" name="SubcontractID" />
+                <input type="hidden" id="hd_netnumber" />
+                <input type="hidden" id="hd_Namepartner" name="Pre_PartnerName" />
+                <input type="hidden" id="hd_RtIDcard" name="ReturnIDCard" />
+                <input type="hidden" id="hd_dromroom" />
+                <input type="hidden" id="pre_Region_hidden" />               
+                <input type="hidden" id="pre_Province_hidden"/>
+                <input type="hidden" id="hd_NowDate" value ="@Model.Pre_NowDate" />
+            </div>
+            <p class="clearfix"></p>
+        </form>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+</div>
+
+<div class="modal fade" id="basic-modal-content-Success" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content-Success-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <div id="LastPopupMessage">
+                    </div>
+                    <h3 class="text-center">
+                        @lSUCCESS
+                    </h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();Reload();">&nbsp; @bSUBMIT &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="basic-modal-content-Fail" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content-Fail-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <div id="LastPopupMessage">
+                    </div>
+                    <h3 class="text-center">
+                        @lFAIL
+                    </h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();Reload();">&nbsp; @bSUBMIT &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="Login" method="post" action="/PreRegister/ProcessLinePreregister">
+    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12 add-border-rounded-green">
+        <span><img src="~/img/logo-fibre.jpg" class="center-block img-responsive"></span>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3 col-xs-12">
+            @lLOCATION_CODE
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3 col-xs-12">
+            <input type="text" id="LcCode" name="LcCode" class="form-control" maxlength="@Length_Location_Code" />
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3">@lASC_CODE</div>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3">
+            <input type="text" id="ASCCode" name="ASCCode" class="form-control" maxlength="@Length_ASC_Code" />
+        </div>
+
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3">@lINPUT_CAPTCHA</div>
+
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3 text-center">
+            <input type="text" id="defaultReal" class="form-control" name="defaultReal" />
+        </div>
+        <p class="clearfix"></p>
+
+        <div class="col-xs-12  text-center">
+            <button id="btn1" type="button" class="btn btn-default btn-for-xs">&nbsp; @bCLEAR &nbsp; </button>
+            <button id="btn2" type="button" class="btn btn-success btn-for-xs">&nbsp; @bLOGIN &nbsp; </button>
+            <button id="btndis" type="button" class="btn btn-success btn-for-xs" disabled style="display: none;">&nbsp; @bLOGIN &nbsp;</button>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+    <input id="outType" name="outType" type="hidden" />
+    <input id="outSubType" name="outSubType" type="hidden" />
+    <input type="hidden" id="outPartnames" name="outPartname" />
+</form>
+<script>
+    var validateModel003R = new Array();
+    var validateModel004R = new Array();
+
+    $(function () {
+        $("#PageRegister .select").select2({
+        });
+
+        $("#PageRegister .select-error").select2({
+            theme: "classic"
+        });
+
+        $("#btndis").hide();
+        hideHeader();
+        getCustomerCardType("R");
+
+        //
+        GetRegion();
+        GetProvince();
+        SetDefaultDormitoryDDL();
+        //GetProvince();
+        //
+        //getDormomitory();
+        //GetFloors();
+        //getRoomNumber();
+        
+
+        getSubcontract();
+        GetContactTime();
+        setInstallDate();
+
+        var minStartdate = '@Year' + '-' + '@month' + '-' + '@day'
+  @*      var YearTH = parseInt(@Year).toString();
+        var minStartdateTH = (YearTH)+ '-' + '@month' + '-' + '@day'*@
+        $('#dtpInstallDateEN').datetimepicker({
+            format: 'd-m-Y',
+            yearOffset: 0,
+            lang: 'en',
+            timepicker: false,
+            minDate: minStartdate,
+            onSelectDate: function (dp, $input) {
+
+                GetContactTimeFilter($input.val())
+                //GetContactTimeFilter($input.val($('#dtpInstallDatesTH').val().toString()));
+            },
+        });
+
+        $("#dtpInstallDatesTH_text").val(convertToThaiDate($('#dtpInstallDatesTH').val()));
+        $("#dtpInstallDatesTH_text").click(function () {
+           
+            $("#dtpInstallDatesTH").trigger('open.xdsoft');
+        });
+        $('#dtpInstallDatesTH').datetimepicker({
+            format: 'd-m-Y',
+            yearOffset: 0,
+            lang: 'th',
+            timepicker: false,
+            minDate: minStartdate,
+            onSelectDate: function (dp, $input) {
+               
+                var ctTh = convertToThaiDate($('#dtpInstallDatesTH').val());
+               
+                $("#dtpInstallDatesTH_text").val(ctTh);
+                
+                GetContactTimeFilter(ctTh)
+                // $('#dtpInstallDatesTH_text').val($input.val())
+            }
+
+        });
+        $('#bSUBMIT').disabled = true;
+
+        $('#defaultReal').realperson({
+            length: 5,
+            regenerate: 'Change',
+            dot: '*',
+            dots: $.realperson.defaultDots,
+            chars: $.realperson.alphanumeric
+        });
+        $('#LcCode').keyup(function () {
+            CheckKeyUps('LcCode', '@Input_Location_Code');
+        });
+
+        $('#ASCCode').keyup(function () {
+            CheckKeyUps('ASCCode', '@Input_ASC_Code');
+        });
+
+    });
+    function convertToThaiDate(englishDate) {
+        
+        if (englishDate != "") {
+            var dd = englishDate.substring('0', '2');
+            var MM = englishDate.substring('3', '5');
+            var yyyy = parseInt(englishDate.substring('6', '10'));
+            var year = parseInt(yyyy, 10) + 543;
+            return dd + "-" + MM + "-" + year;
+        }
+    }
+
+    
+
+    function CheckKeyUps(id, RexStr, checkMobile) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        if (checkMobile == undefined || checkMobile != "M") {
+            var filter = new RegExp(RexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+        }
+        else {
+            var filterM = new RegExp(RexStr, "g");
+            strBuilder = strKey.match(filterM);
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    $('#btn1').click(function () {
+        $('#LcCode').val("");
+        $('#ASCCode').val("");
+        $("#LcCode").removeClass('textFieldFalse').addClass('textField');
+        $("#defaultReal").removeClass('textFieldFalse').addClass('textField');
+        $("#defaultReal").val("");
+    });
+
+    $('#btn2').click(function () {
+
+        $("#btndis").show();
+        $('#btn2').hide();
+        //var modelvalidate = new Array();
+        //modelvalidate.push({ id: "LcCode" });
+        var chk = true;//false;
+        var cap = false;
+        //chk = ValidationProcessing(modelvalidate, "error")
+        $.ajax({
+            url: '/Process/ValidateCaptcha',
+            data: { inputUser: $('#defaultReal').val(), inputHash: $('#defaultReal').realperson('getHash') },
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (response) {
+                if (!response) {
+                    toastrErrorMessage("@L_CAPTCHA_ERR");
+                    $("#defaultReal").removeClass('textField').addClass('textFieldFalse');
+                    $("#btn2").show();
+                    $('#btndis').hide();
+                }
+                else {
+                    $("#defaultReal").removeClass('textFieldFalse').addClass('textField');
+                    cap = true;
+                }
+            }
+        }); // end ajax
+
+        if (chk && cap) {
+
+            $.ajax({
+                url: '/Preregister/CheckSeibel',
+                data: { LocationCode: $('#LcCode').val(), ASCCode: $('#ASCCode').val() },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (response) {
+                    if (response.outStatus == "Error" || response.outType == "" || response.outSubType == "") {
+                        toastrErrorMessage(response.outErrorMessage);
+                        $("#btn2").show();
+                        $('#btndis').hide();
+                    }
+                    else {
+                        $('#outType').val(response.outType);
+                        $('#outSubType').val(response.outSubType);
+                        $('#Partnername').text(response.outPartnerName);
+                        $('#hd_Namepartner').val(response.outPartnerName);
+                        $('#outPartnames').val(response.outPartnerName);
+
+                        $('#LcCode').val(response.outLocationCode);
+                        $("#test").submit();
+                        $('#PageRegister').show();
+                        $('#Login').hide();
+                        $('#Login').submit();
+                        $("#wrapSwitchLanguage").hide();
+                    }
+                }
+            }); // end ajax
+        }
+
+    });
+    $('#txtNonMobile').focusout(function (event) {
+        if ($("#txtNonMobile").val() != "") {
+            GetDormDetails();
+        }
+    });
+
+    $('#ddlDORMITARY_Name').change(function (event) {
+        $('#hd_dromname').val($('#ddlDORMITARY_Name :selected').val());
+        $("#txtNonMobile").val('');
+        $('#ddlFloor').empty();
+        GetFloors();
+        $('#ddlDORMITARY_ROOM').empty();
+        $('#ddlDORMITARY_ROOM').append("<option value=''selected >" + "@lDORMITARY_ROOM" + "</option>");
+    });
+    $('#ddlFloor').change(function (event) {
+        $("#hd_dromfloor").val($('#ddlFloor :selected').val());
+        $("#txtNonMobile").val('');
+        $('#ddlDORMITARY_ROOM').empty();
+        getRoomNumber();
+    });
+
+    $('#ddlDORMITARY_ROOM').change(function (event) {
+        $("#hd_dromroom").val($('#ddlDORMITARY_ROOM :selected').val());
+        $("#txtNonMobile").val('');
+        getPreno();
+        getSubcontract();
+
+        getRegionAndProvoinceForDorm();
+    });
+    $('#ddlContactTime').change(function (event) {
+        $("#hd_Timeslot").val($("#ddlContactTime option:selected").text());
+    });
+    $('#ddlSUBCONTRACT_NAME').change(function (event) {
+        $("#hd_subcontract").val($("#ddlSUBCONTRACT_NAME option:selected").text());
+
+    });
+
+    $('#ddlRegion').change(function (event) {
+        onRegionChange();
+    });
+
+    $('#ddlProvince').change(function (event) {
+        onProvinceChange();
+    });
+
+    function GetDormDetails() {
+        if ("@ViewBag.Language" == "TH") {
+
+            if (result = validatemobile()) {                
+                getDormomitory();
+                GetFloors();
+                getRoomNumber();
+                getSubcontract();
+                GetSubcontractID();
+                GetDormitaryAddressID();
+                GetAddress();
+
+                getRegionAndProvoinceForDorm();
+
+                $('#bSUBMIT').removeProp('disabled', false);
+            }
+            else {
+                $("#txtNonMobile").val('');
+                $('#ddlDORMITARY_ROOM').empty();
+                $('#ddlDORMITARY_Name').empty();
+                $('#ddlFloor').empty();
+                getDormomitory();
+                GetFloors();
+                getRoomNumber();
+                getSubcontract();
+                GetSubcontractID();
+                validateModel003R.push({ id: "txtNonMobile" });
+                ValidationProcessing(validateModel003R, "err003");
+            }
+        }
+        else {
+            if (result = validatemobile()) {
+
+                getDormomitory();
+                GetFloors();
+                getRoomNumber();
+                getSubcontract();
+                GetAddress();
+                GetDormitaryAddressID();
+                validateModel003R.pop({ id: "txtNonMobile" });
+                ValidationProcessing(validateModel003R, "err003");
+
+                getRegionAndProvoinceForDorm();
+
+                $('#bSUBMIT').removeProp('disabled', false);
+            }
+            else {
+                $("#txtNonMobile").val('');
+                $('#ddlDORMITARY_ROOM').empty();
+                $('#ddlDORMITARY_Name').empty();
+                $('#ddlFloor').empty();
+                
+                getDormomitory();
+                GetFloors();
+                getRoomNumber();
+                getSubcontract();
+                validateModel003R.push({ id: "txtNonMobile" });
+                ValidationProcessing(validateModel003R, "err003");
+            }
+        }
+    }
+
+    function getCustomerCardType(type) {
+        $('#ddlID_CARD_NAME').empty();
+        //GetCustomerCardType
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetCustomerCardType",
+            data: { 'customerType': type },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder = "";
+                var flagSelect = false;
+                var firstStr = "<option value='' disabled>" + "@lCARD_TYPE" + "</option>";
+                var firstStrSelect = "<option value='' disabled selected>" + "@lCARD_TYPE" + "</option>";
+
+                $.each(data, function (i, e) {
+                    var str = "";
+
+                    if ($("#tddlID_CARD_NAME").val() != "") {
+                        if ($("#tddlID_CARD_NAME").val() == e.Value) {
+                            flagSelect = true;
+                            str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        }
+                        else {
+                            str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                        }
+                    }
+                    else {
+                        if (e.DefaultValue == type) {
+                            flagSelect = true;
+                            str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        }
+                        else {
+                            str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                        }
+                    }
+                    strBuilder += str;
+                });
+
+                if (flagSelect) {
+                    strBuilder = firstStr + strBuilder;
+                }
+                else {
+                    strBuilder = firstStrSelect + strBuilder;
+                }
+                $('#ddlID_CARD_NAME').append(strBuilder);
+                $('#ddlID_CARD_NAME').select2({
+                });
+            }
+        });
+    }
+    function getSubcontract() {
+        $('#ddlSUBCONTRACT_NAME').empty();
+        var firstStr = "";
+        var firstStrSelect = "";
+        $.ajax({
+            type: "GET",
+            url: "/PreRegister/GetSubcontract",
+            data: { "Netnumber": $("#txtNonMobile").val() },
+            dataType: "json",
+            success: function (data) {
+
+                $('#ddlSUBCONTRACT_NAME').empty();
+                var strBuilder = "";
+                var flagSelect = false;
+                if ($("#txtNonMobile").val() == "") {
+                    firstStr = "<option value='' disabled>" + "@lSUBCONTRACT_NAME" + "</option>";
+                    firstStrSelect = "<option value='' disabled selected>" + "@lSUBCONTRACT_NAME" + "</option>";
+                }
+
+                $.each(data, function (i, e) {
+
+                    var str = "";
+
+                    if ($("#tddlSUBCONTRACT_NAME").val() != "") {
+                        if ($("#tddlSUBCONTRACT_NAME").val() == e.Value) {
+                            flagSelect = true;
+                            str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        }
+                        else {
+                            str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                        }
+                    }
+                    else {
+                        if (e.DefaultValue == type) {
+                            flagSelect = true;
+                            str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        }
+                        else {
+                            str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                        }
+                    }
+                    strBuilder += str;
+                });
+
+                if (flagSelect) {
+                    strBuilder = firstStr + strBuilder;
+                }
+                else {
+                    strBuilder = firstStrSelect + strBuilder;
+                }
+
+                $("#ddlSUBCONTRACT_NAME").append(strBuilder);
+                $("#ddlSUBCONTRACT_NAME").select2({
+                });
+                ($("#hd_subcontract").val($('#SUBCONTRACT_NAME :selected').text()));
+                //  getPreno();
+            }
+        });
+    }
+
+    function GetSubcontractID() {
+
+        $.ajax({
+            type: "GET",
+            url: "/PreRegister/GetSubcontractID",
+            data: { "netnumber": $("#txtNonMobile").val() },
+            dataType: "json",
+            success: function (data) {
+
+                if (data != null) {
+                    $('#hd_SubcontractId').val(data);
+                }
+            }
+        });
+    }
+    function getDormomitory() {
+        $('#ddlDORMITARY_Name').empty();
+
+        var firstStr = "";
+        var firstStrSelect = "";
+        $.ajax({
+            type: "GET",
+            url: "/PreRegister/GetDormitaryDDL",
+            data: { "netnumber": $("#txtNonMobile").val(), "region": $("#ddlRegion").val(), "province": $("#ddlProvince").val() },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder = "";
+                var flagSelect = false;
+                if ($("#txtNonMobile").val() == "") {
+                    firstStr = "<option value='' disabled>" + "@lDORMITARY_Name" + "</option>";
+                    firstStrSelect = "<option value='' disabled selected>" + "@lDORMITARY_Name" + "</option>";
+                }
+                $.each(data, function (i, e) {
+
+                    var str = "";
+                    if ($("#tddlDORMITARY_Name").val() != "") {
+                        if ($("#tddlDORMITARY_Name").val() == e.Value)
+                        {
+                            flagSelect = true;
+                            str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        }
+                        else {
+                            str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                        }
+                    }
+                    else {
+                        if (e.DefaultValue == type)
+                        {
+                            flagSelect = true;
+                            str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        }
+                        else {
+                            str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                        }
+                    }
+                    
+                    strBuilder += str;
+                });
+
+                if (flagSelect) {
+                    strBuilder = firstStr + strBuilder;
+                }
+                else {
+                    strBuilder = firstStrSelect + strBuilder;
+                }
+
+                $('#ddlDORMITARY_Name').append(strBuilder);
+                $('#ddlDORMITARY_Name').select2({
+                });
+                GetFloors();
+                getRoomNumber();
+                if ($("#txtNonMobile").val() != "") {
+                    ($("#hd_dromname").val($('#ddlDORMITARY_Name :selected').val()));
+                    GetFloors();
+                }
+            }
+
+        });
+    }
+    function GetFloors() {
+        $('#ddlFloor').empty();
+        $('#ddlFloor').append("<option value=''selected >" + "@lFloor" + "</option>");
+        var firstStr = "";
+        var firstStrSelect = "";
+        if ($("#hd_dromname").val() != "") {
+
+            var domname = $("#hd_dromname").val();
+            var mySplitResult = domname.split(":");
+            var dormID = "";
+            var dormName = "";
+            var dormNo = "";
+            for (i = 0; i < mySplitResult.length; i++) {
+                if (mySplitResult[i] != null) {
+
+                    if (i == 0) {
+                        dormID = mySplitResult[i];
+                    }
+                    else if (i == 1) {
+                        dormName = mySplitResult[i];
+                    }
+                    else if (i == 2) {
+                        dormNo = mySplitResult[i];
+                    }
+                }
+            }
+            $.ajax({
+                type: "GET",
+                url: "/PreRegister/GetFloors",
+                data: { 'DormID': dormID, 'DormName': dormName, 'DormNO': dormNo, 'Netnumber': $("#txtNonMobile").val() },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $('#ddlFloor').empty();
+                    var strBuilder = "";
+                    var flagSelect = false;
+                    if ($("#txtNonMobile").val() == "") {
+                        firstStr = "<option value='' disabled>" + "@lFloor" + "</option>";
+                        firstStrSelect = "<option value='' disabled selected>" + "@lFloor" + "</option>";
+                    }
+                    $.each(data, function (i, e) {
+                        var str = "";
+                        if ($("#tddlFloor").val() != "") {
+                            if ($("#tddlFloor").val() == e.Value) {
+                                flagSelect = true;
+                                str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                            }
+                            else {
+                                str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                            }
+                        }
+                        else {
+                            if (e.DefaultValue == type) {
+                                flagSelect = true;
+                                str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                            }
+                            else {
+                                str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                            }
+                        }
+                        strBuilder += str;
+
+                    });
+
+                    if (flagSelect) {
+                        strBuilder = firstStr + strBuilder;
+                    }
+                    else {
+                        strBuilder = firstStrSelect + strBuilder;
+                    }
+
+                    $('#ddlFloor').append(strBuilder);
+
+                    if ($("#txtNonMobile").val() != "") {
+                        ($("#hd_dromfloor").val($('#ddlFloor :selected').val()));
+                        getRoomNumber();
+                    }
+                }
+            });
+        }
+        $('#ddlFloor').select2({
+        });
+    }
+
+    function getRoomNumber() {
+        $('#ddlDORMITARY_ROOM').empty();
+        $('#ddlDORMITARY_ROOM').append("<option value=''selected >" + "@lDORMITARY_ROOM" + "</option>");
+        var firstStr = "";
+        var firstStrSelect = "";
+        if ($("#hd_dromname").val() != "") {
+            var domname = $("#hd_dromname").val();
+            var mySplitResult = domname.split(":");
+            var dormID = "";
+            var dormName = "";
+            var dormNo = "";
+            var floor = $("#hd_dromfloor").val();
+            for (i = 0; i < mySplitResult.length; i++) {
+                if (mySplitResult[i] != null) {
+
+                    if (i == 0) {
+                        dormID = mySplitResult[i];
+                    }
+                    else if (i == 1) {
+                        dormName = mySplitResult[i];
+                    }
+                    else if (i == 2) {
+                        dormNo = mySplitResult[i];
+                    }
+                }
+            }
+            $.ajax({
+                type: "GET",
+                url: "/PreRegister/GetDormitaryRoomDDL",
+                data: { 'DormID': dormID, 'DormName': dormName, 'DormNO': dormNo, 'DromFloor': floor, 'Netnumber': $("#txtNonMobile").val() },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $('#ddlDORMITARY_ROOM').empty();
+                    var strBuilder = "";
+                    var flagSelect = false;
+                    if ($("#txtNonMobile").val() == "") {
+                        firstStr = "<option value='' disabled>" + "@lDORMITARY_ROOM" + "</option>";
+                        firstStrSelect = "<option value='' disabled selected>" + "@lDORMITARY_ROOM" + "</option>";
+                    }
+                    $.each(data, function (i, e) {
+                        var str = "";
+                        if ($("#tddlDORMITARY_ROOM").val() != "") {
+                            if ($("#tddlDORMITARY_ROOM").val() == e.Value) {
+                                flagSelect = true;
+                                str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                            }
+                            else {
+                                str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                            }
+                        }
+                        else {
+                            if (e.DefaultValue == type) {
+                                flagSelect = true;
+                                str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                            }
+                            else {
+                                str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                            }
+                        }
+                        strBuilder += str;
+                    });
+
+                    if (flagSelect) {
+                        strBuilder = firstStr + strBuilder;
+                    }
+                    else {
+                        strBuilder = firstStrSelect + strBuilder;
+                    }
+                    $('#ddlDORMITARY_ROOM').append(strBuilder);
+
+                    if ($("#txtNonMobile").val() != "") {
+                        ($("#hd_dromroom").val($('#ddlDORMITARY_ROOM :selected').val()));
+
+                    }
+                }
+            });
+        }
+        $('#ddlDORMITARY_ROOM').select2({
+        });
+    }
+    function getPreno() {
+
+        $('#txtNonMobile').val("");
+        if ($("#hd_dromname").val() != "") {
+            var domname = $("#hd_dromname").val();
+            var mySplitResult = domname.split(":");
+            var dormID = "";
+            var dormName = "";
+            var dormNo = "";
+            var floor = $("#hd_dromfloor").val();
+            var dormroom = $("#hd_dromroom").val();
+            for (i = 0; i < mySplitResult.length; i++) {
+                if (mySplitResult[i] != null) {
+
+                    if (i == 0) {
+                        dormID = mySplitResult[i];
+                    }
+                    if (i == 1) {
+                        dormName = mySplitResult[i];
+                    }
+                    if (i == 2) {
+                        dormNo = mySplitResult[i];
+                    }
+                }
+            }
+            $.ajax({
+                type: "GET",
+                url: "/PreRegister/GetNonPreMobile",
+                data: { 'DormID': dormID, 'DormName': dormName, 'DormNO': dormNo, 'DromFloor': floor, 'Dormroom': dormroom },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data != null) {
+                        $('#txtNonMobile').val(data);
+                        GetDormitaryAddressID();
+                        GetAddress();
+                        getSubcontract();
+                        GetSubcontractID();
+                        $('#bSUBMIT').removeProp('disabled', false);
+                    }
+                }
+            });
+        }
+    }
+
+    function GetAddress() {
+
+        //var Addressname = $("#hd_Address").val();
+        $.ajax({
+            type: "GET",
+            url: "/PreRegister/GetDormitaryAddress",
+            data: { "netnumber": $("#txtNonMobile").val() },
+            dataType: "json",
+            success: function (data) {
+
+                if (data != null) {
+                    $('#hd_AddressName').val(data[0].Text);
+                }
+            }
+
+        });
+    }
+    function GetDormitaryAddressID() {
+
+        $.ajax({
+            type: "GET",
+            url: "/PreRegister/GetDormitaryAddressID",
+            data: { "netnumber": $("#txtNonMobile").val() },
+            dataType: "json",
+            success: function (data) {
+
+                if (data != null) {
+                    $('#hd_AddressID').val(data);
+                }
+            }
+        });
+    }
+
+    function setInstallDate() {
+
+        if ("@ViewBag.Language" == "TH") {
+            $("#divEnDatePicker").hide();
+            $("#divThDatePicker").show();
+        }
+        else {
+            $("#divThDatePicker").hide();
+            $("#divEnDatePicker").show();
+        }
+    }
+    function validatemobile() {
+
+        var result = false;
+        $.ajax({
+            type: "POST",
+            url: "/PreRegister/CheckValidate",
+            data: { "mobile": $("#txtNonMobile").val() },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data) {
+                    if (data.toString() == "Available") {
+                        result = true;
+                    }
+                    else {
+                        result = false;
+                    }
+                }
+            }
+        });
+        return result;
+    }
+
+    function validateIdCard(idtxtCardNo) {
+
+        var num = idtxtCardNo; // function เพิ่มเติม
+
+        var sum = 0;
+        var total = 0;
+        var digi = 13;
+
+        for (i = 0; i < 12; i++) {
+            sum = sum + (num[i] * digi);
+            digi--;
+        }
+        total = ((11 - (sum % 11)) % 10);
+
+        if (total != num[12]) {
+
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    }
+    function SavePregister() {
+        MobileNo = $("#Tel").val();
+        var MobileNo = MobileNo.length;
+        $('#bSUBMIT').one('click', function (event) {
+            event.preventDefault();
+            //do something
+            $(this).prop('disabled', true);
+        });
+        if ("@ViewBag.Language" == "TH") {
+            if ($('#ddlID_CARD_NAME :selected').val() == "ID_CARD") {
+                var chk = true;
+
+                if (chk == validateIdCard($("#txtCARD_NO").val())) {
+
+                }
+                else {
+                    $("#txtCARD_NO").val('');
+                }
+            }
+            if (MobileNo < 10) {
+                $("#Tel").val('');
+                validateModel003R.push({ id: "Tel" });
+                ValidationProcessing(validateModel003R, "err003");
+            }
+            else {
+
+            }
+            pushRequireFieldRTH();
+        }
+        else {
+            if ($('#ddlID_CARD_NAME :selected').val() == "ID_CARD") {
+                var chk = true;
+
+                if (chk == validateIdCard($("#txtCARD_NO").val())) {
+
+                }
+                else {
+                    $("#txtCARD_NO").val('');
+                }
+            }
+            if (MobileNo < 10) {
+                $("#Tel").val('');
+                validateModel003R.push({ id: "Tel" });
+                ValidationProcessing(validateModel003R, "err003");
+            }
+            else {
+
+                //validateModel003R.pop({ id: "Tel" });
+                //ValidationProcessing(validateModel003R, "err003");
+                //$('#error0').hide();
+            }
+            pushRequireFieldREN();
+        }
+
+        var chk = ValidationProcessing(validateModel003R, "err003");
+
+        if (!chk) {
+            //$("#txtCARD_NO").val('');
+            //validateModel003R.push({ id: "txtCARD_NO" });
+
+            //    $('#bSUBMIT').removeProp("disabled");
+        }
+        else {
+            $('#PreregisterPage').submit();
+            $('#Login').hide();
+            $('#PageRegister').show();
+        }
+    }
+
+    function Clear() {
+        $('#btnNoAccept').dblclick(function (e) {
+            e.preventDefault();
+
+        });
+        setInstallDate();
+        $('#bSUBMIT').prop('disabled', true);
+        if ("@ViewBag.Language" == "TH") {
+            $('#dtpInstallDatesTH_text').val("");
+            $('#dtpInstallDatesTH_text').removeClass('form-control errorinput').addClass('form-control');
+
+        }
+        else {
+            $('#dtpInstallDateEN').val("");
+            $('#dtpInstallDateEN').removeClass('form-control errorinput').addClass('form-control');
+
+        }
+        $('#txtNonMobile').val("");
+        $('#txtName').val("");
+        $('#txtSurName').val("");
+        $('#Tel').val("");
+        $('#txtCARD_NO').val("");
+        $('#ddlDORMITARY_Name').empty();
+        $('#ddlFloor').empty();
+        $('#ddlDORMITARY_ROOM').empty();
+        $('#ddlContactTime').empty();
+        $('#ddlSUBCONTRACT_NAME').empty();
+        $('#txtCARD_NO').removeClass('form-control errorinput').addClass('form-control');
+        $('#txtNonMobile').removeClass('form-control errorinput').addClass('form-control');
+        $('#txtName').removeClass('form-control errorinput').addClass('form-control');
+        $('#txtSurName').removeClass('form-control errorinput').addClass('form-control');
+        $('#Tel').removeClass('form-control errorinput').addClass('form-control');
+        $('#ddlDORMITARY_Name').removeClass('form-control errorinput').addClass('form-control');
+        $('#ddlFloor').removeClass('form-control errorinput').addClass('form-control');
+        $('#ddlDORMITARY_ROOM').removeClass('form-control errorinput').addClass('form-control');
+        $('#ddlSUBCONTRACT_NAME').removeClass('form-control errorinput').addClass('form-control');
+        $('#ddlID_CARD_NAME').removeClass('form-control errorinput').addClass('form-control');
+        getCustomerCardType("R");
+        getDormomitory();
+        $('#ddlDORMITARY_ROOM').empty();
+        $('#ddlDORMITARY_ROOM').append("<option value=''selected >" + "@lDORMITARY_ROOM" + "</option>");
+        $('#ddlFloor').empty();
+        $('#ddlFloor').append("<option value=''selected >" + "@lFloor" + "</option>");
+        getSubcontract();
+        GetContactTime();
+        setInstallDate();
+
+        $("#pre_Region_hidden").val("");
+        $("#pre_Province_hidden").val("");
+    }
+    var success = '@isSaveCommplete';
+    var fail = '@isSaveFail';
+    var language_ = '@languagePages';
+    var login_ = '@loginstatus';
+
+    if (login_ == 'True') {
+        $('#Login').hide();
+        $("#wrapSwitchLanguage").hide();
+        $('#PageRegister').show();
+    }
+    else {
+        $('#Login').show();
+        $('#PageRegister').hide();
+    }
+    if (success == 'True') {
+        $('#Login').hide();
+        $('#PageRegister').show();
+        $("#wrapSwitchLanguage").hide();
+        Reload();
+        setTimeout(function () {
+            $('#basic-modal-content-Success').modal();
+        }, 200);
+    }
+    if (fail == 'True') {
+        $('#Login').hide();
+        $('#PageRegister').show();
+        $("#wrapSwitchLanguage").hide();
+        Reload();
+        setTimeout(function () {
+            $('#basic-modal-content-Fail').modal();
+        }, 200);
+    }
+    function Reload() {
+        $('#Login').hide();
+        $('#PageRegister').show();
+        $("#wrapSwitchLanguage").hide();
+    }
+    function ClosePopupReload() {
+        if (success == 'True') {
+            Reload();
+        }
+        else {
+            Reload();
+        }
+    }
+    function showjpopupSuccess(width_, height_) {
+        $('#basic-modal-content-Success').modal('show');
+        $('#basic-modal-content-Success').css('display', 'block');
+
+        var div1 = $('#simplemodal-container');
+        if (width_ != null) { div1.css('width', width_); }
+        if (height_ != null) { div1.css('height', height_); }
+
+        div1.css('margin-left', '10%');
+
+        return false;
+    }
+    function showjpopupFail(width_, height_) {
+        $('#basic-modal-content-Fail').modal('show');
+        $('#basic-modal-content-Fail').css('display', 'block');
+
+        var div1 = $('#simplemodal-container');
+        if (width_ != null) { div1.css('width', width_); }
+        if (height_ != null) { div1.css('height', height_); }
+
+        div1.css('margin-left', '10%');
+
+        return false;
+    }
+
+    function GetContactTime() {
+
+        $("#ddlContactTime").empty();
+        $.ajax({
+            type: "GET",
+            url: "/PreRegister/GetContactTime",
+            dataType: "json",
+            success: function (data) {
+                var strBuilder = "<option value='' disabled selected >" + "@lTIME" + "</option>";
+                $.each(data, function (i, e) {
+                    var str = "";
+
+                    if (e.DefaultValue != undefined) {
+                        if (e.DefaultValue.toString().toUpperCase() == "Y")
+                            str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        else
+                            str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    }
+                    else
+                        str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+
+                    strBuilder += str;
+                });
+                $('#ddlContactTime').append(strBuilder);
+                $('#ddlContactTime').select2({
+                });
+            }
+        });
+        }
+        //GetContactTimeFliter
+        function GetContactTimeFilter(Dateselect) {
+            //alert(Dateselect);
+            $("#ddlContactTime").empty();
+            $.ajax({
+                type: "GET",
+                url: "/PreRegister/GetContactTimeToday",
+                data: { 'Datetime': Dateselect },
+                dataType: "json",
+                success: function (data) {
+                    
+                    // alert(data);
+                    var strBuilder = "<option value='' disabled selected >" + "@lTIME" + "</option>";
+                    $.each(data, function (i, e) {
+                        var str = "";
+
+                        if (e.DefaultValue != undefined) {
+                            if (e.DefaultValue.toString().toUpperCase() == "Y")
+                                str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                            else
+                                str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                        }
+                        else
+                            str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+
+                        strBuilder += str;
+                    });
+                    $('#ddlContactTime').append(strBuilder);
+                    $('#ddlContactTime').select2({
+                    });
+                }
+            });
+        }
+
+        function pushRequireFieldRTH() {
+            validateModel003R.push({ id: "txtName" });
+            validateModel003R.push({ id: "txtSurName" });
+            validateModel003R.push({ id: "Tel" });
+            validateModel003R.push({ id: "txtNonMobile" });
+            validateModel003R.push({ id: "ddlID_CARD_NAME" });
+            validateModel003R.push({ id: "txtCARD_NO" });
+            validateModel003R.push({ id: "ddlDORMITARY_Name" });
+            validateModel003R.push({ id: "ddlDORMITARY_ROOM" });
+            validateModel003R.push({ id: "dtpInstallDatesTH_text" });
+            validateModel003R.push({ id: "ddlContactTime" });
+            validateModel003R.push({ id: "ddlSUBCONTRACT_NAME" });
+            validateModel003R.push({ id: "ddlFloor" });
+        }
+        function popRequireFieldRTH() {
+            validateModel003R.pop({ id: "txtName" });
+            validateModel003R.pop({ id: "txtSurName" });
+            validateModel003R.pop({ id: "Tel" });
+            validateModel003R.pop({ id: "txtNonMobile" });
+            validateModel003R.pop({ id: "ddlID_CARD_NAME" });
+            validateModel003R.pop({ id: "txtCARD_NO" });
+            validateModel003R.pop({ id: "ddlDORMITARY_Name" });
+            validateModel003R.pop({ id: "ddlDORMITARY_ROOM" });
+            validateModel003R.pop({ id: "dtpInstallDatesTH_text" });
+            validateModel003R.pop({ id: "ddlContactTime" });
+            validateModel003R.pop({ id: "ddlSUBCONTRACT_NAME" });
+            validateModel003R.pop({ id: "ddlFloor" });
+        }
+        function pushRequireFieldREN() {
+            validateModel003R.push({ id: "txtName" });
+            validateModel003R.push({ id: "txtSurName" });
+            validateModel003R.push({ id: "Tel" });
+            validateModel003R.push({ id: "txtNonMobile" });
+            validateModel003R.push({ id: "ddlID_CARD_NAME" });
+            validateModel003R.push({ id: "txtCARD_NO" });
+            validateModel003R.push({ id: "ddlDORMITARY_Name" });
+            validateModel003R.push({ id: "ddlDORMITARY_ROOM" });
+            validateModel003R.push({ id: "dtpInstallDateEN" });
+            validateModel003R.push({ id: "ddlContactTime" });
+            validateModel003R.push({ id: "ddlSUBCONTRACT_NAME" });
+            validateModel003R.push({ id: "ddlFloor" });
+
+        }
+        function popRequireFieldREN() {
+            validateModel003R.pop({ id: "txtName" });
+            validateModel003R.pop({ id: "txtSurName" });
+            validateModel003R.pop({ id: "Tel" });
+            validateModel003R.pop({ id: "txtNonMobile" });
+            validateModel003R.pop({ id: "ddlID_CARD_NAME" });
+            validateModel003R.pop({ id: "txtCARD_NO" });
+            validateModel003R.pop({ id: "ddlDORMITARY_Name" });
+            validateModel003R.pop({ id: "ddlDORMITARY_ROOM" });
+            validateModel003R.pop({ id: "dtpInstallDateEN" });
+            validateModel003R.pop({ id: "ddlContactTime" });
+            validateModel003R.pop({ id: "ddlSUBCONTRACT_NAME" });
+            validateModel003R.pop({ id: "ddlFloor" });
+        }
+
+        function onChangeddlIDCardType() {// Dinamic Set maxlength ของ card แต่ละ type
+
+            $('#txtCARD_NO').val("");
+            if ($('#ddlID_CARD_NAME :selected').val() == "ID_CARD") {
+                $('#txtCARD_NO').attr("maxlength", 13);
+            }
+            else if ($('#ddlID_CARD_NAME :selected').val() == "MONK_CERT") {
+                $('#txtCARD_NO').prop("maxlength", 15);
+            }
+            else if ($('#ddlID_CARD_NAME :selected').val() == "PASSPORT") {
+                $('#txtCARD_NO').attr("maxlength", 9);
+            }
+            else if ($('#ddlID_CARD_NAME :selected').val() == "IMM_CARD") {
+                $('#txtCARD_NO').attr("maxlength", 15);
+            }
+            else if ($('#ddlID_CARD_NAME :selected').val() == "HILL_CARD") {
+                $('#txtCARD_NO').attr("maxlength", 15);
+            }
+        }
+
+        $('#txtCARD_NO').keyup(function () {
+            if ($('#ddlID_CARD_NAME :selected').val() == "ID_CARD") {
+                CheckKeyUps("txtCARD_NO", '@INPUT_ID_CARD');
+            }
+            else if ($('#ddlID_CARD_NAME :selected').val() == "MONK_CERT") {
+                CheckKeyUps("txtCARD_NO", '@INPUT_MONK_CERT');
+        }
+        else if ($('#ddlID_CARD_NAME :selected').val() == "PASSPORT") {
+            CheckKeyUps("txtCARD_NO", '@INPUT_PASSPORT');
+        }
+
+        else if ($('#ddlID_CARD_NAME :selected').val() == "IMM_CARD") {
+            CheckKeyUps("txtCARD_NO", '@INPUT_IMM_CARD');
+        }
+        else if ($('#ddlID_CARD_NAME :selected').val() == "HILL_CARD") {
+            CheckKeyUps("txtCARD_NO", '@INPUT_HILL_CARD');
+        }
+        });
+function CheckKeyUps(id, RexStr) {
+    var strKey = $("#" + id).val();
+    var strBuilder = "";
+    var filter = new RegExp(RexStr);
+    for (var i = 0; i < strKey.length; i++) {
+        if (filter.test(strKey.substr(i, 1))) {
+            strBuilder += strKey.substr(i, 1);
+        }
+    }
+    $("#" + id).val(strBuilder);
+
+}
+$('#txtName').keyup(function () {
+    // $('#L_FIRST_NAME').val($('#L_FIRST_NAME').val().replace(/[+฿/!@@#$%^&*()_\><{}๐":;'|,=~0123456789]/g, function (str) { return ''; }));
+    CheckKeyUps("txtName", "@FBB_Con_CharNotonName");
+});
+    $('#txtSurName').keyup(function () {
+        // $('#L_FIRST_NAME').val($('#L_FIRST_NAME').val().replace(/[+฿/!@@#$%^&*()_\><{}๐":;'|,=~0123456789]/g, function (str) { return ''; }));
+        CheckKeyUps("txtSurName", "@FBB_Con_CharNotonName");
+        });
+
+        $("#Tel").keyup(function () {
+            CheckKeyUps("Tel", '@FBB_Input_MobileNo','M');
+    });
+
+
+    $("#txtNonMobile").keyup(function () {
+        CheckKeyUps("txtNonMobile", '[0-9]');
+    });
+
+
+    function GetRegion()
+    {
+        $('#ddlRegion').empty();
+        var firstStr = "";
+        var firstStrSelect = "";
+        $.ajax({
+            type: "GET",
+            url: "/PreRegister/GetRegion",
+            data: {},
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder = "";
+
+                if ($("#txtNonMobile").val() == "")
+                {
+                    strBuilder = "<option value='' disabled selected >" + "@lRegion" + "</option>";
+                    $.each(data, function (i, e) {
+                        var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                        strBuilder += str;
+                    });
+                }
+                else
+                {
+                    strBuilder = "<option value='' disabled>" + "@lRegion" + "</option>";
+                    var str = "";
+                    $.each(data, function (i, e)
+                    {
+                        if (e.Value == $('#pre_Region_hidden').val())
+                            str = '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        else
+                            str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+
+                        strBuilder += str;
+                    });                   
+                }
+
+                $('#ddlRegion').append(strBuilder);
+            }
+            });
+
+                $('#ddlRegion').select2({
+                });
+    }
+
+    function GetProvince()
+    {
+        $('#ddlProvince').empty();
+        $.ajax({
+            type: "GET",
+            url: "/PreRegister/Getprovince",
+            dataType: "json",
+            data: { 'regionfilter': $('#ddlRegion').val() },
+            async: false,
+            success: function (data) {
+                var strBuilder = "";// "<option value='' disabled selected >" + "@lProvince" + "</option>";
+                if ($("#txtNonMobile").val() == "")
+                {
+                    strBuilder = "<option value='' disabled selected >" + "@lProvince" + "</option>";
+                    $.each(data, function (i, e)
+                    {
+
+                        var str = '<option value="' + e.Text + '">' + e.Value + '</option>';
+                        strBuilder += str;
+                    });                    
+                }
+                else
+                {
+                    strBuilder = "<option value='' disabled >" + "@lProvince" + "</option>";
+                    var str = "";
+                    $.each(data, function (i, e)
+                    {
+                        if (e.Value == $('#pre_Province_hidden').val())
+                            str = '<option value="' + e.Text + '" selected>' + e.Value + '</option>';
+                        else
+                            str = '<option value="' + e.Text + '">' + e.Value + '</option>';
+
+                        strBuilder += str;
+                    });
+                }
+
+                $('#ddlProvince').append(strBuilder);
+            }
+        });
+        $('#ddlProvince').select2({
+        });
+    }
+
+    function onRegionChange()
+    {
+        GetProvince();
+        document.getElementById("ddlDORMITARY_Name").disabled = false;
+        document.getElementById("ddlFloor").disabled = false;
+        document.getElementById("ddlDORMITARY_ROOM").disabled = false;
+        getDormomitory();
+        GetFloors();
+        getRoomNumber();
+    }
+
+    function onProvinceChange()
+    {
+        //GetD
+        document.getElementById("ddlDORMITARY_Name").disabled = false;
+        document.getElementById("ddlFloor").disabled = false;
+        document.getElementById("ddlDORMITARY_ROOM").disabled = false;
+        getDormomitory();
+        GetFloors();
+        getRoomNumber();
+
+        //$("#ddlRegion option[value='ROS']").attr('selected', 'selected');
+    }
+    
+    function getRegionAndProvoinceForDorm()
+    {
+        var domname = $("#hd_dromname").val();
+        var mySplitResult = domname.split(":");
+        var dormID = "";
+        var dormName = "";
+        var dormNo = "";
+        for (i = 0; i < mySplitResult.length; i++) {
+            if (mySplitResult[i] != null) {
+
+                if (i == 0) {
+                    dormID = mySplitResult[i];
+                }
+                else if (i == 1) {
+                    dormName = mySplitResult[i];
+                }
+                else if (i == 2) {
+                    dormNo = mySplitResult[i];
+                }
+            }
+        }
+        
+        $.ajax({
+            type: "GET",
+            url: "/PreRegister/GetRegionAndProvoinceForDorm",
+            dataType: "json",
+            data: { 'dormId': dormID },
+            async: false,
+            success: function (response) {
+                if (response)
+                {                    
+                    document.getElementById("ddlDORMITARY_Name").disabled = false;
+                    document.getElementById("ddlFloor").disabled = false;
+                    document.getElementById("ddlDORMITARY_ROOM").disabled = false;
+                    $('#pre_Region_hidden').val(response.regionVal);
+                    $('#pre_Province_hidden').val(response.provinceVal);
+                    GetRegion();
+                    GetProvince();
+                }
+            }
+        });
+        
+    }
+
+    function SetDefaultDormitoryDDL()
+    {
+        document.getElementById("ddlDORMITARY_Name").disabled = true;
+        document.getElementById("ddlFloor").disabled = true;
+        document.getElementById("ddlDORMITARY_ROOM").disabled = true;
+        $('#ddlDORMITARY_Name').empty();
+        $('#ddlDORMITARY_Name').append("<option value=''selected >" + "@lDORMITARY_Name" + "</option>");
+        $('#ddlDORMITARY_Name').select2({        });
+
+        $('#ddlFloor').empty();
+        $('#ddlFloor').append("<option value=''selected >" + "@lFloor" + "</option>");
+        $('#ddlFloor').select2({        });
+
+        $('#ddlDORMITARY_ROOM').empty();
+        $('#ddlDORMITARY_ROOM').append("<option value=''selected >" + "@lDORMITARY_ROOM" + "</option>");
+        $('#ddlDORMITARY_ROOM').select2({        });
+    }
+</script>

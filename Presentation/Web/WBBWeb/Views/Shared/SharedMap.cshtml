@@ -1,0 +1,122 @@
+﻿@{
+    string L_GGMAP_TOOLTIP = "";
+
+    if (null != ViewData["L_GGMAP_TOOLTIP"])
+    {
+        L_GGMAP_TOOLTIP = ViewData["L_GGMAP_TOOLTIP"] as string;
+    }
+}
+
+<style type="text/css">
+    #map_canvas
+    {
+        width: 730px;
+        height: 580px;
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+
+<script type="text/javascript">
+    var geocoder;
+    var map;
+    var myMarker;
+    var GGM;
+
+
+    function initialize() {
+        GGM = new Object(google.maps);
+        geocoder = new GGM.Geocoder();
+
+        var my_Latlng = new GGM.LatLng(13.7617284, 100.652798);
+        //var my_mapTypeId = GGM.MapTypeId.ROADMAP;
+        var my_mapTypeId = GGM.MapTypeId.HYBRID;
+
+        var my_DivObj = $("#map_canvas")[0];
+
+        var myOptions = {
+            zoom: 16,
+            center: my_Latlng,
+            mapTypeId: my_mapTypeId
+        };
+
+        map = new GGM.Map(my_DivObj, myOptions);
+
+        myMarker = new GGM.Marker({
+            position: my_Latlng,
+            map: map,
+            draggable: true,
+            title: "@L_GGMAP_TOOLTIP"
+        });
+
+        GGM.event.addListener(myMarker, 'dragend', function () {
+            var my_Point = myMarker.getPosition();
+            var my_Point_left = "";
+            var my_Point_Rith = "";
+
+            my_Point_left = String(my_Point).substr(0, 10);
+            my_Point_Rith = String(my_Point).substr(0, 10);
+
+            map.panTo(my_Point);
+            $("#CoveragePanelModel__CoveragePanelModel_L_LAT2").val(parseFloat(my_Point.lat()).toFixed(6));
+            $("#CoveragePanelModel__CoveragePanelModel_L_LONG2").val(parseFloat(my_Point.lng()).toFixed(6));
+
+        });
+    }
+
+
+    function searchPlace() {
+        /// alert('Onchang');
+        ////sert textbox        
+
+        var provice = $("#COVERAGE_L_PROVINCE").val();
+        var amphur = $("#COVERAGE_L_AMPHUR").val();
+        var tumbol = $("#COVERAGE_L_TUMBOL").val();
+        var soi = "";
+        var road = "";
+
+        if ($("#CoveragePanelModel_Address_L_SOI").val() != "")
+            soi = " " + $("#CoveragePanelModel_Address_L_SOI").val();
+
+        if ($("#CoveragePanelModel_Address_L_ROAD").val() != "")
+            road = " " + $("#CoveragePanelModel_Address_L_ROAD").val();
+
+
+        var aumphurToSearch = '';
+        if (amphur.indexOf('(ปณ.)') > -1) {
+            aumphurToSearch = amphur.replace('(ปณ.)', '');
+        } else if (amphur.indexOf('(PO.)') > -1) {
+            aumphurToSearch = amphur.replace('(PO.)', '');
+        } else {
+            aumphurToSearch = amphur;
+        }
+
+        var setAddress = provice + " " + aumphurToSearch + " " + tumbol + " " + road + " " + soi;
+
+        if (geocoder) {
+            geocoder.geocode({
+                address: setAddress
+            }, function (results, status) {
+                if (status == GGM.GeocoderStatus.OK) {
+                    var my_Point = results[0].geometry.location;
+                    google.maps.event.trigger(map, "resize");
+                    map.setCenter(my_Point);
+                    myMarker.setMap(map);
+                    myMarker.setPosition(my_Point);
+
+                    $("#CoveragePanelModel__CoveragePanelModel_L_LAT2").val(parseFloat(my_Point.lat()).toFixed(6));
+                    $("#CoveragePanelModel__CoveragePanelModel_L_LONG2").val(parseFloat(my_Point.lng()).toFixed(6));
+                    /// $("#zoom_value").val(map.getZoom()); 							
+                } else {                    
+                    alert("Google Map cannot find location (Soi, Road).");
+                    $("#CoveragePanelModel_Address_L_SOI").val("");
+                    $("#CoveragePanelModel_Address_L_ROAD").val("");
+                    searchPlace();
+                }
+            });
+        }
+    }
+
+</script>
+
+<div id="map_canvas"></div>

@@ -1,0 +1,1346 @@
+﻿
+@model WBBEntity.PanelModels.FBBWebConfigModels.CoveragePortPanelGrid
+@Html.Partial("~/Views/Shared/_PartialPopupHistory.cshtml")
+@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.Models;
+
+
+@{
+    var o = (List<WBBEntity.PanelModels.Account.ComponentModel>)ViewBag.User.ComponentModel;
+    string FBB_CFG001_4_ADD = "";
+    string FBB_CFG001_4_EDIT = "";
+    string FBB_CFG001_4_DELETE = "";
+    string FBB_CFG001_4_GENERATE_PORT = "";
+    decimal DsalamID =0;
+    
+    
+    var FalgTieCardportQuery ="";
+
+    var g = (List<decimal>)ViewBag.User.Groups;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderByDescending(des => des.ReadOnlyFlag).ToList();
+
+    if (o != null)
+    {
+        FBB_CFG001_4_ADD = o.Any(c => c.ComponentName == "FBB_CFG001_4_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_4_ADD").ReadOnlyFlag : "";
+        FBB_CFG001_4_EDIT = o.Any(c => c.ComponentName == "FBB_CFG001_4_EDIT") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_4_EDIT").ReadOnlyFlag : "";
+        FBB_CFG001_4_DELETE = o.Any(c => c.ComponentName == "FBB_CFG001_4_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_4_DELETE").ReadOnlyFlag : "";
+        FBB_CFG001_4_GENERATE_PORT = o.Any(c => c.ComponentName == "FBB_CFG001_4_GENERATE_PORT") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_4_GENERATE_PORT").ReadOnlyFlag : "";
+    }
+    if (ViewBag.FalgTieCardportQuery !=null)
+    {
+        FalgTieCardportQuery = ViewBag.FalgTieCardportQuery;
+ 
+    }
+    if (ViewBag.DSLAMID!=null)
+    {
+        DsalamID = ViewBag.DSLAMID;
+    }
+    }
+<style>
+    .k-grid-Delete btn btn-default i-gap-right-xs-3 config{
+        width:150px;
+    }
+</style>
+
+
+@{
+    ViewBag.Title = "_Coverage_CardPortData";
+    
+}
+
+@*@Html.TextBoxFor(model => model.NodeID)**@
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Card/Port</h3>
+            <ol class="breadcrumb">
+                   <li><a href="@Url.Action("Index", "Coverage_Search")">Main Page</a></li>
+                  <li><a href="@Url.Action("Index", "Coverage_Manage", new { ContactID=ViewBag.ContactID})">Site/Coverage</a></li>
+                 <li><a href="@Url.Action("Index", "Coverage_Dslam", new { cvrId=ViewBag.cvrId})">Building/Coverage</a></li>
+                  <li class="active">Card/Port</li>
+             
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+  <div class="col-md-12">
+      <h4 style="margin-top: 0"><label id="lblNodeId">NOIDEID</label>   <input type="hidden" id="NodeID" />
+ </h4>
+      </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+        <div class="panel panel-success">
+
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-info-circle" style="font-size: large;">&nbsp;Card Port</i>
+                    <a data-toggle="collapse" class="pull-right" href="#CardPort" onclick="onPanelToggle(this);" id="SiteInformationPanelHeaders">
+                        <i class="fa fa-chevron-circle-down fa-lg" id="ArrowIconSiteInformations"></i>
+                    </a>
+                </h3>
+            </div>
+
+   <div id="CardPort" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">  
+       
+        @(Html.Kendo().Grid<CoveragePortPanelGrid>()
+            .Name("GridCardPortModel")
+              .ToolBar(toolbar => toolbar.Template("" +
+        " <div class='pull-right'><a onclick=\"showPopupHistoryLog('Card_Port')\" class='btn btn-default pull-left'><i class='fa fa-history'></i>&nbsp; Show History</a> </div>  &nbsp;&nbsp; <div class='pull-right'> <a onclick='onAddPopup()'  id='btnAddCard' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a></div>")
+        
+        )
+        
+      
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.Number).Title("Card Number").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.CardModel).Title("Card Model").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.CardType).Title("Card Type  ").ClientTemplate("# if (CardType=='Y') { #" +
+                           "Data" +
+                       "# }else if(CardType=='N'){# Data<span class='replacePlus'></span>Voice #}#").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.Reseve).Title("Reserve ").HtmlAttributes(new { @class = "i-text-align-center" });
+                        
+            if(FalgTieCardportQuery=="1"){
+                columns.Bound(p => p.Building).Title("BUILDING").HtmlAttributes(new { @class = "i-text-align-center" });
+            }else{
+            
+            
+            }
+            
+          
+            
+            
+            
+            columns.Command(command =>
+            {
+
+
+
+
+                if (FBB_CFG001_4_EDIT !="")
+                {
+                    command.Custom("Edit").Click("editGrid").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; Edit");  
+                }
+                if (FBB_CFG001_4_DELETE !="")
+                {
+                    command.Custom("Delete").Click("deleteGrid").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete");
+                }
+               // command.Custom("Show").Click("Agrdi").Text("<i class='fa fa-plus-circle fa-lg s'></i>&nbsp; Generarte Port").HtmlAttributes(new { @class = "k-grid-Delete btn btn-default i-gap-right-xs-3 config" });
+                
+              
+            });
+            
+        })
+
+       
+          .Selectable(selectable => selectable
+                        .Mode(GridSelectionMode.Single)
+                        .Type(GridSelectionType.Row))
+                        .Events(events => events.Change("onChangeCard").DataBound(""))
+
+  .Filterable()
+        .Pageable(p => p.Input(true)
+       .Numeric(true)
+        .PageSizes(true)
+        )//.HtmlAttributes(new { style = "text-align:rigth;" })
+                //.Reorderable(r => r.Columns(true))
+                /// .Groupable()
+        .Sortable()
+
+          .Pageable(p => p.Input(true)
+           .Numeric(true)
+         .PageSizes(true)
+
+        )
+
+
+
+
+            .DataSource(dataSource => dataSource
+                .Ajax()
+
+                .Read(read => read.Action("ReadCradPortData", "Coverage_CardPort").Data("onData"))
+                .PageSize(10)
+
+               ///.Events(events => events.RequestEnd("CheadckFlagCardModel"))
+                .Model(model => model.Id(p => p.CARDID))
+
+             )
+           .Events(e => e.DataBound("onDataBound"))
+      
+
+    )
+           
+            
+    
+            </div>
+            </div>
+
+
+            <div class="row">
+    <div class="col-md-12">
+        @CoverageInformation()
+    </div>
+
+
+        </div>
+
+
+
+
+             
+
+
+
+
+   
+</div>
+</div>
+
+
+
+
+
+
+                @helper CoverageInformation()
+{    
+    <div class="panel panel-success i-gap-top-2">
+
+
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Port </span>
+                <a data-toggle="collapse" class="pull-right" href="#PortInformationPanel" onclick="onPanelToggle(this);" id="PortInformationPanelHeader">
+                    <i class="fa fa-chevron-circle-down fa-lg" id="CoverageInformationPanelHeaderArrow"></i>
+                </a>
+            </h3>
+        </div>
+        <div id="PortInformationPanel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1">
+            <div class="panel-body">
+                <ul class="nav nav-tabs" id="myTabDSLAMModel">
+                    <li class="active"><a data-toggle="tab" href="#PortInfo">Port </a></li>
+                    <li class=""><a data-toggle="tab" href="#PortHistory">Port History</a></li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div id="PortInfo" class="tab-pane fade active in">
+                        <div class="i-gap-top-2" style="margin-bottom: 10px;">
+                            @(Html.Kendo().Grid<CoveragePortPanel>()
+                        .Name("GridPortdata")
+                          .ToolBar(toolbar => toolbar.Template("" +
+        "<div class='pull-right'> <a id ='Generate_Port'   onclick='Genate_Port_Data()'  class='btn btn-default' ><i class='fa fa-magic fa-lg'></i>&nbsp; Generate Port</a></div><div class='pull-right'></div>"))
+                      
+        //  .ToolBar(toolBar => toolBar.Template("" +
+        //"<div class='pull-right'><a onclick=\"showPopupHistoryLog('Generate_Port')\" class='btn btn-default pull-left'><i class='fa fa-history'></i>&nbsp; Show History</a></div>"))
+        
+        .Columns(columns =>
+                        {
+                            //columns.Bound(p => p.CVRId).Title("CVRID").Hidden();
+                            //columns.Bound(p => p.ContactId).Title("ContactId").Hidden();
+                            columns.Bound(p => p.PortNumber).Title("Port Number");
+                            columns.Bound(p => p.PortStatus).Title("Port Status");
+                            columns.Bound(p => p.PortType).Title("Port Type");
+
+                        })
+                             
+                   .Selectable(selectable => selectable
+                        .Mode(GridSelectionMode.Single)
+                        .Type(GridSelectionType.Row))
+                        .Events(events => events.Change("onChangeCardCardPort"))          
+                        .Filterable()
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                           
+                            .Read(read => read.Action("ReadCradPort", "Coverage_CardPort"))
+
+
+                        )
+
+                    )
+                        </div>
+                    </div>
+                    <div id="PortHistory" class="tab-pane fade " style="height: 200px;">
+                        @(Html.Kendo().Grid<portPanelHittory>()
+                        .Name("GridCoveragePortInfo")
+                       
+                        .Columns(columns =>
+                        {
+                            //columns.Bound(p => p.CVRId).Title("CVRID").Hidden();
+                            //columns.Bound(p => p.ContactId).Title("ContactId").Hidden();
+                            columns.Bound(p => p.Datetime).Title("Datetime").Format("{0:dd/MM/yyyy}");
+                            columns.Bound(p => p.User).Title("User");
+                            columns.Bound(p => p.DESC).Title("DESC");
+                                                   
+                        })
+                        
+                        .Pageable()
+                        .Sortable()
+                        .Filterable()
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                     
+                            .Read(read => read.Action("ReadCradPortHistory", "Coverage_CardPort"))
+                        )
+                    
+                                    )
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@(Html.Kendo().Window()
+    .Name("AddPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Add CardPort")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Content(@<text>
+<div class="row i-no-over" id="AddPopupPanel">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Card Model <span id="requiredfor-CardMode_PortModel"></span></label>
+            <div class="i-fg-data-entry">
+                  @(Html.Kendo().DropDownList()
+                                          .Name("CardMode_PortModel")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("Model")
+                                          .DataValueField("CardModelID")
+                                          .Events(events => events.Change("onChangeCardDroupdownCard"))
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectModelCradModel", "MasterData");
+                                              });
+                                          })
+                                          
+                                    )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-CardMode_PortModel"></div>
+
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Resrve <span id="requiredfor-Resrve"></span></label>
+            <div class="i-fg-data-entry">
+                  @(Html.Kendo().DropDownList()
+                                          .Name("Resrve")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("reserve")
+                                            
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SetdataReserve", "MasterData");
+                                              });
+                                          })
+                                          
+                                    )
+               
+            </div>
+            
+            <div class="i-fg-data-entry-validation" id="validatefor-Resrve"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Card Type  <span id="requiredfor-CardType"></span></label>
+            <div class="i-fg-data-entry">
+           
+                  @Html.TextBoxFor(Model => Model.CardType,
+
+                     new
+                     {
+                          @readonly = "readonly",
+                         @type = "text",
+                         @id = "CardType",
+                         @class = "k-textbox form-control",
+                         @maxlength = 50
+                         
+                     })
+            </div>
+           
+            <div class="i-fg-data-entry-validation" id="validatefor-CardType"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Number  <span id="requiredfor-PortNumber"></span></label>
+            <div class="i-fg-data-entry">
+                  @Html.TextBoxFor(Model => Model.Number,
+
+                     new
+                     {
+                         @readonly = "readonly",
+                         @type = "text",
+                         @id = "Number",
+                         @class = "k-textbox form-control",
+                         @maxlength = 50
+                           
+                     })
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-PortNumber"></div>
+        </div>
+    </div>
+
+      @{if(@FalgTieCardportQuery=="1"){
+        
+        <div class="col-md-12">
+        <div class="form-group">
+            <label>Building  <span id="requiredfor-Building"></span></label>
+          <div class="i-fg-data-entry">
+                  @(Html.Kendo().DropDownList()
+                                          .Name("Building")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("building")
+                                          .DataValueField("Dispay")
+                                            
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("selectDataBuildingTieCardPort", "MasterData").Data("onData22");
+                                              });
+
+                                             
+                                          })
+                                        ///  .Events(e => e.DataBound("CheckDataTieBuiling"))
+                                    )
+               
+            </div>
+              <div class="i-fg-data-entry-validation" id="validatefor-Building"></div>
+        </div>
+    </div>
+        
+        
+        }else{
+        
+        
+        }
+          
+          
+          }
+     
+
+    
+
+
+      
+      
+
+    <div class="col-md-12">
+          <button class="btn btn-default i-gap-top-1 i-hidden pull-right" onclick="ClearFrom()" id="btnReset"><i class="fa fa-ban fa-lg"></i>&nbsp;  Cancel</button>
+        <button class="btn btn-default i-gap-top-1 pull-right" onclick="onSave('ADD')" id="btnSave"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Save</button>
+      
+        <button class="btn btn-default i-gap-top-1 i-hidden pull-right" onclick="onSave('UPDATE')" id="btnUpdate"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Update</button>
+
+    </div>
+    
+</div>
+</text>)
+)
+
+
+
+
+
+
+
+
+ <input type="hidden" id="CARDMODEIDADDHD" value="0"/>
+<input type="hidden" id="cardModelidOnGrid" value="0"/>
+<input type="hidden" id="CARDID" value="0"/>
+<input type="hidden" id="CardModelID" value="0"/>
+<input type="hidden" id="DSalamModelID" value="0"/>
+
+
+
+
+
+<script>
+
+    $(function () {
+        if ("@FBB_CFG001_4_ADD" =="") $("#btnAddCard").hide();
+        if("@FBB_CFG001_4_GENERATE_PORT" =="")$("#Generate_Port").hide();
+
+
+           
+            });
+
+    function CheckDataTieBuiling() {
+        
+
+        $("#Building").data("kendoDropDownList").dataSource.read({ dsalamid: "@DsalamID" });
+       
+            
+
+    }
+
+
+    function showPopupHistoryLog(panel) {
+        var title = panel;
+        var application = "FBB_CFG001_4_Card_Port";
+        var refKey = $("#NodeID").val();      
+        var refName = "NODEID";
+
+        onHistoryPopUp_Show(title, application, refKey, refName);
+    }
+
+    function onDataBound() {
+     
+        if ($("#GridCardPortModel").data("kendoGrid").dataSource.view().length > 0) {
+            var data = $("#GridCardPortModel").data("kendoGrid").dataSource.view()[0].Nodeid;
+            $("#lblNodeId").html("NODEID : " + data);
+            
+            $("#NodeID").val(data);
+           /// $("#Generate_Port").attr("disabled", "disabled");
+        } else {
+
+        ///   $("#Generate_Port").removeAttr("disabled");
+
+        }
+    
+        //$("#GridCardPortModel").data("kendoGrid").dataSource.read();
+        $(".replacePlus").text("+"); 
+        setButton();
+        //$("#Generate_Port").attr("disabled", "disabled");
+       
+    }
+
+    function onData() {    
+        
+        ///var data = $("#GridCardPortModel").data("kendoGrid").dataSource.view()[0].Nodeid;
+        return {
+
+         
+            DSLAMID: "@ViewBag.DSLAMID"
+           
+        }
+
+        
+    }
+
+    function onData22() {
+        
+       
+        return {
+
+
+            DSLAMID: "@ViewBag.DSLAMID"
+
+        }
+
+
+    }
+
+    @*    function onChangeCard() {
+     
+    
+        $("#lblNodeId").val(@ViewBag.NODEID);
+    
+    
+    }*@
+
+    
+    function onChangeCard() {
+        
+        
+        var entityGrid = $("#GridCardPortModel").data("kendoGrid");
+        var selectedItem = entityGrid.dataItem(entityGrid.select());
+      
+        //$("#Generate_Port").removeAttr("disabled");
+      ///  $("#GridPortdata").data("kendoGrid").dataSource.read({ CARDID: selectedItem.CARDID });
+        if (selectedItem.CARDID != null) {
+            $("#GridPortdata").data("kendoGrid").dataSource.read({ CARDID: selectedItem.CARDID });
+            /////$("#GridPortdata").data("kendoGrid").dataSource.read();
+            
+            //var entityGrid = $("#GridCardPortModel").data("kendoGrid");
+            //var selectedItem = entityGrid.dataItem(entityGrid.select());
+           /// getCode(selectedItem.CARDID);
+        } else {
+
+            ///$("#Generate_Port").removeAttr("disabled");
+         
+        }
+
+        if (selectedItem.HasPort == false) {
+            $("#CardMode_PortModel").data("kendoDropDownList").enable(true);
+             $("#Generate_Port").removeAttr("disabled");
+           
+        } else {
+            $("#Generate_Port").attr("disabled", "disabled");
+            $("#CardMode_PortModel").data("kendoDropDownList").enable(false);
+        }
+
+
+       
+    }
+    
+
+
+    function onChangeCardDroupdownCard() {
+        
+        
+        var downlistlistCard = $("#CardMode_PortModel").data("kendoDropDownList").value();
+        var cardModeldi = $("#CardType").val(downlistlistCard);
+        var CardModelIDIDHiden = $("#CardModelID").val(downlistlistCard);
+
+        if (downlistlistCard.length>0) {
+            if (downlistlistCard != null) {
+                
+               
+                $.ajax({
+                    url: '/MasterData/SelectModelCradModelID',
+                    data: {
+                        CardModelID: downlistlistCard
+                    },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                       
+                        
+                  /// var fx=     $("#CardType").val(response[0].CardType);
+                   checkDataFlag(response[0].CardType);
+                    },
+                   
+                
+
+
+
+                });
+            }
+        
+        }else{
+    
+    
+    }
+       
+        
+        }
+    
+
+    
+     
+  
+
+
+    function onChangeCardCardPort() {
+
+        var entityGrid = $("#GridPortdata").data("kendoGrid");
+        var selectedItem = entityGrid.dataItem(entityGrid.select());
+
+      ///  $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+      
+        if (selectedItem.PortID != null) {
+            $("#GridCoveragePortInfo").data("kendoGrid").dataSource.read({ Portid: selectedItem.PortID });
+
+           /// $("#Generate_Port").attr("disabled", "disabled");
+        }
+       
+    }
+    function ClearFrom(){
+    
+     var falgb="@FalgTieCardportQuery";
+   
+        $("#CardMode_PortModel").data("kendoDropDownList").value("");
+
+        if (falgb=="1") {
+          $("#Building").data("kendoDropDownList").value("");
+        }
+      
+        $("#CardType").val("");
+        // $("input[name=DATAONLY_FLAG22]:checked").val("");
+        $("#Number").val("");
+        $("#Resrve").data("kendoDropDownList").value("");
+        $("#AddPopup").data("kendoWindow").close();
+
+        
+      
+    }
+    
+
+    function onGridDataBound() {
+        
+        var total = $("#GridCardPortModel").data("kendoGrid").dataSource.total();
+        if (total!=null) {
+            var totalNumber = parseFloat(total) + 1;
+            //alert(totalNumber);
+           /// $("#Number").val(totalNumber);
+            
+            $.ajax({
+                url: '/Coverage_CardPort/Max_number',
+                data: {
+                                    },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    
+                    if (response != null) {
+                 
+
+                        $("#Number").val(response);
+                    }
+                 
+                },
+
+            });
+
+
+       
+        }
+     
+        //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        //$("#CardMode_PortModel").data("kendoDropDownList").value(dataItem.CardModel);
+        //if (totalNumber <= 80) {
+
+
+
+        //}
+
+       
+    }
+
+
+    function onAddPopup() {
+    
+        
+       
+
+        onGridDataBound();
+
+        $("#CardMode_PortModel").data("kendoDropDownList").enable(true);
+      $("#CardMode_PortModel").data("kendoDropDownList").value("");
+        //$("#CardMode_PortModel").data("kendoDropDownList").text("");
+     
+
+
+     $("#CardType").val("DATA + VOICE");
+        ////alert($("#Resrve").data("kendoDropDownList").text("") + "Re" + "T" + $("#CardMode_PortModel").data("kendoDropDownList").text(""));
+    
+    $("#Resrve").data("kendoDropDownList").value("");
+  ///  $("#Resrve").data("kendoDropDownList").text("");
+    var flag = "@FalgTieCardportQuery";
+        if (flag=="1") {
+            $("#Building").data("kendoDropDownList").value("");
+        }
+  
+
+
+
+
+
+
+
+       var validateModel = [];
+       validateModel.push({ id: "CardMode_PortModel" });
+       validateModel.push({ id: "Resrve" });
+
+       if (flag=="1") {
+             validateModel.push({ id: "Building" });
+       }
+ 
+     
+       
+        ClearTextValidation("AddPopup");
+
+    
+      
+     
+        
+
+        SetRequired(validateModel);
+        $("#btnReset").show();
+        $("#btnSave").show();
+        
+        $("#btnUpdate").hide();
+
+        $("#AddPopup_wnd_title").text("Add Card/Port");
+
+        $("#AddPopup").data("kendoWindow").open();
+        $("#AddPopup").data("kendoWindow").center();
+    }
+
+
+    //function sharchMateData(ResultCommand) {
+    
+    //    Loading();
+        
+    //    var dataSerch = $("#cardModelidOnGrid").val()
+    //        $.ajax({
+    //            url: '/CARDModel/Add_CardModel',
+    //            data: {
+                   
+    //                CardModelID: dataSerch
+    //            },
+    //            dataType: "json",
+    //            type: 'POST',
+    //            success: function (response) {
+
+    //                ///alert(response);
+    //                if (response != null) {
+
+    //                    $("#GridCardModel").data("kendoGrid").dataSource.read();
+    //                    Loading(0);
+    //                    $("#AddPopup").data("kendoWindow").close();
+    //                    CheadckFlagCardModel(response)
+    //                    // alert(response);
+
+    //                }
+    //            },
+    //            error: function (err) {
+
+    //                $("#AddPopup").data("kendoWindow").close();
+    //                showFeedback("error", err);
+    //            }
+
+
+
+
+
+    //        });
+
+        
+    //}
+
+   
+
+
+
+    //function getCode(CARDID) {
+    //    //debugger
+    //    ///alert(CARDID);
+ 
+    //    $.ajax({
+    //        url: '/Coverage_CardPort/ReadCradPort',
+    //        data: {
+    //            CARDID: CARDID
+    //        },
+    //        dataType: "json",
+    //        type: 'POST',
+    //        success: function (response) {
+    //            $("#GridPortdata").data("kendoGrid").dataSource.read();
+              
+            
+    //        },
+    //        error: function (err) {
+    //            ////$("#DSLAMPopUp").data("kendoWindow").close();
+    //            ///showFeedback("error", err);
+    //        }
+    //    });
+    //}
+
+
+    function Genate_Port_Data() {
+        
+    
+        var textCommand = "AddGrid";
+    //   alert('dfdf');
+       
+       var entityGrid = $("#GridCardPortModel").data("kendoGrid");
+       var selectedItem = entityGrid.dataItem(entityGrid.select());
+       var CardModelID = selectedItem.CARModelID
+       var CARDID = selectedItem.CARDID
+
+       
+       Loading();
+            $.ajax({
+                url: '/Coverage_CardPort/CreatePortDataGrid',
+                data: {
+                    DSLAMID: "@ViewBag.DSLAMID",
+                    ComandBox: textCommand,
+                    CARDID: CARDID,
+                    CardModelID: CardModelID,
+                  },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+                    if (response != null) {
+                        /// $("#GridPortdata").data("kendoGrid").dataSource.read();
+                   
+
+                        $("#GridPortdata").data("kendoGrid").dataSource.read({ CARDID: response.CARDID });
+                        $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+                       /// $("#GridPortdata").data("kendoGrid").dataSource.read();
+                        Loading(0);
+                          $("#Generate_Port").attr("disabled", "disabled");
+
+
+                    } else if (response == "AddGrid") {
+                        Loading(0);
+                        CheadckFlagCardModel(response);
+
+                        $("#Generate_Port").attr("disabled", "disabled");
+                    }
+                },
+                error: function (err) {
+                    //alert("b");
+                    //$("#AddPopup").data("kendoWindow").close();
+                    ////showFeedback("error", err);
+                }
+            });
+
+    }
+
+
+    function ValidationProcessingTing(panel) {
+        
+        var chk = true;
+        $("#" + panel + " .i-required").each(function (index, e) {
+            
+            var field = e.id.split('requiredfor-')[1];
+            var value = $("#" + field).val();
+          ///  alert(value);
+            if ($.trim(value) == "" || value == 0) {
+                $("#validatefor-" + field).html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + field).html("");
+            }
+        });
+        ////alert($("#Resrve").data("kendoDropDownList").text("") + "Re" + "T" + $("#CardMode_PortModel").data("kendoDropDownList").text(""));
+    
+
+        //if (panel == "AddPopupPanel") {
+        //    if (($("#Resrve").val()=="")) {
+        //        if ($("#Resrve").val() != "") {
+        //            $("#validatefor-" + "servicepop").html(ValidationIcon() + "This field is required.");
+        //            chk = false;
+        //        }
+        //    }
+
+        //    if (panel == "AddPopupPanel") {
+        //        if (($("#CardMode_PortModel").val()=="")) {
+        //            if ($("#CardMode_PortModel").val() != "") {
+        //                $("#validatefor-" + "servicepop").html(ValidationIcon() + "This field is required.");
+        //                chk = false;
+        //            }
+        //        }
+
+        //if (chk) {
+        //    $("#" + panel + " .i-validate-length").each(function (index, e) {
+        //        var field = e.id.split('validatefor-')[1];
+        //        var value = $("#" + field).val();
+        //        var length = parseInt(e.className.split('i-length-')[1]);
+        //        var val_length = 0;
+        //        if (value != "") {
+        //            val_length = value.length;
+        //        }
+
+        //        if (val_length > length) {
+        //            $("#" + e.id).html(ValidationIcon() + "This maxlength field is " + length + ".");
+        //            chk = false;
+        //        }
+        //        else {
+        //            $("#" + e.id).html("");
+        //        }
+        //    });
+        //}
+
+        return chk;
+    }
+
+
+    function onSave(ResultCommand) {
+       
+        
+        var chk = ValidationProcessingTing("AddPopupPanel");
+       
+       
+        var CardModelID = $("#CardMode_PortModel").data("kendoDropDownList").value();
+        var CardType = $("#CardMode_PortModel").data("kendoDropDownList").text();
+        
+        var buliing = "";
+        var fagBuling ="@FalgTieCardportQuery";
+        if (fagBuling == "1") {
+            buliing = $("#Building").data("kendoDropDownList").value();
+
+        } else {
+
+            buliing = "";
+
+        }
+      
+     
+        if (chk) {
+            Loading();
+            $.ajax({
+                url: '/Coverage_CardPort/Add_CardCradPort',
+                data: {
+
+                    ResultCommand: ResultCommand,
+                    RESERVE_TECHNOLOGY: $("#Resrve").val(),
+                    CardModelID: CardModelID, DSalamModelID: "@ViewBag.DSLAMID", CradNumber: $("#Number").val(),
+                    CARDID: $("#CARDID").val(), NodeID: $("#NodeID").val(), CardType: CardType, Building: buliing,
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    
+                    
+                    $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+                    $("#AddPopup").data("kendoWindow").close();                                            
+                    
+                    CheadckFlagCardModel(response); 
+                },
+                error: function (err) {
+
+                    $("#AddPopup").data("kendoWindow").close();
+                    showFeedback("error", err);
+                }
+
+
+
+
+
+            });
+
+        }else if(ResultCommand=="DELETE"){
+        
+        
+        
+            Loading();
+            $.ajax({
+                url: '/Coverage_CardPort/Add_CardCradPort',
+                data: {
+
+                    ResultCommand: ResultCommand,
+                    RESERVE_TECHNOLOGY: $("#Resrve").val(),
+                    CardModelID: CardModelID, DSalamModelID: "@ViewBag.DSLAMID", CradNumber: $("#Number").val(),
+                    CARDID: $("#CARDID").val(), NodeID: $("#NodeID").val(), CardType: CardType
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    
+                    $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+                    $("#AddPopup").data("kendoWindow").close();
+
+                    CheadckFlagCardModel(response);
+                    $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+                },
+                error: function (err) {
+
+                    $("#AddPopup").data("kendoWindow").close();
+                    showFeedback("error", err);
+                }
+
+
+
+
+
+            });
+
+
+
+        } else   {
+
+            if (ResultCommand == "SaveGridPanel") {
+            
+                var dataGridPort = $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+                Loading();
+                $.ajax({
+                    url: '/Coverage_CardPort/CreatePortDataGrid',
+                    data: {
+                      
+                    },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        ///alert(response);
+                        if (response != null) {
+
+                         
+                            Loading(0);
+                            $("#AddPopup").data("kendoWindow").close();
+                            CheadckFlagCardModel(response)
+                            // alert(response);
+
+                        } else if (response == "ADD") {
+                            Loading(0);
+                            CheadckFlagCardModel(response)
+
+
+                        }
+                    },
+                    error: function (err) {
+
+                        $("#AddPopup").data("kendoWindow").close();
+                        showFeedback("error", err);
+                    }
+
+
+
+
+
+                });
+            
+            }
+
+        }
+    }
+
+
+    //function CallNodeId() {
+  
+    //        $.ajax({
+    //            url: '/Coverage_CardPort/setdataNodeID',
+    //            //data: { },
+    //            dataType: "json",
+    //            type: 'POST',
+    //            success: function (response) {
+                            
+    //                $("#sss").val(response.NodeID);
+                 
+    //            }
+    //        });
+
+
+    //}
+
+
+        function deleteGrid(e) {
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            $("#CardMode_PortModel").data("kendoDropDownList").value(dataItem.CardModel);
+            $("#CardType").val(dataItem.CardType);
+            // $("input[name=DATAONLY_FLAG22]:checked").val("");
+            $("#Number").val(dataItem.Number);
+            $("#Resrve").val(dataItem.Reseve);
+            $("#CARDID").val(dataItem.CARDID);
+            $("#DSalamModelID").val(dataItem.DSalamModelID);
+           
+            var fagdata = "@FalgTieCardportQuery";
+            if (fagdata == "1") {
+                $("#Building").data("kendoDropDownList").value(dataItem.Building);
+            }
+
+
+
+          
+        
+            var de = confirm("Are you sure you want to delete?");
+            if (de) {
+                onSave('DELETE');
+            }
+        }
+
+        function checkDataFlag(value) {
+            
+            if (value == "Y") {
+
+                dataFaxtext = "DATA";
+                $("#CardType").val(dataFaxtext);
+            } else {
+                dataFaxtext = "DATA+Voice";
+                $("#CardType").val(dataFaxtext);
+            }
+
+        }
+
+        function editGrid(e) {
+            
+            
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+           
+            
+            var fagdata = "@FalgTieCardportQuery";
+           
+
+
+
+            var dataFaxtext = "";
+
+            
+            if (dataItem.CardType == "Y") {
+
+                dataFaxtext = "DATA";
+                $("#CardType").val(dataFaxtext);
+            } else {
+                dataFaxtext = "DATA+Voice";
+                $("#CardType").val(dataFaxtext);
+            }
+
+            var entityGrid = $("#GridCardPortModel").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+      
+            $("#CardMode_PortModel").data("kendoDropDownList").text(dataItem.CardModel);
+            $("#Number").val(dataItem.Number);
+            $("#Resrve").data("kendoDropDownList").value(dataItem.Reseve);
+            if (fagdata == "1") {
+                $("#Building").data("kendoDropDownList").value("");
+                $("#Building").data("kendoDropDownList").value(dataItem.Building);
+            } 
+            
+            $("#CARDID").val(dataItem.CARDID);
+            $("#DSalamModelID").val(dataItem.DSalamModelID);
+
+
+          
+           
+
+
+
+
+
+
+
+
+         
+            ClearTextValidation("AddPopup");
+
+            var validateModel = [];
+            validateModel.push({ id: "CardMode_PortModel" });
+         
+            validateModel.push({ id: "Resrve" });
+         
+
+
+            if (fagdata == "1") {
+                validateModel.push({ id: "Building" });
+            }
+
+            SetRequired(validateModel);
+
+            $("#btnSave").hide();
+            $("#btnUpdate").show();
+            $("#btnReset").show();
+            $("#AddPopup_wnd_title").text("Edit Card/Port Configuration");
+
+            $("#AddPopup").data("kendoWindow").open();
+            $("#AddPopup").data("kendoWindow").center();
+        }
+
+        function CheadckFlagCardModel(resultFlag) {
+
+            
+            var returnDesc = "";
+            var Return_Code = "";
+          
+                if (resultFlag == "ADD") {
+                    $.ajax({
+                        url: '/Coverage_CardPort/setdataTransition',
+                        //data: { },
+                        dataType: "json",
+                        type: 'POST',
+                        success: function (response) {                           
+
+                            returnDesc = response[0];
+                            Return_Code = response[1];
+
+                            if (Return_Code == 0) {
+                                Loading(0);
+                                showFeedback('warning', returnDesc);
+                            } else {
+                               
+                                Loading(0);
+                                showFeedback('success', returnDesc);
+
+                                $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+                                $("#GridPortdata").data("kendoGrid").dataSource.read({ CARDID: -1 });
+                            }                 
+                        }
+                    });
+
+                }
+                else if (resultFlag == "UPDATE") {
+                    $.ajax({
+                        url: '/Coverage_CardPort/setdataTransition',
+                        //data: { },
+                        dataType: "json",
+                        type: 'POST',
+                        success: function (response) {
+                            returnDesc = response[0];
+                            Return_Code = response[1];
+
+
+                            if (Return_Code == 0) {
+                                Loading(0);
+                                showFeedback('warning', returnDesc);
+                            } else {
+                                Loading(0);
+                                showFeedback('success', returnDesc);
+                                $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+                                $("#GridPortdata").data("kendoGrid").dataSource.read({ CARDID: -1 });
+                            }
+                        }
+                    });
+                }
+                else if (resultFlag == "AddGrid") {
+                    $.ajax({
+                        url: '/Coverage_CardPort/setdataTransition',
+                        //data: { },
+                        dataType: "json",
+                        type: 'POST',
+                        success: function (response) {
+                            returnDesc = response[0];
+                            Return_Code = response[1];
+
+
+                            if (Return_Code == 0) {
+                                Loading(0);
+                                showFeedback('warning', returnDesc);
+                            } else {
+                                Loading(0);
+                                showFeedback('success', returnDesc);
+                              //  $("#GridPortdata").data("kendoGrid").dataSource.read({ CARDID: 0 });
+
+                            }
+                        }
+                    });
+
+                }
+                else if (resultFlag == "DELETE") {
+                    $.ajax({
+                        url: '/Coverage_CardPort/setdataTransition',
+                        //data: { },
+                        dataType: "json",
+                        type: 'POST',
+                        success: function (response) {
+                            returnDesc = response[0];
+                            Return_Code = response[1];
+
+                            
+                            if (Return_Code == 0) {
+                                Loading(0);
+                                showFeedback('warning', returnDesc);
+                            } else {
+                             ///   $("#GridPortdata").data("kendoGrid").dataSource.read({ CARDID: 0 });
+                                Loading(0);
+                                showFeedback('success', returnDesc);
+                                $("#GridCardPortModel").data("kendoGrid").dataSource.read();
+                                $("#GridPortdata").data("kendoGrid").dataSource.read({ CARDID: -1 });
+                            }
+                        }
+
+
+                    });
+
+                }
+
+              
+
+             
+            
+        }
+
+</script>
+
+
+

@@ -1,0 +1,1898 @@
+﻿@using WBBEntity.PanelModels.FBBWebConfigModels;
+@Html.Partial("~/Views/Shared/_PartialPopupHistory.cshtml")
+
+
+
+@model WBBEntity.PanelModels.FBBWebConfigModels.GridFTTxModel
+@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.Models;
+@{
+    var o = (List<WBBEntity.PanelModels.Account.ComponentModel>)ViewBag.User.ComponentModel;
+    var g = (List<decimal>)ViewBag.User.Groups;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderBy(des => des.ReadOnlyFlag).ToList();
+
+    string FBB_CFG005_1_ADD = "";
+    string FBB_CFG005_1_EDIT = "";
+    string FBB_CFG005_1_DELETE = "";
+    string FBB_CFG005_1_EXPORT_EXCEL = "";
+
+    if (o != null)
+    {
+        FBB_CFG005_1_ADD = o.Any(c => c.ComponentName == "FBB_CFG005_1_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG005_1_ADD").ReadOnlyFlag : "";
+        FBB_CFG005_1_EDIT = o.Any(c => c.ComponentName == "FBB_CFG005_1_EDIT") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG005_1_EDIT").ReadOnlyFlag : "";
+        FBB_CFG005_1_DELETE = o.Any(c => c.ComponentName == "FBB_CFG005_1_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG005_1_DELETE").ReadOnlyFlag : "";
+        FBB_CFG005_1_EXPORT_EXCEL = o.Any(c => c.ComponentName == "FBB_CFG005_1_EXPORT_EXCEL") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG005_1_EXPORT_EXCEL").ReadOnlyFlag : "";
+    }
+}
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">FTTx Coverage</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        @LeftPane()
+    </div>
+
+    <div class="col-md-6">
+        @RightPane()
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @(Html.Kendo().Grid<GridFTTxModel>()
+        .Name("GridFTTx")
+        .ToolBar(toolbar => toolbar.Template("" +
+        "<div class='pull-right'><a onclick='onAddPopup()' class='btn btn-default' id='c_add'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a>&nbsp;" +
+        "<a onclick='exportExcel()' id='btnExport' disabled='disabled' class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp; Export to Excel</a>&nbsp;" +
+        "<a class='btn btn-default' onclick=\"showPopupHistoryLog('FTTx Coverage')\"><i class='fa fa-history'></i>&nbsp; Show History</a></div>"))
+        .Columns(columns =>
+        {
+            //columns.Bound(p => p.RegionCode).Title("REGION CODE").HtmlAttributes(new { @class = "i-text-align-center" }).Width(100);
+            columns.Bound(p => p.Province).HtmlAttributes(new { @class = "i-text-align-center" }).Width(100);
+            columns.Bound(p => p.Amphur).HtmlAttributes(new { @class = "i-text-align-center" }).Title("District").Width(100);
+            columns.Bound(p => p.Tumbon).HtmlAttributes(new { @class = "i-text-align-center" }).Title("Sub-District").Width(120);
+            columns.Bound(p => p.Zipcode).HtmlAttributes(new { @class = "i-text-align-center" }).Title("Zipcode").Width(100);
+            columns.Bound(p => p.OwnerProduct).Title("OWNER").HtmlAttributes(new { @class = "i-text-align-center" }).Width(100);
+            columns.Bound(p => p.SERVICE_TYPE).Title("SERVICE TYPE").HtmlAttributes(new { @class = "i-text-align-center" }).Width(120);
+            columns.Bound(p => p.tower_th).Title("Tower THAI").HtmlAttributes(new { @class = "i-text-align-center" }).Width(100);
+            columns.Bound(p => p.tower_en).Title("Tower ENGLISH").HtmlAttributes(new { @class = "i-text-align-center" }).Width(130);
+            columns.Bound(p => p.Coverage_Status).Title("Coverage Status").HtmlAttributes(new { @class = "i-text-align-center" }).Width(150);
+            columns.Bound(p => p.ONTARGET_DATE_EX).Title("OnTargetDate_EX").HtmlAttributes(new { @class = "i-text-align-center" }).ClientTemplate("#= (ONTARGET_DATE_EX) ? kendo.toString(kendo.parseDate(ONTARGET_DATE_EX), 'dd/MM/yyyy') : '' #").Width(150);
+            columns.Bound(p => p.ONTARGET_DATE_IN).Title("OnTargetDate_IN").HtmlAttributes(new { @class = "i-text-align-center" }).ClientTemplate("#= (ONTARGET_DATE_IN) ? kendo.toString(kendo.parseDate(ONTARGET_DATE_IN), 'dd/MM/yyyy') : '' #").Width(150);
+            columns.Bound(p => p.FTTX_ID).Title("FTTX_ID").HtmlAttributes(new { @class = "i-text-align-center" }).Hidden();
+            columns.Command(command =>
+            {
+                if (FBB_CFG005_1_EDIT != "")
+                {
+                    command.Custom("Edit").Click("editGrid").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; Edit");
+                }
+                if (FBB_CFG005_1_DELETE != "")
+                {
+                    command.Custom("Delete").Click("deleteGrid").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete");
+                }
+            }).Width(210);
+        })
+        .Pageable(p => p.Input(true)
+            .Numeric(true)
+            .PageSizes(true)
+        )
+                //.Filterable()
+        .Scrollable(scrollable => scrollable.Height(270))
+        .Reorderable(r => r.Columns(true))
+        .Groupable()
+        .Sortable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(5)
+            .Read(read => read.Action("Read", "FTTx").Data("onDataBind"))
+
+         )
+         .Events(e => e.DataBound("onGridDataBound"))
+    )
+    </div>
+</div>
+
+
+
+@helper LeftPane()
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Search Panel</span>
+                <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+            </h3>
+        </div>
+        <div id="SearchPanel" class="panel-collapse collapse in">
+            <div class="panel-body" style="min-height: 236px;">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Owner Product</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("OwnerProduct")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectOwnerProduct", "MasterData");
+                                              });
+                                          })
+                                    )
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Owner Type</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("OwnerType")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectOwnerType", "MasterData");
+                                              });
+                                          })
+                                    )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Region</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("Region")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectLov", "MasterData", new { type = "REGION_CODE" });
+                                              });
+                                          })
+                                          .Events(e => e.Change("onRegionChange"))
+                                    )
+                            </div>
+                        </div>
+
+                    </div>
+         
+
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Province</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("Province")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectProvince", "MasterData");
+                                              });
+                                          })
+                                          .Events(e => e.Change("onProvinceChange"))
+                                    )
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>District</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("Amphur")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectAmphur", "MasterData").Data("filterAmphurTop");
+                                              });
+
+
+                                          })
+                                          .Events(e => e.Change("onAumphurChange"))
+                                    )
+                            </div>
+                        </div>                         
+                       <script>
+                           function filterAmphurTop() {
+                            return {                               
+                                fttx : "Y"
+                            };
+                        }
+                    </script>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sub-District</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("Tumbon")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectTumbon", "MasterData");
+                                              });
+                                          })
+                                          .Events(e => e.Change("onProvinceAndAmpreChang"))
+                                    )
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Tower Thai</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                          .Name("tower_th_From")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("Selecttower_th", "MasterData");
+                                              });
+                                          })
+
+                                    )
+                            </div>
+                        </div>
+
+
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label></label>
+                        <div class="i-fg-data-entry">
+                            <div class="btn-group pull-right">
+                                <a class="btn btn-default i-width-sm" onclick="onCancel();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                                <a onclick="onFilter()" class="btn btn-info i-width-sm"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Search</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div></div>
+      
+}
+
+@helper RightPane()
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Summary</span>
+                <a data-toggle="collapse" class="pull-right" href="#Summary" onclick="onPanelToggle(this);" id="SummaryHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SummaryHeaderArrow"></i></a>
+            </h3>
+        </div>
+        <div id="Summary" class="panel-collapse collapse in">
+            <div class="panel-body" style="min-height: 236px;">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-info i-total-box">
+                                    <div class="row">
+                                        <div class="col-md-4"><i class="fa fa-globe fa-4x"></i></div>
+                                        <div class="col-md-8 i-text-align-right">
+                                            <span class="i-f1" id="totalCoverage">0</span><br />
+                                            <span class="i-f2">Total Coverage</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-danger i-total-box">
+                                    <div class="row">
+                                        <div class="col-md-4"><i class="fa fa-share-alt fa-4x"></i></div>
+                                        <div class="col-md-8 i-text-align-right">
+                                            <span class="i-f1" id="totalNSN">0</span><br />
+                                            <span class="i-f2">NSN</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-warning i-total-box">
+                                    <div class="row">
+                                        <div class="col-md-4"><i class="fa fa-road fa-4x"></i></div>
+                                        <div class="col-md-8 i-text-align-right">
+                                            <span class="i-f1" id="totalSIMAT">0</span><br />
+                                            <span class="i-f2">SIMAT</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                @* <div class="row i-gap-top-3">*@
+                <div class="row" style="margin-top: 20px;">
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-success i-total-box">
+                                    <div class="row">
+                                        <div class="col-md-4"><i class="fa fa-rss fa-4x"></i></div>
+                                        <div class="col-md-8 i-text-align-right">
+                                            <span class="i-f1" id="totalAIS">0</span><br />
+                                            <span class="i-f2">AIS</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn btn-success i-total-box" style="background-color: gray;">
+                                    <div class="row">
+                                        <div class="col-md-4"><i class="fa fa-building fa-4x"></i></div>
+                                        <div class="col-md-8 i-text-align-right">
+                                            <span class="i-f1" id="totalSYMPHONY">0</span><br />
+                                            <span class="i-f2">SYMPHONY</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*</div>*@
+                    @*      <div class="col-md-4"></div>*@
+                    @*</div>*@
+
+                </div>
+            </div>
+        </div>
+    </div>    
+}
+
+
+@(Html.Kendo().Window()
+    .Name("AddPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Add Coverage")
+    .Width(830)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Content(@<text>
+<div class="row i-no-over" id="AddPopupPanel">
+
+    <div class="col-md-12">     
+            <div class="col-md-3 col-lg-3">
+                <div class="form-group">
+                <label>Owner Product <span id="requiredfor-OwnerProducts"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().ComboBox()
+                                              .Name("OwnerProducts")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter("contains")
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectOwnerProduct", "MasterData", new { label = false });
+                                                  });
+                                              })
+                                        )
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-OwnerProducts"></div>
+                </div>
+            </div>
+                   
+             <div class="col-md-3 col-lg-3">
+                <div class="form-group">
+                <label>Owner Type <span id="requiredfor-OwnerTypes"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                                              .Name("OwnerTypes")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectOwnerType", "MasterData");
+                                                  });
+                                              })
+                                        )
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-OwnerTypes"></div>
+                </div>
+            </div>
+            
+             <div class="col-md-3 col-lg-3">
+                <div class="form-group">
+                     <label>Service Type <span id="requiredfor-Service_Type"></span></label>
+                    <div class="i-fg-data-entry">
+                        @(Html.Kendo().DropDownList()
+                                                  .Name("Service_Type")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("DISPLAY_VAL")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectLov", "MasterData", new { type = "FTTx" });
+                                                      });
+                                                  })
+                                                .Events(e => e.Change("OnchageDataServiceType"))
+                                            )
+                    </div>
+                    <div class="i-fg-data-entry-validation" id="validatefor-Service_Type"></div>
+                </div>      
+             </div>  
+   </div>
+
+    <div class="col-md-12">
+        
+            <div class="col-md-3"> 
+                <div class="form-group">          
+                <label>Ontarget Date IN <span id="requiredfor-ONTARGET_DATE_IN"></span> </label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DatePicker().Name("ONTARGET_DATE_IN").HtmlAttributes(new { @class = "form-control i-form-control-extend" }).Format("dd/MM/yyyy").Min(DateTime.Today))
+                </div>
+             <div class="i-fg-data-entry-validation" id="validatefor-ONTARGET_DATE_IN"></div>
+                </div>
+             </div>
+      @*  //.Format("dd/MM/yyyy").Min(DateTime.Today))*@
+             <div class="col-md-3">  
+                 <div class="form-group">         
+                <label>Ontarget Date EX</label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DatePicker().Name("ONTARGET_DATE_EX").HtmlAttributes(new { @class = "form-control i-form-control-extend" }).Format("dd/MM/yyyy").Min(DateTime.Today))
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-ONTARGET_DATE_EX"></div>
+                </div>
+             </div>
+
+             <div class="col-md-3">
+                 <div class="form-group">
+                 <label>Coverage Status<span id="requiredfor-Coverage_Status"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                                              .Name("Coverage_Status")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectLov", "MasterData", new { type = "COVERAGESTATUS" });
+                                                  });
+                                              })
+                                              .Events(e => e.Change("OnchageStatus"))
+                                        )
+                </div>     
+               <div class="i-fg-data-entry-validation" id="validatefor-Coverage_Status"></div>       
+                </div> 
+             </div>  
+    </div>  
+
+    <div class="col-md-12">      
+        <br /> 
+        <br /> 
+    </div>
+
+   <div class="col-md-12">        
+            <div class="col-md-3">
+                <div class="form-group">
+                <label>Province TH <span id="requiredfor-Provinces"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                                              .Name("Provinces")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectProvince", "MasterData");
+                                                  });
+                                              })
+                                        )
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-Provinces"></div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                <label>District TH <span id="requiredfor-Amphurs"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                                              .Name("Amphurs")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectAmphur", "MasterData").Data("filterAmphurs");
+                                                  })
+                                                  .ServerFiltering(true);
+                                              })
+                                              .Enable(false)
+                                              .AutoBind(false)
+                                              .CascadeFrom("Provinces")
+                                        )
+                    <script>
+                        function filterAmphurs() {
+                            return {
+                                province: $("#Provinces").val(),
+                                fttx : "Y"
+                            };
+                        }
+                    </script>
+                </div>
+                 <div class="i-fg-data-entry-validation" id="validatefor-Amphurs"></div>
+                </div>
+            </div>
+
+             <div class="col-md-3">
+                <div class="form-group">     
+                    <label>Sub-District TH <span id="requiredfor-Tumbons"></span></label>           
+                    <div class="i-fg-data-entry">
+                        @(Html.Kendo().DropDownList()
+                                                  .Name("Tumbons")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectTumbon", "MasterData").Data("filterTumbons");
+                                                      })
+                                                      .ServerFiltering(true);
+                                                  })
+                                                  .Enable(false)
+                                                  .AutoBind(false)
+                                                  .CascadeFrom("Amphurs")                                                  
+                                            )
+                        <script>
+                            function filterTumbons() {
+                                return {
+                                    province: $("#Provinces").val(),
+                                    aumphur : $("#Amphurs").val()
+                                };
+                            }
+                        </script>
+                    </div>    
+                    <div class="i-fg-data-entry-validation" id="validatefor-Tumbons"></div>            
+                </div>
+            </div>        
+    </div>
+     <div id="HideEng">
+         <div class="col-md-12">        
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Province ENG <span id="requiredfor-ProvincesEN"></span></label>
+                    <div class="i-fg-data-entry">
+                        @(Html.Kendo().DropDownList()
+                                                  .Name("ProvincesEN")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectProvince", "MasterData", new { langFlag = "Y" });
+                                                      });
+                                                  })
+                                            )
+                    </div>
+                    <div class="i-fg-data-entry-validation" id="validatefor-ProvincesEN"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>District ENG <span id="requiredfor-AmphursEN"></span></label>
+                    <div class="i-fg-data-entry">
+                        @(Html.Kendo().DropDownList()
+                                                  .Name("AmphursEN")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectAmphur", "MasterData").Data("filterAmphursEN");
+                                                      })
+                                                      .ServerFiltering(true);
+                                                  })
+                                                  .Enable(false)
+                                                  .AutoBind(false)
+                                                  .CascadeFrom("ProvincesEN")
+                                            )
+                        <script>
+                            function filterAmphursEN() {
+                                   
+                                return {
+                                    province: $("#ProvincesEN").val(),
+                                    langFlag: "Y",
+                                    fttx : "Y"
+                                };
+                            }
+                        </script>
+                    </div>
+                     <div class="i-fg-data-entry-validation" id="validatefor-AmphursEN"></div>
+                    </div>
+                </div>
+
+                 <div class="col-md-3">
+                    <div class="form-group">     
+                        <label>Sub-District ENG <span id="requiredfor-TumbonsEN"></span></label>           
+                        <div class="i-fg-data-entry">
+                            @(Html.Kendo().DropDownList()
+                                                      .Name("TumbonsEN")
+                                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                      .DataTextField("DISPLAY_VAL")
+                                                      .DataValueField("LOV_NAME")
+                                                      .DataSource(source =>
+                                                      {
+                                                          source.Read(read =>
+                                                          {
+                                                              read.Action("SelectTumbon", "MasterData").Data("filterTumbonsEN");
+                                                          })
+                                                          .ServerFiltering(true);
+                                                      })
+                                                      .Enable(false)
+                                                      .AutoBind(false)
+                                                      .CascadeFrom("AmphursEN")
+                                                )
+                            <script>
+                                function filterTumbonsEN() {
+                                   
+                                    return {
+                                        province: $("#ProvincesEN").val(),
+                                        aumphur: $("#AmphursEN").val(),
+                                        langFlag: "Y"
+                                    };
+                                }
+                            </script>
+                        </div>    
+                        <div class="i-fg-data-entry-validation" id="validatefor-TumbonsEN"></div>            
+                    </div>
+                </div>        
+        </div>
+    </div>
+    <div class="col-md-12">      
+        <br /> 
+        <br /> 
+    </div>
+
+    <div id="HideTower">
+        <div class="col-md-12">
+
+               <div class="col-md-3" id="zip">
+                <div class="form-group">
+                <label>Zipcode <span id="requiredfor-Zipcodes"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                                              .Name("Zipcodes")
+                                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                .DataTextField("ZipCode")
+                                                .DataValueField("ZipCode")
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectZipCode", "MasterData").Data("filterZipcodes");
+                                                    })
+                                                    .ServerFiltering(true);
+                                                })
+                                                .Enable(false)
+                                                .AutoBind(false)
+                                                .CascadeFrom("Tumbons")
+                                        )
+                     <script>
+                         function filterZipcodes() {
+                             return {
+                                 province: $("#Provinces").val(),
+                                 aumphur: $("#Amphurs").val(),
+                                 tumbon: $("#Tumbons").val(),
+                             };
+                         }
+                     </script>
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-Zipcodes"></div>
+                </div>
+            </div>  
+            <div class="col-md-3" id="forTwTH">
+                <div class="form-group">
+                    <label>Tower Thai <span id="requiredfor-tower_th"></span></label>
+                    <div class="i-fg-data-entry">
+
+                        @Html.TextBoxFor(model => model.tower_th, new { @class = "k-textbox form-control", @maxlength = "250" })
+                    </div>
+                    <div class="i-fg-data-entry-validation" id="validatefor-tower_th"></div>
+
+                </div>
+            </div>       
+
+       
+            <div class="col-md-3" id="forTwEH">
+                <div class="form-group">
+                    <label>Tower English  <span id="requiredfor-tower_en"></span></label>
+                    <div class="i-fg-data-entry">
+                        @Html.TextBoxFor(model => model.tower_en, new { @class = "k-textbox form-control", @maxlength = "250" })
+                    </div>
+                    <div class="i-fg-data-entry-validation" id="validatefor-tower_en"></div>
+
+                </div>
+            </div>
+           
+        </div>     
+
+        <div class="col-md-12">
+
+             <div class="col-md-3" id="lat">
+                <div class="form-group">
+                    <label>Latitude  <span id="requiredfor-latitude"></span></label>
+                    <div class="i-fg-data-entry">
+                        @Html.TextBoxFor(model => model.latitude, new { @class = "k-textbox form-control", @onkeypress = "return checkNumlat(event)", @onchange = "numlat(this)", @maxlength = "250" })
+                    </div>
+                    <div class="i-fg-data-entry-validation" id="validatefor-latitude"></div>
+
+                </div>
+            </div>
+
+            <div class="col-md-3" id="lon">
+                <div class="form-group">
+                        <label>Longtitude  <span id="requiredfor-longitude"></span></label>
+                        <div class="i-fg-data-entry">
+                            @Html.TextBoxFor(model => model.longitude, new { @class = "k-textbox form-control", @onkeypress = "return checkNumlon(event)", @onchange = "numlon(this)", @maxlength = "250" })
+                        </div>
+                        <div class="i-fg-data-entry-validation" id="validatefor-longitude"></div>
+                 </div>
+            </div>                
+           
+        </div>         
+    </div>   
+    
+    <div class="col-md-12">         
+        <div class="form-group">    
+            <div class="btn-group pull-right i-gap-top-1" id="btnSave">
+                <a class="btn btn-default i-width-sm-2" onclick="onCancelPopup()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                <a class="btn btn-success i-width-sm-2" onclick="onSave('Create')"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Save</a>
+            </div>
+
+            <div class="btn-group pull-right i-gap-top-1 i-hidden" id="btnUpdate">
+                <a class="btn btn-default i-width-sm-2" onclick="onCancelPopup()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                <a class="btn btn-success i-width-sm-2" onclick="onSave('Update')"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Update</a>
+            </div>
+        </div>
+      
+    </div>
+
+
+
+</div>
+</text>)
+)
+
+<input type="hidden" id="GROUP_AMPHUR" />
+<input type="hidden" id="oldOwnerProduct" />
+<input type="hidden" id="oldOwnerType" />
+<input type="hidden" id="FTTX_HIDEDN" />
+
+
+<script>
+
+   
+  
+
+   
+    
+    function onCancel() {
+        window.location.href = "@Url.Action("FTTxCoverage", "FTTx")";
+    }
+
+    function onCancelPopup() {
+
+        $("#AddPopup").data("kendoWindow").close();
+    }
+
+    function onGridDataBound() {
+        setButton();
+
+        var total = $("#GridFTTx").data("kendoGrid").dataSource.total();
+        if (total > 0)
+            $("#btnExport").removeAttr("disabled");
+        else
+            $("#btnExport").attr("disabled", "disabled");
+    }
+
+
+
+
+    function onDataBind() {
+
+        return {
+            region: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value(), amphur: $("#Amphur").data("kendoDropDownList").value(),
+            ownerProduct: $("#OwnerProduct").data("kendoDropDownList").value(), ownerType: $("#OwnerType").data("kendoDropDownList").value(),
+            tower_th: $("#tower_th_From").data("kendoDropDownList").value()
+        };
+    }
+
+    function onRegionChange() {      
+        $("#Province").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value() });
+        $("#Amphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: "" ,  fttx : "Y"});
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: "", aumphur: "" });
+        $("#tower_th_From").data("kendoDropDownList").dataSource.read({
+            region: $("#Region").data("kendoDropDownList").value(),
+            province: "",
+            aumphur: "",
+            tumbon: "",
+            FaqDataOnloandData: "LoandDataTower_th"
+        });
+    }
+
+
+    function onProvinceAndAmpreChang() {
+
+        $("#tower_th_From").data("kendoDropDownList").dataSource.read({
+            aumphur: $("#Amphur").data("kendoDropDownList").value(),
+            FaqDataOnloandData: "FiterGroupAmper",
+            province: $("#Province").data("kendoDropDownList").value(),
+            region: $("#Region").data("kendoDropDownList").value(),
+            tumbon: $("#Tumbon").data("kendoDropDownList").value()
+        });
+
+    }   
+
+    function onProvinceChange() {
+        $("#Amphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value(), fttx: "Y" });
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value(), aumphur: "" });
+        $("#tower_th_From").data("kendoDropDownList").dataSource.read({
+            aumphur: "",
+            FaqDataOnloandData: "FiterGroupAmper",
+            province: $("#Province").data("kendoDropDownList").value(),
+            region: $("#Region").data("kendoDropDownList").value(),
+            tumbon: ""
+        });
+    }
+
+    function onAumphurChange() {
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value(), aumphur: $("#Amphur").data("kendoDropDownList").value() });
+        $("#tower_th_From").data("kendoDropDownList").dataSource.read({
+            aumphur: $("#Amphur").data("kendoDropDownList").value(),
+            FaqDataOnloandData: "FiterGroupAmper",
+            province: $("#Province").data("kendoDropDownList").value(),
+            region: $("#Region").data("kendoDropDownList").value(),
+            tumbon: ""
+        });
+
+    }
+
+    function deleteGrid(e) {
+        
+        $("#FTTX_HIDEDN").val(0);
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $("#OwnerProducts").data("kendoComboBox").value(dataItem.OwnerProduct);
+        $("#OwnerTypes").data("kendoDropDownList").value(dataItem.OwnerType);
+        $("#Provinces").data("kendoDropDownList").value(dataItem.Province)
+        $("#Amphurs").data("kendoDropDownList").value(dataItem.Amphur);
+        $("#Service_Type").data("kendoDropDownList").value(dataItem.Service_Type);       
+        $("#GROUP_AMPHUR").val(dataItem.GroupAmphur);
+        $("#FTTX_HIDEDN").val(dataItem.FTTX_ID);
+
+        //var c = confirm("Are you sure you want to delete " + dataItem.Province + " " + dataItem.Amphur + " " + dataItem.OwnerProduct + " ?");
+        var c = confirm("Are you sure you want to delete?");
+        if (c) {
+            onSave('Delete');
+        }
+    }
+
+    function editGrid(e) {
+      
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));       
+        $("#OwnerProducts").data("kendoComboBox").value(dataItem.OwnerProduct);
+        $("#OwnerTypes").data("kendoDropDownList").value(dataItem.OwnerType);     
+
+       
+        //$("#Provinces").data("kendoDropDownList").dataSource.read();
+        $("#Provinces").data("kendoDropDownList").value(dataItem.Province);
+
+        //$("#ProvincesEN").data("kendoDropDownList").dataSource.read();
+        $("#ProvincesEN").data("kendoDropDownList").value(dataItem.ProvinceEN);      
+        
+        $("#Amphurs").data("kendoDropDownList").dataSource.read({
+            province: dataItem.Province,
+            fttx: "Y"            
+        });
+        $("#Amphurs").data("kendoDropDownList").value(dataItem.Amphur);
+
+        $("#Tumbons").data("kendoDropDownList").dataSource.read({
+            province: dataItem.Province,
+            aumphur: dataItem.Amphur           
+        });
+        if (dataItem.Tumbon != undefined) {
+            //setTimeout("setValueForDelay('" + dataItem.Tumbon + "','Tumbons')", 300);
+            $("#Tumbons").data("kendoDropDownList").value(dataItem.Tumbon);
+        }
+        else {
+            $("#Tumbons").data("kendoDropDownList").value("");
+        }
+
+        $("#AmphursEN").data("kendoDropDownList").dataSource.read({
+            province: dataItem.ProvinceEN,
+            langFlag: "Y",
+            fttx: "Y"
+        });
+        $("#AmphursEN").data("kendoDropDownList").value(dataItem.AmphurEN);
+       
+        $("#TumbonsEN").data("kendoDropDownList").dataSource.read({
+            province: dataItem.ProvinceEN,
+            aumphur: dataItem.AmphurEN,
+            langFlag: "Y"
+        });
+        //setTimeout("setValueForDelay('" + dataItem.TumbonEN + "','TumbonsEN')", 300);
+        $("#TumbonsEN").data("kendoDropDownList").value(dataItem.TumbonEN);            
+      
+
+        $("#Service_Type").data("kendoDropDownList").value(dataItem.SERVICE_TYPE);
+        $("#Coverage_Status").data("kendoDropDownList").value(dataItem.Coverage_Status);
+        $("#Zipcodes").data("kendoDropDownList").dataSource.read({
+            province: dataItem.Province,
+            aumphur: dataItem.Amphur,
+            tumbon: dataItem.Tumbon,
+        });
+        //setTimeout("setValueForDelay('" + dataItem.Zipcode + "','Zipcodes')", 300);
+        $("#Zipcodes").data("kendoDropDownList").value(dataItem.Zipcode);
+
+        $("#GROUP_AMPHUR").val(dataItem.GroupAmphur);
+        $("#oldOwnerProduct").val(dataItem.OwnerProduct);
+        $("#oldOwnerType").val(dataItem.OwnerType);
+        $("#tower_th").val(dataItem.tower_th);
+        $("#tower_en").val(dataItem.tower_en);
+        $("#FTTX_HIDEDN").val(dataItem.FTTX_ID);
+
+        $("#latitude").val(dataItem.latitude);
+        $("#longitude").val(dataItem.longitude);
+        
+        $("#ONTARGET_DATE_IN").val(kendo.toString(kendo.parseDate(dataItem.ONTARGET_DATE_IN), 'dd/MM/yyyy'));
+        $("#ONTARGET_DATE_EX").val(kendo.toString(kendo.parseDate(dataItem.ONTARGET_DATE_EX), 'dd/MM/yyyy'));
+
+        if (dataItem.SERVICE_TYPE == "OTHER") {
+            $("#HideTower").hide();
+            var validateModel = [];
+            validateModel.push({ id: "tower_th" });
+            validateModel.push({ id: "tower_en" });
+            validateModel.push({ id: "latitude" });
+            validateModel.push({ id: "longitude" });
+            validateModel.push({ id: "Tumbons" });
+            validateModel.push({ id: "ProvincesEN" });
+            validateModel.push({ id: "AmphursEN" });
+            validateModel.push({ id: "TumbonsEN" });
+            validateModel.push({ id: "Zipcodes" });
+            RemoveValidation(validateModel);
+            ClearTextValidation("AddPopup");
+
+            if (dataItem.Tumbon != "" && dataItem.Tumbon != "กรุณาเลือก" && dataItem.Tumbon != undefined) {
+                var validateModel = [];
+                validateModel.push({ id: "Zipcodes" });
+                validateModel.push({ id: "ProvincesEN" });
+                validateModel.push({ id: "AmphursEN" });
+                SetRequired(validateModel);
+                ClearTextValidation("AddPopup");
+
+                $("#HideTower").show();
+                $("#HideEng").show();
+                $("#lat").hide();
+                $("#lon").hide();
+                $("#forTwTH").hide();
+                $("#forTwEH").hide();
+            }
+            else {
+                var validateModel = [];
+                validateModel.push({ id: "Zipcodes" });
+                validateModel.push({ id: "ProvincesEN" });
+                validateModel.push({ id: "AmphursEN" });
+                RemoveValidation(validateModel);
+                ClearTextValidation("AddPopup");
+
+                $("#HideEng").hide();
+            }
+
+        }else{
+            var validateModel = [];
+            validateModel.push({ id: "tower_th" });
+            validateModel.push({ id: "tower_en" });
+            validateModel.push({ id: "latitude" });
+            validateModel.push({ id: "longitude" });
+            validateModel.push({ id: "Tumbons" });
+            validateModel.push({ id: "ProvincesEN" });
+            validateModel.push({ id: "AmphursEN" });
+            validateModel.push({ id: "TumbonsEN" });
+            validateModel.push({ id: "Zipcodes" });
+            SetRequired(validateModel);
+            ClearTextValidation("AddPopup");
+            ClearTextValidation("AddPopup");
+
+            $("#HideEng").show();
+            $("#HideTower").show();
+            $("#lat").show();
+            $("#lon").show();
+            $("#forTwTH").show();
+            $("#forTwEH").show();
+        }
+       
+
+        if (dataItem.Coverage_Status == "ON_SITE") {
+            var validateModel = [];
+            validateModel.push({ id: "ONTARGET_DATE_IN" });
+            SetRequired(validateModel);
+        }
+        else
+        {
+            var validateModel = [];
+            validateModel.push({ id: "ONTARGET_DATE_IN" });
+            RemoveValidation(validateModel);
+        }
+
+        ClearTextValidation("AddPopup");
+
+        var validateModel = [];
+
+        validateModel.push({ id: "OwnerProducts" });
+        validateModel.push({ id: "OwnerTypes" });
+        validateModel.push({ id: "Provinces" });
+        validateModel.push({ id: "Amphurs" });
+        validateModel.push({ id: "Service_Type" });    
+
+        //validateModel.push({ id: "ProvincesEN" });
+        //validateModel.push({ id: "AmphursEN" });   
+
+        validateModel.push({ id: "Coverage_Status" });
+   
+        SetRequired(validateModel);
+       
+        $("#btnSave").hide();
+        $("#btnUpdate").show();
+
+        $("#AddPopup_wnd_title").text("Edit Coverage");
+
+        $("#AddPopup").data("kendoWindow").open();
+        $("#AddPopup").data("kendoWindow").center();
+    }
+
+    function setValueForDelay(val, id) {
+        //alert(id + val);
+        $("#" + id).data("kendoDropDownList").value(val);
+    }
+
+    function onFilter() {
+        
+      
+        if ($("#OwnerProduct").data("kendoDropDownList").value() == ""
+            && $("#OwnerType").data("kendoDropDownList").value() == ""
+            && $("#Region").data("kendoDropDownList").value() == ""
+            && $("#Province").data("kendoDropDownList").value() == ""
+            && $("#Amphur").data("kendoDropDownList").value() == ""
+            && $("#Tumbon").data("kendoDropDownList").value() == ""
+            && $("#tower_th_From").data("kendoDropDownList").value() == "")
+        {
+            $("#GridFTTx").data("kendoGrid").dataSource.read(1);          
+
+        }
+        else {
+            Loading();
+            $("#GridFTTx").data("kendoGrid").dataSource.read({
+                region: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value(), amphur: $("#Amphur").data("kendoDropDownList").value(), tumbon: $("#Tumbon").data("kendoDropDownList").value(),
+                ownerProduct: $("#OwnerProduct").data("kendoDropDownList").value(), ownerType: $("#OwnerType").data("kendoDropDownList").value(), tower_th: $("#tower_th_From").data("kendoDropDownList").value(),
+            });
+        }
+
+        $.ajax({
+            url: '/FTTx/GetCountCoverage',
+            data: {
+                region: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value(),
+                amphur: $("#Amphur").data("kendoDropDownList").value(),
+                tumbon: $("#Tumbon").data("kendoDropDownList").value(),
+                ownerProduct: $("#OwnerProduct").data("kendoDropDownList").value(),
+                ownerType: $("#OwnerType").data("kendoDropDownList").value(),
+                tower_th: $("#tower_th_From").data("kendoDropDownList").value(),
+            },
+            dataType: "json",
+            type: 'POST',
+            success: function (data) {
+                $("#totalCoverage").text(data.Total);
+                $("#totalNSN").text(data.NSN);
+                $("#totalSIMAT").text(data.SIMAT);
+                $("#totalAIS").text(data.AIS);
+                $("#totalSYMPHONY").text(data.SYMPHONY);
+                Loading(0);
+                /// onCancel();
+            }
+        });
+        //var filters = [];
+
+        //if ($("#Region").val() != "")
+        //    filters.push({ field: "Region", operator: "eq", value: $("#Region").val() });
+
+        //if ($("#Province").val() != "")
+        //    filters.push({ field: "Province", operator: "eq", value: $("#Province").val() });
+
+        //if ($("#Amphur").val() != "")
+        //    filters.push({ field: "Amphur", operator: "eq", value: $("#Amphur").val() });
+
+        //if ($("#OwnerProduct").val() != "")
+        //    filters.push({ field: "OwnerProduct", operator: "eq", value: $("#OwnerProduct").val() });
+
+        //if ($("#OwnerType").val() != "")
+        //    filters.push({ field: "OwnerType", operator: "eq", value: $("#OwnerType").val() });
+
+        //if (filters.length > 0)
+        //    $("#GridFTTx").data("kendoGrid").dataSource.filter(filters);
+        //else
+        //    $("#GridFTTx").data("kendoGrid").dataSource.filter({ field: "OwnerType", operator: "eq", value: "" });
+
+        //$("#GridFTTx").data("kendoGrid").dataSource.total()        
+    }
+
+    function onAddPopup() {
+        
+   
+        $("#OwnerProducts").data("kendoComboBox").value("");
+        $("#OwnerTypes").data("kendoDropDownList").value("");
+
+        $("#Provinces").data("kendoDropDownList").value("");
+        $("#Amphurs").data("kendoDropDownList").value("");
+        $("#Tumbons").data("kendoDropDownList").value("");
+
+        $("#ProvincesEN").data("kendoDropDownList").value("");
+        $("#AmphursEN").data("kendoDropDownList").value("");
+        $("#TumbonsEN").data("kendoDropDownList").value("");
+
+        $("#Service_Type").data("kendoDropDownList").select(1);
+        $("#Coverage_Status").data("kendoDropDownList").select(2);
+        $("#ONTARGET_DATE_IN").val("");
+        $("#ONTARGET_DATE_EX").val("");
+        
+        $("#oldOwnerProduct").val("");
+        $("#oldOwnerType").val("");
+        $("#tower_th").val("");
+        $("#tower_en").val("");
+        $("#latitude").val("");
+        $("#longitude").val("");     
+
+        ClearTextValidation("AddPopup");    
+        var validateModel= [];
+        validateModel.push({ id: "tower_th" });
+        validateModel.push({ id: "tower_en" });
+        validateModel.push({ id: "latitude" });
+        validateModel.push({ id: "longitude" });
+        validateModel.push({ id: "Tumbons" });
+        validateModel.push({ id: "TumbonsEN" });
+        validateModel.push({ id: "Zipcodes" });
+        validateModel.push({ id: "ProvincesEN" });
+        validateModel.push({ id: "AmphursEN" });
+        
+        RemoveValidation(validateModel);
+        ClearTextValidation("AddPopup");     
+        validateModel = [];
+
+
+
+        validateModel.push({ id: "OwnerProducts" });
+        validateModel.push({ id: "OwnerTypes" });
+        validateModel.push({ id: "Provinces" });
+        validateModel.push({ id: "Amphurs" });
+        //validateModel.push({ id: "ProvincesEN" });
+        //validateModel.push({ id: "AmphursEN" });
+        validateModel.push({ id: "Service_Type" });
+        validateModel.push({ id: "ONTARGET_DATE_IN" });
+        validateModel.push({ id: "Coverage_Status" });       
+        
+        $("#HideEng").hide();
+        $("#HideTower").hide();
+       
+        SetRequired(validateModel);
+
+        $("#btnSave").show();
+        $("#btnUpdate").hide();
+        $("#AddPopup_wnd_title").text("Add Coverage");
+        $("#AddPopup").data("kendoWindow").open();
+        $("#AddPopup").data("kendoWindow").center();
+    }
+
+    function CheckKeyUp_FTTX(id, RexStr) {
+        
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+
+            //if (id.value.match(invalidChars))
+            //    id.value = id.value.replace(invalidChars, '');
+        }
+        $("#" + id).val(strBuilder);
+
+    }
+
+    function event_button() {
+        if (window.event.keyCode == 39) {
+            window.event.keyCode = 9;
+        }
+    }
+    $('#tower_th').keyup(function (e) {        
+
+       if (e.keyCode >= 37 && e.keyCode <= 40) {
+           return true;
+       }
+       else {
+           CheckKeyUp_FTTX("tower_th", "^[ก-๙0-9-()-\/*^_฿=\+&$#! ]+$");
+       }
+     
+         
+    });
+
+    $('#tower_en').keyup(function (e) {
+
+        if (e.keyCode >= 37 && e.keyCode <= 40) {
+            return true;
+        }
+        else {
+            CheckKeyUp_FTTX("tower_en", "^[a-zA-Z0-9\b()-\/*^_฿=\+&$#! ]+$");
+        }
+       
+    });
+
+
+
+    function ValidationProcessing2(panel) {
+   
+        var chk = true;
+        $("#" + panel + " .i-required").each(function (index, e) {
+            var field = e.id.split('requiredfor-')[1];
+            var value = $("#" + field).val();
+            if ($.trim(value) == "") {
+                $("#validatefor-" + field).html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + field).html("");
+            }
+        });
+
+        if (chk) {
+            $("#" + panel + " .i-validate-length").each(function (index, e) {
+                var field = e.id.split('validatefor-')[1];
+                var value = $("#" + field).val();
+                var length = parseInt(e.className.split('i-length-')[1]);
+                var val_length = 0;
+                if (value != "") {
+                    val_length = value.length;
+                }
+
+                if (val_length > length) {
+                    $("#" + e.id).html(ValidationIcon() + "This maxlength field is " + length + ".");
+                    chk = false;
+                }
+                else {
+                    $("#" + e.id).html("");
+                }
+            });
+        }
+
+        return chk;
+    }
+    function ReadDropdownTower() {
+
+        $("#tower_th_From").data("kendoDropDownList").dataSource.read({
+            province: $("#Province").data("kendoDropDownList").value(),
+            aumphur: $("#Amphur").data("kendoDropDownList").value(),
+            FaqDataOnloandData: ""
+        });
+
+    }
+    function onSave(action) {        
+        
+        var flagValidate = "";     
+        var ServiceTtypeDDL = $("#Service_Type").data("kendoDropDownList").value();
+        var zip = $("#AmphursEN").val();
+        var province = $("#ProvincesEN").val();
+        var aum = $("#AmphursEN").val();
+        if (ServiceTtypeDDL == "กรุณาเลือก")
+        {
+            $("#Service_Type").val("");
+        }
+        var chk = ValidationProcessing2("AddPopupPanel");
+        if (ServiceTtypeDDL == "OTHER") {
+            if ($("#Tumbons").val() != "") {
+                if ($("#TumbonsEN").val() != "") {
+                    $("#validatefor-Tumbons").html("");
+                    $("#validatefor-TumbonsEN").html("");
+                }
+                else {
+                    chk = false;
+                    $("#validatefor-TumbonsEN").html(ValidationIcon() + "This field is required , if Sub-District_TH has value.");
+                }
+            }
+            else {
+                $("#ProvincesEN").data("kendoDropDownList").value("");
+                $("#AmphursEN").data("kendoDropDownList").value("");
+                $("#TumbonsEN").data("kendoDropDownList").value("");
+                //$("#ProvincesEN").val("")
+                //$("#AmphursEN").val("")
+                //$("#TumbonsEN").val("");
+                $("#validatefor-TumbonsEN").html("");
+                $("#validatefor-Tumbons").html("");
+                //if ($("#TumbonsEN").val() != "") {
+                //    chk = false;                  
+                //    $("#validatefor-Tumbons").html(ValidationIcon() + "This field is required , if Sub-District_ENG has value.");
+                //}
+                //else {
+                //    $("#validatefor-TumbonsEN").html("");
+                //    $("#validatefor-Tumbons").html("");
+                //}   
+            }
+        }
+
+        if (!kendo.parseDate($("#ONTARGET_DATE_EX").val(), "dd/MM/yyyy")) {
+            if ($("#ONTARGET_DATE_EX").val() != "") {
+                $("#validatefor-" + "ONTARGET_DATE_EX").html(ValidationIcon() + "This field is not correct format.");
+                chk = false;
+            }
+        }
+        else {
+            $("#validatefor-" + "ONTARGET_DATE_EX").html("");
+        }
+
+        if (!kendo.parseDate($("#ONTARGET_DATE_IN").val(), "dd/MM/yyyy")) {
+            if ($("#ONTARGET_DATE_IN").val() != "") {
+                $("#validatefor-" + "ONTARGET_DATE_IN").html(ValidationIcon() + "This field is not correct format.");
+                chk = false;
+            }
+        }
+        else {
+            $("#validatefor-" + "ONTARGET_DATE_IN").html("");
+        }
+
+        if ($("#Tumbons").val() == "") {           
+            $("#Zipcodes").val("");
+        }
+
+        if (chk) {
+          
+            if (ServiceTtypeDDL == "OTHER") {
+                $("#tower_th").val("");
+                $("#tower_en").val("");
+                //$("#Tumbons").data("kendoDropDownList").value("");
+                $("#latitude").val("");
+                $("#longitude").val("");
+            }
+
+            Loading();
+            $.ajax({
+                url: '/FTTx/FTTxCommand',
+                data: {
+                    action: action,
+                    ownerProduct: $("#OwnerProducts").val(), ownerType: $("#OwnerTypes").val(), province: $("#Provinces").val(), amphur: $("#Amphurs").val(), tumbon: $("#Tumbons").val(),
+                    province_en: $("#ProvincesEN").val(), amphur_en: $("#AmphursEN").val(), tumbon_en: $("#TumbonsEN").val(), zipcode :$("#Zipcodes").val(),
+                    groupAmphur: $("#GROUP_AMPHUR").val(), oldOwnerProduct: $("#oldOwnerProduct").val(), oldOwnerType: $("#oldOwnerType").val(), tower_th: $("#tower_th").val(), tower_en: $("#tower_en").val(),
+                    Service_Type: $("#Service_Type").data("kendoDropDownList").value(), FTTX: $("#FTTX_HIDEDN").val(), tagetdate_ex: $("#ONTARGET_DATE_EX").val(), targetdate_in: $("#ONTARGET_DATE_IN").val(),
+                    status: $("#Coverage_Status").val(), lat: $("#latitude").val(), lon: $("#longitude").val(),
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+
+
+                    if (response == true) {
+                        Loading(0);
+                        $("#AddPopup").data("kendoWindow").close();
+                        onFilter();
+                        ReadDropdownTower();
+                        showFeedback("success", action + "d Complete.");
+
+                    }
+                    else if (response == "dup") {
+                        Loading(0);
+                        $("#AddPopup").data("kendoWindow").close();
+                        showFeedback("warning", "Coverage is duplicate, please try again.");
+                    }
+                    else {
+                        Loading(0);
+                        $("#AddPopup").data("kendoWindow").close();
+                        showFeedback("error", response);
+                        ///ReadDropdownTower();
+
+                    }
+                },
+                failure: function (err) {
+                    $("#AddPopup").data("kendoWindow").close();
+                    showFeedback("error", err);
+                }
+            });
+
+        }
+    }
+
+    function exportExcel() {
+        window.open("/FTTx/ExportExcel?region=" + $("#Region").val() +
+            "&province=" + $("#Province").val() +
+            "&amphur=" + $("#Amphur").val() +
+            "&tumbon=" + $("#Tumbon").val() +
+            "&ownerProduct=" + $("#OwnerProduct").val() +
+            "&ownerType=" + $("#OwnerType").val() +
+             "&tower_th=" + $("#tower_th_From").val() +
+            "&tower_en=" + $("#tower_en").val()+
+            "&ServiceType=" + $("#Service_Type").val());
+    }
+
+    function showPopupHistoryLog(panel) {
+        var title = panel;
+        var application = "FBB_CFG005_1";
+        var refKey = $("#Province").val();
+        var refName = "PROVINCE";
+
+        onHistoryPopUp_Show(title, application, refKey, refName);
+    }
+
+    $(function () {
+        if ("@FBB_CFG005_1_ADD" == "") $("#c_add").hide();
+        if ("@FBB_CFG005_1_EXPORT_EXCEL" == "") $("#btnExport").hide();
+
+        onFilter();
+    });
+    function OnchageDataServiceType() {
+   
+        var ServiceTtypeDDL = $("#Service_Type").data("kendoDropDownList").value();
+        var tumbon = $("#Tumbons").data("kendoDropDownList").value();
+
+        if (ServiceTtypeDDL == "OTHER" || ServiceTtypeDDL == "กรุณาเลือก") {
+            var validateModel = [];
+            validateModel.push({ id: "tower_th" });
+            validateModel.push({ id: "tower_en" });
+            validateModel.push({ id: "latitude" });
+            validateModel.push({ id: "longitude" });
+            validateModel.push({ id: "Tumbons" });
+            validateModel.push({ id: "TumbonsEN" });
+            RemoveValidation(validateModel);
+            ClearTextValidation("AddPopup");
+           
+            $("#HideTower").hide();
+
+            if (tumbon != "") {
+                var validateModel = [];
+                validateModel.push({ id: "Zipcodes" });
+                validateModel.push({ id: "ProvincesEN" });
+                validateModel.push({ id: "AmphursEN" });                
+                SetRequired(validateModel);
+                ClearTextValidation("AddPopup");
+
+                $("#HideTower").show();
+                $("#HideEng").show();
+                $("#lat").hide();
+                $("#lon").hide();
+                $("#forTwTH").hide();
+                $("#forTwEH").hide();
+            }
+            else
+            {
+                var validateModel = [];
+                validateModel.push({ id: "Zipcodes" });
+                validateModel.push({ id: "ProvincesEN" });
+                validateModel.push({ id: "AmphursEN" });
+                RemoveValidation(validateModel);
+                ClearTextValidation("AddPopup");
+
+                $("#HideEng").hide();
+            }
+          
+        } else {
+            var validateModel = [];
+            validateModel.push({ id: "tower_th" });
+            validateModel.push({ id: "tower_en" });
+            validateModel.push({ id: "latitude" });
+            validateModel.push({ id: "longitude" });
+            validateModel.push({ id: "Tumbons" });
+            validateModel.push({ id: "ProvincesEN" });
+            validateModel.push({ id: "AmphursEN" });
+            validateModel.push({ id: "TumbonsEN" });
+            validateModel.push({ id: "Zipcodes" });
+            SetRequired(validateModel);
+            ClearTextValidation("AddPopup");           
+          
+            $("#HideEng").show();
+            $("#HideTower").show();
+            $("#lat").show();
+            $("#lon").show();
+            $("#forTwTH").show();
+            $("#forTwEH").show();
+          
+
+        }
+    }
+
+    function OnchageStatus()
+    {
+        var coverage_status = $("#Coverage_Status").data("kendoDropDownList").value();
+
+        if (coverage_status != "ON_SITE") {
+            var validateModel = [];
+            validateModel.push({ id: "ONTARGET_DATE_IN" });      
+            RemoveValidation(validateModel);
+            ClearTextValidation("AddPopup");          
+
+        } else {
+            var validateModel = [];
+            validateModel.push({ id: "ONTARGET_DATE_IN" });          
+            SetRequired(validateModel);
+            ClearTextValidation("AddPopup");          
+
+        }
+    }
+
+    function numlat(e) {
+        var decimal = /^[-+]?[0-9]+\.[0-9]+$/;
+        var check = document.getElementById("latitude").value.toString();
+        if (e.value.match(decimal)) {
+            var len = document.getElementById("latitude").value.length;
+            var index = document.getElementById("latitude").value.indexOf('.');
+
+
+            if (index > 0) {
+                var CharAfterdot = (len - (index + 1));
+                if (CharAfterdot == 6) {
+                    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                    return true;
+                }
+                else if (CharAfterdot < 6) {
+                    //showFeedback("warning", "Please fill decimal 6 digits.");
+                    for (var i = CharAfterdot; i < 6; i++) {
+                        check = check + "0";
+                    }
+                    e.value = check;
+                    //e.focus();
+
+                    return false;
+                }
+            }
+            else {
+                e.value = check + "000000";
+                return true;
+            }
+
+        }
+        else {
+            var len2 = document.getElementById("latitude").value.length;
+            var check2 = document.getElementById("latitude").value.toString();
+            var hasDuplicates = (/([.]).*?\1/).test(check2)
+            if (hasDuplicates) {
+                e.value = '';
+                e.focus();
+                return false;
+            }
+            else {
+                var index = document.getElementById("latitude").value.indexOf('.');
+                if (index > 0) {
+                    e.value = check + "000000";
+                }
+                else {
+                    if (len2 > 0) {
+                        e.value = check + ".000000";
+                    }
+
+                }
+            }
+
+            return true;
+
+        }
+    }
+    function numlon(e) {
+        var decimal = /^[-+]?[0-9]+\.[0-9]+$/;
+        var check = document.getElementById("longitude").value.toString();
+        if (e.value.match(decimal)) {
+            var len = document.getElementById("longitude").value.length;
+            var index = document.getElementById("longitude").value.indexOf('.');
+            if (index > 0) {
+                var CharAfterdot = (len - (index + 1));
+                if (CharAfterdot == 6) {
+                    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                    return true;
+                }
+                else if (CharAfterdot < 6) {
+                    //showFeedback("warning", "Please fill decimal 6 digits.");
+                    for (var i = CharAfterdot; i < 6; i++) {
+                        check = check + "0";
+                    }
+                    e.value = check;
+                    //e.focus();
+
+                    return false;
+                }
+            }
+            else {
+                e.value = check + "000000";
+                return true;
+            }
+        }
+        else {
+
+            var len2 = document.getElementById("longitude").value.length;
+            var check2 = document.getElementById("longitude").value.toString();
+            var hasDuplicates = (/([.]).*?\1/).test(check2)
+            if (hasDuplicates) {
+                e.value = '';
+                e.focus();
+                return false;
+            }
+            else {
+                var index = document.getElementById("longitude").value.indexOf('.');
+                if (index > 0) {
+                    e.value = check + "000000";
+                }
+                else {
+                    if (len2 > 0) {
+                        e.value = check + ".000000";
+                    }
+
+                }
+            }
+            return true;
+          
+        }
+    }
+
+
+    function checkNumlat(e) {
+
+        var unicode = (typeof e.which == "number") ? e.which : e.keyCode
+        if ((unicode < 49 || unicode > 57) && unicode != 46 && unicode != 8 && unicode != 0 && unicode != 48) { //if the key isn't the backspace key (which we should allow)
+          
+            return false;
+        }
+        else {
+            var len = document.getElementById("latitude").value.length;
+            var check = document.getElementById("latitude").value.toString();
+
+            if (unicode == 8 || unicode == 46 || unicode == 0 || unicode == 48) {//if not a number
+                if (len >= 3 && check.indexOf(".") == -1) {
+                    if (unicode == 46) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else {
+                    if (unicode == 46 && check.indexOf(".") != -1) {
+                        return false;
+                    }
+                    else {
+                        return true //disable key press
+                    }
+
+                }
+            }
+
+            if (len >= 3 && check.indexOf(".") == -1) {
+                return false;
+            }
+            else {
+                if (check.indexOf(".") > -1) {
+                    var index = document.getElementById("latitude").value.indexOf('.');
+                    if (index > 0) {
+                        var CharAfterdot = (len - (index + 1));
+                        if (CharAfterdot < 6) {
+                          
+                            return true;
+                        }
+                           
+                        else {                            
+                            return false;
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+    }
+
+    $("#Tumbons").change(function () {
+       
+        var ServiceTtypeDDL = $("#Service_Type").data("kendoDropDownList").value();
+        var tumbon = $("#Tumbons").data("kendoDropDownList").value();
+
+        if (ServiceTtypeDDL == "OTHER" || ServiceTtypeDDL == "กรุณาเลือก") {
+            if (tumbon != "") {
+                var validateModel = [];
+                validateModel.push({ id: "Zipcodes" });
+                validateModel.push({ id: "ProvincesEN" });
+                validateModel.push({ id: "AmphursEN" });
+                SetRequired(validateModel);            
+                $("#HideTower").show();
+                $("#HideEng").show();
+                $("#lat").hide();
+                $("#lon").hide();
+                $("#forTwTH").hide();
+                $("#forTwEH").hide();
+            }
+            else {
+                var validateModel = [];
+                validateModel.push({ id: "Zipcodes" });               
+                validateModel.push({ id: "ProvincesEN" });
+                validateModel.push({ id: "AmphursEN" });
+                RemoveValidation(validateModel);
+                $("#HideTower").hide();
+                $("#HideEng").hide();
+                //$("#lat").show();
+                //$("#lon").show();
+                //$("#forTwTH").show();
+                //$("#forTwEH").show();
+            }
+        }
+        else {
+
+            $("#HideTower").show();
+            $("#lat").show();
+            $("#lon").show();
+            $("#forTwTH").show();
+            $("#forTwEH").show();
+        }
+    });
+
+    $("#Amphurs").change(function ()
+    {
+        $("#AmphursEN").data("kendoDropDownList").value("");
+        $("#TumbonsEN").data("kendoDropDownList").value("");       
+    });
+
+    $("#Provinces").change(function ()
+    {      
+        $("#ProvincesEN").data("kendoDropDownList").value("");
+        $("#AmphursEN").data("kendoDropDownList").value("");
+        $("#TumbonsEN").data("kendoDropDownList").value("");
+      
+    });
+
+    function checkNumlon(e) {
+        
+        var unicode = (typeof e.which == "number") ? e.which : e.keyCode
+        if ((unicode < 49 || unicode > 57) && unicode != 46 && unicode != 8 && unicode != 0 && unicode != 48) { //if the key isn't the backspace key (which we should allow)
+            return false;
+        }
+        else {
+            var len = document.getElementById("longitude").value.length;
+            var check = document.getElementById("longitude").value.toString();
+
+            if (unicode == 8 || unicode == 46 || unicode == 0 || unicode == 48) {//if not a number
+
+                if (len >= 3 && check.indexOf(".") == -1) {
+                    if (unicode == 46) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else {
+                    if (unicode == 46 && check.indexOf(".") != -1) {
+                        return false;
+                    }
+                    else {
+                        return true //disable key press
+                    }
+                    
+                }
+            }         
+
+            if (len >= 3 && check.indexOf(".") == -1) {
+                return false;
+            }
+            else {
+                if (check.indexOf(".") > -1) {
+                    var index = document.getElementById("longitude").value.indexOf('.');
+                    if (index > 0) {
+                        var CharAfterdot = (len - (index + 1));
+                        if (CharAfterdot < 6) {
+                           
+                            return true;
+                        }                           
+                        else {
+                            
+                            return false;
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+    }
+</script>

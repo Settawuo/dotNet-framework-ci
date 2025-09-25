@@ -1,0 +1,1158 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.LastMileByDistanceModel
+@{
+    string L_STATUS = "STATUS";
+    string L_INV_NO = "เลขที่ใบกำกับภาษี";
+    string L_INV_DATE = "วันที่ออกใบกำกับภาษี";
+    string L_IR_DOC = "IR Doc / ใบยอมรับผลการติดตั้ง";
+    string L_REMARK = "Remark";
+
+    string L_REMARK_SUB = "Remark for Sub";
+    string dpDistance = "Dispute Distance";
+    string B_SAVE = "SAVE";
+    string B_CANCEL = "CANCEL";
+    string L_PAID_DATE = "Paid Date(วันที่โอน)";
+}
+<div class="row">
+
+    <div class="col-sm-12 col-md-3">
+        <label>FOA Date From</label>
+        @(Html.Kendo().DatePicker().Name("dtpFOADateFrom")
+                                             .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                            .Format("dd/MM/yyyy")
+                                            .Min(new DateTime(1900, 1, 1))
+                                            .Max(new DateTime(2099, 12, 31))
+                                              .Events(e => e.Change("ondtpChangeFOADateFrom"))
+        )
+    </div>
+
+    <div class=" col-sm-12 col-md-3">
+        <label>FOA Date To</label>
+        @(Html.Kendo().DatePicker().Name("dtpFOADateTo")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                            .Format("dd/MM/yyyy")
+                                            .Min(new DateTime(1900, 1, 1))
+                                            .Max(new DateTime(2099, 12, 31))
+                                           .Events(e => e.Change("ondtpChangeFOADateTo"))
+        )
+    </div>
+
+
+
+</div>
+<div id="chkstatus" class="row">
+    <br />
+    <div class=" col-sm-12 col-md-3">
+        <label>Status</label> @*<span id="requiredfor-SectorInfo"></span></label>&nbsp;<label style="color:red;font-size:15px">**@
+        <div class="i-fg-data-entry">
+            @(Html.Kendo().DropDownList()
+                                                                                 .Name("updateddlStatus")
+                                                                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                                                 .DataTextField("DISPLAY_VAL")
+                                                                                 .DataValueField("LOV_VAL1")
+                                                                                 .DataSource(source =>
+                                                                                 {
+                                                                                     source.Read(read =>
+                                                                                     {
+                                                                                         read.Action("SelectScmWorkFlowStatus", "LastMileByDistance");
+
+                                                                                     });
+
+                                                                                 })
+                                                                                   .Events(e => e.Change("changeDDLStatusUpdateAll"))
+            )
+        </div>
+        <div class="i-fg-data-entry-validation" id="validatefor-_ddlStatus"></div>
+    </div>
+    <div class="col-sm-12 col-md-3">
+
+    </div>
+    <div class="col-sm-12 col-md-3">
+
+    </div>
+
+</div>
+<div id="upinv" class="row">
+    <br />
+    <div class=" col-sm-12 col-md-3">
+        <label>เลขที่ใบกำกับภาษี:</label>
+        <input type="Text" id="_InvNo" class="k-textbox form-control" />
+    </div>
+
+    <div class=" col-sm-12 col-md-3">
+        <label>วันที่ออกใบกำกับภาษี:</label>
+        @(Html.Kendo().DatePicker().Name("dtpInvDt")
+.HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+.ParseFormats(new List<string> { "dd/MM/yyyy" })
+.Format("dd/MM/yyyy")
+.Min(new DateTime(1900, 1, 1))
+.Max(new DateTime(2099, 12, 31))
+                //  .Events(e => e.Change("onChangedtpInvDate"))
+        )
+    </div>
+   
+</div>
+<div class="row">
+    <br />
+</div>
+<div class="row i-text-align-right">
+
+    @* <div class=" col-sm-12 i-text-align-right">*@
+    <button class="btn btn-info btsearchs" onclick="ClearUpdateSearch();"><i class="fa fa-times btsearchs"></i>&nbsp;&nbsp;Clear</button>
+    <button id="btnSearchOrder" class="btn btn-info btsearchs" onclick="searchUpdateList();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Search</button>
+    @*</div>*@
+</div>
+<div class="row">
+    <br />
+</div>
+<div id="FLSgridResult" class="row">
+    @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.LastMileByDistanceOrderListModel>()
+                                                      .Name("FLSViewUpdateALL")
+                                                      .Selectable(selectable => selectable.Enabled(true).Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
+                                                      .Columns(columns =>
+                                                      {
+
+
+                                                          columns.Bound(p => p.ACCESS_NUMBER)
+                                             .ClientTemplate("<input type='checkbox' class='k-cbs FLSViewRow-checkbox' />")
+                                             .HeaderTemplate("<input type='checkbox' id='FLSViewheader-chb' class='h-cbs k-cbs' />").HtmlAttributes(new { style = "text-align:center;" })
+                                             .HeaderHtmlAttributes(new { style = "text-align:center" }).Width(50).Sortable(false);
+
+
+
+                                                          columns.Bound(p => p.ACCESS_NUMBER_MASKING).Title("Internet No").HtmlAttributes(new { style = "text-align:left;" }).Width(130);
+                                                          columns.Bound(p => p.ACCESS_NUMBER).Title("Internet No").HtmlAttributes(new { style = "text-align:left;" }).Width(130).Hidden();
+                                                          columns.Bound(p => p.ACCOUNT_NAME).Title("Customer Name").HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                                          columns.Bound(p => p.SBC_CPY).Title("Sub Contract Name").HtmlAttributes(new { style = "text-align:left;" }).Width(170);
+                                                          columns.Bound(p => p.INVOICE_NO).Title("Invoice No.").HtmlAttributes(new { style = "text-align:left;" }).Width(140);
+                                                          columns.Bound(p => p.INVOICE_DATE_TEXT).Title("Invoice DATE").HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                                          columns.Bound(p => p.FOA_SUBMIT_DATE_TEXT).Title("FOA SUBMIT DATE").HtmlAttributes(new { style = "text-align:left;" }).Width(160);
+                                                          columns.Bound(p => p.FOA_SUBMIT_DATE_TEXT).Title("COMPLETE DATE").HtmlAttributes(new { style = "text-align:left;" }).Width(160);
+                                                          columns.Bound(p => p.ORDER_STATUS).Title("WorkFlow Status").HtmlAttributes(new { style = "text-align:left;" }).Width(170);
+                                                      })
+
+                                                                .Scrollable(scrollable => scrollable.Height("auto"))
+                                                                 .Resizable(resize => resize.Columns(true))
+                                                            .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                                                            .AutoBind(false)
+                                                            .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .Model(model =>
+                                                                {
+                                                                    model.Id(p => p.ACCESS_NUMBER_MASKING);
+                                                                    model.Id(p => p.ACCESS_NUMBER);
+
+                                                                })
+                                                                .PageSize(20)
+                                                                .Read(read => read.Action("FLSUPDATEOrderList", "LastMileByDistance").Data("FLSbindingValue"))
+
+                                                            )
+                                                            .Events(e => e.DataBound("FLSViewUpdateALLDataBound"))
+    //  .Events(e => e.Edit("editGrid"))
+    )
+
+</div>
+<div class="row">
+    <br />
+</div>
+<div class="row i-gap-top-1">
+    <div id="ddlHold" class=" col-sm-12 col-md-3">
+        <label> <span id="requiredfor-SectorInfo"></span>&nbsp;<label style="color:red;font-size:15px">*</label>Status</label>
+        <div class="i-fg-data-entry">
+            @(Html.Kendo().DropDownList()
+                                    .Name("ddlStatusHold")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("LOV_VAL1")
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                    {
+                                        read.Action("SelectScmWorkFlowStatus", "LastMileByDistance");
+                                    });
+                                    })
+                                    .Events(e => e.Change("onchangeddlStatusHold"))
+            )
+        </div>
+        <div class="i-fg-data-entry-validation" id="validatefor-_ddlstatushold"></div>
+
+    </div>
+    <div id="ddlWS" class=" col-sm-12 col-md-3">
+        <label> <span id="requiredfor-SectorInfo"></span>&nbsp;<label id="vdddlws" style="color:red;font-size:15px">*</label>Status</label>
+
+        <input type="text" id="_ddl-Status" class="k-textbox form-control" />
+        <div class="i-fg-data-entry-validation" id="validatefor-_ddl-Status"></div>
+    </div>
+    <div id="_irdc" class=" col-sm-12 col-md-3">
+        <label><span id="requiredfor-SectorInfo"></span>&nbsp;<label id="vdirdc" style="color:red;font-size:15px">*</label> @L_IR_DOC</label>
+        <div class="i-fg-data-entry">
+            @(Html.Kendo().DropDownList()
+                                        .Name("_ddlIRDOC")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                        .DataTextField("DISPLAY_VAL")
+                                        .DataValueField("LOV_VAL1")
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                        {
+                                            read.Action("SelectIrDocFLSUPDATE", "LastMileByDistance");
+                                        });
+                                        })
+                                        .Events(e => e.Change("irdoconChangeDropDownUpdateAll"))
+            )
+        </div>
+
+        <div class="i-fg-data-entry-validation" id="validatefor-_IR_DOC"></div>
+
+    </div>
+
+</div>
+<div class="row i-gap-top-1">
+    <div id="_invno" class="col-sm-12 col-md-3">
+
+        <label><span id="requiredfor-SectorInfo"></span>&nbsp;<label id="vdinvno" style="color:red;font-size:15px">*</label>Invoice No</label>
+        <input type="text" id="_invNO" class="k-textbox form-control" />
+
+        @*@Html.TextBoxFor(t => t.INVOICE_NO, new { maxlength = 50, @class = "k-textbox form-control" })*@
+        <div class="i-fg-data-entry-validation" id="validatefor-_InvoiceNo"></div>
+    </div>
+
+    <div id="_invdt" class=" col-sm-12 col-md-3">
+        <label><span id="requiredfor-SectorInfo"></span>&nbsp;<label id="vdinvdt" style="color:red;font-size:15px">*</label>Invoice Date</label>
+        @(Html.Kendo().DatePicker().Name("_dtpInvDate")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                            .Format("dd/MM/yyyy")
+                                            .Min(new DateTime(1900, 1, 1))
+                                            .Max(new DateTime(2099, 12, 31))
+
+        )
+        <div class="i-fg-data-entry-validation" id="validatefor-_dtpInvDate"></div>
+    </div>
+    <div id="paiddate" class=" col-sm-12 col-md-3">
+        <label>@L_PAID_DATE</label>
+        @(Html.Kendo().DatePicker().Name("dtppaiddate")
+                                                                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                                                      .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                                                                      .Format("dd/MM/yyyy")
+                                                                                      .Min(new DateTime(1900, 01, 01))
+                                                                                      .Max(new DateTime(2099, 12, 31))
+                // .Events(e => e.Change("ondtpaiddate"))
+        )
+        <div class="i-fg-data-entry-validation" id="validatefor-perioddate"></div>
+    </div>
+
+
+
+</div>
+<div class="row i-gap-top-1">
+    <div id="_dpDistance" class="col-sm-12 col-md-3">
+        <label>@dpDistance</label>
+        <input type="text" id="_disDistance" class="k-textbox form-control" />
+        @*@Html.TextBoxFor(t => t.INVOICE_NO, new { maxlength = 50, @class = "k-textbox form-control" })*@
+        <div class="i-fg-data-entry-validation" id="validatefor-_disputeDistance"></div>
+    </div>
+</div>
+
+<div class="row i-gap-top-1">
+
+    <div id="_remark" class=" col-sm-8">
+        <label>@L_REMARK</label>
+        @Html.TextArea("remarkfls", new { @class = "k-textbox form-control", @style = "resize:none", @rows = 3, @id = "_flsremark" })
+        <div class="i-fg-data-entry-validation" id="validatefor-_REMARK"></div>
+    </div>
+
+</div>
+
+<div class="row i-gap-top-1">
+    <br />
+</div>
+<div class="row i-text-align-center">
+
+    <a class="btn btn-danger" onclick="CloseFLSUPDATE();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Close</a>
+    <button class="btn btn-info" onclick="ClearUpdateSearch();"><i class="fa fa-times"></i>&nbsp;&nbsp;Clear</button>
+    <a class="btn btn-info" id="btnFLSSave" onclick="FLSUpdateALL();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;Save</a>
+
+
+
+</div>
+
+
+@(Html.Kendo().Window()
+                  .Name("FLSPOPUP")
+          .HtmlAttributes(new { @class = "i-gap-popup" })
+          .Title("System Information")
+          .Width(520)
+          .Draggable()
+          .Visible(false)
+          .Modal(true)
+          .Content(@<text>
+
+            <label id="popupsdata"></label>
+ 
+        </text>)
+)
+
+
+
+<script>
+
+
+
+
+
+
+
+    function irdoconChangeDropDownUpdateAll() {
+        if (($("#_ddlIRDOC").val() == "N") && ($("#_ddlStatus").val() == "Confirm Paid")) {
+            $('#chkird input:checked').removeAttr('checked');
+            var dialog = $("#checkIRDOCYN").data("kendoWindow").open();
+            dialog = $("#checkIRDOCYN").data("kendoWindow");
+            dialog.center();
+        } else {
+            $("#checkIRDOCYN").data("kendoWindow").close();
+            $('#chkird input:checked').removeAttr('checked');
+        }
+
+    }
+    function onchangeddlStatusHold() {
+        $("#_ddlIRDOC").data('kendoDropDownList').value("ALL");
+        $("#_ddl-Status").val("");
+        $("#_invNO").val("");
+        $("#_dtpInvDate").val("");
+
+
+        $("#_flsremark").val("");
+        $("#_disDistance").val("");
+        $("#validatefor-_ddl-Status").html("");
+        $("#validatefor-_InvoiceNo").html("");
+        $("#validatefor-_dtpInvDate").html("");
+        $("#validatefor-_IR_DOC").html("");
+        $("#validatefor-_REMARK").html("");
+        $("#validatefor-_disputeDistance").html("");
+
+        $("#validatefor-_ddlstatushold").html("");
+        var ss = $('#ddlStatusHold').val();
+
+        if (ss === "Cancelled") {
+            $("#_invno").hide();
+            $("#_irdc").hide();
+            $("#_invdt").hide();
+            $("#paiddate").hide();
+            $("#ddlWS").hide();
+            $("#ddlHold").show();
+        }
+        else {
+            //  $('#vdinvdt').html("*");
+            //  $('#vdinvno').html("*");
+            // $('#vdirdc').html("*");
+            $("#_invno").show();
+            $("#_irdc").show();
+            $("#_invdt").show();
+            $("#paiddate").show();
+            $("#ddlWS").hide();
+            $("#ddlHold").show();
+
+        }
+    }
+    function changeDDLStatusUpdateAll() {
+        var status = $("#updateddlStatus").val();
+
+
+        // $("#_ddl-Status").attr("disabled", false);
+        $("#validatefor-_ddlStatus").html("");
+
+        $("#validatefor-_InvoiceNo").html("");
+        $("#validatefor-_dtpInvDate").html("");
+        $("#validatefor-_IR_DOC").html("");
+        $("#validatefor-_REMARK").html("");
+        $("#validatefor-_disputeDistance").html("");
+
+        //  alert(status);
+        if (status == "Dispute") {
+            searchUpdateList();
+            $("#_ddl-Status").val(status);
+            $("#_disDis").prop("disabled", false);
+            $("#_dpDistance").show();
+            $("#_invno").hide();
+            $("#_irdc").hide();
+            $("#_invdt").hide();
+            $("#paiddate").hide();
+            $("#_disDistance").val("");
+            $("#_ddlIRDOC").data('kendoDropDownList').value("N");
+        }
+
+        else {
+
+            if (status == "ALL") {
+                $("#_ddl-Status").val("");
+                $("#_invdt").show();
+                $("#paiddate").show();
+                $("#_irdc").show();
+                $("#_disDis").prop("disabled", true);
+                $("#_dpDistance").hide();
+                $("#_invno").show();
+            }
+            else {
+                searchUpdateList();
+                $("#_ddl-Status").val(status);
+                $("#_invdt").show();
+                $("#_irdc").show();
+                $("#paiddate").show();
+                $("#_disDis").prop("disabled", true);
+                $("#_dpDistance").hide();
+                $("#_invno").show();
+                $("#_ddlIRDOC").data('kendoDropDownList').value("Y");
+            }
+            setdtpaiddate();
+        }
+
+    }
+    $("#_invNO").keyup(function () {
+        CheckKeyUps("_invNO", "[a-zA-Z0-9_-/]");
+
+    });
+    $("#_disDistance").keyup(function () {
+        CheckKeyUps("_disDistance", "[0-9]");
+
+    });
+
+    var AccessList = function () {
+        ACCESS_NUMBER = "";
+    }
+    $(document).ready(function () {
+
+
+        $("#dtpFOADateFrom").data("kendoDatePicker").value("");
+
+        $("#dtpFOADateTo").data("kendoDatePicker").value("");
+        document.getElementById('_flsremark').setAttribute('maxlength', 500);
+
+        document.getElementById('_invNO').setAttribute('maxlength', 30);
+        document.getElementById('_disDistance').setAttribute('maxlength', 7);
+
+        $("#updateddlStatus").data('kendoDropDownList').value("ALL");
+        $("#ddlStatusHold").data('kendoDropDownList').value("ALL");
+
+        $("#_ddlIRDOC").data('kendoDropDownList').value("ALL");
+
+        $("#_ddl-Status").val("");
+        $("#_invNo").val("");
+        $("#_dtpInvDate").val("");
+
+
+        $("#_flsremark").val("");
+        $("#_disDistance").val("");
+
+
+
+        $("#validatefor-_ddlStatus").html("");
+
+
+
+
+        $("#_ddl-Status").attr("disabled", true);
+        $("#btnFLSSave").attr("disabled", true);
+
+        $('.chkir').on('change', function () {
+            var chkval = [];
+            $('.chkir').not(this).prop('checked', false);
+            $.each($("input[name='chkirdocval']:checked"), function () {
+                chkval.push($(this).val());
+            });
+
+            $("#chkirval").val(chkval);
+            setTimeout(function () { $("#checkIRDOCYN").data("kendoWindow").close(); }, 2000);
+
+        });
+        var status = $("#_ddlStatus").val();
+
+        if (status == "Dispute") {
+            $("#_disDistance").prop("disabled", false);
+            $("#_disDistance").val('');
+            $("#_dpDistance").show();
+
+
+        }
+        else {
+            $("#_disDistance").val('');
+            $("#_dpDistance").hide();
+
+        }
+
+        var grid = $("#FLSViewUpdateALL").data("kendoGrid");
+        grid.table.on("click", ".FLSViewRow-checkbox", FLSselectRowS);
+        var count = 0;
+        //check all Ready onClick
+        $('#FLSViewheader-chb').change(function (ev) {
+            //   alert('aa');
+            var checked = ev.target.checked;
+
+            $('.FLSViewRow-checkbox:enabled').each(function (idx, item) {
+                count++;
+                if (checked) {
+                    if ($(item).prop("checked", false)) {
+                        $(item).click();
+                    }
+                } else {
+                    if ($(item).prop("checked", true)) {
+                        $(item).click();
+                        checkedIds = {};
+                    }
+                }
+            });
+
+            if (checked) {
+                //  alert('a');
+                $(".h-cbs").prop('checked', true);
+            } else {
+                //alert('b');
+                $(".h-cbs").prop('checked', false);
+            }
+
+
+        });
+
+        //sample retrive data
+        $("#btnFLSSave").bind("click", function () {
+            $("#FLSViewRow-checkbox").attr("checked", false);
+            var checked = [];
+            var checkeds = [];
+
+
+            for (var i in checkedIds) {
+                var ListModel = new AccessList();
+                if (checkedIds[i]) {
+                    ListModel.ACCESS_NUMBER = i;
+                    checked.push(i);
+                    checkeds.push(ListModel);
+                    // $("#accNo").val("000000000");
+                }
+
+            }
+
+        });
+    });
+
+    function FLSselectRowS() {
+        var checked = this.checked,
+            row = $(this).closest("tr"),
+            grid = $("#FLSViewUpdateALL").data("kendoGrid"),
+            dataItem = grid.dataItem(row);
+
+        checkedIds[dataItem.ACCESS_NUMBER] = checked;
+
+        if (checked) {
+            //-select the row
+            row.addClass("k-state-selected");
+            $("#btnFLSSave").attr("disabled", false);
+            //var checkHeader = true;
+            //  alert('T');
+
+
+        } else {
+
+            row.removeClass("k-state-selected");
+         //   $("#btnFLSSave").attr("disabled", true);
+            // alert('F');
+            $("#FLSViewheader-chb").prop("checked", false);
+            // $("#FLSViewheader-chb").attr("checked", false);
+            //$("#SCMViewheader-chb")[0].checked = false;
+        }
+
+        FLScheckUpdateAllButton();
+    }
+
+    function FLScheckUpdateAllButton() {
+
+
+        //   AccessListModel.ACCESS_NUMBER = $("#accNo").val();
+
+        var count = 0;
+        var index = 0;
+        idssToSend = [];
+        $.each(checkedIds, function (i, val) {
+
+            if (checkedIds[i]) {
+                //AccessListModel.ACCESS_NUMBER = i;
+                //
+                var AccessListModel = new AccessList();
+                AccessListModel.ACCESS_NUMBER = i;
+                idssToSend.push(AccessListModel);
+                count++;
+            }
+            index++;
+        });
+
+        if (count == 0) {
+            $("#btnFLSSave").attr("disabled", true);
+        }
+        else {
+            $("#btnFLSSave").attr("disabled", false);
+        }
+
+    }
+
+    function FLSUpdateALL() {
+        var count = 0;
+        var index = 0;
+        idssToSend = [];
+        $.each(checkedIds, function (i, val) {
+
+            if (checkedIds[i]) {
+                //AccessListModel.ACCESS_NUMBER = i;
+                //
+                var AccessListModel = new AccessList();
+                AccessListModel.ACCESS_NUMBER = i;
+                idssToSend.push(AccessListModel);
+                count++;
+            }
+            index++;
+        });
+
+        // var idsSend = [];
+        var data;
+        var chk = FLSUpdateAllValidationValue();
+
+        if (chk) {
+
+
+            var user = "";
+            var IntF = "";
+            //SCM VALUE
+            var status = getStatusbybtn();
+            var InvNo = $("#_invNO").val();
+            var InvDate = $("#_dtpInvDate").val();
+            var IrDoc = $("#_ddlIRDOC").val();
+            var remark = $("#_flsremark").val();
+            var remarksub = "";
+            var chkirdoc = "";
+            //FAPO Value
+            var ValDis = $("#_disDistance").val();
+            var Reason = "";
+            var TranDT = $("#dtppaiddate").val(); //dtpaiddate
+            var prddate = "";
+            var AccNO = "";
+
+            if (idssToSend != null) {
+
+                data = JSON.stringify({
+                    'AccNOList': idssToSend, 'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT, 'chkirdoc': chkirdoc, 'prddate': prddate
+                });
+
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/LastMileByDistance/UpdateByOrder",
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response === "Update success.") {
+
+                            $("#updateddlStatus").data('kendoDropDownList').value("ALL");
+                            $("#ddlStatusHold").data('kendoDropDownList').value("ALL");
+                            $("#_ddl-Status").val("");
+                            $("#_invNO").val("");
+                            $("#_disDistance").val("");
+                            $("#_InvNo").val("");
+                            $("#dtpInvDt").val("");
+                            $("#_dtpInvDate").val("");
+                            $("#dtppaiddate").val("");
+                            $("#_ddlIRDOC").data('kendoDropDownList').dataSource.read("ALL");
+                            $("#_flsremark").val("");
+                            $("#FLSViewUpdateALL").data("kendoGrid").dataSource.read();
+                            $("#btnFLSSave").attr("disabled", true);
+                            $("#popupsdata").html(response);
+                            opendialog();
+                            $(".k-cbs").prop("checked", false);
+                            checkedIds = {};
+                        }
+                        else {
+                            $("#updateddlStatus").data('kendoDropDownList').value("ALL");
+                            $("#ddlStatusHold").data('kendoDropDownList').value("ALL");
+                            $("#_ddl-Status").val("");
+                            $("#_invNO").val("");
+                            $("#_disDistance").val("");
+                            $("#_InvNo").val("");
+                            $("#dtpInvDt").val("");
+                            $("#_dtpInvDate").val("");
+                            $("#dtppaiddate").val("");
+                            $("#_ddlIRDOC").data('kendoDropDownList').dataSource.read("ALL");
+                            $("#_flsremark").val("");
+                            $("#FLSViewUpdateALL").data("kendoGrid").dataSource.read();
+                            $("#btnFLSSave").attr("disabled", true);
+                            $("#popupsdata").html(response);
+                            opendialog();
+                            $(".k-cbs").prop("checked", false);
+                            checkedIds = {};
+
+                        }
+
+                    },
+                    failure: function (msg) {
+                        $("#updateddlStatus").data('kendoDropDownList').value("ALL");
+                        $("#ddlStatusHold").data('kendoDropDownList').value("ALL");
+                        $("#_ddl-Status").val("");
+                        $("#_invNO").val("");
+                        $("#_disDistance").val("");
+                        $("#_InvNo").val("");
+                        $("#dtpInvDt").val("");
+                        $("#_dtpInvDate").val("");
+                        $("#dtppaiddate").val("");
+                        $("#_ddlIRDOC").data('kendoDropDownList').dataSource.read("ALL");
+                        $("#_flsremark").val("");
+                        $("#FLSViewUpdateALL").data("kendoGrid").dataSource.read();
+                        $("#btnFLSSave").attr("disabled", true);
+                        $("#popupsdata").html(response);
+                        opendialog();
+                        $(".k-cbs").prop("checked", false);
+                        checkedIds = {};
+                    }
+
+                });
+
+
+            }
+
+
+        }
+        else {
+
+        }
+
+
+      
+
+        // var grid = $("#FLSViewUpdateALL").data("kendoGrid");
+    }
+    function opendialog() {
+        $("#FLSViewUpdateALL tr").removeClass("k-state-selected");
+        var dialog = $("#FLSPOPUP").data("kendoWindow").open();
+        dialog = $("#FLSPOPUP").data("kendoWindow");
+        dialog.center();
+      
+      
+
+    }
+
+    function getStatusbybtn() {
+        var status = "";
+        var chkst = $("#_WFSTATUS").val();;
+        if (chkst == "Waiting Sub Verify") {
+            status = $("#_ddl-Status").val();
+        }
+        else {
+
+            status = $("#ddlStatusHold").val();
+        }
+
+
+        return status;
+    }
+    function CancelFLSUpdate() {
+        $('#btnFLSSave').attr('disabled', true);
+        $("#FLSViewUpdateALL tr").removeClass("k-state-selected");
+        $("#updateddlStatus").data('kendoDropDownList').value("ALL");
+        $("#ddlStatusHold").data('kendoDropDownList').value("ALL");
+
+        $("#_ddlIRDOC").data('kendoDropDownList').value("ALL");
+        $("#_ddl-Status").val("");
+        $("#_invNO").val("");
+        $("#_dtpInvDate").val("");
+
+        $("#dtppaiddate").val(""); 
+        $("#_flsremark").val("");
+        $("#_disDistance").val("");
+        $("#validatefor-_ddl-Status").html("");
+        $("#validatefor-_InvoiceNo").html("");
+        $("#validatefor-_dtpInvDate").html("");
+        $("#validatefor-_IR_DOC").html("");
+        $("#validatefor-_REMARK").html("");
+        $("#validatefor-_disputeDistance").html("");
+
+        $("#validatefor-_ddlstatushold").html("");
+
+
+        $(".k-cbs").prop("checked", false);
+        checkedIds = {};
+        var grid = $("#FLSViewUpdateALL").data("kendoGrid");
+        grid.dataSource.data([]);
+
+
+    }
+    function CloseFLSUPDATE() {
+        CancelFLSUpdate();
+        ClearUpdateSearch();
+        var dialog = $("#FLSEditALLConfigPopup").data("kendoWindow").open();
+        dialog = $("#FLSEditALLConfigPopup").data("kendoWindow");
+        dialog.close();
+    }
+    function FLSUpdateAllValidationValue() {
+
+        var chk = ValidationProcessing("dateselect");
+
+
+        if (chk) //check blank value
+        {
+
+            var WF_STATUS = $("#_WFSTATUS").val();
+
+            if (WF_STATUS == "Waiting Sub Verify") {
+
+
+
+                if ($("#_ddl-Status").val() == "ALL" || $("#_ddl-Status").val() == '') {
+                    $("#validatefor-_ddl-Status").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+
+                }
+                else if ($("#_ddl-Status").val() == "Confirm Paid") {
+                    $("#validatefor-_ddl-Status").html("");
+
+
+                    $("#validatefor-_ddl-Status").html("");
+                    if ($.trim($("#_dtpInvDate").val()) == '') {
+                        $("#validatefor-" + "_dtpInvDate").html(ValidationIcon() + "This field is required.");
+                        chk = false;
+                    }
+                    else {
+
+                        if (!kendo.parseDate($("#_dtpInvDate").val(), "dd/MM/yyyy")) {
+                            if ($("#_dtpInvDate").val() != "") {
+                                $("#validatefor-_dtpInvDate").html(ValidationIcon() + "This field is not correct format.");
+                                chk = false;
+                            }
+                        }
+                        else {
+                            $("#validatefor-" + "_dtpInvDate").html("");
+                        }
+                    }
+                    if ($("#_invNO").val() == '') {
+                        $("#validatefor-" + "_InvoiceNo").html(ValidationIcon() + "This field is required.");
+                        chk = false;
+                    }
+                    else {
+                        $("#validatefor-" + "_InvoiceNo").html("");
+                    }
+                    if ($("#_ddlIRDOC").val() == "ALL" || $("#_ddlIRDOC").val() == '') {
+                        $("#validatefor-" + "_IR_DOC").html(ValidationIcon() + "This field is required.");
+                        chk = false;
+                    }
+                    else {
+                        $("#validatefor-" + "_IR_DOC").html("");
+                    }
+
+
+                }
+                else if ($("#_ddl-Status").val() == "Dispute") {
+                    $("#validatefor-_ddl-Status").html("");
+                    if ($("#_disDistance").val() == '') {
+                        $("#validatefor-" + "_disputeDistance").html(ValidationIcon() + "This field is required.");
+                        chk = false;
+                    }
+                    else {
+                        $("#validatefor-" + "_disputeDistance").html("");
+                    }
+
+
+                }
+
+
+                else {
+                    $("#validatefor-_ddl-Status").html("");
+                    $("#validatefor-_InvoiceNo").html("");
+                    $("#validatefor-_dtpInvDate").html("");
+                    $("#validatefor-_IR_DOC").html("");
+                    $("#validatefor-_REMARK").html("");
+                    $("#validatefor-_disputeDistance").html("");
+
+                }
+
+            }
+            if (WF_STATUS == "Hold") {
+
+                var d = $("#ddlStatusHold").val();
+
+                if ($("#ddlStatusHold").val() == "ALL" || $("#ddlStatusHold").val() == '') {
+                    $("#validatefor-_ddlstatushold").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+
+                }
+                else {
+
+                    if (d == "Confirm Paid") {
+
+                        $("#validatefor-_ddlstatushold").html("");
+
+
+                        $("#validatefor-_REMARK").html("");
+
+                        //  chk = true;
+
+                    }
+                    else if ($("#ddlStatusHold").val() == "Cancelled") {
+                        $("#validatefor-_ddlstatushold").html("");
+                        if ($.trim($("#_flsremark").val()) == '') {
+                            $("#validatefor-" + "_REMARK").html(ValidationIcon() + "This field is required.");
+                            chk = false;
+                        }
+                        else {
+                            $("#validatefor-" + "_REMARK").html("");
+                            $("#validatefor-_ddlstatushold").html("");
+                        }
+                    }
+                    else {
+
+                        $("#validatefor-_ddl-Status").html("");
+                        $("#validatefor-_InvoiceNo").html("");
+                        $("#validatefor-_dtpInvDate").html("");
+                        $("#validatefor-_IR_DOC").html("");
+                        $("#validatefor-_REMARK").html("");
+                        $("#validatefor-_disputeDistance").html("");
+                        $("#validatefor-_ddlstatushold").html("");
+
+                    }
+
+                }
+
+
+            }
+        }
+
+
+        return chk;
+    }
+
+    //on click of the checkbox:
+
+
+
+
+    //       //onChangedtpFOADateFrom
+    //function onChangedtpFOADateFrom() {
+    //    var pickDate = this.value();
+    //    var datepicker = $("#dtpFOADateTo").data("kendoDatePicker");
+    //    if (pickDate) {
+    //        datepicker.enable(true);
+    //        var minDate = new Date(pickDate);
+    //        var maxDate = new Date(pickDate.setMonth(pickDate.getMonth() + 5));
+    //        maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, maxDate.getDate() - 1);
+    //        $("#dtpFOADateTo").kendoDatePicker({
+    //            min: minDate,
+    //            max: maxDate,
+    //            format: "dd/MM/yyyy",
+    //            parseFormats: ["dd/MM/yyyy"]
+    //        });
+
+    //    } else {
+    //       // datepicker.enable(false);
+    //    }
+    //    datepicker.value(new Date());
+    //    $("#dtpFOADateTo").val("");
+    //}
+    //function onChangedtpFOADateTo() {
+
+    //}
+
+
+    //ondtpChangeFOADateFrom
+    function ondtpChangeFOADateFrom() {
+        // var pickDate = this.value();
+        var startPicker = $("#dtpFOADateFrom").data("kendoDatePicker").value();
+        var endPicker = $("#dtpFOADateTo").data("kendoDatePicker").value();
+        if (endPicker < startPicker
+            && ($("#dtpFOADateFrom").data("kendoDatePicker").value() != ''
+                && (kendo.parseDate($("#dtpFOADateFrom").val(), "dd/MM/yyyy")))) {
+            //alert(endPicker);
+            $("#dtpFOADateTo").data("kendoDatePicker").value(startPicker);
+        }
+        //var minDate = new Date(pickDate);
+        //var maxDate = new Date(pickDate.setMonth(pickDate.getMonth() + 5));
+        //maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, maxDate.getDate() - 1);
+        //$("#dtpFOADateTo").kendoDatePicker({
+        //    min: minDate,
+        //    max: maxDate,
+        //    format: "dd/MM/yyyy",
+        //    parseFormats: ["dd/MM/yyyy"]
+        //});
+        if ($("#_WFSTATUS").val() === "Waiting Sub Verify") { searchUpdateList(); }
+
+    }
+
+    function ondtpChangeFOADateTo() {
+
+        var startPicker = $("#dtpFOADateFrom").data("kendoDatePicker").value();
+        var endPicker = $("#dtpFOADateTo").data("kendoDatePicker").value();
+        //  alert(startPicker);
+        if ($("#dtpFOADateFrom").data("kendoDatePicker").value() === null) {
+            $("#dtpFOADateFrom").data("kendoDatePicker").value(endPicker);
+
+        }
+        else if ((endPicker < startPicker)
+            && ($("#dtpFOADateTo").data("kendoDatePicker").value() != ''
+                && (kendo.parseDate($("#dtpFOADateTo").val(), "dd/MM/yyyy")))
+        ) {
+            //alert(endPicker);
+            $("#dtpFOADateFrom").data("kendoDatePicker").value(endPicker);
+        }
+        if ($("#_WFSTATUS").val() === "Waiting Sub Verify") { searchUpdateList(); }
+     
+    }
+
+
+
+    function defaultFLSUpdateData() {
+        var searchUpdate = new FLSUpdateModel();
+        searchUpdate.UPDATESTATUS = $("#updateddlStatus").val();
+        searchUpdate.WF_STATUS = $("#_WFSTATUS").val();
+        searchUpdate.DateFrom = $("#dtpFOADateFrom").val();//DateFrom
+        searchUpdate.DateTo = $("#dtpFOADateTo").val(); //DateTo
+        searchUpdate.INVOICE_NO = $("#_InvNo").val();
+        searchUpdate.INVOICE_DATE = $("#dtpInvDt").val(); //
+
+        var grid = $("#FLSViewUpdateALL").data("kendoGrid");
+
+
+        searchUpdate.PAGE_INDEX = grid.dataSource.page();
+        searchUpdate.PAGE_SIZE = grid.dataSource.pageSize();
+        return searchUpdate;
+    }
+    function FLSbindingValue() {
+        Loading();
+        model = defaultFLSUpdateData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    function searchUpdateList() {
+      
+        $(".k-cbs").prop("checked", false);
+        checkedIds = {};
+        //  var upchk = ValidateSearch();
+        var grid = $("#FLSViewUpdateALL").data("kendoGrid");
+        grid.dataSource.page(1);
+        // if (upchk) {
+
+        //   }
+    }
+    function ValidateSearch() {
+        var chkk = ValidationProcessing("dateselect");
+        var st = $("#_WFSTATUS").val();
+
+        if (chkk) {
+            if (st === "Waiting Sub Verify") {
+                /// alert("ValidationBlankValue");
+                if ($("#updateddlStatus").val() == "ALL" || $("#updateddlStatus").val() == '') {
+                    $("#validatefor-_ddlStatus").html(ValidationIcon() + "This field is required.");
+                    chkk = false;
+
+                }
+                else {
+                    $("#validatefor-_ddlStatus").html("");
+                    chkk = true;
+                }
+            }
+            else {
+                chkk = true;
+            }
+        }
+        return chkk;
+    }
+    function ClearUpdateSearch() {
+        var status = $("#_WFSTATUS").val();
+        
+        $("#dtpInvDt").data("kendoDatePicker").value("");
+        $("#_InvNo").val("");
+        $("#dtpFOADateFrom").data("kendoDatePicker").value("");
+
+        $("#dtpFOADateTo").data("kendoDatePicker").value("");
+
+        $("#updateddlStatus").data('kendoDropDownList').value("ALL");
+        $("#_ddlIRDOC").data('kendoDropDownList').value("ALL");
+        $("#validatefor-_ddlStatus").html("");
+        $(".k-cbs").prop("checked", false);
+        checkedIds = {};
+        var grid = $("#FLSViewUpdateALL").data("kendoGrid");
+        grid.dataSource.data([]);
+        $("#FLSViewUpdateALL tr").removeClass("k-state-selected");
+        if (status == "Waiting Sub Verify") {
+            changeDDLStatusUpdateAll();
+        }
+        else {
+            onchangeddlStatusHold();
+        }
+        CancelFLSUpdate();
+    }
+
+    function FLSViewUpdateALLDataBound() {
+
+        Loading(0);
+        var grid = this;
+        //fix kendo grid width
+        if (this.dataSource.view().length === 0) {
+
+            //var colspan = this.thead.find("th").length;
+
+
+
+            //var emptyRow = "<tr style='height:auto; text-align:Left' ><td colspan='" + colspan + "'>&nbsp;&nbsp;&nbsp;&nbsp;No Data Found  </td></tr>";
+
+            //this.tbody.html(emptyRow);
+
+            //this.table.width(800);
+
+            //$(".k-grid-content").height(50);
+        }
+        else {
+
+            $('.k-grid-content').height("auto");
+            $('.k-grid-content').css("max-height", "200px");
+        }
+        $('#FLSViewheader-chb').removeAttr('checked');
+        $('#FLSViewRow-checkbox').removeAttr('checked');
+        var view = this.dataSource.view();
+        for (var i = 0; i < view.length; i++) {
+            if (checkedIds[view[i].id]) {
+                this.tbody.find("tr[data-uid='" + view[i].uid + "']")
+                    .addClass("k-state-selected")
+                    .find(".FLSViewRow-checkbox")
+                    .attr("checked", "checked");
+            }
+
+
+        }
+
+        //when header checkbox is checked
+        if ($("#FLSViewheader-chb").prop("checked")) {
+
+            $('.FLSViewRow-checkbox:enabled').each(function (idx, item) {
+                if ($(item).prop("checked", false)) {
+                    $(item).click();
+                }
+            });
+        }
+
+
+    }
+    function setdtpaiddate() {
+
+        var minDate = new Date();
+        $("#dtppaiddate").kendoDatePicker({
+            min: minDate,
+            max: new Date(2099, 12, 31),
+            format: "dd/MM/yyyy",
+            parseFormats: ["dd/MM/yyyy"]
+        });
+     //   var d = $("#dtpaiddate").val();
+     //   $("#dtpaiddate").data("kendoDatePicker").value(new Date());
+
+
+
+    }
+
+
+</script>

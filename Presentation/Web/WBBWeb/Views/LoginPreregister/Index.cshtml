@@ -1,0 +1,321 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@{
+    string lLOCATION_CODE = "";
+    string lASC_CODE = "";
+    string lINPUT_CAPTCHA = "";
+    string bCLEAR = "";
+    string bLOGIN = "";
+
+    string Input_Location_Code = "";
+    string Input_ASC_Code = "";
+    string Length_Location_Code = "";
+    string Length_ASC_Code = "";
+    
+    string  L_CAPTCHA_ERR = "";
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        L_CAPTCHA_ERR = labelFBBTR003.Any(c => c.Name == "L_CAPTCHA_ERR") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_CAPTCHA_ERR").DisplayValue : "";
+    }
+    
+    
+    if (ViewBag.labelFBBORV00 != null)
+    {
+        var labelFBBORV00 = (List<LovScreenValueModel>)ViewBag.labelFBBORV00;
+        lLOCATION_CODE = labelFBBORV00.Any(c => c.Name == "L_LOCATION_CODE") ? labelFBBORV00.First(c => c.Name == "L_LOCATION_CODE").DisplayValue : "";
+        lASC_CODE = labelFBBORV00.Any(c => c.Name == "L_ASCCODE") ? labelFBBORV00.First(c => c.Name == "L_ASCCODE").DisplayValue : "";
+        lINPUT_CAPTCHA = labelFBBORV00.Any(c => c.Name == "L_INPUT_CAPTCHA") ? labelFBBORV00.First(c => c.Name == "L_INPUT_CAPTCHA").DisplayValue : "";
+        bCLEAR = labelFBBORV00.Any(c => c.Name == "B_CLEAR") ? labelFBBORV00.First(c => c.Name == "B_CLEAR").DisplayValue : "";
+        bLOGIN = labelFBBORV00.Any(c => c.Name == "B_LOGIN") ? labelFBBORV00.First(c => c.Name == "B_LOGIN").DisplayValue : "";
+    }
+    
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        Input_Location_Code = FbbConstant.Any(f => f.Field == "Input_Location_Code") ? FbbConstant.First(f => f.Field == "Input_Location_Code").Validation : "";
+        Input_ASC_Code = FbbConstant.Any(f => f.Field == "Input_ASC_Code") ? FbbConstant.First(f => f.Field == "Input_ASC_Code").Validation : "";
+        Length_Location_Code = FbbConstant.Any(f => f.Field == "Length_Location_Code") ? FbbConstant.First(f => f.Field == "Length_Location_Code").Validation : "";
+        Length_ASC_Code = FbbConstant.Any(f => f.Field == "Length_ASC_Code") ? FbbConstant.First(f => f.Field == "Length_ASC_Code").Validation : "";
+    }
+}
+
+<style>
+    .green-color {
+        color: #74a433;
+        /*font-weight: bold;*/
+    }
+
+    .fieldset {
+        border: 5px solid #83ad47;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        -khtml-border-radius: 5px;
+        -moz-border-radius: 5px;
+    }
+
+        .fieldset legend {
+            color: #74a433;
+            padding: 5px 10px;
+            margin-top: 20px;
+            margin-left: 20px;
+            width: auto;
+        }
+
+    .realperson-regen {
+        /*padding-top: 4px;*/
+        font-size: 14px;
+        cursor: pointer;
+        border-style: solid;
+        /*border-width: 1px;*/
+        /*padding-left: 50px;*/
+        background-color: #83AD47;
+        /*text-align: left;*/
+        /*text-align: center;*/
+        width: 80px;
+        display: inline-block;
+        line-height: 2;
+        color: white;
+    }
+
+    .realperson-text {
+        margin-left: -50px;
+        display: inline-block;
+        /*width: 240px;*/
+    }
+
+    .input-captcha {
+        width: 200px;
+        margin-left: -50px;
+    }
+
+    .input-text {
+        width: 200px;
+    }
+
+    .form-login {
+    height: auto;
+    width: 740px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+    padding-top: 0px;
+    background-color: #FFF;
+    box-shadow: 2px 2px 2px #ccc;
+    box-shadow: inset 2 2 0px #ccc;
+    border-radius: 0px 0px 10px 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #666;
+    line-height: 40px;
+    cursor: pointer;
+}
+    
+</style>
+
+
+<body>
+    <div class="title-form" style="margin-top:10px; width: 740px;height: 20px;">
+    </div>
+
+    <!--end title form-->
+    <form id="test" method="post" action="/PreRegister/ProcessLinePreregister">
+        <div class="form-login">            
+            <div style="padding-left: 150px; padding-right: 150px; height: 600px; padding-top: 5px;">
+                <fieldset class="fieldset">
+                    <div style="text-align: center; margin-top:10px;">
+                        <img src="~/Images/AIS_Fiber.jpg" width="150" />
+                    </div>
+                    <div class="wrap01" style="margin-top: -10px">
+                        <ul id="error" class="i-red"></ul>
+                    </div>
+                    <div style="margin-left: 80px; margin-top: -10px; color: gray;">
+                        <h3>@lLOCATION_CODE</h3>
+                    </div>
+                    <div style="margin-left: 80px; margin-top: -25px;">
+                        <input type="text" id="LcCode" name="LcCode" class="input-text" maxlength="@Length_Location_Code" />
+                    </div>
+
+                    <div style="margin-left: 80px; color: gray; margin-top: -20px;">
+                        <h3>@lASC_CODE</h3>
+                    </div>
+                    <div style="margin-left: 80px; margin-top: -25px;">
+                        <input type="text" id="ASCCode" name="ASCCode" class="input-text"  maxlength ="@Length_ASC_Code"/>
+                    </div>
+
+                    <div style="margin-left: 80px;">
+                        <div id="summarytabCaptcha" style="color: gray;">
+                            <h3>@lINPUT_CAPTCHA</h3>
+                            <div class="wrap01" style="margin-left: -10px;">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="wrap01" style="margin-left: -100px; margin-top: -30px;">
+                                                <ul id="err005" class="i-red"></ul>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div>
+                                    <input type="text" id="defaultReal" class="input-captcha" name="defaultReal" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float: left; margin-left: 30px;">
+                        <input id="btn1" type="button" class="greyButton-short" style="line-height: 40px; width: 185px; border: none; margin-top: 10px;" value="@bCLEAR" />
+                        <input id="btn2" type="button" class="greenButton2" style="line-height: 40px; width: 185px; border: none; margin-top: 10px;" value="@bLOGIN"/>
+                         <input id="btndis" class="greyButton" disabled="disabled" style="line-height: 40px; color:white; width: 185px; border: none; margin-top: 10px;" value="@bLOGIN" />
+                    </div>
+                    <br />
+
+                    <div class="wrap01">
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+       <input id="outType" name="outType" type="hidden" />
+       <input id="outSubType" name="outSubType" type="hidden" />
+          <input id="outPartname" name="outPartname" type="hidden"  value=""/>
+    </form>
+</body>
+
+
+
+<script>
+
+    $(function () {
+        //changeLanguage();                 
+        //$("#TopUp").val("5");
+        $("#btndis").hide();
+
+    });
+
+    function changeLanguage() {
+        if ($("#LanguagePage").val() == "1") {
+            $("#btnTh").show();
+            $("#btnEn").hide();
+
+            $(".display-th").show();
+            $(".display-en").hide();
+        }
+        else {
+            $("#btnTh").hide();
+            $("#btnEn").show();
+
+            $(".display-th").hide();
+            $(".display-en").show();
+        }
+    }
+
+    $('#defaultReal').realperson({
+        length: 5,
+        regenerate: 'Change',
+        dot: '*',
+        dots: $.realperson.defaultDots,
+        chars: $.realperson.alphanumeric
+    });
+    $('#LcCode').keyup(function () {
+        CheckKeyUps('LcCode', '@Input_Location_Code');
+    });
+
+        $('#ASCCode').keyup(function () {
+            CheckKeyUps('ASCCode', '@Input_ASC_Code');
+    });
+
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    $('#btn1').click(function () {
+        $('#LcCode').val("");
+        $('#ASCCode').val("");
+        $('#error').html("");
+        $("#LcCode").removeClass('textFieldFalse').addClass('textField');
+        $("#defaultReal").removeClass('textFieldFalse').addClass('textField');
+        $("#err005").html("");
+        $("#defaultReal").val("");
+
+    });
+
+    $('#btn2').click(function () {
+
+        $("#btndis").show();
+        $('#btn2').hide();
+        //var modelvalidate = new Array();
+        //modelvalidate.push({ id: "LcCode" });        
+        var chk = true;//false;
+        var cap = false;
+        //chk = ValidationProcessing(modelvalidate, "error")        
+        $.ajax({
+            url: '/Process/ValidateCaptcha',
+            data: { inputUser: $('#defaultReal').val(), inputHash: $('#defaultReal').realperson('getHash') },
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (response) {
+                if (!response) {
+                    $("#err005").html("<li>" + "@L_CAPTCHA_ERR" + "</li>");
+                    $("#defaultReal").removeClass('textField').addClass('textFieldFalse');
+                    $("#btn2").show();
+                    $('#btndis').hide();
+                }
+                else {
+                    $("#err005").html("");
+                    $("#defaultReal").removeClass('textFieldFalse').addClass('textField');
+                    cap = true;
+                }
+            }
+        }); // end ajax
+
+        if (chk && cap) {
+           
+            $.ajax({
+               url: '/loginpreregister/CheckSeibel',
+                data: { LocationCode: $('#LcCode').val(), ASCCode: $('#ASCCode').val() },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (response) {
+
+                    if (response.outStatus == "Error" || response.outType == "" || response.outSubType == "") {
+                        $('#error').html("<li>" + response.outErrorMessage + "</li>");
+                        $("#btn2").show();
+                        $('#btndis').hide();
+                    }
+                    else {
+                       
+                        $('#outType').val(response.outType);
+                        $('#outSubType').val(response.outSubType);
+                        $("#outPartname").val(response.outPartnerName);
+                        $('#LcCode').val(response.outLocationCode);
+                        $("#test").submit();
+                        $('#error').html("");
+                        $("#err005").html("");
+                       
+
+                    }
+                }
+            }); // end ajax
+        }
+
+    });
+
+</script>
+

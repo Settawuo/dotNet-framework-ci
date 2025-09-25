@@ -1,0 +1,427 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@{#region
+    string notCode = "";
+    string disable = "";
+    string noProfile = "";
+    string noToken = "";
+    string notFound = "";
+    string notRedirect = "";
+    string bNext = "";
+    var channelSaleGroup = new List<string>();
+
+    if (ViewBag.IDSConfig != null)
+    {
+        var IDSConfig = (List<LovScreenValueModel>)ViewBag.IDSConfig;
+        notCode = IDSConfig.Any(c => c.Name == "ERR_FBB_AUTH_MSG_NOT_CODE") ? IDSConfig.FirstOrDefault(c => c.Name == "ERR_FBB_AUTH_MSG_NOT_CODE").DisplayValue : "";
+        disable = IDSConfig.Any(c => c.Name == "ERR_FBB_AUTH_MSG_DISABLED") ? IDSConfig.FirstOrDefault(c => c.Name == "ERR_FBB_AUTH_MSG_DISABLED").DisplayValue : "";
+        noProfile = IDSConfig.Any(c => c.Name == "ERR_FBB_AUTH_MSG_no_profile") ? IDSConfig.FirstOrDefault(c => c.Name == "ERR_FBB_AUTH_MSG_no_profile").DisplayValue : "";
+        noToken = IDSConfig.Any(c => c.Name == "ERR_FBB_AUTH_MSG_NOT_ACCESS_CODE") ? IDSConfig.FirstOrDefault(c => c.Name == "ERR_FBB_AUTH_MSG_NOT_ACCESS_CODE").DisplayValue : "";
+        notFound = IDSConfig.Any(c => c.Name == "ERR_FBB_AUTH_MSG_NOT_FOUND") ? IDSConfig.FirstOrDefault(c => c.Name == "ERR_FBB_AUTH_MSG_NOT_FOUND").DisplayValue : "";
+        notRedirect = IDSConfig.Any(c => c.Name == "ERR_FBB_AUTH_MSG_NOT_REDIRECT") ? IDSConfig.FirstOrDefault(c => c.Name == "ERR_FBB_AUTH_MSG_NOT_REDIRECT").DisplayValue : "";
+        channelSaleGroup = IDSConfig.Where(w => w.Name == "Officer_Channel_Sale").Select(s => s.DisplayValue).ToList();
+        bNext = IDSConfig.Any(f => f.Name == "Officer_Btn_Next_Text") ? IDSConfig.First(f => f.Name == "Officer_Btn_Next_Text").DisplayValue : "";
+    }
+
+    #endregion
+}
+<div id="loginPopup" class="popup">
+    <div class="popup-content">
+        <span><img src="~/img/logo-fibre.jpg" style="width:120px"></span>
+        <form id="idsLogin" method="post" action="/process/MenuOfficer"></form>
+    </div>
+</div>
+
+<div id="errorPopup">
+    <div class="add-border-rounded-green">
+        <p class="clearfix"></p>
+        <p>
+            <div id="errorMsg" class="text-center" style="padding: 12px;"></div>
+        </p>
+        <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="btnBackOfficer()">&nbsp; ปิด &nbsp; </button>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-content {
+        background-color: #fff;
+        width: 300px;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 5px;
+        position: relative;
+        text-align: center;
+    }
+
+        .popup-content input {
+            padding: 10px;
+        }
+
+    #errorPopup {
+        display: none;
+        justify-content: center;
+    }
+</style>
+
+<script>
+    let isError = true;
+    let errMsg = "";
+    let seibel = @Html.Raw(Json.Encode(ViewBag.CheckSeibelIDS));
+    const profile = @Html.Raw(Json.Encode(ViewBag.IDSProfile));
+    const asc_code = profile.Data.asc_code;
+    const pincode = profile.Data.pincode;
+    let profileError = profile.Data.error;
+    let outLocationCode = profile.Data.error_description;
+    let isSpecial = profile.Data.is_special;
+    $(document).ready(function () {
+        $(".container").hide();
+        $('#logo_div').hide();
+        $('#aisfooter').hide();
+        $('.truehits-bg').hide()
+        LockScreen(true);
+        setMenuOfficerParam();
+        setTimeout(function () {
+            checkIDSError();
+            if (isError) {
+                $("#errorMsg").text(errMsg);
+                $("#errorPopup").css("display", "flex");
+                if (profileError == "location_code_null") {
+                    checkLocationCode();
+                }
+                LockScreen(false);
+            } else {
+                checkChnSaleGroup();
+            }
+        }, 700);
+    });
+
+
+    function checkIDSError() {
+        switch (profileError) {
+            case "not_code": errMsg = '@notCode'; break;
+            case "no_token": errMsg = '@noToken'; break;
+            case "no_profile": errMsg = '@noProfile'; break;
+            case "disable": errMsg = '@disable'; break;
+            case "has_ascList":
+            case "is_backoffice":
+            case "is_outsource":
+            case "has_pincode":
+            case "has_outLcCode":
+            case "has_NumLcCode": isError = false; break;
+            default: errMsg = '@notRedirect'; break;
+        }
+    }
+
+    function checkChnSaleGroup() {
+        //const channelSaleGroup = @Html.Raw(Json.Encode(channelSaleGroup));
+        if (isSpecial == 'Y') {
+            $("#ASCCode").prop("required", false);
+            if ((pincode != null && asc_code != null) && (pincode != "" && asc_code != "")) {
+                // staff
+                $("#EmployeeID").val(pincode).prop("disabled", true);
+                //$("#ASCCode").val(asc_code);
+            } else if ((pincode != null || pincode != "") && (asc_code == null || asc_code == "")) {
+                // staff
+                $("#EmployeeID").val(pincode).prop("disabled", true);
+                //$("#ASCCode").val(asc_code);
+            } else if ((asc_code != null || asc_code != "") && (pincode == null || pincode == "")) {
+                // partner special
+                $("#ASCCode").val(asc_code).prop("disabled", true);
+                $("#EmployeeID").prop("required", false).hide();
+            }
+            $("#loginPopup").css("display", "block");
+            LockScreen(false);
+        }
+
+        else {
+            switch (profileError) {
+                case "has_ascList":
+                    setSeibelInfo(seibel);
+                    $("#loginPopup").css("display", "none");
+                    $("#ASCCode").val(asc_code);
+                    $("#EmployeeID").prop("required", false);
+                    $("#LcCode").val(profile.Data.location_code);
+                    $("#idsLogin").submit();
+                    break;
+                case "has_NumLcCode":
+                    setSeibelInfo(seibel);
+                    $("#loginPopup").css("display", "none");
+                    $("#EmployeeID").val(pincode);
+                    $("#ASCCode").prop("required", false);
+                    $("#LcCode").val(profile.Data.location_code);
+                    $("#idsLogin").submit();
+                    break;
+                case "has_outLcCode":
+                    $("#loginPopup").css("display", "none");
+                    $("#ASCCode").val(asc_code);
+                    $("#EmployeeID").prop("required", false);
+                    $("#LcCode").val(profile.Data.location_code);
+                    $("#idsLogin").submit();
+                    break;
+                case "is_backoffice":
+                    $("#loginPopup").css("display", "block");
+                    $("#ASCCode").css("display", "none");
+                    $("#ASCCode").prop("required", false);
+                    $("#EmployeeID").val(pincode).prop("disabled", true);
+                    LockScreen(false);
+                    break;
+                case "is_outsource":
+                    $("#loginPopup").css("display", "block");
+                    $("#ASCCode").prop("required", false);
+                    $("#EmployeeID").val("00000000").prop("disabled", true);
+                    LockScreen(false);
+                    break;
+                case "has_pincode":
+                    setSeibelInfo(seibel);
+                    $("#loginPopup").css("display", "none");
+                    $("#ASCCode").val(asc_code);
+                    $("#EmployeeID").val(pincode);
+                    $("#LcCode").val(profile.Data.location_code);
+                    $("#idsLogin").submit();
+                    break;
+                default:
+                    if ((asc_code != "" || asc_code != null) && (seibel.outPosition == null || seibel.outPosition == "")) {
+                        $("#errorMsg").text('@disable');
+                        $("#loginPopup").css("display", "none");
+                        $("#errorPopup").css("display", "flex");
+                    } else {
+                        $("#loginPopup").css("display", "block");
+                    }
+                    LockScreen(false);
+            }
+        }
+    }
+
+    function validateNumberInput(inputElement) {
+        inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
+    }
+
+    function chkSeibel() {
+        LockScreen(true);
+        let message = "";
+        let notFound = "@notFound";
+        let hasInputVal = true;
+
+        if ($('#LcCode').prop("required") && $('#LcCode').val() == '') {
+            message = notFound.replace("{x}", "Location code");
+            $('#LcCode').attr("placeholder", message).val('');
+            hasInputVal = false;
+        }
+        if ($('#EmployeeID').prop("required") && $('#EmployeeID').val() == '') {
+            message = notFound.replace("{x}", "Employee ID");
+            $('#EmployeeID').attr("placeholder", message).val('');
+            hasInputVal = false;
+        }
+        if ($("#LanguagePage").val() == '2') {
+            if (profileError == 'has_outLcCode'||profileError == 'has_pincode') {
+                $("#ASCCode").prop("required", false);
+            }
+        }
+        if ($('#ASCCode').prop("required") && $('#ASCCode').val() == '') {
+            message = notFound.replace("{x}", "ASC code");
+            $('#ASCCode').attr("placeholder", message).val('');
+            hasInputVal = false;
+        }
+        if (hasInputVal) {
+            $.ajax({
+                url: '/officer/CheckSeibel',
+                data: { LocationCode: $('#LcCode').val(), ASCCode: $('#ASCCode').val() },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (response) {
+                    //R23.08 Max IDS Login officer
+                    if (response != null && response.outStatus != "Error") {
+                        
+
+
+                        if (profileError == "location_code_null" || response.outLocationCode == "") {
+                            $("#LcCode").prop("required", false);
+                            if (response.outLocationCode != null && response.outLocationCode != "") {
+                                $("#LcCode").prop("required", true);
+                                profileError = "has_outLcCode";
+                                outLocationCode = response.outLocationCode;
+                                if (typeof response.outLocationCode === 'number') {
+                                    profile.error = "has_NumLcCode";
+                                }
+                                if (response.outPosition != null && response.outPosition != "") {
+                                    profileError = "has_ascList";
+                                }
+                                seibel = response;
+                                checkChnSaleGroup();
+                            } else {
+                                if (isSpecial == 'Y') {
+                                    if ((pincode != null && asc_code != null) && (pincode != "" && asc_code != "")) {
+                                        // staff
+                                        $("#LcCode").val('')
+                                        $("#ASCCode").val('')
+                                    } else if ((pincode != null || pincode != "") && (asc_code == null || asc_code == "")) {
+                                        // staff
+                                        $("#LcCode").val('')
+                                        $("#ASCCode").val('')
+                                    } else if ((asc_code != null || asc_code != "") && (pincode == null || pincode == "")) {
+                                        // partner special
+                                        $("#LcCode").val('')
+                                    }
+                                } else {
+                                    $("#LcCode").val('')
+                                }
+
+                                if ($('#LcCode').prop("required")) {
+                                    var message = notFound.replace("{x}", "Location code");
+                                    $('#LcCode').attr("placeholder", message).val('');
+                                }
+                                LockScreen(false);
+                                return;
+                            }
+                        }
+                        setSeibelInfo(response);
+                        if (response.outPosition == null && response.outLocationCode == null) {
+                            $('#LcCode').val('');
+                            if ($("#EmployeeID").val() == "") {
+                                $('#ASCCode').val('');
+                            }
+                        } else {
+                            $("#loginPopup").css("display", "none");
+                            if ($('#EmployeeID').val() != '') {
+                                CheckEmpCode();
+                            }
+                            $("#ASCCode").prop("disabled", false);
+                            $("#EmployeeID").prop("disabled", false);
+                            $("#LcCode").prop("disabled", false);
+
+                            $("#idsLogin").submit();
+
+                            $("#ASCCode").prop("disabled", true);
+                            $("#EmployeeID").prop("disabled", true);
+                            $("#LcCode").prop("disabled", true);
+                        }
+                    } else {
+                        if (!$('#LcCode').prop("disabled") && $('#LcCode').prop("required")) {
+                            message = notFound.replace("{x}", "Location code");
+                            $('#LcCode').attr("placeholder", message).val('');
+                        }
+                        if (!$('#EmployeeID').prop("disabled") &&   $('#EmployeeID').prop("required")) {
+                            message = notFound.replace("{x}", "Employee ID");
+                            $('#EmployeeID').attr("placeholder", message).val('');
+                        }
+                        if (!$('#ASCCode').prop("disabled") && ($('#ASCCode').prop("required") || $('#ASCCode').val() != '')) {
+                            message = notFound.replace("{x}", "ASC code");
+                            $('#ASCCode').attr("placeholder", message).val('');
+                        }
+                    }
+                },
+                error: function (error) {
+
+                    $("#errorMsg").text(error);
+                    $("#errorPopup").css("display", "flex");
+                }
+            });
+        }
+        LockScreen(false);
+    }
+
+    function btnBackOfficer() {
+        $("#idsLogin").submit();
+    }
+
+    const inputReq = [
+        { id: "LcCode", placeholder: "Input location code" },
+        { id: "EmployeeID", placeholder: "Input employee id" },
+        { id: "ASCCode", placeholder: "Input ASC code" }
+    ];
+
+
+    const seibelInfo = ["outType", "outSubType", "outMobileNo", "outPartnerName", "outLocationEmailByRegion", "outEmpName", "outTitle", "outCompanyName", "outDistChn", "outChnSales", "outShopType", "outOperatorClass", "outASCTitleThai", "outASCPartnerName", "outMemberCategory", "outPosition", "outRegion", "outSubRegion", "outLocationProvince", "outEmpName", "THFirstName", "THLastName"];
+
+    function setMenuOfficerParam() {
+        inputReq.forEach(field => {
+            $('<input>').attr({
+                type: 'text', class: 'form-control',
+                id: field.id, name: field.id,
+                placeholder: field.placeholder,
+                maxlength: 10, required: true,
+                oninput: "validateNumberInput(this)"
+            }).appendTo($('#idsLogin'));
+            $('<p class="clearfix"></p>').appendTo($('#idsLogin'));
+        });
+
+        $('<button>').attr({
+            id: 'btnChkSeibel', type: 'button',
+            class: 'btn btn-success btn-for-xs',
+            style: 'margin: 10px auto;',
+            onclick: 'chkSeibel()'
+        }).text(' @bNext ').appendTo($('#idsLogin'));
+
+        seibelInfo.forEach(item => {
+            $('<input>').attr({
+                type: 'hidden', id: item, name: item, value: ''
+            }).appendTo($('#idsLogin'));
+        });
+    }
+
+    function setSeibelInfo(response) {
+        $('#LcCode').val(response.outLocationCode);
+        for (const key of seibelInfo) {
+            $('#' + key).val(response[key]);
+        }
+        setMenuOfficerParamExtension()
+
+    }
+
+    function checkLocationCode() {
+        $("#errorPopup").css("display", "none");
+        $("#loginPopup").css("display", "block");
+        if (asc_code != "" && pincode == "") {
+            $("#ASCCode").val(asc_code);
+            $("#EmployeeID").prop("required", false).hide();
+        } else {
+            $("#ASCCode").prop("required", false).hide();
+            $("#EmployeeID").val(pincode);
+        }
+        if ((asc_code == "" || asc_code == null) && (pincode == "" || pincode == null)) {
+            $("#errorMsg").text('@disable');
+            $("#loginPopup").css("display", "none");
+            $("#errorPopup").css("display", "flex");
+        }
+    }
+
+    function setMenuOfficerParamExtension(){
+        $('#outPartnerName').attr('id', 'PartnerName').attr('name', 'PartnerName')
+        $('#outRegion').attr('id', 'outLocationRegion').attr('name', 'outLocationRegion')
+        $('#outSubRegion').attr('id', 'outLocationSubRegion').attr('name', 'outLocationSubRegion')
+    }
+
+    function CheckEmpCode() {
+        $.ajax({
+            url: '/Campaign/CheckEmpCode',
+            data: { empCode: $('#EmployeeID').val() },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.result1 != "") {
+                    $("#outEmpName").val(response.result1)
+                    $('#THFirstName').val(response.THFirstName);
+                    $('#THLastName').val(response.THLastName);
+                }
+            }
+
+        });
+    }
+</script>

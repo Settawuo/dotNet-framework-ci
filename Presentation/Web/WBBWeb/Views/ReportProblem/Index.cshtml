@@ -1,0 +1,429 @@
+﻿@using WBBEntity.PanelModels
+@{
+    Layout = "~/Views/Shared/_LayoutPaymentAndReportProblem.cshtml";
+
+    string L_REPORT_PROBLEM_HEADER = string.Empty;
+    string L_REPORT_PROBLEM_DESCRIPTION = string.Empty;
+    string L_IDENTIFY_REQUEST = string.Empty;
+    string L_PLEASE_IDENTIFY_REQUEST = string.Empty;
+    string L_PROBLEM_DETAILS = string.Empty;
+    string L_CONTACT_INFOMATION = string.Empty;
+    string L_CONTACT_EMAIL = string.Empty;
+    string L_CONTACT_NUMBER = string.Empty;
+    string B_SUBMIT = string.Empty;
+    string L_REQUIED_FIELD = string.Empty;
+    string L_REQUIRED_FIELDS = string.Empty;
+
+    if (ViewBag.LabelFBBOR020 != null)
+    {
+        var labelFBBTOR020 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR020;
+        L_REPORT_PROBLEM_HEADER = labelFBBTOR020.Any(c => c.Name == "L_REPORT_PROBLEM_HEADER") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_REPORT_PROBLEM_HEADER").DisplayValue : "";
+        L_IDENTIFY_REQUEST = labelFBBTOR020.Any(c => c.Name == "L_IDENTIFY_REQUEST") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_IDENTIFY_REQUEST").DisplayValue : "";
+        L_PLEASE_IDENTIFY_REQUEST = labelFBBTOR020.Any(c => c.Name == "L_PLEASE_IDENTIFY_REQUEST") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_PLEASE_IDENTIFY_REQUEST").DisplayValue : "";
+        L_PROBLEM_DETAILS = labelFBBTOR020.Any(c => c.Name == "L_PROBLEM_DETAILS") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_PROBLEM_DETAILS").DisplayValue : "";
+        L_CONTACT_INFOMATION = labelFBBTOR020.Any(c => c.Name == "L_CONTACT_INFOMATION") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_CONTACT_INFOMATION").DisplayValue : "";
+        L_CONTACT_EMAIL = labelFBBTOR020.Any(c => c.Name == "L_CONTACT_EMAIL") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_CONTACT_EMAIL").DisplayValue : "";
+        L_CONTACT_NUMBER = labelFBBTOR020.Any(c => c.Name == "L_CONTACT_NUMBER") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_CONTACT_NUMBER").DisplayValue : "";
+        B_SUBMIT = labelFBBTOR020.Any(c => c.Name == "B_SUBMIT") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "B_SUBMIT").DisplayValue : "";
+        L_REQUIED_FIELD = labelFBBTOR020.Any(c => c.Name == "L_REQUIED_FIELD") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_REQUIED_FIELD").DisplayValue : "";
+        L_REQUIRED_FIELDS = labelFBBTOR020.Any(c => c.Name == "L_REQUIRED_FIELDS") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_REQUIRED_FIELDS").DisplayValue : "";
+    }
+}
+
+
+@*    <link rel="stylesheet" href="~/css/main.min.css" />*@
+
+<style>
+    
+    #box1P_holder {
+        background:none
+    }
+
+
+    .report-headtext {
+        font-size: 29px;
+        color: #558C0B;
+        font-family: 'db_helvethaicaais_x65_med';
+        padding-left: 15px;
+        /*float: left;*/
+    }
+
+    .report-detail-text {
+        color: #614e48;
+        font-size: 17px;
+        line-height: 25px;
+    }
+
+    .detail-for-menu-report {
+        width: 100%;
+        border: 1px solid #999999;
+        min-height: 500px;
+        background-color: #ffffff;
+    }
+
+    .col-centered{
+    float: none;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+    /*=======EDIT DROPDOWN===========*/
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #8DC63F; /*before color #c5d444*/
+    color: #fff; /*before color #393A3B*/
+    text-align: center;
+}
+
+
+</style>
+
+
+<div class="col-sm-12 col-md-8 col-lg-6 col-centered">
+    
+    @using (Html.BeginForm("SendReport", "ReportProblem", FormMethod.Post, new { id = "ReportProblem" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="content-menu">
+            <div class="detail-for-menu-report">
+                <div class="innercontent">
+                    <div class="row_ais">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <h4 class="report-headtext page-header">@L_REPORT_PROBLEM_HEADER</h4>
+                            <strong>@L_REPORT_PROBLEM_DESCRIPTION</strong>
+                            <p class="clearfix"></p>
+    
+                            <div class="col-sm-12 col-md-12 col-lg-12 report-detail-text">
+                                @L_IDENTIFY_REQUEST 
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                @if (ViewBag.dropDownListProblemType != null)
+                                {
+                                    <select id="ProblemType" name="ProblemType" class="select select2-hidden-accessible" style="width: 100%" >
+                                        <option value="" disabled="disabled" selected="selected">@L_PLEASE_IDENTIFY_REQUEST</option>
+                                        @foreach (var item in (List<SelectListItem>) ViewBag.dropDownListProblemType)
+                                        {
+                                            <option value="@item.Value" >@item.Text</option>
+                                        }
+                                    </select>
+                                }
+                                <p class="clearfix"></p>
+                            </div>
+    
+                            <p class="clearfix"></p>
+                            <div class="col-sm-12 col-md-12 col-lg-12 report-detail-text">
+                                @L_PROBLEM_DETAILS 
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                @Html.TextArea("ProblemDetails", new {@class = "form-control",row = "5", style = "width : 100%;max-width: 100%;height: 129px;", maxlength = "1500", autocomplete = "off", title = L_REQUIED_FIELD})
+                                @Html.TextBox("ProblemTypeDes", null, new {@class = "hidden"})
+                                <p class="clearfix"></p>
+                            </div>
+    
+                            <p class="clearfix"></p>
+                            <div class="col-sm-12 col-md-12 col-lg-12 report-detail-text">
+                                @L_CONTACT_INFOMATION 
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                @Html.TextBox("ContactInfo", null, new {type = "text" ,@class = "form-control" , id = "ContactInfo", maxlength = "100", autocomplete = "off", title = L_REQUIED_FIELD})
+                                <p class="clearfix"></p>
+                            </div>
+    
+                            <p class="clearfix"></p>
+                            <div class="col-sm-12 col-md-12 col-lg-12 report-detail-text">
+                                @L_CONTACT_EMAIL 
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                @Html.TextBox("ContactEmail", null, new {@class = "form-control",  maxlength = "100", autocomplete = "off", title = L_REQUIED_FIELD})
+                                <p class="clearfix"></p>
+                            </div>
+    
+                            <p class="clearfix"></p>
+                            <div class="col-sm-12 col-md-12 col-lg-12 report-detail-text">
+                                @L_CONTACT_NUMBER 
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12 required">
+                                @Html.TextBox("ContactNumber", null, new {@class = "form-control", maxlength = "100", autocomplete = "off", title = L_REQUIED_FIELD})
+                                <p class="clearfix"></p>
+                            </div>
+    
+                            <p class="clearfix"></p>
+                            <div class="col-sm-12 col-md-12 col-lg-12 text-right ">
+                                <a  id="btnSendReport"
+                                    class="btn btn-success btn-for-xs" role="button">@B_SUBMIT</a>
+                            </div>
+                            <p class="clearfix"></p>
+                        </div>
+                        <p class="clearfix"></p>
+                    </div>
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+                
+            <p class="clearfix"></p>
+        </div>
+    }
+    
+   
+</div>
+    
+<script>
+    $(document).ready(function() {
+        $('li').removeClass('active');
+        $('.bd-4').addClass('active');
+        $('.reportproblem').addClass('active');
+    });
+
+
+
+    $('#ProblemDetails').on("change input paste", function() {
+        RemoveText("ProblemDetails", 1500);
+    });
+
+    $('#ContactInfo').on("change input paste", function() {
+        RemoveText("ContactInfo", 100);
+    });
+
+    $('#ContactEmail').on("change input paste", function() {
+        RemoveText("ContactEmail", 100);
+    });
+
+    $('#ContactNumber').on("change input paste", function () {
+        CheckKeyUps("ContactNumber", "^[0-9]+$");
+        RemoveText("ContactNumber", 100);
+    });
+
+
+    $("#ProblemDetails").keyup(function (e) {
+        return CheckKey(e, $('#ProblemDetails').val(), 1500);
+    });
+
+    $("#ContactInfo").keyup(function (e) {
+        return CheckKey(e, $('#ContactInfo').val(), 100);
+    });
+
+    $("#ContactEmail").keyup(function (e) {
+        return CheckKey(e, $('#ContactEmail').val(), 100);
+    });
+
+    $("#ContactNumber").keyup(function (e) {
+        CheckKeyUps("ContactNumber", "^[0-9]+$");
+        return CheckKey(e, $('#ContactNumber').val(), 100);
+    });
+
+    $("#ContactInfo").keypress(function (e) {
+        return stopEnterKey(e);
+    });
+
+    $("#ContactEmail").keypress(function (e) {
+        return stopEnterKey(e);
+    });
+
+    $("#ContactNumber").keypress(function (e) {
+        return stopEnterKey(e);
+    });
+
+    function RemoveText(id, maxlength) {
+        var strKey = $("#" + id).val();
+        if (strKey.length > maxlength) {
+            var strBuilder = "";
+            for (var i = 0; i < maxlength; i++) {
+                strBuilder += strKey.substr(i, 1);
+            }
+            $("#" + id).val(strBuilder);
+        }
+        
+    }
+
+
+    function CheckKeyUps(id, rexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(rexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function CheckKey(e, value, maxlength) {
+        var response = true;
+        var mybrowser = navigator.userAgent;
+        var isIe = false;
+        if (mybrowser.indexOf('MSIE') > 0) {
+            isIe = true;
+        }
+
+        var k;
+        if (window.event) k = window.event.keyCode; //  IE
+        else if (e) k = e.which; //  Firefox
+
+        if (value.length >= maxlength && !(k == 46 || k == 8)) {
+            if (isIe) {
+                event.returnValue = false;
+            }
+            response = false;
+        }
+
+        return response;
+    }
+
+    $('#btnSendReport').click(function () {
+
+        var chk = false;
+        var a = [];
+
+        a.push({ id: "ProblemType" });
+        a.push({ id: "ProblemDetails" });
+        a.push({ id: "ContactInfo" });
+        a.push({ id: "ContactEmail", condition: "Email" });
+        a.push({ id: "ContactNumber", condition: "PhoneNumber" });
+
+
+        chk = ValidationProcessing(a, "err001");
+
+        if (chk) {
+            $('#ProblemTypeDes').val($("#ProblemType option:selected").text());
+            $('#ReportProblem').submit();
+        }
+
+    });
+
+    function stopEnterKey(evt) {
+        evt = (evt) ? evt : ((event) ? event : null);
+        var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+        if ((evt.keyCode == 13) && (node.type == "text")) { return false; }
+        return true;
+    }
+
+
+    function ValidationProcessing(validateModel, err) {
+        var chk = true;
+        var error = "#" + err;
+        var temp = "";
+        var cond = "";
+
+        $(error).html(temp);
+        $(validateModel).each(function (index, e) {
+            if (e.id == undefined) {
+                var vgroup = e.vgroup;
+                if (vgroup != undefined) {
+                    var tempkid = "";
+                    var vchk = false;
+                    $.each(vgroup, function (j, k) {
+                        var kid = "#" + k.id;
+                        var kvalue = $(kid).val();
+                        if (j == 0) tempkid = $(kid);
+
+                        if ($.trim(kvalue) != "")
+                            vchk = true;
+                    });
+                    if (vchk) {
+                        $(tempkid)[0].className = "form-control";
+                    } else {
+                        chk = false;
+                        $(tempkid)[0].className = "form-control errorinput";
+                    }
+                }
+            } else {
+                var id = "#" + e.id;
+                var value = $(id).val();
+                cond = e.condition;
+                var required = e.required;
+                if (required == undefined) required = true;
+                if ($.trim(value) == "" && required) {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                            theme: "classic"
+                        });
+                    } else if ($(id)[0].className == "form-control" || $(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control errorinput";
+                        $("#VALIDATE_" + e.id).show();
+                    } else {
+                        $(id)[0].className = "form-control errorinput";
+                        $("#VALIDATE_" + e.id).show();
+                    }
+                    chk = false;
+                } else if (cond != undefined) {
+                    var cchk = true;
+                    if ((!required && value != "") || required) {
+                        if (cond == "Email") {
+                            cchk = validateEmail(value);
+                            
+                        }
+                        else if (cond == "PhoneNumber") {
+
+                            cchk = validatePhoneNumber(value);
+                        }
+                            
+                    }
+
+                    if (!cchk) {
+                        $(id)[0].className = "form-control errorinput";
+                        chk = false;
+                    } else {
+                        if ($(id)[0].className == "form-control"
+                                || $(id)[0].className.indexOf("errorinput") > -1) {
+                            $(id)[0].className = "form-control";
+                        } else
+                            $(id)[0].className = "form-control";
+                    }
+                } else {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                        });
+                    } else if ($(id)[0].className == "form-control errorinput") {
+                        $(id)[0].className = "form-control";
+                    } else if ($(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control";
+                    }
+                }
+            }
+        });
+
+        if (!chk) {
+            toastrErrorMessage('@L_REQUIRED_FIELDS');
+        }
+        return chk;
+    }
+
+    function validateEmail(email) {
+
+        var filter = /^(((([a-zA-Z0-9\_\-]{1,50})+(([\.]{1,50}[a-zA-Z0-9\_\-]{1,50}){0,50})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+
+        if (email.substr(0, 2) == "-@@" || email.substr(0, 2) == "_@@") {
+            return false;
+        }
+        if (email.indexOf('@@') <= -1) {
+            return false;
+        }
+
+        if (filter.test(email)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validatePhoneNumber(value) {
+        var rex = /^[0-9/\-]+$/;
+        if (rex.test(value)) {
+            if (value.length < 9) {
+                return false;
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function toastrErrorMessage(message) {
+        toastr.options.positionClass = "toast-top-center";
+        toastr.options.closeButton = true;
+        toastr.error(message);
+    }
+
+</script>

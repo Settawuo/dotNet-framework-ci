@@ -1,0 +1,69 @@
+﻿@using WBBWeb.Extension
+@using WBBEntity.PanelModels
+@using System.Linq;
+@using WBBWeb.Controllers;
+
+@{
+    ViewBag.Title = "Index";
+
+    var resMsg = ViewBag.resMessage;
+
+    //if (ViewBag.resMessage != null)
+    //{
+    //    var resMessage = (List<LovValueModel>)ViewBag.resMessage;
+    //}
+}
+
+<div id="Test">
+    <button id="TestCallWS">Call Web Service</button>
+</div>
+
+<div id="Show_Data" style="display : none">
+    <div id="message">Message Mapping : </div>
+</div>
+
+
+
+<script type="text/javascript">
+    
+    function mapping(stCode, stDesc) {
+
+        var TextMapping;
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Mapping","CheckCardByLaser")',
+            data: {
+                "stCode": stCode,
+                "stDesc": stDesc
+            },
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                TextMapping = data;
+            }
+        });
+
+        console.log(TextMapping);
+
+        return TextMapping;
+    }
+
+    $('#TestCallWS').click(function () {
+        console.log("Call WS");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CallWebService","CheckCardByLaser")',
+            datatype: "json",
+            success: function (data) {
+                console.log("data : ", data);
+                if (data != null) {
+
+                    $('#Show_Data').show();
+                    $('#message').append(data.messageMapping);
+                    
+                }
+            }
+        });
+    });
+</script>

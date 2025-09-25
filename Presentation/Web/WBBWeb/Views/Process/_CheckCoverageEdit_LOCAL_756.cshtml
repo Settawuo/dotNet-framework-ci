@@ -1,0 +1,836 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension
+@using WBBWeb.Controllers; 
+@{
+
+    string B_BACK = "";
+    if (ViewBag.LabelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR000;
+        B_BACK = labelFBBTR000.Any(c => c.Name == "B_BACK") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+    }
+
+    string H_FBB001 = "";
+    string L_SPECIFIC_BUILD = "";
+    string L_BUILDING = "";
+    string L_OTHER2 = "";
+    string L_IMG_NEW = "";
+    string L_SEARCH_BUILDING = "";
+    string SPECIFICMap = "";
+    string HowtoMap = "";
+    string L_SAVE_SUCCESS = "";
+    string L_FAILED_TO_SAVE = "";
+    string L_BUILD_NAME = "";
+    string L_CLOSE = "";
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        H_FBB001 = LabelFBBTR001.Any(c => c.Name == "H_FBB001") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "H_FBB001").DisplayValue : "";
+        L_SPECIFIC_BUILD = LabelFBBTR001.Any(c => c.Name == "L_SPECIFIC_BUILD") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_SPECIFIC_BUILD").DisplayValue : "";
+        L_BUILDING = LabelFBBTR001.Any(c => c.Name == "L_BUILDING") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_BUILDING").DisplayValue : "";
+        L_OTHER2 = LabelFBBTR001.Any(c => c.Name == "L_OTHER2") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_OTHER2").DisplayValue : "";
+        L_IMG_NEW = LabelFBBTR001.Any(c => c.Name == "L_IMG_NEW") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_IMG_NEW").Blob : "";
+        L_SEARCH_BUILDING = LabelFBBTR001.Any(c => c.Name == "L_SEARCH_BUILDING") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_SEARCH_BUILDING").DisplayValue : "";
+        SPECIFICMap = LabelFBBTR001.Any(c => c.Name == "L_SPECIFIC_ADDR_2") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_SPECIFIC_ADDR_2").DisplayValue : "";
+        HowtoMap = LabelFBBTR001.Any(c => c.Name == "L_HOW_TO") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_HOW_TO").DisplayValue : "";
+        L_SAVE_SUCCESS = LabelFBBTR001.Any(c => c.Name == "L_SAVE_SUCCESS") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_SAVE_SUCCESS").DisplayValue : "";
+        L_FAILED_TO_SAVE = LabelFBBTR001.Any(c => c.Name == "L_FAILED_TO_SAVE") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_FAILED_TO_SAVE").DisplayValue : "";
+        L_BUILD_NAME = LabelFBBTR001.Any(c => c.Name == "L_BUILD_NAME") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_BUILD_NAME").DisplayValue : "";
+        L_CLOSE = LabelFBBTR001.Any(c => c.Name == "L_CLOSE") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_CLOSE").DisplayValue : "";
+    }
+
+
+    string Length_Building = "";
+    string Input_Building = "";
+    string FBB_Con_WEB_CONFIG = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var LabelFbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        Length_Building = LabelFbbConstant.Any(f => f.Field == "Length_Building") ? LabelFbbConstant.First(f => f.Field == "Length_Building").Validation : "";
+        Input_Building = LabelFbbConstant.Any(f => f.Field == "Input_Building") ? LabelFbbConstant.First(f => f.Field == "Input_Building").Validation : "";
+        FBB_Con_WEB_CONFIG = LabelFbbConstant.Any(f => f.Field == "WEB_CONFIG") ? LabelFbbConstant.First(f => f.Field == "WEB_CONFIG").Validation : "";
+    }
+
+    string PermissionCondoUpdateStatus = "";
+    string UserName = "";
+    if (null != ViewBag.User)
+    {
+        var currentUser = ViewBag.User as WBBEntity.PanelModels.Account.UserModel;
+        UserName = currentUser.UserName;
+    }
+    var controller = DependencyResolver.Current.GetService<ProcessController>();
+    PermissionCondoUpdateStatus = controller.PermissionCondoUpdateStatus(UserName);
+
+    string isSaleManager = "";
+
+    if (null != ViewBag.isSaleManager)
+    {
+        isSaleManager = ViewBag.isSaleManager;
+    }
+}
+
+<div id="page1" class="container addrounded">
+    <h4 class="page-header tgreen">@H_FBB001</h4>
+
+    <div id="cvrbody">
+        <div class="col-md-12 title-form">
+            <i class="fa fa-chevron-right tgreen"></i>@L_SPECIFIC_BUILD
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-10 col-md-offset-1">
+            <!--===radio address====-->
+            <div class="col-md-12 radio">
+                <label class="radio-inline" for="R_OTHER" style="font-weight: normal !important;">
+                    <input type="radio" name="R_BUILD" id="R_OTHER" value="OTHER" onclick="onBuildChange()">
+                    @L_OTHER2
+                </label>
+                @if (PermissionCondoUpdateStatus == "Y")
+                {
+                    <p class="visible-xs"></p>
+                    <label class="radio-inline" for="R_BUILD" style="font-weight: normal !important; padding-right: 15px;">
+                        <input type="radio" name="R_BUILD" id="R_BUILD" value="CONDOMINIUM" onclick="onBuildChange()">
+                        @L_BUILDING
+                    </label>
+                }
+                <p class="clearfix"></p>
+            </div>
+            <!--===END radio address====-->
+
+            <div id="divTower">
+                <div class="col-md-12">
+                    <div style="display: none;" id="DIV_L_BUILD_NAME">
+                        <input id="L_BUILD_NAME" type="hidden" value="0" />
+                    </div>
+                    @Html.TextBoxFor(model => model.CoveragePanelModel.Address.L_BUILD_NAME_Hied,
+                        new
+                        {
+                            @class = "form-control",
+                            @title = @L_SEARCH_BUILDING,
+                            @maxlength = Length_Building,
+                            @placeholder = @L_SEARCH_BUILDING,
+                        })
+                </div>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-md-8 col-md-offset-2" id="div_condo_carousel">
+            </div>
+
+            <div id="div_bulding"></div>
+
+        </div>
+        <div id="DIViframeMap" style="display: none;">
+            <div class="col-md-12 title-form">
+                <i class="fa fa-chevron-right tgreen"></i>@SPECIFICMap
+                <br>
+                <p class="clearfix">@HowtoMap</p>
+            </div>
+            <div class="col-md-12">
+                <div class="widget" id="w_iframe">
+                    <div class="widget-footer">
+                        <a href="javascript:void(0)" class="fa fa-expand fa-1x" id="expandFibreMap"
+                           data-placement="right" title="" data-original-title="FA-EXPAND"><i></i></a>
+                    </div>
+                    <div class="widget-body">
+                        <iframe name="my-iframe" id="iframeMap" height="680"
+                                frameborder="0" scrolling="no"
+                                marginheight="0" marginwidth="0"
+                                data-src="https://staging-mapfibre.ais.co.th/mapfibre/" src="about:blank"></iframe>
+                    </div>
+                </div>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+
+        <p class="clearfix"></p>
+    </div>
+    <p class="clearfix"></p>
+
+    <div class="col-md-12">
+        <div class="col-sm-6" style="left: 445px;">
+            <button type="button" class="btn btn-success">Save</button>
+        </div>
+        <div class="col-sm-6" style="right: 50px;">
+            <button type="button" class="btn btn-warning">Back</button>
+        </div>
+    </div>
+    <p class="clearfix"></p>
+    
+
+
+
+    <p class="clearfix"></p>
+    <p class="clearfix page-header"></p>
+    <div class="col-md-12 text-right" id="cvrbodybtn">
+        <a href="javascript:void(0);" id="backtologin" class="btn btn-default btn-for-xs" style="color: #8DC63F;" role="button">@B_BACK</a>
+
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+
+</div>
+
+<div class="modal fade" id="modal001" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="modal001txt" class="text-center">
+                        
+                    </h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" id="modal001btn" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; @L_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+
+    var UserMap = '3';
+
+    var bloodEngine = null;
+    var buildings = [];
+    var states = [];
+    var buildnos = [];
+    var zipcodes = [];
+    var addressIds = [];
+    var provincess = [];
+    var amphurss = [];
+    var tumbonss = [];
+    var zipcode5 = [];
+    var sitecodess = [];
+
+    var selected_building_obj = sgst_selected_building_obj = "";
+    function clear_building_ogj() {
+        selected_building_obj = sgst_selected_building_obj = {
+            "address_id": "",
+            "amphur": "",
+            "building_name": "",
+            "building_name_for_srh": "",
+            "lang": "",
+            "province": "",
+            "sitecode": "",
+            "tumbon": "",
+            "zipcode": "",
+            "zipcode_rowid": ""
+        };
+    };
+    clear_building_ogj();
+
+    $(document).ready(function () {
+
+        if ("@isSaleManager" == "true") {
+            UserMap = '4';
+        }
+
+        $("#R_OTHER").prop("checked", true);
+        showMap();
+
+        setTimeout(function () {
+            onBuildChange();            
+        }, 100);
+
+        $('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').inputmask('Regex', {
+            regex: "@Input_Building",
+        });
+
+        $('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').bind('typeahead:select', function (ev, suggestion) {
+            //console.log("selected_building", suggestion);
+            $("#div_bulding").html("");
+            typeaheadoncomplete(suggestion);
+        });
+
+        $('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').bind('typeahead:change', function (ev, suggestion) {
+            //console.log("change_building");
+            typeaheadoncomplete(suggestion);
+        });
+
+        $("#expandFibreMap").click(function () {
+            $('#w_iframe').toggleClass('fullscreen');
+        });
+
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").keypress(function (e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+            }
+        });
+
+    });
+
+    $('#backtologin').click(function () {
+        window.location.href = '@Url.Action("Login", "Process")';
+    });
+
+    function typeaheadoncomplete(suggestion, round, builono) {
+        if (sgst_selected_building_obj.building_name === suggestion) {
+
+            return false;
+        }
+
+        buildnos = [];
+        var lang = "T";
+        if ($("#LanguagePage").val() == "2")
+            lang = "E";
+
+        var addrType = $('input[name=R_BUILD]:checked').val();
+        var selected_building = '';
+        var addressid = addressIdMathced(suggestion);
+        var pro = '';
+        var aum = '';
+        var tum = '';
+        var zipcode = '';
+        var sitecode = '';
+
+        selected_building = $.grep(buildings, function (e) {
+            return (e.address_id == addressid && e.lang == lang);
+        });
+
+        sgst_selected_building = $.grep(buildings, function (e) {
+            return (e.building_name_for_srh == suggestion);
+        });
+
+        if (suggestion) {
+            if (addressid && selected_building.length > 0) {
+                selected_building_obj = selected_building[0];
+                sgst_selected_building_obj = sgst_selected_building[0];
+
+                pro = selected_building[0].province;
+                aum = selected_building[0].amphur;
+                tum = selected_building[0].tumbon;
+                zipcode = selected_building[0].zipcode;
+                sitecode = selected_building[0].sitecode;
+
+                console.log("selected_building", selected_building);
+
+                getBuildingNoBatch(selected_building[0].zipcode_rowid, selected_building_obj.building_name, builono);
+                $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").typeahead('val', sgst_selected_building_obj.building_name);
+
+            }
+        }
+        else {
+            clear_building_ogj();
+        }
+
+        return false;
+    };
+
+    function addressIdMathced(suggestion) {
+        try {
+            return addressIds[getIndexIfObjWithOwnAttr(states, suggestion)];
+        } catch (e) {
+            console.log("addressIdMathced---catch", e);
+            return "";
+        }
+    }
+
+    function chunkBloodHoudDataSet(data) {
+        //console.log("chunkBloodHoudDataSet");
+        var dataSources = [];
+        var i, j, chunkSize = 1000;
+        for (i = 0, j = data.length; i < j; i += chunkSize) {
+            tempArray = data.slice(i, i + chunkSize);
+            var d = $.map(tempArray, function (item) {
+                return item;
+            });
+            dataSources.push(createBloodhoundEngine(d));
+        }
+        //console.log("chunkBloodHoudDataSet---End", dataSources);
+        return dataSources;
+    }
+
+    function createTypeahead(idName, datasets) {
+        //console.log("createTypeahead");
+        $(idName).typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+        }, chunkBloodHoudDataSet(datasets));
+        //console.log("createTypeahead---end");
+        removeTypeaheadLoading(idName);
+    };
+
+    function disabledTower() {
+        clear_building_ogj();
+
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val("");
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").typeahead("val", "");
+        $("#L_BUILD_NAME option[value='']").attr("selected", "selected");
+
+        //clear validate
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").removeClass();
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").addClass("form-control");
+
+    }
+
+    function createBloodhoundEngine(datasets) {
+        //console.log("createBloodhoundEngine");
+        var engine = new Bloodhound({
+            //initialize: false,
+            local: datasets,
+            limit: 1,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            datumTokenizer: function (d) {
+                var tokens;
+                var wordSprites = ["อาคาร", "บ้าน"];
+                try {
+                    var bloodHoundtokens = Bloodhound.tokenizers.whitespace(d);
+                    tokens = [d].concat(bloodHoundtokens);
+                    //$.each(bloodHoundtokens, function (k, v) {
+                    //    $.each(v.split("-"), function (i, t) {
+                    //        tokens.push(t);
+                    //    });
+                    //})
+                    var dewhiteSpaceToke = bloodHoundtokens.join('');
+                    tokens.push(dewhiteSpaceToke);
+
+                    if (dewhiteSpaceToke.indexOf('-') > -1) {
+                        tokens.push(dewhiteSpaceToke.replace('-', ''));
+                    }
+
+                    for (var i = 0; i < wordSprites.length; i++) {
+                        var word = wordSprites[i];
+                        if (dewhiteSpaceToke.indexOf(word) > -1) {
+                            tokens = tokens.concat(Bloodhound.tokenizers.whitespace(dewhiteSpaceToke.replace(word, word + ' ')));
+                        }
+                    }
+                } catch (e) {
+                    //console.log("createBloodhoundEngine-----catch :", e);
+                    console.log(e);
+                    tokens = [""];
+                }
+                //console.log("createBloodhoundEngine-----end :", tokens);
+                return tokens;
+            },
+        });
+
+        engine.initialize();
+
+        var src = {
+            source: engine.ttAdapter(),
+        }
+        return src;
+    }
+
+    function removeTypeaheadLoading(id) {
+        //console.log("removeTypeaheadLoading");
+        $(id).removeClass('ui-autocomplete-loading');
+        $(id).removeAttr('disabled');
+        //console.log("removeTypeaheadLoading----End");
+    }
+
+    function showTypeaheadLoading(id) {
+        $(id).addClass('ui-autocomplete-loading');
+        $(id).attr('disabled', 'disabled');
+    }
+
+    function destroyTypeahead(idName) {
+        $(idName).typeahead('destroy');
+        if (bloodEngine) {
+            bloodEngine.clear();
+        }
+    };
+
+    function getBuildingBatch(sffMb, sffTw, sffBb) {
+        //console.log("---Function getBuildingBatch----");
+        var addrType = $('input[name=R_BUILD]:checked').val();
+        var lang = "T";
+        var temp = "";
+
+        var valueMatch = "";
+        var pC = "";
+        var bN = "";
+
+        if ($("#LanguagePage").val() == "2")
+            lang = "E";
+
+        if (addrType == "CONDOMINIUM") {
+            addrType = "B";
+            valueMatch = sffTw;
+            temp = "<option value='' disabled selected>@L_BUILD_NAME</option>";
+            showTypeaheadLoading("#CoveragePanelModel_Address_L_BUILD_NAME_Hied");
+            //console.log("Select CONDOMINIUM");
+        }
+        else
+            addrType = "O";
+
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetBuildingAll",
+            data: {
+                "type": addrType, "language": lang
+            },
+            dataType: "json",
+            //async: false,
+            success: function (data) {
+                //console.log("Get BuildingBatch success");
+                var chkMatch = false;
+
+                buildings = [];
+                states = [];
+                zipcodes = [];
+                addressIds = [];
+                provincess = [];
+                amphurss = [];
+                tumbonss = [];
+                zipcode5 = [];
+                sitecodess = [];
+                //console.log("destroyTypeahead");
+                destroyTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied');
+
+                $.each(data, function (i, e) {
+                    var s = "";
+                    if (valueMatch === e.Text) {
+                        s = "selected";
+                        pC = e.Value;
+                        bN = e.Text;
+                        temp = temp.replace("selected", " ");
+                        chkMatch = true;
+                        //console.log("Match : ", e.Text);
+                    }
+
+                    var str = "<option value='" + e.Value + "' " + s + ">" + e.Text + "</option>";
+                    temp += str;
+
+                    if (e.Value && e.Value !== '0') {
+                        var building_json = JSON.parse(e.Value);
+                        //console.log("AddValue :", building_json);
+                        buildings.push(building_json);
+                        states.push(building_json.building_name_for_srh);
+                        zipcodes.push(building_json.zipcode_rowid);
+                        addressIds.push(building_json.address_id);
+                        provincess.push(building_json.province);
+                        amphurss.push(building_json.amphur);
+                        tumbonss.push(building_json.tumbon);
+                        zipcode5.push(building_json.zipcode);
+                        sitecodess.push(building_json.sitecode);
+
+                    }
+                });
+
+                //console.log("End Add Value :", buildings);
+
+                if (addrType == "B") {
+                    if (!chkMatch && sffTw != "" && sffTw != undefined) {
+
+                        $("#DIV_L_BUILD_NAME").hide();
+
+                        destroyTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied');
+                        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val("");
+                        clear_building_ogj();
+
+
+                        createTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied', states);
+
+                        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").show();
+                        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").removeAttr("disabled");
+                        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").typeahead('val', sffTw.toUpperCase());
+                        selected_building_obj.building_name = sffTw.toUpperCase();
+
+                        $("#L_BUILD_NAME").val("0");
+                    }
+                    else {
+
+                        $("#DIV_L_BUILD_NAME").hide();
+                        $("#L_BUILD_NAME").val("0");
+
+                        destroyTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied');
+                        createTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied', states);
+
+                    }
+
+                    if (!chkMatch && sffBb !== undefined && sffBb !== '') {
+                        typeaheadoncomplete(selected_building_obj.building_name);
+                    };
+
+                    if (chkMatch && sffBb !== undefined && sffBb !== '') {
+                        typeaheadoncomplete(sffTw, undefined, sffBb);
+                    };
+                }
+                $("input:text.tt-hint").remove();
+            }
+        });
+    }
+
+    function getBuildingNoBatch(pC, bN, b) {
+
+        buildnos = [];
+
+        var lang = "T";
+        var temp = "";
+        var postCode = $("#L_BUILD_NAME").val();
+        var buildName = $("#L_BUILD_NAME option:selected").text();
+        if (pC != undefined && bN != undefined) {
+            postCode = pC;
+            buildName = bN;
+        }
+        if (bN != undefined) {
+            buildName = bN;
+        }
+        if ($("#LanguagePage").val() == "2")
+            lang = "E";
+
+        $.ajax({
+            type: "GET",
+            url: "/Process/GetBuildingNoAll",
+            data: {
+                "postcode": postCode, "build_name": buildName, "language": lang
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var tempRowBuilding = "";
+                var tempTableBuilding = "<div class='panel panel-info'><div class='panel-heading flex-container' style='border-bottom: none; background: #8dc63f; !important;'>";
+                tempTableBuilding += "</div><div class='table-responsive'><table class='table table-hover'>";
+                tempTableBuilding += "<thead class='text-center promotionTitle' style='background: #8dc63f;'><tr>";
+                tempTableBuilding += "<th class='text-center'>Addess ID</th>";
+                tempTableBuilding += "<th class='text-center'>Bulding Name</th>";
+                tempTableBuilding += "<th class='text-center'>Bulding No</th>";
+                tempTableBuilding += "<th class='text-center'><div>Status</div><div><input type='checkbox' id='chkbxAll'></div></th>";
+                tempTableBuilding += "<th class='text-center'><div>FTTR</div><div><input type='checkbox' id='chkbxAllS'></div></th>";
+                tempTableBuilding += "<th class='text-center'>Update By</th>";
+                tempTableBuilding += "<th class='text-center'>Update Date</th>";
+                tempTableBuilding += "<th class='text-center'>Reason</th>";
+                tempTableBuilding += "<tbody class='text-center'>";
+                var countData = 0;
+                $.each(data, function (i, e) {
+                    
+                    if (e.Value && e.Value !== '0') {
+                        var building_json = JSON.parse(e.Value);
+                        console.log("building_json", building_json);
+                        tempRowBuilding += "<tr class='promotionDetail-table'>";
+                        tempRowBuilding += "<td>" + building_json.address_id + "</td>";
+                        tempRowBuilding += "<td>" + building_json.building_name + "</td>";
+                        tempRowBuilding += "<td>" + building_json.building_no + "</td>";
+                        tempRowBuilding += "<td>";
+                        if (building_json.active_flag == "Y") {
+                            tempRowBuilding += "<input id='chkStatus" + countData + "' type='checkbox' class='form-check-input' checked='checked' onclick='CheckStatus(" + countData + ")'>";
+                        }
+                        else {
+                            tempRowBuilding += "<input id='chkStatus" + countData + "' type='checkbox' class='form-check-input' onclick='CheckStatus(" + countData + ")'>";
+                        }
+                        tempRowBuilding += "<input type='hidden' id='hdStatus" + countData + "' value='" + building_json.active_flag + "' >";
+                        tempRowBuilding += "</td>";
+                        tempRowBuilding += "<td>";
+                        if (building_json.fttr_flag == "Y") {
+                            tempRowBuilding += "<input id='chkFttrStatus" + countData + "' type='checkbox' class='form-check-input' checked='checked' onclick='CheckStatus(" + countData + ")'>";
+                        }
+                        else {
+                            tempRowBuilding += "<input id='chkFttrStatus" + countData + "' type='checkbox' class='form-check-input' onclick='CheckStatus(" + countData + ")'>";
+                        }
+                        tempRowBuilding += "<input type='hidden' id='hdFttrStatus" + countData + "' value='" + building_json.fttr_flag + "' >";
+                        tempRowBuilding += "</td>";
+                        tempRowBuilding += "<td>" + "<label id='lblUpdateBy" + countData + "'>" + building_json.updated_by + "</label>" + "</td>";
+                        tempRowBuilding += "<td>" + "<label id='lblUpdateDate" + countData + "'>" + building_json.updated_date + "</label>" + "</td>";
+                        tempRowBuilding += "<td><input id='Reason" + countData + "' type='text' class='form-control' maxlength='300'></td>";
+                        tempRowBuilding += "</tr>";
+                        countData = countData + 1;
+                    }
+                });
+
+                tempTableBuilding += tempRowBuilding;
+                tempTableBuilding += "</tbody></table></div></div>";
+
+                $("#div_bulding").html(tempTableBuilding);
+            }
+        });
+    }
+
+    function onBuildChange(flgBind) {
+        $("#div_bulding").html("");
+        if ($("#R_BUILD").is(":checked")) {
+            $("#DIViframeMap").hide();
+            
+            disabledTower();
+            $("#divTower").hide();
+
+            if (flgBind != "notBind") {
+                getBuildingBatch();
+            } else {
+                $("#L_BUILD_NAME").val("0");
+            }
+
+            $("#divTower").show();
+
+        }
+        else if ($("#R_OTHER").is(":checked")) {
+
+            showMap();
+        }
+
+    }
+
+    function SaveStatus(indexData, addressID) {
+        var chkStatus = "N";
+        var chkFttrStatus = "N";
+        var chkStatusSent = "N";
+        var chkFttrStatusSent= "N";
+        if ($('#chkStatus' + indexData).is(":checked")) {
+            chkStatus = "Y";
+            chkStatusSent = "Y";
+        }
+        if ($('#chkFttrStatus' + indexData).is(":checked")) {
+            chkFttrStatus = "Y";
+            chkFttrStatusSent = "Y";
+        }
+        if (chkStatus == $('#hdStatus' + indexData).val()) {
+            chkStatusSent = "";
+        }
+        if (chkFttrStatus == $('#hdFttrStatus' + indexData).val()) {
+            chkFttrStatusSent = "";
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/Process/SaveChangeStatusBuilding",
+            data: {
+                "addressID": addressID,
+                "chkStatus": chkStatusSent,
+                "chkFttrStatus": chkFttrStatusSent
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.ReturnCode == "Y") {
+                    $('#hdStatus' + indexData).val(chkStatus);
+                    $('#hdFttrStatus' + indexData).val(chkFttrStatus);
+                    $('#lblUpdateBy' + indexData).text(data.UpdateBy);
+                    $('#lblUpdateDate' + indexData).text(data.UpdateDate);
+                    $('#Reason' + indexData).text(data.Reason);
+                    $("#btnSave" + indexData).attr('disabled', 'disabled');
+
+                    $('#modal001').modal();
+                    $(".simplemodal-container").addClass("modelStyleFix");
+                    $('#modal001txt').text('@L_SAVE_SUCCESS');
+                    $("#detail001").show();
+                }
+                else if (data.ReturnCode == "X")
+                {
+                    window.location.href = '@Url.Action("Login", "Process")';
+                }
+                else {
+                    $('#modal001').modal();
+                    $(".simplemodal-container").addClass("modelStyleFix");
+                    $('#modal001txt').text('@L_FAILED_TO_SAVE');
+                    $("#detail001").show();
+                }
+            },
+            error: function () {
+                $('#modal001').modal();
+                $(".simplemodal-container").addClass("modelStyleFix");
+                $('#modal001txt').text('@L_FAILED_TO_SAVE');
+                $("#detail001").show();
+            }          
+        });
+    }
+
+    function CheckStatus(indexData) {
+
+        var chkStatus = "N";
+        var chkFttrStatus = "N";
+        if ($('#chkStatus' + indexData).is(":checked")) {
+            chkStatus = "Y";
+        }
+        if ($('#chkFttrStatus' + indexData).is(":checked")) {
+            chkFttrStatus = "Y";
+        }
+
+        if (chkStatus == $('#hdStatus' + indexData).val() && chkFttrStatus == $('#hdFttrStatus' + indexData).val()) {
+            $("#btnSave" + indexData).attr('disabled', 'disabled');
+        }
+        else {
+            $("#btnSave" + indexData).removeAttr('disabled');
+        }
+    }
+
+    function showMap() {
+        disabledTower();
+        $("#divTower").hide();
+        $("#DIViframeMap").show();
+        var iframe = $("#iframeMap");
+        iframe.attr("src", iframe.data("src"));
+
+        postCheckcoverage('@FBB_Con_WEB_CONFIG',
+        {
+            role: UserMap,
+            langFlag: $("#LanguagePage").val(),
+            postcode: '',
+            province: '',
+            district: '',
+            subDistrict: '',
+            moo: '',
+            soi: '',
+            road: '',
+            houseNo: '',
+            buildingName: '',
+            TriplePlayFlag: $("#HdAddTriple").val(),
+            locationCode: '',
+            ascCode: '',
+            employeeID: '',
+            saleFirstname: '',
+            saleLastname: '',
+            locationName: '',
+            subRegion: '',
+            region: '',
+            ascName: '',
+            channelName: "",
+            saleChannel: "",
+        }, "post", "my-iframe");
+
+        $("#div_condo_carousel").hide();
+    }
+
+    function postCheckcoverage(path, params, method, target) {
+
+        method = method || "post";
+
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        form.setAttribute("target", target);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+
+   
+    function getIndexIfObjWithOwnAttr(array, value) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] === value) {
+                return i;
+            }
+        }
+        return -1;
+    };
+
+   
+
+    </text>)
+</script>

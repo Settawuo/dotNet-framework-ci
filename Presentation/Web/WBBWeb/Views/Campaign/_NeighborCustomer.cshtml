@@ -1,0 +1,550 @@
+﻿@using WBBEntity.PanelModels
+@model List<WBBEntity.PanelModels.FriendModel>
+@{
+
+    string L_DETAIL_FRIEND = "";
+    string L_NAME = "";
+    string L_SURNAME = "";
+    string L_CONTACT_MOBILE = "";
+    string L_EMAIL = "";
+    string L_INSTALL_ADDRESS = "";
+    string L_SELECT_ADDRESS_TYPE = "";
+    string L_BUILDING = "";
+    string L_VILLAGE = "";
+    string L_BUILDING_NAME = "";
+    string L_VILLAGE_NAME = "";
+    string L_PROVINCE = "";
+    string L_DISTRICT = "";
+    string L_SUB_DISTRICT = "";
+    string L_POSTAL_CODE = "";
+    string L_HOUSE_NO = "";
+    string L_SOI = "";
+    string L_ROAD = "";
+    string L_CONTACT_TIME = "";
+    string L_PLEASE_SELECT = "";
+    
+    if (ViewBag.LabelFBBOR021 != null)
+    {
+        var LabelFBBOR021 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR021;
+
+        L_DETAIL_FRIEND = LabelFBBOR021.Any(c => c.Name == "L_DETAIL_FRIEND") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_DETAIL_FRIEND").DisplayValue : "";
+        L_NAME = LabelFBBOR021.Any(c => c.Name == "L_NAME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_NAME").DisplayValue : "";
+        L_SURNAME = LabelFBBOR021.Any(c => c.Name == "L_SURNAME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_SURNAME").DisplayValue : "";
+        L_CONTACT_MOBILE = LabelFBBOR021.Any(c => c.Name == "L_CONTACT_MOBILE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_CONTACT_MOBILE").DisplayValue : "";
+        L_EMAIL = LabelFBBOR021.Any(c => c.Name == "L_EMAIL") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_EMAIL").DisplayValue : "";
+        L_INSTALL_ADDRESS = LabelFBBOR021.Any(c => c.Name == "L_INSTALL_ADDRESS") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_INSTALL_ADDRESS").DisplayValue : "";
+        L_SELECT_ADDRESS_TYPE = LabelFBBOR021.Any(c => c.Name == "L_SELECT_ADDRESS_TYPE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_SELECT_ADDRESS_TYPE").DisplayValue : "";
+        L_BUILDING = LabelFBBOR021.Any(c => c.Name == "L_BUILDING") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_BUILDING").DisplayValue : "";
+        L_VILLAGE = LabelFBBOR021.Any(c => c.Name == "L_VILLAGE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_VILLAGE").DisplayValue : "";
+        L_BUILDING_NAME = LabelFBBOR021.Any(c => c.Name == "L_BUILDING_NAME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_BUILDING_NAME").DisplayValue : "";
+        L_VILLAGE_NAME = LabelFBBOR021.Any(c => c.Name == "L_VILLAGE_NAME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_VILLAGE_NAME").DisplayValue : "";
+        L_PROVINCE = LabelFBBOR021.Any(c => c.Name == "L_PROVINCE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_PROVINCE").DisplayValue : "";
+        L_DISTRICT = LabelFBBOR021.Any(c => c.Name == "L_DISTRICT") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_DISTRICT").DisplayValue : "";
+        L_SUB_DISTRICT = LabelFBBOR021.Any(c => c.Name == "L_SUB_DISTRICT") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_SUB_DISTRICT").DisplayValue : "";
+        L_POSTAL_CODE = LabelFBBOR021.Any(c => c.Name == "L_POSTAL_CODE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_POSTAL_CODE").DisplayValue : "";
+        L_HOUSE_NO = LabelFBBOR021.Any(c => c.Name == "L_HOUSE_NO") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_HOUSE_NO").DisplayValue : "";
+        L_SOI = LabelFBBOR021.Any(c => c.Name == "L_SOI") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_SOI").DisplayValue : "";
+        L_ROAD = LabelFBBOR021.Any(c => c.Name == "L_ROAD") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_ROAD").DisplayValue : "";
+        L_CONTACT_TIME = LabelFBBOR021.Any(c => c.Name == "L_CONTACT_TIME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_CONTACT_TIME").DisplayValue : "";
+        L_PLEASE_SELECT = LabelFBBOR021.Any(c => c.Name == "L_PLEASE_SELECT") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_PLEASE_SELECT").DisplayValue : "";
+    }
+
+    string FBB_Con_CharNotonName = "";
+    string FBB_Input_MobileNo = "";
+    string FBB_Con_Input_Building = "";
+    string FBB_Con_Input_Home_Number = "";
+    string FBB_Con_Input_Soi = "";
+    string FBB_Con_Input_Road = "";
+
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_Con_CharNotonName = FbbConstant.Any(f => f.Field == "Char Not on Name") ? FbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        FBB_Input_MobileNo = FbbConstant.Any(f => f.Field == "Input_MobileNo") ? FbbConstant.First(f => f.Field == "Input_MobileNo").Validation : "";
+        FBB_Con_Input_Building = FbbConstant.Any(f => f.Field == "Input BUILDING_NAME") ? FbbConstant.First(f => f.Field == "Input BUILDING_NAME").Validation : "";
+        FBB_Con_Input_Home_Number = FbbConstant.Any(f => f.Field == "Input_Home_Number") ? FbbConstant.First(f => f.Field == "Input_Home_Number").Validation : "";
+        FBB_Con_Input_Soi = FbbConstant.Any(f => f.Field == "Input_Soi") ? FbbConstant.First(f => f.Field == "Input_Soi").Validation : "";
+        FBB_Con_Input_Road = FbbConstant.Any(f => f.Field == "Input_Road") ? FbbConstant.First(f => f.Field == "Input_Road").Validation : "";
+
+    }
+}
+
+
+@if (Model != null)
+{
+    for(int index = 1 ; index <= Model.Count() ; index ++)
+    {
+        
+        <div id="@("Customer" + index)" class="Customer" style="display: none">
+            <h4 class="page-header tgreen">@L_DETAIL_FRIEND @index</h4>
+            <div class="row">
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_NAME", L_NAME)
+                    @Html.TextBox("FRIENDS[" + index + "].NAME", Model[index - 1].NAME, new { @class = "form-control",@title=L_NAME,@maxlength = 50,@onkeyup = "nameKeyup(this)"})  
+                </div>
+                <div class="col-xs-2 col-sm-2">
+                </div>
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_SURNAME", L_SURNAME)
+                    @Html.TextBox("FRIENDS[" + index + "].SURNAME", Model[index - 1].SURNAME, 
+                        new {   @class = "form-control",
+                                @title=L_SURNAME,
+                                @maxlength = 50,
+                                @onkeyup = "nameKeyup(this)"
+                        }
+                    )  
+                </div>
+                <p class="clearfix"></p>
+            </div>            
+            <div class="row">
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_CONTACT_MOBILE", L_CONTACT_MOBILE)
+                    @Html.TextBox("FRIENDS[" + index + "].CONTACT_MOBILE", Model[index - 1].CONTACT_MOBILE, 
+                        new { id="ContactNo" + index ,
+                              @class = "form-control",
+                              @title=L_CONTACT_MOBILE,
+                              @maxlength = 10,
+                              @onkeyup = "contactNoKeyup(this)"
+                            }
+                        ) 
+                    @Html.Hidden("FRIENDS[" + index + "].MOBILE_IS_AIS","" , new {id="MOBILE_IS_AIS" + index})
+                </div>
+                <div class="col-xs-2 col-sm-2">
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div id='@("IsAIS"+ index)' class="isAisImage" style="display: none;">
+                        <img src="../Images/is_ais.png" alt="" style="max-width: none !important; width: 30px; height: 30px; color: white;">
+                    </div>
+                </div>
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_EMAIL", L_EMAIL)
+                    @Html.TextBox("FRIENDS[" + index + "].EMAIL", Model[index - 1].EMAIL, 
+                        new { @class = "form-control",
+                              @title=L_EMAIL,
+                              @maxlength = 100
+                        }) 
+                   
+                </div>
+                <p class="clearfix"></p>
+            </div>
+            <p class="clearfix"></p>
+
+            <div class="row">
+                <div class="col-xs-10">
+                    @Html.Label("L_INSTALL_ADDRESS", L_INSTALL_ADDRESS)
+                </div>
+            </div>
+            <p class="clearfix"></p>
+
+            <div class="row">
+                <div class="col-xs-10">
+                    @Html.Label("L_SELECT_ADDRESS_TYPE", L_SELECT_ADDRESS_TYPE)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-10">
+                    <label for="R_BUILD">
+                        @L_BUILDING
+                        <input type="radio"  class="rdoBuild" name="@("R_BUILD" + index)" id="@("rdoBuild" + index)" value="B" checked="checked" onclick="onBuildChange(this)">
+                    </label>
+                    &nbsp;&nbsp;
+                    <label for="R_MOOBAN">
+                        @L_VILLAGE
+                        <input type="radio" name="@("R_BUILD" + index)" id="@("rdoMooban" + index)" value="V" onclick="onBuildChange(this)">
+                    </label>
+                    
+                    @Html.Hidden("FRIENDS[" + index + "].SELECT_ADDRESS_TYPE","B", 
+                        new { 
+                            @class = "selectAddressType"
+                        })
+                </div>
+                <p class="clearfix"></p>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-10  col-sm-5">
+                    <div id="@("divCondo" + index)">
+                        @Html.Label("L_BUILDING_NAME", L_BUILDING_NAME)
+                    </div>
+                    <div id="@("divMoban" + index)" style="display: none;">
+                        @Html.Label("L_VILLAGE_NAME", L_VILLAGE_NAME)
+                    </div>
+                    @Html.TextBox("FRIENDS[" + index + "].BUILDING", Model[index - 1].BUILDING, 
+                        new {   @class = "form-control",
+                                @maxlength = 255,
+                                @onkeyup = "buildingKeyup(this)"
+                        }) 
+                </div>
+                <p class="clearfix"></p>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_PROVINCE", L_PROVINCE)
+                    <select class="select province" style="width: 100%" 
+                        id="@("Province" + index)" 
+                        name="@("FRIENDS[" + index + "].PROVINCE")"  
+                        onchange="onProvinceChange(this)">
+                        <option disabled selected value="">@L_PROVINCE</option>
+                    </select>
+                </div>
+                <div class="col-xs-2 col-sm-2"></div>
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_DISTRICT", L_DISTRICT)
+                    <select class="select district" style="width: 100%" 
+                        id="@("District" + index)" 
+                        name="@("FRIENDS[" + index + "].DISTRICT")" 
+                        onchange="onAmphurChange(this)">
+                        <option disabled selected value="">@L_DISTRICT</option>
+                    </select>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_SUB_DISTRICT", L_SUB_DISTRICT)
+                    <select class="select subDistrict" style="width: 100%" 
+                        id="@("SubDistrict" + index)" 
+                        name="@("FRIENDS[" + index + "].SUB_DISTRICT")" 
+                        onchange="onTumbolChange(this)">
+                        <option disabled selected value="">@L_SUB_DISTRICT</option>
+                    </select>
+                </div>
+                <div class="col-xs-2 col-sm-2">
+                </div>
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_POSTAL_CODE", L_POSTAL_CODE)
+                    <select class="select postalCode" style="width: 100%" 
+                        id="@("PostalCode" + index)" 
+                        name="@("FRIENDS[" + index + "].POSTAL_CODE")" 
+                        onchange="onZipCodeChange(this)">
+                        <option disabled selected value="">@L_POSTAL_CODE</option>
+                    </select>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_HOUSE_NO", L_HOUSE_NO)
+                    @Html.TextBox("FRIENDS[" + index + "].HOUSE_NO", Model[index - 1].HOUSE_NO, 
+                    new {   @class = "form-control",
+                            @title=L_HOUSE_NO,
+                            @maxlength = 20,
+                            @onkeyup = "houseNoKeyup(this)"
+                    }) 
+                </div>
+                <div class="col-xs-2 col-sm-2"></div>
+                <div class="col-xs-10 col-sm-5">
+                    @Html.Label("L_SOI", L_SOI)
+                    @Html.TextBox("FRIENDS[" + index + "].SOI", Model[index - 1].SOI, 
+                    new {   @class = "form-control",
+                            @title=L_SOI,
+                            @maxlength = 50,
+                            @onkeyup = "soiKeyup(this)"
+                    }) 
+                </div>
+                <p class="clearfix"></p>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-10  col-sm-5">
+                    @Html.Label("L_ROAD", L_ROAD)
+                    @Html.TextBox("FRIENDS[" + index + "].ROAD", Model[index - 1].ROAD, 
+                    new {   @class = "form-control",
+                            @title=L_ROAD,
+                            @maxlength = 50,
+                            @onkeyup = "roadKeyup(this)"
+                    }) 
+                   
+                </div>
+                <p class="clearfix"></p>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-10  col-sm-5">
+                    @Html.Label("L_CONTACT_TIME", L_CONTACT_TIME)
+                    <select class="select contactTime" style="width: 100%" 
+                        id="@("ContactTime" + index)" 
+                        name="@("FRIENDS[" + index + "].CONTACT_TIME")">
+                        <option disabled="disabled" selected="selected">@L_PLEASE_SELECT</option>
+                    </select>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+
+            <p class="clearfix"></p>
+    
+        </div>
+    }
+    
+}
+
+
+<script type="text/javascript">
+
+    function nameKeyup(input) {
+        CheckKeyUps(input.id, '@FBB_Con_CharNotonName');
+    }
+
+    function contactNoKeyup(input) {
+        CheckKeyUps(input.id, '@FBB_Input_MobileNo','M');
+    }
+
+    function contactNoFocusout(input) {
+        var id = input.id;
+        var val = $.trim($("#" + id).val());
+        var index = id.replace('ContactNo', '');
+
+        $("#IsAIS" + index).hide();
+        $("#MOBILE_IS_AIS" + index).val("N");
+        if (val.length == 10) {
+            if (GetCheckMobileOnlineQuery(val)) {
+                $("#IsAIS" + index).show();
+                $("#MOBILE_IS_AIS" + index).val("Y");
+            }
+        }
+    }
+
+    function buildingKeyup(input) {
+        CheckKeyUps(input.id, '@FBB_Con_Input_Building');
+    }
+
+    function houseNoKeyup(input) {
+        CheckKeyUps(input.id, '@FBB_Con_Input_Home_Number');
+    }
+
+    function soiKeyup(input) {
+        CheckKeyUps(input.id, '@FBB_Con_Input_Soi');
+    }
+
+    function roadKeyup(input) {
+        CheckKeyUps(input.id, '@FBB_Con_Input_Road');
+    }
+
+    function getProvince() {
+        $('.province').empty();
+        var str = '<option disabled selected value="">' + "@L_PLEASE_SELECT" + '</option>';
+
+        $('.province').append(str);
+        $.ajax({
+            type: "GET",
+            url: "/Campaign/GetProvince",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder = '';
+                $.each(data, function (i, e) {
+
+                    strBuilder += '<option value="' + e.Value + '">' + e.Text + '</option>';
+                });
+
+                $('.province').append(strBuilder);
+                $('.province').select2();
+            }
+        });
+    }
+
+    function onProvinceChange(sel) {
+
+        var pv = sel.value;
+        var id = sel.id;
+
+        var index = id.replace('Province', '');
+
+        $('#District' + index).empty();
+        $('#SubDistrict' + index).empty();
+        $('#PostalCode' + index).empty();
+        $.ajax({
+            type: "GET",
+            url: "/Campaign/GetAmphur",
+            dataType: "json",
+            data: { 'provinceFilter': pv },
+            async: false,
+            success: function (data) {
+                var strBuilder = "<option value='' disabled selected >" + "@L_PLEASE_SELECT" + "</option>";
+                $.each(data, function (i, e) {
+
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+                $('#District' + index).append(strBuilder);
+            }
+        });
+            $('#District' + index).select2();
+            $('#SubDistrict' + index).append("<option value='' disabled selected >" + "@L_SUB_DISTRICT" + "</option>");
+        $('#SubDistrict' + index).select2();
+        $('#PostalCode' + index).append("<option value='' disabled selected >" + "@L_POSTAL_CODE" + "</option>");
+        $('#PostalCode' + index).select2();
+    }
+
+    function onAmphurChange(sel) {
+
+        var aphur = sel.value;
+        var id = sel.id;
+        var index = id.replace('District', '');
+
+        $('#SubDistrict' + index).empty();
+        $('#PostalCode' + index).empty();
+
+        var pv = $('#Province' + index).val();
+
+        $.ajax({
+            type: "GET",
+            url: "/Campaign/GetTumbon",
+            async: false,
+            data: { 'provinceFilter': pv, 'amphurFilter': aphur },
+            dataType: "json",
+            success: function (data) {
+
+                var strBuilder = "<option value='' disabled selected >" + "@L_PLEASE_SELECT" + "</option>";
+                $.each(data, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+
+                $('#SubDistrict' + index).append(strBuilder);
+            },
+            error: function () {
+
+            }
+        });
+
+            $('#SubDistrict' + index).select2();
+            $('#PostalCode' + index).append("<option value='' disabled selected >" + "@L_POSTAL_CODE" + "</option>");
+        $('#PostalCode' + index).select2();
+
+    }
+
+    function onTumbolChange(sel) {
+        var tum = sel.value;
+        var id = sel.id;
+        var index = id.replace('SubDistrict', '');
+
+        $('#PostalCode' + index).empty();
+
+        var pro = $('#Province' + index).val();
+        var amp = $('#District' + index).val();
+
+        $.ajax({
+            type: "GET",
+            url: "/Campaign/GetCoverageZipCode",
+            dataType: "json",
+            data: {
+                'provinceFilter': pro,
+                'amphurFilter': amp,
+                'tumbonFilter': tum,
+                "sso": ""
+            },
+            async: false,
+            success: function (data) {
+                var tempZipCode = "";
+                if (data.zipCodeList.length == 1)
+                    $("#PostalCode" + index + " option[value='']").remove();
+
+                $.each(data.zipCodeList, function (i, e) {
+                    var str = '<option value="' + e.Text + '">' + e.Text + '</option>';
+                    tempZipCode += str;
+                });
+                $('#PostalCode' + index).append(tempZipCode);
+            }
+        });
+        $('#PostalCode' + index).select2();
+
+    }
+
+    function getContactTime() {
+        $('.contactTime').empty();
+        var str = '<option disabled selected value="">' + "@L_PLEASE_SELECT" + '</option>';
+
+        $('.contactTime').append(str);
+        $.ajax({
+            type: "GET",
+            url: "/Campaign/GetContactTimeNeighbor",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder = '';
+                $.each(data, function (i, e) {
+
+                    strBuilder += '<option value="' + e.Value + '">' + e.Text + '</option>';
+                });
+
+                $('.contactTime').append(strBuilder);
+                $('.contactTime').select2();
+            }
+        });
+    }
+
+    function onBuildChange(chk) {
+
+        var id = chk.id;
+        var index = id.replace('rdoBuild', '').replace('rdoMooban', '');
+
+        if ($("#rdoBuild" + index).is(":checked")) {
+            $("input[name = 'FRIENDS[" + index + "].SELECT_ADDRESS_TYPE']").val("B");
+            $("#divCondo" + index).show();
+            $("#divMoban" + index).hide();
+        } else if ($("#rdoMooban" + index).is(":checked")) {
+
+            $("input[name = 'FRIENDS[" + index + "].SELECT_ADDRESS_TYPE']").val("V");
+            $("#divCondo" + index).hide();
+            $("#divMoban" + index).show();
+        }
+
+    }
+
+    function checkIsAisMobile(input) {
+        var id = input.id;
+        var index = id.replace('ContactNo', '');
+
+    }
+    
+    //R22.07 Issue Check Mobile OnlineQuery
+    function GetCheckMobileOnlineQuery(mobileNo) {
+        var IsAIS = false;
+        $.ajax({
+            url: '/CheckCoverage/GetCheckMobileOnlineQuery',
+            data: {
+                mobileNo: mobileNo,
+                fibreID: '',
+                locationCode: ''
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.SubNetworkType == "Pre-paid" || response.SubNetworkType == "Post-paid") {
+                    // IsAIS // Pre-paid // Post-paid
+                    IsAIS = true;
+                }
+            }
+        });
+        return IsAIS;
+    }
+
+    function clearDetial() {
+        $('.Customer').hide();
+        getProvince();
+        getContactTime();
+
+        $('.district').empty();
+        $('.subDistrict').empty();
+        $('.postalCode').empty();
+        $('.district').append("<option value='' disabled selected >" + "@L_DISTRICT" + "</option>");
+        $('.district').select2();
+        $('.subDistrict').append("<option value='' disabled selected >" + "@L_SUB_DISTRICT" + "</option>");
+        $('.subDistrict').select2();
+        $('.postalCode').append("<option value='' disabled selected >" + "@L_POSTAL_CODE" + "</option>");
+        $('.postalCode').select2();
+        $(".rdoBuild").prop("checked", true);
+        $(".selectAddressType").val("B");
+        $('.isAisImage').hide();
+    }
+
+</script>

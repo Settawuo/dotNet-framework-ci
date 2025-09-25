@@ -1,0 +1,165 @@
+﻿@{
+    string B_CONFIRM = "CONFIRM";
+    string B_CLOSE = "CLOSE";
+    string B_EXPORT = "EXPORT Template";
+}
+<div style="padding: 15px;">
+    <div class="row">
+        <div class="form-group">
+            <label>Update Status to <span style="color: red;">&nbsp;*</span></label>
+            @(Html.Kendo().DropDownList()
+          .Name("ddlAccStatus")
+          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+          .DataTextField("DISPLAY_VAL")
+          .DataValueField("LOV_VAL1")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("StatusUpdateByFile", "ReportInstallationCostbyOrder");
+
+              });
+
+          }).Events(e => e.Change("onchangeAccStatus"))
+            )
+        </div>
+        <div class="i-fg-data-entry-validation" id="validatefor-ddlAccStatus"></div>
+    </div>
+    <div class="row">
+        <label>Import File</label>
+        @(Html.Kendo().Upload()
+              .Name("accReportInstallationfile")
+              .HtmlAttributes(new
+              {
+                  accept = ".csv, text/csv, application/csv"
+              })
+              .Async(a => a
+                  .Save("AccReportInstallationfile_Save", "ReportInstallationCostbyOrder")
+                  .Remove("AccReportInstallationfile_Remove", "ReportInstallationCostbyOrder")
+                  .AutoUpload(true))
+              .Multiple(false)
+              .Events(e => e.Success("onAccReportInstallationfileSuccess"))
+              .Events(e => e.Error("onAccReportInstallationfileError"))
+        )
+        <div class="i-fg-data-entry-validation" id="validatefor-accLastMilefile"></div>
+    </div>
+    <div class="row i-gap-top-1">
+        <div class="i-text-align-center">
+            <a id="btnCancelUpdateACCStatusByFile" class="btn btn-danger"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLOSE</a>
+            <a id="btnExportTemplate" class="btn btn-success"><i class="fa fa-file-excel-o fa-lg"></i>&nbsp;&nbsp;@B_EXPORT</a>
+            <a id="btnConfirmUpdateACCStatusByFile" class="btn btn-success"><i class="fa fa-check-square-o fa-lg"></i>&nbsp;&nbsp;@B_CONFIRM</a>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnConfirmUpdateACCStatusByFile").on('click', function () {
+            submitUpdateACCStatusByFile();
+        });
+
+        $("#btnCancelUpdateACCStatusByFile").on('click', function () {
+            resetUpdateAccStatusByFile();
+        });
+        $("#btnExportTemplate").attr("disabled", true);
+        $("#btnExportTemplate").on('click', function () {
+            ExportTemple();
+        });
+
+    });
+    function onchangeAccStatus() {
+        var status = $("#ddlAccStatus").val();
+       // alert(status);
+        if (status != "ALL") {
+            $("#btnExportTemplate").attr("disabled", false);
+        }
+        else {
+            $("#btnExportTemplate").attr("disabled", true);
+        }
+
+    }
+    function ExportTemple() {
+        var Status = $("#ddlAccStatus").val();
+        window.open("/ReportInstallationCostbyOrder/ExportSample?Status=" + Status + "");
+    }
+
+    function resetUpdateAccStatusByFile() {
+        $("#ddlAccStatus").data('kendoDropDownList').value("ALL");
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $("#validatefor-ddlAccStatus").html("");
+        $("#validatefor-accLastMilefile").html("");
+        $("#UpdateStatusByFileConfig").data("kendoWindow").close();
+    }
+
+    function submitUpdateACCStatusByFile() {
+        console.log("file name ", $(".k-filename").text());
+        if (!ValidationUpdateAccStatusbyFileValue()) { return; }
+
+        var data = JSON.stringify({
+            "status": $("#ddlAccStatus").val(),
+            "fileName": $(".k-filename").text()
+        });
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            url: "/ReportInstallationCostbyOrder/ReportInstallationCostbyOrderUpdateByFile",
+            data: data,
+            async: false,
+            dataType: "json",
+            success: function (response) {
+
+                if (response) {
+                    resetUpdateAccStatusByFile();
+                    if (response === "Update file success.") {
+                        showFeedback("success", response, "System Information");
+                    } else {
+                        showFeedback("error", response, "System Information");
+                    }
+                }
+            },
+            failure: function (msg) {
+                $("#validatefor-accLastMilefile").html(ValidationIcon() + msg);
+            }
+
+        });
+    }
+
+    function onAccReportInstallationfileSuccess(e) {
+        $(".k-filename").text(e.response.fileName);
+        if (!e.response.status) {
+            $("#validatefor-accLastMilefile").html(ValidationIcon() + e.response.message);
+        } else {
+            $("#validatefor-accLastMilefile").html("");
+        }
+    };
+
+    function onAccReportInstallationfileError(e) {
+        if (!e.response.status) {
+            $("#validatefor-accLastMilefile").html(ValidationIcon() + e.response.message);
+        }
+    };
+
+    function ValidationUpdateAccStatusbyFileValue() {
+        var error = true;
+        if ($("#ddlAccStatus").val() === "ALL" || $("#ddlAccStatus").val() === "") {
+            $("#validatefor-ddlAccStatus").html(ValidationIcon() + "This field is required.");
+            error = false;
+        } else {
+            $("#validatefor-ddlAccStatus").html("");
+        }
+
+        if ($("#validatefor-accLastMilefile").html()) {
+            error = false;
+        }
+
+        if (!$(".k-filename").text()) {
+            $("#validatefor-accLastMilefile").html(ValidationIcon() + "Please upload file.");
+            error = false;
+        }
+
+        return error;
+    }
+
+</script>

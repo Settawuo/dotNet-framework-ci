@@ -1,0 +1,301 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationEventSubContactData
+@using WBBEntity.PanelModels;
+@{
+
+    string L_SUB_CONTRACT = "";
+    string L_SUB_TEAM = "";
+    string L_ENGINEER_START_JOB = "";
+    string L_ENGINEER_END_JOB = "";
+
+    string B_ADD = "";
+    string B_CANCEL = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_SUB_CONTRACT = configscreen.Any(f => f.Name == "L_SUB_CONTRACT") ? configscreen.First(f => f.Name == "L_SUB_CONTRACT").LovValue1 : "";
+        L_SUB_TEAM = configscreen.Any(f => f.Name == "L_SUB_TEAM") ? configscreen.First(f => f.Name == "L_SUB_TEAM").LovValue1 : "";
+        L_ENGINEER_START_JOB = configscreen.Any(f => f.Name == "L_ENGINEER_START_JOB") ? configscreen.First(f => f.Name == "L_ENGINEER_START_JOB").LovValue1 : "";
+        L_ENGINEER_END_JOB = configscreen.Any(f => f.Name == "L_ENGINEER_END_JOB") ? configscreen.First(f => f.Name == "L_ENGINEER_END_JOB").LovValue1 : "";
+
+        B_ADD = configscreen.Any(f => f.Name == "B_ADD") ? configscreen.First(f => f.Name == "B_ADD").LovValue1 : "";
+        B_CANCEL = configscreen.Any(f => f.Name == "B_CANCEL") ? configscreen.First(f => f.Name == "B_CANCEL").LovValue1 : "";
+
+    }
+}
+@using (Html.BeginForm("AddSubContactToTmp", "ConfigurationEvents", FormMethod.Post, new { id = "frmAddSubContactToTmp", @enctype = "multipart/form-data" }))
+{
+<div class="panel panel-default SubContactRow">
+    @Html.HiddenFor(t=> t.is_delete,@Model.is_delete)
+    @Html.HiddenFor(t=> t.service_option,@Model.service_option)
+    @Html.HiddenFor(t=> t.indexData,@Model.indexData)
+    @Html.HiddenFor(t=> t.event_code,@Model.event_code)
+    <div class="panel-body" style="min-height: 200px;">
+        <div class="row  i-gap-top-1">
+            <div class="col-sm-6 col-md-6">
+                <label>@L_SUB_CONTRACT</label>
+                @Html.HiddenFor(t=> t.sub_contact)
+                @(Html.Kendo().DropDownList()
+                                      .Name("sub_contact_id")
+                                      .DataTextField("DISPLAY_VAL")
+                                      .DataValueField("LOV_NAME")
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .Filter(FilterType.Contains)
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("SubContactDDLData", "ConfigurationEvents");
+                                          });
+                                      })
+                                      .Events(e => e.Change("SubContactChange"))
+                                      .Value(@Model.sub_contact)
+
+                                   )
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <label>@L_SUB_TEAM</label>
+                @Html.HiddenFor(t=> t.sub_team)
+                @(Html.Kendo().DropDownList()
+                                      .Name("sub_team_id")
+                                      .DataTextField("DISPLAY_VAL")
+                                      .DataValueField("LOV_NAME")
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .Filter(FilterType.Contains)
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("SubContactTeamDDLData", "ConfigurationEvents");
+                                          });
+                                      })
+                                      .Events(e => e.Change("SubContactTeamChange").DataBound("onDataBound"))
+                                      .Value(@Model.sub_team)
+
+                                   )
+            </div>
+        </div>
+        @*end row1*@
+        <div class="row i-gap-top-1">
+            <div class="col-sm-6 col-md-6">
+                <label>@L_ENGINEER_START_JOB</label>
+                @if(@Model.indexData == "")
+                {
+                    @(Html.Kendo().DatePicker()
+                                .Name("start_date_event")
+                                .Format("dd/MM/yyyy")
+                                .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                .Value(@Model.start_date_event != null ? @Model.start_date_event.Substring(3, 2) + "/" + @Model.start_date_event.Substring(0, 2) + "/" + @Model.start_date_event.Substring(6, 4) : "")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .Events(e => e.Change("StartDateChange"))
+                                        .Max(@Model.end_date_subcontact != null ? @Model.end_date_subcontact.Substring(3, 2) + "/" + @Model.end_date_subcontact.Substring(0, 2) + "/" + @Model.end_date_subcontact.Substring(6, 4) : DateTime.Now.AddYears(50).ToString("MM/dd/yyyy"))
+                                        .Min(@Model.start_date_subcontact != null ? @Model.start_date_subcontact.Substring(3, 2) + "/" + @Model.start_date_subcontact.Substring(0, 2) + "/" + @Model.start_date_subcontact.Substring(6, 4) : "")
+                                )
+                }
+                else
+                {
+                     @Html.TextBox("start_date_event",Model.start_date_event , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+                }
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <label>@L_ENGINEER_END_JOB</label>
+                @if(@Model.indexData == "")
+                {
+                    @(Html.Kendo().DatePicker()
+                                .Name("end_date_event")
+                                .Format("dd/MM/yyyy")
+                                .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                .Value(@Model.end_date_event != null ? @Model.end_date_event.Substring(3, 2) + "/" + @Model.end_date_event.Substring(0, 2) + "/" + @Model.end_date_event.Substring(6, 4) : "")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .Events(e => e.Change("EndDateChange"))
+                                        .Max(@Model.end_date_subcontact != null ? @Model.end_date_subcontact.Substring(3, 2) + "/" + @Model.end_date_subcontact.Substring(0, 2) + "/" + @Model.end_date_subcontact.Substring(6, 4) : DateTime.Now.AddYears(50).ToString("MM/dd/yyyy"))
+                                        .Min(@Model.start_date_subcontact != null ? @Model.start_date_subcontact.Substring(3, 2) + "/" + @Model.start_date_subcontact.Substring(0, 2) + "/" + @Model.start_date_subcontact.Substring(6, 4) : "")
+                                )
+                }
+                else
+                {
+                    @Html.TextBox("end_date_event",Model.end_date_event , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+                }
+            </div>
+        </div>
+        @*end row2*@
+        <div class="row i-gap-top-1">
+            <div class="col-sm-12 col-md-12">
+                @{Html.RenderPartial("_SubNameEdit", @Model.SubNameList);}
+            </div>
+        </div>
+        @*end row3*@
+        <div class="row i-gap-top-1">
+            <div class="col-sm-6 col-md-6">
+            </div>
+            <div class="col-sm-6 col-md-6 i-text-align-right">
+                <a class="btn btn-default" onclick="Add()"><i class="fa fa-plus fa-lg"></i>&nbsp;&nbsp;@B_ADD</a>&nbsp;&nbsp;
+                <a class="btn btn-default" onclick="Cancel()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CANCEL</a>
+            </div>
+        </div>
+        @*end row4*@
+    </div>
+</div>
+}
+<script>
+    var IndexData = '@Model.indexData';
+    var EventCode = '@Model.event_code';
+    $(document).ready(function () {
+        var ModeSubContact = '@Model.sub_contact_id';
+
+        $.ajaxSetup({
+            // Disable caching of AJAX responses
+            cache: false
+        });
+
+        $("#sub_team_id").data("kendoDropDownList").dataSource.read({ Subcontract_Name: ModeSubContact });
+        SetNewSubName();
+        if (IndexData != "") {
+
+            $("#sub_contact_id").kendoDropDownList({
+                enable: false
+            });
+            $("#sub_contact_id").closest('.k-dropdown').css('background-color', '#B8B8B8');
+            $("#sub_contact_id").closest('.k-dropdown').css('cursor', 'not-allowed');
+
+            $("#sub_team_id").kendoDropDownList({
+                enable: false
+            });
+            $("#sub_team_id").closest('.k-dropdown').css('background-color', '#B8B8B8');
+            $("#sub_team_id").closest('.k-dropdown').css('cursor', 'not-allowed');
+
+
+        }
+    });
+
+    function SubContactChange() {
+        $("#sub_team_id").data("kendoDropDownList").dataSource.read({ Subcontract_Name: $("#sub_contact_id").val() });
+    }
+
+    function SubContactTeamChange() {
+        SetNewSubName();
+    }
+
+    function onDataBound() {
+        SetNewSubName();
+    }
+
+    function SetNewSubName() {
+        var SubContact = $("#sub_contact_id").data("kendoDropDownList").text();
+        var SubTeam = $("#sub_team_id").data("kendoDropDownList").text();
+        $("#sub_contact").val(SubContact);
+        $("#sub_team").val(SubTeam);
+            $.ajax({
+                url: '/ConfigurationEvents/SetNewSubName',
+                data: {
+                    Subcontract_Name: $("#sub_contact_id").val(), Subcontract_Team: $("#sub_team_id").val()
+                },
+                dataType: "html",
+                type: 'POST',
+                success: function (response) {
+                    $('#span-subname').replaceWith(response);
+                },
+                error: function (err) {
+                    showFeedback("error", err);
+                }
+
+            });
+    }
+
+    function Add() {
+        var dropDown1 = $("#sub_contact_id").data("kendoDropDownList");
+        dropDown1.enable(true);
+        var dropDown2 = $("#sub_team_id").data("kendoDropDownList");
+        dropDown2.enable(true);
+        var CheckSelect = false;
+        $(".SubCheck").each(function () {
+            if ($(this).is(":checked")) {
+                CheckSelect = CheckSelect || true;
+            }
+        });
+
+        if (CheckSelect) {
+
+            Loading();
+            $('#frmAddSubContactToTmp').submit();
+
+            @*var url = '@Url.Action("ConfigurationEventsEdit", "ConfigurationEvents")';
+            if (EventCode == "") {
+                url = url + "?EventCode=N&HasSearch=Y";
+            }
+            else {
+                url = url + "?EventCode=" + EventCode + "&HasSearch=Y";
+            }
+            window.location.href = url;*@
+
+        }
+        else {
+            showFeedback("warning", "Please select staff.");
+        }
+    }
+
+    function Cancel() {
+
+        Loading();
+        var url = '@Url.Action("ConfigurationEventsEdit", "ConfigurationEvents")';
+        if (EventCode == "") {
+            url = url + "?EventCode=N&HasSearch=Y";
+        }
+        else {
+            url = url + "?EventCode=" + EventCode + "&HasSearch=Y";
+        }
+        window.location.href = url;
+
+    }
+
+    function StartDateChange() {
+
+        var startPicker = $("#start_date_event").data("kendoDatePicker"),
+            endPicker = $("#end_date_event").data("kendoDatePicker"),
+            startDate = startPicker.value(),
+            endDate = endPicker.value();
+        if (startDate) {
+            startDate = new Date(startDate);
+            //startDate.setDate(startDate.getDate() + 1);
+            endPicker.min(startDate);
+        }
+        else {
+            if (endDate) {
+                endPicker.min(endDate);
+                endDate = new Date(endDate);
+                //endDate.setDate(endDate.getDate() - 1);
+                startPicker.max(endDate);
+                startPicker.value(endDate);
+            }
+            else {
+                startPicker.value("");
+            }
+        }
+    }
+
+    function EndDateChange() {
+        var startPicker = $("#start_date_event").data("kendoDatePicker"),
+            endPicker = $("#end_date_event").data("kendoDatePicker"),
+            startDate = startPicker.value(),
+            endDate = endPicker.value();
+        if (endDate) {
+            endDate = new Date(endDate);
+            //endDate.setDate(endDate.getDate() - 1);
+            startPicker.max(endDate);
+        }
+        else {
+            if (startDate) {
+                startPicker.max(startDate);
+                startDate = new Date(startDate);
+                //startDate.setDate(startDate.getDate() + 1);
+                endPicker.min(startDate);
+                endPicker.value(startDate);
+            }
+            else {
+                endPicker.value("");
+            }
+        }
+    }
+
+</script>

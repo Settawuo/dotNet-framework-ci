@@ -1,0 +1,1096 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels;
+@using WBBWeb.Extension;
+@{
+    string language = Session[WebConstants.SessionKeys.CurrentUICulture] != null ? Session[WebConstants.SessionKeys.CurrentUICulture].ToString() : "";
+
+    string L_SELECT_VAS_ONTOP_PLAYBOX = "";
+    string L_PLEASE_SELECT_VAS = "";
+    string L_HOOQ_UNLIMITED = "";
+    string L_PREMIER_LEAGUE = "";
+    string L_DOONEE = "";
+    string L_HOOQ_UNLIMITED_DETAIL_1 = "";
+    string L_HOOQ_UNLIMITED_DETAIL_2 = "";
+    string L_HOOQ_UNLIMITED_DETAIL_3 = "";
+    string L_PREMIER_LEAGUE_DETAIL_1 = "";
+    string L_PREMIER_LEAGUE_DETAIL_2 = "";
+    string L_PREMIER_LEAGUE_DETAIL_3 = "";
+    string L_DOONEE_DETAIL_1 = "";
+    string L_DOONEE_DETAIL_2 = "";
+    string L_ERROR_PLEASE_SELECT_VAS = "";
+    string T_CHECK_SERVICE_PB = "";
+
+    //17.9 Speed boost
+    string B_OK = "";
+    string L_MESSAGE_NOT_REGISTER = "";
+
+    //17.11 Officer for Existing Customer
+    string existingFlag = "";
+
+    if (ViewBag.LabelFBBORV12 != null)
+    {
+        var LabelFBBORV12 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV12;
+        L_SELECT_VAS_ONTOP_PLAYBOX = LabelFBBORV12.Any(c => c.Name == "L_SELECT_VAS_ONTOP_PLAYBOX") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_SELECT_VAS_ONTOP_PLAYBOX").DisplayValue : "";
+        L_PLEASE_SELECT_VAS = LabelFBBORV12.Any(c => c.Name == "L_PLEASE_SELECT_VAS") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_PLEASE_SELECT_VAS").DisplayValue : "";
+        L_HOOQ_UNLIMITED = LabelFBBORV12.Any(c => c.Name == "L_HOOQ_UNLIMITED") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_HOOQ_UNLIMITED").DisplayValue : "";
+        L_PREMIER_LEAGUE = LabelFBBORV12.Any(c => c.Name == "L_PREMIER_LEAGUE") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_PREMIER_LEAGUE").DisplayValue : "";
+        L_DOONEE = LabelFBBORV12.Any(c => c.Name == "L_DOONEE") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_DOONEE").DisplayValue : "";
+        L_HOOQ_UNLIMITED_DETAIL_1 = LabelFBBORV12.Any(c => c.Name == "L_HOOQ_UNLIMITED_DETAIL_1") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_HOOQ_UNLIMITED_DETAIL_1").DisplayValue : "";
+        L_HOOQ_UNLIMITED_DETAIL_2 = LabelFBBORV12.Any(c => c.Name == "L_HOOQ_UNLIMITED_DETAIL_2") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_HOOQ_UNLIMITED_DETAIL_2").DisplayValue : "";
+        L_HOOQ_UNLIMITED_DETAIL_3 = LabelFBBORV12.Any(c => c.Name == "L_HOOQ_UNLIMITED_DETAIL_3") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_HOOQ_UNLIMITED_DETAIL_3").DisplayValue : "";
+        L_PREMIER_LEAGUE_DETAIL_1 = LabelFBBORV12.Any(c => c.Name == "L_PREMIER_LEAGUE_DETAIL_1") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_PREMIER_LEAGUE_DETAIL_1").DisplayValue : "";
+        L_PREMIER_LEAGUE_DETAIL_2 = LabelFBBORV12.Any(c => c.Name == "L_PREMIER_LEAGUE_DETAIL_2") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_PREMIER_LEAGUE_DETAIL_2").DisplayValue : "";
+        L_PREMIER_LEAGUE_DETAIL_3 = LabelFBBORV12.Any(c => c.Name == "L_PREMIER_LEAGUE_DETAIL_3") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_PREMIER_LEAGUE_DETAIL_3").DisplayValue : "";
+        L_DOONEE_DETAIL_1 = LabelFBBORV12.Any(c => c.Name == "L_DOONEE_DETAIL_1") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_DOONEE_DETAIL_1").DisplayValue : "";
+        L_DOONEE_DETAIL_2 = LabelFBBORV12.Any(c => c.Name == "L_DOONEE_DETAIL_2") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_DOONEE_DETAIL_2").DisplayValue : "";
+        L_ERROR_PLEASE_SELECT_VAS = LabelFBBORV12.Any(c => c.Name == "L_ERROR_PLEASE_SELECT_VAS") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_ERROR_PLEASE_SELECT_VAS").DisplayValue : "";
+
+        B_OK = LabelFBBORV12.Any(c => c.Name == "B_OK") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "B_OK").DisplayValue : "";
+        L_MESSAGE_NOT_REGISTER = LabelFBBORV12.Any(c => c.Name == "L_MESSAGE_NOT_REGISTER") ? LabelFBBORV12.FirstOrDefault(c => c.Name == "L_MESSAGE_NOT_REGISTER").DisplayValue : "";
+        T_CHECK_SERVICE_PB = LabelFBBORV12.Any(c => c.Name == "T_CHECK_SERVICE_PB") ? LabelFBBORV12.First(c => c.Name == "T_CHECK_SERVICE_PB").DisplayValue : "";
+
+    }
+
+    string L_SUMMARY = "";
+    string L_BAHT = "";
+    string L_SUMM_DETAIL9 = "";
+    string L_SUMM_DETAIL11 = "";
+    string L_SUMM_DETAIL12 = "";
+    string L_SUMMARY_TOPUP_PLAYBOX = "";
+
+    if (ViewBag.LabelFBBTR002 != null)
+    {
+        var labelFBBTR002 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR002;
+        L_SUMMARY = labelFBBTR002.Any(c => c.Name == "L_SUMMARY") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMMARY").DisplayValue : "";
+        L_BAHT = labelFBBTR002.Any(c => c.Name == "L_BAHT") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_BAHT").DisplayValue : "";
+        L_SUMM_DETAIL9 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL9") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL9").DisplayValue : "";
+        L_SUMM_DETAIL11 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL11") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL11").DisplayValue : "";
+        L_SUMM_DETAIL12 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL12") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL12").DisplayValue : "";
+        L_SUMMARY_TOPUP_PLAYBOX = labelFBBTR002.Any(c => c.Name == "L_SUMMARY_TOPUP_PLAYBOX") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMMARY_TOPUP_PLAYBOX").DisplayValue : "";
+    }
+
+    //11
+    string B_CHOOSE_VAS = "";
+
+    if (ViewBag.LabelFBBORV11 != null)
+    {
+        var LabelFBBORV11 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV11;
+        B_CHOOSE_VAS = LabelFBBORV11.Any(c => c.Name == "B_CHOOSE_VAS") ? LabelFBBORV11.FirstOrDefault(c => c.Name == "B_CHOOSE_VAS").DisplayValue : "";
+    }
+
+    //0
+    string B_NEXT = "";
+    string B_BACK = "";
+    string L_CHOOSE_TOPUP = "";
+
+    if (ViewBag.labelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR000;
+        B_NEXT = labelFBBTR000.Any(c => c.Name == "B_NEXT") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+        B_BACK = labelFBBTR000.Any(c => c.Name == "B_BACK") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+        L_CHOOSE_TOPUP = labelFBBTR000.Any(c => c.Name == "L_CHOOSE_TOPUP") ? labelFBBTR000.FirstOrDefault(c => c.Name == "L_CHOOSE_TOPUP").DisplayValue : "";
+    }
+
+    if (null != ViewBag.ExistingFlag)
+    {
+        existingFlag = ViewBag.ExistingFlag;
+    }
+
+    string MyAISBypass = "";
+    if (ViewBag.MyAISBypass != null)
+    {
+        MyAISBypass = ViewBag.MyAISBypass;
+    }
+
+    string MobileFromBypass = "";
+    if (null != ViewBag.MobileFromBypass)
+    {
+        MobileFromBypass = ViewBag.MobileFromBypass;
+    }
+
+}
+
+<div id="SelectOntopPage" class="container col-lg-12 col-md-12 col-xs-12">
+    <div class="col-md-8 col-sm-8 col-xs-12 addrounded">
+        <p class="clearfix"></p>
+        <h4 class="page-header tgreen">@Html.Raw(L_SELECT_VAS_ONTOP_PLAYBOX)</h4>
+        @Html.Raw(L_PLEASE_SELECT_VAS)
+        <p class="clearfix"></p>
+        <div id="divOntopBoxDynamic" class="row-border">
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix page-header"></p>
+        <div class="col-md-12 text-center">
+            <a id="btnSelectOntopBack" href="javascript:void(0);" role="button" 
+                @if (existingFlag == "PLAYBOX:MENU" || MyAISBypass == "Y")
+                {<text>class="btn btn-default btn-for-xs hide"</text>}
+                else
+                {<text>class="btn btn-default btn-for-xs"</text>}
+               onclick="onBtnSelectOntopBack_Click()">&nbsp; @B_BACK &nbsp;
+            </a>
+            <a id="btnSelectOntopNext" href="javascript:void(0);" role="button" class="btn btn-success btn-for-xs"
+                onclick="onBtnSelectOntopNext_Click()">&nbsp; @B_NEXT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </a>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    <div id="divFormSummaryOfSelectOntopPage">
+        <br />
+        <br />
+        <div class="col-md-4 col-sm-4 col-xs-12 addrounded pull-right hidden-xs">
+            <h4 class="greenheader page-header twhite">@Html.Raw(L_SUMMARY)</h4>
+            <div class="page-dot">
+                <i class="fa fa-chevron-right tgreen"></i><span class="tgreen">@Html.Raw(L_SUMMARY_TOPUP_PLAYBOX)</span>
+                <p class="clearfix"></p>
+                <div id="tableSumSelect"></div>
+                <p class="clearfix"></p>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+        <input type="hidden" id="hdSelectHooq" value="0" />
+        <input type="hidden" id="hdSelectBPL" value="0" />
+        <input type="hidden" id="hdSelectDoonee" value="0" />
+        <table class="i-hidden" id="tempV2" border="1" style="border-color: red;"></table>
+    </div>
+</div>
+
+<div id="OntopDetailPage" class="container" style="display: none;">
+    <div class="col-md-8-5 col-sm-8 col-xs-12 addrounded">
+        <p class="clearfix"></p>
+        <h4 class="page-header tgreen">@L_SELECT_VAS_ONTOP_PLAYBOX</h4>
+        <div id="divDetailSelectOntop">
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix page-header"></p>
+        <div class="col-md-12 text-center">
+            <button id="btnOntopDetailBack" type="button" class="btn btn-default btn-for-xs" onclick="onBtnOntopDetailBack_Click()">&nbsp; @B_BACK &nbsp;</button>
+            <button id="btnOntopDetailSelectMore" type="button" class="btn btn-default btn-for-xs" onclick="onBtnOntopDetailSelectMore_Click()">&nbsp; @B_CHOOSE_VAS &nbsp;</button>
+            <button id="btnOntopDetailNext" type="button" class="btn btn-success btn-for-xs" onclick="onBtnOntopDetailNext_Click()">&nbsp; @B_NEXT &nbsp;<i class="fa fa-arrow-circle-o-right "></i></button>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="divFormSummaryOfOntopDetailPage">
+    </div>
+</div>
+
+<div class="modal fade" id="modalMsgNonRegis" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalMsgNonRegis_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <h4 class="text-center">
+                        <div id="modalMsgNonRegistxt" class="text-center">
+                            @(Html.Raw(L_MESSAGE_NOT_REGISTER))
+                        </div>
+                    </h4>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" id="modalMsgNonRegisbtn" class="btn btn-default" data-dismiss="modal" onclick="onBtnSelectOntopBack_Click();">&nbsp; @B_OK &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .existsTopupNonPlaybox {
+        height: 100%;
+        min-height: 0px;
+        line-height: 150px;
+        text-align: center;
+        font-size: 16px;
+        block-size: 0px;
+    }
+    .headtopic {
+        height: 100%;
+        min-height: 0px;
+        text-align: left;
+        font-size: 20px;
+        block-size: 0px;
+        border-bottom: 40px solid #8dc63f;
+        color: white;
+    }
+</style>
+
+<script type="text/javascript">
+    $(function () {
+        if ("@MobileFromBypass" != "") {
+            $('#CoveragePanelModel_P_MOBILE').val("@MobileFromBypass");
+        }
+        $(".wrapSwitchLanguage").hide();
+        getPrivilege();
+        getPackageNewV2();
+        generateOntopBoxV2();
+        changePageHeader_Vas(2);
+    });
+</script>
+
+<script type="text/javascript">
+    var hooqId = "";
+    var bplId = "";
+    var dooneeId = "";
+    var arrOntop = [];
+    var arrOntopPageDetail = [];
+    var arrPrivilege = [];
+    function getPrivilege() {
+        $.ajax({
+            type: "GET",
+            url: "/SelectPackage/GetPrivilegeByMobile",
+            data: {
+                mobile: '@ViewBag.MobileAis'
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data != null) {
+                    arrPrivilege.push(data);
+                }
+            }
+        });
+    }
+    function searchTrial(nameKey, myArray) {
+        for (var i = 0; i < myArray.length; i++) {
+            if (myArray[i].productCode === nameKey) {
+                return true;
+            }
+        }
+        return false;
+    }
+    function containPrivilege(Privilege, Ontop, data) {
+
+        if (Privilege[0].length > 0) { // Buy free trial
+            $.each(Privilege[0], function (i, pr) { //get prvilege
+                $.each(Ontop, function (a, on) { //get on top
+                    if (on != undefined) {
+                        if (pr.productCode == on[2]) {
+                            Ontop.splice(a, 1);
+                        }
+                    }
+                });
+
+            });
+
+        }
+
+        arrOntop = Ontop;
+    }
+    function generateOntopBox() {
+
+        var lblName = "";
+        var lblDetail = "@Html.Raw(L_HOOQ_UNLIMITED)";
+        var strBuilder = "";
+        var rowLength = 0;
+
+        //------------------------------------- Get LovTopup ---------------------------------------
+        $.ajax({
+            type: "GET",
+            url: "/SelectPackage/GetLitTopup",
+            data: {
+                mobile: '@ViewBag.MobileAis',
+                topupExistGroup: 'TOPUP_PLAYBOX'
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data != null) {
+                    containPrivilege(arrPrivilege, arrOntop, data); // check dup privilege
+
+                    var isShowPackage = checkSpeedDownload();
+
+                    //17.9 Speed boost
+                    var topupGroup;
+                    var groupby = "";
+                    var mySelectionArray = [];
+
+                    @if (Model.PackagePromotionList != null)
+                    {
+
+                        foreach (var row in Model.PackagePromotionList)
+                        {
+                            if (row.IsShowPacage == "N")
+                            {
+                                @:mySelectionArray.push(["@row.ProductCd", "@row.IsShowPacage"]);
+                             }
+                        }
+                    }
+                    var isShowSpeedboost = true;
+                    var isShowIpv4 = true;
+                    $.each(arrOntop, function (i, e) {
+
+                        var result = $.grep(mySelectionArray, function (arr) {
+                            return arr[0] == e[2];
+                        });
+
+                        if (result.length > 0) {
+                            if (/TOPUP\w+SPEEDBOOST\b/.test(e[0])) {
+                                isShowSpeedboost = false;
+                            } else if ((e[0] == "TOPUPDYNAMICIPV4" || e[0] == "TOPUPFIXEDIPV4")) {
+                                isShowIpv4 = false;
+                            }
+                        }
+
+                    });
+
+
+                    $.each(data, function (i, e2) {
+                        var strTemp = "";
+                        $.each(arrOntop, function (i, e) {
+                            if (e[0] == e2.DataName) {
+
+
+                                if (/TOPUP\w+SPEEDBOOST\b/.test(e2.DataName) && !isShowPackage) {
+                                    return;
+                                } else if (/TOPUP\w+SPEEDBOOST\b/.test(e2.DataName) && !isShowSpeedboost) {
+                                    return;
+                                } else if ((e2.DataName == "TOPUPDYNAMICIPV4" || e2.DataName == "TOPUPFIXEDIPV4")
+                                    && !isShowIpv4) {
+                                    return;
+                                }
+
+                                if ($("#PruductCD_Content").val() != e[2]) {
+                                    arrOntopPageDetail.push(e2.DataName);
+                                    //------------------ Draw Table Summary ---------------------------------
+                                    var strSum = "";
+
+
+                                    strSum += "<div id='tr" + e[0] + "Row' style='display: none;'>";
+                                    strSum += "<div class='col-xs-8'><span id='lbl" + e[0] + "Detail'></span></div>";
+                                    strSum += "<div class='col-xs-4 text-right'><span id='lbl" + e[0] + "Price'></span>";
+                                    strSum += "&nbsp;" + "@L_BAHT" + "</div>";
+                                    strSum += "<p class='clearfix'></p>";
+                                    strSum += "</div>";
+
+                                    $("#tableSumSelect").append(strSum);
+
+                                    //--------------------End Draw Table Summary ---------------------------------
+                                    var strOntop = "";
+                                    if (topupGroup != e2.TopupGroup) {
+                                        topupGroup = e2.TopupGroup;
+
+                                        strOntop += "<p class='clearfix'></p>";
+                                        strOntop += "<h4 class='greenheader page-header twhite hide'> " + e2.TopupGroupName + "</h4>";
+                                        rowLength = 0;
+
+                                    }
+
+                                    if (e2.Group != groupby) {
+                                        strOntop += "<p class='clearfix hidden-xs'></p>";
+                                        groupby = e2.Group;
+                                        rowLength = 0;
+                                    }
+
+                                    if (e2.Group == "") {
+                                        strOntop += "<div id='ontopBox" + e[0] + "' class='col-sm-4 col-xs-12 text-center'>";
+                                    } else {
+                                        strOntop += "<div id='ontopBox" + e[0] + "' class='" + e2.Group + " col-sm-4 col-xs-12 text-center'>";
+
+                                    }
+                                    strOntop += "<img src='data:image/png;base64," + e2.IconPath + "' class='img-responsive center-block' style='height: auto;'>";
+                                    strOntop += "<p class='clearfix'></p>";
+                                    strOntop += e2.DataIconDes.replace("{0}", $("#RECURRING_CHARGE" + e[1]).val());
+                                    strOntop += "<div class='checkbox'>";
+                                    if (e2.Group == "") {
+                                        strOntop += "<label><input type='checkbox' ontopid='ontopBox" + e[0] + "' id='ontopBox" + e[0] + "_chkbox' onclick='onOntopBox_Click(ontopBox" + e[0] + ")'> @L_CHOOSE_TOPUP </label>";
+                                    } else {
+                                        strOntop += "<label><input type='checkbox' ontopgroupid='" + e2.Group + "' ontopid='ontopBox" + e[0] + "' id='ontopBox" + e[0] + "_chkbox' onclick='onOntopBox_Click(ontopBox" + e[0] + ")'> @L_CHOOSE_TOPUP </label>";
+                                    }
+
+                                    strOntop += "</div>";
+                                    strOntop += "<input type='hidden' name='ontop_id' value='" + e[1] + "' />";
+                                    strOntop += "<input type='hidden' name='productType' value='" + e[0] + "' />";
+                                    strOntop += "<input type='hidden' name='recurring_charge' value='" + $("#RECURRING_CHARGE" + e[1]).val() + "' />";
+                                    strOntop += "<input type='hidden' name='pre_recurring_charge' value='" + $("#PRE_RECURRING_CHARGE" + e[1]).val() + "' />";
+                                    strOntop += "<input type='hidden' name='service_code' value='" + $("#SERVICE_CODE" + e[1]).val() + "' />";
+                                    strOntop += "<input type='hidden' name='DetailHead1' value='" + e2.DetailHead1 + "' />";
+                                    strOntop += "<input type='hidden' name='DetailHead2' value='" + e2.DetailHead2 + "' />";
+                                    strOntop += "<input type='hidden' name='DetailDes' value='" + e2.DetailDes + "' />";
+                                    strOntop += "<input type='hidden' name='LogoPath' value='" + e2.LogoPath + "' />";
+                                    strOntop += "</div>";
+                                    strOntop += "<p class='clearfix visible-xs'></p>";
+
+                                    if ("@language" == "1") {
+                                        $("#lbl" + e[0] + "Detail").text($("#SFF_PROMOTION_BILL_THA" + e[1]).val());
+                                    }
+                                    else {
+                                        $("#lbl" + e[0] + "Detail").text($("#SFF_PROMOTION_BILL_ENG" + e[1]).val());
+                                    }
+                                    strTemp = strOntop;
+
+                                    rowLength += 1;
+                                    if (rowLength == 3) {
+                                        strTemp += "<p class='clearfix hidden-xs'></p>";
+                                        rowLength = 0;
+                                    }
+                                }
+                            }
+
+                        });
+
+                        strBuilder += strTemp;
+
+                    });
+
+                    if (strBuilder == "") {
+                        var valExistingFlag = "@existingFlag";
+                        if (valExistingFlag != "PLAYBOX:MENU") {
+                            $('#modalMsgNonRegis').modal();
+                        }
+                        else {
+                            var lbltopic = "@Html.Raw(L_SELECT_VAS_ONTOP_PLAYBOX)";
+                            var lblNoRegis = "@Html.Raw(L_MESSAGE_NOT_REGISTER)";
+                            $("#SelectOntopPage").hide();
+                            strBuilder += "<div class='col-sm-12 col-xs-12 col-lg-12 headtopic'>" + lbltopic + "</div>";
+                            document.getElementById('box1N_holder').style.backgroundImage = "url(none)";
+                            document.getElementById('box1N_holder').style.backgroundColor = "white";
+                            $('.detail-for-menu').append(strBuilder);
+                            strBuilder2 = "<div id='divExistsTopupNonPlaybox' class='col-sm-12 col-xs-12 col-lg-12 existsTopupNonPlaybox'>" + lblNoRegis + "</div>";
+                            $('.innercontent').append(strBuilder2);
+                            $('.detail-for-menu').attr('style', 'min-height:150px;');
+                            $('.innercontent').attr('style', 'border-radius: 8px 8px 0px 0px');
+                            $('.innercontent').css('border-top', '9px solid #8dc63f');
+                            $('.detail-for-menu').css('border-radius', '8px 8px 0px 0px');
+                            $('#box1N_holder').attr('style', 'padding-bottom:0px;');
+                            $('#box1N_holder').attr('style', 'background:white;');
+                        }
+                        return;
+                    }
+
+                    strBuilder += "<div class='col-sm-4 col-xs-6 text-center'></div>";
+
+                    $("#divOntopBoxDynamic").append(strBuilder);
+
+                    //--------------------End Draw Table Summary ---------------------------------
+
+                    strBuilder = "<p class='clearfix'></p>" +
+                                "<div class='col-xs-8'><strong>" +
+                                    "@L_SUMM_DETAIL11" +
+                                "</strong></div>" +
+                                "<div class='col-xs-4 text-right'><strong>" +
+                                    "<span id='lblSumOntop'>0</span>&nbsp;" +
+                                    "<span>" + "@L_BAHT" + "</span>" +
+                                "</div>" +
+                                "<p class='clearfix'></p>" +
+                                "<div class='col-xs-8'><strong>" +
+                                    "@L_SUMM_DETAIL12" +
+                                "</strong</div>";
+
+                    $("#tableSumSelect").append(strBuilder);
+                    //--------------------End Draw Table Summary ---------------------------------
+                }
+            }
+        });
+        //-------------------------------------End Get LovTopup ------------------------------------
+    }
+
+    function onOntopBox_Click(divId) {
+        if ($("#" + divId.id + "_chkbox").is(":checked")) {
+            $("#" + divId.id).addClass("add-rounded-green");
+        } else {
+            $("#" + divId.id).removeClass("add-rounded-green");
+        }
+        var productType = $("#" + divId.id + " input[name='productType']").val();
+        var price = 0;
+
+        if ($("#" + divId.id + " input[name='recurring_charge']").val() != ""
+            && $("#" + divId.id + " input[name='recurring_charge']").val() != undefined) {
+
+            $("#" + divId.id + " input[name='recurring_charge']").val($("#" + divId.id + " input[name='recurring_charge']").val().replace(',', ''));
+            price = parseFloat($("#" + divId.id + " input[name='recurring_charge']").val());
+        }
+
+        if ($("#" + divId.id + "_chkbox").is(":checked")) {
+            $("#tr" + productType + "Row").show();
+            $("#lbl" + productType + "Price").text(toNumber(price));
+            $("#hdSelect" + productType).val("1");
+        }
+        else {
+            $("#tr" + productType + "Row").hide();
+            $("#lbl" + productType + "Price").text(0);
+            $("#hdSelect" + productType).val("0");
+        }
+
+        if ($("#" + divId.id + "_chkbox").attr("ontopgroupid") != undefined) {
+
+            var groupnmae = $("#" + divId.id + "_chkbox").attr("ontopgroupid");
+            $('.' + groupnmae + ' input:checkbox').each(function () {
+                if (this.id != divId.id + "_chkbox") {
+                    if ($("#" + this.id).prop('checked') == true) {
+                        $(this).removeAttr('checked');
+                        $("#" + this.id.substring(0, this.id.length - 7)).removeClass("add-rounded-green");
+
+                        var productType = $("#" + this.id.substring(0, this.id.length - 7) + " input[name='productType']").val();
+                        $("#tr" + productType + "Row").hide();
+                        $("#lbl" + productType + "Price").text(0);
+                        $("#hdSelect" + productType).val("0");
+                    }
+                }
+            });
+        }
+
+        //Summary
+        var Summoney = 0;
+        $.each(arrOntopPageDetail, function (i, e) {
+            if ($("#lbl" + e + "Price").text() != "") {
+                Summoney = Summoney + parseFloat($("#lbl" + e + "Price").text().replace(',', ''));
+            }
+        });
+
+        $("#lblSumOntop").text(toNumber(Summoney));
+    }
+
+    function onBtnSelectOntopNext_Click() {
+        var haveOntopChecked = false;
+        $("#divOntopBoxDynamic input[type=checkbox]").each(function () {
+            if (this.checked) {
+                haveOntopChecked = true;
+                return;
+            }
+        });
+        if (!haveOntopChecked) {
+            toastrErrorMessage('@Html.Raw(L_ERROR_PLEASE_SELECT_VAS)');
+        } else {
+            $("#SelectOntopPage").hide();
+            $("#OntopDetailPage").show();
+            onOntopDetailPage_LoadV2();
+        }
+    }
+
+    function onBtnSelectOntopBack_Click() {
+        window.location.href = "@Url.Action("TopUpPlayBox", "Process")";
+    }
+
+    function getPackageV2() {
+        var count_PBOX = 0;
+        $.ajax({
+            type: "GET",
+            url: "/SelectPackage/GetListPackageService",
+            data: {
+                "P_OWNER_PRODUCT": "@Model.v_owner_product",
+                "P_PRODUCT_SUBTYPE": "@Model.v_package_subtype", //"VAS",
+                "P_NETWORK_TYPE": "@Model.CoveragePanelModel.SffProductName",
+                "P_SERVICE_DAY": "@Model.CoveragePanelModel.SffServiceYear",
+                "line": "",
+                "P_PACKAGE_FOR": "PUBLIC",
+                "P_PACKAGE_CODE": "@Model.v_PackageCode",
+                "no": "@Model.CoveragePanelModel.P_MOBILE",
+                "topUp": "4",
+                "P_SFF_PROMOCODE": "@Model.v_sff_main_promotionCD",
+                "p_Address_Id": "",
+                "p_Plug_And_Play_Flag": "", //Add New Parameter for Plug and Play //Added by PatthamawadeeH. 28122016
+                "AisAirNumber": sessionStorage.getItem("AisAirNumber")
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var tempV2 = "";
+                $("#tempV2").empty();
+                $.each(data, function (i, e) {
+                    if (e.PRODUCT_SUBTYPE3.indexOf("TOPUP") != -1) {
+                        arrOntop.push([e.PRODUCT_SUBTYPE3, i, e.UPLOAD_SPEED]);
+                        tempV2 += appendingV2(i, e);
+                    }
+                });
+                $("#tempV2").append(tempV2);
+            }
+        });
+    }
+
+    function appendingV2(i, e) {
+        var key = i;
+        var getName = "SelectOntop";
+        if ($("#PruductCD_Content").val() == e.UPLOAD_SPEED) {
+            getName = getName + $("#PruductCD_Content").val();
+        }
+        return "<tr>" +
+            "<td>" +
+            "<input type='text' name='" + getName + "' value='" + i + "'>" +
+            "<input type='text' id='MAPPING_CODE" + key + "' value='" + e.MAPPING_CODE + "'>" +
+            "<input type='text' id='MAPPING_PRODUCT" + key + "' value='" + e.MAPPING_PRODUCT + "'>" +
+            "<input type='text' id='PACKAGE_CODE" + key + "' value='" + e.PACKAGE_CODE + "'>" +
+            "<input type='text' id='PACKAGE_NAME" + key + "' value='" + e.PACKAGE_NAME + "'>" +
+            "<input type='text' id='PACKAGE_GROUP" + key + "' value='" + e.PACKAGE_GROUP + "'>" +
+            "<input type='text' id='RECURRING_CHARGE" + key + "' value='" + e.RECURRING_CHARGE + "'>" +
+            "<input type='text' id='PRE_RECURRING_CHARGE" + key + "' value='" + e.PRE_RECURRING_CHARGE + "'>" +
+            "<input type='text' id='SFF_PROMOTION_BILL_THA" + key + "' value='" + e.SFF_PROMOTION_BILL_THA + "'>" +
+            "<input type='text' id='SFF_PROMOTION_BILL_ENG" + key + "' value='" + e.SFF_PROMOTION_BILL_ENG + "'>" +
+            "<input type='text' id='TECHNOLOGY" + key + "' value='" + e.TECHNOLOGY + "'>" +
+            "<input type='text' id='DOWNLOAD_SPEED" + key + "' value='" + e.DOWNLOAD_SPEED + "'>" +
+            "<input type='text' id='UPLOAD_SPEED" + key + "' value='" + e.UPLOAD_SPEED + "'>" +
+            "<input type='text' id='INITIATION_CHARGE" + key + "' value='" + e.INITIATION_CHARGE + "'>" +
+            "<input type='text' id='PRE_INITIATION_CHARGE" + key + "' value='" + e.PRE_INITIATION_CHARGE + "'>" +
+            "<input type='text' id='PACKAGE_TYPE" + key + "' value='" + e.PACKAGE_TYPE + "'>" +
+            "<input type='text' id='PRODUCT_SUBTYPE_" + key + "' value='" + e.PRODUCT_SUBTYPE + "'>" +
+            "<input type='text' id='PRODUCT_SUBTYPE3_" + key + "' value='" + e.PRODUCT_SUBTYPE3 + "'>" +
+            "<input type='text' id='OWNER_PRODUCT" + key + "' value='" + e.OWNER_PRODUCT + "'>" +
+            "<input type='text' id='ACCESS_MODE" + key + "' value='" + e.ACCESS_MODE + "'>" +
+            "<input type='text' id='SERVICE_CODE" + key + "' value='" + e.SERVICE_CODE + "'>" +
+            "<input type='text' id='SFF_PROMOTION_CODE" + key + "' value='" + e.SFF_PROMOTION_CODE + "'>" +
+            "</td>" +
+            "</tr>";
+    }
+
+    //-------------------------------------OntopDetailPage------------------------------------//
+    var currentPage = 0;
+    var arrPage = [];
+
+    function onOntopDetailPage_Load() {
+        currentPage = 1;
+        var strdetailSelect = "";
+        $("#divDetailSelectOntop").html("");
+
+        $("#divOntopBoxDynamic input[type=checkbox]").each(function () {
+            if (this.checked) {
+                var selectedOntopId = $(this).attr("ontopid");
+                var productSubType = $("#" + selectedOntopId + " input[name='productType']").val();
+                var productID = $("#" + selectedOntopId + " input[name='ontop_id']").val();
+                var DetailHead1 = $("#" + selectedOntopId + " input[name='DetailHead1']").val();
+                var DetailHead2 = $("#" + selectedOntopId + " input[name='DetailHead2']").val();
+                var DetailDes = $("#" + selectedOntopId + " input[name='DetailDes']").val();
+                var LogoPath = $("#" + selectedOntopId + " input[name='LogoPath']").val();
+
+                strdetailSelect += "<div id='div" + productSubType + "Detail'>";
+                strdetailSelect += "<i class='fa fa-chevron-right tgreen'></i>&nbsp;" + DetailHead1.replace("{0}", $("#RECURRING_CHARGE" + productID).val());
+                strdetailSelect += "<p class='clearfix'></p>";
+                strdetailSelect += "<div class='col-xs-12 text-center'>";
+                strdetailSelect += "<img src='data:image/png;base64," + LogoPath + "' class='img-responsive center-block'/>";
+                strdetailSelect += "</div>";
+                strdetailSelect += "<p class='clearfix'></p>";
+                strdetailSelect += "<i class='fa fa-chevron-right tgreen'></i>&nbsp;" + DetailHead2;
+                strdetailSelect += "<p class='clearfix'></p>";
+                strdetailSelect += "<div class='col-xs-12'>";
+                strdetailSelect += "<div class='panel panel-gray'>";
+                strdetailSelect += "<div class='panel-heading'></div>";
+                strdetailSelect += "<div class='panel-body'>";
+                strdetailSelect += DetailDes;
+                strdetailSelect += "</div>";
+                strdetailSelect += "</div>";
+                strdetailSelect += "</div>";
+                strdetailSelect += "</div>";
+            }
+        });
+        $("#divDetailSelectOntop").append(strdetailSelect);
+        changePageDetail();
+        $("#divFormSummaryOfOntopDetailPage").html($("#divFormSummaryOfSelectOntopPage").html());
+    }
+
+    function changePageDetail() {
+        $("#divOntopBoxDynamic input[type=checkbox]:checked").each(function (i, e) {
+            var selectedOntopId = $(this).attr("ontopid");
+            var productSubType = $("#" + selectedOntopId + " input[name='productType']").val();
+            if (currentPage == i + 1) {
+                $("#div" + productSubType + "Detail").show();
+                currentPage = i + 1;
+            } else {
+                $("#div" + productSubType + "Detail").hide();
+            }
+        });
+    }
+
+    function onBtnOntopDetailNext_Click() {
+        currentPage++;
+        if (currentPage != ($("#divOntopBoxDynamic input[type=checkbox]:checked").length + 1)) {
+            changePageDetail();
+        } else {
+            $("#OntopDetailPage").hide();
+            DataBindPageV2();
+            $("#page4").show();
+        }
+    }
+
+    function onBtnOntopDetailSelectMore_Click() {
+        $("#OntopDetailPage").hide();
+        $("#SelectOntopPage").show();
+    }
+
+    function onBtnOntopDetailBack_Click() {
+        currentPage--;
+
+        if (currentPage == 0) {
+            $("#OntopDetailPage").hide();
+            $("#SelectOntopPage").show();
+        } else {
+            changePageDetail();
+        }
+    }
+
+    function checkSpeedDownload() {
+        var isShowPackage = false;
+        $.ajax({
+            type: "GET",
+            url: "/SelectPackage/GetCheckPackageDownloadSpeedTopUpPlaybox",
+            data: {
+                "ProductCode": "@Model.v_sff_main_promotionCD",
+                "AisAirNumber": sessionStorage.getItem("AisAirNumber")
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data != null) {
+                    isShowPackage = data.IsStatus;
+                }
+            }
+        });
+        return isShowPackage;
+    }
+
+    var tmpPackageContent;
+    function getPackageNewV2() {
+        //R21.5
+        var P_SALE_CHANNEL = "CUSTOMER";
+        if (window.parent.$("#P_SALE_CHANNEL").length > 0) {
+            P_SALE_CHANNEL = window.parent.$("#P_SALE_CHANNEL").val();
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/SelectPackage/GetListPackagebySFFPromoV2",
+            data: {
+                "P_OWNER_PRODUCT": "@Model.v_owner_product",
+                "P_PRODUCT_SUBTYPE": "@Model.v_package_subtype",
+                "accessMode": "",
+                "no": "@Model.CoveragePanelModel.P_MOBILE",
+                "P_SFF_PROMOCODE": "@Model.v_sff_main_promotionCD",
+                "P_EXISTING_REQ": "PBOX_CONTENT",
+                "P_SALE_CHANNEL": P_SALE_CHANNEL
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                tmpPackageContent = data.filter(function (elem) {
+                    return elem.PACKAGE_TYPE.indexOf("8") !== -1
+                        && elem.PRODUCT_SUBTYPE.indexOf("PBOX") !== -1
+                        //&& elem.PACKAGE_SERVICE_NAME.indexOf("PBOX") !== -1;
+                        && elem.PACKAGE_SERVICE_NAME.indexOf("INTERNET") !== -1;//R21.12PP ATV
+                });
+                $.each(tmpPackageContent, function (i, e) {
+                    arrOntop.push([e.SFF_PROMOTION_CODE, i, e.UPLOAD_SPEED]);
+                });
+            }
+        });
+
+    }
+    var tmpContentDetail;
+    function generateOntopBoxV2() {
+        var dataName = "";
+        var dataNameCount = 0;
+        $.each(arrOntop, function (arrOntopIndex, arrOntopData) {
+            if (dataNameCount == 0) {
+                dataName = arrOntopData[0];
+            }
+            else {
+                dataName = dataName + "," + arrOntopData[0];
+            }
+            dataNameCount++;
+        });
+        tmpContentDetail = [];
+        if (tmpPackageContent != undefined && tmpPackageContent.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/SelectPackage/GetListTopup",
+                data: {
+                    mobile: '@ViewBag.MobileAis',
+                    topupExistGroup: 'TOPUP_PLAYBOX',
+                    dataName: dataName
+                },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    var strBuilder = "";
+                    var indexData = 0;
+                    if (data != undefined && data.Data.length > 0) {
+
+                        tmpContentDetail = data.Data;
+                        // Filter Package not shows
+                        containPrivilegeV2(arrPrivilege, arrOntop);
+                        $.each(data.DataGroup, function (arrDataGroupIndex, arrDataGroup) {
+                            var setGroupName = arrDataGroup;
+                            $.each(arrOntop, function (arrOntopIndex, arrOntopData) {
+                                var lovDataContent = data.Data.filter(function (elem) {
+                                    return (elem.DataName == arrOntopData[0]
+                                        && elem.GroupName == arrDataGroup);
+                                });
+                                if (lovDataContent != undefined && lovDataContent.length > 0) {
+                                    strBuilder += setHtmlContentPlaybox(indexData, lovDataContent[0], setGroupName);
+                                    setGroupName = "";
+                                    indexData++;
+                                }
+                            });
+                        });
+
+                        @* R21.11 ATV
+                        var havePBOX = checkHavePBOX();
+                        if (!havePBOX) {
+                            strBuilder = "";
+                        }*@
+
+                        if (strBuilder == "") {
+                            var valExistingFlag = "@existingFlag";
+                            @*R21.11 ATV
+                                if (valExistingFlag != "PLAYBOX:MENU") {
+                                    if (!havePBOX) {
+                                    $('#modalMsgNonRegistxt').html("@Html.Raw(T_CHECK_SERVICE_PB)");
+                                }
+                                $('#modalMsgNonRegis').modal();
+                            }
+                            else {*@
+                                var lbltopic = "@Html.Raw(L_SELECT_VAS_ONTOP_PLAYBOX)";
+                                var lblNoRegis = "@Html.Raw(L_MESSAGE_NOT_REGISTER)";
+                                //if (havePBOX) {
+                                    $("#SelectOntopPage").hide();
+                                    strBuilder += "<div class='col-sm-12 col-xs-12 col-lg-12 headtopic'>" + lbltopic + "</div>";
+                                    document.getElementById('box1N_holder').style.backgroundImage = "url(none)";
+                                    document.getElementById('box1N_holder').style.backgroundColor = "white";
+                                    $('.detail-for-menu').append(strBuilder);
+                                    strBuilder2 = "<div id='divExistsTopupNonPlaybox' class='col-sm-12 col-xs-12 col-lg-12 existsTopupNonPlaybox'>" + lblNoRegis + "</div>";
+                                    $('.innercontent').append(strBuilder2);
+                                    $('.detail-for-menu').attr('style', 'min-height:150px;');
+                                    $('.innercontent').attr('style', 'border-radius: 8px 8px 0px 0px');
+                                    $('.innercontent').css('border-top', '9px solid #8dc63f');
+                                    $('.detail-for-menu').css('border-radius', '8px 8px 0px 0px');
+                                    $('#box1N_holder').attr('style', 'padding-bottom:0px;');
+                                    $('#box1N_holder').attr('style', 'background:white;');
+                                //}
+                            //}
+                        }
+                        strBuilder += "<div class='col-sm-4 col-xs-6 text-center'></div>";
+                        $("#divOntopBoxDynamic").append(strBuilder);
+                        onOntopBoxV2_Click();
+                    }
+                }
+            });
+        }
+    }
+
+    function setHtmlContentPlaybox(indexdata, data, setGroupName) {
+        var sffPromotionCode = data.DataName;
+        var strOntop = "";
+        if (tmpPackageContent != undefined && tmpPackageContent.length > 0) {
+            var tmpPackageContentSelect = tmpPackageContent.filter(function (elem) {
+                return elem.SFF_PROMOTION_CODE.indexOf(sffPromotionCode) !== -1;
+            });
+            if (tmpPackageContentSelect != undefined && tmpPackageContentSelect.length > 0) {
+                if (setGroupName) {
+                    strOntop += "<p class='clearfix'></p>";
+                    strOntop += "<h4 class='greenheader page-header twhite hide'> " + data.TopupGroupName + "</h4>";
+                    strOntop += "<p class='clearfix hidden-xs'></p>";
+                }
+
+                if (data.Group == "") {
+                    strOntop += "<div id='ontopBox" + indexdata + "' class='col-sm-4 col-xs-12 text-center'>";
+                } else {
+                    strOntop += "<div id='ontopBox" + indexdata + "' class='" + data.Group + " col-sm-4 col-xs-12 text-center'>";
+
+                }
+                strOntop += "<img src='data:image/png;base64," + data.IconPath + "' class='img-responsive center-block' style='height: auto;'>";
+                strOntop += "<p class='clearfix'></p>";
+                strOntop += data.DataIconDes.replace("{0}", accounting.formatNumber(parseFloat(tmpPackageContentSelect[0].PRICE_CHARGE),2));
+                strOntop += "<div class='checkbox'>";
+                if (data.Group == "") {
+                    strOntop += "<label><input type='checkbox' ontopid='ontopBox" + indexdata + "' id='ontopBox" + indexdata + "_chkbox' value='" + sffPromotionCode +"' onclick='onOntopBoxV2_Click(this)'> @L_CHOOSE_TOPUP </label>";
+                } else {
+                    strOntop += "<label><input type='checkbox' ontopgroupid='" + data.Group + "' ontopid='ontopBox" + indexdata + "' id='ontopBox" + indexdata + "_chkbox' value='" + sffPromotionCode +"' onclick='onOntopBoxV2_Click(this)'> @L_CHOOSE_TOPUP </label>";
+                }
+
+                strOntop += "</div>";
+                strOntop += "</div>";
+                strOntop += "<p class='clearfix visible-xs'></p>";
+
+                var indexInt = 0;
+                indexInt = parseInt(indexdata) + 1;
+                if ((indexInt % 3) == 0) {
+                    strOntop += "<p class='clearfix hidden-xs'></p>";
+                }
+            }
+        }
+        return strOntop;
+    }
+
+    function onOntopBoxV2_Click(data) {
+        var sffPromotioncode = "";
+        var divCheckID = "";
+        var groupID = "";
+        var strSum = "";
+        var contentDetail = "";
+        var price = 0;
+        $("#tableSumSelect").html("");
+        if (data != undefined) {
+            divCheckID = data.attributes.ontopid.value;
+            groupID = data.attributes.ontopgroupid.value;
+            sffPromotioncode = data.value;
+            $('.' + groupID + ' input:checkbox').each(function () {
+                $("#" + divCheckID).removeClass("add-rounded-green");
+                if (this.id != data.id) {
+                    $(this).removeAttr('checked');
+                    $("#" + this.attributes.ontopid.value).removeClass("add-rounded-green");
+                }
+            });
+            if (data.checked) {
+                $("#" + divCheckID).addClass("add-rounded-green");
+                if (tmpPackageContent != undefined && tmpPackageContent.length > 0) {
+                    var tmpPackageContentSelect = tmpPackageContent.filter(function (elem) {
+                        return elem.SFF_PROMOTION_CODE.indexOf(sffPromotioncode) !== -1;
+                    });
+                    if (tmpPackageContentSelect != undefined && tmpPackageContentSelect.length > 0) {
+                        price = parseFloat(tmpPackageContentSelect[0].PRICE_CHARGE);
+                        if ('@language' == "1") {
+                            contentDetail = tmpPackageContentSelect[0].PACKAGE_DISPLAY_THA;
+                        }
+                        else {
+                            contentDetail = tmpPackageContentSelect[0].PACKAGE_DISPLAY_ENG;
+                        }
+                    }
+                }
+            }
+            else {
+                $("#" + divCheckID).removeClass("add-rounded-green");
+            }
+        }
+        if (contentDetail != "") {
+            strSum += "<div>";
+            strSum += "<div class='col-xs-8'><span>" + contentDetail + "</span></div>";
+            strSum += "<div class='col-xs-4 text-right'><span>" + accounting.formatNumber(price, 2) + " </span>";
+            strSum += "&nbsp;" + "@L_BAHT" + "</div>";
+            strSum += "<p class='clearfix'></p>";
+            strSum += "</div>";
+
+            strSum += "<p class='clearfix'></p><div class='col-xs-8'><strong>@L_SUMM_DETAIL11</strong></div>";
+            strSum += "<div class='col-xs-4 text-right'><strong><span id='lblSumOntop'>" + accounting.formatNumber(price, 2) + "</span><span> @L_BAHT</span></div>";
+            strSum += "<p class='clearfix'></p><div class='col-xs-8'><strong>@L_SUMM_DETAIL12</strong</div>";
+        }
+        else {
+            strSum += "<div>";
+            strSum += "<div class='col-xs-8'><span></span></div>";
+            strSum += "<div class='col-xs-4 text-right'><span>" + accounting.formatNumber(0, 2) + " </span>";
+            strSum += "&nbsp;" + "@L_BAHT" + "</div>";
+            strSum += "<p class='clearfix'></p>";
+            strSum += "</div>";
+
+            strSum += "<p class='clearfix'></p><div class='col-xs-8'><strong>@L_SUMM_DETAIL11</strong></div>";
+            strSum += "<div class='col-xs-4 text-right'><strong><span id='lblSumOntop'>" + accounting.formatNumber(0, 2) + "</span><span> @L_BAHT</span></div>";
+            strSum += "<p class='clearfix'></p><div class='col-xs-8'><strong>@L_SUMM_DETAIL12</strong</div>";
+        }
+        $("#tableSumSelect").html(strSum);
+
+    }
+    var logoPath = "";
+    function onOntopDetailPage_LoadV2() {
+        currentPage = 1;
+        var sffPromotioncode = "";
+        var strdetailSelect = "";
+        $("#divDetailSelectOntop").html("");
+        $("#divOntopBoxDynamic input[type=checkbox]:checked").each(function () {
+            if (tmpContentDetail != undefined && tmpContentDetail.length > 0) {
+                sffPromotioncode = this.value;
+                var tmpPackageContentSelect = tmpPackageContent.filter(function (elem) {
+                    return elem.SFF_PROMOTION_CODE.indexOf(sffPromotioncode) !== -1;
+                });
+                //edit get logo chats885 25.08
+                $.ajax({
+                type: "POST",
+                    url: "/SelectPackage/GetListLogoTopup",
+                data: {
+                    packageCode: sffPromotioncode,
+                },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    logoPath = data.Data;
+                }
+                });
+                var tmpPackageContentDetailSelect = tmpContentDetail.filter(function (elem) {
+                    return elem.DataName.indexOf(sffPromotioncode) !== -1;
+                });
+                if (tmpPackageContentDetailSelect != undefined && tmpPackageContentDetailSelect.length > 0 && tmpPackageContentSelect != undefined && tmpPackageContentSelect.length > 0) {
+                    var DetailHead1 = tmpPackageContentDetailSelect[0].DetailHead1;
+                    var DetailHead2 = tmpPackageContentDetailSelect[0].DetailHead2;
+                    var DetailDes = tmpPackageContentDetailSelect[0].DetailDes;
+                    //var LogoPath = tmpPackageContentDetailSelect[0].LogoPath;
+                    strdetailSelect += "<div>";
+                    strdetailSelect += "<i class='fa fa-chevron-right tgreen'></i>&nbsp;" + DetailHead1.replace("{0}", accounting.formatNumber(parseFloat(tmpPackageContentSelect[0].PRICE_CHARGE),2));
+                    strdetailSelect += "<p class='clearfix'></p>";
+                    strdetailSelect += "<div class='col-xs-12 text-center'>";
+                    strdetailSelect += "<img src='data:image/png;base64," + logoPath + "' class='img-responsive center-block'/>";
+                    strdetailSelect += "</div>";
+                    strdetailSelect += "<p class='clearfix'></p>";
+                    strdetailSelect += "<i class='fa fa-chevron-right tgreen'></i>&nbsp;" + DetailHead2;
+                    strdetailSelect += "<p class='clearfix'></p>";
+                    strdetailSelect += "<div class='col-xs-12'>";
+                    strdetailSelect += "<div class='panel panel-gray'>";
+                    strdetailSelect += "<div class='panel-heading'></div>";
+                    strdetailSelect += "<div class='panel-body'>";
+                    strdetailSelect += DetailDes;
+                    strdetailSelect += "</div>";
+                    strdetailSelect += "</div>";
+                    strdetailSelect += "</div>";
+                    strdetailSelect += "</div>";
+                }
+            }
+        });
+        $("#divDetailSelectOntop").append(strdetailSelect);
+        changePageDetail();
+        $("#divFormSummaryOfOntopDetailPage").html($("#divFormSummaryOfSelectOntopPage").html());
+
+    }
+
+    function containPrivilegeV2(Privilege, Ontop) {
+
+        if (Privilege[0].length > 0) { // Buy free trial
+            $.each(Privilege[0], function (i, pr) { //get prvilege
+                $.each(Ontop, function (a, on) { //get on top
+                    if (on != undefined) {
+                        if (pr.productCode == on[0]) {
+                            Ontop.splice(a, 1);
+                        }
+                    }
+                });
+
+            });
+
+        }
+
+        if ($("#PruductCD_Content").val() != "") {
+            var sffPromoContent = $("#PruductCD_Content").val();
+            $.each(Ontop, function (a, on) { //get on top
+                if (on != undefined) {
+                    if (on[0] == sffPromoContent) {
+                        Ontop.splice(a, 1);
+                    }
+                }
+            });
+        }
+
+        arrOntop = Ontop;
+    }
+
+    function checkHavePBOX() {
+        var checkHavePBOX = false;
+            $.ajax({
+                url: '/Process/GetNumberPbox',
+                data: {
+                    NonMobileNo: $('#CoveragePanelModel_P_MOBILE').val(),
+                    IdCard: $('#IDCardNo').val()
+                },
+                dataType: "text",
+                type: 'POST',
+                async: false,
+                success: function (data4) {
+                    if (data4 != '0') {
+                        checkHavePBOX = true;
+                    }
+                }
+            });
+        return checkHavePBOX;
+    }
+
+</script>

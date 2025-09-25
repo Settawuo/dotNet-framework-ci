@@ -1,0 +1,570 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.AWCinformation
+@using WBBEntity.Models;
+
+@{
+    ViewBag.Title = "Air Net Wireless Import Execl";
+}
+
+
+@*<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-success">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-info-circle" style="font-size: large;">&nbsp;Air Net Wireless Import Excel</i>
+                    <a data-toggle="collapse" class="pull-right" href="#Cardmodel" onclick="onPanelToggle(this);" id="SiteInformationPanelHeaders">
+                        <i class="fa fa-chevron-circle-down fa-lg" id="ArrowIconSiteInformations"></i>
+                    </a>
+                </h3>
+            </div>
+
+            <div id="Cardmodel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">
+                <div class=" panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="col-sm-6 col-md-6">
+
+            @(Html.Kendo().Upload()
+            .Name("files")
+                    // .TemplateId("fileTemplate")
+            .Async(a => a
+                .Save("Save", "TAirnet")
+                .Remove("Remove", "TAirnet")
+                .AutoUpload(false)
+                )
+            .Events(events => events
+            .Success("onSuccess")
+            )
+            .Multiple(false)
+            )
+                            </div>
+                        </div>
+                    </div>                    
+
+                    @(Html.Kendo().Grid<AWCexportlist>()
+            .Name("AirNetWirelessImportExcellistModel")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.Base_L2).Title("Base_L2").HtmlAttributes(new { @class = "i-text-align-center" });
+                columns.Bound(p => p.Site_Name).Title("Site Name").HtmlAttributes(new { @class = "i-text-align-center" });
+                //columns.Bound(p => p.Zone).Title("ชื่อโคงการ").HtmlAttributes(new { @class = "i-text-align-center" });
+                //columns.Bound(p => p.Province).Title("ชื่อโคงการ").HtmlAttributes(new { @class = "i-text-align-center" });
+                //columns.Bound(p => p.Aumphur).Title("ชื่อโคงการ").HtmlAttributes(new { @class = "i-text-align-center" });
+                //columns.Bound(p => p.Tumbon).Title("ชื่อโคงการ").HtmlAttributes(new { @class = "i-text-align-center" });                       
+                columns.Bound(p => p.Lat).Title("Lat").HtmlAttributes(new { @class = "i-text-align-center" });
+                columns.Bound(p => p.Lon).Title("Long").HtmlAttributes(new { @class = "i-text-align-center" });
+                columns.Bound(p => p.AP_Name).Title("AP_Name").HtmlAttributes(new { @class = "i-text-align-center" });
+                columns.Bound(p => p.Sector).Title("sector").HtmlAttributes(new { @class = "i-text-align-center" });
+
+            })
+            .ToolBar(toolbar => toolbar.Template("" + "<span class='i-f2'>Total Record: </span><span class='i-f1' id='Totalrecord'> 0 </span><div>"))
+            .Pageable(pageable => pageable
+                            .PageSizes(true)
+                            .Numeric(true)
+                            )
+                            .Sortable()
+                            .AutoBind(false)
+                            .Filterable()
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(10)
+                                //.Sort(sort => sort.Add("updatedate").Descending())              
+                                .Read(read => read.Action("Gettogrid", "TAirnet"))
+                                )
+
+             )
+
+
+             
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>*@
+
+
+<form id="formCoverageArea">
+    <div class="page-header i-header-fit">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">AirNet Wireless Import Excel</h3>
+                <ol class="breadcrumb">
+                    <li>
+                     <a href="javascript:linkback();" >
+                        Main Page</a></li>
+                    <li class="active">Import Excel</li>
+                </ol>
+            </div>
+        </div>
+    </div>    
+
+    <div class="row">
+        <div class="col-md-12">
+            @ImportExcel()
+        </div>
+    </div>
+    <div class="btn-group pull-right">
+
+            <a class="btn btn-success"  id="importsave" onclick="_addnew()">
+            <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Save</a>               
+            <a class="btn btn-default" id="importcancel" onclick="_Cancel()">
+            <i class="fa fa-ban fa-lg""></i>&nbsp;&nbsp;Cancel</a>             
+    </div>   
+</form>
+
+ @helper ImportExcel()
+{ 
+     <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i style="font-size: large;">&nbsp;Import Excel</i>
+                <a data-toggle="collapse" class="pull-right" href="#ImportExcel" onclick="onPanelToggle(this);" id="APconfigPanelHolder3">
+                    <i class="fa fa-chevron-down" id="ArrowIconApconfigCoverage3"></i>
+                </a>
+            </h3>
+        </div>@*endpanel heading*@
+         <div id="ImportExcel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class=" panel panel-default">
+                        <div id="panelbodyCoverageIformation" class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">                                     
+                                    <label>Dowload Template => <a href="~/Template/AirnetImportTemplate.xls" target="_blank">Excel Template</a></label>                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">  
+                                    @(Html.Kendo().Upload()
+                                    .Name("files")                                   
+                                    .Async(a => a
+                                            .Save("Save", "TAirnet")
+                                            .Remove("Remove", "TAirnet")
+                                            .AutoUpload(false)  
+                                                                                                                    
+                                          )
+                                    .Events(events => events
+                                                //.Upload("selectfile") 
+                                                .Select("onSelectUpload")    
+                                                .Success("onSuccess")                                                
+                                                .Error("onError")   
+                                                                                       
+                                                                            
+                                            )
+                                   
+                                    
+                                    .Multiple(false)
+                                    )
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">  
+                                     @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.AWCexportlist>()
+                                    .Name("AirNetWirelessImportExcellistModel")
+                                    .ToolBar(toolbar => toolbar.Template("" +"<div><span class='i-f2'>Total Record: </span><span class='i-f1' id='Totalrecord'> 0 </span></div>"))
+                                    
+                                    .Columns(columns =>
+                                    {
+                                        //columns.Bound(p => p.AP_ID).Title("No.").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Base_L2).Title("Base L2").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Site_Name).Title("Site Name").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Tumbon).Title("Sub district").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Aumphur).Title("District").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Province).Title("Province").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Zone).Title("Region").HtmlAttributes(new { style = "text-align:left;" });                                        
+                                        columns.Bound(p => p.Lat).Title("Latitude").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Lon).Title("Longtitude").HtmlAttributes(new { style = "text-align:left;" });
+
+                                        //columns.Bound(p => p.Base_L2).Title("Tower Type").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Site_Name).Title("Tower Height").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Tumbon).Title("VLAN").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Aumphur).Title("Subnet Mask 26").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Province).Title("Gateway").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Zone).Title("Comment").HtmlAttributes(new { style = "text-align:left;" });   
+                                        
+                                        columns.Bound(p => p.AP_Name).Title("AP Name").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Sector).Title("Sector").HtmlAttributes(new { style = "text-align:left;" });
+
+                                        //columns.Bound(p => p.Base_L2).Title("IP Address").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Site_Name).Title("Status").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Tumbon).Title("Implement Phase").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Aumphur).Title("Implement date").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Province).Title("On service date").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Zone).Title("PO Number").HtmlAttributes(new { style = "text-align:left;" });
+
+                                        //columns.Bound(p => p.AP_Name).Title("AP Company").HtmlAttributes(new { style = "text-align:left;" });
+                                        //columns.Bound(p => p.Sector).Title("AP Lot").HtmlAttributes(new { style = "text-align:left;" });
+                                
+                                       
+
+                                    })               
+                                    .HtmlAttributes(new { style = "height: 380px;" })                   
+                                    .Pageable(pageable => pageable
+                                    .PageSizes(true)
+                                    .Numeric(true)
+                                    )
+                                    .Scrollable()
+                                    .Filterable()                                    
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .PageSize(20)                                
+                                        .Read(read => read.Action("Gettogrid", "TAirnet"))
+
+                                        )
+                                     )
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+     </div>
+    <label id="tempsize" class="i-hidden"></label>
+}
+
+
+ <script>
+     $(document).ready(function () {
+         //$("#Airimportexcel").hide();  
+         $("#Totalrecord").text(0);
+         var grid = $("#AirNetWirelessImportExcellistModel").data("kendoGrid");
+         grid.dataSource.read();
+         var count = grid.dataSource.total();     
+         if (count < 1) {
+             $("#importsave").hide();
+             $("#importcancel").hide();
+         }
+        
+         
+        
+
+     });     
+     function _addnew()
+     {
+         $.ajax({
+             url: '/TAirnet/Sendpackage',
+             data: {},
+             dataType: "json",
+             type: 'POST',
+             success: function (response) {
+
+                 if (response) {
+                     if (response == true) {
+                         $.ajax({
+                             url: '/TAirnet/clearSession',
+                             data: {},
+                             dataType: "json",
+                             type: 'POST',
+                             success: function (response) {
+
+                                 if (response = true) {
+
+                                     //alert("in");
+                                 }
+                                 else {
+                                 }
+                             },
+                             failure: function (msg) {
+                             }
+                         });
+                         $(".k-upload-files.k-reset").find("li").remove();
+                         $("#Totalrecord").text(0);
+                         $("#importsave").hide();
+                         $("#importcancel").hide();
+                         var grid = $("#AirNetWirelessImportExcellistModel").data("kendoGrid");
+                         grid.dataSource.read();
+                         showFeedback("success", "Wait result from Email");
+                     }
+                     else {
+                         showFeedback("error", response);
+                     }
+
+                 }
+                 else {
+                 }
+             },
+             failure: function (msg) {
+             }
+         });
+     }
+     function _Cancel()
+     {
+         
+         $.ajax({
+             url: '/TAirnet/clearSession',
+             data: {},
+             dataType: "json",
+             type: 'POST',
+             success: function (response) {
+
+                 if (response = true) {
+                     
+                     //alert("in");
+                 }
+                 else {
+                 }
+             },
+             failure: function (msg) {
+             }
+         });
+         $(".k-upload-files.k-reset").find("li").remove();
+         $("#Totalrecord").text(0);
+         $("#importsave").hide();
+         $("#importcancel").hide();
+         var grid = $("#AirNetWirelessImportExcellistModel").data("kendoGrid");
+         grid.dataSource.read();
+     }
+     function onSelectUpload(e)
+     {
+         $(".k-upload-files.k-reset").find("li").remove();
+         $.ajax({
+             url: '/TAirnet/clearSession',
+             data: {},
+             dataType: "json",
+             type: 'POST',
+             success: function (response) {
+
+                 if (response = true) {
+
+                    
+                 }
+                 else {
+                    
+                 }
+             },
+             failure: function (msg) {
+             }
+         });
+         var grid = $("#AirNetWirelessImportExcellistModel").data("kendoGrid");
+         grid.dataSource.read();
+
+     }
+     function onSuccess(e) {
+         
+         if (e.response.status == undefined) {             
+             $.ajax({
+                 url: '/TAirnet/clearSession',
+                 data: {},
+                 dataType: "json",
+                 type: 'POST',
+                 success: function (response) {
+
+                     if (response = true) {
+
+
+                     }
+                     else {
+                     }
+                 },
+                 failure: function (msg) {
+                 }
+             });
+             $("#Totalrecord").text(0);
+             var grid = $("#AirNetWirelessImportExcellistModel").data("kendoGrid");
+             grid.dataSource.read();
+             $("#importsave").hide();
+             $("#importcancel").hide();
+             //showFeedback("warning", "please delete");
+         }
+         else {
+             if (!e.response.status) {
+
+                 //$.warning(e.response.message);
+                 $(".k-upload-files.k-reset").find("li").remove();
+                 showFeedback("warning", e.response.message);
+                 $("#importsave").hide();
+                 $("#importcancel").hide();
+                 //alert(e.response.message);
+                 //debugger
+                 //var filename = e.response.filename;
+                 //var id_upload = this.element.attr("id");
+
+                 //$("#grid_" + id_upload).find("li").find("div").each(function (index, e) {
+                 //    //debugger
+                 //    if ($(e).attr("filename") == filename) {
+                 //        $(e).parent().remove();
+                 //    }
+                 //});
+                 //$("#grid_" + id_upload).find("strong").remove();
+
+             }
+             else {
+
+                 $.ajax({
+                     url: '/TAirnet/total',
+                     data: {},
+                     dataType: "json",
+                     type: 'POST',
+                     success: function (response) {
+
+                         if (response) {
+                             $("#Totalrecord").text(response.ttr);
+
+                         }
+                         else {
+                         }
+                     },
+                     failure: function (msg) {
+                     }
+                 });                
+                 var grid = $("#AirNetWirelessImportExcellistModel").data("kendoGrid");
+                 grid.dataSource.read();
+                 $("#importsave").show();
+                 $("#importcancel").show();
+                 showFeedback("success", "Upload Completed");
+
+             }
+         }
+
+     }
+     function onError(e) {
+         
+     }
+     
+    
+    
+     function post(path, params, method) {
+
+         method = method || "post"; // Set method to post by default if not specified.
+
+         // The rest of this code assumes you are not using a library.
+         // It can be made less wordy if you use one.
+         var form = document.createElement("form");
+         form.setAttribute("method", method);
+         form.setAttribute("action", path);
+
+         for (var key in params) {
+             if (params.hasOwnProperty(key)) {
+                 var hiddenField = document.createElement("input");
+                 hiddenField.setAttribute("type", "hidden");
+                 hiddenField.setAttribute("name", key);
+                 hiddenField.setAttribute("value", params[key]);
+
+                 form.appendChild(hiddenField);
+             }
+         }
+
+         document.body.appendChild(form);
+         form.submit();
+     }
+     function linkback() {
+         post('/AirNetSearch/Index', { apname: '@Model.oldmodelpage1.APname', province: '@Model.oldmodelpage1.province', tumbon: '@Model.oldmodelpage1.tumbon', aumphur: '@Model.oldmodelpage1.aumphur', region: '@Model.oldmodelpage1.region' });
+     }
+     //function GetFileSize(fileid) {
+     //    try {
+     //        var fileSize = 0;
+     //        //for IE
+     //        if ($.browser.msie) {
+     //            //before making an object of ActiveXObject,
+     //            //please make sure ActiveX is enabled in your IE browser
+     //            var objFSO = new ActiveXObject("Scripting.FileSystemObject"); var filePath = $("#" + fileid)[0].value;
+     //            var objFile = objFSO.getFile(filePath);
+     //            var fileSize = objFile.size; //size in kb
+     //            fileSize = fileSize / 1048576; //size in mb
+     //        }
+     //            //for FF, Safari, Opeara and Others
+     //        else {
+     //            fileSize = $("#" + fileid)[0].files[0].size //size in kb
+     //            fileSize = fileSize / 1048576; //size in mb
+     //        }
+     //        alert("Uploaded File Size is" + fileSize + "MB");
+     //    }
+     //    catch (e) {
+     //        alert("Error is :" + e);
+     //    }
+     //}
+
+     function selectfile(e) {         
+        
+        // var files = e.files;  
+        // var pop = false;
+        // if( files.length > 1 ) {
+        //     alert("Maximum 1 files can be uploaded at a time.");
+        //     e.preventDefault();
+        //     return false;
+        // }
+
+
+        // if (files[0].extension.toLowerCase() != '.xlsx' && files[0].extension.toLowerCase() != '.xls') {
+        //     alert("Executable files can not be uploaded.");
+        //     e.preventDefault();
+        //     return false;
+        // }
+         
+        // var checkie = msieversion();
+        // if (checkie) {
+        //     var ver = getInternetExplorerVersion();
+        //     if (ver <= 9) {
+        //         $.ajax({
+        //             url: '/TAirnet/Getsize',
+        //             data: { filename: files[0].name },
+        //             dataType: "json",
+        //             type: 'POST',
+        //             success: function (response) {
+
+        //                 if (response) {
+                             
+        //                     $("#tempsize").text(response.size);
+        //                     alert($("#tempsize").text());
+        //                     var aw = $("#tempsize").text();
+        //                     if (parseInt(aw) > 0) {
+        //                         alert("File size more than 10MB can not be uploaded.");
+        //                         pop = true;
+        //                     }
+        //                 }
+                         
+        //             }                     
+        //         });
+        //         if (pop = true) { e.preventDefault(); return false; }
+                 
+        //     }
+        //     else {
+        //         for (var fileCntr = 0; fileCntr < files.length; fileCntr++) {
+        //             if (files[fileCntr].size > 10000000) {
+        //                 alert("File size more than 10MB can not be uploaded.");
+        //                 e.preventDefault();
+        //                 return false;
+        //             }
+        //         }
+        //     }
+        // }
+         
+        //for (var fileCntr = 0; fileCntr < files.length; fileCntr++) {
+        //    if (files[fileCntr].size > 10000000) {
+        //        alert("File size more than 10MB can not be uploaded.");
+        //        e.preventDefault();
+        //        return false;
+        //    }
+        //}        
+        
+         
+     }
+     function getInternetExplorerVersion()
+         // Returns the version of Internet Explorer or a -1
+         // (indicating the use of another browser).
+     {
+         var rv = -1; // Return value assumes failure.
+         if (navigator.appName == 'Microsoft Internet Explorer') {
+             var ua = navigator.userAgent;
+             var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+             if (re.exec(ua) != null)
+                 rv = parseFloat(RegExp.$1);
+         }
+         return rv;
+     }
+
+     function msieversion() {
+         var ua = window.navigator.userAgent;
+         var msie = ua.indexOf("MSIE ");
+
+         if (msie > 0)      // If Internet Explorer, return version number
+             return true
+         else                 // If another browser, return 0
+             return false;        
+     }
+ </script>

@@ -1,0 +1,800 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ReportInstallationCostbyOrderModel
+@{
+    string L_RECAL = "RECAL ตามหัวข้อที่กำหนด";
+    string L_FIBRENET_ID = "Fibrenet ID";
+    string L_EXISTING_RULE = "Existing Rule";
+    string L_NEW_RULE = "New Rule";
+    string L_TOTAL_PRICE = "Total Price";
+    string L_REMARK = "Remark";
+
+    string B_SAVE = "SAVE";
+    string B_CANCEL = "CANCEL";
+}
+
+
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+        <div class="GrFibreNetid" id="GrFibreNetid">
+            <label>@L_RECAL</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class=" col-sm-12 col-md-9">
+        <div id="cal_radio" class="form-inline">
+            <span id="radio1_wrapper">
+                <input type="radio" value="price" id="cal_radio1" class="cal_radio" name="cal_radio" onclick="SwitchPartial(this);"> ราคา (Rule Id)
+            </span>
+
+            <span id="radio2_wrapper">
+                <input type="radio" value="distance" id="cal_radio2" class="cal_radio" name="cal_radio" onclick="SwitchPartial(this);"> ระยะทาง (Distance)
+            </span>
+        </div>
+        <div class="i-fg-data-entry-validation" id="validatefor-ValidateCal_radio"></div>
+    </div>
+</div>
+
+<div id="contentToToggle">
+    <div class=" col-sm-12 col-md-3" style="margin-top:10px">
+        <label>Existing</label>
+        @*&nbsp;<label style="color:red;font-size:15px">*</label>*@
+    </div>
+    <div class=" col-sm-12 col-md-12">
+
+        <div id="SCMGridResult" class="row" style="width: 100%;">
+            @{
+                int counter = 1;
+            }
+            @*<style>
+                #SCMGridResult {
+                    display: flex;
+                    flex-wrap: wrap;
+                    overflow: hidden;
+                }
+
+                .k-grid-content {
+                    overflow-x: hidden !important;
+                }
+            </style>*@
+            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ExistCurReportInstallationCostbyOrderListModel>()
+                                                        .Name("gridRecalDistanceDetail")
+                                                        .Columns(columns =>
+                                                        {
+
+
+                                                            columns.Bound(p => p.LOOKUP_NAME).Title("Lookup Name").HtmlAttributes(new { style = "text-align:left;" }).Width(170);
+                                                            columns.Bound(p => p.TYPE).Title("Type").HtmlAttributes(new { style = "text-align:left;" }).Width(170);
+                                                            columns.Bound(p => p.LOOKUP_ID).Title("Lookup ID").HtmlAttributes(new { style = "text-align:left;" }).Width(170);
+                                                            columns.Bound(p => p.PARAMETER_VALUE).Title("Price").HtmlAttributes(new { style = "text-align:left;" }).Width(170)
+                                                                     //.FooterTemplate("Total price: #= kendo.toString(sum, 'n2') #") // Display the total price in the footer
+                                                                     .FooterTemplate("") // Display the total price in the footer
+                                                                                                                                    //.ClientFooterTemplate("Total price: #= kendo.toString(sum, 'n2') #"); // For client-side operations;
+                                                                     .ClientFooterTemplate(""); // For client-side operations;
+
+                                                        })
+                                                            //  .ToolBar(toolbar => toolbar.Template("<div class='pull-right'><a onclick='ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp; Export To Excel </a></div>"))
+                                                            .Scrollable(scrollable => scrollable.Height("auto"))
+                                                              .Resizable(resize => resize.Columns(true))
+                                                              //.Pageable(pageable => pageable.Numeric(false).PageSizes(new int[] { 20, 50, 100 }))
+                                                              .Pageable(pageable => pageable.Enabled(false))
+                                                              .AutoBind(false)
+                                                              .DataSource(dataSource => dataSource
+                                                              .Ajax()
+                                                              .PageSize(20)
+                                                              .Aggregates(aggregates =>
+                                                              {
+                                                                  aggregates.Add(p => p.PARAMETER_VALUE).Sum(); // Aggregate sum for PRICE column
+                                                              })
+                                                              .Read(read => read.Action("EditRecalReportInstallationCostbyOrderList", "ReportInstallationCostbyOrder").Data("bindingValueRecalExsiting"))
+                                                               )
+                            .Events(e => e.DataBound("onFAPOPopUpViewDataBound"))
+                            //   .Events(e => e.DataBound("onGridDataBound"))
+                            )
+        </div>
+        <div id='sumDisplay' style='text-align:right; margin-top: 20px;margin-right:15px'><strong>Total Price: <span id='totalPriceValue'>0</span></strong></div>
+
+
+    </div>
+    @Html.TextBoxFor(t => t.ACCESS_NO, new { @readonly = "readonly", @id = "FIBRENET_ID", @name = "FIBRENET_ID", @class = "k-textbox form-control", style = "display: none;" })
+    <div style="margin-top: 20px;">
+        @*<input type="text" class="k-textbox form-control" name="FIBRENET_ID_SHOW" id="FIBRENET_ID_SHOW" value="" readonly />*@
+        @*<div class="i-fg-data-entry-validation" id="validatefor-ValidateFibrenetid"></div>*@
+        <input id="OrderNoForRecal" name="OrderNoForRecal" type="hidden" />
+        <input id="OrderNoSffForRecal" name="OrderNoSffForRecal" type="hidden" />
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="GrExistingRule" id="GrExistingRule">
+                <div class="col-sm-12 col-md-12">
+                    <div class="col-sm-12 col-md-12" style="margin-top: 20px;">
+                        <label>New</label>
+                    </div>
+                    <div class="col-6 col-sm-2" style="width: 10%; display: flex; align-items: center;">
+                        <label>Lookup Name</label><label style="color:red;font-size:15px; margin-left: 5px;">*</label>
+                    </div>
+                    <div class="col-6 col-sm-3 " style="padding-left: 0;">
+                        @*@(Html.Kendo().DropDownList()
+                                .Name("NEW_RULE")
+                                .Filter("contains")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend d-inline-block", style = "width: auto;" }) // Removed ml-2
+                                .SelectedIndex(0)
+                                .Events(e => e.Change("FAPOChangeDropDown"))
+                            )*@
+                        @(Html.Kendo().DropDownList()
+                            .Name("NEW_LOOKUP")
+                            .Filter("contains") // Allows filtering of items in the dropdown
+                            .HtmlAttributes(new { @class = "form-control i-form-control-extend d-inline-block", style = "width: auto;" })
+                            .SelectedIndex(0) // Sets the selected index (0 means the first item)
+                            .Events(e => e.Change("onLookupChange")) // Binds the change event to the JavaScript function
+                            .DataTextField("Text") // The field used for the text in the dropdown items
+                            .DataValueField("Value") // The field used for the value in the dropdown items
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    // This action should return the data for the dropdown
+                                    read.Action("SelectLookUp", "ReportInstallationCostbyOrder").Data("bindingValueRecalExsiting2");
+                                });
+                            })
+                        )
+                        <input type="hidden" id="selectedValue" name="selectedValue" />
+                        <input type="hidden" id="selectedText" name="selectedText" />
+                    </div>
+                    <div class="col-6 col-sm-2" style="width: 9%;">
+                        <label>Ontop Lookup</label>
+                    </div>
+                    <div class="col-6 col-sm-5" style="padding-left: 0;">
+                        @*@Html.TextArea("ONTOP_LOOKUP", new { maxlength = 500, @rows = 3, @style = "resize:none; width:auto;", @class = "k-textbox form-control", @id = "REMARK_RE-CAL", @disabled = "disabled" })*@
+                        @*@Html.TextArea("ONTOP_LOOKUP", new { maxlength = 500, @style = "resize:none; width:auto;", @class = "form-control i-form-control-extend d-inline-block", @id = "ONTOP_LOOKUP_RECAL", @disabled = "disabled" })*@
+                        @Html.TextArea("ONTOP_LOOKUP", new { maxlength = 500, @style = "resize:none; width:100;", @class = "form-control i-form-control-extend d-inline-block", @id = "ONTOP_LOOKUP_RECAL", @disabled = "disabled" })
+                    </div>
+
+                </div>
+                <div class="col-sm-12 col-md-12">
+                    <div class="i-fg-data-entry-validation" id="validatefor-ValidateRemark-Lookup_Dropdown"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dynamicGridsContainer" style="padding-top:10px;"></div>
+<div class="row REMARKPOPUP">
+    <div class=" col-sm-12 col-md-12">
+        <label>@L_REMARK</label>
+        &nbsp;<label style="color:red;font-size:15px">*</label>
+        @*@Html.TextBoxFor(t => t.REMARK, new { @id = "REMARK_RE-CAL", @Name = "REMARK_RE-CAL", maxlength = 500, @class = "k-textbox form-control" })*@
+        @Html.TextArea("REMARK_RE-CAL", new { maxlength = 500, @rows = 3, @style = "resize:none; width: 500px;", @class = "k-textbox form-control", @id = "REMARK_RE-CAL" })
+        <div class="i-fg-data-entry-validation" id="validatefor-ValidateRemark-Recal"></div>
+    </div>
+
+
+</div>
+<div class="row">
+    <br />
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-3 i-text-align-right">
+        <a class="btn btn-info" id="saveFapoRecalDistance" onclick="FAPOConfirmRecalDistance();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+        <a class="btn btn-info" id="saveFapoRecalRuleID" onclick="FAPOConfirmRecalRuleId();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+        <a class="btn btn-info" id="saveAllChkFapoRecalDistance" onclick="CheckBoxAllFAPOConfirmRecalDistance();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+    </div>
+    <div class="col-sm-6 col-md-3 i-text-align-left">
+        <a class="btn btn-info" onclick="CancelEditFAPORecalDistanceConfig();"><i class="fa fa-times"></i>&nbsp;&nbsp;@B_CANCEL</a>
+    </div>
+</div>
+<input type="hidden" id="lookupNames" value='@Html.Raw(ViewBag.LookupNamesJson)' />
+<script>
+    let totalPrice = 0;
+    function CancelEditFAPORecalDistanceConfig() {
+
+        contentToToggle.style.display = "none";
+        $("#EditConfigPopupFOA").data("kendoWindow").close();
+        //$("#NEW_RULE").data('kendoDropDownList').select(0);
+        $("#ONTOP_LOOKUP_RECAL").text("");
+
+
+        var dropdown = $("#NEW_LOOKUP").data("kendoDropDownList");
+        if (dropdown) {
+            dropdown.select(0); // Selects the first option
+            //dropdown.trigger("change"); // Triggers the change event to ensure the onLookupChange function is called
+        }
+        $("#TOTAL_PRICE").val("");
+        var container = $("#dynamicGridsContainer");
+        container.empty();
+        $(".i-fg-data-entry-validation").each(function () {
+            $(this).html("");  // Clear the content of each validation message container
+        });
+        //$("#ddlreasonother").val("");
+        //$("#_OtherReason").attr("style", "display:none");
+    }
+    //$("#VALIDATE_DIS").keyup(function () {
+    //    CheckKeyUps("VALIDATE_DIS", "[0-9.]");
+
+    //});
+    $(document).ready(function () {
+
+        //  $('#ddlreasonother').attr("disabled", true);
+        // $("#ddlreasonother").val("");
+        //  $("#_OtherReason").attr("style", "display:none");
+        //  alert($("#ddlReason").val());
+        //k-window-actions
+
+        var grid = $("#gridRecalDistanceDetail").data("kendoGrid");
+        $("#validatefor-NewRule").html("");
+        $("#REMARK_RE-CAL").val("");
+        $("#TOTAL_PRICE").val("");
+
+
+        //LoadRuleID();
+        //$("#NEW_RULE").data('kendoDropDownList').select(0);
+        //var dropdownlist = $("#NEW_RULE").data("kendoDropDownList");
+        //dropdownlist.bind("change", FAPOChangeDropDown);
+
+        /////////////////////
+
+    });
+
+    function FAPOChangeDropDown(e) {
+
+    }
+
+    function LoadRuleID() {
+        $.ajax({
+            cache: false,
+            type: "GET",
+            async: false,
+            url: "/ReportInstallationCostbyOrder/GetRuleId",
+            dataType: "json",
+            success: function (data) {
+                //Add : virtual valueMapper ที่ data มากกว่า 500
+                //data : 11/02/2564
+                if (data.length > 500) {
+                    //#region data > 500 use virtual
+                    try {
+                        $("#NEW_RULE").data({});
+                        $("#NEW_RULE").kendoDropDownList({
+                            dataTextField: "ruleid",
+                            dataValueField: "ruleid",
+                            filter: "contains",
+                            virtual: {
+                                itemHeight: 26,
+                                valueMapper: function (options) {
+                                    var values = convertValues(options.value);
+                                    var indices = [];
+                                    if (values && values.length > 0) {
+                                        for (var j = 0; j < data.length; j++) {
+                                            var rule = data[j];
+                                            if (values.indexOf(rule.ruleid) > -1) {
+                                                indices.push(j);
+                                            }
+                                        }
+                                    }
+                                    options.success(indices);
+                                }
+                            },
+                            height: 520,
+                            dataSource: {
+                                data: data,
+                                schema: {
+                                    model: {
+                                        fields: {
+                                            ruleid: { type: "string" },
+                                            rule_name: { type: "string" }
+                                        }
+                                    }
+                                },
+                                pageSize: 80
+                            }
+
+                        });
+                    } catch (ex) {
+                        console.log(ex);
+                    }
+
+                    //#endregion data > 500 use virtual
+                } else {
+                    //#region data <= 500 not use virtual
+
+                    try {
+                        $("#NEW_RULE").data({});
+                        $("#NEW_RULE").kendoDropDownList({
+                            dataTextField: "ruleid",
+                            dataValueField: "ruleid",
+                            filter: "contains",
+                            height: 200,
+                            dataSource: {
+                                data: data,
+                                pageSize: 80
+                            }
+                        });
+                    } catch (ex) {
+                        console.log(ex);
+                    }
+
+                    //#endregion data <= 500 not use virtual
+
+                }
+
+                var widget = $("#NEW_RULE").data("kendoDropDownList");
+
+                widget.ul.parent().on("wheel", function (e) {
+                    var container = this;
+
+                    if ((container.scrollTop == 0 && e.originalEvent.deltaY < 0) ||
+                        (container.scrollTop == container.scrollHeight - container.offsetHeight &&
+                            e.originalEvent.deltaY > 0)) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                });
+            }
+        });
+    }
+    //function FAPOChangeDropDown() {
+    //    //var ddlreason = $("#ddlReason").val();
+    //    ////alert(ddlreason);
+    //    //if (ddlreason == "อื่นๆ") {
+
+    //    //  $('#ddlreasonother').attr("visibled", true);
+    //    $("#_OtherReason").attr("style", "display:normal");
+    //}
+    //else {
+    //    $("#_OtherReason").val("");
+    //    $("#_OtherReason").attr("style", "display:none");
+    //}
+
+
+    //}
+    function ValidationDateFAPOStatus() {
+        if ($("#FAPOWorkFlowStatus").val() == '') {
+            $("#validatefor-FAPOWorkFlowStatus").html(ValidationIcon() + "This field is required.");
+            chk = false;
+
+        }
+        else {
+            $("#validatefor-FAPOWorkFlowStatus").html("");
+        }
+    }
+    function ValidationDateRecalALLValue() {
+
+        var chk = ValidationProcessing("dateselect");
+
+        if (chk) //check blank value
+        {
+            /// alert("ValidationBlankValue");
+            if ($("#NEW_LOOKUP").val() == '' || $("#NEW_LOOKUP").val() == 'SELECT' || $("#NEW_LOOKUP").val() == 0) {
+                $("#validatefor-ValidateRemark-Lookup_Dropdown").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+                $("#validatefor-ValidateRemark-Lookup_Dropdown").html("");
+            }
+        }
+        return chk;
+    }
+    function ValidationDateRecalValue() {
+        $("#validatefor-ValidateFibrenetid").html("");
+        $("#validatefor-ValidateCal_radio").html("");
+        //    $("#validatefor-ddlReason").html("");
+        var chk = ValidationProcessing("dateselect");
+        //  alert("SCMValidation");
+        if (chk) //check blank value
+        {
+            /// alert("ValidationBlankValue");
+            if ($("#NEW_LOOKUP").val() == '' || $("#NEW_LOOKUP").val() == 'ALL' || $("#NEW_LOOKUP").val() == 0) {
+                $("#validatefor-ValidateRemark-Lookup_Dropdown").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-ValidateRemark-Lookup_Dropdown").html("");
+            }
+
+            //var Cal_Radio_Checked = $('input[name="cal_radio"]:checked').val();
+            var Cal_Radio_Checked = $('.cal_radio:checked').val();
+            if (Cal_Radio_Checked == null) {
+                $("#validatefor-ValidateCal_radio").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-ValidateCal_radio").html("");
+            }
+
+
+            $(".k-grid").each(function (index) {
+                var radioSelector = '.radio_grid_' + (index + 1);
+                if ($(radioSelector).length > 0) { // Check if the grid has radio buttons
+                    var Cal_Radio_Checked = $(radioSelector + ':checked').val();
+
+                    if (!Cal_Radio_Checked) {
+                        $("#validatefor-ValidateCal_radio_dynamicGrid" + (index + 1)).html(ValidationIcon() + "This field is required.");
+                        chk = false;
+                    } else {
+                        $("#validatefor-ValidateCal_radio_dynamicGrid" + (index + 1)).html("");
+                    }
+                }
+            });
+
+            var remarkValue = $("#REMARK_RE-CAL").val().trim();
+            if (remarkValue === "") {
+                $("#validatefor-ValidateRemark-Recal").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-ValidateRemark-Recal").html("");
+            }
+
+            if ($("#FIBRENET_ID").val() == '') {
+                $("#validatefor-ValidateFibrenetid").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-ValidateFibrenetid").html("");
+            }
+
+        }
+        return chk;
+    }
+    var AccessList = function () {
+        ACCESS_NUMBER = "";
+        ORDER_NO = "";
+        NEW_RULE_ID = "";
+        REMARK = "";
+        FLAG_RECAL = "";
+        DISTANCE = "";
+        REASON = "";
+    }
+
+    function FAPOConfirmRecalRuleId(checked) {
+        $("#chkall").val("False");
+
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateRecalValue();
+
+        if (chk) {
+            //FAPO Value
+            //var new_ruid = $("#NEW_RULE").val();
+            var existing_rule = $("#EXISTING_RULE").val();
+            var remark = $("#REMARK_RE-CAL").val();
+            var dbk_ORD_NO = $("#OrderNoForRecal").val();
+            var dbk_ORD_NO_SFF = $("#OrderNoSffForRecal").val();
+            var AccNO = $("#FIBRENET_ID").val();
+            var totalPriceText = $('#totalPrice').text();
+            //--------------------
+            var res = dbk_ORD_NO.split("_");
+            var resSFF = dbk_ORD_NO_SFF.split("_");
+
+
+            var allLookupIds = [];
+            $(".k-grid").each(function (index) {
+                var grid = $(this);
+                var selectedRadio = grid.find('input[type="radio"]:checked');
+
+                if (selectedRadio.length > 0) {
+                    var row = selectedRadio.closest("tr");
+                    var lookupIdCell = row.find('td[data-field="LOOKUP_ID"], td:eq(1)');
+                    if (lookupIdCell.length > 0) {
+                        var lookupId = lookupIdCell.text().trim();
+                        if (lookupId) {
+                            allLookupIds.push(lookupId);
+                        }
+                    } else {
+                        console.log("LOOKUP_ID cell not found in the row.");
+                    }
+                } else {
+                    console.log("No radio button selected in grid " + (index + 1));
+                }
+            });
+            var resultString = allLookupIds.join('|');
+            var lookupIdArray = allLookupIds; // Keep the array for further use
+            var resultString_lookupID = lookupIdArray.length > 0 ? lookupIdArray[0] : ''; // First LOOKUP_ID
+            var resultString_ontop_lookupID = lookupIdArray.slice(1).join('|'); // Remaining LOOKUP_IDs
+
+            console.log("First LOOKUP_ID:", resultString_lookupID); // Output the first LOOKUP_ID
+            console.log("Remaining LOOKUP_IDs:", resultString_ontop_lookupID);
+
+            // ADD LIST MODEL
+            var AccessListModel = new AccessList();
+            AccessListModel.ACCESS_NUMBER = $("#FIBRENET_ID").val();
+            AccessListModel.ORDER_NO = res[0];
+            AccessListModel.FLAG_RECAL = "RECAL";
+            AccessListModel.LOOKUP_ID = resultString_lookupID;
+            AccessListModel.ONTOP_LOOKUP_ID = resultString_ontop_lookupID;
+            AccessListModel.RECAL_TOTAL_COST = totalPriceText;
+            AccessListModel.DISTANCE = "0";
+            AccessListModel.REASON = "";
+            AccessListModel.REMARK = remark;
+            //AccessListModel.NEW_RULE_ID = new_ruid;
+            idsToSend.push(AccessListModel);
+
+            index++;
+            data = JSON.stringify({
+                'ReportInstallationRecalList': idsToSend, "AccNO": AccNO, 'remark': remark
+            });
+
+
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json',
+                url: "/ReportInstallationCostbyOrder/RecalDistanceByRuleId",
+                data: data,
+                async: true,
+                dataType: "json",
+                success: function (response) {
+                    if (response.Code === "0") {
+                        $("#REMARK_RE-CAL").val("");
+                        $("#FIBRENET_ID").val("");
+                        $("#EditConfigPopupFOA").data("kendoWindow").close();
+
+                        showFeedback("success", response.message, "System Information");
+                    }
+                    else {
+                        $("#EditConfigPopupFOA").data("kendoWindow").close();
+                        showFeedback("error", response.message, "System Information");
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+
+            $("#FAPOView").data("kendoGrid").dataSource.read();
+        }
+
+    }
+
+    function FAPOConfirmRecalDistance(checked) {
+        $("#chkall").val("False");
+
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateRecalValue();
+
+        if (chk) {
+            //FAPO Value
+            //var new_ruid = $("#NEW_RULE").val();
+            var existing_rule = $("#EXISTING_RULE").val();
+            var remark = $("#REMARK_RE-CAL").val();
+            var dbk_ORD_NO = $("#OrderNoForRecal").val();
+            var AccNO = $("#FIBRENET_ID").val();
+            //--------------------
+            var res = dbk_ORD_NO.split("_");
+
+            // ADD LIST MODEL
+            var AccessListModel = new AccessList();
+            AccessListModel.ACCESS_NUMBER = $("#FIBRENET_ID").val();
+            //AccessListModel.NEW_RULE_ID = new_ruid;
+            AccessListModel.REMARK = remark;
+            AccessListModel.ORDER_NO = res[0];
+            AccessListModel.FLAG_RECAL = "RECAL";
+            AccessListModel.DISTANCE = "";
+            AccessListModel.REASON = "";
+            idsToSend.push(AccessListModel);
+
+            index++;
+            data = JSON.stringify({
+                'LastMileRecalList': idsToSend, "AccNO": AccNO, 'new_ruid': new_ruid, 'remark': remark
+            });
+
+
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json',
+                url: "/ReportInstallationCostbyOrder/RecalDistanceByOrder",
+                data: data,
+                async: true,
+                dataType: "json",
+                success: function (response) {
+                    if (response.Code === "0") {
+                        $("#REMARK_RE-CAL").val("");
+                        $("#FIBRENET_ID").val("");
+                        $("#EditConfigPopupFOA").data("kendoWindow").close();
+                        showFeedback("success", response.message, "System Information");
+                    }
+                    else {
+                        $("#EditConfigPopupFOA").data("kendoWindow").close();
+                        showFeedback("error", response.message, "System Information");
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+            $("#FAPOView").data("kendoGrid").dataSource.read();
+        }
+
+    }
+    function CheckBoxAllFAPOConfirmRecalDistance(checked) {
+        Loading();
+        //$("#chk").val("False");
+        //$("#chkall").val("False");
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateRecalALLValue();
+
+        if (chk) {
+
+            var AccNO = $("#accNo").val();
+            //FAPO Value
+            var status = $("#ddlFAPOWorkFlowStatus").val();
+
+
+            var remark = $("#REMARK_RE-CAL").val();
+            //var NEW_RULE = $("#NEW_RULE").val();
+
+
+            data = JSON.stringify({
+                'LastMileRecalList': checked, 'AccNO': AccNO, 'Status': status, 'remark': remark
+            });
+            if (checked != null) {
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/ReportInstallationCostbyOrder/RecalAllByOrder",
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response.Code == "0") {
+
+                            $("#REMARK_RE-CAL").val("");
+                            $("#EditConfigPopupFOA").data("kendoWindow").close();
+                            showFeedback("success", response.message, "System Information");
+                        }
+                        else {
+                            $("#EditConfigPopupFOA").data("kendoWindow").close();
+                            showFeedback("error", response.message, "System Information");
+                        }
+                        var grid = getGridName();
+                        grid.dataSource.read();
+                    },
+                    failure: function (msg) {
+                    }
+                });
+                $("#FAPOView").data("kendoGrid").dataSource.read();
+
+
+            }
+        }
+        Loading(0);
+    }
+
+    function convertValues(value) {
+        var data = [];
+        value = $.isArray(value) ? value : [value];
+        for (var idx = 0; idx < value.length; idx++) {
+            data.push(value[idx]);
+        }
+        return data;
+    }
+
+
+    function onFAPOPopUpViewDataBound() {
+        var grid = $("#gridRecalDistanceDetail").data("kendoGrid");
+        var dataItems = grid.dataSource.view();
+        var totalValue = 0;
+        dataItems.forEach(function (item) {
+            totalValue += parseFloat(item.PARAMETER_VALUE) || 0; // Ensure it's a number
+        });
+        $("#totalPriceValue").text(kendo.toString(totalValue, 'n2'));
+
+    }
+
+
+
+    async function onLookupChange(e) {
+        var dropdownlist = this;
+        var selectedValue = dropdownlist.value();
+        var selectedText = dropdownlist.text();
+        var countIndex_res = "";
+        var GetlookupNames = [];
+        await $.ajax({
+            url: '/ReportInstallationCostbyOrder/GetSelectedLookup',
+            type: 'POST',
+            data: {
+                value: selectedValue,
+                p_LOOKUP_NAME: selectedText 
+            },
+            success: function (response) {
+                countIndex_res = response.countIndex;
+                GetlookupNames = response.lookupNames;
+
+            }
+        });
+
+
+
+        var selectedValue = this.value();
+        var container = $("#dynamicGridsContainer");
+        var contentToToggle = $("#contentToToggle");
+        var Ontop_lookupnameDisplay = "";
+
+        container.empty();
+        contentToToggle.find("#totalPriceContainer").remove
+        //var lookupNames = JSON.parse($('#lookupNames').val());
+        let countIndex = Number(countIndex_res);
+        //let countIndex = Number(selectedValue);
+        for (var i = 1; i <= countIndex; i++) {
+            await $.ajax({
+                url: '/ReportInstallationCostbyOrder/GetPartialView',
+                type: 'GET',
+                data: { index: i },
+                success: function (response) {
+
+                var gridId = "dynamicGrid" + i;
+                select = 3
+
+
+
+                if (i != 1 && i < countIndex) {
+                    var label = "<div class='col-6 col - sm - 2' style='width: 10 %; display: flex; align - items: center; padding-bottom: 5px;padding-top: 10px;'><label>Ontop_lookupname :</label><label style='color: red; font - size: 15px; margin - left: 5px; '>*</label><label style='margin-left: 5px;'>" + GetlookupNames[i-1] + "</label></div >";
+                    Ontop_lookupnameDisplay += "" + GetlookupNames[i-1] + ", ";
+                    container.append(label);
+                }
+
+                if (i != 1 && i == countIndex) {
+                    var label = "<div class='col-6 col - sm - 2' style='width: 10 %; display: flex; align - items: center; padding-bottom: 5px;padding-top: 10px;'><label>Ontop_lookupname :</label><label style='color: red; font - size: 15px; margin - left: 5px; '>*</label><label style='margin-left: 5px;'>" + GetlookupNames[i-1] + "</label></div >";
+                    Ontop_lookupnameDisplay += "" + GetlookupNames[i-1];
+                    container.append(label);
+                }
+                var gridContainer = "<div id='" + gridId + "'></div>";
+                container.append(gridContainer);
+                $("#" + gridId).html(response);
+
+                $("#" + gridId).find(".k-grid").each(function () {
+                    var grid = $(this).data("kendoGrid");
+                    if (grid) {
+                        grid.refresh();
+                    } else {
+                        $(this).kendoGrid();
+                    }
+                });
+
+            },
+                error: function (xhr, status, error) {
+                    console.error("Error occurred:", error);
+                }
+
+            });
+
+
+        }
+        $("#ONTOP_LOOKUP_RECAL").text(Ontop_lookupnameDisplay)
+        if (container.find("#totalPriceContainer").length === 0) {
+            container.append("<div id='totalPriceContainer' style='text-align:right; margin-top: 20px;'><strong>Total Price: <span id='totalPrice'>0</span></strong></div>");
+        }
+
+    }
+
+
+    function updateTotalPrice() {
+        let totalPrice = 0;
+        $(".k-grid").each(function () {
+            const gridName = $(this).attr("id");
+            $("input[name='" + gridName + "_selectedRow']:checked").each(function () {
+
+                var price = parseFloat($(this).attr('data-price'));
+
+                if (!isNaN(price)) {
+                    totalPrice += price;
+
+                } else {
+
+                }
+            });
+        });
+
+        $("#totalPrice").text(totalPrice.toFixed(2));
+
+    }
+
+
+
+
+</script>

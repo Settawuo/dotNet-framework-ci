@@ -1,0 +1,344 @@
+﻿@using Kendo.Mvc.UI.Fluent
+@using WBBEntity.PanelModels.FBBWebConfigModels
+@{
+
+}
+
+<html>
+    <style>
+        .rowFormat {
+            margin-bottom: 15px;
+        }
+    </style>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+    </head>
+    <body>
+        <div class="page-header i-header-fit">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <h3 style="margin-top: 0">Configuration Auto Mail Report</h3>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="panel panel-success">            
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>Search</span>
+                            <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                        </h3>
+                    </div>
+                    <div id="SearchPanel" class="panel-collapse collapse in">
+                        <div class="panel-body" style="min-height: 135px;">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 rowFormat">
+                                    <label>Report Name</label>
+                                    @Html.TextBox("txtReportName", "", new { maxlength = 255, @class = "k-textbox form-control"})
+                                    <div class="i-fg-data-entry-validation" id="validatefor-txtFibreNetID"></div>
+                                </div>
+                                <div class="col-sm-6 col-md-6 rowFormat">
+                                    <label>Scheduler</label>
+                                    <div class="i-fg-data-entry">
+                                        @(Html.Kendo().DropDownList()
+                                              .Name("ddlScheduler")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataSource(source => source.Read(read => read.Action("GetScheduler", "ConfigurationAutoMailReport", new { type = "SEARCH" })))
+                                              )
+                                    </div>
+                                </div>
+                            </div> 
+                            <div id="row2" class="row i-gap-top-1">
+                                <div class="col-sm-6 col-md-6">                                      
+                                </div>
+                                <div class="col-sm-6 col-md-6 i-text-align-right">          
+                                    <a class="btn btn-default" onclick="Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                                    <a class="btn btn-info" onclick="Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Search</a>            
+                                </div>                                            
+                            </div>@*end row2*@
+              
+                        </div> @*end SearchPanel*@
+                    </div>  
+
+                </div>
+            </div>
+        </div>   
+        
+        <div class="row">
+            <div class="col-sm-6 col-md-6 i-text-align-left">          
+                <a class="btn btn-primary" onclick="AddReport_Click();"><i class="fa fa-plus fa-lg"></i>&nbsp;&nbsp;Add Report</a>            
+            </div>  
+        </div>
+        <p class="clearfix"></p>
+        
+        <div id="gridresult" class="row">
+            <div class="col-sm-12 col-md-12 " >
+                @(Html.Kendo().Grid<ConfigurationReportModel>()
+                      .Name("gridReportRpt")
+                      .Columns(columns =>
+                      {
+
+                          columns.Command(command => { command.Custom(" Edit").Click("Edit"); command.Custom(" Delete").Click("Delete"); }).Width(140);
+                          columns.Bound(p => p.REPORT_ID).Hidden(true);
+                          columns.Bound(p => p.REPORT_NAME).Title("Report Name").HtmlAttributes(new { style = "text-align:left;"}).Width(130);
+                          columns.Bound(p => p.STATUS_REPORT).Title("Status Report").HtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                          columns.Bound(p => p.SCHEDULER).Title("Scheduler").HtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                          columns.Bound(p => p.DAY_OF_WEEK).Title("Day of Week").HtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                          columns.Bound(p => p.LAST_DATE_SEND_MAIL).Title("Last Date Send Email").HtmlAttributes(new { style = "text-align:left;" }).Width(130);
+                          columns.Bound(p => p.EMAIL_STATUS).Title("Email Status").HtmlAttributes(new { style = "text-align:center;" }).Width(90);
+                          columns.Bound(p => p.MESSAGE_FAILED).Title("Message Failed").HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                          columns.Command(command => command.Custom(" Resend").Click("Resend")).Title("Resend").Width(90);
+
+                      })
+                      .Scrollable(scrollable => scrollable.Height("auto"))    
+                     
+                      .Pageable(pageable => pageable                    
+                          //.PageSizes(true)
+                          .Numeric(true)   
+                          .PageSizes(new int[] {20, 50, 100})   
+                      )
+                      .Sortable()   
+                      .AutoBind(false) 
+                      //.Filterable()                 
+                      .Resizable(resize => resize.Columns(true))   
+                      .DataSource(dataSource => dataSource
+                          .Ajax()
+                          .PageSize(20)                 
+                          //.Sort(sort => sort.Add(p => p.Item_no).Ascending())   
+                          .Read(read => read.Action("ReportRead", "ConfigurationAutoMailReport").Data("bindingValue"))
+                          .Model(model => model.Id(p => p.REPORT_ID))
+                          
+                      )
+                      .Events(e => e.DataBound("onGridDataBound"))
+                      
+                      )
+            </div>                
+        </div>  
+        
+        
+        
+@*        <div id="modalWindow">
+            <strong id="txtModal"></strong>
+            <p class="clearfix"></p>
+            <button class="k-button" id="yesButton">Confrim</button>
+            <button class="k-button" id="noButton"> Cancel</button>
+        </div>*@
+        
+        <div class="modal fade" id="modalConfirmation" tabindex="-1" role="dialog" aria-labelledby="MessageFeedbackPopUpLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header btn-danger" id="">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="">Confirmation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label id="lblModal"></label>
+                        <p class="clearfix"></p>
+                        <div class="text-right">
+                            <button class="btn btn-danger" id="yesButton" data-dismiss="modal" aria-hidden="true"><i class="fa fa-check fa-lg"></i> Confrim</button>
+                            <button class="btn btn-default" id="noButton" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-lg"></i> Cancel</button>
+                        </div>
+                        <p class="clearfix"></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="modal fade" id="modalConfirmationResend" tabindex="-1" role="dialog" aria-labelledby="MessageFeedbackPopUpLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header btn-success" id="">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="">Confirmation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label id="lblModalResend"></label>
+                        <p class="clearfix"></p>
+                        <div class="text-right">
+                             <button class="btn btn-success" id="yesButtonResend" data-dismiss="modal" aria-hidden="true"><i class="fa fa-check fa-lg"></i> Confrim</button>
+                            <button class="btn btn-default" id="noButtonResend" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-lg"></i> Cancel</button>
+                        </div>
+                       <p class="clearfix"></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </body>
+    
+
+    
+    <script>
+        var SaveStatus = '@ViewBag.SaveStatus';
+        //var wnd;
+        $(document).ready(function () {
+
+            //wnd = $("#modalWindow").kendoWindow({
+            //    title: "Confirmation",
+            //    modal: true,
+            //    visible: false,
+            //    resizable: false,
+            //    width: 300,
+            //    height: 100
+            //}).data("kendoWindow");
+
+            if (SaveStatus != "") {
+                if (SaveStatus == "SaveSuccess") {
+                    showFeedback("success", "Save Success", "Save Report");
+                } else {
+                    showFeedback("error", "Save Fail", "Save Report");
+                }
+            }
+        });
+
+        function AddReport_Click() {
+
+            window.location.href = "@Url.Action("ConfigurationInformation", "ConfigurationAutoMailReport")";
+        }
+
+
+        function onGridDataBound() {
+            Loading(0);
+            if (this.dataSource.view().length == 0) {
+
+
+                var colspan = this.thead.find("th").length;
+                var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+                this.tbody.html(emptyRow);
+
+                $(".k-grid-content").height(3 * kendo.support.scrollbar());
+
+            }
+            else {
+                $(".k-grid-content").height("auto");
+
+                $(".k-grid-Edit").find("span").addClass("fa fa-pencil-square-o fa-lg");
+                $(".k-grid-Delete").find("span").addClass("fa fa-trash-o fa-lg");
+                $(".k-grid-Resend").find("span").addClass("fa fa-repeat fa-lg");
+            }
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS: JSON.stringify(model)
+            };
+        }
+
+        function defaultData() {
+            var searchResult = new ReportModel();
+            searchResult.reportName = $.trim($("#txtReportName").val());
+            searchResult.scheduler = $("#ddlScheduler").data("kendoDropDownList").text() == "All" ? "" : $("#ddlScheduler").data("kendoDropDownList").text();
+
+            return searchResult;
+        }
+
+        var ReportModel = function () {
+            reportName: "";
+            scheduler: "";
+            sortBy: "";
+            sortColumn: "";
+            sortColumnName: "";
+        }
+
+        function Search() {
+            Loading();
+            SearchData();
+        }
+        function SearchData() {
+            var model = defaultData();
+
+            var grid = $("#gridReportRpt").data("kendoGrid");
+            grid.dataSource.page(1);
+        }
+
+        function Clear() {
+            $("#txtReportName").val("");
+            $("#ddlScheduler").data("kendoDropDownList").select(0);
+            $("#gridReportRpt").data("kendoGrid").dataSource.data([]);
+        }
+
+        function Resend(e) {
+            e.preventDefault();
+            
+            $("#lblModalResend").text("Are you sure you want to resend the report?");
+            $("#modalConfirmationResend").modal('show');
+
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $("#yesButtonResend").click(function () {
+                console.log("Resend");
+                Loading();
+                $.ajax({
+                    type: "POST",
+                    url: "/ConfigurationAutoMailReport/Resend",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        reportId: dataItem.id ,
+                        createBy: $("#created_by").val()
+                    }),
+                    async: true,
+                    success: function (response) {
+                        if (response.status == "Y") {
+                            showFeedback("success", "Resend Success", "Resend Email");
+                        } else {
+                            showFeedback("error", "Resend Fail", "Resend Email");
+                        }
+
+                        SearchData();
+                    }
+                });
+                Loading(0);
+            });
+           
+        }
+
+        function Edit(e) {
+            e.preventDefault();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var url = '@Url.Action("ConfigurationInformation", "ConfigurationAutoMailReport", new { reportId = "param" })';
+            window.location.href = url.replace('param', encodeURIComponent(dataItem.id));
+
+        }
+
+        function Delete(e) {
+            e.preventDefault();
+
+            var grid = this;
+            var row = $(e.currentTarget).closest("tr");
+            $("#lblModal").text("Are you sure you want to delete the report?");
+            $("#modalConfirmation").modal('show');
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $("#yesButton").click(function () {
+                console.log("Delete");
+                Loading();
+                $.ajax({
+                    type: "POST",
+                    url: "/ConfigurationAutoMailReport/DeleteReport",
+                    contentType: 'application/json',
+                    data: JSON.stringify({ reportId: dataItem.id }),
+                    async: true,
+                    success: function (response) {
+                        if (response.saveStatus == "Y") {
+                            grid.removeRow(row);
+                            showFeedback("success", "Delete Success", "Delete Report");
+                        } else {
+                            showFeedback("error", "Delete Fail", "Delete Report");
+                        }
+                    }
+                });
+                Loading(0);
+            });
+        }
+
+    </script>
+</html>

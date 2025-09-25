@@ -1,0 +1,585 @@
+﻿@model FBBConfig.Models.LogInterfaceView
+@using WBBEntity.PanelModels;
+@{   
+    string lGridColTransaction = string.Empty;
+    string lGridColMethodName = string.Empty;
+    string lGridColServiceName = string.Empty;
+    string lGridColIdCardNo = string.Empty;
+    string lGridColInput = string.Empty;
+    string lGridColOutPut = string.Empty;
+    string lGridColInterfaceNode = string.Empty;
+    string lGridColCreateBy = string.Empty;
+    string lGridColCreateDate = string.Empty;
+
+    string lPageName = string.Empty;
+    string lSearchPanal = string.Empty;
+    string lPackageName = string.Empty;
+    string lMethod = string.Empty;
+    string lTable = string.Empty;
+    string lFileName = string.Empty;
+    string lCreateDateFrom = string.Empty;
+    string lCreateDateTo = string.Empty;
+    
+    string bCancel = string.Empty;
+    string bSearch = string.Empty;
+    string bExport = string.Empty;
+
+    string bUpdate = "Update";
+    //string cfg_calendar = string.Empty;
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+        lPageName = configscreen.Any(f => f.Name == "L_PAGE_NAME") ? configscreen.First(f => f.Name == "L_PAGE_NAME").LovValue1 : "";
+        lSearchPanal = configscreen.Any(f => f.Name == "L_SEARCH_PANAL") ? configscreen.First(f => f.Name == "L_SEARCH_PANAL").LovValue1 : "";
+        lPackageName = configscreen.Any(f => f.Name == "L_PACKAGE_NAME") ? configscreen.First(f => f.Name == "L_PACKAGE_NAME").LovValue1 : "";
+        lMethod = configscreen.Any(f => f.Name == "L_METHOD") ? configscreen.First(f => f.Name == "L_METHOD").LovValue1 : "";
+        lTable = configscreen.Any(f => f.Name == "L_TABLE") ? configscreen.First(f => f.Name == "L_TABLE").LovValue1 : "";
+        lFileName = configscreen.Any(f => f.Name == "L_FILE_NAME") ? configscreen.First(f => f.Name == "L_FILE_NAME").LovValue1 : "";
+        lCreateDateFrom = configscreen.Any(f => f.Name == "L_CREATE_DATE_FROM") ? configscreen.First(f => f.Name == "L_CREATE_DATE_FROM").LovValue1 : "";
+        lCreateDateTo = configscreen.Any(f => f.Name == "L_CREATE_DATE_TO") ? configscreen.First(f => f.Name == "L_CREATE_DATE_TO").LovValue1 : "";
+
+        bCancel = configscreen.Any(f => f.Name == "B_CANCEL") ? configscreen.First(f => f.Name == "B_CANCEL").LovValue1 : "";
+        bSearch = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.First(f => f.Name == "B_SEARCH").LovValue1 : "";
+        bExport = configscreen.Any(f => f.Name == "B_EXPORT") ? configscreen.First(f => f.Name == "B_EXPORT").LovValue1 : "";
+
+        lGridColTransaction = configscreen.Any(f => f.Name == "G_TRANSACTION") ? configscreen.First(f => f.Name == "G_TRANSACTION").LovValue1 : "";
+        lGridColMethodName = configscreen.Any(f => f.Name == "G_METHOD_NAME") ? configscreen.First(f => f.Name == "G_METHOD_NAME").LovValue1 : "";
+        lGridColServiceName = configscreen.Any(f => f.Name == "G_SERVICE_NAME") ? configscreen.First(f => f.Name == "G_SERVICE_NAME").LovValue1 : "";
+        lGridColIdCardNo = configscreen.Any(f => f.Name == "G_ID_CARD_NO") ? configscreen.First(f => f.Name == "G_ID_CARD_NO").LovValue1 : "";
+        lGridColInput = configscreen.Any(f => f.Name == "G_INPUT") ? configscreen.First(f => f.Name == "G_INPUT").LovValue1 : "";
+        lGridColOutPut = configscreen.Any(f => f.Name == "G_OUTPUT") ? configscreen.First(f => f.Name == "G_OUTPUT").LovValue1 : "";
+        lGridColInterfaceNode = configscreen.Any(f => f.Name == "G_INTERFACE_NODE") ? configscreen.First(f => f.Name == "G_INTERFACE_NODE").LovValue1 : "";
+        lGridColCreateBy = configscreen.Any(f => f.Name == "G_CREATE_BY") ? configscreen.First(f => f.Name == "G_CREATE_BY").LovValue1 : "";
+        lGridColCreateDate = configscreen.Any(f => f.Name == "G_CREATE_DATE") ? configscreen.First(f => f.Name == "G_CREATE_DATE").LovValue1 : "";
+
+        //cfg_calendar = configscreen.Any(f => f.Name == "CFG_DATE_CALENDAR") ? configscreen.First(f => f.Name == "CFG_DATE_CALENDAR").LovValue2 : "";
+    }  
+}
+
+<html>
+    <style>
+        .rowFormat {
+            margin-bottom: 15px;
+        }
+    </style>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+    </head>
+    <body>
+        <div class="page-header i-header-fit">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <h3 style="margin-top: 0">@lPageName</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="panel panel-success">            
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>@lSearchPanal</span>
+                            <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                        </h3>
+                    </div>
+                    <div id="SearchPanel" class="panel-collapse collapse in">
+                        <div class="panel-body" style="min-height: 135px;">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <label>@lPackageName</label>
+                                    <div class="i-fg-data-entry">
+                                        <select name="txtPackageName" class="form-control k-textbox input-datalist">
+	                                        <option value="">ALL</option>
+                                            <option value="customOption">[New Package Name]</option>
+                                            @foreach (var itemPackageName in Model.PACKAGE_NAME.Select(x => x.Value))
+                                            {
+                                                <option id="@itemPackageName" value="@itemPackageName">@itemPackageName</option>
+                                            }
+
+                                        </select>
+                                        <input name="txtPackageName" class="form-control k-textbox input-datalist" style="display:none;">
+                                    </div>    
+                                </div>
+                               <div class="col-sm-6 col-md-3">
+                                    <label>@lMethod</label>
+                                    <div class="i-fg-data-entry">
+                                        <select name="txtMethodName" class="form-control k-textbox input-datalist">
+	                                        <option value="">ALL</option>
+                                            <option value="customOption">[New Method Name]</option>
+                                            @foreach (var itemMethodName in Model.METHOD_NAME.Select(x => x.Value))
+                                            {
+                                                <option id="@itemMethodName" value="@itemMethodName">@itemMethodName</option>
+                                            }
+
+                                        </select>
+                                        <input name="txtMethodName" class="form-control k-textbox input-datalist" style="display:none;">
+                                    </div>                       
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>@lTable</label>
+                                    <div class="i-fg-data-entry">
+                                        <select name="txtTable" class="form-control k-textbox input-datalist">
+	                                        <option value="">ALL</option>
+                                            <option value="customOption">[New Table]</option>
+                                            @foreach (var itemTable in Model.TABLE.Select(x => x.Value))
+                                            {
+                                                <option id="@itemTable" value="@itemTable">@itemTable</option>
+                                            }
+
+                                        </select>
+                                        <input name="txtTable" class="form-control k-textbox input-datalist" style="display:none;">
+                                    </div>                        
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>@lFileName</label>
+                                    <div class="i-fg-data-entry">
+                                        <input type="text" id="txtFileName" class="k-textbox form-control validate"/>
+                                    </div>                   
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <label>@lCreateDateFrom</label>
+                                    <div class="i-fg-data-entry">
+                                         @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                         .HtmlAttributes(new { @class = "form-control i-form-control-extend validate"})
+                                         .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                         .Format("dd/MM/yyyy")
+                                         .Min(new DateTime(1900, 1, 1))
+                                         .Max(new DateTime(2099, 12, 31))
+                                         .Events(e => e.Change("ChangdtpDateFrom")))
+                                    </div>     
+                                    <div class="i-fg-data-entry-validation" id="validatefor-dtpDateFrom"></div>
+                                    <span class="k-invalid-msg" data-for="PickupDate"></span> 
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <label>@lCreateDateTo</label>
+                                    <div class="i-fg-data-entry">
+                                         @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                         .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                         .Format("dd/MM/yyyy")
+                                         .Min(new DateTime(1900, 1, 1))
+                                         .Max(new DateTime(2099, 12, 31))
+                                         .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                         .Events(e => e.Change("ChangdtpDateTo")))
+                                    </div>
+                                    <div class="i-fg-data-entry-validation" id="validatefor-dtpDateTo"></div>
+                                </div>
+                            </div> @*end row1*@
+                            <div id="row2" class="row i-gap-top-1">
+                                <div class="col-sm-6 col-md-6">                                      
+                                </div>
+                                <div class="col-sm-6 col-md-6 i-text-align-right">          
+                                    <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@bCancel</a>
+                                    <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@bSearch</a>            
+                                </div>                                            
+                            </div>
+                        </div>
+                    </div>  
+
+                </div>
+            </div>
+        </div>
+        <div id="gridresult" class="row">
+            <div class="col-sm-12 col-md-12 " >
+                @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.LogInterfaceReportGridList>()
+                      .Name("gridLogInterfaceRpt")
+                      .Columns(columns =>
+                      {
+                          columns.Bound(p => p.INTERFACE_ID).HeaderTemplate("<input id='selectall' class='chkbx' type='checkbox' onclick='ToggleChkBox(this.checked);' />").ClientTemplate("<input id='checkbox' onclick='grdChkBoxClick(this); ' class='chkbxq' type='checkbox' />").Sortable(false).Filterable(false).Width(30);
+                          columns.Bound(p => p.IN_TRANSACTION_ID).Title(lGridColTransaction).HtmlAttributes(new { style = "text-align:center;" }).Width(170);
+                          columns.Bound(p => p.METHOD_NAME).Title(lGridColMethodName).HtmlAttributes(new { style = "text-align:center;" }).Width(170);
+                          columns.Bound(p => p.SERVICE_NAME).Title(lGridColServiceName).HtmlAttributes(new { style = "text-align:center;" }).Width(170);
+                          columns.Bound(p => p.IN_ID_CARD_NO).Title(lGridColIdCardNo).HtmlAttributes(new { style = "text-align:left;" }).Width(170);
+                          columns.Bound(p => p.INPUT).ClientTemplate("#:getTheSubstring(data.INPUT,40)#").Title(lGridColInput).HtmlAttributes(new { style = "text-align:left;" }).Width(300);
+                          columns.Bound(p => p.OUTPUT).ClientTemplate("#:getTheSubstring(data.OUTPUT,40)#").Title(lGridColOutPut).HtmlAttributes(new { style = "text-align:left;" }).Width(300);
+                          columns.Bound(p => p.INTERFACE_NODE).Title(lGridColInterfaceNode).HtmlAttributes(new { style = "text-align:left;" }).Width(170);
+                          columns.Bound(p => p.CREATED_BY).Title(lGridColCreateBy).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                          columns.Bound(p => p.CREATED_DATE).Title(lGridColCreateDate).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                      })
+
+                      .Scrollable(scrollable => scrollable.Height("auto"))
+                      .ToolBar(toolBar =>
+                      {
+                          toolBar.Template("" + "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp; " + bExport + "</a>&nbsp;</div>"
+                                              + "<div class='pull-right'><a onclick='modalConfirmShow()' id='btnUpdate'  class='btn btn-default'><i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + bUpdate + "</a>&nbsp;</div>");
+                      })
+                      .Pageable(pageable => pageable                    
+                          //.PageSizes(true)
+                          .Numeric(true)   
+                          .PageSizes(new int[] {20, 50, 100})   
+                      )
+                      .Sortable()   
+                      .AutoBind(false) 
+                      //.Filterable()                 
+                      .Resizable(resize => resize.Columns(true))   
+                      .DataSource(dataSource => dataSource
+                          .Ajax()
+                          .PageSize(20)       
+                          .Model(model => model.Id(p=>p.INTERFACE_ID))          
+                          //.Sort(sort => sort.Add(p => p.Item_no).Ascending())   
+                          .Read(read => read.Action("GetLogInterfaceAsync", "LogInterface").Data("bindingValue"))
+                          )
+                      .Events(e => e.DataBound("onGridDataBound"))
+                      
+                      )
+            </div>                
+        </div>         
+    </body>
+</html>
+
+<div class="modal fade cancel-sm-box" tabindex="-1" id="modal003_perorder" data-order-id="" role="dialog" aria-labelledby="modal003_perorder_label">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header" style="padding-bottom: 25px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+            </div>
+            <p class="clearfix"></p>
+            <h4 class="text-center">Confirm Update</h4>
+            <button type="button" class="btn btn-xs btn-default" onclick="UpdateLoginterface(); $.modal.close();">&nbsp; Ok &nbsp;</button>
+            <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">&nbsp; Cancel &nbsp; </button>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    var idsToSend = [];
+    $(document).ready(function () {
+        $('#btnExport').attr("disabled", true);
+        $('#btnUpdate').attr("disabled", true);
+        $("#dtpDateFrom").data("kendoDatePicker").value("");
+        $("#dtpDateTo").data("kendoDatePicker").value("");
+
+        $("select.input-datalist").show();
+        $("input.input-datalist").hide();
+
+        $("select[name='txtPackageName']").val('');
+        $("input[name='txtPackageName']").val('');
+        $("select[name='txtMethodName']").val('');
+        $("input[name='txtMethodName']").val('');
+        $("select[name='txtTable']").val('');
+        $("input[name='txtTable']").val('');
+        $("#txtFileName").val('');
+    });
+
+    function grdChkBoxClick(flag) {
+        $('.chkbxq').each(function () {
+            var ch = $(this).prop('checked');
+            if (ch) {
+                $('#btnUpdate').attr("disabled", false);
+                return false;
+            } else {
+                $('#btnUpdate').attr("disabled", true);
+            }
+        });
+    }
+    function ToggleChkBox(flag) {
+        var state = flag;
+        if (state == true) {
+            $('.chkbxq').prop('checked', true);
+            $('#btnUpdate').attr("disabled", false);
+        }
+        else {
+            $('.chkbxq').prop('checked', false);
+            $('#btnUpdate').attr("disabled", true);
+        }
+    }
+
+    function getTheSubstring(value, length) {
+        var char = value;
+        if (typeof char != 'undefined') {
+            if (value.length > length) {
+                return kendo.toString(value.substring(0, length)) + "...";
+            }
+            else { return kendo.toString(value); }
+        } else { return ""}
+    }
+
+    function modalConfirmShow(e) {
+        idsToSend = [];
+        var grid = $("#gridLogInterfaceRpt").data("kendoGrid")
+        var ds = grid.dataSource.view();
+        for (var i = 0; i < ds.length; i++) {
+            var row = grid.table.find("tr[data-uid='" + ds[i].uid + "']");
+            var checkbox = $(row).find(".chkbxq");
+            if (checkbox.is(":checked")) {
+                idsToSend.push(ds[i].id);
+            }
+        }
+        $("#modal003_perorder").modal();
+    }
+
+    var ListInterfaceId = function () {
+        INTERFACE_ID: [];
+    }
+    function UpdateLoginterface() {
+        var interface_id = idsToSend;
+        var listInterfaceId = new ListInterfaceId();
+        listInterfaceId.INTERFACE_ID = interface_id;
+
+        SendRequest(listInterfaceId);
+
+        Loading();
+        var grid = $("#gridLogInterfaceRpt").data("kendoGrid");
+        grid.dataSource.page(1);
+        $("#modal003_perorder").modal('hide');
+
+    }
+
+    function SendRequest(model) {
+        $.ajax({
+            type: "GET",
+            url: "/LogInterface/UpdateLogInterface",
+            data: {
+                dataS: JSON.stringify(model)
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                alert(data.ReturnDesc);
+            },
+            error: function (data) {
+                alert(data.ReturnDesc);
+            }
+        });
+    }
+
+    function ChangdtpDateFrom() {
+        var endPicker = $("#dtpDateTo").data("kendoDatePicker"),
+        startDate = this.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            endPicker.min(startDate);
+        }
+
+    }
+
+    function ChangdtpDateTo() {
+        var startPicker = $("#dtpDateFrom").data("kendoDatePicker"),
+        endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            startPicker.max(endDate);
+        }
+
+    }
+
+    $("select.input-datalist").change(function () {
+        var $this = $(this);
+        if ($this.val() == "customOption") {
+            $this.hide();
+            $this.next().show();
+            $this.prop('selectedIndex', 0);
+        }
+
+    });
+
+    $("input.input-datalist").blur(function () {
+        var $this = $(this);
+        if ($this.val() == "") {
+            $this.hide();
+            $this.prev().show();
+        }
+    });
+
+    var LogInterfaceModel = function () {
+        INTERFACE_ID: null;
+        IN_TRANSACTION_ID: null;
+        METHOD_NAME: "";
+        SERVICE_NAME: "";
+        IN_ID_CARD_NO: "";
+        CREATE_DATE_FROM: "";
+        CREATE_DATE_TO: "";
+        sortBy: "";
+        sortColumn: "";
+        sortColumnName: "";
+    }
+
+    function defaultData() {
+        var searchModel = new LogInterfaceModel();
+        searchModel.IN_TRANSACTION_ID = $("select[name='txtPackageName']").val() == '' ? $("input[name='txtPackageName']").val() : $("select[name='txtPackageName']").val();
+        searchModel.METHOD_NAME = $("select[name='txtMethodName']").val() == '' ? $("input[name='txtMethodName']").val() : $("select[name='txtMethodName']").val();
+        searchModel.SERVICE_NAME = $("#txtFileName").val();
+        searchModel.IN_ID_CARD_NO = $("select[name='txtTable']").val() == '' ? $("input[name='txtTable']").val() : $("select[name='txtTable']").val(); 
+        searchModel.CREATE_DATE_FROM = kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy");
+        searchModel.CREATE_DATE_TO = kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy");
+
+        return searchModel;
+    }
+
+    function bindingValue() {
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    function _Search() {
+        
+        var model = defaultData();
+        var chk = ValidationDateValue();
+        if (chk) {
+            Loading();
+            var grid = $("#gridLogInterfaceRpt").data("kendoGrid");
+            grid.dataSource.page(1);
+        }
+    }
+
+    function ValidationDateValue() {
+
+        var chk = ValidationProcessing("dateselect");
+
+        if (chk) //check blank value
+        {
+            if ($.trim($("#dtpDateFrom").val()) == '') {
+                $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if ($.trim($("#dtpDateTo").val()) == '') {
+                $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check format
+        {
+            if (!kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if (!kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateTo").val() != "") {
+                    $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check Date From must be earlier than Date To
+        {
+            var startPicker = new Date(kendo.parseDate($("#dtpDateFrom").val(), "mm/dd/yyyy"));
+            var endPicker = new Date(kendo.parseDate($("#dtpDateTo").val(), "mm/dd/yyyy"));
+
+            if (startPicker > endPicker) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+            }
+        }
+        return chk;
+    }
+
+    function onGridDataBound() {
+        Loading(0);
+        if (this.dataSource.view().length == 0) {
+
+            //insert empty row
+
+            var colspan = this.thead.find("th").length;
+            //alert(colspan)
+            var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+            this.tbody.html(emptyRow);
+
+            //workarounds for IE lt 9
+            //this.table.width(800);
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+            $('#btnExport').attr("disabled", true);
+            $('#btnUpdate').attr("disabled", true);
+        }
+        else {
+            $(".k-grid-content").height("auto");
+            $('#btnExport').attr("disabled", false);
+            //this.dataSource.total = 100;
+        }
+    }
+
+    function _ExportToExcel() {
+        var model = new defaultDataExport();
+
+        window.open("/LogInterface/ExportLogInterfaceReport?dataS=" + JSON.stringify(model) + "");
+    }
+
+    function defaultDataExport() {
+        var sortColumn = '';
+        var searchResult = new LogInterfaceModel();
+        searchResult.IN_TRANSACTION_ID = $("select[name='txtPackageName']").val() == '' ? $("input[name='txtPackageName']").val() : $("select[name='txtPackageName']").val();
+        searchResult.METHOD_NAME = $("select[name='txtMethodName']").val() == '' ? $("input[name='txtMethodName']").val() : $("select[name='txtMethodName']").val();
+        searchResult.SERVICE_NAME = $("#txtFileName").val(); 
+        searchResult.IN_ID_CARD_NO = $("select[name='txtTable']").val() == '' ? $("input[name='txtTable']").val() : $("select[name='txtTable']").val();
+        searchResult.CREATE_DATE_FROM = kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy");
+        searchResult.CREATE_DATE_TO = kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy");
+
+        var grid = $("#gridLogInterfaceRpt").data("kendoGrid");
+        var dataSource = grid.dataSource;
+        var kendoSort = dataSource.sort();
+        if (kendoSort != null && kendoSort != "undefined" && kendoSort[0] != null) {
+            searchResult.sortBy = kendoSort[0].dir == null ? "" : kendoSort[0].dir;
+            sortColumn = kendoSort[0].field == null ? "" : kendoSort[0].field;
+            searchResult.sortColumn = sortColumn;
+
+        }
+        var column = grid.columns;
+        if (column != null && sortColumn != '') {
+            var result = $.grep(grid.columns, function (e) { return e.field == sortColumn; });
+            searchResult.sortColumnName = result != null ? result[0].title : '';
+        }
+
+        return searchResult;
+    }
+
+    function _Clear() {
+        $("select.input-datalist").show();
+        $("input.input-datalist").hide();
+
+        $("select[name='txtPackageName']").val('');
+        $("input[name='txtPackageName']").val('');
+        $("select[name='txtMethodName']").val('');
+        $("input[name='txtMethodName']").val('');
+        $("select[name='txtTable']").val('');
+        $("input[name='txtTable']").val('');
+
+        $("#txtFileName").val('');
+        $("#dtpDateFrom").data("kendoDatePicker").value("");
+        $("#dtpDateTo").data("kendoDatePicker").value("");
+        //reset min, max.
+        $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+        $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+
+        $('#btnExport').attr("disabled", true);
+        $('#btnUpdate').attr("disabled", true);
+        $("#gridLogInterfaceRpt").data("kendoGrid").dataSource.data([]);
+
+        $("#validatefor-dtpDateTo").html("");
+        $("#validatefor-dtpDateFrom").html("");
+    }
+
+</script>

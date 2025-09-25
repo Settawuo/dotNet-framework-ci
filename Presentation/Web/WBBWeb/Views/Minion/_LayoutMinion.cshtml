@@ -1,0 +1,538 @@
+﻿@using WBBEntity.Minions
+@{
+    Layout = null;
+
+    var minionServiceListMenu = new List<MinionGetMinionServiceQueryModel>();
+
+    if (ViewBag.MinionServiceListMenu != null)
+    {
+        minionServiceListMenu = (List<MinionGetMinionServiceQueryModel>)ViewBag.MinionServiceListMenu;
+    }
+}
+
+<!DOCTYPE html>
+<html class="no-js" lang="th">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10,9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0" />
+    <meta name="date" content="2017-08-22" />
+    <meta name="sitecode" content="TH" />
+
+    <title>Minions</title>
+
+    <!-- Cahing Browser -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+
+    <!--Include Style Script-->
+    <link href="http://localhost:50960/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+    <link href="~/Scripts/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+
+    <link href="~/Content/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/minions.css" rel="stylesheet" />
+
+
+    <script src="~/Content/Content2016/js/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/js/bootstrap.min.js"></script>
+
+    @*    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>*@
+    @*<script src="https://rawgit.com/google/code-prettify/master/loader/run_prettify.js?autoload=true&lang=css"></script>*@
+    @*<script src="https://rawgit.com/google/code-prettify/master/loader/run_prettify.js?autoload=true&amp;lang=css" defer=""></script>*@
+
+</head>
+<body>
+    <div class="MenuContainer" style="margin-top: 30px;">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-12 well">
+                    <ul id="tree1">
+                        <strong>Minions Service</strong>
+                        <br />
+
+                        <li>AirNet
+                            <ul>
+                                <li>PKG_AIROR904
+                                    <ul>
+                                        <li id="lnkListProfileCustomer" class="menu"><a href="#">LIST_PROFILE_CUSTOMER</a> </li>
+                                        <li id="lnkListProfileContact" class="menu"><a href="#">LIST_PROFILE_CONTACT</a></li>
+                                        <li id="lnkListProfileAddress" class="menu"><a href="#">LIST_PROFILE_ADDRESS</a></li>
+                                        <li id="lnkListProfilePackage" class="menu"><a href="#">LIST_PROFILE_PACKAGE</a></li>
+                                        <li id="lnkListProfileSplitter" class="menu"><a href="#">LIST_PROFILE_SPLITTER</a></li>
+                                    </ul>
+                                </li>
+                                <li>PKG_AIROR905
+                                    <ul>
+                                        <li id="lnkListPackageByService" class="menu"><a href="#">LIST_PACKAGE_BY_SERVICE</a> </li>
+                                        <li id="lnkListPackageBySffPromo" class="menu"><a href="#">LIST_PACKAGE_BY_SFFPROMO</a></li>
+                                        <li id="lnkListPackageByChange" class="menu"><a href="#">LIST_PACKAGE_BY_CHANGE</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>WBB
+                            <ul>
+                                <li>PKG_FBB_INS_PROFILE
+                                    <ul>
+                                        <li id="lnkInstalProfileProcMain" class="menu"><a href="#">PROC_MAIN</a> </li>
+                                        <li id="lnkInstalProfileInsAddr" class="menu"><a href="#">PROC_INS_ADDR</a> </li>
+                                        <li id="lnkInstalProfileInsContact" class="menu"><a href="#">PROC_INS_CONTACT</a> </li>
+                                        <li id="lnkInstalProfileInsPackage" class="menu"><a href="#">PROC_INS_PACKAGE</a> </li>
+                                        <li id="lnkInstalProfileInsSplitter" class="menu"><a href="#">PROC_INS_SPLITTER</a> </li>
+                                        <li id="lnkInstalProfileMessageLog" class="menu"><a href="#">PROC_MESSAGE_LOG</a> </li>
+                                    </ul>
+                                </li>
+                                <li id="lnkSaveOrderNew" class="menu"><a href="#">Save Order New</a> </li>
+                            </ul>
+                        </li>
+                        <li>External Service
+                            <ul>
+                                <li id="lnkExternalService" class="menu"><a href="#">SoapRequest</a> </li>
+                                <li id="lnkExternalSmsSurvey" class="menu"><a href="#">SmsSurvey</a> </li>
+                            </ul>
+                        </li>
+                        @*    
+                          <li>List Minion Service
+                            <ul id="liListMinionServiceId">
+                            </ul>
+                        </li>*@
+
+                        <li>Soap Service
+                            <ul id="liListMinionServiceId">
+                                @if (ViewBag.MinionServiceListMenu != null)
+                                {
+                                    var lstMenu = (List<MinionGetMinionServiceQueryModel>)ViewBag.MinionServiceListMenu;
+                                    var mainMenu = lstMenu.GroupBy(item => item.SERVICE_MAIN_NAME).ToList();
+
+                                    foreach (var mainItem in mainMenu)
+                                    {
+                                    <li>@mainItem.Key
+                                        <ul>
+
+                                            @{
+                                        var item1 = mainItem;
+                                            }
+                                            @foreach (var menuItem in lstMenu.Where(item => item.SERVICE_MAIN_NAME == item1.Key))
+                                            {
+                                                <li id="@menuItem.SERVICE_ID" class="menu soapMenu"><a href="#">@menuItem.SERVICE_PARENT_NAME</a> </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+
+
+                    </ul>
+                    <div class="col-sm-12 col-md-12 text-left" style="margin-top: 20px;">
+                        <a id="logouthome" class="btn btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8" id="MainPartial">
+                @RenderBody()
+            </div>
+            <div class="col-md-8 hidden" id="ExternelPartial">
+                @{
+                    @Html.Partial("_externalServicePartial", new WBBContract.Minions.MinionGetExternalSoapServiceQuery())
+                }
+            </div>
+            <div class="col-md-8 hidden" id="ExternalSmsSurvey">
+                @{
+                    @Html.Partial("_externalSmsSurveyFOAPartial", new WBBContract.Minions.MinionProcMainCommand())
+                }
+            </div>
+
+            <div class="col-md-8 hidden" id="PartailSoapXml">
+                @{
+                    @Html.Partial("_SoapServicePartial", new WBBContract.Minions.MinionGetMinionServiceQuery())
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="ProgressLoading" class="modal fade" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" style="text-align: center;">
+            <div class="row" style="margin-top: 20%; margin-left: auto; margin-right: auto; color: white;">
+                <div>
+                    @*<img src="~/Content/Content2016/images/minion/giphy.gif" style="position:inherit;" />*@
+                    @*<img src="~/Content/Content2016/images/minion/laugh.gif" style="position:inherit;"  />*@
+                    <img src="~/Content/Content2016/images/minion/min1.gif" />
+                </div>
+                <div id="txtLoading" style="text-align: center;">
+                    LOADING
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    $(window).on('load', function () {
+        $('#ProgressLoading').modal('show');
+
+        setTimeout(function () {
+            $('#ProgressLoading').modal('hide');
+        }, 3000);
+    });
+
+
+    $.fn.extend({
+        treed: function (o) {
+
+            bindMinionServiceMenu();
+
+            var openedClass = 'glyphicon-minus-sign';
+            var closedClass = 'glyphicon-plus-sign';
+
+            if (typeof o != 'undefined') {
+                if (typeof o.openedClass != 'undefined') {
+                    openedClass = o.openedClass;
+                }
+                if (typeof o.closedClass != 'undefined') {
+                    closedClass = o.closedClass;
+                }
+            };
+
+            //initialize each of the top levels
+            var tree = $(this);
+            tree.addClass("tree");
+            tree.find('li').has("ul").each(function () {
+                var branch = $(this); //li with children ul
+                branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
+                branch.addClass('branch');
+                branch.on('click', function (e) {
+                    if (this == e.target) {
+                        var icon = $(this).children('i:first');
+                        icon.toggleClass(openedClass + " " + closedClass);
+                        $(this).children().children().toggle();
+                    }
+                });
+                branch.children().children().toggle();
+            });
+            //fire event from the dynamically added icon
+            tree.find('.branch .indicator').each(function () {
+                $(this).on('click', function () {
+                    $(this).closest('li').click();
+                });
+            });
+            //fire event to open branch if the li contains an anchor instead of text
+            tree.find('.branch > a').each(function () {
+                $(this).on('click', function (e) {
+                    $(this).closest('li').click();
+                    e.preventDefault();
+                });
+            });
+            //fire event to open branch if the li contains a button instead of text
+            tree.find('.branch > button').each(function () {
+                $(this).on('click', function (e) {
+                    $(this).closest('li').click();
+                    e.preventDefault();
+                });
+            });
+        }
+    });
+
+    //Initialization of treeviews
+
+    $('#tree1').treed();
+
+    $(function () {
+
+        $('input[type=radio][name=rdoRequest]').change(function () {
+            if (this.value == 'form-data') {
+                $('.form-data').removeClass('hidden');
+                $('.raw-xml').addClass('hidden');
+            } else if (this.value == 'raw-xml') {
+                $('.form-data').addClass('hidden');
+                $('.raw-xml').removeClass('hidden');
+            }
+        });
+
+        $('input[type=radio][name=rdoResponse]').change(function () {
+            if (this.value == 'xml') {
+                $('#response-xml').removeClass('hidden');
+                $('#response-json').addClass('hidden');
+            } else if (this.value == 'json') {
+                $('#response-xml').addClass('hidden');
+                $('#response-json').removeClass('hidden');
+            }
+        });
+
+        $('#lnkListPackageByService').click(function () {
+
+            clickLinkPackage('/GetListPackageByService');
+            setTextXml('frmListPackageService', 'xmlListPackageByService');
+            $('#frmListPackageService').show();
+
+        });
+
+        $('#lnkListPackageBySffPromo').click(function () {
+            clickLinkPackage('/GetListPackageBySffPromo');
+            setTextXml('frmListPackageSffPromo', 'xmlListPackageBySffPromo');
+            $('#frmListPackageSffPromo').show();
+
+        });
+
+        $('#lnkListPackageByChange').click(function () {
+
+            clickLinkPackage('/GetListPackageByChange');
+            setTextXml('frmListPackageChange', 'xmlListPackageByService');
+            $('#frmListPackageChange').show();
+
+        });
+
+        $('#lnkInstalProfileProcMain').click(function () {
+
+            clickLinkPackage('/InstallProfileProcMain');
+            setTextXml('frmInstallProfileProcMain', 'xmlProcMain');
+            $('#frmInstallProfileProcMain').show();
+
+        });
+
+        $('#lnkInstalProfileInsAddr').click(function () {
+
+            clickLinkPackage('/InstallAddress');
+            setTextXml('frmInstallProfileProcInsAddr', 'xmlProcInsAddr');
+            $('#frmInstallProfileProcInsAddr').show();
+
+        });
+
+        $('#lnkInstalProfileInsContact').click(function () {
+
+            clickLinkPackage('/InstallContact');
+            setTextXml('frmInstallProfileProcInsContact', 'xmlProcInsContact');
+            $('#frmInstallProfileProcInsContact').show();
+
+        });
+
+        $('#lnkInstalProfileInsPackage').click(function () {
+            clickLinkPackage('/InstallPackage');
+            setTextXml('frmInstallProfileProcInsPackage', 'xmlProInsPackage');
+            $('#frmInstallProfileProcInsPackage').show();
+
+        });
+
+        $('#lnkInstalProfileInsSplitter').click(function () {
+            clickLinkPackage('/InstallSplitter');
+            setTextXml('frmInstallProfileProcInsSplitter', 'xmlProcInsSplitter');
+            $('#frmInstallProfileProcInsSplitter').show();
+
+        });
+
+        $('#lnkInstalProfileMessageLog').click(function () {
+            clickLinkPackage('/MessageLog');
+            setTextXml('frmInstallProfileProcMessageLog', 'xmlProcMessageLog');
+            $('#frmInstallProfileProcMessageLog').show();
+
+        });
+
+        $('#lnkSaveOrderNew').click(function () {
+            clickLinkPackage('/SaveOrderNew');
+            $('#frmSaveOrderNew').show();
+        });
+
+        $('#lnkListProfileCustomer').click(function () {
+            clickLinkPackage('/GetListProfileCustomer');
+            setTextXml('frmListProfileCustomer', 'xmlListProfileCustomer');
+            $('#frmListProfileCustomer').show();
+
+        });
+
+        $('#lnkListProfileContact').click(function () {
+            clickLinkPackage('/GetListProfileContact');
+            setTextXml('frmListProfileContact', 'xmlListProfileContact');
+            $('#frmListProfileContact').show();
+
+        });
+
+        $('#lnkListProfileAddress').click(function () {
+            clickLinkPackage('/GetListProfileAddress');
+            setTextXml('frmListProfileAddress', 'xmlListProfileAddress');
+            $('#frmListProfileAddress').show();
+
+        });
+
+        $('#lnkListProfilePackage').click(function () {
+            clickLinkPackage('/GetListProfilePackage');
+            setTextXml('frmListProfilePackage', 'xmlListProfilePackage');
+            $('#frmListProfilePackage').show();
+
+        });
+
+        $('#lnkListProfileSplitter').click(function () {
+            clickLinkPackage('/GetListProfileSplitter');
+            setTextXml('frmListProfileSplitter', 'xmlListProfileSplitter');
+            $('#frmListProfileSplitter').show();
+
+        });
+
+        $('#lnkExternalService').click(function () {
+
+            clickLinkPackage('ExternalService');
+            $('#frmExternalService').show();
+
+        });
+
+        $('#lnkExternalSmsSurvey').click(function () {
+            clickLinkPackage('/ExternalSmsSurvey');
+            setTextXml('frmExternalSmsSurvey', 'xmlProcSmsSurveyFOA');
+            $('#frmExternalSmsSurvey').show();
+
+        });
+
+    });
+
+    $('.menu').click(function () {
+        $('.menu a').removeClass('clickMenu');
+        $(this).find('a').addClass('clickMenu');
+
+    });
+
+
+    $('.soapMenu').click(function () {
+        var idMenu = this.id;
+
+        clickLinkPackage('SoapService');
+
+        $('#frmRequestSoap #hdnServicId').val(idMenu);
+
+        $('#frmRequestSoap input[type=radio][id=rdoDev]').prop('checked', true);
+        $('#frmRequestSoap #xmlString').val('');
+        $('#frmRequestSoap #UrlEnpoint').val('');
+        $('#frmRequestSoap #UrlEnpointDev').val('');
+        $('#frmRequestSoap #UrlEnpointStg').val('');
+        $('#frmRequestSoap #UrlEnpointPrd').val('');
+
+        $.ajax({
+            type: "GET",
+            data: { "serviceId": idMenu},
+            url: '/Minion/GetRequestXml',
+            success: function (data) {
+
+                $('#frmRequestSoap #hdnServicId').val(idMenu);
+                
+                $('#frmRequestSoap #xmlString').val(data.rawxml);
+                $('#frmRequestSoap #UrlEnpoint').val(data.DEV_SERVICE_MAIN_URL);
+                $('#frmRequestSoap #UrlEnpointDev').val(data.DEV_SERVICE_MAIN_URL);
+                $('#frmRequestSoap #UrlEnpointStg').val(data.STG_SERVICE_MAIN_URL);
+                $('#frmRequestSoap #UrlEnpointPrd').val(data.PRD_SERVICE_MAIN_URL);
+
+            }
+        });
+
+        $('#frmRequestSoap').show();
+    });
+
+
+    $('#logouthome').click(function () {
+        $.ajax({
+            type: "POST",
+            data: { "flagout": "Y" },
+            url: '/Minion/Logout',
+            success: function () {
+                window.location = "../Minion/Login";
+            }
+        });
+    });
+
+    function clickLinkPackage(link) {
+        if ($('.ajaxOption.hidden').length == 0) {
+            $('.ajaxOption').addClass('hidden');
+        }
+
+        if (link == 'ExternalService') {
+            $('#MainPartial').addClass('hidden');
+            $('#ExternelPartial').removeClass('hidden');
+            $('.dvResponseExternalService').addClass('hidden');
+            $('.txtUrlExternalService').val('');
+            $('.txtRequestDataExternalService').val('');
+            $('#PartailSoapXml').addClass('hidden');
+
+        }
+        else if (link == 'SoapService') {
+            $('#PartailSoapXml').removeClass('hidden');
+
+            $('#MainPartial').addClass('hidden');
+            $('#ExternelPartial').addClass('hidden');
+            $('.dvResponseExternalService').addClass('hidden');
+            $('.txtUrlExternalService').val('');
+            $('.txtRequestDataExternalService').val('');
+
+        } else if (link == '/SaveOrderNew') {
+            var urlSaveOrderNew = window.location.href.toString().replace('#', '') + link;
+            $('#inpEndPoint').val(urlSaveOrderNew);
+
+            $('#rdoRequest1').prop('checked', true);
+            $('#divPartial form').hide();
+            $('#divMain').removeClass('hidden');
+            $('#dvResponse').addClass('hidden');
+            $('.form-data').removeClass('hidden');
+            $('.raw-xml').addClass('hidden');
+
+            $('#MainPartial').removeClass('hidden');
+            $('#ExternelPartial').addClass('hidden');
+            $('#PartailSoapXml').addClass('hidden');
+
+            $('#rdoRequest2').click();
+            $('#divRdoRequest').hide();
+        } else {
+            var url = window.location.href.toString().replace('#', '') + link;
+            $('#inpEndPoint').val(url);
+
+            $('#rdoRequest1').prop('checked', true);
+            $('#divPartial form').hide();
+            $('#divMain').removeClass('hidden');
+            $('#dvResponse').addClass('hidden');
+            $('.form-data').removeClass('hidden');
+            $('.raw-xml').addClass('hidden');
+
+            $('#MainPartial').removeClass('hidden');
+            $('#ExternelPartial').addClass('hidden');
+            $('#PartailSoapXml').addClass('hidden');
+
+            $('#divRdoRequest').show();
+        }
+    }
+
+    function bindMinionServiceMenu() {
+        try {
+            //$("#liListMinionServiceId").html('');
+
+            //var strBuilder = '';
+
+            //strBuilder += '<li id="lnkIns001" class="menu"><a href="#">PROC_MAIN</a></li>';
+            //strBuilder += '<li id="lnkIns002" class="menu"><a href="#">PROC_INS_ADDR</a></li>';
+
+
+            //if (strBuilder != '') {
+            //    $("#liListMinionServiceId").html(strBuilder);
+            //}
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    function setTextXml(formName, fileName) {
+
+        if ($('#' + formName + ' #xmlString').val() == "") {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetXmlDefualt")',
+                data: { fileName: fileName },
+                dataType: "json",
+                success: function (response) {
+                    $('#' + formName + ' #xmlString').val(response.Content);
+                }
+            });
+        }
+    }
+
+</script>
+
+</html>

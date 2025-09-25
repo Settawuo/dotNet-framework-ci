@@ -1,0 +1,1 @@
+namespace WBBContract.Queries.ExWebServices.FbbCpGw { public class GetListPackageQuery : CpGateWayQueryBase { } }

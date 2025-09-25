@@ -1,0 +1,700 @@
+﻿@using WBBEntity.PanelModels.FBBWebConfigModels
+@Html.Partial("~/Views/Shared/_PartialPopupHistory.cshtml")
+@model CoverageAreaModel
+
+@{
+    var o = (List<WBBEntity.PanelModels.Account.ComponentModel>)ViewBag.User.ComponentModel;
+    var g = (List<decimal>)ViewBag.User.Groups;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderBy(des => des.ReadOnlyFlag).ToList();
+
+    string FBB_CFG001_3_ADD = "";
+    string FBB_CFG001_3_CONFIG = "";
+    string FBB_CFG001_3_DELETE = "";
+    string FBB_CFG001_3_DSLAM_RESTOCK = "";
+    string FBB_CFG001_3_DSLAM_DELETE = "";
+    
+    if (o != null)
+    {
+        FBB_CFG001_3_ADD = o.Any(c => c.ComponentName == "FBB_CFG001_3_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_3_ADD").ReadOnlyFlag : "";
+        FBB_CFG001_3_CONFIG = o.Any(c => c.ComponentName == "FBB_CFG001_3_CONFIG") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_3_CONFIG").ReadOnlyFlag : "";
+        FBB_CFG001_3_DELETE = o.Any(c => c.ComponentName == "FBB_CFG001_3_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_3_DELETE").ReadOnlyFlag : "";
+        FBB_CFG001_3_DSLAM_RESTOCK = o.Any(c => c.ComponentName == "FBB_CFG001_3_DSLAM_RESTOCK") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_3_DSLAM_RESTOCK").ReadOnlyFlag : "";
+        FBB_CFG001_3_DSLAM_DELETE = o.Any(c => c.ComponentName == "FBB_CFG001_3_DSLAM_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_3_DSLAM_DELETE").ReadOnlyFlag : "";
+    }
+}
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Building/DSLAM</h3>
+            <ol class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Coverage_Search")">Main Page</a></li>
+                <li><a href="@Url.Action("Index", "Coverage_Manage", new { contactId = Model.ContactID })">Site/Coverage</a></li>
+                <li class="active">Building/DSLAM</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div id="divBuilding" class="tab-pane fade active in">
+            @(Html.Kendo().Grid<DslamPanel>()
+                        .Name("GridDSLAM")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.NodeId).Title("NodeId");
+                            columns.Bound(p => p.Number).Title("Dslam Number");
+                            columns.Bound(p => p.BuildingCode).Title("Building Code");
+                            columns.Bound(p => p.BuildingUse).Title("Building Use");
+                            columns.Bound(p => p.CurrentPort).Title("Total Port");
+                            columns.Command(command =>
+                            {
+                                if (FBB_CFG001_3_CONFIG != "")
+                                {
+                                    command.Custom("Config").Click("onGridDSLAM_Config").Text("<i class='fa fa-cog fa-lg'></i>&nbsp; Config");
+                                }
+                                if (FBB_CFG001_3_DELETE != "")
+                                {
+                                    command.Custom("Delete").Click("onGridDSLAM_Delete").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete");
+                                }
+                            }).Width(200);
+                        })
+                        .ToolBar(toolBar => toolBar.Template("<div class='pull-right'>" +        
+        "<a onclick='onGridDSLAM_Add()' class='btn btn-default pull-left' id='c_add'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a>"+
+        "<a onclick=\"showPopupHistoryLog('Building DSLAM')\" class='btn btn-default pull-right'><i class='fa fa-history'></i>&nbsp; Show History</a> &nbsp;" +
+        "</div>"))
+                            .Pageable(p => p.Input(true)
+                                .Numeric(true)
+                                .PageSizes(true)
+                            )
+                            .Filterable()
+                            .Reorderable(r => r.Columns(true))
+                            .Groupable()
+                            .Sortable()
+                             .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(10)
+                                .Read(read => read.Action("Read", "Coverage_Dslam").Data("onDataBind"))
+                             )
+                             .Events(e => e.DataBound("onGridDLSAM_DataBound"))
+                        )
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-success i-gap-top-2">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Restock</span>
+                <a data-toggle="collapse" class="pull-right" href="#APanel" onclick="onPanelToggle(this);" id="APanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="APanelHeaderArrow"></i></a>
+            </h3>
+        </div>
+        <div id="APanel" class="panel-collapse collapse in">
+            <div class="panel-body">
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+            @(Html.Kendo().Grid<GridDSLAMRestockModel>()
+                        .Name("GridDSLAMRestock")
+                        .ToolBar(toolBar => toolBar.Template("<div class='pull-right'>" +        
+                        "<a onclick=\"showPopupHistoryLog2('DSLAM Restock')\" class='btn btn-default pull-right'><i class='fa fa-history'></i>&nbsp; Show History</a> &nbsp;" +
+                        "</div>"))
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.NodeID).Title("NodeId");
+                            columns.Bound(p => p.DSALMNumber).Title("Dslam Number");
+                            columns.Bound(p => p.RegionCode).Title("Region Code");
+                            columns.Bound(p => p.LotNumber).Title("Lot Number");                            
+                            columns.Command(command =>
+                            {
+                                if (FBB_CFG001_3_DSLAM_RESTOCK != "")
+                                {
+                                    command.Custom("Restock").Click("onRestock").Text("<i class='fa fa-refresh fa-lg'></i>&nbsp; Restock");
+                                }
+                                if (FBB_CFG001_3_DSLAM_DELETE != "")
+                                {
+                                    command.Custom("Delete").Click("onDeleteStock").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete");
+                                }
+                            }).Width(210);
+                        })                        
+                            .Pageable(p => p.Input(true)
+                                .Numeric(true)
+                                .PageSizes(true)
+                            )
+                            .Filterable()
+                            .Reorderable(r => r.Columns(true))
+                            .Sortable()
+                             .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(10)
+                                .Read(read => read.Action("ReadGridRestock", "Coverage_Dslam").Data("onDataBind"))
+                             )
+                             .Events(e => e.DataBound("onGridDLSAM_DataBound"))
+                        )
+    </div>
+</div>
+
+                 </div>
+        </div>
+    </div>    
+
+@(Html.Kendo().Window()
+    .Name("DSLAMPopUp")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Add DSLAM")
+    .Width(520)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Content(@<text>
+<div class="row i-no-over" id="DSLAMPopUpPanel" style="margin: auto; overflow-x: hidden;">
+
+    <div class="col-md-10">
+        <div class="form-group">
+            <label>Node ID <span id="requiredfor-Code"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="Code" class="k-textbox form-control" readonly="true" style="width: 105%" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-Code"></div>
+        </div>
+    </div>
+
+    <div id="xx">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Region</label>
+                <div class="i-fg-data-entry">
+                    <input type="text" id="Region" class="k-textbox form-control" readonly="true" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Building Code</label>
+                <div class="i-fg-data-entry">
+                    <input type="text" id="BuildingCode" class="k-textbox form-control" readonly="true" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>DL Number</label>
+                <div class="i-fg-data-entry">
+                    <input type="text" id="DLRun" class="k-textbox form-control" readonly="true" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Network Type <span id="requiredfor-MC"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                                .Name("MC")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataTextField("LOV_NAME")
+                                .DataValueField("DISPLAY_VAL")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("SelectLov", "MasterData", new { type = "NETWORK_TYPE", lovNameText = true });
+                                    });
+                                })
+                                .Events(e => e.Change("getCode"))
+                        )
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-MC"></div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Network Type <span id="requiredfor-IPRANPort"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                                .Name("IPRANPort")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetIPRANPort", "Coverage_Dslam").Data("filterIPRANPort");
+                                    })
+                                    .ServerFiltering(true);
+                                })
+                                .Enable(false)
+                                .AutoBind(false)
+                                .CascadeFrom("MC")
+                                .Events(e => e.Change("getCode"))
+                        )
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-IPRANPort"></div>
+                <script>
+                    function filterIPRANPort() {
+                        return {
+                            mc: $("#MC").val()
+                        };
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-10" style="clear: both">
+        <div class="form-group">
+            <label>
+                <input type="radio" name="selectdslam" value="D" onclick="onClickDSLAM()" id="selectD" />
+                DSLAM Master</label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DropDownList()
+                                .Name("DSLAMMaster")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetDSLAMMaster", "Coverage_Dslam").Data("filterDSLAMMaster");
+                                    });
+                                })
+                                .Enable(false)
+                                .AutoBind(false)
+                                .Events(e => e.Change("onDSLAMMasterChange"))
+                        )
+            </div>
+            <script>
+                function filterDSLAMMaster() {
+                    return {
+                        regionCode: "@Model.RegionCode"
+                    };
+                }
+            </script>
+        </div>
+    </div>
+
+    <div class="col-md-10">
+        <div class="form-group">
+            <label>
+                <input type="radio" name="selectdslam" value="E" onclick="onClickDSLAM()" />
+                Existing DSLAM</label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DropDownList()
+                                .Name("ExistingDSLAM")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataTextField("Text")
+                                .DataValueField("Value")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetExistingDSLAM", "Coverage_Dslam", new { cvrId = Model.CVRID });
+                                    })
+                                    .ServerFiltering(true);
+                                })
+                                .Enable(false)
+                                .AutoBind(false)
+                                .Events(e => e.Change("onExistingDSLAMChange"))
+                        )
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="form-group">
+            <label>DSLAM Model <span id="requiredfor-DSLAMModel"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="DSLAMModel" class="k-textbox form-control" readonly="true" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-DSLAMModel"></div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="form-group">
+            <label>Brand <span id="requiredfor-Brand"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="Brand" class="k-textbox form-control" readonly="true" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-Brand"></div>
+        </div>
+    </div>
+
+    <div class="col-md-11">
+        <div class="form-group">
+            <label>Building Use <span id="requiredfor-BuildingUse"></span></label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().MultiSelect()
+                              .Name("BuildingUse")
+                              .Placeholder("กรุณาเลือก")
+                              .DataTextField("Tower")
+                              .DataValueField("Tower")
+                              .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetBuilding", "Coverage_Dslam", new { contactId = Model.ContactID, label = false });
+                                    });
+                                })
+                        )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-BuildingUse"></div>
+        </div>
+    </div>
+
+    <div class="col-md-11">
+        <div class="form-group">
+            <div class="btn-group pull-right i-gap-top-1">
+                <a class="btn btn-default i-width-sm-2" onclick="onCancel();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                <a class="btn btn-success i-width-sm-2" onclick="onGridDSLAMPopUp_Save()" id="btnMC_GridDSLAMPopUp_Save"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Save</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</text>)
+)
+
+<input type="hidden" id="DSLAMID" />
+<input type="hidden" id="DLs" />
+<input type="hidden" id="hdNodeNameTH" value="@ViewBag.NodeNameTH" />
+
+<script>
+    function onCancel() {
+        $("#DSLAMPopUp").data("kendoWindow").close();
+    }
+
+    function showPopupHistoryLog(panel) {
+        var title = panel;
+        var application = "FBB_CFG001_3_DSLAM_RELATION";
+        var refKey = $("#hdNodeNameTH").val();
+        var refName = "Node Name TH";    
+
+        onHistoryPopUp_Show(title, application, refKey, refName);
+    }
+
+    function showPopupHistoryLog2(panel) {
+        var title = panel;
+        var application = "FBB_CFG001_3_DSLAM_RESTOCK";
+        var refKey = $("#hdNodeNameTH").val();
+        var refName = "Node Name TH";
+
+        onHistoryPopUp_Show(title, application, refKey, refName);
+    }
+
+    $(function () {
+        if ("@FBB_CFG001_3_ADD" == "") $("#c_add").hide();
+
+        ClearTextValidation("DSLAMPopUpPanel");
+        var validateModel = [];
+        validateModel.push({ id: "MC" });
+        validateModel.push({ id: "IPRANPort" });
+        validateModel.push({ id: "DSLAMModel" });
+        validateModel.push({ id: "Brand" });
+        validateModel.push({ id: "BuildingUse" });
+        validateModel.push({ id: "Code" });
+        SetRequired(validateModel);
+    });
+
+    function onDataBind() {
+        return {
+            cvrId: "@Model.CVRID"
+        }
+    }
+
+    function getCode() {
+        $.ajax({
+            url: '/Coverage_Dslam/GetMaxDL',
+            data: {
+                cvrId: "@Model.CVRID"
+            },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                var dl = "DL" + response;
+                var c = "FBB" + "@Model.RegionLOV" + "_" + "@Model.IPRANCode" + "_" + "@Model.CondoCode" + "_" + "@Model.BuildingCode" + "_" + dl;
+
+                if ($("#IPRANPort").data("kendoDropDownList").value() != "")
+                    c += $("#MC").data("kendoDropDownList").text() + $("#IPRANPort").data("kendoDropDownList").value()
+
+                if ($("#Brand").val() != "")
+                    c += "_" + $("#Brand").val();
+
+                $("#Code").val(c);
+                $("#DLs").val(response);
+            },
+            error: function (err) {
+                $("#DSLAMPopUp").data("kendoWindow").close();
+                showFeedback("error", err);
+            }
+        });
+    }
+
+    function onGridDSLAMPopUp_Save() {
+
+        var chk = ValidationProcessing("DSLAMPopUpPanel");
+        if (chk) {
+            $.ajax({
+                url: '/Coverage_Dslam/CoverageDSLAMBuildingCommand',
+                data: {
+                    action: "Create", cvrId: "@Model.CVRID", dslamId: $("#DSLAMID").val(), type: $("input[name=selectdslam]:checked").val(),
+                    multiBuilding: $("#BuildingUse").data("kendoMultiSelect").value().toString(),
+                    nodeId: $("#Code").val(), dslamNo: $("#DLs").val(), contactId: "@Model.ContactID", nodeNameTH: $("#hdNodeNameTH").val(),
+                    nodeNameTH: $("#hdNodeNameTH").val(), buildingCode: $("#BuildingCode").val()
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    if (response == true) {
+                        Loading(0);
+                        $("#DSLAMPopUp").data("kendoWindow").close();
+
+                        showFeedback("success", "Created Complete.");
+                        $("#GridDSLAM").data("kendoGrid").dataSource.read();
+                        $("#GridDSLAMRestock").data("kendoGrid").dataSource.read();
+                    }
+                    else {
+                        Loading(0);
+                        $("#DSLAMPopUp").data("kendoWindow").close();
+                        showFeedback("warning", "Coverage Building " + response + " is duplicate, please try again.");
+                        $("#GridDSLAM").data("kendoGrid").dataSource.read();
+                        $("#GridDSLAMRestock").data("kendoGrid").dataSource.read();
+                    }
+
+                },
+                error: function (err) {
+                    $("#DSLAMPopUp").data("kendoWindow").close();
+                    showFeedback("error", err);
+                }
+            });
+
+        }
+    }
+
+    function onGridDSLAM_Add() {
+        $.ajax({
+            url: '/Coverage_Dslam/GetMaxDL',
+            data: {
+                cvrId: "@Model.CVRID"
+            },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                $("#DLs").val(response);
+
+                var dl = "DL" + response;
+                var c = "FBB" + "@Model.RegionLOV" + "_" + "@Model.IPRANCode" + "_" + "@Model.CondoCode" + "_" + "@Model.BuildingCode" + "_" + dl;
+                $("#Code").val(c);
+                $("#Region").val("@Model.Region");
+                $("#BuildingCode").val("@Model.BuildingCode");
+                $("#DLRun").val(dl);
+
+                $("#MC").data("kendoDropDownList").value("");
+                $("#IPRANPort").data("kendoDropDownList").value("");
+                $("#DSLAMMaster").data("kendoDropDownList").value("");
+                $("#ExistingDSLAM").data("kendoDropDownList").value("");
+                $("#BuildingUse").data("kendoMultiSelect").value("");
+                $("input[name=selectdslam]").removeAttr("checked");
+                $("#DSLAMModel").val("");
+                $("#Brand").val("");
+                $("#DSLAMMaster").data("kendoDropDownList").enable(false);
+                $("#ExistingDSLAM").data("kendoDropDownList").enable(false);
+
+                ClearTextValidation("DSLAMPopUp");
+
+                $("#xx").show();
+
+                $("#selectD").click();
+                onClickDSLAM();
+
+                $("#DSLAMPopUp").data("kendoWindow").open();
+                $("#DSLAMPopUp").data("kendoWindow").center();
+            },
+            error: function (err) {
+                $("#DSLAMPopUp").data("kendoWindow").close();
+                showFeedback("error", err);
+            }
+        });
+    }
+
+    function onGridDSLAM_Config(e) {
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        window.location.href = "/Coverage_CardPort/index?cvrId=" + "@Model.CVRID" + "&dslamId=" + dataItem.DSLAMID + "&ContactID=" + "@Model.ContactID";
+    }
+
+    function onGridDSLAM_Delete(e) {
+        var c = confirm("Are you sure you want to delete?");
+
+        if (c) {
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $.ajax({
+                url: '/Coverage_Dslam/CoverageDSLAMBuildingCommand',
+                data: {
+                    action: "Delete", cvrRelationId: dataItem.CVRRelationID, nodeNameTH: $("#hdNodeNameTH").val(), buildingCode: dataItem.BuildingCode,
+                    nodeId: dataItem.NodeId
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    if (response == true) {
+                        $("#DSLAMPopUp").data("kendoWindow").close();
+
+                        showFeedback("success", "Deleted Complete.");
+                        $("#GridDSLAM").data("kendoGrid").dataSource.read();
+                        $("#GridDSLAMRestock").data("kendoGrid").dataSource.read();
+                    }
+                    else {
+                        $("#DSLAMPopUp").data("kendoWindow").close();
+                        showFeedback("error", response);
+                    }
+                },
+                error: function (err) {
+                    $("#DSLAMPopUp").data("kendoWindow").close();
+                    showFeedback("error", err);
+                }
+            });
+        }
+    }
+
+    function onGridDLSAM_DataBound() {
+        clearPageScrollUp("#GridDSLAM");
+        clearPageScrollUp("#GridDSLAMRestock");
+        setButton();
+    }
+
+    function onClickDSLAM() {
+        if ($("input[name=selectdslam]:checked").val() == "D") {
+            var validateModel = [];
+            validateModel.push({ id: "MC" });
+            validateModel.push({ id: "IPRANPort" });
+            SetRequired(validateModel);
+
+            $("#DSLAMMaster").data("kendoDropDownList").dataSource.read();
+            $("#DSLAMMaster").data("kendoDropDownList").enable();
+
+            $("#ExistingDSLAM").data("kendoDropDownList").value("");
+            $("#ExistingDSLAM").data("kendoDropDownList").enable(false);
+            $("#xx").show();
+
+            getCode();
+        }
+        else if ($("input[name=selectdslam]:checked").val() == "E") {
+            $("#ExistingDSLAM").data("kendoDropDownList").dataSource.read();
+            $("#ExistingDSLAM").data("kendoDropDownList").enable();
+
+            $("#DSLAMMaster").data("kendoDropDownList").value("");
+            $("#DSLAMMaster").data("kendoDropDownList").enable(false);
+            $("#xx").hide();
+            $("#Code").val("");
+
+            var validateModel = [];
+            validateModel.push({ id: "MC" });
+            validateModel.push({ id: "IPRANPort" });
+            RemoveValidation(validateModel);
+        }
+
+        $("#DSLAMModel").val("");
+        $("#Brand").val("");
+    }
+
+    function onDSLAMMasterChange() {
+        $.ajax({
+            url: '/Coverage_Dslam/GetModelAndBrand',
+            data: {
+                regionCode: "@Model.RegionCode", lotNo: $("#DSLAMMaster").data("kendoDropDownList").value()
+            },
+            dataType: "json",
+            type: 'POST',
+            success: function (data) {
+                $("#DSLAMModel").val(data.Value);
+                $("#Brand").val(data.Value2);
+                $("#DSLAMID").val(data.ID);
+                getCode();
+            }
+        });
+    }
+
+
+    function onExistingDSLAMChange() {
+        var value = $("#ExistingDSLAM").data("kendoDropDownList").value()
+        var data = value.split(',');
+        $("#DSLAMModel").val(data[0]);
+        $("#Brand").val(data[1]);
+        $("#DSLAMID").val(data[2]);
+
+        $("#Code").val($("#ExistingDSLAM").data("kendoDropDownList").text());
+
+    }
+
+    function onRestock(e) {
+        Loading();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));        
+        $.ajax({
+            url: '/Coverage_Dslam/DSLAMRetockCommand',
+            data: {
+                action: "Restock", dslamId: dataItem.DSLAMID, nodeId: dataItem.NodeID, nodeTH: $("#hdNodeNameTH").val()
+                },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                if (response == true) {
+                    Loading(0);
+
+                    showFeedback("success", "Restock Complete.");
+                    $("#GridDSLAMRestock").data("kendoGrid").dataSource.read();
+                }
+                else {
+                    Loading(0);
+                    showFeedback("warning", "DSLAM Already Used.");
+                }
+
+            },
+            error: function (err) {
+                Loading(0);
+                showFeedback("error", err);
+            }
+        });
+    }
+
+    function onDeleteStock(e) {
+        var c = confirm("Are you sure you want to delete?");
+
+        if (c) {
+            Loading();
+
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            $.ajax({
+                url: '/Coverage_Dslam/DSLAMRetockCommand',
+                data: {
+                    action: "Delete", dslamId: dataItem.DSLAMID, nodeId: dataItem.NodeID, nodeTH: $("#hdNodeNameTH").val()
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    if (response == true) {
+                        Loading(0);
+
+                        showFeedback("success", "Deleted Complete.");
+                        $("#GridDSLAMRestock").data("kendoGrid").dataSource.read();
+                    }
+                    else {
+                        Loading(0);
+                        showFeedback("warning", "DSLAM Already Used.");
+                    }
+
+                },
+                error: function (err) {
+                    Loading(0);
+                    showFeedback("error", err);
+                }
+            });
+        }
+    }
+</script>

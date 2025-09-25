@@ -1,0 +1,157 @@
+﻿@using WBBWeb.Extension
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+
+@{
+
+    string L_SELECT_MODEL = "";
+    string L_SELECT_MODEL_SELL_ROUTER = "";
+    string L_SELECT_MODEL_BYOD = "";
+    string L_DOWNLOAD_MANUAL = "";
+    string L_POPUP_SELECT_MODEL = "";
+    string B_NEXT = "";
+    string B_CLOSE = "";
+    string L_POPUP_CHECK_DEVICE = "";
+    string L_POPUP_CHECK_DEVICE_IMG = "";
+
+
+    if (ViewBag.LabelFBBOR028 != null)
+    {
+        var LabelFBBOR028 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR028;
+        L_SELECT_MODEL = LabelFBBOR028.Any(c => c.Name == "L_SELECT_MODEL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SELECT_MODEL").DisplayValue : "";
+        L_SELECT_MODEL_SELL_ROUTER = LabelFBBOR028.Any(c => c.Name == "L_SELECT_MODEL_SELL_ROUTER") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SELECT_MODEL_SELL_ROUTER").DisplayValue : "";
+        L_SELECT_MODEL_BYOD = LabelFBBOR028.Any(c => c.Name == "L_SELECT_MODEL_BYOD") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SELECT_MODEL_BYOD").DisplayValue : "";
+        L_DOWNLOAD_MANUAL = LabelFBBOR028.Any(c => c.Name == "L_DOWNLOAD_MANUAL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_DOWNLOAD_MANUAL").DisplayValue : "";
+        L_POPUP_SELECT_MODEL = LabelFBBOR028.Any(c => c.Name == "L_POPUP_SELECT_MODEL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_SELECT_MODEL").DisplayValue : "";
+        L_POPUP_CHECK_DEVICE = LabelFBBOR028.Any(c => c.Name == "L_POPUP_CHECK_DEVICE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_CHECK_DEVICE").DisplayValue : "";
+        L_POPUP_CHECK_DEVICE_IMG = LabelFBBOR028.Any(c => c.Name == "L_POPUP_CHECK_DEVICE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_CHECK_DEVICE").Blob : "";
+        B_NEXT = LabelFBBOR028.Any(c => c.Name == "B_NEXT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+        B_CLOSE = LabelFBBOR028.Any(c => c.Name == "B_CLOSE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        
+        if(L_POPUP_CHECK_DEVICE_IMG != "")
+        {
+            string ImgSCPEText = "";
+            String img64Url = string.Format("data:image/jpg;base64,{0}", L_POPUP_CHECK_DEVICE_IMG);
+            ImgSCPEText = "<img src='"+img64Url+"'/>";
+            L_POPUP_CHECK_DEVICE = L_POPUP_CHECK_DEVICE.Replace("{Image}", ImgSCPEText);
+        }
+        else
+        {
+            L_POPUP_CHECK_DEVICE = L_POPUP_CHECK_DEVICE.Replace("{Image}", "");
+        }
+    }
+}
+
+<div id="page0" class="container" style="display: none;">
+    
+    <div class="col-lg-12 col-md-12 col-xs-12 addrounded">
+        
+        <p class="clearfix"></p>
+        <div class="col-lg-offset-4 col-md-4 col-md-offset-4 col-md-4 col-xs-12 addrounded">
+            <div id="divOptionInstallRouter">
+                <h4 class='title- page-header tgreen'>@Html.Raw(L_SELECT_MODEL)</h4>
+                <div class='panel panel-info'>
+                    <div class='panel-heading' style='border-bottom: none; !important;'></div>
+                    <div class='table-responsive'>
+                        <table class='table table-hover'>
+                            <tbody class='promotionDetail2'>
+                                <tr id='trRouter1' class='promotionDetail-table' style='cursor: pointer;'>
+                                    <th class="col-lg-1">
+                                        <input class='classRadioOptionRouter' id='radioRouter1' type='radio' value='5'  name='SelectOptionSelectInstallRouter' onclick='onBindingSelectOptionInstallRouter()'>
+                                    </th>
+                                    <td  class="col-lg-5">
+                                        @Html.Raw(L_SELECT_MODEL_SELL_ROUTER)
+                                    </td>
+                                </tr>
+                                <tr id='trRouter2' class='promotionDetail-table' style='cursor: pointer;'>
+                                    <th>
+                                        <input class='classRadioOptionRouter' id='radioRouter2' type='radio' value='3'  name='SelectOptionSelectInstallRouter' onclick='onBindingSelectOptionInstallRouter()'>
+                                    </th>
+                                    <td>
+                                        @Html.Raw(L_SELECT_MODEL_BYOD) <br>
+                                        <a id="btnDownloadConfig" href="~/ConfigurationManualFile/ConfigurationManual.pdf" target="_blank" style="cursor: pointer; display: none;" class="tgreen" title="@Html.Raw(L_DOWNLOAD_MANUAL)">@Html.Raw(L_DOWNLOAD_MANUAL)</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="clearfix"></p>
+        <p class="clearfix page-header"></p>
+        <div class="col-md-12 text-center">
+            <button id="btnNextPageCheckCoverage" type="button" class="btn btn-success">
+                &nbsp; @B_NEXT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </button>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    
+</div>
+
+<div class="modal fade" id="myModalSCPE" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h4 class="text-center">
+                        @Html.Raw(L_POPUP_CHECK_DEVICE)
+                    </h4>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#divOptionInstallRouter').find('table.table-hover').find('tbody').find('tr').attr("style", "cursor: pointer;");
+        $('#divOptionInstallRouter').find('table.table-hover').find('tbody').find('tr').click(function () {
+            if ($(this).find('th').find('input[type=radio]').val() != $("input[name=SelectOptionSelectInstallRouter]:checked").val()) {
+                $(this).find('th').find('input[type=radio]').prop('checked', true);
+                onBindingSelectOptionInstallRouter();
+            }
+        });
+
+    });
+
+    function onBindingSelectOptionInstallRouter() {
+        $('#btnDownloadConfig').hide();
+        var valOptionSelectInstallRouter = $("input[name=SelectOptionSelectInstallRouter]:checked").val();
+        if (valOptionSelectInstallRouter == "3") {
+            $('#btnDownloadConfig').show();
+            $('#myModalSCPE').modal('show');
+        }
+        
+    }
+
+    $('#btnNextPageCheckCoverage').click(function () {
+        var valOptionSelectInstallRouter = $("input[name=SelectOptionSelectInstallRouter]:checked").val();
+
+        if ((valOptionSelectInstallRouter == null) || (valOptionSelectInstallRouter == "")) {
+            toastrErrorMessage('@Html.Raw(L_POPUP_SELECT_MODEL)');
+            validateResult = false;
+        }
+        else {
+            $('#page1').show();
+            $('#page0').hide();
+            $("#wrapSwitchLanguage").hide();
+            selectPage(1);
+        }
+    });
+
+</script>

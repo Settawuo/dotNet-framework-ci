@@ -1,0 +1,96 @@
+﻿@using System.Globalization
+@using System.Threading
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension
+@model WBBContract.Commands.PaymentLogCommand
+@{
+    Layout = "~/Views/Shared/_LayoutPaymentAndReportProblem.cshtml";
+
+    var lHeaderPayment = "Transaction Successful";
+    var lSubHeaderPayment = "ชำระค่าบริการสำเร็จ";
+    var lInternetNo = "หมายเลขการทำรายการ";
+    var lTransactionDate = "วันที่ทำรายการ";
+    var lTransactionTime = "เวลาที่ทำรายการ";
+    var lOutstandingBalance = "ยอดเงินรวม";
+    var lBalanceType = "{0} บาท";
+
+    var lBack = "กลับสู่หน้าหลัก";
+
+    if (ViewBag.LabelFBBOR019 != null)
+    {
+        var lovlist = (List<LovScreenValueModel>)ViewBag.LabelFBBOR019;
+        var lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_SUCCESS_HEADER") ?? new LovScreenValueModel();
+        lHeaderPayment = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_SUCCESS_SUB_HEADER") ?? new LovScreenValueModel();
+        lSubHeaderPayment = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_TRANSACTION_NO") ?? new LovScreenValueModel();
+        lInternetNo = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_TRANSACTION_DATE") ?? new LovScreenValueModel();
+        lTransactionDate = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_TRANSACTION_TIME") ?? new LovScreenValueModel();
+        lTransactionTime = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_OUTSTANDING_BALANCE") ?? new LovScreenValueModel();
+        lOutstandingBalance = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_TOTAL") ?? new LovScreenValueModel();
+        lBalanceType = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_BACK") ?? new LovScreenValueModel();
+        lBack = lovScreenValueModel.DisplayValue;
+
+    }
+
+    var amount = "";
+    if (Model != null)
+    {
+        amount = DataConvertHelpers.ToStrCurrencyFormat(string.IsNullOrEmpty(Model.ResponseAmount) ? Model.RequestParamAmount : Model.ResponseAmount);
+    }
+}
+<div id="divMainDetailBoxData" class="boxPayment">
+    <div class="row_ais">
+        <div class="row">
+            <p class="col-sm-12 col-md-12 col-lg-12 payment-headtext payment-box">@lHeaderPayment</p>
+            <p class="col-sm-12 col-md-12 col-lg-12 payment-subheadtext">@lSubHeaderPayment</p>
+        </div>
+        <div class="row">
+            <dl class="col-sm-12 col-md-12 col-lg-12 dl-horizontal">
+                <dt style="text-align: left"  class="payment-detail-text1">@lInternetNo</dt>
+                <dd class="payment-detail-text2">@Model.CustInternetNum</dd>
+                
+                <dt style="text-align: left" class="payment-detail-text1">@lTransactionDate</dt>
+                @{ Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US"); }
+                <dd class="payment-detail-text2">@Model.ResponseDatetime.GetValueOrDefault().ToString("dd/MM/yyyy")</dd>
+                
+                <dt style="text-align: left" class="payment-detail-text1">@lTransactionTime</dt>
+                <dd class="payment-detail-text2">@Model.ResponseDatetime.GetValueOrDefault().ToString("HH:mm:ss")</dd>
+                
+                <dt style="text-align: left" class="payment-detail-text1">@lOutstandingBalance</dt>
+                <dd class="payment-detail-text2">@string.Format(lBalanceType,  amount)</dd>
+           
+            </dl>
+        </div>
+        <div class="row_ais">
+            <form class="form-inline">
+                <div class="form-group payment-box-btn-firstpage">
+                    <a href="@Url.Action("RedirectPage", "Payment")" class="form-group btn2 btn btn-for-xs">
+                        @lBack
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+  <script>
+        $(document).ready(function () {
+            $('li').removeClass('active');
+            $('.bd-3').addClass('active');
+            $('.pay').addClass('active');
+        });
+   </script>

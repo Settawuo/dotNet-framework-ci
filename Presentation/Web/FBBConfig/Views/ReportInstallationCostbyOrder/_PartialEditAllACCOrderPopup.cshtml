@@ -1,0 +1,888 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ReportInstallationCostbyOrderModel
+@{
+    string L_STATUS = "Status";
+
+    string L_PAIDDATE = "Paid Date(วันที่โอน)";
+    string L_INVOICEDATE = "Invoice Date";
+    string L_REMARK = "Remark";
+    string L_FROM = "From:";
+    string L_TO = "To:";
+
+    string B_SAVE = "SAVE";
+    string B_CANCEL = "CANCEL";
+    string B_CLEAR = "Clear";
+    string B_SEARCH = "Search";
+
+    string L_Maping_Cost = "MAPING COST";
+    string L_Over_Length = "OVER LENGHT";
+    string L_Over_Cost = "OVER COST";
+    string L_Rule_ID = "RULE ID";
+    string L_SUBCONTRACT_CODE = "VENDER CODE";
+    string L_ACC_REMARK = "REMARK STATUS";
+    string L_ACC_INVOICE_NO = "INVOICE NO.";
+    string L_ACC_INVOICE_DATE = "INVOICE DATE";
+    string L_PERIOD = "รอบการเบิก";
+    string L_ORDER_STATUS = "WORK FLOW STATUS";
+    string L_INTERNET_NO = "INTERNET NO.";
+    string L_ACCOUNT_NAME = "ACCOUNT_NAME";
+    string L_PROMOTION = "PROMOTION";
+    string L_SUB_NAME = "SUBCONTRACT";
+    string L_OUTDOOR = "ราคา OUT DOOR";
+    string L_INDOOR = "ราคา IN DOOR";
+    string L_TOTAL_PAID = "TOTAL PAID";
+    string L_ENTRY_FEE = "ค่าแรกเข้า(ENTRY FEE)รวม VAT";
+    string L_ORDER_NO = "ORDER NO.";
+    string L_PRODUCT_NAME = "PRODUCT NAME";
+    string L_RECAL_RATE = "RECAL RATE";
+    string L_RECAL_OVER_LENGTH = "RECAL OVER LENGTH";
+    string L_RECAL_OVER_COST = "RECAL OVER COST";
+    string L_LENGTH_DISTANCE = "LENGTH_DISTANCE";
+    string L_ORDER_SFF = "ORDER SFF";
+    string L_FOA_SUBMIT_DATE = "FOA SUBMIT DATE";
+    string L_CS_APPROVE_DATE_TEXT = "APPROVE JOB FBSS";
+    string L_EVENT_CODE = "EVENT CODE";
+    string L_INSTALLATION_ADDRESS = "INSTALLATION ADDRESS";
+    string L_SUBCONTRACT_SUB_TYPE = "SUBCONTRACT SUB TYPE";
+    string L_SUBCONTRACT_TYPE = "SUBCONTRACT TYPE";
+    string L_RECAL_MAPPING_COST = "RECAL MAPPING COST";
+    string L_INV_AMT_VAT = "Invoice Amount Vat7%";
+    string L_TOTAL_INV_AMT_VAT = "Total Invoice Amount(Include Vat7%)";
+    string L_ORDER_STATUS_DATE = "ORDER_STATUS_DATE";
+    string L_TOTAL_COST = "TOTAL FOA";
+    string L_OM_ORDER_STATUS = "ORDER STATUS";
+    string L_PAID_DATE = "PAID DATE";
+    string L_INVOICENO = "Invoice No.";
+}
+
+@*<div class="row">
+    <div class=" col-sm-12 col-md-4">
+
+        <label>Invoice No</label>
+        <input type="text" id="acct_no" class="k-textbox form-control" />
+
+    </div>
+    <div class=" col-sm-12 col-md-4">
+
+    </div>
+
+</div>
+<div class="row">
+    <br />
+</div>*@
+@*<div id="Invoicedt" class="row>">
+
+    <div class="row">
+        <div class="col-sm-12 col-md-4">
+            <label>@L_PAIDDATE  @L_FROM </label>
+            @(Html.Kendo().DatePicker().Name("dtpInvoiceDateFrom")
+            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+            .ParseFormats(new List<string>
+                { "dd/MM/yyyy" })
+                .Format("dd/MM/yyyy")
+                .Min(new DateTime(1900, 1, 1))
+                .Max(new DateTime(2099, 12, 31))
+                .Events(e => e.Change("ondtpChangeInvoiceDateFrom"))
+                )
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <label>@L_TO</label>
+            @(Html.Kendo().DatePicker().Name("dtpInvoiceDateTo")
+            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+            .ParseFormats(new List<string>
+                { "dd/MM/yyyy" })
+                .Format("dd/MM/yyyy")
+                .Min(new DateTime(1900, 1, 1))
+                .Max(new DateTime(2099, 12, 31))
+                .Events(e => e.Change("ondtpChangeInvoiceDateTo"))
+                )
+        </div>
+    </div>
+</div>*@
+
+@*<div class="row i-text-align-right">
+
+    <a class="btn btn-info" onclick="ClearEditACCConfig();"><i class="fa fa-times"></i>&nbsp;&nbsp;@B_CLEAR</a>
+    <a id="btnSearchOrder" class="btn btn-info" onclick="searchACCTValue();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+
+</div>*@
+
+@*<div class="row">
+    <br />
+</div>*@
+
+<div id="ACCgridResult" class="row">
+    @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ReportInstallationCostbyOrderListModel>
+        ()
+        .Name("ACCTView")
+        .Selectable(selectable => selectable.Enabled(true).Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
+        .Columns(columns =>
+        {
+            //columns.Bound(p => p.ORDER_STATUS)
+            //.ClientTemplate("<input type='checkbox' class='k-cba ACCTPopupRow-checkbox' />")
+            //.HeaderTemplate("<input type='checkbox' id='ACCTPopupheader-chb' class='h-cba k-cba' />").HtmlAttributes(new { style = "text-align:center;" })
+            //.HeaderHtmlAttributes(new { style = "text-align:center" }).Width(50).Sortable(false);
+            columns.Bound(p => p.INVOICE_NO).Title(@L_ACC_INVOICE_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+
+            columns.Bound(p => p.INVOICE_DATE_TEXT).Title(@L_ACC_INVOICE_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+
+            columns.Bound(p => p.ORDER_STATUS).Title(@L_ORDER_STATUS).HtmlAttributes(new { style = "text-align:center;" }).Width(120);
+            columns.Bound(p => p.PAY_PERIOD).Title(@L_PERIOD).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+            columns.Bound(p => p.ORDER_STATUS_DT_TEXT).Title(@L_ORDER_STATUS_DATE).HtmlAttributes(new { style = "text-align:center;" }).Width(160);
+            columns.Bound(p => p.ACCESS_NUMBER_MASKING).Title(@L_INTERNET_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+            columns.Bound(p => p.ACCESS_NUMBER).Title(@L_INTERNET_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(120).Hidden();
+            columns.Bound(p => p.ACCOUNT_NAME).Title(@L_ACCOUNT_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+            columns.Bound(p => p.PROMOTION_NAME).Title(@L_PROMOTION).HtmlAttributes(new { style = "text-align:left;" }).Width(180);
+            columns.Bound(p => p.SUBCONTRACT_NAME).Title(@L_SUB_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(180);
+            columns.Bound(p => p.LENGTH_DISTANCE).Title(@L_LENGTH_DISTANCE).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+            columns.Bound(p => p.OUTDOOR_COST).Title(@L_OUTDOOR).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(130);
+            columns.Bound(p => p.INDOOR_COST).Title(@L_INDOOR).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(130);
+            columns.Bound(p => p.MAPPING_COST).Title(L_Maping_Cost).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+            columns.Bound(p => p.OVER_LENGTH).Title(L_Over_Length).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+            columns.Bound(p => p.OVER_COST).Title(L_Over_Cost).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+            columns.Bound(p => p.TOTAL_COST).Title(@L_TOTAL_COST).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(130);
+            columns.Bound(p => p.ENTRY_FEE).Title(@L_ENTRY_FEE).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(180);
+            columns.Bound(p => p.ORDER_NO).Title(@L_ORDER_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(220);
+            columns.Bound(p => p.PRODUCT_NAME).Title(@L_PRODUCT_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(130);
+            columns.Bound(p => p.SUBCONTRACT_CODE).Title(@L_SUBCONTRACT_CODE).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+            columns.Bound(p => p.REMARK).Title(@L_ACC_REMARK).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+            columns.Bound(p => p.PAID_DATE_TEXT).Title(@L_PAID_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+            columns.Bound(p => p.OM_ORDER_STATUS).Title(@L_OM_ORDER_STATUS).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+            columns.Bound(p => p.ORDER_SFF).Title(@L_ORDER_SFF).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+            columns.Bound(p => p.FOA_SUBMIT_DATE_TEXT).Title(@L_FOA_SUBMIT_DATE).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+            columns.Bound(p => p.CS_APPROVE_DATE_TEXT).Title(@L_CS_APPROVE_DATE_TEXT).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+            columns.Bound(p => p.EVENT_CODE).Title(@L_EVENT_CODE).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+            columns.Bound(p => p.INSTALLATION_ADDRESS).Title(@L_INSTALLATION_ADDRESS).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+            columns.Bound(p => p.SUBCONTRACT_TYPE).Title(@L_SUBCONTRACT_TYPE).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+            columns.Bound(p => p.SUBCONTRACT_SUB_TYPE).Title(@L_SUBCONTRACT_SUB_TYPE).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+            columns.Bound(p => p.RECAL_OVER_LENGTH).Title(L_RECAL_OVER_LENGTH).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+            columns.Bound(p => p.RECAL_OVER_COST).Title(L_RECAL_OVER_COST).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+            columns.Bound(p => p.RECAL_MAPPING_COST).Title(L_RECAL_MAPPING_COST).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+            columns.Bound(p => p.RECAL_RATE).ClientFooterTemplate("<div style='text-align:right;' id='totalamount'>Total Amount:</div>")
+            .Title(L_RECAL_RATE).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150); //TOTAL RECAL
+            columns.Bound(p => p.TOTAL_PAID).ClientFooterTemplate("<div style='text-align:right;' id='sumtotal'></div>")
+            .Title(L_TOTAL_PAID).HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+            // .HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+
+
+            columns.Bound(p => p.INVOICE_AMOUNT_VAT).Title(L_INV_AMT_VAT).ClientFooterTemplate("<div class='' style='text-align:right;' id='sumvat'></div>")
+            .HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+            columns.Bound(p => p.TOTAL_INVOICE_AMOUNT_VAT).Title(L_TOTAL_INV_AMT_VAT).ClientFooterTemplate("<div class='' style='text-align:right;' id='sumincvat'></div>")
+            .HtmlAttributes(new { style = "text-align:right;" }).Format("{0:n}").Width(150);
+            columns.Bound(p => p.RULE_ID).Title(L_Rule_ID).HtmlAttributes(new { style = "text-align:center;" }).Width(110);
+
+
+        })
+        .Scrollable(scrollable => scrollable.Height("auto"))
+        // .Editable(editable => editable.Mode(GridEditMode.InCell))
+        .Resizable(resize => resize.Columns(true))
+        .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+        .AutoBind(false)
+        .Sortable()
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .Aggregates(aggregates =>
+        {
+
+            aggregates.Add(p => p.TOTAL_PAID).Sum();
+
+        })
+        //   .Group(groups => groups.Add(p => p.SUBCONTRACT_NAME))
+        .Model(model =>
+        {
+            model.Field(p => p.ACCESS_NUMBER_MASKING);
+            model.Id(p => p.ACCESS_NUMBER);
+            model.Field(p => p.PAY_PERIOD).Editable(false);
+            model.Field(p => p.ORDER_STATUS_DT_TEXT).Editable(false);
+            model.Field(p => p.ACCESS_NUMBER).Editable(false);
+            model.Field(p => p.ACCOUNT_NAME).Editable(false);
+            model.Field(p => p.PROMOTION_NAME).Editable(false);
+            model.Field(p => p.SUBCONTRACT_NAME).Editable(false);
+            model.Field(p => p.LENGTH_DISTANCE).Editable(false);
+            model.Field(p => p.OUTDOOR_COST).Editable(false);
+            model.Field(p => p.INDOOR_COST).Editable(false);
+            model.Field(p => p.MAPPING_COST).Editable(false);
+            model.Field(p => p.OVER_LENGTH).Editable(false);
+            model.Field(p => p.OVER_COST).Editable(false);
+            model.Field(p => p.TOTAL_PAID).Editable(false);
+            model.Field(p => p.ENTRY_FEE).Editable(false);
+            model.Field(p => p.ORDER_NO).Editable(false);
+            model.Field(p => p.PRODUCT_NAME).Editable(false);
+            model.Field(p => p.SUBCONTRACT_CODE).Editable(false);
+            model.Field(p => p.INVOICE_DATE_TEXT).Editable(false);
+            model.Field(p => p.INVOICE_NO).Editable(false);
+            model.Field(p => p.REMARK).Editable(false);
+            model.Field(p => p.PAID_DATE_TEXT).Editable(false);
+            model.Field(p => p.OM_ORDER_STATUS).Editable(false);
+            model.Field(p => p.ORDER_SFF).Editable(false);
+            model.Field(p => p.FOA_SUBMIT_DATE).Editable(false);
+            model.Field(p => p.CS_APPROVE_DATE_TEXT).Editable(false);
+            model.Field(p => p.EVENT_CODE).Editable(false);
+            model.Field(p => p.INSTALLATION_ADDRESS).Editable(false);
+            model.Field(p => p.SUBCONTRACT_TYPE).Editable(false);
+            model.Field(p => p.SUBCONTRACT_SUB_TYPE).Editable(false);
+            model.Field(p => p.RECAL_OVER_LENGTH).Editable(false);
+            model.Field(p => p.RECAL_OVER_COST).Editable(false);
+            model.Field(p => p.RECAL_MAPPING_COST).Editable(false);
+            model.Field(p => p.RECAL_RATE).Editable(false);
+            model.Field(p => p.TOTAL_PAID).Editable(false);
+
+            model.Field(p => p.INVOICE_AMOUNT_BFVAT).Editable(false);
+            model.Field(p => p.INVOICE_AMOUNT_VAT).Editable(false);
+            model.Field(p => p.TOTAL_INVOICE_AMOUNT_VAT).Editable(false);
+            model.Field(p => p.RULE_ID).Editable(false);
+            model.Field(p => p.APPROVE_FLAG).Editable(false);
+
+        })
+        .PageSize(20)
+        .Read(read => read.Action("ACCUPDATEOrderList", "ReportInstallationCostbyOrder").Data("ACCTbindingValue"))
+        //.Update(update => update.Action("UpdateSCMOrderList", "LastMileByDistance"))
+        )
+        .Events(e => e.DataBound("onACCTPopupDataBound"))
+        )
+</div>
+<div class="row">
+    <br />
+</div>
+
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+
+        <label>@L_STATUS <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label style="color:red;font-size:15px">*</label>
+        <div class="i-fg-data-entry">
+            @(Html.Kendo().DropDownList()
+            .Name("ddlStatus2")
+            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+            .DataTextField("DISPLAY_VAL")
+            .DataValueField("LOV_VAL1")
+            .DataSource(source =>
+            {
+            source.Read(read =>
+            {
+            read.Action("SelectAccWorkFlowStatus", "ReportInstallationCostbyOrder")
+            .Data("getAdditionalParam");
+
+            }).ServerFiltering(true);
+
+            })
+            .Events(e => e.Change("onddlStatusChangeDropDown"))
+            )
+        </div>
+        <div class="i-fg-data-entry-validation" id="validatefor-ddlStatus2"></div>
+
+    </div>
+    <div id="paiddt2" class=" col-sm-12 col-md-4">
+        <label>@L_PAIDDATE <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label style="color:red;font-size:15px">*</label>
+
+            @(Html.Kendo().DatePicker()
+            .Name("dtPaidDate2")
+            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+            .ParseFormats(new List<string>
+                { "dd/MM/yyyy" })
+                .Format("dd/MM/yyyy")
+                .Min(new DateTime(1900, 1, 1))
+                .Max(new DateTime(2099, 12, 31))
+                @*.Events(e => e.Change("onChangedtpInvDateACC"))*@
+                )
+
+        <div class="i-fg-data-entry-validation" id="validatefor-dtPaidDate2"></div>
+    </div>
+</div>
+<div id="accallinvnodate" class="row">
+    <div id="_accinvodate" class=" col-sm-12 col-md-4">
+        <label>@L_INVOICEDATE </label>
+
+        @(Html.Kendo().DatePicker()
+                .Name("accdtinvodate")
+                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                .ParseFormats(new List<string>
+                    { "dd/MM/yyyy" })
+                    .Format("dd/MM/yyyy")
+                    .Min(new DateTime(1900, 1, 1))
+                    .Max(new DateTime(2099, 12, 31))
+                    @*.Events(e => e.Change("onChangedtpInvDateACC"))*@
+        )
+
+        <div class="i-fg-data-entry-validation" id="validatefor-accdtinvodate"></div>
+    </div>
+    <div id="_accinvono" class=" col-sm-12 col-md-4">
+        <label>@L_INVOICENO</label>
+        <input type="text" id="_accallinvono" value="" class="k-textbox form-control" />
+        <div class="i-fg-data-entry-validation" id="validatefor-accinvono"></div>
+    </div>
+</div>
+<div class="row">
+    <div class=" col-sm-12 col-md-12">
+        <label>@L_REMARK <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label id="accallrm" style="color:red;font-size:15px">*</label>
+        @Html.TextArea("REMARK", new { maxlength = 500, @rows = 3, @style = "resize:none; width:437px", @class = "k-textbox form-control", @id = "REMARK2" })
+        <div class="i-fg-data-entry-validation" id="validatefor-REMARK2"></div>
+    </div>
+
+</div>
+<div class="row">
+    <br />
+</div>
+<div class="row i-text-align-center">
+    <a class="btn btn-info" onclick="CancelEditACCAllConfig();"><i class="fa fa-times"></i>&nbsp;&nbsp;@B_CANCEL</a>
+    <a class="btn btn-info" id="btnSaveAcc" onclick="ACCTAllConfirmPaid();" disabled="disabled"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+    @*<a class="btn btn-info" id="saveChkAcc" onclick="CheckBoxACCTConfirmPaid();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>*@
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        //$("#dtpInvoiceDateFrom").data("kendoDatePicker").value(new Date());
+        //setDate();
+        ////$("#dtpInvoiceDateTo").data("kendoDatePicker").value(new Date());
+
+        var grid = $("#ACCTView").data("kendoGrid");
+        grid.table.on("click", ".ACCTPopupRow-checkbox", selectRow2);
+
+        //check all
+        $('#ACCTPopupheader-chb').change(function (ev) {
+            var checked = ev.target.checked;
+
+            $('.ACCTPopupRow-checkbox:enabled').each(function (idx, item) {
+                if (checked) {
+                    if ($(item).prop("checked", false)) {
+                        $(item).click();
+                    }
+                } else {
+                    if ($(item).prop("checked", true)) {
+                        $(item).click();
+                        checkedIds = {};
+                    }
+                }
+            });
+
+            if (checked) {
+                $(".h-cba").prop('checked', true);
+            } else {
+                $(".h-cba").prop('checked', false);
+            }
+        });
+
+    });
+
+    function onACCTPopupDataBound() {
+        Loading(0);
+        var grid = this;
+        //fix kendo grid width
+        if (this.dataSource.view().length === 0) {
+
+        }
+        else {
+
+            $('.k-grid-content').height("auto");
+            $('.k-grid-content').css("max-height", "200px");
+        }
+        $('#ACCTPopupheader-chb').removeAttr('checked');
+        $('#ACCTPopupRow-checkbox').removeAttr('checked');
+        var view = this.dataSource.view();
+        for (var i = 0; i < view.length; i++) {
+            if (checkedIds[view[i].id]) {
+                this.tbody.find("tr[data-uid='" + view[i].uid + "']")
+                    .addClass("k-state-selected")
+                    .find(".ACCTPopupRow-checkbox")
+                    .attr("checked", "checked");
+            }
+            else {
+                this.tbody.find("tr[data-uid='" + view[i].uid + "']")
+                    .css("display", "none")
+            }
+
+        }
+
+        //when header checkbox is checked
+        if ($("#ACCTPopupheader-chb").prop("checked")) {
+
+            $('.ACCTPopupRow-checkbox:enabled').each(function (idx, item) {
+                if ($(item).prop("checked", false)) {
+                    $(item).click();
+                }
+            });
+        }
+    }
+
+    function onddlStatusChangeDropDown() {
+        //var st = this.val();
+        var st = $("#ddlStatus2").val();
+        if (st == "Hold") {
+            //  paiddt
+            $("#accallinvnodate").hide();
+            $("#accallrm").html("*")
+            document.getElementById('paiddt2').style.display = 'none';
+        }
+        else {
+            $("#accallinvnodate").show();
+            $("#accallrm").html("")
+            document.getElementById('paiddt2').style.display = 'block';
+        }
+
+    }
+    function CancelEditACCAllConfig() {
+        $("#ACCTPopup").data("kendoWindow").close();
+        $("#ddlStatus2").data('kendoDropDownList').value("ALL");
+        document.getElementById('paiddt2').style.display = 'block';
+        //document.getElementById('Invoicedt').style.display = 'block';
+        $("#ACCTView").data('kendoGrid').dataSource.data([]);
+        $("#dtPaidDate2").val("");
+        $("#REMARK2").val("");
+        $("#acct_no").val("");
+        $("#_accallinvono").val(""); //_accinvono 
+        $("#accdtinvodate").val(""); //accdtinvodate
+        $("#validatefor-ddlStatus2").html("");
+        $("#validatefor-dtPaidDate2").html("");
+        $("#validatefor-REMARK2").html("");
+        //$("#dtpInvoiceDateFrom").data("kendoDatePicker").value(new Date());
+
+        setDate();
+
+    }
+
+    function ClearEditACCConfig() {
+        $("#ACCTView").data('kendoGrid').dataSource.data([]);
+        $("#ddlStatus2").data('kendoDropDownList').value("ALL");
+        document.getElementById('paiddt2').style.display = 'block';
+        document.getElementById('Invoicedt').style.display = 'block';
+        $("#dtPaidDate2").val("");
+        $("#dtpInvoiceDateFrom").data("kendoDatePicker").value(new Date());
+        //$("#dtpInvoiceDateTo").data("kendoDatePicker").value(new Date());
+        $("#REMARK2").val("");
+        $("#acct_no").val("");
+        $("#_accallinvono").val(""); //_accinvono 
+        $("#accdtinvodate").val(""); //accdtinvodate
+        $("#validatefor-ddlStatus2").html("");
+        $("#validatefor-dtPaidDate2").html("");
+        $("#validatefor-REMARK2").html("");
+
+        setDate();
+    }
+
+    function AccAllValidationDateValue() {
+        $("#validatefor-ddlStatus2").html("");
+        $("#validatefor-" + "dtPaidDate2").html("");
+        $("#validatefor-" + "REMARK2").html("");
+        var chk = ValidationProcessing("dateselect");
+
+        //  alert("SCMValidation");
+        if (chk) //check blank value
+        {
+            // alert("ValidationBlankValue");
+            if ($("#ddlStatus2").val() == "ALL" || $("#ddlStatus2").val() == "") {
+                $("#validatefor-ddlStatus2").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            } else if ($("#ddlStatus2").val() == "Paid") {
+                $("#validatefor-" + "REMARK2").html("");
+                if ($.trim($("#dtPaidDate2").val()) == "") {
+                    $("#validatefor-dtPaidDate2").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                } else {
+                    if (!kendo.parseDate($("#dtPaidDate2").val(), "dd/MM/yyyy")) {
+                        if ($("#dtPaidDate2").val() != "") {
+                            $("#validatefor-dtPaidDate2").html(ValidationIcon() + "This field is not correct format.");
+                            chk = false;
+                        }
+                    } else {
+                        $("#validatefor-" + "dtPaidDate2").html("");
+                    }
+                }
+                $("#validatefor-ddlStatus2").html("");
+            }
+            else if ($("#ddlStatus2").val() == "Hold") {
+                $("#validatefor-" + "dtPaidDate2").html("");
+                $("#validatefor-ddlStatus2").html("");
+                //  REMARK
+                if ($.trim($("#REMARK2").val()) == "") {
+                    $("#validatefor-REMARK2").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "REMARK2").html("");
+                }
+            } else {
+                $("#validatefor-ddlStatus2").html("");
+                $("#validatefor-" + "dtPaidDate2").html("");
+                $("#validatefor-" + "REMARK2").html("");
+            }
+
+
+        }
+        return chk;
+    }
+    var AccessList = function () {
+        ACCESS_NUMBER = "";
+    }
+    function ACCTAllConfirmPaid() {
+        $("#chk").val("False");
+        var count = 0;
+        var index = 0;
+       // idsToSend = [];
+        //$.each(checkedIds, function (i, val) {
+
+        //    if (checkedIds[i]) {
+        //        //AccessListModel.ACCESS_NUMBER = i;
+        //        //
+        //        var AccessListModel = new AccessList();
+        //        AccessListModel.ACCESS_NUMBER = i;
+        //        idsToSend.push(AccessListModel);
+        //        count++;
+        //    }
+        //    index++;
+        //});
+
+        var data;
+        var chk = AccAllValidationDateValue();
+        if (chk) {
+
+            //alert("AccChk");
+            var AccNO = "";
+            var user = "";
+            var IntF = "";
+            //SCM VALUE
+            var status = $("#ddlStatus2").val();
+            var InvNo = $("#_accallinvono").val(); //_accinvono 
+            var InvDate = $("#accdtinvodate").val();; //accdtinvodate
+            var IrDoc = "";
+            var remark = $("#REMARK2").val();
+            var remarksub = "";
+            //FAPO Value
+            var ValDis = "";
+            var Reason = "";
+            var TranDT = $("#dtPaidDate2").val();
+          //  alert(idsToSend);
+            if (idsToSend != null) {
+
+                data = JSON.stringify({
+                    'AccNOList': idsToSend, 'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+                });
+               // console.log(data);
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/ReportInstallationCostbyOrder/UpdateByOrder",
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response === "Update success.") {
+
+                            $("#ddlStatus2").data('kendoDropDownList').value("ALL");
+
+                            $("#REMARK2").val("");
+                            $("#dtPaidDate2").val("");
+                            $("#_accallinvono").val(""); //_accinvono 
+                            $("#accdtinvodate").val(""); //accdtinvodate
+                            $("#ACCTPopup").data("kendoWindow").close();
+
+                            showFeedback("success", response, "System Information");
+                            //checkedIds = {};
+                        }
+                        else {
+                            $("#ACCTPopup").data("kendoWindow").close();
+                            showFeedback("error", response, "System Information");
+                            //checkedIds = {};
+                        }
+
+                    },
+                    failure: function (msg) {
+
+                    }
+                });
+
+            }
+            $("#AccountingView").data("kendoGrid").dataSource.read();
+            //$("#ACCTView").data("kendoGrid").dataSource.read();
+        }
+        //hidepanel();
+    }
+
+    function CheckBoxACCTConfirmPaid(checked) {
+        $("#chk").val("False");
+        var index = 0;
+        idsToSend = [];
+        var data;
+
+        var chk = AccAllValidationDateValue();
+        if (chk) {
+
+
+            // alert("AccChk");
+            var AccNO = $("#accNo").val();
+            var user = " ";
+            var IntF = " ";
+            //SCM VALUE
+            var status = $("#ddlStatus2").val();
+            var InvNo = $("#_accallinvono").val(); //_accinvono 
+            var InvDate = $("#accdtinvodate").val();; //accdtinvodate
+            var IrDoc = " ";
+            var remark = $("#REMARK2").val();
+            var remarksub = " ";
+            //FAPO Value
+            var ValDis = " ";
+            var Reason = " ";
+            var TranDT = $("#dtPaidDate2").val();
+
+
+
+            if (checked != null) {
+
+                data = JSON.stringify({
+                    'AccNOList': checked, 'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+                });
+                console.log("checkbox");
+
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/ReportInstallationCostbyOrder/UpdateByOrder",
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response === "Update success.") {
+
+                            $("#ddlStatus2").data('kendoDropDownList').value("ALL");
+
+                            $("#REMARK2").val("");
+                            $("#dtPaidDate2").val("");
+                            $("#_accallinvono").val(""); //_accinvono 
+                            $("#accdtinvodate").val(""); //accdtinvodate
+                            $("#EditConfigPopup").data("kendoWindow").close();
+                          
+
+                            showFeedback("success", response, "System Information");
+                        }
+                        else {
+                            $("#EditConfigPopup").data("kendoWindow").close();
+                            showFeedback("error", response, "System Information");
+                        }
+                    },
+                    failure: function (msg) {
+
+                    }
+                });
+                $("#ACCTView").data("kendoGrid").dataSource.read();
+            }
+
+
+            else {
+                //    alert("AccNotChk");
+            }
+            // alert(status + invNo + invDate + irdoc + remark);
+        }
+        //hidepanel();
+    }
+
+    function defaultACCUpdateData() {
+        var searchUpdate = new FLSUpdateModel();
+
+        searchUpdate.UPDATESTATUS = "";
+        searchUpdate.WF_STATUS = "Confirm Paid";
+
+        searchUpdate.DateFrom = $("#dtpInvoiceDateFrom").val();//DateFrom
+        searchUpdate.DateTo = $("#dtpInvoiceDateTo").val(); //DateTo
+        searchUpdate.INVOICE_NO = "";
+        var _acct_no = $("#acct_no").val();
+        if (_acct_no != null || _acct_no != "" || _acct_no != "undefined") {
+            searchUpdate.INVOICE_NO = _acct_no
+        }
+        searchUpdate.INVOICE_DATE = "";
+
+        var grid = $("#ACCTView").data("kendoGrid");
+
+        searchUpdate.PAGE_INDEX = grid.dataSource.page();
+        searchUpdate.PAGE_SIZE = grid.dataSource.pageSize();
+
+        var activeTab = $('#SoftwareTabStrip').data("kendoTabStrip").select().index();
+        if (activeTab === 0) {
+            searchUpdate.TOTAL_COUNT = $(".ACCTViewRow-checkbox:checked").length;
+
+        } else if (activeTab === 1) {
+            searchUpdate.TOTAL_COUNT = $(".ACCTViewRow2-checkbox:checked").length;
+        }
+
+
+        return searchUpdate;
+    }
+    //var model;
+    function ACCTbindingValue() {
+        Loading();
+        model = defaultACCUpdateData();
+        //model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    function selectRow2() {
+        var checked = this.checked,
+            row = $(this).closest("tr"),
+            grid = $("#ACCTView").data("kendoGrid"),
+            dataItem = grid.dataItem(row);
+        checkedIds[dataItem.ACCESS_NUMBER] = checked;
+        if (checked) {
+            //-select the row
+            row.addClass("k-state-selected");
+            $("#btnSaveAcc").attr("disabled", false);
+        } else {
+            row.removeClass("k-state-selected");
+            $("#ACCTPopupheader-chb").prop("checked", false);
+        }
+        ACCcheckUpdateAllButton();
+    }
+
+    function ACCcheckUpdateAllButton() {
+        var count = 0;
+        var index = 0;
+        idssToSend = [];
+        $.each(checkedIds, function (i, val) {
+
+            if (checkedIds[i]) {
+                //AccessListModel.ACCESS_NUMBER = i;
+                var AccessListModel = new AccessList();
+                AccessListModel.ACCESS_NUMBER = i;
+                idssToSend.push(AccessListModel);
+                count++;
+            }
+            index++;
+        });
+
+        if (count == 0) {
+            $("#btnSaveAcc").attr("disabled", true);
+        }
+        else {
+            $("#btnSaveAcc").attr("disabled", false);
+        }
+    }
+
+    function getAdditionalParam(dropDown) {
+        console.log(ddlStatusModel)
+        return ddlStatusModel;
+        //do stuff with dropDown
+    }
+    var checkedIds = {};
+    function searchACCTValue() {
+      //  idssToSend = [];
+        //$(".k-cba").prop("checked", false);
+        //checkedIds = {};
+      //  var data = JSON.stringify({ 'AccNOList': idsToSend });
+       
+     //   console.log(data);
+       // var grid = $("#ACCTView").data("kendoGrid");
+       // grid.dataSource.page(1);
+        $("#btnSaveAcc").attr("disabled", false);
+
+        Loading(0);
+       var grid = $("#ACCTView").data("kendoGrid");
+        grid.dataSource.page(1);
+    
+
+    }
+
+    function getSumValue() {
+        //var usertype = $("#chkusertype").val();
+        //alert(usertype);
+        if (usertype == "ACCT") {
+
+            var _sumtotal;
+            $.ajax({
+                type: "POST",
+                url: "/ReportInstallationCostbyOrder/getSumValue",
+                // data: data,
+                dataType: "json",
+                async: false,
+                success: function (response) {
+
+                    if (response) {
+                        //   console.log(response._sumtotal);
+                        //   console.log(response._sumvat);
+                        //   console.log(response._sumincvat);
+
+                        $("#_sumtotal").val(response._sumtotal);
+                        $("#_sumvat").val(response._sumvat);
+                        $("#_sumincvat").val(response._sumincvat);
+
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+        }
+        setSumValue();
+    }
+
+    function setSumValue() {
+        var usertype = $("#chkusertype").val();
+        //alert(usertype);
+        //var _st = $("#_sumtotal").val();
+        //var _sv = $("#_sumvat").val();
+        //var _sincv = $("#_sumincvat").val();
+        // console.log(_st);
+        // console.log(_sv);
+        //  console.log(_sincv);
+        if (usertype == "ACCT") {
+
+            //$("#sumtotal").html(_st);
+            //$("#sumvat").html(_sv);
+            //$("#sumincvat").html(_sincv);
+        }
+    }
+
+    function setDate() {
+        //alert("sss");
+        var pickDate = new Date()
+        var minDate = new Date(pickDate);
+        var maxDate = new Date(pickDate.setMonth(pickDate.getMonth() + 5));
+        maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, maxDate.getDate() - 1);
+        $("#dtpInvoiceDateTo").kendoDatePicker({
+            min: minDate,
+            max: maxDate,
+            format: "dd/MM/yyyy",
+            parseFormats: ["dd/MM/yyyy"]
+        });
+        var value = $("#dtpInvoiceDateFrom").val();
+        $("#dtpInvoiceDateTo").val(value);
+    }
+
+    function ondtpChangeInvoiceDateFrom() {
+        var pickDate = this.value();
+        var datepicker = $("#dtpInvoiceDateTo").data("kendoDatePicker");
+        if (pickDate) {
+            datepicker.enable(true);
+            var minDate = new Date(pickDate);
+            var maxDate = new Date(pickDate.setMonth(pickDate.getMonth() + 5));
+            maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, maxDate.getDate() - 1);
+            $("#dtpInvoiceDateTo").kendoDatePicker({
+                min: minDate,
+                max: maxDate,
+                format: "dd/MM/yyyy",
+                parseFormats: ["dd/MM/yyyy"]
+            });
+
+        } else {
+            datepicker.enable(false);
+        }
+        datepicker.value(new Date());
+        var value = $("#dtpInvoiceDateFrom").val();
+        $("#dtpInvoiceDateTo").val(value);
+    }
+    function ondtpChangeInvoiceDateTo() {
+        //var startPicker = $("#dtpInvoiceDateFrom").data("kendoDatePicker").value();
+        //var endPicker = $("#dtpInvoiceDateTo").data("kendoDatePicker").value();
+        ////  alert(startPicker);
+        //if ($("#dtpInvoiceDateFrom").data("kendoDatePicker").value() === null) {
+        //    $("#dtpInvoiceDateFrom").data("kendoDatePicker").value(endPicker);
+
+        //}
+        //else if ((endPicker < startPicker)
+        //    && ($("#dtpInvoiceDateTo").data("kendoDatePicker").value() != ''
+        //    && (kendo.parseDate($("#dtpInvoiceDateTo").val(), "dd/MM/yyyy")))
+        //) {
+        //    $("#dtpInvoiceDateFrom").data("kendoDatePicker").value(endPicker);
+        //}
+    }
+</script>

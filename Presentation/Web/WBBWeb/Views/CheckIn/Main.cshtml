@@ -1,0 +1,158 @@
+﻿@model WBBEntity.PanelModels.WebServiceModels.CheckInOrderModel
+@using System.Data;
+@{
+    Layout = "~/Views/CheckIn/_Layout.cshtml";
+}
+
+<style>
+    #grid .k-grid-toolbar {
+        padding: .6em 1.3em .6em .4em;
+    }
+
+    .category-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+
+    #category {
+        vertical-align: middle;
+    }
+
+
+</style>
+<div class="col-sm-12 col-md-12 ">
+    <div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12 ">
+            @(Html.Kendo().Grid<dynamic>()
+                            .Name("Grid")
+                            .Columns(columns =>
+                            {
+                                foreach (System.Data.DataColumn column in Model.Data.Columns)
+                                {
+                                    columns.Bound(column.ColumnName).Title(column.Caption).Width(150);
+
+                                }
+                            })
+                            .Pageable(pageable => pageable
+                                //.PageSizes(true)
+                                .Numeric(true)
+                                .PageSizes(new int[] { 10, 20, 50, 100 })
+                            )
+                            .ToolBar(toolbar =>
+                            {
+                                toolbar.Template(@<text>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="col-sm-1">
+                            <label>Activity</label>
+                        </div>
+                        <div id="Activity" class="col-sm-6">
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                    .Name("activity")
+                                    .DataTextField("Value")
+                                    .DataValueField("Text")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .DataSource(source => source.Read(read => read.Action("GetActivity", "CheckIn")))
+                                    .Events(e =>
+                                    {
+                                        e.Change("onSearch");
+                                    })
+                                )
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <a class="k-pager-refresh k-link k-button" title="Refresh" style="float: left;"><span class="fa fa-refresh"></span></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-1" style="float: right">
+                        <a onclick='_ExportToExcel()' id='btnExport' aria-disabled="true" class='btn btn-default' style="float: right"><i class='fa fa-reply fa-lg'></i>&nbsp; EXPORT </a>&nbsp;
+                    </div>
+                    <div class="col-sm-4" style="float: right">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-search" aria-hidden="true"></span></span>
+                            <input type="text" class="form-control" id='FieldFilter' maxlength="10" placeholder="Search Internet no..." oninput="this.value = this.value.replace(/[^0-9.]/g, '');" />
+                        </div>
+                    </div>
+                </div>
+
+            </text>);
+                            })
+                                            .HtmlAttributes(new { style = "height: 550px" })
+                                            .AutoBind(true)
+                                            .Sortable()
+                                            .Scrollable(scrollable => scrollable.Height("auto"))
+                                            .Resizable(resize => resize.Columns(true))
+                                            .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .ServerOperation(false)
+                                                .Model(model =>
+                                                {
+
+                                                    var id = Model.Data.Columns[0].ColumnName;
+                                                    model.Id(id);
+
+                                                    foreach (System.Data.DataColumn column in Model.Data.Columns)
+                                                    {
+                                                        var field = model.Field(column.ColumnName, column.DataType);
+
+                                                        if (column.ColumnName == id)
+                                                        {
+                                                            field.Editable(false);
+                                                        }
+                                                    }
+
+                                                })
+                                                .Read(read => read.Action("CheckInOrderData", "CheckIn").Data("bindingValue"))
+                                                .PageSize(10)
+                                                .Sort(s =>
+                                                {
+                                                    s.Add("TIMESLOT").Ascending();
+                                                    s.Add("INTERNET_NUMBER").Ascending();
+
+                                                })
+                                            )
+)
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#FieldFilter").keyup(function () {
+            var value = $("#FieldFilter").val();
+            grid = $("#Grid").data("kendoGrid");
+
+            if (value) {
+                grid.dataSource.filter({ field: "Internet_Number", operator: "contains", value: value });
+            } else {
+                grid.dataSource.filter({});
+            }
+        });
+    });
+
+    $(function () {
+        var grid = $("#Grid");
+        grid.find(".k-grid-toolbar").on("click", ".k-pager-refresh", function (e) {
+            e.preventDefault();
+            grid.data("kendoGrid").dataSource.read();
+        });
+
+    });
+
+    function _ExportToExcel() {
+        window.open("/CheckIn/ExportCheckInEngineerData");
+    }
+
+    function onSearch(e) {
+        var grid = $("#Grid");
+        grid.data("kendoGrid").dataSource.read();
+    }
+
+    function bindingValue() {
+        return {
+            dataQuery: $('#activity').data("kendoDropDownList").value()
+        };
+    }
+</script>

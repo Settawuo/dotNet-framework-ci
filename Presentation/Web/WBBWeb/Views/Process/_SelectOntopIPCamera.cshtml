@@ -1,0 +1,434 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension;
+@{#region
+
+    string NonMobileNo = ViewBag.NonMobileNo ?? ViewBag.AisAirNumberByPass ?? "";
+    string Channel = ViewBag.Channel ?? "";
+    string tempV2ByPass = ViewBag.tempV2ByPass ?? "";
+    string MyAISBypass = ViewBag.MyAISBypass ?? "";
+
+    string SCREEN_SELECT_1 = "";//
+    string SCREEN_SELECT_2 = "";//
+    string SCREEN_SELECT_2_1 = "";//
+    string SCREEN_SELECT_3 = "";//
+    string SCREEN_SELECT_4 = "";//
+    string ERROR_SELECT_PACKAGE = "";//
+    string CONFIG_CHANNEL = "";//
+    string L_USE_COST = "";
+    string L_USE_DISCOUNT = "";
+    string IMG_PATH = "";
+    string DISCOUNT_COLOR = "";
+    string IPCamera_Summary_Max_Existing = "";
+    string L_Message_NOT_INS_IPCamera = "";
+    int PACKAGE_CODE_COUNT = 0;
+    var PACKAGE_CODE_LIST = new List<LovScreenValueModel>();
+    var DISPLAY_CODE_LIST = new List<LovScreenValueModel>();
+
+    if (ViewBag.IpCamera != null)
+    {
+        var ipCamera = (List<LovScreenValueModel>)ViewBag.IpCamera;
+        SCREEN_SELECT_1 = ipCamera.Any(c => c.Name == "IPCamera_Name_Existing") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Name_Existing").DisplayValue : "";
+        SCREEN_SELECT_2 = ipCamera.Any(c => c.Name == "IPCamera_Detail_Name_2") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Detail_Name_2").DisplayValue : "";
+        SCREEN_SELECT_2_1 = ipCamera.Any(c => c.Name == "IPCamera_Detail_Name_1") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Detail_Name_1").DisplayValue : "";
+        SCREEN_SELECT_3 = ipCamera.Any(c => c.Name == "IPCamera_Detail_Name_3") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Detail_Name_3").DisplayValue : "";
+        SCREEN_SELECT_4 = ipCamera.Any(c => c.Name == "IPCamera_Rent") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Rent").DisplayValue : "";
+        L_USE_COST = ipCamera.Any(c => c.Name == "IPCamera_Use_Cost_Text") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Use_Cost_Text").DisplayValue : "";
+        L_USE_DISCOUNT = ipCamera.Any(c => c.Name == "IPCamera_Use_discount_Text") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Use_discount_Text").DisplayValue : "";
+        L_Message_NOT_INS_IPCamera = ipCamera.Any(c => c.Name == "L_Message_NOT_INS_IPCamera") ? ipCamera.FirstOrDefault(c => c.Name == "L_Message_NOT_INS_IPCamera").DisplayValue : "";
+        DISPLAY_CODE_LIST = ipCamera.Where(w => w.Name == "IPCamera_Display_Name_Existing").Reverse().ToList();
+        PACKAGE_CODE_LIST = ipCamera.Where(w => w.Name == "IPCamera_Package_Name_Existing").Reverse().ToList();
+        PACKAGE_CODE_COUNT = PACKAGE_CODE_LIST.Count();
+        IMG_PATH = ipCamera.Any(c => c.Name == "IPCamera_Detail_Picture_Existing") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Detail_Picture_Existing").Blob : "";
+    }
+
+    if (ViewBag.LabelFBBORV41 != null)
+    {
+        var LabelFBBORV41 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV41;
+        ERROR_SELECT_PACKAGE = LabelFBBORV41.Any(c => c.Name == "ERROR_SELECT_PACKAGE") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "ERROR_SELECT_PACKAGE").DisplayValue : "";
+        CONFIG_CHANNEL = LabelFBBORV41.Any(c => c.Name == "CONFIG_CHANNEL") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "CONFIG_CHANNEL").DisplayValue : "";
+    }
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        DISCOUNT_COLOR = FbbConstant.Any(f => f.Field == "IPCamera_discount_color_text") ? FbbConstant.First(f => f.Field == "IPCamera_discount_color_text").Validation : "";
+        IPCamera_Summary_Max_Existing = FbbConstant.Any(f => f.Field == "IPCamera_Summary_Max_Existing") ? FbbConstant.First(f => f.Field == "IPCamera_Summary_Max_Existing").Validation : "";
+    }
+    #endregion
+}
+
+@*HTML form's Initial*@
+<table style="display: none; border-color: red;" id="tempV2" border="1"></table>
+<div id="page2_1" style="display: none;">
+    <div class="container">
+        <div class="col-md-8-5 col-xs-12 addrounded">
+            <p class="clearfix"></p>
+            <h3 class="page-header tgreen" id="lblSelectVas">
+                @Html.Raw(SCREEN_SELECT_1)
+            </h3>
+            @Html.Raw(SCREEN_SELECT_2)
+            <h4 class="page-header tgreen">
+                @Html.Raw(SCREEN_SELECT_3)
+            </h4>
+            <p class="clearfix"></p>
+            <div class="divInstallType" style="display: none;"></div>
+            <div id="divVasCamDynamic" class="row-border">
+                <div class="divVasCamPackage"></div>
+                <div style="padding-top: 10px;">
+                    <p class="clearfix"></p>
+                    <div id="divRemark" class="col-xs-12" style="background-color: lightgray; border-radius: 12px; padding: 30px; color:#666;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-6 text-center"></div>
+            <p class="clearfix"></p>
+            <p class="clearfix page-header"></p>
+            <div class="divButtonIPCamera"></div>
+            <p class="clearfix"></p>
+        </div>
+        <div class="divSidebarSummary"></div>
+    </div>
+</div>
+
+@*HTML form's Package*@
+<div class="masterVasboxHidden" style="display:none">
+    <div id='xobsav' class='col-sm-4 col-xs-12 text-center add-rounded-gray' style='padding: 0px 3px; margin: 0px 20px 40px; border: 0px;'>
+        <div class='click-to-top'>
+            <div class='greenheader page-header twhite' style='margin-right: -2px;margin-left: -2px;padding-left: 0px;'>@SCREEN_SELECT_4</div>
+            <img src="data:image/png;base64,@IMG_PATH" alt="Image" class='img-responsive center-block'>
+        </div>
+        <p class='clearfix'></p>
+        <div class='checkbox'>
+            <label name='emanegakcaplbl' style='padding-top: 4px;'>
+                <input type='checkbox' id='xobsav_chkbox' name='vasbox' onclick='onVasBoxChange(xobsav)'>
+            </label>
+            <p class='clearfix'></p>
+            <select name='esahcrup' onchange='onVasBox_Click(xobsav)' style='width:50px;'></select>
+        </div>
+        <p class='clearfix'></p>
+        <p class='clearfix'></p>
+        <p class='clearfix'></p>
+        <input type='hidden' name='kcaptceles'>
+        <input type='hidden' name='yalpsiDyrammus'>
+    </div>
+</div>
+
+<style>
+    div.click-to-top {
+        display: inline-block;
+        position: relative;
+        max-width: 100%;
+    }
+
+        div.click-to-top:hover {
+            z-index: 10;
+        }
+
+        div.click-to-top span {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #333;
+            color: #fff;
+        }
+
+        div.click-to-top:hover span {
+            display: block;
+        }
+
+    .add-rounded-green {
+        background: #8dc63f;
+    }
+
+    .btn-gray {
+        color: #fff;
+        background-color: #6c757d;
+    }
+
+        .btn-gray:hover {
+            color: #fff;
+            background-color: #5a6268;
+        }
+
+    input[type="checkbox"] {
+        transform: scale(1.5);
+    }
+</style>
+
+<script type="text/javascript">
+    setSessionAisAirNumber();
+     const contractProfileCountFbb = parseInt($('#CustomerRegisterPanelModel_ContractProfileCountFbb').val(), 10);
+     const fbbLimitContract = parseInt($('#CustomerRegisterPanelModel_FBBLimitContract').val(), 10);
+     const contractIPCameraCount = getContractIPCameraCount();
+     var limitPurchase = @IPCamera_Summary_Max_Existing;
+
+     $(function () {
+         if (contractProfileCountFbb >= fbbLimitContract || contractIPCameraCount >= limitPurchase) {
+             showIPCameraErrorMessage('@L_Message_NOT_INS_IPCamera');
+         } else if ("@ViewBag.Vas" == "8" || "@ViewBag.TopUp" == "1") {
+             $('#trBundling').hide();
+             $('#trDiscount').hide();
+             onLoadLine2Page2();
+             changePageHeader_Vas(2);
+         }
+     });
+
+    var selectCamera = "";
+    const isSubContact = @Json.Encode(ViewBag.IsSubContact);
+    function onLoadLine2Page2() {
+        $('#page2_1').show();
+        $('#divStepLogoLine1').hide();
+        $('#divStepLogoLine2').show();
+        $('#divPromotionDetailSum').hide();
+
+        if ("@Channel" == "@CONFIG_CHANNEL") {
+            $("#btnVasBackPage").hide();
+        }
+
+        getItemStorageIPCam();
+        setFormSummaryLine2();
+        getPackageCode();
+        GetListDeviceContractOnlineQuery();
+        setPackageIPCamTermCond();
+        setDefaultSelectIPCam();
+    }
+
+    function getItemStorageIPCam() {
+        $('.wrapSwitchLanguage').hide();
+        if ('@MyAISBypass' == 'Y') {
+            sessionStorage.setItem("vas_flag", "8");
+            $('#tempV2').html("@Html.Raw(tempV2ByPass)");
+            GetPostalCodeJson()
+            Get_Region();
+            sessionStorage.setItem("ServiceLevel", $('#ServiceLevel').val());
+        } else {
+            var tempV2 = sessionStorage.getItem("tempV2");
+            $('#tempV2').append(tempV2);
+            var tmpServiceLevel = sessionStorage.getItem("ServiceLevel").toString();
+            $("#ServiceLevel").val(tmpServiceLevel);
+        }
+        var tmpAreaRegion = sessionStorage.getItem("AreaRegion").toString();
+        $("#CoveragePanelModel_Address_AreaRegion").val(tmpAreaRegion);
+
+        selectCamera = $('input[id^="PACKAGE_TYPE"][value="14"]').closest('tr').find('input[name="SelectCamera"]').val();
+    }
+
+    var packageSelectedList = [];
+    function getPackageCode() {
+        var packageList = @Html.Raw(Json.Encode(PACKAGE_CODE_LIST));
+        var displayList = @Html.Raw(Json.Encode(DISPLAY_CODE_LIST));
+        $('body').append($('<input>').attr({
+            id: 'package_count',
+            type: 'hidden',
+            value: '@PACKAGE_CODE_COUNT'
+        }));
+        $.each(packageList, function (idx, pkg) {
+            const summaryDisplay = displayList.filter(item => item.LovValue3 === pkg.LovValue3).map(f => f.DisplayValue);
+            const packageIndex = $('input[id^="SFF_PROMOTION_CODE"][value="' + pkg.LovValue3 + '"]').closest('tr').find('input[name="SelectCamera"]').val();
+
+            //Use BindHidden for clone masterVasbox
+            $(".divVasCamPackage").after('<div class="masterVasbox"></div>');
+            BindHidden('.masterVasbox');
+            let modifiedHTML = $('.masterVasbox').html().replace(/xobsav/g, 'vasBox' + idx);
+            $('.masterVasbox').html(modifiedHTML);
+
+            //Use BindHidden for clone divServiceIPCamera 27Sep2023
+            $("#trServiceIPCameraPlus").after('<div class="divServiceIPCameraPlus"></div>');
+            BindHidden('.divServiceIPCameraPlus');
+            let divServiceIPCameraHTML = $('.divServiceIPCameraPlus').html().replace(/divServiceIPCameraPlus/g, 'divServiceIPCameraPlus' + idx);
+            $('.divServiceIPCameraPlus').html(divServiceIPCameraHTML);
+            $("#lbServiceIPCameraPlus").text(summaryDisplay);
+
+            //Set some name with index
+            $('.masterVasbox').find($("input[name='kcaptceles']").attr('name', 'selectpack' + packageIndex).val(pkg.LovValue3));
+            $('.masterVasbox').find("label[name='emanegakcaplbl']").attr('name', 'lblPackageName' + idx).after(pkg.DisplayValue);
+            $('.checkbox').find($("input[name='yalpsiDyrammus']").attr('name', 'summaryDisplay' + idx).val(summaryDisplay));
+            $('.checkbox').css("padding","20px")
+            //Set option for select
+            if (((fbbLimitContract - contractProfileCountFbb) >= (limitPurchase - contractIPCameraCount)) || isNaN(fbbLimitContract) || isNaN(contractProfileCountFbb)){
+                limitPurchase = limitPurchase - contractIPCameraCount;
+            } else {
+                limitPurchase = fbbLimitContract - contractProfileCountFbb;
+            }
+            packageSelectedList[idx] = 0;
+            var selectElement = $('.masterVasbox').find("select[name='esahcrup']").attr('name', 'ddlPurchaseNo' + idx).val(limitPurchase);
+            for (var i = 1; i <= limitPurchase; i++) {
+                var optionElement = $('<option>').attr('value', i).text(i);
+                selectElement.append(optionElement);
+            }
+
+            $('.masterVasbox').removeClass('masterVasbox');
+        });
+
+        $('.masterVasboxHidden').remove();
+        $('.divServiceIPCameraPlusHidden').remove();
+    }
+
+    function setPackageIPCamTermCond() {
+        const detailInfo =  @Html.Raw(Json.Encode(ViewBag.IPCameraDetailInfo));
+        var combinedValue = "";
+        detailInfo.forEach(function (item) {
+            combinedValue += item.DisplayValue;
+        });
+        $("#divRemark").html(combinedValue);
+    }
+
+    function setDefaultSelectIPCam() {
+        var findOntop = $("[name=SelectCamera]");
+        $.each(findOntop, function (j, k) {
+            if ($('#PACKAGE_TYPE' + this.value).val() == '14') {
+                summTotal = $('#PRICE_CHARGE' + this.value).val()
+            }
+        });
+        packageSelectedList[0] = 1;
+        $('#vasBox0').addClass("add-rounded-green").css("border", "0px");
+        $("#vasBox0_chkbox").prop('checked', true);
+        $("#lbServiceIPCameraCost").text(summTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $("#summTotalIPCamera").text($("#lbServiceIPCameraCost").text());
+        $("select[name='ddlPurchaseNo0']").val(1);
+
+        const servicecode = $("#SERVICE_CODE" + selectCamera).val();
+        sessionStorage.setItem('SERVICE_CODE', servicecode);
+
+        if ('@DISCOUNT_COLOR' != '') {
+            $('.divUseIPCamera0 #DiscountIPCameraCost').css('color', '@DISCOUNT_COLOR');
+            $('.divUseIPCameraHidden #DiscountIPCameraCost').css('color', '@DISCOUNT_COLOR');
+        }
+    }
+
+    let isCheckout = false;
+    function onVasBoxChange(divId)
+    {
+        const hasChecked = $("#" + divId.id + "_chkbox").is(":checked");
+        if (hasChecked) {
+            $("#" + divId.id + "_chkbox").prop('checked', false);
+            $("#" + divId.id).removeClass("add-rounded-green");
+        } else {
+            $("#" + divId.id).addClass("add-rounded-green").css("border", "0px");
+            $("#" + divId.id + "_chkbox").prop('checked', true);
+        }
+    }
+
+    var ipcamPurchaseCount = 1;
+    var summTotal = 0;
+    function onVasBox_Click(divId) {
+        const vasBoxIndex = parseInt(divId.id.replace("vasBox", ""));
+        const purchaseCount = parseInt($(`select[name='ddlPurchaseNo${vasBoxIndex}']`).val());
+        ipcamPurchaseCount = purchaseCount;
+        if (packageSelectedList[vasBoxIndex] != purchaseCount) {
+            UpdateUseIPCamera(vasBoxIndex, purchaseCount);
+        }
+        const currentId = $('#' + divId.id).find($("input[name*='selectpack']")).attr('name').match(/selectpack(\d+)/)[1];
+        const ipcamPrice = $("#PRICE_CHARGE" + currentId).val();
+        summTotal = ipcamPrice * purchaseCount;
+
+        $("#lbServiceIPCameraCost").text(summTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $("#summTotalIPCamera").text($("#lbServiceIPCameraCost").text());
+
+
+        //const hasChecked = $("#" + divId.id + "_chkbox").is(":checked"); // check T
+        //if (hasChecked) {
+        //    $("#" + divId.id).removeClass("add-rounded-green");
+        //    $("#" + divId.id + "_chkbox").prop('checked', false);
+        //} else {
+        //    $("#" + divId.id).addClass("add-rounded-green").css("border", "0px");
+        //    $("#" + divId.id + "_chkbox").prop('checked', true);
+        //}
+    }
+
+    function UpdateUseIPCamera(pkgIdx, newAmout) {
+        let oldAmout = packageSelectedList[pkgIdx];
+        if (newAmout > oldAmout) {
+            $(".divUseIPCamera0").hide();
+            if (oldAmout != 1) {
+                oldAmout ++;
+            }
+            for (var i = oldAmout; i <= newAmout; i++) {
+                $("#trUseIPCameraPlus").append('<div class="divUseIPCamera"></div>');
+                BindHidden('.divUseIPCamera');
+                var content = $('.divUseIPCamera').html();
+                content = content.replace(/\{x\}/g, i);
+                $('.divUseIPCamera').html(content);
+                $('.divUseIPCamera').removeClass('divUseIPCamera').addClass(`divUseIPCamera${i}`);
+            }
+        } else {
+            for (var i = oldAmout; i > newAmout; i--) {
+                $("#trUseIPCameraPlus").find(`.divUseIPCamera${i}`).remove();
+            }
+            if (newAmout == 1) {
+                $("#trUseIPCameraPlus").find(".divUseIPCamera1").remove();
+                $(".divUseIPCamera0").show();
+            }
+        }
+
+        packageSelectedList[pkgIdx] = newAmout;
+    }
+
+    function GetPostalCodeJson() { //R20.5 Service Level - Set ZIPCODE_ID
+        $.ajax({
+            type: "POST",
+            url: "/Process/GetPostalCodeJson",
+            data: {
+                "outPostalCode": $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_ZIPCODE").val(),
+                "outTumbol": $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_TUMBOL").val(),
+                "outAmphur": $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_AMPHUR").val(),
+                "outProvince": $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_PROVINCE").val()
+            },
+            dataType: "json",
+            async: false,
+            success: function (response) {
+                var data = response.result;
+                $("#CoveragePanelModel_Address_ZIPCODE_ID").val(data);
+                $("#CustomerRegisterPanelModel_AddressPanelModelSetup_ZIPCODE_ID").val(data);
+                $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_ZIPCODE_ID").val(data);
+                $("#CustomerRegisterPanelModel_AddressPanelModelVat_ZIPCODE_ID").val(data);
+
+                sessionStorage.setItem("AddrZipID", data);
+            }
+        });
+    }
+
+    function Get_Region() {
+        $.ajax({
+            url: '/CheckCoverage/Get_Region',
+            data: { rowid: $("#CustomerRegisterPanelModel_AddressPanelModelSetup_ZIPCODE_ID").val() },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (data) {
+                $("#CoveragePanelModel_Address_AreaRegion").val(data);
+                sessionStorage.setItem("AreaRegion", data);
+            }
+        });
+    }
+
+    function showIPCameraErrorMessage(errorMessage) {
+        $('#LastPopupCheckFailMessage').after('<h3 id="LastPopupCheckFailMessageIPCamera" class="text-center">' + errorMessage + '</h3>');
+        $('#modolCheckFail').modal('show');
+    }
+
+    function getContractIPCameraCount() {
+        let ipCameraCount = 0;
+        $.ajax({
+            url: '/CheckCoverage/GetContractProfileCountFbb',
+            data: { mobileNo: sessionStorage.getItem("AisAirNumber") },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: response => ipCameraCount = response
+        });
+        return ipCameraCount;
+    }
+
+    function setSessionAisAirNumber() {
+        if (!!!sessionStorage.getItem("AisAirNumber") || sessionStorage.getItem("AisAirNumber") == "" || typeof sessionStorage.getItem("AisAirNumber") == "undefined" || sessionStorage.getItem("AisAirNumber") == "null") {
+            sessionStorage.setItem("AisAirNumber", "@NonMobileNo");
+        }
+        else if ("@NonMobileNo" != "" && sessionStorage.getItem("AisAirNumber") != "@NonMobileNo") {
+            sessionStorage.setItem("AisAirNumber", "@NonMobileNo");
+        }
+    }
+</script>

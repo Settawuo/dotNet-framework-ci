@@ -1,0 +1,518 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.SearchSubContractEmailInfoModel
+@using WBBEntity.PanelModels;
+@{
+    string usertypeCHK = ViewBag.UserGroupCHK;
+
+    // Btn
+    string B_CONFIRM = "";
+    string B_CANCEL = "";
+    string B_SEARCH = "";
+    string B_CLEAR = "";
+    // Lable
+    string L_ORG_ID = "";
+    string L_REGION = "";
+    string L_SUB_CONTRACTOR_NAME_TH = "";
+    string L_SUB_CONTRACTOR_NAME_EN = "";
+    string L_MODIFY_DT = "";
+    string L_CREATE_DT = "";
+    //
+    string L_ROW_ID = "";
+    string L_ACTION_FLAG = "";
+    string L_STORAGE_LOCATION = "";
+    //
+    string L_SUBCONTRACT_EMAIL = "";
+    string L_PHASE = "";
+    string L_SUB_CONTRACTOR_CODE = "";
+    string L_SUB_CONTRACTOR_FOR_MAIL = "";
+    //
+    string L_SUBCONTRACT_NAME = "";
+
+
+
+
+
+
+    //page name
+    string L_PAGE_NAME = "";
+
+    if (ViewBag.ListScreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.ListScreen;
+        B_CONFIRM = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_CONFIRM").LovValue1 : "";
+        B_SEARCH = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue1 : "";
+        B_CLEAR = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_CLEAR").LovValue1 : "";
+        B_CANCEL = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_CANCEL").LovValue1 : "";
+
+
+        //----lable
+        L_ORG_ID = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_ORG_ID").LovValue1 : "";
+        L_REGION = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_REGION").LovValue1 : "";
+        L_SUB_CONTRACTOR_NAME_TH = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_SUB_CONTRACTOR_NAME_TH").LovValue1 : "";
+        L_SUB_CONTRACTOR_NAME_EN = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_SUB_CONTRACTOR_NAME_EN").LovValue1 : "";
+        L_MODIFY_DT = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_MODIFY_DT").LovValue1 : "";
+        L_CREATE_DT = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_CREATE_DT").LovValue1 : "";
+        //
+        L_ROW_ID = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_ROW_ID").LovValue1 : "";
+        L_ACTION_FLAG = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_ACTION_FLAG").LovValue1 : "";
+        L_STORAGE_LOCATION = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_STORAGE_LOCATION").LovValue1 : "";
+        L_SUBCONTRACT_EMAIL = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_SUBCONTRACT_EMAIL").LovValue1 : "";
+        L_PHASE = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_PHASE").LovValue1 : "";
+        L_SUB_CONTRACTOR_CODE = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_SUB_CONTRACTOR_CODE").LovValue1 : "";
+        L_SUB_CONTRACTOR_FOR_MAIL = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_SUB_CONTRACTOR_FOR_MAIL").LovValue1 : "";
+        //
+        L_SUBCONTRACT_NAME = configscreen.Any(f => f.Type == "FBB_SUBCONTRACT_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_SUBCONTRACT_NAME").LovValue1 : "";
+
+    }
+}
+@*------------------------------Add*@
+@(Html.Kendo().Window()
+      .Name("EditPopupSubContracEmailInfo")
+      .HtmlAttributes(new { @class = "i-gap-popup" })
+          .Title("Config SubContract Email Info")
+      .Width(520)
+      .Draggable()
+      .Visible(false)
+      .Modal(true)
+      .Content(@<text>
+
+        <div class="row">
+            <div class="col-md-10 col-sm-10">
+                <label>@L_SUBCONTRACT_EMAIL</label>
+                <input type="hidden" name="rowid" id="rowid" class="k-textbox form-control" />
+                <input type="text" name="sub_contrac_email" id="sub_contrac_email" class="k-textbox form-control" />
+                <div class="i-fg-data-entry-validation" id="validatefor-txt_sub_contrac_email"></div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-sm-10">
+                <label>@L_SUB_CONTRACTOR_FOR_MAIL</label>
+                <input type="text" name="sub_contrac_for_mail" id="sub_contrac_for_mail" class="k-textbox form-control" />
+                <div class="i-fg-data-entry-validation" id="validatefor-txt_sub_contrac_for_mail"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-sm-10">
+                <label>@L_PHASE</label>
+                <input type="text" name="phase" id="phase" class="k-textbox form-control" />
+                <div class="i-fg-data-entry-validation" id="validatefor-txt_phase"></div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-sm-10">
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-md-6 col-sm-10">
+                <p class="clearfix"></p>
+                <a id="btnEditSubContractConfirm" class="btn btn-success" onclick="ConfirmEditSubContract()"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;@B_CONFIRM</a>
+                <a id="btnCancelEditSubContract" class="btn btn-default" onclick="CancelEditPopupSubContracEmailInfo()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CANCEL</a>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-md-2 col-sm-12">
+                <p class="clearfix"></p>
+            </div>
+        </div>
+
+    </text>)
+)
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Config SubContract Email Info</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Search Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="SearchPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4">
+                            <label>@L_SUBCONTRACT_NAME</label>
+                            @(Html.Kendo().DropDownList()
+                                  .Name("ddlSubContract")
+                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                  .OptionLabel("SELECT ALL")
+                                  .DataTextField("SUB_CONTRACTOR_NAME")
+                                          .DataValueField("SUB_CONTRACTOR_NAME")
+                                  .Filter("contains")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("SelectSubContractorName", "ConfigurationSubContractEmailInfo");
+                                      }).ServerFiltering(true);
+                                  })
+                                    //.Events(e => e.Change("onChangeddlSubContract"))
+
+
+                            )
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <label>@L_STORAGE_LOCATION</label>
+                            @(Html.Kendo().AutoComplete()
+                                  .Name("storage")
+                                   .DataTextField("LOV_VAL1")
+                                  .Filter("contains")
+                                  .MinLength(3)
+                                  .HtmlAttributes(new { style = "width:100%" })
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("getStorage", "ConfigurationSubContractEmailInfo")
+                                              .Data("onAdditionalData");
+                                      })
+                                      .ServerFiltering(true);
+                                  })
+                            )
+                        </div>
+                    </div>
+                    <div>&nbsp;</div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4">
+                            <label>@L_SUB_CONTRACTOR_CODE</label>
+                            @(Html.Kendo().DropDownList()
+                                  .Name("ddlSubContractCode")
+                                  .OptionLabel("SELECT ALL")
+                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                  .DataTextField("SUB_CONTRACTOR_CODE")
+                                  .DataValueField("SUB_CONTRACTOR_CODE")
+                                  .Filter("contains")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("SelectSubContractorCode", "ConfigurationSubContractEmailInfo");
+                                      }).ServerFiltering(true);
+                                  })
+                                    //  .Events(e => e.Change("onChangeddlSubContractCode") )
+
+                            )
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <label>@L_ACTION_FLAG</label>
+                            @(Html.Kendo().DropDownList()
+                            // .Filter("contains")
+                                      .Name("ddlActionFlag")
+                                       .OptionLabel("SELECT ALL")
+                                        .DataTextField("DISPLAY_VAL")
+                                        .DataValueField("LOV_VAL1")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("SetDDLActionFlag", "ConfigurationSubContractEmailInfo");
+                                            });
+                                        })
+                                    // .Events(e => e.Change("OnAcctionFlagChange"))
+                                 .SelectedIndex(0)
+                            )
+                        </div>
+                        <div class="col-sm-12 col-md-12 i-text-align-right i-text-align-right">
+
+                            <a class="btn btn-info" onclick="searchOrderList();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                            <a class="btn btn-default" onclick="ClearSearch();"><i class="fa fa-ban"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*------------Result*@
+
+        <div class="panel panel-success" id="Result_Panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Result Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#ResultSearchWriteOffPanel" onclick="onPanelToggle(this);" id="ResultSearchWriteOffPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="ResultSearchWriteOffPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="ResultSearchWriteOffPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+
+                    <div class="row i-gap-top-1  ">
+                        <div class="col-sm-12 col-md-12 i-gap-top-1">
+                            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.SubContractEmailInfoModel>()
+                                       .Name("GridSubContractEmailInfo")
+                                       .Selectable(selectable => selectable.Enabled(true).Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
+                                       .Columns(columns =>
+                                       {
+                                           columns.Bound(p => p.ORG_ID).Title(@L_ORG_ID).HtmlAttributes(new { style = "text-align:center;" }).Width(100);
+                                           columns.Bound(p => p.REGION).Title(@L_REGION).HtmlAttributes(new { style = "text-align:center;" }).Width(100);
+                                           columns.Bound(p => p.SUB_CONTRACTOR_NAME_TH).Title(@L_SUB_CONTRACTOR_NAME_TH).HtmlAttributes(new { style = "text-align:left;" }).Width(300);
+                                           columns.Bound(p => p.SUB_CONTRACTOR_NAME_EN).Title(@L_SUB_CONTRACTOR_NAME_EN).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                           columns.Bound(p => p.ROW_ID).Title(@L_ROW_ID).HtmlAttributes(new { style = "text-align:left;" }).Hidden().Width(100);
+                                           columns.Bound(p => p.ACTION_FLAG).Title(@L_ACTION_FLAG).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                           columns.Bound(p => p.STORAGE_LOCATION).Title(@L_STORAGE_LOCATION).HtmlAttributes(new { style = "text-align:center;" }).Width(250);
+                                           columns.Bound(p => p.SUBCONTRACT_EMAIL).Title(@L_SUBCONTRACT_EMAIL).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                                           columns.Bound(p => p.PHASE).Title(@L_PHASE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                           columns.Bound(p => p.SUB_CONTRACTOR_CODE).Title(@L_SUB_CONTRACTOR_CODE).HtmlAttributes(new { style = "text-align:center;" }).Width(250);
+                                           columns.Bound(p => p.SUB_CONTRACTOR_FOR_MAIL).Title(@L_SUB_CONTRACTOR_FOR_MAIL).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                                           columns.Bound(p => p.CREATE_DT_TEXT).Title(@L_CREATE_DT).HtmlAttributes(new { style = "text-align:center;" }).Width(250);
+                                           columns.Bound(p => p.MODIFY_DT_TEXT).Title(@L_MODIFY_DT).HtmlAttributes(new { style = "text-align:center;" }).Width(250);
+                                           
+                                           columns.Command(command =>
+                                           {
+                                               command.Custom("Edit").Click("EditConfigSub").Text("<i class='fa fa-pencil-square-o fa-lg' id='EditSubContract'></i>");
+
+                                           }).Title("ACTION").HtmlAttributes(new { style = "text-align:center;" }).Width(80);
+                                       })
+                                           .Scrollable(scrollable => scrollable.Height("auto"))
+                                            .Resizable(resize => resize.Columns(true))
+                                            .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                                            .AutoBind(false)
+                                            .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .PageSize(20)
+                                                    .Read(read => read.Action("getConfigurationSubContractEmailInfo", "ConfigurationSubContractEmailInfo").Data("bindingValue"))
+                                              ).Events(e => e.DataBound("onSubContracInfoDataBound"))
+                            )
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="_usertype" value="@ViewBag.UserGroupCHK" />
+<script>
+    $(document).ready(function () {
+
+        $("#storage").keyup(function () {
+            CheckKeyUps("storage", "[a-zA-Z0-9]");
+        });
+
+        $("#phase").keyup(function () {
+            CheckKeyUps("phase", "[0-9]");
+        });
+        $("#sub_contrac_for_mail").keyup(function () {
+            CheckKeyUps("sub_contrac_for_mail", "[^#/$!&*%_@@^_+=]");
+        });
+        //$("#sub_contrac_email").keyup(function () {
+        //  CheckKeyUps("sub_contrac_email", "([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$");
+        //});
+     
+        clearmessage();
+    });
+    function onSubContracInfoDataBound() {
+        var grid = this;
+        if (this.dataSource.view().length == 0) {
+            var colspan = this.thead.find("th").length;
+            var emptyRow = "<tr style='height:auto; text-align:Left' ><td colspan='" + colspan + "'>&nbsp;&nbsp;&nbsp;&nbsp;No Data Found  </td></tr>";
+
+            this.tbody.html(emptyRow);
+            this.table.width(800);
+            $(".k-grid-content").height(50);
+
+        } else {
+            grid.tbody.find("tr[role='row']").each(function () {
+                var model = grid.dataItem(this);
+             //   console.log("model=" + model);
+                if ($("#_usertype").val() == "SCM") {
+                    $(this).find(".k-grid-Edit").show();
+                } else {
+                    $(this).find(".k-grid-Edit").hide();
+                } 
+            });
+            $('.k-grid-content').height("auto");
+            $('.k-grid-content').css("max-height", "300px");
+
+        }
+        Loading(0);
+    }
+    var ConfigSubConEmailModel = function () {
+        subcontract_name: "";
+        subcontract_code: "";
+        storage: "";
+        action_flag: "";
+        PAGE_INDEX: 1;
+        PAGE_SIZE: 20;
+    }
+    function defaultDataSubCon() {
+
+        var ConfigSubConEmailModelResult = new ConfigSubConEmailModel();
+        //console.log("test" + $("#ddlSubContractCode").val())
+        ConfigSubConEmailModelResult.subcontract_name = $("#ddlSubContract").val(); //ASSET_CODE
+        ConfigSubConEmailModelResult.subcontract_code = $("#ddlSubContractCode").val(); //ACCESS_NUMBER
+        ConfigSubConEmailModelResult.storage = $("#storage").val(); //ASSET_CODE
+        ConfigSubConEmailModelResult.action_flag = $("#ddlActionFlag").val(); //ASSET_CODE
+
+        return ConfigSubConEmailModelResult;
+    }
+
+    function bindingValue() {
+        model = defaultDataSubCon();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+    function ClearSearch() {
+        $("#ddlSubContract").data('kendoDropDownList').value("ALL");
+        $("#ddlSubContractCode").data('kendoDropDownList').value("ALL");
+        $("#ddlActionFlag").data('kendoDropDownList').value("ALL");
+        $("#storage").val("");
+        clearmessage();
+
+        $("#GridSubContractEmailInfo").data("kendoGrid").dataSource.data([]);
+        $(".k-grid-content").height(50);
+
+    }
+    function searchOrderList() {
+        Loading();
+        $("#GridSubContractEmailInfo").data("kendoGrid").dataSource.data([]);
+        var grid = $("#GridSubContractEmailInfo").data("kendoGrid");
+        grid.dataSource.page(1);
+        grid.refresh();
+        Loading(0);
+
+
+    }
+    function EditConfigSub(e) {
+        $("#EditPopupSubContracEmailInfo").data("kendoWindow").open();
+        var dialog = $("#EditPopupSubContracEmailInfo").data("kendoWindow");
+        dialog.center();
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        //console.log(dataItem);
+        $("#sub_contrac_email").val(dataItem.SUBCONTRACT_EMAIL);
+        $("#sub_contrac_for_mail").val(dataItem.SUB_CONTRACTOR_FOR_MAIL);
+        $("#phase").val(dataItem.PHASE);
+        $("#rowid").val(dataItem.ROW_ID);
+         
+    }
+    function ConfirmEditSubContract() {
+
+        var chk = ValidationData();
+
+        if (chk) {
+            Loading();
+
+            var sub_contrac_email = $("#sub_contrac_email").val();
+            var rowid = $("#rowid").val();
+            var sub_contrac_for_mail = $("#sub_contrac_for_mail").val();
+            var phase = $("#phase").val();
+
+            data = JSON.stringify({
+                'rowid': rowid, 'sub_contrac_email': sub_contrac_email, "sub_contrac_for_mail": sub_contrac_for_mail, "phase": phase
+            });
+
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json',
+                url: "/ConfigurationSubContractEmailInfo/ConfirmUpdateSubContractEmailInfo",
+                data: data,
+                async: false,
+                dataType: "json",
+                success: function (response) {
+                    if (response.Code === "0") {
+                        $("#EditPopupSubContracEmailInfo").data("kendoWindow").close();
+                        showFeedback("success", response.message, "System Information");
+                    }
+                    else {
+                        $("#EditPopupSubContracEmailInfo").data("kendoWindow").close();
+                        showFeedback("error", response.message, "System Information");
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+            $("#GridSubContractEmailInfo").data("kendoGrid").dataSource.read();
+        }
+        Loading(0);
+    }
+
+    function CancelEditPopupSubContracEmailInfo() {
+        $("#EditPopupSubContracEmailInfo").data("kendoWindow").close();
+        clearmessage();
+    }
+    function clearmessage() {
+        $("#validatefor-txt_sub_contrac_email").html("");
+        $("#validatefor-txt_sub_contrac_for_mail").html("");
+        $("#validatefor-txt_phase").html("");
+    }
+    function ValidationData() {
+        var sub_contrac_email = $("#sub_contrac_email").val();
+        var sub_contrac_for_mail = $("#sub_contrac_for_mail").val();
+        var phase = $("#phase").val();
+        
+        var ck = true;
+         
+        if (sub_contrac_email == "") {
+            $("#validatefor-txt_sub_contrac_email").html(ValidationIcon() + "This field is required.");
+            ck=false;
+
+        } else {
+
+            if (validEmail(sub_contrac_email)) {
+
+                $("#validatefor-txt_sub_contrac_email").html("");
+                
+                if (sub_contrac_for_mail == "") {
+                    $("#validatefor-txt_sub_contrac_for_mail").html(ValidationIcon() + "This field is required.");
+                    ck = false;
+
+                } else {
+                    $("#validatefor-txt_sub_contrac_for_mail").html("");
+
+                    if (phase == "") {
+                        $("#validatefor-txt_phase").html(ValidationIcon() + "This field is required.");
+                        ck = false;
+
+                    } else {
+                        $("#validatefor-txt_phase").html(""); 
+                    }
+                }
+
+            } else { 
+                $("#validatefor-txt_sub_contrac_email").html("invalid email formatch");
+                ck = false;
+            }
+            
+        }
+ 
+        return  ck;
+
+
+    }
+</script>
+<script>
+    function onAdditionalData() {
+        return {
+            text: $("#storage").val()
+        };
+    }
+
+    function validEmail(v) {
+
+        var filter = /^([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+        if (!filter.test(v)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+</script>

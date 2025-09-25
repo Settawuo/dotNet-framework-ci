@@ -1,0 +1,662 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ReverseAssetModel
+@using WBBEntity.PanelModels;
+@{
+
+    string B_CONFIRM = "";
+    string B_SEARCH = "";
+    string B_CANCEL = "";
+
+    string L_ACCESS_NUMBER = "";
+    string L_ASSET_CODE = "";
+    string L_SUB_NUMBER = "";
+    string L_ASSET_TYPE = "";
+    string L_ORDER_DATE = "";
+    string L_PRODUCT_NAME = "";
+    string L_SERVICE_NAME = "";
+    string L_INSTALLATION_COST = "";
+    string L_ASSET_STATUS = "";
+
+    string L_INTERNET_STATUS = "";
+    string L_MODIFY_DATE = "";
+    string L_ASSET_DATE = "";
+
+    string L_MODIFY_DATE_FROM = "";
+    string L_ASSET_DATE_FROM = "";
+    string L_TO = "";
+    string L_BROWSE_FILE = "";
+    string L_REASON = " ";
+
+
+    if (ViewBag.SearchListScreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.SearchListScreen;
+        B_CONFIRM = configscreen.Any(f => f.Name == "B_CONFIRM") ? configscreen.FirstOrDefault(f => f.Name == "B_CONFIRM").LovValue1 : "";
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue1 : "";
+        B_CANCEL = configscreen.Any(f => f.Name == "B_CANCEL") ? configscreen.FirstOrDefault(f => f.Name == "B_CANCEL").LovValue1 : "";
+
+        L_ACCESS_NUMBER = configscreen.Any(f => f.Name == "L_ACCESS_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "L_ACCESS_NUMBER").LovValue1 : "";
+        L_ASSET_CODE = configscreen.Any(f => f.Name == "L_ASSET_CODE") ? configscreen.FirstOrDefault(f => f.Name == "L_ASSET_CODE").LovValue1 : "";
+        L_SUB_NUMBER = configscreen.Any(f => f.Name == "L_SUB_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "L_SUB_NUMBER").LovValue1 : "";
+        L_ASSET_TYPE = configscreen.Any(f => f.Name == "L_ASSET_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "L_ASSET_TYPE").LovValue1 : "";
+        L_ORDER_DATE = configscreen.Any(f => f.Name == "L_ORDER_DATE") ? configscreen.FirstOrDefault(f => f.Name == "L_ORDER_DATE").LovValue1 : "";
+        L_PRODUCT_NAME = configscreen.Any(f => f.Name == "L_PRODUCT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_PRODUCT_NAME").LovValue1 : "";
+        L_SERVICE_NAME = configscreen.Any(f => f.Name == "L_SERVICE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_SERVICE_NAME").LovValue1 : "";
+        L_INSTALLATION_COST = configscreen.Any(f => f.Name == "L_INSTALLATION_COST") ? configscreen.FirstOrDefault(f => f.Name == "L_INSTALLATION_COST").LovValue1 : "";
+        L_ASSET_STATUS = configscreen.Any(f => f.Name == "L_ASSET_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "L_ASSET_STATUS").LovValue1 : "";
+        L_INTERNET_STATUS = configscreen.Any(f => f.Name == "L_INTERNET_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "L_INTERNET_STATUS").LovValue1 : "";
+        L_MODIFY_DATE = configscreen.Any(f => f.Name == "L_MODIFY_DATE") ? configscreen.FirstOrDefault(f => f.Name == "L_MODIFY_DATE").LovValue1 : "";
+        L_ASSET_DATE = configscreen.Any(f => f.Name == "L_ASSET_DATE") ? configscreen.FirstOrDefault(f => f.Name == "L_ASSET_DATE").LovValue1 : "";
+
+
+        L_MODIFY_DATE_FROM = configscreen.Any(f => f.Name == "L_MODIFY_DATE_FROM") ? configscreen.FirstOrDefault(f => f.Name == "L_MODIFY_DATE_FROM").LovValue1 : "";
+        L_ASSET_DATE_FROM = configscreen.Any(f => f.Name == "L_ASSET_DATE_FROM") ? configscreen.FirstOrDefault(f => f.Name == "L_ASSET_DATE_FROM").LovValue1 : "";
+        L_TO = configscreen.Any(f => f.Name == "L_TO") ? configscreen.FirstOrDefault(f => f.Name == "L_TO").LovValue1 : "";
+        L_BROWSE_FILE = configscreen.Any(f => f.Name == "L_BROWSE_FILE") ? configscreen.FirstOrDefault(f => f.Name == "L_BROWSE_FILE").LovValue1 : "";
+        L_REASON = configscreen.Any(f => f.Name == "L_REASON") ? configscreen.FirstOrDefault(f => f.Name == "L_REASON").LovValue1 : "";
+
+
+    }
+
+
+
+}
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal_confirmByCheckBox">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+                <h4 class="modal-title" id="myModalLabel">&nbsp;</h4>
+            </div>
+            <p class="clearfix"></p>
+            <h4 class="modal-title" id="myModalLabel">Confirm ReverseAsset</h4>
+            @*<p class="text-center" id="text-content-message">Confirm ReverseAsset</p>*@
+            @*<div class="modal-footer  text-center">*@
+            <p class="clearfix">&nbsp;</p>
+
+            <button class="btn btn-success btn-sx ReverseAsset-confirm fa fa-check-circle-o" type="button" onclick="ConfirmReverseAssetByCheckBox();">&nbsp; Ok &nbsp;</button>
+            <button class="btn btn-default btn-sx ReverseAsset-cancel  fa fa-ban" type="button" data-dismiss="modal">&nbsp; Cancel &nbsp; </button>
+            <p class="clearfix">&nbsp;</p>
+
+            @*</div>*@
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabelByFile" aria-hidden="true" id="modal_confirmByCheckBoxByfile">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+                <h4 class="modal-title" id="myModalLabel">Confirm ReverseAsset</h4>
+            </div>
+            <p class="clearfix"></p>
+            <p class="text-center" id="text-content-messageByfile"></p>
+
+            @*<div class="modal-footer">*@
+
+            <button class="btn btn-success btn-sx ReverseAsset-confirm fa fa-check-circle-o" type="button" onclick="ConfirmReverseAssetByFile();">&nbsp; Ok &nbsp;</button>
+            <button class="btn btn-default btn-sx ReverseAsset-cancel  fa fa-ban" type="button" data-dismiss="modal" onclick="ConfirmReverseAssetByFileCancel();">&nbsp; Cancel &nbsp; </button>
+            <p class="clearfix">&nbsp;</p>
+
+            @*</div>*@
+        </div>
+    </div>
+</div>
+
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Reverse Asset</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Search Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#ReverseAssetPanel" onclick="onPanelToggle(this);" id="ReverseAssetPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="ReverseAssetPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="ReverseAssetPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div class="row i-gap-top-1  ">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <label>@L_ACCESS_NUMBER</label>
+                                    <div class="i-fg-data-entry">
+                                        @Html.TextBoxFor(t => t.ACCESS_NUMBER, new { maxlength = 50, @class = "k-textbox form-control" })
+                                    </div>
+                                    <div class="i-fg-data-entry-validation" id="validatefor-txtAccessNumber"></div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <label>@L_ASSET_CODE</label>
+                                    <div class="i-fg-data-entry">
+                                        @Html.TextBoxFor(t => t.ASSET_CODE, new { maxlength = 50, @class = "k-textbox form-control" })
+                                    </div>
+                                    <div class="i-fg-data-entry-validation" id="validatefor-txtAssetCode"></div>
+                                </div>
+                            </div> 
+                            <div class="row ">
+                                <div class="col-sm-2 col-md-2">
+                                    <label>@L_BROWSE_FILE  </label>
+                                </div>
+                            </div>
+                            <div class="row i-gap-top-1">
+                                <div class="col-sm-10 col-md-4"> 
+
+                                    @(Html.Kendo().Upload()
+                                           .Name("ReverseAssetfile")
+
+                                          .HtmlAttributes(new
+                                          {
+                                              accept = ".xlsx,.xls"
+                                          })
+                                           .Messages(m => m.Select(@L_BROWSE_FILE))
+
+                                          .Async(a => a
+                                          .Save("ImportFileInternet_Save", "ReverseAsset")
+                                          .Remove("ImportFileInternet_Remove", "ReverseAsset")
+                                                          .AutoUpload(false))
+                                          .Multiple(false)
+                                           .Events(e => e.Select("resetReverseAssetByFile"))
+                                          .Events(e => e.Success("onReverseAssetfileSuccess"))
+                                          .Events(e => e.Error("onReverseAssetfileError"))
+
+                                    )
+                                    <div class="i-fg-data-entry-validation" id="validatefor-ReverseAssetfile"></div>
+                                </div>
+                                <div class="col-sm-2 col-md-2">
+                                    <a id="btnExportTemplateReverseAsset" onclick="ExportTemplateReverseAsset()" class="btn btn-default"><i class="fa fa-file-excel-o small"></i>&nbsp;&nbsp;Export Template Reverse Asset</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 i-text-align-right i-text-align-right">
+                                    <a id="btnSearchReverseAssetByFile" class="btn btn-info"><i class="fa fa-search"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                                    <a id="btnCancelReverseAssetByFile" class="btn btn-default"><i class="fa fa-ban"></i>&nbsp;&nbsp;@B_CANCEL</a>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        @*//--------------*@
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-success" id="Result_Panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Result Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#ResultReverseAssetPanel" onclick="onPanelToggle(this);" id="ResultReverseAssetPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="ResultReverseAssetPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="ResultReverseAssetPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div class="row i-gap-top-1  ">
+                        <div class="row i-gap-top-1  ">
+                            @*<div class="col-sm-12 col-md-12 i-text-align-right i-gap-top-1">
+
+                                    <a id="btnConfirmReverseAssetByCheckBox" class="btn btn-info i-gap-top-1"><i class="fa fa-reply"></i>&nbsp;&nbsp;@B_CONFIRM</a>
+                                </div>*@
+                            <div class="col-sm-12 col-md-12 i-gap-top-1">
+                                @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ReverseAssetModel>()
+                                             .Name("gridSendReverseAsset")
+
+                                            .Columns(columns =>
+                                            {
+
+
+                                                columns.Bound(p => p.ACCESS_NUMBER).Title(@L_ACCESS_NUMBER).HtmlAttributes(new { style = "text-align:left;" }).Width(150)
+                                                    //  .ClientTemplate("<input type='checkbox' #= IsSelected ? checked='checked':'' # class='cbAdvisor' />")
+                                               .ClientTemplate("<input type='checkbox' class='k-cb SendReverseAsset-checkbox' onclick='childcheckbox_change(this)' />")
+                                               .HeaderTemplate("<input type='checkbox' id='Head_SendReverseAsset' onclick='allcheckbox_change(this)'/>").HtmlAttributes(new { style = "text-align:center;" })
+                                                    // .HeaderTemplate("<input type='checkbox' id='SendReverseAsset-chb' class='h-cb k-cb' />").HtmlAttributes(new { style = "text-align:center;" })
+                                               .HeaderHtmlAttributes(new { style = "text-align:center" }).Width(50); ;
+                                                columns.Bound(p => p.ACCESS_NUMBER).Title(@L_ACCESS_NUMBER).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                                columns.Bound(p => p.ASSET_CODE).Title(@L_ASSET_CODE).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+                                                columns.Bound(p => p.SUB_NUMBER).Title(@L_SUB_NUMBER).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                                columns.Bound(p => p.ASSET_TYPE).Title(@L_ASSET_TYPE).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                                columns.Bound(p => p.ORDER_DATE).Format("{0:dd/MM/yyyy}").Title(@L_ORDER_DATE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                                columns.Bound(p => p.PRODUCT_NAME).Title(@L_PRODUCT_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                                columns.Bound(p => p.SERVICE_NAME).Title(@L_SERVICE_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                                columns.Bound(p => p.INSTALLATION_COST).Title(@L_INSTALLATION_COST).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+                                                columns.Bound(p => p.ASSET_STATUS).Title(@L_ASSET_STATUS).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                                columns.Bound(p => p.INTERNET_STATUS).Title(@L_INTERNET_STATUS).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                                columns.Bound(p => p.MODIFY_DATE).Format("{0:dd/MM/yyyy}").Title(@L_MODIFY_DATE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                                columns.Bound(p => p.ASSET_DATE).Format("{0:dd/MM/yyyy}").Title(@L_ASSET_DATE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+
+                                            })
+
+                                          .ToolBar(toolbar => toolbar.Template("<div class='pull-right'><a     id='btnConfirmReverseAssetByCheckBox'  class='btn btn-info'><i class='fa fa-reply fa-lg'></i>&nbsp; " + @B_CONFIRM + " </a></div>"))
+                                                 .Scrollable(scrollable => scrollable.Height("auto"))
+                                                  .Resizable(resize => resize.Columns(true))
+                                                  .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                                                  .AutoBind(false)
+                                                  .DataSource(dataSource => dataSource
+                                                  .Ajax()
+                                                  .PageSize(20)
+                                                   .Read(read => read.Action("getReverseAsset", "ReverseAsset").Data("bindingValue"))
+                                            ).Events(e => e.DataBound("onGridDataBound"))
+                                )
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    var AccessList = function () {
+        ACCESS_NUMBER = "";
+        ASSET_CODE = "";
+        ACTION = "";
+    }
+
+
+    //var checkedIds = {};
+    var temp_Ischecked = [];
+    var checkeds = [];
+
+    var FileNameXls = "";
+    var ReverseAssetModel = function () {
+        ACCESS_NUMBER: "";
+        ASSET_CODE: "";
+        FILE_NAME: "";
+
+        PAGE_INDEX: 1;
+        PAGE_SIZE: 20;
+    }
+
+    function modalConfirmShow(e) {
+        $("#modal_confirm").modal();
+    }
+
+    function bindingValue() {
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+    function defaultData() {
+
+
+        var searchResult = new ReverseAssetModel();
+        searchResult.ACCESS_NUMBER = $("#ACCESS_NUMBER").val(); //ACCESS_NUMBER
+        searchResult.ASSET_CODE = $("#ASSET_CODE").val(); //ASSET_CODE
+        searchResult.FILE_NAME = FileNameXls;
+
+        // console.log("FileNameXls=" + FileNameXls)
+
+        return searchResult;
+        // searchResult.REASON = $("#REASON").val(); //REASON
+    }
+    $(document).ready(function () {
+
+        //=============
+        $("#btnSearchReverseAssetByFile").on('click', function () {
+            _Search();
+        });
+        $("#btnCancelReverseAssetByFile").on('click', function () {
+            ClearFilter();
+        });
+        $("#btnConfirmReverseAssetByCheckBox").on('click', function () {
+            ConfirmReverseAssetByCheckBoxShowModal();
+        });
+
+        // --
+        $("#btnConfirmReverseAssetByCheckBox").attr('disabled', true);
+        // ClearGrid();
+        ClearFilter();
+        ClearFileUpload();
+
+        Constructor();
+        //  resetReverseAssetByFile();
+        _PopClear();
+
+        $("#ResultReverseAssetPanel").removeClass("panel-collapse collapse").addClass("panel-collapse collapse in");
+    });
+    //-------------
+    function Constructor() {
+        //  console.log("Constructor");
+        var grid = $("#gridSendReverseAsset").data("kendoGrid");
+        grid.dataSource.bind("change", function (e) {
+            _PopGridChange();
+        });
+    }
+    //--------------
+    function _PopGridChange() {
+        $('#gridSendReverseAsset').find("td").find("input:checkbox").each(function (i, e) {
+            $(e).prop("checked", false);
+        });
+        $("#Head_SendReverseAsset").prop("checked", false);
+        //  get_temp();
+    }
+    //--------------child-checkbox-----------------
+    function childcheckbox_change(Input) {
+        var result = true;
+        $('#gridSendReverseAsset').find("td").find("input:checkbox").each(function (i, e) {
+
+            if ($(e).prop("checked") == false) {
+                if (result == true) result = false;
+            }
+        });
+        $("#Head_SendReverseAsset").prop("checked", result);
+        stemp_temp(Input);
+    }
+
+
+    //-----------all-hearderCheckbox------------
+    function allcheckbox_change(Input) {
+        // console.log("allcheckbox_change" + Input);
+        $('#gridSendReverseAsset input:checkbox').each(function (i, e) {
+            $(e).prop("checked", $(Input).prop("checked"));
+        });
+        stemp_temp(Input);
+    }
+    function stemp_temp(Input) {
+        var chDis = 0;
+        checkeds = [];
+
+        $('#gridSendReverseAsset').find("td").find("input:checkbox").each(function (i, e) {
+            var ListModel = new AccessList();
+            var item = $(e).parent().parent().children(1).get(1).innerText;
+            var item2 = $(e).parent().parent().children(2).get(2).innerText;
+            var temModel = [item, item2, $(e).prop("checked")];
+            temp_Ischecked[item + item2] = temModel;
+
+            if ($(e).prop("checked")) {
+                ListModel.ACCESS_NUMBER = item;
+                ListModel.ASSET_CODE = item2;
+                checkeds.push(ListModel);
+                //   console.log(item + item2 +"="+ $(e).prop("checked"))
+                chDis += 1;
+            }
+
+
+        });
+
+        //  debugger;
+        if (chDis > 0) {
+
+            $("#btnConfirmReverseAssetByCheckBox").attr('disabled', false);
+        } else {
+            $("#btnConfirmReverseAssetByCheckBox").attr('disabled', true);
+        }
+    }
+    function _PopClear() {
+        //clear temp
+        temp_Ischecked = [];
+        _PopGridChange();
+    }
+    //----
+    function resetReverseAssetByFile() {
+        ClearFilter();
+        ClearFileUpload();
+
+        $("#ResultReverseAssetPanel").removeClass("panel-collapse collapse in").addClass("panel-collapse collapse");
+    }
+    function ClearFilter() {
+
+        $("#ACCESS_NUMBER").val("");
+        $("#ASSET_CODE").val("");
+        $("#validatefor-txtAccessNumber").html("");
+        $("#validatefor-txtAssetCode").html("");
+        $("#btnConfirmReverseAssetByCheckBox").attr('disabled', true);
+    }
+    function ClearGrid() {
+        $("#gridSendReverseAsset").data("kendoGrid").dataSource.data([]);
+    }
+    function ClearFileUpload() {
+
+
+        $(".k-upload-selected").remove();
+        $(".k-upload-files .k-reset").find("li").remove();
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $(".k-upload.k-header").addClass("k-upload-empty");
+        $(".k-upload-button").removeClass("k-state-focused");
+        $("#validatefor-ReverseAssetfile").html("");
+    }
+    function onGridDataBound(e) {
+        Loading(0);
+        if (this.dataSource.view().length == 0) {
+            //insert empty row
+            var colspan = this.thead.find("th").length;
+            var emptyRow = "<tr style='height:auto; text-align:left' ><td colspan='" + colspan + "'> &nbsp;&nbsp;&nbsp;&nbsp;No Data Found </td></tr>";
+
+            this.tbody.html(emptyRow);
+
+            $("#btnConfirmReverseAssetByCheckBox").attr('disabled', true);
+
+            this.table.width(800);
+            $(".k-grid-content").height(50);
+        }
+        else {
+            $('.k-grid-content').css("min-height", "100px");
+            $('.k-grid-content').height("auto");
+            $('.k-grid-content').css("max-height", "300px");
+
+            //   $("#btnConfirmReverseAssetByCheckBox").attr('disabled', false);
+
+        }
+    }
+    function onReverseAssetfileSuccess(e) {
+
+        Loading();
+        if (e.operation == 'upload') {
+
+            if (e.response.data != '') {
+                //  console.log("onReverseAssetfileSuccess");
+                $("#ResultReverseAssetPanel").removeClass("panel-collapse collapse in").addClass("panel-collapse collapse");
+
+                $('.k-upload-files.k-reset').each(function () {
+                    //  console.log("e.response.fileName" + e.response.fileName)
+                    FileNameXls = e.response.fileName;
+
+                    //  $(".k-filename").text(e.response.fileName);
+                    if (!e.response.status) {
+                        $("#validatefor-ReverseAssetfile").html(ValidationIcon() + e.response.message);
+                    } else {
+
+                        $("#validatefor-ReverseAssetfile").html("");
+                        ConfirmReverseAssetByFileShowModal(FileNameXls);
+                    }
+                    ClearFilter();
+                    ClearGrid();
+
+                    //var grid = $("#gridSendReverseAsset").data("kendoGrid");
+                    //grid.dataSource.page(1);
+
+                });
+
+            }
+        }
+
+        Loading(0);
+    }
+
+    function onReverseAssetfileError(e) {
+        //console.log("onReverseAssetfileError");
+        if (!e.response.status) {
+            $("#validatefor-ReverseAssetfile").html(ValidationIcon() + e.response.message);
+            ClearGrid();
+        } else {
+            $("#validatefor-ReverseAssetfile").html("");
+        }
+
+    };
+
+    var temp_model;
+    function _Search() {
+
+        $("#ResultReverseAssetPanel").removeClass("panel-collapse collapse").addClass("panel-collapse collapse in");
+        var ckTxtAccessNumber = validateforTextBox("ACCESS_NUMBER", "txtAccessNumber");
+        // console.log("ckTxtAccessNumber=" + ckTxtAccessNumber)
+        if (ckTxtAccessNumber) {
+            $("#validatefor-txtAssetCode").html("");
+        } else {
+            var ckTxtAssetCode = validateforTextBox("ASSET_CODE", "txtAssetCode");
+            ///  console.log("ckTxtAssetCode=" + ckTxtAssetCode)
+            if (ckTxtAssetCode) {
+                $("#validatefor-txtAccessNumber").html("");
+            } else {
+                $("#validatefor-txtAssetCode").html("");
+            }
+
+        }
+
+
+        ClearGrid();
+        FileNameXls = "";
+        ClearFileUpload();
+        $("#gridSendReverseAsset tr").removeClass("k-state-selected");
+
+        // if (ckTxtAccessNumber == true || ckTxtAssetCode == true) {
+
+        Loading();
+
+        var model = defaultData();
+        temp_model = model;
+        Loading();
+        var grid = $("#gridSendReverseAsset").data("kendoGrid");
+        grid.dataSource.page(1);
+        grid.refresh();
+
+        Loading(0);
+        // }
+    }
+    function validateforTextBox(idTxt, idMsg) {
+        var chk = true;
+        if ($.trim($("#" + idTxt).val()) == '') {
+            // console.log("idMsg=" + idMsg)
+            //  console.log("idTxt=" + idTxt)
+            $("#validatefor-" + idMsg).html(ValidationIcon() + "This field is required.");
+            chk = false;
+        }
+        else {
+            $("#validatefor-" + idMsg).html("");
+        }
+
+        return chk;
+
+    }
+    function ConfirmReverseAssetByCheckBoxShowModal() {
+        $("#modal_confirmByCheckBox").modal('show');
+
+    }
+    function ConfirmReverseAssetByFileShowModal(FileNameXls) {
+        //console.log("ConfirmReverseAssetByFileShowModal")
+        $("#modal_confirmByCheckBoxByfile").modal('show');
+        $("#text-content-messageByfile").html("File Name :" + FileNameXls)
+    }
+    function ConfirmReverseAssetByCheckBox() {
+        $("#modal_confirmByCheckBox").modal('hide');
+        Loading();
+
+        $.ajax({
+
+            contentType: 'application/json',
+            url: "/ReverseAsset/ReverseAssetConfirmByCheck",
+            data: JSON.stringify({ dataSModel: checkeds }),
+            async: false,
+            dataType: "json",
+            type: "POST",
+            success: function (response) {
+                Loading(0);
+                if (response) {
+                    if (response["Code"] == "0") {
+                        var responsetext = "<span style='font-weight: normal;'><b>Data Total :</b> " + response["DataTotal"].toLocaleString('en') + " asset. <br/> <b>Reverse Asset Success : </b>" + response["SuccessCount"].toLocaleString('en') + " asset.<br/> <b>Reverse Asset Error : </b>" + response["ErrorCount"].toLocaleString('en') + " asset.  </span>"
+
+                        showFeedback("success", responsetext, "Notify Information");
+
+                        ClearFileUpload();
+                        _PopClear();
+                        _Search();
+                    } else {
+                        Loading(0);
+                        _PopClear();
+                        showFeedback("error", response["message"], "Notify Information");
+                    }
+                }
+            },
+            failure: function (msg) {
+                Loading(0);
+            }
+
+        });
+
+
+        Loading(0);
+    }
+
+    function ConfirmReverseAssetByFile() {
+        $("#modal_confirmByCheckBoxByfile").modal('hide');
+        Loading();
+
+        $.ajax({
+
+            contentType: 'application/json',
+            url: "/ReverseAsset/ConfirmReverseAssetByFile",
+            data: JSON.stringify({ dataSModel: null }),
+            async: false,
+            dataType: "json",
+            type: "POST",
+            success: function (response) {
+                Loading(0);
+                if (response) {
+                    if (response["Code"] == "0") {
+                        var responsetext = "<span style='font-weight: normal;'><b>Data Total :</b> " + response["DataTotal"].toLocaleString('en') + " asset. <br/> <b>Reverse Asset Success : </b>" + response["SuccessCount"].toLocaleString('en') + " asset.<br/> <b>Reverse Asset Error : </b>" + response["ErrorCount"].toLocaleString('en') + " asset.  </span>"
+
+                        showFeedback("success", responsetext, "Notify Information");
+
+                        ClearFileUpload();
+                    } else {
+                        showFeedback("error", response["message"], "Notify Information");
+                    }
+                }
+            },
+            failure: function (msg) {
+                Loading(0);
+                //$("#validatefor-ReverseAssetfile").html(ValidationIcon() + msg);
+            }
+
+        });
+
+        Loading(0);
+    }
+    function ConfirmReverseAssetByFileCancel() {
+        // console.log("ConfirmReverseAssetByFileCancel");
+        $.ajax({
+
+            contentType: 'application/json',
+            url: "/ReverseAsset/ImportFileInternet_Remove",
+            //  data:null,
+            async: false,
+            dataType: "json",
+            type: "POST",
+            success: function (response) {
+            },
+            failure: function (msg) {
+
+            }
+
+        });
+        ClearFileUpload();
+    }
+    //R19.05
+    function ExportTemplateReverseAsset() {
+        var url = '@Url.Action("ExportTemplateReverseAsset", "ReverseAsset")';
+        window.open(url, '_blank');
+    }
+</script>

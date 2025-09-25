@@ -1,0 +1,2219 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension;
+@{
+    string language = Session[WebConstants.SessionKeys.CurrentUICulture] != null ? Session[WebConstants.SessionKeys.CurrentUICulture].ToString() : "";
+
+    string VAS = "";
+    string OWNER_PRODUCT = "";
+    string ADDRESS_ID = "";
+    string PACKAGE_CODE = "";
+    string ContactMobileNo = "";
+    decimal SFF_CHKPROFILE_ID = 0;
+
+    if (ViewBag.ContactMobileNo != null)
+    {
+        ContactMobileNo = ViewBag.ContactMobileNo;
+    }
+
+    if (ViewBag.Vas != null)
+    {
+        VAS = ViewBag.Vas;
+    }
+
+    if (ViewBag.OwnerProduct != null)
+    {
+        OWNER_PRODUCT = ViewBag.OwnerProduct;
+    }
+
+    if (ViewBag.AddressID != null)
+    {
+        ADDRESS_ID = ViewBag.AddressID;
+    }
+
+    if (ViewBag.PackageCode != null)
+    {
+        PACKAGE_CODE = ViewBag.PackageCode;
+    }
+
+    if (ViewBag.SffProfileLogID != null)
+    {
+        SFF_CHKPROFILE_ID = ViewBag.SffProfileLogID;
+    }
+
+    string L_SUM_INSTALL_RATE = "";
+    string L_SUM_MAINTEN_RATE = "";
+    string L_VAS_DATAIL = "";
+    string L_SELECT_VAS = "";
+    string L_LIST = "";
+    string L_CHARGE = "";
+    string L_INSTALL_RATE = "";
+    string L_INSTALL_RATE_VALUE = "";
+    string L_MAINTEN_FEE = "";
+    string L_MAINTEN_FEE_VALUE = "";
+    string L_BAHT_MIN = "";
+    string L_BAHT_MONTH = "";
+    string L_CALL_IN_RATE = "";
+    string L_CALL_IN_RATE_VALUE = "";
+    string L_BAHT_TIME = "";
+    string L_CALL_OUT_RATE = "";
+    string L_CALL_OUT_RATE_VALUE = "";
+    string L_CALL_FREE = "";
+    string L_MINUTE = "";
+
+    // R1608-2  //
+    string L_CALLING_RATE = "";
+    string L_PER_MIN = "";
+    string L_PER_TIME = "";
+    string L_FREE_FIXEDLINE = "";
+    string L_UNLIMITED = "";
+    string L_CALL_IN_AIS = "";
+    string L_CALL_IN_AIS_VALUE = "";
+    string L_CALL_OUT_AIS = "";
+    string L_CALL_OUT_AIS_VALUE = "";
+    string L_REMARK_VOICE_RATE = "";
+    //
+
+    string SHOW_ICON_FIXEDLINE_CUST_REGISTER = "";
+    string SHOW_ICON_FIXEDLINE_SSO_REGISTER = "";
+    string SHOW_ICON_FIXEDLINE_CUST_VAS = "";
+    string SHOW_ICON_FIXEDLINE_SSO_VAS = "";
+
+    string SHOW_ICON_PLAYBOX_CUST_REGISTER = "";
+    string SHOW_ICON_PLAYBOX_SSO_REGISTER = "";
+    string SHOW_ICON_PLAYBOX_CUST_VAS = "";
+    string SHOW_ICON_PLAYBOX_SSO_VAS = "";
+
+    string DEFAULT_ICON_PLAYBOX_CUST_REGISTER = "";
+    string DEFAULT_ICON_PLAYBOX_SSO_REGISTER = "";
+    string DEFAULT_ICON_PLAYBOX_CUST_VAS = "";
+    string DEFAULT_ICON_PLAYBOX_SSO_VAS = "";
+
+    string L_AIS_PLAYBOX = "";
+    string L_INTERNET_TV = "";
+    string L_FIXEDLINE_VOIP = "";
+    string L_FIXEDLINE_DES = "";
+    string L_CLICK_CHECKBOX = "";
+    string L_SUM_DISCOUNT_INSTALL_RATE = "";
+
+    string L_CHARGE_ON_INSTALL_DATE = "";
+    string L_ENTRANCE_FEE = "";
+
+    string L_MESSAGE_NOT_PLAYBOX = "";
+    string B_OK = "";
+
+    if (ViewBag.LabelFBBTR010 != null)
+    {
+        var LabelFBBTR010 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR010;
+        L_SUM_INSTALL_RATE = LabelFBBTR010.Any(c => c.Name == "L_SUM_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SUM_INSTALL_RATE").DisplayValue : "";
+        L_SUM_MAINTEN_RATE = LabelFBBTR010.Any(c => c.Name == "L_SUM_MAINTEN_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SUM_MAINTEN_RATE").DisplayValue : "";
+        L_VAS_DATAIL = LabelFBBTR010.Any(c => c.Name == "L_VAS_DATAIL") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_VAS_DATAIL").DisplayValue : "";
+        L_SELECT_VAS = LabelFBBTR010.Any(c => c.Name == "L_SELECT_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SELECT_VAS").DisplayValue : "";
+
+        L_LIST = LabelFBBTR010.Any(c => c.Name == "L_LIST") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_LIST").DisplayValue : "";
+        L_CHARGE = LabelFBBTR010.Any(c => c.Name == "L_CHARGE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CHARGE").DisplayValue : "";
+        L_INSTALL_RATE = LabelFBBTR010.Any(c => c.Name == "L_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_INSTALL_RATE").DisplayValue : "";
+        L_INSTALL_RATE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_INSTALL_RATE").LovValue3 : "";
+        L_MAINTEN_FEE = LabelFBBTR010.Any(c => c.Name == "L_MAINTEN_FEE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MAINTEN_FEE").DisplayValue : "";
+        L_MAINTEN_FEE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_MAINTEN_FEE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MAINTEN_FEE").LovValue3 : "";
+        L_BAHT_MIN = LabelFBBTR010.Any(c => c.Name == "L_BAHT_MIN") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_BAHT_MIN").DisplayValue : "";
+        L_BAHT_MONTH = LabelFBBTR010.Any(c => c.Name == "L_BAHT_MONTH") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_BAHT_MONTH").DisplayValue : "";
+        L_CALL_IN_RATE = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_RATE").DisplayValue : "";
+        L_CALL_IN_RATE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_RATE").LovValue3 : "";
+        L_BAHT_TIME = LabelFBBTR010.Any(c => c.Name == "L_BAHT_TIME") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_BAHT_TIME").DisplayValue : "";
+        L_CALL_OUT_RATE = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_RATE").DisplayValue : "";
+        L_CALL_OUT_RATE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_RATE").LovValue3 : "";
+        L_CALL_IN_AIS = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_AIS").DisplayValue : "";
+        L_CALL_IN_AIS_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_AIS").LovValue3 : "";
+        L_CALL_OUT_AIS = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_AIS").DisplayValue : "";
+        L_CALL_OUT_AIS_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_AIS").LovValue3 : "";
+        L_FREE_FIXEDLINE = LabelFBBTR010.Any(c => c.Name == "L_FREE_FIXEDLINE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_FREE_FIXEDLINE").DisplayValue : "";
+        L_UNLIMITED = LabelFBBTR010.Any(c => c.Name == "L_UNLIMITED") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_UNLIMITED").DisplayValue : "";
+        L_PER_MIN = LabelFBBTR010.Any(c => c.Name == "L_PER_MIN") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_PER_MIN").DisplayValue : "";
+        L_PER_TIME = LabelFBBTR010.Any(c => c.Name == "L_PER_TIME") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_PER_TIME").DisplayValue : "";
+        L_CALLING_RATE = LabelFBBTR010.Any(c => c.Name == "L_CALLING_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALLING_RATE").DisplayValue : "";
+        L_REMARK_VOICE_RATE = LabelFBBTR010.Any(c => c.Name == "L_REMARK_VOICE_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_REMARK_VOICE_RATE").DisplayValue : "";
+        L_CALL_FREE = LabelFBBTR010.Any(c => c.Name == "L_CALL_FREE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_FREE").DisplayValue : "";
+        L_MINUTE = LabelFBBTR010.Any(c => c.Name == "L_MINUTE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MINUTE").DisplayValue : "";
+
+        SHOW_ICON_FIXEDLINE_CUST_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_REGISTER").DisplayValue : "";
+        SHOW_ICON_FIXEDLINE_SSO_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_REGISTER").DisplayValue : "";
+        SHOW_ICON_FIXEDLINE_CUST_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_VAS").DisplayValue : "";
+        SHOW_ICON_FIXEDLINE_SSO_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_VAS").DisplayValue : "";
+
+        SHOW_ICON_PLAYBOX_CUST_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER").DisplayValue : "";
+        SHOW_ICON_PLAYBOX_SSO_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER").DisplayValue : "";
+        SHOW_ICON_PLAYBOX_CUST_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS").DisplayValue : "";
+        SHOW_ICON_PLAYBOX_SSO_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS").DisplayValue : "";
+
+        DEFAULT_ICON_PLAYBOX_CUST_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER").DefaultValue : "";
+        DEFAULT_ICON_PLAYBOX_SSO_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER").DefaultValue : "";
+        DEFAULT_ICON_PLAYBOX_CUST_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS").DefaultValue : "";
+        DEFAULT_ICON_PLAYBOX_SSO_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS").DefaultValue : "";
+
+        L_AIS_PLAYBOX = LabelFBBTR010.Any(c => c.Name == "L_AIS_PLAYBOX") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_AIS_PLAYBOX").DisplayValue : "";
+        L_INTERNET_TV = LabelFBBTR010.Any(c => c.Name == "L_INTERNET_TV") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_INTERNET_TV").DisplayValue : "";
+        L_FIXEDLINE_VOIP = LabelFBBTR010.Any(c => c.Name == "L_FIXEDLINE_VOIP") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_FIXEDLINE_VOIP").DisplayValue : "";
+        L_FIXEDLINE_DES = LabelFBBTR010.Any(c => c.Name == "L_FIXEDLINE_DES") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_FIXEDLINE_DES").DisplayValue : "";
+        L_CLICK_CHECKBOX = LabelFBBTR010.Any(c => c.Name == "L_CLICK_CHECKBOX") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CLICK_CHECKBOX").DisplayValue : "";
+        L_SUM_DISCOUNT_INSTALL_RATE = LabelFBBTR010.Any(c => c.Name == "L_SUM_DISCOUNT_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SUM_DISCOUNT_INSTALL_RATE").DisplayValue : "";
+
+        L_MESSAGE_NOT_PLAYBOX = LabelFBBTR010.Any(c => c.Name == "L_MESSAGE_NOT_PLAYBOX") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MESSAGE_NOT_PLAYBOX").DisplayValue : "";
+        B_OK = LabelFBBTR010.Any(c => c.Name == "B_OK") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "B_OK").DisplayValue : "";
+    }
+
+    string B_VAS_CONFIRM_SKIP = "";
+
+    if (ViewBag.LabelFBBORV11 != null)
+    {
+        var LabelFBBORV11 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV11;
+        B_VAS_CONFIRM_SKIP = LabelFBBORV11.Any(c => c.Name == "B_VAS_CONFIRM_SKIP") ? LabelFBBORV11.FirstOrDefault(c => c.Name == "B_VAS_CONFIRM_SKIP").DisplayValue : "";
+    }
+
+    string B_NEXT = "";
+    string B_BACK = "";
+    string L_CLOSE = "";
+    string L_CHOOSE_TOPUP = "";
+
+    if (ViewBag.labelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR000;
+        B_NEXT = labelFBBTR000.Any(c => c.Name == "B_NEXT") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+        B_BACK = labelFBBTR000.Any(c => c.Name == "B_BACK") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+        L_CLOSE = labelFBBTR000.Any(c => c.Name == "B_CLOSE") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        L_CHOOSE_TOPUP = labelFBBTR000.Any(c => c.Name == "L_CHOOSE_TOPUP") ? labelFBBTR000.FirstOrDefault(c => c.Name == "L_CHOOSE_TOPUP").DisplayValue : "";
+    }
+
+    string sffProductName = "";
+    string sffServiceYear = "";
+
+    if (ViewBag.SFFProductName != null) { sffProductName = ViewBag.SFFProductName; }
+    if (ViewBag.SFFServiceYear != null) { sffServiceYear = ViewBag.SFFServiceYear; }
+
+    string L_SUMMARY = "";
+    string L_SUMM_DETAIL1 = "";
+    string L_SUMM_DETAIL_WireBB = "";
+    string L_SUMM_DETAIL_FTTx = "";
+    string L_SUMM_DETAIL5 = "";
+    string L_SUMM_DETAIL8 = "";
+    string L_SUMM_DETAIL9 = "";
+    string L_SUMM_DETAIL11 = "";
+    string L_SUMM_DETAIL13 = "";
+    string L_SUMM_DETAIL14 = "";
+    string L_SUMM_DETAIL15 = "";
+    string L_SUMM_DETAIL12 = "";
+    string L_BAHT = "";
+    string L_ONTOP_PLAYBOX_BPL = "";
+
+    string L_BUNDLING_DISCOUNT_DTL = "";
+    string L_DISCOUNT_DTL = "";
+
+
+    if (ViewBag.LabelFBBTR002 != null)
+    {
+        var labelFBBTR002 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR002;
+        L_SUMMARY = labelFBBTR002.Any(c => c.Name == "L_SUMMARY") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMMARY").DisplayValue : "";
+        L_SUMM_DETAIL1 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL1") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL1").DisplayValue : "";
+        L_SUMM_DETAIL_WireBB = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL_WireBB") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL_WireBB").DisplayValue : "";
+        L_SUMM_DETAIL_FTTx = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL_FTTx") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL_FTTx").DisplayValue : "";
+        //L_SUMM_DETAIL5 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL5") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL5").DisplayValue : "";
+        L_SUMM_DETAIL8 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL8") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL8").DisplayValue : "";
+        L_SUMM_DETAIL9 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL9") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL9").DisplayValue : "";
+        L_SUMM_DETAIL11 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL11") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL11").DisplayValue : "";
+        L_SUMM_DETAIL13 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL13") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL13").DisplayValue : "";
+        L_SUMM_DETAIL14 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL14") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL14").DisplayValue : "";
+        L_SUMM_DETAIL15 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL15") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL15").DisplayValue : "";
+        L_SUMM_DETAIL12 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL12") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL12").DisplayValue : "";
+        L_BAHT = labelFBBTR002.Any(c => c.Name == "L_BAHT") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_BAHT").DisplayValue : "";
+        L_ONTOP_PLAYBOX_BPL = labelFBBTR002.Any(c => c.Name == "L_ONTOP_PLAYBOX_BPL") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_BPL").DisplayValue : "";
+        L_BUNDLING_DISCOUNT_DTL = labelFBBTR002.Any(c => c.Name == "L_BUNDLING_DISCOUNT_DTL") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_BUNDLING_DISCOUNT_DTL").DisplayValue : "";
+        L_DISCOUNT_DTL = labelFBBTR002.Any(c => c.Name == "L_DISCOUNT_DTL") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_DISCOUNT_DTL").DisplayValue : "";
+
+        L_CHARGE_ON_INSTALL_DATE = labelFBBTR002.Any(c => c.Name == "L_CHARGE_ON_INSTALL_DATE") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_CHARGE_ON_INSTALL_DATE").DisplayValue : "";
+        L_ENTRANCE_FEE = labelFBBTR002.Any(c => c.Name == "L_ENTRANCE_FEE") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_ENTRANCE_FEE").DisplayValue : "";
+
+    }
+
+    string L_ONTOP_PLAYBOX_PRE_INITIATION = "";
+    string L_ONTOP_PLAYBOX_PROMOTION = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_INITIATION = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_FREE_TV = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_HOOQ = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTH = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTHS = "";
+    string L_ONTOP_PLAYBOX_FREE = "";
+    string L_ONTOP_PLAYBOX_VALUE = "";
+    string L_ONTOP_PLAYBOX_DISCOUNT_KARAOKE = "";
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        L_ONTOP_PLAYBOX_PRE_INITIATION = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_PRE_INITIATION") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_PRE_INITIATION").DisplayValue : "";
+        L_ONTOP_PLAYBOX_PROMOTION = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_PROMOTION") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_PROMOTION").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_INITIATION = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_INITIATION") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_INITIATION").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_FREE_TV = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_FREE_TV") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_FREE_TV").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_HOOQ = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTH = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTH") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTH").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTHS = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTHS") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTHS").DisplayValue : "";
+        L_ONTOP_PLAYBOX_FREE = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_FREE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_FREE").DisplayValue : "";
+        L_ONTOP_PLAYBOX_VALUE = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_VALUE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_VALUE").DisplayValue : "";
+        L_ONTOP_PLAYBOX_DISCOUNT_KARAOKE = labelFBBTR003.Any(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_KARAOKE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_DISCOUNT_KARAOKE").DisplayValue : "";
+        L_SUMM_DETAIL5 = labelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_INITIATIONS") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_INITIATIONS").DisplayValue : "";
+    }
+
+    string viewBagShowIconPB = "";
+    string viewBagShowIconFL = "";
+    string viewBagAddPB = "";
+
+    if (ViewBag.v_icon_pb != null)
+    {
+        viewBagShowIconPB = ViewBag.v_icon_pb;
+    }
+
+    if (ViewBag.v_check_pb != null)
+    {
+        viewBagShowIconFL = ViewBag.v_check_pb;
+    }
+
+    if (ViewBag.v_add_playbox != null)
+    {
+        viewBagAddPB = ViewBag.v_add_playbox;
+    }
+
+    string MobileAis = "";
+    if (ViewBag.MobileAis != null)
+    {
+        MobileAis = ViewBag.MobileAis;
+    }
+
+    string MyAISBypass = "";
+    if (ViewBag.MyAISBypass != null)
+    {
+        MyAISBypass = ViewBag.MyAISBypass;
+    }
+
+    string tempV2ByPass = "";
+    if (ViewBag.tempV2ByPass != null)
+    {
+        tempV2ByPass = ViewBag.tempV2ByPass;
+    }
+}
+
+<div id="divVasPopupDetail" data-div-obj="obsolete" style="display: none;">
+    <div id="divPromotionDetail">
+        <div class="panel panel-info">
+            <div class="panel-heading " style="border-bottom: none !important;">
+            </div>
+            <table class="table-non-border">
+                <thead class="text-center" style="background: #e9ecf0;">
+                    <tr>
+                        <th class="text-left">@L_LIST</th>
+                        <th class="text-left">@L_CHARGE</th>
+                    </tr>
+                </thead>
+                <tbody class="text-left">
+                    <tr>
+                        <td>@L_INSTALL_RATE</td>
+                        <td>@L_INSTALL_RATE_VALUE @L_BAHT_TIME</td>
+                    </tr>
+                    <tr id="maintainance" style="display: none;">
+                        <td>@L_MAINTEN_FEE</td>
+                        <td id="maintainBath"></td>
+                    </tr>
+                    <tr id="callfree" style="display: none;">
+                        <td>@L_CALL_FREE</td>
+                        <td id="callfreeMin"></td>
+                    </tr>
+                </tbody>
+                <thead class="text-center" style="background: #e9ecf0;">
+                    <tr>
+                        <th class="text-left">@L_CALLING_RATE</th>
+                        <th class="text-left"></th>
+                    </tr>
+                </thead>
+                <tbody class="text-left">
+                    <tr>
+                        <td>@L_FREE_FIXEDLINE</td>
+                        <td>@L_UNLIMITED</td>
+                    </tr>
+                    <tr>
+                        <td>@L_CALL_IN_AIS</td>
+                        @if (language == "1")
+                        {
+                            <td>@L_PER_MIN  @L_CALL_IN_AIS_VALUE   @L_BAHT</td>
+                        }
+                        else
+                        {
+                            <td>@L_CALL_IN_AIS_VALUE   @L_PER_MIN</td>
+                        }
+                    </tr>
+                    <tr>
+                        <td>@L_CALL_OUT_AIS</td>
+                        @if (language == "1")
+                        {
+                            <td>@L_PER_MIN @L_CALL_OUT_AIS_VALUE @L_BAHT</td>
+                        }
+                        else
+                        {
+                            <td>@L_CALL_OUT_AIS_VALUE @L_PER_MIN</td>
+
+                        }
+                    </tr>
+                    <tr>
+                        <td>@L_CALL_IN_RATE</td>
+                        @if (language == "1")
+                        {
+                            <td>@L_PER_TIME @L_CALL_IN_RATE_VALUE  @L_BAHT</td>
+                        }
+                        else
+                        {
+                            <td>@L_CALL_IN_RATE_VALUE  @L_PER_TIME</td>
+
+                        }
+                    </tr>
+                    <tr>
+                        <td>@L_CALL_OUT_RATE</td>
+                        @if (language == "1")
+                        {
+                            <td>@L_PER_MIN @L_CALL_OUT_RATE_VALUE  @L_BAHT</td>
+                        }
+                        else
+                        {
+                            <td>@L_CALL_OUT_RATE_VALUE  @L_PER_MIN</td>
+
+                        }
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            @L_REMARK_VOICE_RATE
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+</div>
+
+<div id="page2_1" style="display: none;">
+    <div class="container col-lg-12 col-md-12 col-xs-12">
+        <div class="col-md-8 col-sm-8 col-xs-12 addrounded">
+            <p class="clearfix"></p>
+            <h4 class="page-header tgreen" id="lblSelectVas">@L_SELECT_VAS</h4>
+            @L_CLICK_CHECKBOX
+            <p class="clearfix"></p>
+            <div id="divVasBoxDynamic" class="row-border"></div>
+
+            <div class="col-sm-4 col-xs-6 text-center"></div>
+            <p class="clearfix"></p>
+            <p class="clearfix page-header"></p>
+            <div class="col-md-12 text-center">
+                @if (VAS == "2" || ViewBag.TopUp == "1")
+                {
+                    <button type="button"
+                            @if (ViewBag.ExistingFlag == "PLAYBOX:MENU" || MyAISBypass == "Y") { <text> class="btn btn-default btn-for-xs hide" </text>  } else { <text> class="btn btn-default btn-for-xs" </text> }
+                            id="btnVasBackPage" onclick=" onBtnVasBackPage_Click() ">
+                        &nbsp; @B_BACK &nbsp;
+                    </button>
+                    <button type="button" class="btn btn-success btn-for-xs" id="btnVasNextPage" onclick=" onBtnVasNextPageV2_Click() ">
+                        &nbsp; @B_NEXT &nbsp;<i class="fa fa-arrow-circle-o-right "></i>
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-default btn-for-xs" id="btnCrossVas" onclick=" onBtnCrossVas_Click() ">
+                        &nbsp; @B_VAS_CONFIRM_SKIP &nbsp;
+                    </button>
+                    <button type="button" class="btn btn-success btn-for-xs" id="btnVasNextPage" onclick=" onBtnVasNextPage_Click() ">
+                        &nbsp; @B_NEXT &nbsp;<i class="fa fa-arrow-circle-o-right "></i>
+                    </button>
+                }
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        <div id="divSelectValFormSummaryDetail">
+            <div class="col-md-4 col-sm-4 col-xs-12 addrounded pull-right hidden-xs">
+                <br />
+                <br />
+                <h4 class="greenheader page-header twhite" id="lblSumHeaderVas"></h4>
+
+                <div class="page-dot" id="pageDotEntranceFeeVas" style="display: none">
+                    <i class="fa fa-chevron-right tgreen"></i><span class="tgreen">@L_CHARGE_ON_INSTALL_DATE</span>
+                    <p class="clearfix"></p>
+                    <div class="col-xs-8"><span id="lblEntranceFeeVas">@L_ENTRANCE_FEE</span></div>
+                    <div class="col-xs-4 text-right"><span id="entranceFeeDatailVas"></span> @L_BAHT</div>
+                    <p class="clearfix"></p>
+                </div>
+                <div id="divPromotionDetailSum" class="page-dot">
+                    <i class="fa fa-chevron-right tgreen"></i>
+                    <span class="tgreen" id="o1Vas"></span>
+                    <p class="clearfix"></p>
+                    <span id="summDetailVas"></span>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="page-dot">
+                    <i class="fa fa-chevron-right tgreen"></i>
+                    <span class="tgreen" id="o2Vas"></span>
+                    <div>
+                        <p class="clearfix"></p>
+                        <span class="col-xs-8"><span id="summLb1Vas"></span><span id="summLb1RouterVas"></span></span>
+                        <span class="col-xs-4 text-right"><span id="summVal1Vas"></span> @L_BAHT</span>
+                    </div>
+                    <div>
+                        <p class="clearfix"></p>
+                        <span class="col-xs-8"><span id="o3Vas"></span></span>
+                        <span class="col-xs-4 text-right"><span id="summVal2Vas"></span> @L_BAHT</span>
+                    </div>
+                    <p class="clearfix"></p>
+
+                    <div id="trPlayBoxPreIni" style="display: none;">
+                        <span class="col-xs-8" id="lblPlayBoxPreIniVas"></span>
+                        <span class="col-xs-4 text-right"><span id="lblSumPlayBoxPreIniVas"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <div id="trPlayBoxDisCountIni" style="display: none;">
+                        <span class="col-xs-8" id="lblPlayBoxDisCountIniVas"></span>
+                        <span class="col-xs-4 text-right"><span id="lblSumPlayBoxDisCountIniVas"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <div id="trInstallVas">
+                        <span class="col-xs-8" id="lblInstallVas">@L_SUM_INSTALL_RATE</span>
+                        <span class="col-xs-4 text-right"><span id="lblInstallPriceVas"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <div id="trInstallPlayBox">
+                        <span class="col-xs-8" id="lblInstallPlayBox"></span>@*@L_ONTOP_PLAYBOX_PRE_INITIATION*@ @*R21.11 ATV*@
+                        <span class="col-xs-4 text-right"><span id="lblInstallPricePlayBox"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <div id="trDiscountPlayBox">
+                        <span class="col-xs-8" id="lblDiscountPlayBox"></span>@*@L_ONTOP_PLAYBOX_DISCOUNT_INITIATION*@ @*R21.11 ATV*@
+                        <span class="col-xs-4 text-right"><span id="lblDiscountPricePlayBox"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <div id="trInstallFixedLine">
+                        <span class="col-xs-8" id="lblInstallFixedLine">@L_SUM_INSTALL_RATE</span>
+                        <span class="col-xs-4 text-right"><span id="lblInstallPriceFixedLine"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <div id="trDiscountFixedLine">
+                        <span class="col-xs-8" id="lblDiscountFixedLine">@L_SUM_DISCOUNT_INSTALL_RATE</span>
+                        <span class="col-xs-4 text-right"><span id="lblDiscountPriceFixedLine"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <strong>
+                        <span class="col-xs-8" id="o4Vas"></span>
+                        <span class="col-xs-4 text-right"><span id="summTotal1Vas"></span> @L_BAHT</span>
+                    </strong>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="page-dot">
+                    @*<div class="page-dot hidden">*@
+                    <i class="fa fa-chevron-right tgreen"></i>
+                    <span class="tgreen" id="oProrateVas"></span>
+
+                    <div>
+                        <p class="clearfix"></p>
+                        <span class="col-xs-8">
+                            <span id="o6Vas"></span>
+                            <span id="summLb3Vas"></span>
+                        </span>
+                        <span class="col-xs-4 text-right"><span id="summVal3Vas"></span> @L_BAHT</span>
+                    </div>
+                    <p class="clearfix"></p>
+                    <div id="trBundling">
+                        <span class="col-xs-8"><span id="Bunding_Discount"></span><span id="BundingVas">@L_BUNDLING_DISCOUNT_DTL</span></span>
+                        <span class="col-xs-4 text-right"><span id="summBundingVas"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <div id="trDiscount">
+                        <span class="col-xs-8"><span id="Discount_dtl"></span><span id="DiscountVas">@L_DISCOUNT_DTL</span></span>
+                        <span class="col-xs-4 text-right"><span id="summDiscountVas"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <div id="trInstallMonthVas">
+                        @*<span class="col-xs-8" id="lblInstallMonthVas">@L_SUM_MAINTEN_RATE</span>*@
+                        <span class="col-xs-8" id="lblInstallMonthVas"></span>
+                        <span class="col-xs-4 text-right"><span id="lblInstallMonthPriceVas"></span> @L_BAHT</span>
+                        <p class="clearfix"></p>
+                    </div>
+                    @*R21.12PP ATV*@
+                    <div id="trPlayboxAutoMonthVas"></div>
+                    <strong>
+                        <span class="col-xs-8" id="o7Vas"></span>
+                        <span class="col-xs-4 text-right"><span id="summTotal2Vas"></span> @L_BAHT</span>
+                    </strong>
+                    <p class="clearfix"></p>
+                </div>
+            <div class="page-dot">
+                <i class="fa fa-chevron-right tgreen"></i>
+                <span class="tgreen" id="o5Vas"></span>
+                <p class="clearfix"></p>
+                <span class="col-xs-8"><span id="o62Vas"></span></span>
+                <span class="col-xs-4 text-right"><span id="sumProrateVas"></span> @L_BAHT</span>
+                <p class="clearfix"></p>
+                <strong>
+                    <span class="col-xs-8"><span id="o42Vas"></span></span>
+                    <span class="col-xs-4 text-right"><span id="sumTotalProrateVas"></span> @L_BAHT</span>
+                </strong>
+                <p class="clearfix"></p>
+                <strong>
+                    <span class="col-xs-8"><span id="vatVas"></span></span>
+                </strong>
+                <p class="clearfix"></p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div style="display: none;">
+        <input type="hidden" id="ZTEVasAddressID" value="@ADDRESS_ID" />
+        <input type="hidden" id="ContactMobileNo" value="@ContactMobileNo" />
+    </div>
+</div>
+
+<div class="modal fade" id="modalMsgNonRegis" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalMsgNonRegis_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="modalMsgNonRegistxt" class="text-center">
+                        @(Html.Raw(L_MESSAGE_NOT_PLAYBOX))
+                    </h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" id="modalMsgNonRegisbtn" class="btn btn-default" data-dismiss="modal" onclick="onBtnVasBackPage_Click();">&nbsp; @B_OK &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<table style="display: none; border-color: red;" id="tempV2" border="1"></table>
+
+@*AWARE_R20.02*@
+<input type="hidden" id="BillCycle" />
+<input type="hidden" id="BillCycleHave2MainFlag" />
+<input type="hidden" id="BillCycleTimeSlotStartDate" />
+<input type="hidden" id="BillCycleTimeSlotDayAdd" />
+<input type="hidden" id="BillCycleTimeSlotDtpLenght" />
+<input type="hidden" id="BillCycleTimeSlotDayLenght" />
+
+<script type="text/javascript">
+
+    var flagSelectDetail = false;
+
+    function onLoadPage2_1() {
+
+        if ($('#tempV tr').length != 0) {
+            setFormSummaryLine1();
+            setVasForSelect();
+        }
+        else {
+            alert('Does not have VAS.');
+        }
+    }
+
+    var MultiPlayboxModel = function () {
+        packageServiceCode: "";
+        packageServiceName: "";
+        packageType: "";
+        packageTypeDesc: "";
+
+        packageDisplayTha: "";
+        packageDisplayEng: "";
+
+        prePriceCharge: "";
+        priceCharge: "";
+
+        productSubtype: "";
+        productSubtype3: "";
+        sffProductName: "";
+        sffPromotionCode: "";
+        sffWordInStatementTha: "";
+        sffWordInStatementEng: "";
+        serviceCode: "";
+
+        mappingCode: "";
+        ownerProduct: "";
+        downloadSpeed: "";
+        uploadSpeed: "";
+        autoMappingPromotionCode: ""; //R21.12PP ATV
+        packageForSaleFlag: ""; //R21.12PP ATV
+    }
+
+    var tmpPackageDataDeviceContract;
+    var objPromotionCodeforGetDeviceArry = [];
+    function GetListDeviceContractOnlineQuery() { //R21.11 ATV
+        objPromotionCodeforGetDeviceArry = [];
+        var findOntop = $("[name=SelectVasPlayboxCheckbox]");
+        $.each(findOntop, function (i, e) {
+            var packType = $("#PACKAGE_TYPE" + e.value).val();
+            var proSub1 = $("#PRODUCT_SUBTYPE" + e.value).val();
+            var packSerName = $("#PACKAGE_SERVICE_NAME" + e.value).val();
+            var sffPromotionCodePboxMain = $("#SFF_PROMOTION_CODE" + e.value).val();
+            if (packType == "11" && proSub1 == "PBOX" && packSerName == "PBOX") { //main PBOX
+                objPromotionCodeforGetDeviceArry.push({ SFF_PROMOTION_CODE: sffPromotionCodePboxMain });
+            }
+        });
+
+        //R22.08 Edit Add Parameter GetListDeviceContract OnlineQuery
+        objPromotionCodeforGetDeviceArry.push({ SFF_PROMOTION_CODE: '@Model.v_sff_main_promotionCD' });
+
+        //R22.07
+        var P_PRODUCT_SUBTYPE = '@Model.v_package_subtype';
+        var P_OWNER_PRODUCT = '@Model.v_owner_product';
+        var P_SALE_CHANNEL = sessionStorage.getItem("P_SALE_CHANNEL");
+        if ('@MyAISBypass' == "Y") {
+            P_SALE_CHANNEL = 'CUSTOMER';
+        }
+        //-------------------------------
+
+        if (objPromotionCodeforGetDeviceArry.length > 0) {
+            $.ajax({
+                type: "GET",
+                url: "/SelectPackage/GetListDeviceContractOnlineQuery",
+                data: {
+                    "AisAirNumber": sessionStorage.getItem("AisAirNumber"),
+                    "P_CHANNEL": "WEB",
+                    "P_EVENT": "Existing",
+                    "PROMOTION_CODE_ARRAY": JSON.stringify(objPromotionCodeforGetDeviceArry),
+                    //R22.07 Edit Add Parameter GetListDeviceContract OnlineQuery
+                    "P_PRODUCT_SUBTYPE": P_PRODUCT_SUBTYPE,
+                    "P_OWNER_PRODUCT": P_OWNER_PRODUCT,
+                    "P_SALE_CHANNEL": P_SALE_CHANNEL,
+                    "accessMode": "",
+                    "isPartner": "",
+                    "partnerName": "",
+                    "addressId": ""
+                    //-------------------------------
+                },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    tmpPackageDataDeviceContract = data;
+                }
+            });
+        }
+    }
+
+    var objPackageOntopContentPlaybox = []; //R21.12PP ATV
+    function setVasPlayboxcheckboxForSelect() { //R20.1
+        var flagShowPlayBox = false;
+        var chkShowPlayBox = false;
+
+        var strBuilder = "";
+        $('#divVasBoxDynamic').empty();
+
+        var idPlayBox = "";
+        var playbox_Monthly_Fee = "";
+        var package_display = "";
+        var sffPromotionCodePboxMain = "";
+        objPackageOntopContentPlaybox = []; //R21.12PP ATV
+
+        flagShowPlayBox = "@SHOW_ICON_PLAYBOX_CUST_VAS" == "Y" ? true : false;
+        if ("@viewBagShowIconPB" != "") {
+            flagShowPlayBox = "@viewBagShowIconPB" == "Y" ? true : false;
+        }
+
+        GetListDeviceContractOnlineQuery();//R21.11 ATV
+
+        //PlayBox
+        if (flagShowPlayBox) {
+
+            var findOntop = $("[name=SelectVasPlayboxCheckbox]");
+
+            $.each(findOntop, function (i, e) {
+                var packType = $("#PACKAGE_TYPE" + e.value).val();
+                var proSub1 = $("#PRODUCT_SUBTYPE" + e.value).val();
+                var packSerName = $("#PACKAGE_SERVICE_NAME" + e.value).val();
+                var serviceCode = $("#SERVICE_CODE" + e.value).val();
+                var lblName = "@Html.Raw(L_AIS_PLAYBOX)";
+                var lblDetail = "@Html.Raw(@L_INTERNET_TV)";
+                var sffPromotionCode = $("#SFF_PROMOTION_CODE" + e.value).val();
+                var packTypeDesc = $("#PACKAGE_TYPE_DESC" + e.value).val();
+
+                //PBOX Main Monthly
+                if (packType == "11" && proSub1 == "PBOX" && packSerName == "PBOX") { //main PBOX
+                    chkShowPlayBox = true;
+                    playbox_Monthly_Fee = $("#PRICE_CHARGE" + e.value).val();
+                    package_display = $("#LanguagePage").val() == 1 ? $("#PACKAGE_DISPLAY_THA" + e.value).val() : $("#PACKAGE_DISPLAY_ENG" + e.value).val();
+                    sffPromotionCodePboxMain = $("#SFF_PROMOTION_CODE" + e.value).val();//R21.10
+                }
+                //PBOX Install
+                if (packType == "7" && proSub1 == "PBOX" && packSerName == "PBOX") {
+
+                    var priceCharge = $("#PRICE_CHARGE" + e.value).val();
+                    var prePriceCharge = $("#PRE_PRICE_CHARGE" + e.value).val();
+                    var sffWordInStatement = $("#LanguagePage").val() == 1 ? $("#SFF_WORD_IN_STATEMENT_THA" + e.value).val() : $("#SFF_WORD_IN_STATEMENT_ENG" + e.value).val();
+
+                    idPlayBox = "vasBox" + e.value;
+
+                    strBuilder += "<div id='vasBox" + e.value + "' class='col-sm-4 col-xs-12 text-center'>";
+                    strBuilder += "<img src='../img/play_box_old.png' class='img-responsive center-block'>";
+                    strBuilder += "<p class='clearfix'></p>";
+                    strBuilder += lblName;
+                    strBuilder += lblDetail;
+                    strBuilder += "<div class='checkbox'>";
+                    strBuilder += "<label><input type='checkbox' vasid='vasBox" + e.value + "' id='vasBox" + e.value + "_chkbox' onclick='onVasBoxV2_Click(vasBox" + e.value + ")'> @L_CHOOSE_TOPUP </label>";
+                    strBuilder += "</div>";
+
+                    strBuilder += "<input type='hidden' name='selectpack' value='" + e.value + "' />";
+                    strBuilder += "<input type='hidden' name='productSubType' value='" + proSub1 + "' />";
+                    strBuilder += "<input type='hidden' name='packageServiceName' value='" + packSerName + "' />";
+                    strBuilder += "<input type='hidden' name='priceCharge' value='" + priceCharge + "' />";
+                    strBuilder += "<input type='hidden' name='prePriceCharge' value='" + prePriceCharge + "' />";
+                    strBuilder += "<input type='hidden' name='playboxMonthlyFee' value='' />";
+                    strBuilder += "<input type='hidden' name='packageDisplay' value='' />";
+                    strBuilder += "<input type='hidden' name='sffWordInStatement' value='" + sffWordInStatement + "' />";
+                    strBuilder += "<input type='hidden' id='PRODUCT_SUBTYPE_SFFPROMO' value='" + proSub1 + "' />";
+                    strBuilder += "<input type='hidden' name='serviceCode' value='" + serviceCode + "' />";
+                    strBuilder += "<input type='hidden' name='sffPromotionCodePboxMain' value='' />";//R21.10
+                    strBuilder += "<input type='hidden' name='sffPromotionCodePboxInsatall' value='" + sffPromotionCode + "' />";//R21.11 ATV
+
+                    strBuilder += "</div>";
+                    strBuilder += "<p class='clearfix visible-xs'></p>";
+                }
+                //PBOX Ontop Content //R21.12PP ATV
+                if (packType == "8" && proSub1 == "PBOX" && packSerName == "PBOX" && packTypeDesc == "Ontop Content") {
+                    objPackageOntopContentPlaybox.push({
+                        MAPPING_CODE: $("#MAPPING_CODE" + e.value).val(),
+                        OWNER_PRODUCT: $("#OWNER_PRODUCT" + e.value).val(),
+                        PACKAGE_DISPLAY_ENG: $("#PACKAGE_DISPLAY_ENG" + e.value).val(),
+                        PACKAGE_DISPLAY_THA: $("#PACKAGE_DISPLAY_THA" + e.value).val(),
+                        PACKAGE_SERVICE_CODE: $("#PACKAGE_SERVICE_CODE" + e.value).val(),
+                        PACKAGE_SERVICE_NAME: $("#PACKAGE_SERVICE_NAME" + e.value).val(),
+                        PACKAGE_TYPE: $("#PACKAGE_TYPE" + e.value).val(),
+                        PACKAGE_TYPE_DESC: $("#PACKAGE_TYPE_DESC" + e.value).val(),
+                        PRE_PRICE_CHARGE: $("#PRE_PRICE_CHARGE" + e.value).val(),
+                        PRICE_CHARGE: $("#PRICE_CHARGE" + e.value).val(),
+                        PRODUCT_SUBTYPE: $("#PRODUCT_SUBTYPE" + e.value).val(),
+                        PRODUCT_SUBTYPE3: $("#PRODUCT_SUBTYPE3" + e.value).val(),
+                        SFF_PRODUCT_NAME: $("#SFF_PRODUCT_NAME" + e.value).val(),
+                        SFF_PROMOTION_CODE: $("#SFF_PROMOTION_CODE" + e.value).val(),
+                        SFF_WORD_IN_STATEMENT_ENG: $("#SFF_WORD_IN_STATEMENT_ENG" + e.value).val(),
+                        SFF_WORD_IN_STATEMENT_THA: $("#SFF_WORD_IN_STATEMENT_THA" + e.value).val(),
+                        SERVICE_CODE: $("#SERVICE_CODE" + e.value).val(),
+                        DOWNLOAD_SPEED: $("#DOWNLOAD_SPEED" + e.value).val(),
+                        AUTO_MAPPING_PROMOTION_CODE: $("#AUTO_MAPPING_PROMOTION_CODE" + e.value).val(),
+                        PACKAGE_FOR_SALE_FLAG: $("#PACKAGE_FOR_SALE_FLAG" + e.value).val()
+                    });
+                }
+            });
+        }
+
+        // Check Show Main Playbox
+        if (chkShowPlayBox) {
+            $('#divVasBoxDynamic').append(strBuilder);
+
+            $("#" + idPlayBox + " input[name = 'playboxMonthlyFee']").val(playbox_Monthly_Fee);
+            $("#" + idPlayBox + " input[name = 'packageDisplay']").val(package_display);
+            $("#" + idPlayBox + " input[name = 'sffPromotionCodePboxMain']").val(sffPromotionCodePboxMain);//R21.10
+
+            var flagDefaultPB = false;
+            if ("@DEFAULT_ICON_PLAYBOX_CUST_VAS" == "Y")
+                flagDefaultPB = true;
+
+            if (flagDefaultPB)
+                $("#" + idPlayBox + "_chkbox").trigger("click");
+        }
+        //else {
+        //    alert('Does not have a VAS.');
+        //}
+
+    }
+
+    function setVasForSelect() {
+
+        var flagShowVoip = false;
+        var flagShowPlayBox = false;
+
+        var strBuilder = "";
+        $('#divVasBoxDynamic').empty();
+
+        var i = "";
+        var mc = "";
+        var ow = "";
+
+        if ("@VAS" == "2" || "@ViewBag.TopUp" == "1") {
+            //Line2
+            if ("@VAS" == "2") {
+                //SSO
+                flagShowPlayBox = "@SHOW_ICON_PLAYBOX_SSO_VAS" == "Y" ? true : false;
+                flagShowVoip = "@SHOW_ICON_FIXEDLINE_SSO_VAS" == "Y" ? true : false;
+            }
+            else {
+                //Cus
+                flagShowPlayBox = "@SHOW_ICON_PLAYBOX_CUST_VAS" == "Y" ? true : false;
+                flagShowVoip = "@SHOW_ICON_FIXEDLINE_CUST_VAS" == "Y" ? true : false;
+            }
+        }
+        else {
+            //Line1
+            if ("@VAS" == "1") {
+                //SSO
+                flagShowPlayBox = "@SHOW_ICON_PLAYBOX_SSO_REGISTER" == "Y" ? true : false;
+                flagShowVoip = "@SHOW_ICON_FIXEDLINE_SSO_REGISTER" == "Y" ? true : false;
+            }
+            else {
+                //Cus
+                flagShowPlayBox = "@SHOW_ICON_PLAYBOX_CUST_REGISTER" == "Y" ? true : false;
+                flagShowVoip = "@SHOW_ICON_FIXEDLINE_CUST_REGISTER" == "Y" ? true : false;
+            }
+
+            i = $("input[name=SelectPackage]:checked").val() != undefined ? $("input[name=SelectPackage]:checked").val() : "";
+            mc = $("#MAPPING_CODE" + i).val() != undefined ? $("#MAPPING_CODE" + i).val() : "";
+            ow = $("#OWNER_PRODUCT" + i).val() != undefined ? $("#OWNER_PRODUCT" + i).val() : "";
+        }
+
+        if ("@viewBagShowIconPB" != "") {
+            flagShowPlayBox = "@viewBagShowIconPB" == "Y" ? true : false;
+        }
+
+        if ("@viewBagShowIconFL" != "") {
+            flagShowVoip = "@viewBagShowIconFL" == "Y" ? true : false;
+        }
+
+        if ("@viewBagAddPB" != "") {
+            flagShowPlayBox = "@viewBagAddPB" == "N" ? true : false;
+        }
+
+        var idPlayBox = "";
+        //PlayBox
+        if (flagShowPlayBox) {
+            var findOntop = $("[name=SelectOntop" + mc + ow + "]");
+
+            $.each(findOntop, function (i, e) {
+
+                var preInitiation = "";
+                var initiation = "";
+                var proSub1 = $("#PRODUCT_SUBTYPE_" + mc + e.value).val();
+                var proSub3 = $("#PRODUCT_SUBTYPE3_" + mc + e.value).val();
+                var lblName = "@Html.Raw(L_AIS_PLAYBOX)";
+                var lblDetail = "@Html.Raw(@L_INTERNET_TV)";
+                if (proSub1 == "PBOX") {
+                    if (proSub3 == "PBOX") { //main PBOX
+                        preInitiation = $("#PRE_INITIATION_CHARGE" + mc + e.value).val();
+                        initiation = $("#INITIATION_CHARGE" + mc + e.value).val();
+                        idPlayBox = "vasBox" + e.value;
+
+                        strBuilder += "<div id='vasBox" + e.value + "' class='col-sm-4 col-xs-12 text-center'>";
+                        strBuilder += "<img src='../img/play_box_old.png' class='img-responsive center-block'>";
+                        strBuilder += "<p class='clearfix'></p>";
+                        strBuilder += lblName;
+                        strBuilder += lblDetail;
+                        strBuilder += "<div class='checkbox'>";
+                        strBuilder += "<label><input type='checkbox' vasid='vasBox" + e.value + "' id='vasBox" + e.value + "_chkbox' onclick='onVasBox_Click(vasBox" + e.value + ")'> @L_CHOOSE_TOPUP </label>";
+                        strBuilder += "</div>";
+
+                        //strBuilder += "<div id='vasBox" + e.value + "' class='vas-box' >";
+
+                        //strBuilder += "<div class='vas-icon-check'>";
+                        //strBuilder += "<i class='fa fa-square-o' style='color:#74A433; font-size:30px;'></i>";
+                        //strBuilder += "</div>";
+
+                        //strBuilder += "<div id='vasBox" + e.value + "-check' class='vas-icon-check' style='visibility:hidden'>";
+                        //strBuilder += "<i class='fa fa-check-square fa-2x' style='color:#74A433;'></i>";
+                        //strBuilder += "</div>";
+
+                        strBuilder += "<input type='hidden' name='selectpack' value='" + e.value + "' />";
+                        strBuilder += "<input type='hidden' name='price' value='' />";
+                        strBuilder += "<input type='hidden' name='monthprice' value='' />";
+                        strBuilder += "<input type='hidden' name='initationCharge' value='" + initiation + "' />";
+                        strBuilder += "<input type='hidden' name='preInitiationCharge' value='" + preInitiation + "' />";
+                        strBuilder += "<input type='hidden' name='productSubType' value='" + proSub1 + "' />";
+
+                        //strBuilder += "<div class='vas-image-box image-playbox'>";
+                        //strBuilder += "</div>";
+
+                        //strBuilder += "<div class='vas-detail'>";
+                        //strBuilder += "<b><label>" + lblName + "</label></b><br/>";
+                        //strBuilder += "<label>" + lblDetail + "</label><br/>";
+                        @*   strBuilder += "<a class='basic' onclick='onVasDetail_Click(this)' value='" + detail + "'>" + "@L_VAS_DATAIL" + "</a>";*@
+                        //strBuilder += "</div>";
+
+                        strBuilder += "</div>";
+                        strBuilder += "<p class='clearfix visible-xs'></p>";
+                    }
+                }
+            });
+        }
+
+        //Voip
+        var findV = $("[name=SelectV" + mc + ow + "]");
+
+        if (flagShowVoip) {
+            $.each(findV, function (i, e) {
+
+                var mainPrice = "";
+                var ontopPrice = 0;
+                var name = $('#TECHNOLOGY' + mc + e.value).val();
+                var ow = $('#OWNER_PRODUCT' + mc + e.value).val();
+
+                var lblName = "@Html.Raw(L_FIXEDLINE_VOIP)";
+                var lblDetail = "@Html.Raw(L_FIXEDLINE_DES)";
+
+                //var findOntop = $("[name=SelectOntopV" + $('#MAPPING_PRODUCT' + mc + e.value).val() + ow + "]");
+                var findOntop = $("[name=SelectOntopV" + $('#MAPPING_PRODUCT' + mc + e.value).val() + "]");
+                var productSubtype = $('#PRODUCT_SUBTYPE_' + mc + e.value).val()
+
+                var preInitiation = 0;
+                var initiation = 0;
+
+
+                if (productSubtype == "VOIP") {
+                    //VOIP
+                    mainPrice = $('#RECURRING_CHARGE' + mc + e.value).val();
+
+                    $.each(findOntop, function (j, k) {
+                        ontopPrice += parseFloat($("#INITIATION_CHARGE" + mc + k.value).val());
+
+                        preInitiation = $("#PRE_INITIATION_CHARGE" + mc + k.value).val();
+                        initiation = $("#INITIATION_CHARGE" + mc + k.value).val();
+                    });
+
+                    $("#maintainance").hide();
+                    $("#callfree").hide();
+
+                    var productSubType3 = $("#PRODUCT_SUBTYPE3_" + mc + e.value).val().split('|');
+                    if (productSubType3[1] == 'B') {
+                        $("#maintainance").show();
+                        $("#maintainBath").text(productSubType3[0] + " " + '@L_BAHT_MONTH');
+                    }
+                    else if (productSubType3[1] == 'M') {
+                        $("#callfree").show();
+                        $("#callfreeMin").text(productSubType3[0] + " " + '@L_MINUTE');
+                    }
+            }
+            else {
+                    //Vas
+                ontopPrice += parseFloat($("#INITIATION_CHARGE" + mc + e.value).val());
+                preInitiation = $("#PRE_INITIATION_CHARGE" + mc + e.value).val();
+                initiation = $("#INITIATION_CHARGE" + mc + e.value).val();
+            }
+
+                //Detail popup
+                var detail = "";
+                var picfixedline = "";
+
+                if ("@language" == "1") {
+                    detail = $('#SFF_PROMOTION_BILL_THA' + mc + e.value).val();
+                    picfixedline = "fixedlineOldTH.jpg";
+                }
+                else {
+                    detail = $('#SFF_PROMOTION_BILL_ENG' + mc + e.value).val();
+                    picfixedline = "fixedlineOldEN.jpg";
+                }
+
+                //strBuilder += "<div id='vasBox" + e.value + "' class='col-sm-4 col-xs-12 text-center'>";
+                strBuilder += "<div id='vasBox" + e.value + "' class='col-sm-4 col-md-4 col-xs-12 text-center hidden'>";
+                //strBuilder += "<img src='../img/fixedline.jpg' class='img-responsive center-block'>";
+
+                strBuilder += "<img src='../img/" + picfixedline + "' class='img-responsive center-block'>";
+                strBuilder += "<p class='clearfix'></p>"
+                strBuilder += lblName;
+                strBuilder += lblDetail;
+                strBuilder += "<div class='checkbox'>";
+                strBuilder += "<label><input type='checkbox' vasid='vasBox" + e.value + "' id='vasBox" + e.value + "_chkbox' onclick='onVasBox_Click(vasBox" + e.value + ")'> @L_CHOOSE_TOPUP </label>";
+                strBuilder += "</div>";
+
+                //strBuilder += "<div id='vasBox" + e.value + "' class='vas-box' onclick='onVasBox_Click(vasBox" + e.value + ")'>";
+
+                //strBuilder += "<div class='vas-icon-check'>";
+                //strBuilder += "<i class='fa fa-square-o' style='color:#74A433; font-size:30px;'></i>";
+                //strBuilder += "</div>";
+
+                //strBuilder += "<div id='vasBox" + e.value + "-check' class='vas-icon-check' style='visibility:hidden'>";
+                //strBuilder += "<i class='fa fa-check-square fa-2x' style='color:#74A433;'></i>";
+                //strBuilder += "</div>";
+
+                strBuilder += "<input type='hidden' name='selectpack' value='" + e.value + "' />";
+                strBuilder += "<input type='hidden' name='price' value='" + ontopPrice + "' />";
+                strBuilder += "<input type='hidden' name='monthprice' value='" + mainPrice + "' />";
+                strBuilder += "<input type='hidden' name='initationCharge' value='" + initiation + "' />";
+                strBuilder += "<input type='hidden' name='preInitiationCharge' value='" + preInitiation + "' />";
+                strBuilder += "<input type='hidden' name='productSubType' value='" + productSubtype + "' />";
+
+                //strBuilder += "<div class='vas-image-box image-voip'>";
+                //strBuilder += "</div>";
+
+                //strBuilder += "<div class='vas-detail'>";
+                //strBuilder += "<b><label>" + lblName + "</label></b><br/>";
+                //strBuilder += "<label>" + lblDetail + "</label><br/>";
+                @*strBuilder += "<a class='basic' onclick='onVasDetail_Click(this)' value='" + detail + "'>" + "@L_VAS_DATAIL" + "</a>";*@
+                //strBuilder += "</div>";
+
+                strBuilder += "</div>";
+                strBuilder += "<p class='clearfix visible-xs'></p>";
+            });
+        }
+
+        $('#divVasBoxDynamic').append(strBuilder);
+
+        var flagDefaultPB = false;
+
+        if ("@VAS" == "2" || "@ViewBag.TopUp" == "1") {
+            // Line2
+            if ("@VAS" == "2") {
+                // SSO
+                if ("@DEFAULT_ICON_PLAYBOX_SSO_VAS" == "Y")
+                    flagDefaultPB = true;
+            }
+            else {
+                // CUST
+                if ("@DEFAULT_ICON_PLAYBOX_CUST_VAS" == "Y")
+                    flagDefaultPB = true;
+            }
+        }
+        else {
+            // Line1
+            if ("@VAS" == "1") {
+                // SSO
+                if ("@DEFAULT_ICON_PLAYBOX_SSO_REGISTER" == "Y")
+                    flagDefaultPB = true;
+            }
+            else {
+                // CUST
+                if ("@DEFAULT_ICON_PLAYBOX_CUST_REGISTER" == "Y")
+                    flagDefaultPB = true;
+            }
+        }
+
+        if (flagDefaultPB)
+            $("#" + idPlayBox + "_chkbox").trigger("click");
+    }
+
+    function setFormSummaryLine1() {
+        $('#hdGetVoip').val("0");
+        $('#hdGetPlayBox').val("0");
+
+        $('#trInstallPlayBox').hide();
+        $('#trDiscountPlayBox').hide();
+        $('#trInstallFixedLine').hide();
+        $('#trDiscountFixedLine').hide();
+        $('#trInstallVas').hide();
+        $('#trInstallMonthVas').hide();
+        $('#trPlayboxAutoMonthVas').hide(); //R21.12PP ATV
+
+        $('#summDetailVas').text($('#summDetail').text());
+        $('#summLb1Vas').text($('#summLb1').text());
+        $('#summLb1RouterVas').text($('#summLb1Router').text());
+        $('#summVal1Vas').text($('#summVal1').text());
+        $('#summVal2Vas').text($('#summVal2').text());
+
+        if ($("#showEntrancefee").val() == "true") {
+            $("#pageDotEntranceFeeVas").show();
+        }
+        else {
+            $("#pageDotEntranceFeeVas").hide();
+        }
+
+        if ($('#hdSelectSPONTOP').val() == "0") {
+
+            $('#summVal3Vas').text($('#summVal3').text());
+            $('#summtext3Vas').text($('#summtext3').text());
+            $('#summTotal2Vas').text($('#summTotal2').text());
+            $('#trBundling').hide();
+            $('#trDiscount').hide();
+            $('#sumProrateVas').text($('#sumProrate').text());
+            $('#sumTotalProrateVas').text($('#sumTotalProrate').text());
+        }
+        $('#summtext1Vas').text($('#summtext1').text());
+        $('#summtext2Vas').text($('#summtext2').text());
+        $('#summTotal1Vas').text($('#summTotal1').text());
+        $('#summLb3Vas').html($('#summLb3').val().replace(/\|/g, '<br>'));
+        //$('#sumProrateVas').text($('#sumProrate').text());
+        //$('#sumTotalProrateVas').text($('#sumTotalProrate').text());
+        $('#lblInstallPriceVas').text(0);
+        $('#lblInstallMonthPriceVas').text(0);
+        $('#lblInstallPricePlayBox').text(0);
+        $('#lblDiscountPricePlayBox').text(0);
+
+        //Label
+
+        $('#lblSumHeaderVas').text($('#lbsummary').text());
+        $('#o1Vas').text($('#o1').text());
+        $('#o42Vas').text($('#o42').text());
+        $('#o2Vas').text($('#o2').text());
+        $('#o3Vas').text($('#o3').text());
+        $('#o4Vas').text($('#o4').text());
+        $('#oProrateVas').text($('#oProrate').text());
+        $('#o6Vas').text($('#o6').text());
+        $('#o7Vas').text($('#o7').text());
+        $('#vatVas').text($('#vat').text());
+        $('#o5Vas').text($('#o5').text());
+        $('#o62Vas').text($('#o62').text());
+        $('.bathvas').text($('#obaht').text());
+
+        //Play Box
+        if ($("#hdSelectPlayBox").val() == "1") {
+
+            $("#trPlayBoxPreIni").show();
+            $("#trPlayBoxDisCountIni").show();
+
+            $('#lblPlayBoxPreIniVas').text("@L_ONTOP_PLAYBOX_PRE_INITIATION");
+            $('#lblPlayBoxDisCountIniVas').text("@L_ONTOP_PLAYBOX_DISCOUNT_INITIATION");
+
+            var i = $("input[name=SelectPackage]:checked").val();
+            var mc = $("#MAPPING_CODE" + i).val();
+            var ow = $("#OWNER_PRODUCT" + i).val();
+            var findOntop = $("[name=SelectOntop" + mc + ow + "]");
+            var initiation = "";
+
+            $.each(findOntop, function (i, e) {
+                var proSub1 = $("#PRODUCT_SUBTYPE_" + mc + e.value).val();
+                var proSub3 = $("#PRODUCT_SUBTYPE3_" + mc + e.value).val();
+                if (proSub1 == "PBOX") {
+                    if (proSub3 == "PBOX") {
+                        initiation = $("#INITIATION_CHARGE" + mc + e.value).val();
+                    }
+                }
+            });
+
+            $('#lblSumPlayBoxPreIniVas').text(toNumber(initiation));
+            $('#lblSumPlayBoxDisCountIniVas').text(toNumber(initiation));
+        }
+        else {
+            $("#trPlayBoxPreIni").hide();
+            $("#trPlayBoxDisCountIni").hide();
+        }
+    }
+
+    function setFormSummaryLine2() {
+
+        $('#summLb1Vas').parent().closest("div").hide();
+        $('#o3Vas').parent().closest("div").hide();
+        $('#o6Vas').parent().closest("div").hide();
+
+        $('#hdGetVoip').val("0");
+        $('#hdGetPlayBox').val("0");
+
+        $('#trInstallPlayBox').hide();
+        $('#trDiscountPlayBox').hide();
+        $('#trInstallFixedLine').hide();
+        $('#trDiscountFixedLine').hide();
+        $('#trInstallVas').hide();
+        $('#trInstallMonthVas').hide();
+        $('#trPlayboxAutoMonthVas').hide(); //R21.12PP ATV
+
+        $('#summTotal1Vas').text('0');
+        $('#summTotal2Vas').text('0');
+        $('#sumTotalProrateVas').text('0');
+        $('#lblInstallPriceVas').text('0');
+        $('#lblInstallMonthPriceVas').text('0');
+        $('#lblInstallPricePlayBox').text(0);
+        $('#lblDiscountPricePlayBox').text(0);
+        $('#sumProrateVas').text('0');
+        $('#lblSumHeaderVas').text("@L_SUMMARY");
+        $('#o1Vas').text("@L_SUMM_DETAIL1");
+        $('#o2Vas').text("@L_SUMM_DETAIL5");
+        $('#o42Vas').text("@L_SUMM_DETAIL15");
+        $('#o4Vas').text("@L_SUMM_DETAIL8");
+        $('#oProrateVas').text("@L_SUMM_DETAIL9");
+        $('#o7Vas').text("@L_SUMM_DETAIL11");
+        $('#o5Vas').text("@L_SUMM_DETAIL13");
+        $('#o62Vas').text("@L_SUMM_DETAIL14");
+        $('#vatVas').text("@L_SUMM_DETAIL12");
+        $('.bathvasline2').text("@L_BAHT");
+    }
+
+    function onVasBox_Click(divId) {
+
+        if (!flagSelectDetail) {
+
+            var thisVasHasChecked = $("#" + divId.id + "_chkbox").is(":checked");
+            if (thisVasHasChecked) {
+                $("#" + divId.id).addClass("add-rounded-green");
+            } else {
+                $("#" + divId.id).removeClass("add-rounded-green");
+            }
+
+            var sumTotal1Vas = 0;
+
+            var productSubType = $("#" + divId.id + " input[name='productSubType']").val();
+
+            var price = 0;
+            var monthPrice = 0;
+            var installPrice = 0;
+            var installMonthPrice = 0;
+
+            var initation = 0;
+            var preInitiation = 0;
+            var installPricePB = 0;
+            var installDiscountPB = 0;
+
+            if ($("#" + divId.id + " input[name='initationCharge']").val() != "" && $("#" + divId.id + " input[name='initationCharge']").val() != undefined) {
+                $("#" + divId.id + " input[name='initationCharge']").val($("#" + divId.id + " input[name='initationCharge']").val().replace(',', ''));
+                initation = parseFloat($("#" + divId.id + " input[name='initationCharge']").val());
+            }
+
+            if ($("#" + divId.id + " input[name='preInitiationCharge']").val() != "" && $("#" + divId.id + " input[name='preInitiationCharge']").val() != undefined) {
+                $("#" + divId.id + " input[name='preInitiationCharge']").val($("#" + divId.id + " input[name='preInitiationCharge']").val().replace(',', ''));
+                preInitiation = parseFloat($("#" + divId.id + " input[name='preInitiationCharge']").val());
+            }
+
+            if ($("#" + divId.id + " input[name='price']").val() != "" && $("#" + divId.id + " input[name='price']").val() != undefined) {
+                $("#" + divId.id + " input[name='price']").val($("#" + divId.id + " input[name='price']").val().replace(',', ''));
+                price = parseFloat($("#" + divId.id + " input[name='price']").val());
+            }
+
+            if ($("#" + divId.id + " input[name='monthprice']").val() != "" && $("#" + divId.id + " input[name='monthprice']").val() != undefined) {
+                $("#" + divId.id + " input[name='monthprice']").val($("#" + divId.id + " input[name='monthprice']").val().replace(',', ''));
+                monthPrice = parseFloat($("#" + divId.id + " input[name='monthprice']").val());
+            }
+
+            if (thisVasHasChecked) {
+                installPrice = price;
+                installMonthPrice = monthPrice;
+
+                installPricePB = preInitiation;
+                installDiscountPB = preInitiation - initation;
+            }
+            else {
+                installPrice = 0;
+                installMonthPrice = 0;
+
+                installPricePB = 0;
+                installDiscountPB = 0;
+            }
+
+            if (productSubType == "VOIP") {
+                // First Bill
+                $('#lblInstallPriceFixedLine').text(toNumber(installPricePB));
+                $('#lblDiscountPriceFixedLine').text(toNumber(installDiscountPB));
+
+                if ($('#lblInstallPriceFixedLine').text() == "0" || $('#lblInstallPriceFixedLine').text() == "" || $('#lblInstallPriceFixedLine').text() == undefined) {
+                    $('#trInstallFixedLine').hide();
+                }
+                else {
+                    $('#trInstallFixedLine').show();
+                }
+
+                if ($('#lblDiscountPriceFixedLine').text() == "0" || $('#lblDiscountPriceFixedLine').text() == "" || $('#lblDiscountPriceFixedLine').text() == undefined) {
+                    $('#trDiscountFixedLine').hide();
+                    var priceMonthPackage = $('#summTotal2Vas').text() != "" && $('#summTotal2Vas').text() != undefined ? parseFloat($('#summTotal2Vas').text().replace(',', '')) : 0;
+                    var priceInstallMonthVoip = $('#lblInstallMonthPriceVas').text() != "" && $('#lblInstallMonthPriceVas').text() != undefined ? parseFloat($('#lblInstallMonthPriceVas').text().replace(',', '')) : 0;
+                    var sumTotal2 = priceMonthPackage - priceInstallMonthVoip;
+                    $('#summTotal2Vas').text(toNumber(sumTotal2));
+                }
+                else {
+                    $('#trDiscountFixedLine').show();
+                }
+
+                // Month Bill
+
+                $('#lblInstallPriceVas').text(toNumber(installPrice));
+                $('#lblInstallMonthPriceVas').text(toNumber(installMonthPrice));
+
+                if ($('#lblInstallPriceVas').text() == "0" || $('#lblInstallPriceVas').text() == "" || $('#lblInstallPriceVas').text() == undefined) {
+                    $('#trInstallVas').hide();
+                }
+                else {
+                    $('#trInstallVas').show();
+                }
+
+                if ($('#lblInstallMonthPriceVas').text() == "0" || $('#lblInstallMonthPriceVas').text() == "" || $('#lblInstallMonthPriceVas').text() == undefined) {
+                    $('#trInstallMonthVas').hide();
+                }
+                else {
+                    $('#trInstallMonthVas').show();
+                }
+            }
+            else if (productSubType == "PBOX") {
+
+                $('#lblInstallPricePlayBox').text(toNumber(installPricePB));
+                $('#lblDiscountPricePlayBox').text(toNumber(installDiscountPB));
+
+                if ($('#lblInstallPricePlayBox').text() == "0" || $('#lblInstallPricePlayBox').text() == "" || $('#lblInstallPricePlayBox').text() == undefined) {
+                    $('#trInstallPlayBox').hide();
+                }
+                else {
+                    $('#trInstallPlayBox').show();
+                }
+
+                if ($('#lblDiscountPricePlayBox').text() == "0" || $('#lblDiscountPricePlayBox').text() == "" || $('#lblDiscountPricePlayBox').text() == undefined) {
+                    $('#trDiscountPlayBox').hide();
+                }
+                else {
+                    $('#trDiscountPlayBox').show();
+                }
+            }
+
+            // First bill
+
+            var priceRouter = $('#summVal1Vas').text() != "" && $('#summVal1Vas').text() != undefined ? parseFloat($('#summVal1Vas').text().replace(',', '')) : 0;
+            var priceRouterDiscount = $('#summVal2Vas').text() != "" && $('#summVal2Vas').text() != undefined ? parseFloat($('#summVal2Vas').text().replace(',', '')) : 0;
+
+            var pricePlayBox = $('#lblInstallPricePlayBox').text() != "" && $('#lblInstallPricePlayBox').text() != undefined ? parseFloat($('#lblInstallPricePlayBox').text().replace(',', '')) : 0;
+            var pricePlayBoxDiscount = $('#lblDiscountPricePlayBox').text() != "" && $('#lblDiscountPricePlayBox').text() != undefined ? parseFloat($('#lblDiscountPricePlayBox').text().replace(',', '')) : 0;
+
+            var priceFixedLine = "";
+            var priceFixedLineDiscount = "";
+
+            var priceVas = $('#lblInstallPriceVas').text() != "" && $('#lblInstallPriceVas').text() != undefined ? parseFloat($('#lblInstallPriceVas').text().replace(',', '')) : 0;
+
+            var sumTotal1 = (priceRouter - priceRouterDiscount) + priceVas + (pricePlayBox - pricePlayBoxDiscount);
+            $('#summTotal1Vas').text(toNumber(sumTotal1));
+
+            // Month bill
+
+            if (productSubType != "PBOX") {
+                var priceInstall = $('#summTotal1Vas').text() != "" && $('#summTotal1Vas').text() != undefined ? parseFloat($('#summTotal1Vas').text().replace(',', '')) : 0;
+                var priceMonthPackage = $('#summTotal2Vas').text() != "" && $('#summTotal2Vas').text() != undefined ? parseFloat($('#summTotal2Vas').text().replace(',', '')) : 0;
+                var priceInstallMonthVoip = $('#lblInstallMonthPriceVas').text() != "" && $('#lblInstallMonthPriceVas').text() != undefined ? parseFloat($('#lblInstallMonthPriceVas').text().replace(',', '')) : 0;
+
+                var sumTotal2 = priceInstallMonthVoip + priceMonthPackage;
+
+                $('#summTotal2Vas').text(toNumber(sumTotal2));
+
+                // Prorate
+
+                var daysInMonth = new Date().getDaysInMonth();
+                var sumProrate = (sumTotal2 / daysInMonth) * 1;
+                var sumTotalProrate = priceVas + sumTotal2 + sumProrate + priceInstall;
+                $('#sumProrateVas').text(accounting.formatNumber(sumProrate, 2));
+                $('#sumTotalProrateVas').text(accounting.formatNumber(sumTotalProrate, 2));
+            }
+        }
+
+        flagSelectDetail = false;
+
+    }
+
+    var objInstallContentPlayboxArry = []; //R21.11 ATV
+    var objAutoContentPlayboxArry = []; //R21.12PP ATV
+    function onVasBoxV2_Click(divId) {
+
+        objInstallContentPlayboxArry = []; //R21.11 ATV
+        objAutoContentPlayboxArry = []; //R21.12PP ATV
+
+        if (!flagSelectDetail) {
+
+            var thisVasHasChecked = $("#" + divId.id + "_chkbox").is(":checked");
+            if (thisVasHasChecked) {
+                $("#" + divId.id).addClass("add-rounded-green");
+                var serviceCode = $("#" + divId.id + " input[name='serviceCode']").val();
+                sessionStorage.setItem('SERVICE_CODE', serviceCode);
+            } else {
+                $("#" + divId.id).removeClass("add-rounded-green");
+                sessionStorage.removeItem('SERVICE_CODE');
+            }
+
+            var priceCharge = 0;
+            var prePriceCharge = 0;
+            var playboxMonthlyFee = 0;
+
+            var installPricePB = 0;
+            var installDiscountPB = 0;
+            var monthPrice = 0;
+
+            var autoContentPrice = 0;
+
+            //R21.11 ATV
+            var sffPromotionCodePboxMain = $("input[name='sffPromotionCodePboxMain']").val();
+
+            var tmpstrPlayboxInstall = "";
+            var tmpstrPlayboxDisInstall = "";
+            var durationByMonth = "";
+            var flagContractDevicePlaybox = false;
+            if (tmpPackageDataDeviceContract != undefined) {
+                if (tmpPackageDataDeviceContract.ContractDeviceList != undefined && tmpPackageDataDeviceContract.ContractDeviceList.length > 0) {
+                    var tmpContractDeviceList = tmpPackageDataDeviceContract.ContractDeviceList.filter(function (elem) {
+                        return elem.PRODUCT_SUBTYPE.indexOf("PBOX") !== -1
+                            && elem.SFF_PROMOTION_CODE.indexOf(sffPromotionCodePboxMain) !== -1;
+                    });
+                    if (tmpContractDeviceList != undefined && tmpContractDeviceList.length > 0) {
+                        flagContractDevicePlaybox = true;
+                        $.each(tmpContractDeviceList, function (i, e) {
+                            prePriceCharge = parseFloat(e.PENALTY_CHARGE);
+                            priceCharge = parseFloat(e.PENALTY_CHARGE);
+                            durationByMonth = e.DURATION_BY_MONTH;
+                            if ('@language' == "1") {
+                                tmpstrPlayboxInstall = e.CONTRACT_DISPLAY_TH_1;
+                                tmpstrPlayboxDisInstall = e.CONTRACT_DISPLAY_TH_2;
+                            }
+                            else {
+                                tmpstrPlayboxInstall = e.CONTRACT_DISPLAY_EN_1;
+                                tmpstrPlayboxDisInstall = e.CONTRACT_DISPLAY_EN_2;
+                            }
+                        });
+                    }
+                }
+            }
+            //---------
+
+            //R21.12PP ATV (แบบเก่า :: กรณีถ้า tmpPackageDataDeviceContract ไม่มีค่า)
+            if (flagContractDevicePlaybox == false) {
+                if ($("#" + divId.id + " input[name='priceCharge']").val() != "" && $("#" + divId.id + " input[name='priceCharge']").val() != undefined) {
+                    $("#" + divId.id + " input[name='priceCharge']").val($("#" + divId.id + " input[name='priceCharge']").val().replace(',', ''));
+                    priceCharge = parseFloat($("#" + divId.id + " input[name='priceCharge']").val());
+                }
+
+                if ($("#" + divId.id + " input[name='prePriceCharge']").val() != "" && $("#" + divId.id + " input[name='prePriceCharge']").val() != undefined) {
+                    $("#" + divId.id + " input[name='prePriceCharge']").val($("#" + divId.id + " input[name='prePriceCharge']").val().replace(',', ''));
+                    prePriceCharge = parseFloat($("#" + divId.id + " input[name='prePriceCharge']").val());
+                }
+
+                tmpstrPlayboxInstall = '@L_ONTOP_PLAYBOX_PRE_INITIATION';
+                tmpstrPlayboxDisInstall = '@L_ONTOP_PLAYBOX_DISCOUNT_INITIATION';
+            }
+            //---------
+
+            if ($("#" + divId.id + " input[name='playboxMonthlyFee']").val() != "" && $("#" + divId.id + " input[name='playboxMonthlyFee']").val() != undefined) {
+                $("#" + divId.id + " input[name='playboxMonthlyFee']").val($("#" + divId.id + " input[name='playboxMonthlyFee']").val().replace(',', ''));
+                playboxMonthlyFee = parseFloat($("#" + divId.id + " input[name='playboxMonthlyFee']").val());
+            }
+
+            if (thisVasHasChecked) {
+                installPricePB = prePriceCharge;
+
+                if (flagContractDevicePlaybox == true)
+                    installDiscountPB = priceCharge; //R21.4 ATV
+                else
+                    installDiscountPB = prePriceCharge - priceCharge; //R21.12PP ATV เรียกแบบเก่า
+
+                monthPrice = playboxMonthlyFee;
+            }
+            else {
+                priceCharge = 0;
+                prePriceCharge = 0;
+                playboxMonthlyFee = 0;
+
+                installPricePB = 0;
+                installDiscountPB = 0;
+                monthPrice = 0;
+            }
+
+            // First bill
+            $('#lblInstallPlayBox').text(tmpstrPlayboxInstall); //R21.4 ATV
+            $('#lblDiscountPlayBox').text(tmpstrPlayboxDisInstall); //R21.4 ATV
+            $('#lblInstallPricePlayBox').text(toNumber(installPricePB));
+            $('#lblDiscountPricePlayBox').text(toNumber(installDiscountPB));
+
+            if ($('#lblInstallPricePlayBox').text() == "0" || $('#lblInstallPricePlayBox').text() == "" || $('#lblInstallPricePlayBox').text() == undefined) {
+                $('#trInstallPlayBox').hide();
+            }
+            else {
+                $('#trInstallPlayBox').show();
+            }
+
+            if ($('#lblDiscountPricePlayBox').text() == "0" || $('#lblDiscountPricePlayBox').text() == "" || $('#lblDiscountPricePlayBox').text() == undefined) {
+                $('#trDiscountPlayBox').hide();
+            }
+            else {
+                $('#trDiscountPlayBox').show();
+            }
+            //
+
+            var priceRouter = $('#summVal1Vas').text() != "" && $('#summVal1Vas').text() != undefined ? parseFloat($('#summVal1Vas').text().replace(',', '')) : 0;
+            var priceRouterDiscount = $('#summVal2Vas').text() != "" && $('#summVal2Vas').text() != undefined ? parseFloat($('#summVal2Vas').text().replace(',', '')) : 0;
+
+            var pricePlayBox = $('#lblInstallPricePlayBox').text() != "" && $('#lblInstallPricePlayBox').text() != undefined ? parseFloat($('#lblInstallPricePlayBox').text().replace(',', '')) : 0;
+            var pricePlayBoxDiscount = $('#lblDiscountPricePlayBox').text() != "" && $('#lblDiscountPricePlayBox').text() != undefined ? parseFloat($('#lblDiscountPricePlayBox').text().replace(',', '')) : 0;
+
+            var priceVas = $('#lblInstallPriceVas').text() != "" && $('#lblInstallPriceVas').text() != undefined ? parseFloat($('#lblInstallPriceVas').text().replace(',', '')) : 0;
+
+            var sumTotal1 = (priceRouter - priceRouterDiscount) + priceVas + (pricePlayBox - pricePlayBoxDiscount);
+            $('#summTotal1Vas').text(toNumber(sumTotal1));
+
+            // Month bill
+            $("#lblInstallMonthVas").text($("#" + divId.id + " input[name='packageDisplay']").val());
+            $('#lblInstallMonthPriceVas').text(toNumber(monthPrice));
+
+            // Month Playbox Auto bill //R21.12PP ATV
+            var flagOntopContentPlaybox = false;
+            var strBuildOntopContent = "";
+            $("#trPlayboxAutoMonthVas").html("");
+            if (objPackageOntopContentPlaybox != undefined && objPackageOntopContentPlaybox.length > 0) {
+                var tmpOntopContentPlayboxList = objPackageOntopContentPlaybox.filter(function (elem) {
+                    return elem.PACKAGE_TYPE.indexOf("8") !== -1
+                        && elem.PRODUCT_SUBTYPE.indexOf("PBOX") !== -1
+                        && elem.PACKAGE_SERVICE_NAME.indexOf("PBOX") !== -1
+                        && elem.PACKAGE_TYPE_DESC.indexOf("Ontop Content") !== -1
+                        && elem.AUTO_MAPPING_PROMOTION_CODE.indexOf(sffPromotionCodePboxMain) !== -1;
+                });
+                if (tmpOntopContentPlayboxList != undefined && tmpOntopContentPlayboxList.length > 0) {
+                    flagOntopContentPlaybox = true;
+                    $.each(tmpOntopContentPlayboxList, function (i, e) {
+                        var lblPlayboxAutoMonthVas = ('@language' == "1") ? e.PACKAGE_DISPLAY_THA : e.PACKAGE_DISPLAY_ENG;
+
+                        strBuildOntopContent += "<span class='col-xs-8' id='lblPlayboxAutoMonthVas" + i.toString() + "'>" + lblPlayboxAutoMonthVas + "</span>";
+                        strBuildOntopContent += "<span class='col-xs-4 text-right'>";
+                        strBuildOntopContent += "<span id='lblPlayboxAutoMonthPriceVas" + i.toString() + "'>" + toNumber(e.PRICE_CHARGE) + "</span>";
+                        strBuildOntopContent += " " + "@L_BAHT" + "</span ><p class='clearfix'></p>";
+
+                        $("#trPlayboxAutoMonthVas").html(strBuildOntopContent);
+                        autoContentPrice += parseFloat(e.PRICE_CHARGE);
+                        objAutoContentPlayboxArry.push({ SffPromotionCodeMain: sffPromotionCodePboxMain, Name: lblPlayboxAutoMonthVas, Value: toNumber(e.PRICE_CHARGE) });
+                    });
+                }
+                else autoContentPrice = 0;
+            }
+            //-------------------------
+
+            if (!thisVasHasChecked) {
+                $('#trInstallMonthVas').hide();
+                $('#trPlayboxAutoMonthVas').hide();
+            }
+            else {
+                $('#trInstallMonthVas').show();
+                //R21.11 ATV
+                objInstallContentPlayboxArry.push({ SffPromotionCode: sffPromotionCodePboxMain, Name: tmpstrPlayboxInstall, Value: prePriceCharge, DurationByMonth: durationByMonth, Action: "Add", flagContractDevicePlaybox: flagContractDevicePlaybox }); //R21.11 ATV
+                objInstallContentPlayboxArry.push({ SffPromotionCode: sffPromotionCodePboxMain, Name: tmpstrPlayboxDisInstall, Value: priceCharge, DurationByMonth: durationByMonth, Action: "Del", flagContractDevicePlaybox: flagContractDevicePlaybox }); //R21.11 ATV
+                //-------------------------
+
+                //R21.12PP ATV
+                if (flagOntopContentPlaybox == true) {
+                    $('#trPlayboxAutoMonthVas').show();
+                }
+                else {
+                    $('#trPlayboxAutoMonthVas').hide();
+                }
+                //-------------------------
+            }
+
+            var sumTotal2 = monthPrice + autoContentPrice;
+            $('#summTotal2Vas').text(toNumber(sumTotal2));
+
+            // Prorate
+
+            var daysInMonth = new Date().getDaysInMonth();
+            var sumProrate = (sumTotal2 / daysInMonth) * 1;
+            var sumTotalProrate = sumTotal1 + sumTotal2 + sumProrate;
+            $('#sumProrateVas').text(accounting.formatNumber(sumProrate, 2));
+            $('#sumTotalProrateVas').text(accounting.formatNumber(sumTotalProrate, 2));
+
+            //set in session save submit;
+            if (thisVasHasChecked) {
+                var listPBsffpromotmp = [];
+                var clistPBsffpromotmp = 0;
+                var listtmp = SetTempListPBsffpromo();
+                for (var h = 0; h < listtmp.length; h++) {
+                    listPBsffpromotmp[clistPBsffpromotmp] = listtmp[h];
+                    clistPBsffpromotmp++;
+                }
+                sessionStorage.setItem('MultiPBArray', JSON.stringify(listPBsffpromotmp)); //set in session save submit;
+            }
+            else {
+                sessionStorage.setItem('MultiPBArray', "");
+            }
+        }
+
+        flagSelectDetail = false;
+    }
+
+    function SetTempListPBsffpromo() {
+        var findOntop = $("[name=SelectVasPlayboxCheckbox]");
+        var listtmp = []; var clisttmp = 0;
+        $.each(findOntop, function (i, e) {
+            var packType = $("#PACKAGE_TYPE" + e.value).val();
+            var proSub1 = $("#PRODUCT_SUBTYPE" + e.value).val();
+            var packSerName = $("#PACKAGE_SERVICE_NAME" + e.value).val();
+            var packTypeDesc = $("#PACKAGE_TYPE_DESC" + e.value).val();
+            if (((packType == "7" || packType == "11") && proSub1 == "PBOX" && packSerName == "PBOX")
+                || (packType == "8" && proSub1 == "PBOX" && packSerName == "PBOX" && packTypeDesc == "Ontop Content")) {
+                var model = new MultiPlayboxModel();
+                model.mappingCode = $("#MAPPING_CODE" + e.value).val();
+                model.ownerProduct = $("#OWNER_PRODUCT" + e.value).val();
+                model.packageDisplayEng = $("#PACKAGE_DISPLAY_ENG" + e.value).val();
+                model.packageDisplayTha = $("#PACKAGE_DISPLAY_THA" + e.value).val();
+                model.packageServiceCode = $("#PACKAGE_SERVICE_CODE" + e.value).val();
+                model.packageServiceName = $("#PACKAGE_SERVICE_NAME" + e.value).val();
+                model.packageType = $("#PACKAGE_TYPE" + e.value).val();
+                model.packageTypeDesc = $("#PACKAGE_TYPE_DESC" + e.value).val();
+                model.prePriceCharge = $("#PRE_PRICE_CHARGE" + e.value).val();
+                model.priceCharge = $("#PRICE_CHARGE" + e.value).val();
+                model.productSubtype = $("#PRODUCT_SUBTYPE" + e.value).val();
+                model.productSubtype3 = $("#PRODUCT_SUBTYPE3" + e.value).val();
+                model.sffProductName = $("#SFF_PRODUCT_NAME" + e.value).val();
+                model.sffPromotionCode = $("#SFF_PROMOTION_CODE" + e.value).val();
+                model.sffWordInStatementEng = $("#SFF_WORD_IN_STATEMENT_ENG" + e.value).val();
+                model.sffWordInStatementTha = $("#SFF_WORD_IN_STATEMENT_THA" + e.value).val();
+                model.serviceCode = $("#SERVICE_CODE" + e.value).val();
+                model.downloadSpeed = $("#DOWNLOAD_SPEED" + e.value).val();
+                model.uploadSpeed = $("#UPLOAD_SPEED" + e.value).val();
+                model.autoMappingPromotionCode = $("#AUTO_MAPPING_PROMOTION_CODE" + e.value).val(); //R21.12PP ATV
+                model.packageForSaleFlag = $("#PACKAGE_FOR_SALE_FLAG" + e.value).val(); //R21.12PP ATV
+                listtmp[clisttmp] = model;
+                clisttmp++;
+            }
+
+        });
+
+        return listtmp;
+    }
+
+    function onVasDetail_Click(e) {
+
+        flagSelectDetail = true;
+        $('#divVasPopupDetail').modal('show');
+        $('#divVasPopupDetail').css('display', 'block');
+
+        var div1 = $('#simplemodal-container');
+        div1.css('width', '520px');
+        div1.css('height', 'auto');
+        div1.css('margin-left', '10%');
+
+        //$('#lblVasPopupDetail').text($(e).attr('value'));
+
+        //e.stopPropagation();
+        return false;
+    }
+
+    function onBtnVasNextPage_Click() {
+
+        $('#hdGetVoip').val("0");
+        $('#hdGetPlayBox').val("0");
+
+        if ("@VAS" == "2" || "@ViewBag.TopUp" == "1") {
+            //line 2
+            var temp = "";
+
+            if ($("#divVasBoxDynamic input[type=checkbox]:checked").length == 0) {
+                if ($("#LanguagePage").val() == "1")
+                    temp = "กรุณาระบุบริการเสริมที่ต้องการสมัคร";
+                else
+                    temp = "Please choose an VAS service.";
+            }
+            else {
+                $("#divVasBoxDynamic input[type=checkbox]:checked").each(function (i, e) {
+                    var selectedVasId = $(this).attr("vasid");
+                    if ($("#" + selectedVasId + " input[name='productSubType']").val() == "VOIP") {
+                        $('#hdGetVoip').val("1");
+                    }
+                    else if ($("#" + selectedVasId + " input[name='productSubType']").val() == "PBOX") {
+                        $('#hdGetPlayBox').val("1");
+                    }
+                });
+
+                $('#page2_1').hide();
+                onLoadPage2_2();
+                $('#page2_2').show();
+
+                //script Adobe Analytic
+                var lang = $("#LanguagePage").val() == 1 ? "th" : "en";
+                digitalData.page = {
+                    pageInfo: {
+                        pageName: "newfibre:" + lang + ":vasSummary",
+                        site: "newfibre",
+                        language: lang
+                    }
+                }
+                console.log("page load vasSummary : ", lang);
+                
+
+                // Update 17.4 Script Adobe Analytic
+                digitalData.customLinkName = "add-on:next-button";
+                console.log("custom-link-click : button btnVasNextPage");
+                
+            }
+
+            if (temp) {
+                toastrErrorMessage(temp);
+            }
+        }
+        else {
+            //Line 1
+            if ($("#divVasBoxDynamic input[type=checkbox]:checked").length == 0) {
+                // Not Select VAS
+                $('#hdSelectVas').val("1");
+                $('#page2_1').hide();
+                onLoad003();
+                $('#page3').show();
+
+                //script Adobe Analytic
+                var lang = $("#LanguagePage").val() == 1 ? "th" : "en";
+                digitalData.page = {
+                    pageInfo: {
+                        pageName: "newfibre:" + lang + ":customer",
+                        site: "newfibre",
+                        language: lang
+                    }
+                }
+                console.log("page load customer : ", lang);
+                
+
+                // Update 17.4 Script Adobe Analytic
+                digitalData.customLinkName = "add-on:next-button";
+                console.log("custom-link-click : button btnVasNextPage");
+                
+            }
+            else {
+                // Select VAS
+
+                $("#divVasBoxDynamic input[type=checkbox]:checked").each(function (i, e) {
+                    var selectedVasId = $(this).attr("vasid");
+                    if ($("#" + selectedVasId + " input[name='productSubType']").val() == "VOIP") {
+                        $('#hdGetVoip').val("1");
+                    }
+                    else if ($("#" + selectedVasId + " input[name='productSubType']").val() == "PBOX") {
+                        $('#hdGetPlayBox').val("1");
+                    }
+                });
+
+                $('#hdSelectVas').val("0");
+                $('#page2_1').hide();
+                onLoadPage2_2();
+                $('#page2_2').show();
+                //script Adobe Analytic
+                var lang = $("#LanguagePage").val() == 1 ? "th" : "en";
+                digitalData.page = {
+                    pageInfo: {
+                        pageName: "newfibre:" + lang + ":vasSummary",
+                        site: "newfibre",
+                        language: lang
+                    }
+                }
+                console.log("page load vasSummary : ", lang);
+                
+
+                // Update 17.4 Script Adobe Analytic
+                digitalData.customLinkName = "add-on:next-button";
+                console.log("custom-link-click : button btnVasNextPage");
+                
+            }
+        }
+
+        //Set playbox label in playbox detail
+        if ($("#hdGetPlayBox").val() == "1") {
+
+            var i = "";
+            var mc = "";
+            var ow = "";
+            var recurring = "";
+            var initiation = 0;
+            var preInitiation = 0;
+            var strMonth = "";
+            var hasBPL = false;
+            var hasKaraoke = false;
+
+            if ("@VAS" == "2" || "@ViewBag.TopUp" == "1") {
+            }
+            else {
+                i = $("input[name=SelectPackage]:checked").val();
+                mc = $("#MAPPING_CODE" + i).val();
+                ow = $("#OWNER_PRODUCT" + i).val();
+            }
+
+            var findOntop = $("[name=SelectOntop" + mc + ow + "]");
+
+            $.each(findOntop, function (i, e) {
+
+                var proSub1 = $("#PRODUCT_SUBTYPE_" + mc + e.value).val();
+                var proSub3 = $("#PRODUCT_SUBTYPE3_" + mc + e.value).val();
+                if (proSub1 == "PBOX") {
+                    if (proSub3 == "PBOX") { //main PBOX
+                        preInitiation = parseFloat($("#PRE_INITIATION_CHARGE" + mc + e.value).val());
+                        initiation = parseFloat($("#INITIATION_CHARGE" + mc + e.value).val());
+                    }
+                    else if (proSub3.indexOf("HOOQ") > -1) {
+                        recurring = $("#PRE_RECURRING_CHARGE" + mc + e.value).val()
+                    }
+                    else if (proSub3.indexOf("KARAOKE") > -1) {
+                        recurring = $("#PRE_RECURRING_CHARGE" + mc + e.value).val()
+                        hasKaraoke = true;
+                    }
+                    else if (proSub1 == "PBOX" && proSub3 == "BPL") {
+                        hasBPL = true;
+                    }
+                    else { //Free....
+
+                    }
+                }
+            });
+
+            strMonth = parseInt(recurring, 10) > 1 ? "@L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTHS" : "@L_ONTOP_PLAYBOX_DISCOUNT_HOOQ_MONTH";
+
+            $("#lblVasSumPromotion").text("@L_ONTOP_PLAYBOX_PROMOTION");
+            $("#lblVasSumInitiation").text("@L_ONTOP_PLAYBOX_FREE" + " " + "@L_ONTOP_PLAYBOX_PRE_INITIATION" + " " + "@L_ONTOP_PLAYBOX_VALUE" + " " + toNumber(preInitiation - initiation) + " " + "@L_BAHT");
+            if (hasKaraoke) {
+                if (recurring != "") {
+                    $("#liVasSumHooq").show();
+                    $("#lblVasSumHooq").text("@L_ONTOP_PLAYBOX_FREE" + " " + "@L_ONTOP_PLAYBOX_DISCOUNT_KARAOKE" + " " + recurring + " " + strMonth);
+                }
+                else {
+                    $("#liVasSumHooq").hide();
+                }
+            }
+            else {
+                if (parseInt(recurring, 10) > 0) {
+                    if (recurring != "") {
+                        $("#liVasSumHooq").show();
+                        $("#lblVasSumHooq").text("@L_ONTOP_PLAYBOX_FREE" + " " + "@L_ONTOP_PLAYBOX_DISCOUNT_HOOQ" + " " + recurring + " " + strMonth);
+                    }
+                    else {
+                        $("#liVasSumHooq").hide();
+                    }
+                }
+            }
+            $("#lblRemarkPrice").text(toNumber(preInitiation - initiation) + " " + "@L_BAHT");
+            if (hasBPL) {
+                $("#hdGetBPL").val("1");
+                $("#liBPLDetail").show();
+                $("#lblBPLDetail").html("@Html.Raw(L_ONTOP_PLAYBOX_BPL)");
+            }
+            else {
+                $("#hdGetBPL").val("0");
+                $("#liBPLDetail").hide();
+                $("#lblBPLDetail").text("");
+            }
+        }
+        else {
+            $("#hdGetBPL").val("0");
+            $("#lblVasSumPromotion").text("");
+            $("#lblVasSumInitiation").text("");
+            $("#lblVasSumHooq").text("");
+            $("#lblVasSumKaraoke").text("");
+            $("#lblRemarkPrice").text("");
+        }
+
+        if ($('#hdGetVoip').val() == "1" && $('#hdGetPlayBox').val() == "1") {
+            $('#divVoipPage').hide();
+            $('#divPlayBoxPage').show();
+            $('#divInstallDateVas').hide();
+            $('#divContactPhone').hide();
+        }
+        else if ($('#hdGetVoip').val() == "1" && $('#hdGetPlayBox').val() == "0") {
+            $('#divVoipPage').show();
+            $('#divPlayBoxPage').hide();
+            $('#divInstallDateVas').show();
+            $('#divContactPhone').show();
+        }
+        else if ($('#hdGetPlayBox').val() == "1" && $('#hdGetVoip').val() == "0") {
+            $('#divVoipPage').hide();
+            $('#divPlayBoxPage').show();
+            $('#divInstallDateVas').hide();
+            $('#divContactPhone').show();
+        }
+        else {
+            $('#divVoipPage').hide();
+            $('#divPlayBoxPage').hide();
+            $('#divInstallDateVas').hide();
+            $('#divContactPhone').hide();
+        }
+
+    }
+
+    function onBtnVasNextPageV2_Click() {
+
+        $('#hdGetVoip').val("0");
+        $('#hdGetPlayBox').val("0");
+
+        //line 2
+        var temp = "";
+
+        if ($("#divVasBoxDynamic input[type=checkbox]:checked").length == 0) {
+            if ($("#LanguagePage").val() == "1")
+                temp = "กรุณาระบุบริการเสริมที่ต้องการสมัคร";
+            else
+                temp = "Please choose an VAS service.";
+        }
+        else {
+            $("#divVasBoxDynamic input[type=checkbox]:checked").each(function (i, e) {
+                var selectedVasId = $(this).attr("vasid");
+                if ($("#" + selectedVasId + " input[name='productSubType']").val() == "PBOX") {
+                    $('#hdGetPlayBox').val("1");
+                }
+            });
+
+            $('#page2_1').hide();
+            onLoadPage2_2();
+            $('#page2_2').show();
+
+            //script Adobe Analytic
+            var lang = $("#LanguagePage").val() == 1 ? "th" : "en";
+            digitalData.page = {
+                pageInfo: {
+                    pageName: "newfibre:" + lang + ":vasSummary",
+                    site: "newfibre",
+                    language: lang
+                }
+            }
+            console.log("page load vasSummary : ", lang);
+            
+
+            // Update 17.4 Script Adobe Analytic
+            digitalData.customLinkName = "add-on:next-button";
+            console.log("custom-link-click : button btnVasNextPage");
+            
+        }
+
+        if (temp) {
+            toastrErrorMessage(temp);
+            return;
+        }
+
+        //Set playbox label in playbox detail
+        if ($("#hdGetPlayBox").val() == "1") {
+
+            var hasBPL = false;
+
+            if (objInstallContentPlayboxArry != undefined && objInstallContentPlayboxArry.length > 0) {
+                $.each(objInstallContentPlayboxArry, function (i, e) {
+                    if (i == 0) {
+                        if (e.flagContractDevicePlaybox == false) {
+                            $("#lblVasSumPromotion").text("@L_ONTOP_PLAYBOX_PROMOTION");
+                            $("#lblVasSumInitiation").text("@L_ONTOP_PLAYBOX_FREE" + " " + "@L_ONTOP_PLAYBOX_PRE_INITIATION" + " " + "@L_ONTOP_PLAYBOX_VALUE" + " " + $("#lblInstallPricePlayBox").text() + " " + "@L_BAHT");
+                        }
+                        else {
+                            $("#lblVasSumPromotion").text("");
+                            $("#lblVasSumInitiation").text("");
+                        }
+                    }
+                });
+            }
+
+            //R21.12PP ATV (แบบเก่า ไม่ได้ใช้ เก็บไว้ก่อน)
+            //$("#lblVasSumPromotion").text("@L_ONTOP_PLAYBOX_PROMOTION");
+            //$("#lblVasSumInitiation").text("@L_ONTOP_PLAYBOX_FREE" + " " + "@L_ONTOP_PLAYBOX_PRE_INITIATION" + " " + "@L_ONTOP_PLAYBOX_VALUE" + " " + $("#lblInstallPricePlayBox").text() + " " + "@L_BAHT");
+
+            if (hasBPL) {
+                $("#hdGetBPL").val("1");
+                $("#liBPLDetail").show();
+                $("#lblBPLDetail").html("@Html.Raw(L_ONTOP_PLAYBOX_BPL)");
+            }
+            else {
+                $("#hdGetBPL").val("0");
+                $("#liBPLDetail").hide();
+                $("#lblBPLDetail").text("");
+            }
+        }
+        else {
+            $("#hdGetBPL").val("0");
+            $("#lblVasSumPromotion").text("");
+            $("#lblVasSumInitiation").text("");
+            $("#lblVasSumHooq").text("");
+            $("#lblVasSumKaraoke").text("");
+            $("#lblRemarkPrice").text("");
+        }
+
+        //R21.12PP ATV
+        if ($("#lblVasSumPromotion").text() == "" && $("#lblVasSumInitiation").text() == "" && $("#lblVasSumHooq").text() == "") {
+            $("#divTagIVasPro").hide();
+            $("#divVasPro").hide();
+        }
+        else {
+            $("#divTagIVasPro").show();
+            $("#divVasPro").show();
+        }
+        //--------------------
+
+        $('#divVoipPage').hide();
+        $('#divPlayBoxPage').show();
+        $('#divInstallDateVas').show();
+        $('#divContactPhone').show();
+
+    }
+
+    function onBtnCrossVas_Click() {
+        // Not Select VAS
+        $('#hdGetVoip').val("0");
+        $('#hdGetPlayBox').val("0");
+        $('#hdSelectVas').val("1");
+        $('#page2_1').hide();
+        onLoad003();
+
+        //onLoadPage2_3();
+        $('#page3').show();
+
+        //script Adobe Analytic
+        var lang = $("#LanguagePage").val() == 1 ? "th" : "en";
+        digitalData.page = {
+            pageInfo: {
+                pageName: "newfibre:" + lang + ":customer",
+                site: "newfibre",
+                language: lang
+            }
+        }
+        console.log("page load customer : ", lang);
+        
+
+        // Update 17.4 Script Adobe Analytic
+        digitalData.customLinkName = "add-on:skip-button";
+        console.log("custom-link-click : button btnCrossVas");
+        
+    }
+
+    function onBtnVasBackPage_Click() {
+
+        if ("@VAS" == "2" || "@ViewBag.TopUp" == "1") {
+            //line 2
+            if ("@ViewBag.TopUp" == "1")
+                window.location.href = "@Url.Action("TopUp", "Process")";
+            else
+                window.location.href = "@Url.Action("SearchProfile", "Process")";
+
+            // Update 17.4 Script Adobe Analytic
+            digitalData.customLinkName = "add-on:cancel-button";
+            console.log("custom-link-click : button btnVasBackPage");
+            
+        }
+        else {
+            //Line 1
+            $('#hdSelectVas').val("1");
+            $('#page2_1').hide();
+            $('#page2').show();
+
+            // Update 17.4 Script Adobe Analytic
+            digitalData.customLinkName = "add-on:cancel-button";
+            console.log("custom-link-click : button btnVasBackPage");
+            
+        }
+    }
+
+    // Line 2
+    function onLoadLine2Page2() {
+
+        $('#page2_1').show();
+        $('#divStepLogoLine1').hide();
+        $('#divStepLogoLine2').show();
+        $('#divPromotionDetailSum').hide();
+
+        $('.wrapSwitchLanguage').hide();
+        setFormSummaryLine2();
+
+        $("#tempV2").empty();
+
+        if ('@MyAISBypass' == 'Y') {
+            $('#tempV2').html("@Html.Raw(tempV2ByPass)");
+        }
+        else {
+            var tempV2 = sessionStorage.getItem("tempV2");
+            $('#tempV2').append(tempV2);
+        }
+
+        if ($('#tempV2 tr').length != 0) {
+
+
+            if ('@MyAISBypass' == 'Y') {
+                //R20.5 Service Level
+                GetPostalCodeJson();
+                sessionStorage.setItem("ServiceLevel", '@Model.outServiceLevel');
+            }
+
+            //R20.5 Service Level
+            var tmpAreaRegion = sessionStorage.getItem("AreaRegion").toString();
+            $("#CoveragePanelModel_Address_AreaRegion").val(tmpAreaRegion);
+            var tmpServiceLevel = sessionStorage.getItem("ServiceLevel").toString();
+            $("#ServiceLevel").val(tmpServiceLevel);
+
+            //R20.1
+            setVasPlayboxcheckboxForSelect();
+        }
+        else {
+            alert('Does not have a VAS.');
+        }
+    }
+
+    function GetPostalCodeJson() { //R20.5 Service Level - Set ZIPCODE_ID
+        $.ajax({
+            type: "POST",
+            url: "/Process/GetPostalCodeJson",
+            data: {
+                "outPostalCode": '@Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ZIPCODE',
+                "outTumbol": '@Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_TUMBOL',
+                "outAmphur": '@Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_AMPHUR',
+                "outProvince": '@Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_PROVINCE',
+            },
+            dataType: "json",
+            async: false,
+            success: function (response) {
+                var data = response.result;
+                sessionStorage.setItem("AddrZipID", data);
+                Get_Region(data);
+            }
+        })
+    }
+
+    function Get_Region(AddrZipID) {
+        $.ajax({
+            url: '/CheckCoverage/Get_Region',
+            data: { rowid: AddrZipID },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (data) {
+                sessionStorage.setItem("AreaRegion", data);
+            }
+        });
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    //AWARE_R20.02
+    $(document).ready(function () {
+        getDataTimeSlotByBillCycle();
+    });
+
+    //AWARE_R20.02
+    function getDataTimeSlotByBillCycle() {
+
+        $('#BillCycle').val("");
+        $('#BillCycleHave2MainFlag').val("");
+        $('#BillCycleTimeSlotStartDate').val("");
+        $('#BillCycleTimeSlotDayAdd').val("");
+        $('#BillCycleTimeSlotDayLenght').val("");
+
+        var aisAirNumberTMP = "";
+        if (sessionStorage.getItem('AisAirNumber') == null) {
+            aisAirNumberTMP = "@MobileAis";
+        }
+        else {
+            aisAirNumberTMP = sessionStorage.getItem('AisAirNumber');
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/ChangePromotion/GetDataTimeSlotByBillCycle",
+            data: {
+                "non_mobile_no": aisAirNumberTMP
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data != null) {
+                    //console.log('BillCycle : ' + data.BillCycle);
+                    //console.log('MainCurrent : ' + data.MainCurrent);
+                    //console.log('MainFuture : ' + data.MainFuture);
+                    //console.log('BillCycleHave2MainFlag : ' + data.BillCycleHave2MainFlag);
+                    //console.log('BillCycleTimeSlotStartDate : ' + data.BillCycleTimeSlotStartDate);
+                    //console.log('BillCycleTimeSlotDayAdd : ' + data.BillCycleTimeSlotDayAdd);
+                    //console.log('BillCycleTimeSlotDayLenght : ' + data.BillCycleTimeSlotDayLenght);
+                    $('#BillCycle').val(data.BillCycle);
+                    $('#BillCycleHave2MainFlag').val(data.BillCycleHave2MainFlag);
+                    $('#BillCycleTimeSlotStartDate').val(data.BillCycleTimeSlotStartDate);
+                    $('#BillCycleTimeSlotDayAdd').val(data.BillCycleTimeSlotDayAdd);
+                    $('#BillCycleTimeSlotDtpLenght').val(data.BillCycleTimeSlotDtpLenght);
+                    $('#BillCycleTimeSlotDayLenght').val(data.BillCycleTimeSlotDayLenght);
+                }
+            }
+        });
+    }
+
+    $(function () {
+        if ("@ViewBag.Vas" == "2" || "@ViewBag.TopUp" == "1") {
+            onLoadLine2Page2();
+            changePageHeader_Vas(2);
+        }
+    });
+
+    $(function () {
+        if ("@ViewBag.TopUp" == "1") {
+            $('#trBundling').hide();
+            $('#trDiscount').hide();
+        }
+
+        if ("@ViewBag.Vas" == "2") {
+            $('#trBundling').hide();
+            $('#trDiscount').hide();
+        }
+    });
+</script>

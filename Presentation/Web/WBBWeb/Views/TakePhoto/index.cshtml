@@ -1,0 +1,767 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension
+@{
+    Layout = "~/Views/Shared/_NewLayoutReferences.cshtml";
+
+    var H_TAKE_WORDING_2 = "";
+    var H_TAKE_WORDING_3 = "";
+    var H_TAKE_WORDING_4 = "";
+
+    var L_TAKE_WORDING_1 = "";
+    var L_TAKE_WORDING_2 = "";
+    var L_TAKE_WORDING_3 = "";
+    var L_TAKE_WORDING_4 = "";
+    var L_TAKE_WORDING_5 = "";
+    var L_TAKE_WORDING_6 = "";
+    var L_TAKE_WORDING_7 = "";
+    var L_TAKE_WORDING_8 = "";
+    
+    var L_START_CAMERA = "";
+    var L_CLOSE_CAMERA = "";
+    var L_TAKE_PHOTO = "";
+    var L_SWITCH_CAMERA = "";
+    var L_BROWSE = "";
+    var L_DOWNLOAD = "";
+    var L_BROWSE_OR_TAKE_PHOTO = "";
+    
+
+    if (ViewBag.screenCFG != null)
+    {
+        var screenCFG = (List<LovScreenValueModel>)ViewBag.screenCFG;
+        H_TAKE_WORDING_2 = screenCFG.Any(c => c.Name == "H_TAKE_WORDING_2") ? screenCFG.FirstOrDefault(c => c.Name == "H_TAKE_WORDING_2").DisplayValue : "";
+        H_TAKE_WORDING_3 = screenCFG.Any(c => c.Name == "H_TAKE_WORDING_3") ? screenCFG.FirstOrDefault(c => c.Name == "H_TAKE_WORDING_3").DisplayValue : "";
+        H_TAKE_WORDING_4 = screenCFG.Any(c => c.Name == "H_TAKE_WORDING_4") ? screenCFG.FirstOrDefault(c => c.Name == "H_TAKE_WORDING_4").DisplayValue : "";
+
+        L_TAKE_WORDING_1 = screenCFG.Any(c => c.Name == "L_TAKE_WORDING_1") ? screenCFG.FirstOrDefault(c => c.Name == "L_TAKE_WORDING_1").DisplayValue : "";
+        L_TAKE_WORDING_2 = screenCFG.Any(c => c.Name == "L_TAKE_WORDING_2") ? screenCFG.FirstOrDefault(c => c.Name == "L_TAKE_WORDING_2").DisplayValue : "";
+        L_TAKE_WORDING_3 = screenCFG.Any(c => c.Name == "L_TAKE_WORDING_3") ? screenCFG.FirstOrDefault(c => c.Name == "L_TAKE_WORDING_3").DisplayValue : "";
+        L_TAKE_WORDING_4 = screenCFG.Any(c => c.Name == "L_TAKE_WORDING_4") ? screenCFG.FirstOrDefault(c => c.Name == "L_TAKE_WORDING_4").DisplayValue : "";
+        L_TAKE_WORDING_5 = screenCFG.Any(c => c.Name == "L_TAKE_WORDING_5") ? screenCFG.FirstOrDefault(c => c.Name == "L_TAKE_WORDING_5").DisplayValue : "";
+        L_TAKE_WORDING_6 = screenCFG.Any(c => c.Name == "L_TAKE_WORDING_6") ? screenCFG.FirstOrDefault(c => c.Name == "L_TAKE_WORDING_6").DisplayValue : "";
+        L_TAKE_WORDING_7 = screenCFG.Any(c => c.Name == "L_TAKE_WORDING_7") ? screenCFG.FirstOrDefault(c => c.Name == "L_TAKE_WORDING_7").DisplayValue : "";
+        L_TAKE_WORDING_8 = screenCFG.Any(c => c.Name == "L_TAKE_WORDING_8") ? screenCFG.FirstOrDefault(c => c.Name == "L_TAKE_WORDING_8").DisplayValue : "";
+
+
+        L_START_CAMERA = screenCFG.Any(c => c.Name == "L_START_CAMERA") ? screenCFG.FirstOrDefault(c => c.Name == "L_START_CAMERA").DisplayValue : "";
+        L_CLOSE_CAMERA = screenCFG.Any(c => c.Name == "L_CLOSE_CAMERA") ? screenCFG.FirstOrDefault(c => c.Name == "L_CLOSE_CAMERA").DisplayValue : "";
+        L_TAKE_PHOTO = screenCFG.Any(c => c.Name == "L_TAKE_PHOTO") ? screenCFG.FirstOrDefault(c => c.Name == "L_TAKE_PHOTO").DisplayValue : "";
+        L_SWITCH_CAMERA = screenCFG.Any(c => c.Name == "L_SWITCH_CAMERA") ? screenCFG.FirstOrDefault(c => c.Name == "L_SWITCH_CAMERA").DisplayValue : "";
+        L_BROWSE = screenCFG.Any(c => c.Name == "L_BROWSE") ? screenCFG.FirstOrDefault(c => c.Name == "L_BROWSE").DisplayValue : "";
+        L_DOWNLOAD = screenCFG.Any(c => c.Name == "L_DOWNLOAD") ? screenCFG.FirstOrDefault(c => c.Name == "L_DOWNLOAD").DisplayValue : "";
+        L_BROWSE_OR_TAKE_PHOTO = screenCFG.Any(c => c.Name == "L_BROWSE_OR_TAKE_PHOTO") ? screenCFG.FirstOrDefault(c => c.Name == "L_BROWSE_OR_TAKE_PHOTO").DisplayValue : "";
+    }
+}
+
+<style>
+    .customer-image-btn-group span label.btn:first-child {
+        margin-left: 0;
+        margin-right: 5px;
+    }
+
+    .customer-image-btn-group span label.btn {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+</style>
+<body>
+
+    <script src="~/Scripts/FileSaver.js"></script>
+    <script src="~/Scripts/canvas-toBlob.js"></script>
+
+    <h4 class="page-header tgreen">@(Html.Raw(H_TAKE_WORDING_2))</h4>
+
+    <h5 id="header3">@(Html.Raw(H_TAKE_WORDING_3))</h5>
+    <h5 id="header4" style="display: none;">@(Html.Raw(H_TAKE_WORDING_4))</h5>
+    <div class="contentarea text-center">
+        <div class="text-center" style="margin-top: 10px;">
+            <div class="col-sm-4 col-xs-3 customer-image-btn-group " style="margin-top: 10px;"></div>
+            <div class="col-sm-4 col-xs-6 customer-image-btn-group " style="margin-top: 10px;">
+                <img id="samplePic" src="~/img/aisFibreWatermark.jpg">
+            </div>
+            <div class="col-sm-4 col-xs-3 customer-image-btn-group " style="margin-top: 10px;"></div>
+        </div>
+        <div class="text-center" style="margin-top: 10px;">
+            <video id="video" style="display: none; float: inherit;">Camera not available.</video>
+            <label style="font-size: 36px; display: none;" id="errorText"></label>
+            <img id="photo" style="display:none">
+        </div>
+        <div class="col-sm-12 col-xs-12 customer-image-btn-group " style="margin-top: 10px;">
+            <button id="startVideobutton" class="btn btn-success" onclick=""><span class='glyphicon glyphicon-camera'></span> @L_START_CAMERA</button>
+            <button id="closeVideobutton" class="btn btn-success" onclick="" style="display: none;"><span class='glyphicon glyphicon-off'></span> @L_CLOSE_CAMERA</button>
+            <button id="switchCamerabutton" class="btn btn-success" onclick="" style="display: none;"><span class='glyphicon glyphicon-refresh'></span> @L_SWITCH_CAMERA</button>
+            <button id="startbutton" class="btn btn-success" style="display: none;" onclick=""><span class='glyphicon glyphicon-camera'></span> @L_TAKE_PHOTO</button>
+            <input id="file" type="file" name="files" class="upload_file" style="display: none;" accept="image/jpeg, image/png" />
+            <label role="button" class="btn btn-success" for="file" id="browsebutton" onclick=""><span class='glyphicon glyphicon-picture'></span> @L_BROWSE</label>
+            <label role="button" class="btn btn-success" for="file" id="browsebuttonIOS" style="display: none;" onclick=""><span class='glyphicon glyphicon-picture'></span> @L_BROWSE_OR_TAKE_PHOTO</label>
+            <a class="btn btn-success" id="download" onclick="" style="display: none;"><span class='glyphicon glyphicon-download'></span> @L_DOWNLOAD</a>
+        </div>
+        <div class="col-sm-12 col-xs-12 customer-image-btn-group " style="margin-top: 10px;">
+            <div class="text-center">
+                @(Html.Raw(L_TAKE_WORDING_1))
+
+            </div>
+        </div>
+        <div class="col-sm-12 col-xs-12 customer-image-btn-group " style="margin-top: 10px;">
+            <div class="text-center" id="how_ios" style="display: none;">
+                @(Html.Raw(L_TAKE_WORDING_2)) <br />
+                @(Html.Raw(L_TAKE_WORDING_3)) <br />
+                @(Html.Raw(L_TAKE_WORDING_4)) <br />
+                @(Html.Raw(L_TAKE_WORDING_5))
+            </div>
+            <div class="text-center" id="how_android" style="display: none;">
+                @(Html.Raw(L_TAKE_WORDING_6)) <br />
+                @(Html.Raw(L_TAKE_WORDING_7)) <br />
+                @(Html.Raw(L_TAKE_WORDING_8))
+            </div>
+        </div>
+        <canvas id="canvas" style="display:none"></canvas>
+
+    </div>
+    <div id="ProgressIcon" class="modal fade">
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center">
+                <div class="text-center" style="color:white;">
+                    <div>
+                        <i class="fa fa-spinner fa-spin fa-6" style="position:inherit;"></i>
+                    </div>
+                    <div id="txtLoading" style="text-align:center;">
+                        LOADING
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+
+    @functions{
+        public string GetAntiForgeryToken()
+        {
+            string cookieToken, formToken;
+            AntiForgery.GetTokens(null, out cookieToken, out formToken);
+            return cookieToken + "," + formToken;
+        }
+    }
+
+    var width = 320;    // We will scale the photo width to this
+    var height = 0;     // This will be computed based on the input stream
+
+    // |streaming| indicates whether or not we're currently streaming
+    // video from the camera. Obviously, we start at false.
+
+    var streaming = false;
+
+    // The various HTML elements we need to configure or control. These
+    // will be set by the startup() function.
+
+    var video = null;
+    var canvas = null;
+    var photo = null;
+    var startbutton = null;
+    var constraints = null;
+    var imageUpload = null;
+    var button = null;
+    var blobData = null;
+    var deviceList = [];
+    var listID = 0;
+
+    var ua = window.navigator.userAgent;
+    var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+    var webkit = !!ua.match(/WebKit/i);
+    var iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+    var android = !!ua.match(/android/i);
+
+    var forgeryId = "@GetAntiForgeryToken()";
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#ProgressIcon #txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+
+    LockScreen(true);
+
+    function startup() {
+        
+        video = document.getElementById('video');
+        canvas = document.getElementById('canvas');
+        photo = document.getElementById('photo');
+        startbutton = document.getElementById('startbutton');
+        imageUpload = document.getElementById('file');
+        button = document.getElementById('download');
+
+        if (!!iOSSafari || !!iOS) {
+            $("#startVideobutton").hide();
+            $("#closeVideobutton").hide();
+            $("#startbutton").hide();
+            $("#switchCamerabutton").hide();
+
+            $("#how_ios").show();
+
+            $("#browsebutton").hide();
+            $("#browsebuttonIOS").show();
+
+        }
+
+        if (!!android)
+        {
+            $("#how_android").show();
+        }
+
+        navigator.getMedia = (navigator.getUserMedia ||
+                               navigator.webkitGetUserMedia ||
+                               navigator.mozGetUserMedia ||
+                               navigator.msGetUserMedia);
+
+        video.addEventListener('canplay', function (ev) {
+            if (!streaming) {
+                height = video.videoHeight / (video.videoWidth / width);
+
+                // Firefox currently has a bug where the height can't be read from
+                // the video, so we will make assumptions if this happens.
+
+                if (isNaN(height)) {
+                    height = width / (4 / 3);
+                }
+
+                video.setAttribute('width', width);
+                video.setAttribute('height', height);
+                canvas.setAttribute('width', width);
+                canvas.setAttribute('height', height);
+                streaming = true;
+            }
+        }, false);
+
+        var backCamID = "";
+        var i = 0;
+
+        if (!!navigator.mediaDevices) {
+            navigator.mediaDevices.enumerateDevices().then(function (devices) {
+                devices.forEach(function (device) {
+                    if (device.kind == "videoinput") {
+                        deviceList.push(device);
+                        //alert(i + ": " + deviceList[i].deviceId)
+                        if (device.label.match(/back/) != null) {
+                            backCamID = device.deviceId;
+                            listID = i;
+                        }
+                        i++;
+                    }
+                });
+
+                if (!!backCamID) {
+
+                    constraints = {
+                        audio: false, video: {
+                            optional: [{ sourceId: backCamID }]
+                        }
+                    };
+                }
+                else {
+                    constraints = {
+                        audio: false, video: true
+                    };
+                }
+            })
+        }
+
+        imageUpload.addEventListener('change', handleImage, false);
+
+        clearphoto();
+
+        if (navigator.userAgent.match(/Line/i)) {
+            $("#errorText").show();
+            $("#errorText").text("Line in-app Browser does not supported, please open in another browser or copy link to open in another browser");
+        }
+
+        LockScreen(false);
+
+        $.ajax({
+            url: "/Process/writelog",
+            type: 'POST',
+            headers: {
+                'VerificationToken': forgeryId,
+                'isLog': true
+            },
+            data: {
+                message: "navigator.getMedia: " + navigator.getMedia + "\nuA: " + navigator.userAgent,
+                AisAirNumber: "0000000000",
+                method: "_startUpCamera",
+                service: "startUpCamera"
+            },
+            success: function (result) {
+            }
+        });
+    }
+
+    function startVideo() {
+
+        if (!!navigator.getMedia){
+            navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess)
+        }
+        else{
+
+            $("#errorText").show();
+            if (navigator.userAgent.match(/Line/i)){
+                $("#errorText").text("Line in-app Browser does not supported, please open in another browser or copy link to open in another browser");
+            }
+            else {
+                $("#errorText").text("Your browser does not supported, please open in Chrome or Firefox");
+            }
+
+            $.ajax({
+                url: "/Process/writelog",
+                type: 'POST',
+                headers: {
+                    'VerificationToken': forgeryId,
+                    'isLog': true
+                },
+                data: {
+                    message: "navigator.getMedia: " + navigator.getMedia + "\nuA: " + navigator.userAgent,
+                    AisAirNumber: "0000000000",
+                    method: "_errorOpenCamera",
+                    service: "openCamera"
+                },
+                success: function (result) {
+                }
+            });
+        }
+
+        startbutton.addEventListener('click', function (ev) {
+            takepicture();
+            ev.preventDefault();
+        }, false);
+    }
+
+    function switchVideo() {
+
+        //alert("listID: " + listID);
+
+        if (listID + 1 >= deviceList.length)
+            listID = (listID + 1) % (deviceList.length - 1);
+        else
+            listID++;
+
+        //alert("listID: " + listID);
+
+        constraints = {
+            audio: false, video: {
+                optional: [{ sourceId: deviceList[listID].deviceId }]
+            }
+        };
+
+        video.pause();
+        //video.srcObject = null;
+        localstream.getTracks()[0].stop();
+
+        startVideo();
+    }
+
+    $('#startVideobutton').click(function () {
+        startVideo();
+    });
+
+    $('#switchCamerabutton').click(function () {
+        switchVideo();
+    });
+
+    $('#download').click(function () {
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Internet Explorer, return version number
+        {
+            window.navigator.msSaveBlob(canvas.msToBlob(), 'aisFibreWatermark.jpg');
+        }
+        else {
+            if (!!blobData) {
+                saveAs(blobData, "aisFibreWatermark.jpg");
+            }
+            //button.href = canvastmp.toDataURL('image/jpeg');
+            //button.setAttribute("download", "aisFibreWatermark.jpg");
+        }
+    });
+
+    var localstream;
+
+    $('#closeVideobutton').click(function () {
+        video.pause();
+        //video.srcObject = null;
+        localstream.getTracks()[0].stop();
+
+        $("#video").hide();
+        $("#startVideobutton").show();
+        $("#closeVideobutton").hide();
+        $("#startbutton").hide();
+        $("#switchCamerabutton").hide();
+        $("#browsebutton").show();
+        $("#header4").hide();
+        $("#header3").show();
+
+        if(!!$("#photo").src)
+            $("#samplePic").hide();
+        else
+            $("#samplePic").show();
+
+        if (!!iOSSafari || !!iOS) {
+            $("#startVideobutton").hide();
+            $("#closeVideobutton").hide();
+            $("#startbutton").hide();
+            $("#switchCamerabutton").hide();
+
+            $("#browsebutton").hide();
+            $("#browsebuttonIOS").show();
+        }
+
+    });
+
+
+    var handleSuccess = function (stream) {
+        $("#browsebutton").hide();
+        $("#photo").hide();
+        $("#download").hide();
+        $("#video").show();
+        $("#startbutton").show();
+        $("#switchCamerabutton").show();
+        $("#startVideobutton").hide();
+        $("#header4").show();
+        $("#header3").hide();
+        $("#samplePic").hide();
+
+        $("#closeVideobutton").show();
+
+        if (!!iOSSafari || !!iOS) {
+            $("#startVideobutton").hide();
+            $("#closeVideobutton").hide();
+            $("#startbutton").hide();
+            $("#switchCamerabutton").hide();
+
+            $("#browsebuttonIOS").hide();
+        }
+
+
+        video.srcObject = stream;
+        localstream = stream;
+
+        video.play();
+
+        if (navigator.userAgent.match(/Line/i)){
+            $("#errorText").show();
+            $("#errorText").text("Line in-app Browser does not supported, please open in another browser or copy link to open in another browser");
+        }
+    };
+
+    // Fill the photo with an indication that none has been
+    // captured.
+
+    function clearphoto() {
+        var context = canvas.getContext('2d');
+        context.fillStyle = "#AAA";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        var data = canvas.toDataURL('image/png');
+        photo.setAttribute('src', data);
+    }
+
+    // Capture a photo by fetching the current contents of the video
+    // and drawing it into a canvas, then converting that to a PNG
+    // format data URL. By drawing it on an offscreen canvas and then
+    // drawing that to the screen, we can change its size and/or apply
+    // other changes before drawing it.
+    var imgtmp = new Image;
+
+    function takepicture() {
+        var context = canvas.getContext('2d');
+        if (width && height) {
+            canvas.width = width;
+            canvas.height = height;
+            context.drawImage(video, 0, 0, width, height);
+
+            var data = canvas.toDataURL('image/png');
+            photo.setAttribute('src', data);
+
+            $("#video").hide();
+            $("#startbutton").hide();
+            $("#switchCamerabutton").hide();
+            $("#startVideobutton").show();
+            $("#samplePic").hide();
+            $("#browsebutton").show();
+            $("#closeVideobutton").hide();
+            $("#header4").hide();
+            $("#header3").show();
+
+            if (!!iOSSafari || !!iOS) {
+                $("#startVideobutton").hide();
+                $("#closeVideobutton").hide();
+                $("#startbutton").hide();
+                $("#switchCamerabutton").hide();
+
+                $("#browsebutton").hide();
+                $("#browsebuttonIOS").show();
+            }
+
+            $("#photo").show();
+            $("#errorText").hide();
+            $("#download").show();
+            //if (!iOSSafari || !!iOS) {
+            //    $("#download").show();
+            //}
+            LockScreen(true);
+
+            imgtmp.onload = renderImage;
+            imgtmp.src = data;
+
+            video.pause();
+            //video.srcObject = null;
+            localstream.getTracks()[0].stop();
+
+        } else {
+            clearphoto();
+        }
+    }
+
+    window.addEventListener('load', startup, false);
+
+    function renderImage() {
+        var watermarkstr = getWatermark();
+
+        var canvastmp = document.getElementById('canvas'),
+        ctx = canvastmp.getContext('2d'),
+        /// store angles (0, 90, 180, 270) in an array
+        angles = [0 * Math.PI, 0.5 * Math.PI, Math.PI, 1.5 * Math.PI],
+        indexCanvas = 0;
+
+        /// use index to set canvas size
+        switch (indexCanvas) {
+            case 0:
+            case 2:
+                /// for 0 and 180 degrees size = image
+                canvastmp.width = imgtmp.width;
+                canvastmp.height = imgtmp.height;
+                break;
+            case 1:
+            case 3:
+                /// for 90 and 270 canvas width = img height etc.
+                canvastmp.width = imgtmp.height;
+                canvastmp.height = imgtmp.width;
+                break;
+        }
+
+        /// get stored angle and center of canvas
+        var angle = angles[indexCanvas],
+        cw = canvastmp.width * 0.5,
+        ch = canvastmp.height * 0.5;
+
+        /// rotate context
+        ctx.translate(cw, ch);
+        ctx.rotate(angle);
+        ctx.translate(-imgtmp.width * 0.5, -imgtmp.height * 0.5);
+
+        /// draw image and reset transform
+        ctx.drawImage(imgtmp, 0, 0);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+        ctx.font = Math.ceil((Math.sqrt((imgtmp.width * imgtmp.width) + (imgtmp.height * imgtmp.height)) / watermarkstr.length) * 2) + 'px db_helvethaicaais_x55_regular'; //54
+
+        //ctx.globalCompositeOperation = 'lighter'; //ใส
+        ctx.globalCompositeOperation = "difference";
+        //ctx.fillStyle = '#444'; //สี
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; //สี
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        var metrics = ctx.measureText("WaterMark");
+        var width = 0;
+        var height = 0;
+        ctx.translate(canvastmp.width / 2, canvastmp.height / 2);
+        ctx.rotate(-Math.atan(canvastmp.height / canvastmp.width));
+        ctx.fillText(watermarkstr, -width / 2, height / 2);
+
+        ctx.translate(-canvastmp.width / 4, -canvastmp.height / 4);
+        ctx.fillText(watermarkstr, -width, height);
+
+        ctx.translate(canvastmp.width / 2, canvastmp.height / 2);
+        ctx.fillText(watermarkstr, -width, height);
+
+        //ctx.translate(canvastmp.width, canvastmp.height);
+        //ctx.fillText(watermarkstr, -width, height);
+
+        photo.setAttribute('src', canvastmp.toDataURL('image/jpg'));
+
+        if (canvastmp.toBlob) {
+            canvastmp.toBlob(function (blob) {
+                blobData = blob;
+
+                LockScreen(false);
+            });
+        }
+        else {
+            blobData = null;
+            LockScreen(false);
+        }
+    }
+
+
+    // Update 17.5 Get LOV for Watermark
+    function getWatermark() {
+
+        var watermarkcardtxt = "";
+
+        $.ajax({
+            type: "GET",
+            url: "/Process/getWatermark",
+            dataType: "json",
+            async: false,
+            success: function (txtdata) {
+                watermarkcardtxt = txtdata;
+            },
+            error: function () {
+                watermarkcardtxt = "use for registration at AIS FIBRE only";
+            }
+
+        });
+        return watermarkcardtxt;
+    }
+
+    function validateUploadFile(maxSize, fileType, idTextPath, fileClient) {
+
+        var browser = get_browser_info();
+        if (true) /// not IE  browser.name != "MSIE"
+        {
+            /// check file size
+
+            @*if (((fileClient.files[0].size) / 1024) > maxSize) {
+
+                $("#" + idTextPath).removeClass('form-control').addClass('form-control errorinput');
+                $("#err003").html("@lERR_FILE_SIZE");
+                $("#" + idTextPath).val("");
+                return;
+            }*@
+
+            /// check file type
+
+            var chk = false;
+            var txt = "";
+            fileType = fileType.split('|');
+            for (var i = 0; i < fileType.length; i++) {
+                if (fileType[i].toUpperCase() == fileClient.files[0].name.substr((fileClient.files[0].name.lastIndexOf('.') + 1)).toUpperCase()) {
+                    chk = true;
+                    break;
+                }
+            }
+
+            if (!chk) {
+                $("#" + idTextPath).removeClass('form-control').addClass('form-control errorinput');
+                toastrErrorMessage("Invalid file format")
+                $("#" + idTextPath).val("");
+                return false;
+            }
+            else {
+                $("#" + idTextPath).removeClass('form-control errorinput').addClass('form-control');
+                $("#" + idTextPath).val(fileClient.files[0].name);
+            }
+        }
+        else {
+
+            var objFSO = new ActiveXObject("Scripting.FileSystemObject");
+            var file = $(fileClient)[0].value;
+            var objFile = objFSO.getFile(file);
+            var objFileName = objFSO.GetFileName(file)
+
+            /// check file type
+            @*var fileSize = objFile.size; //size in kb
+
+            if ((fileSize / 1024) > maxSize) {
+                $("#" + idTextPath).removeClass('form-control').addClass('form-control errorinput');
+                $("#err003").html("@lERR_FILE_SIZE");
+                $("#" + idTextPath).val("");
+                return;
+            }*@
+            /// check file type
+
+            var chk = false;
+            var txt = "";
+            fileType = fileType.split('|');
+            for (var i = 0; i < fileType.length; i++) {
+                if (file.substr(file.lastIndexOf('.') + 1).toUpperCase() == fileType[i].toUpperCase()) {
+                    chk = true;
+                    break;
+                }
+            }
+            if (!chk) {
+                $("#" + idTextPath).removeClass('form-control').addClass('form-control errorinput');
+                toastrErrorMessage("Invalid file format")
+                $("#" + idTextPath).val("");
+                return false;
+            }
+            else {
+                $("#" + idTextPath).removeClass('form-control errorinput').removeClass('textFieldFalse').addClass('form-control');
+                $("#" + idTextPath).val(objFileName);
+            }
+        }
+
+        $("#" + idTextPath).removeClass('form-control errorinput').removeClass('textFieldFalse').addClass('form-control');
+
+        return true;
+    }
+
+    function get_browser_info() {
+        var ua = navigator.userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+        if (/trident/i.test(M[1])) {
+            tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+            return { name: 'IE', version: (tem[1] || '') };
+        }
+        if (M[1] === 'Chrome') {
+            tem = ua.match(/\bOPR\/(\d+)/)
+            if (tem != null) { return { name: 'Opera', version: tem[1] }; }
+        }
+        M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+        if ((tem = ua.match(/version\/(\d+)/i)) != null) { M.splice(1, 1, tem[1]); }
+        return {
+            name: M[0],
+            version: M[1]
+        };
+    }
+
+    function handleImage(e) {
+        var validate = validateUploadFile(parseInt("200"), "jpg|JPG|jpeg|JPEG|png|PGN", 'textImage', this);
+        if (validate) {
+            var ctx = canvas.getContext('2d');
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                var img = new Image();
+                img.onload = function () {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                }
+                img.src = event.target.result;
+                photo.setAttribute('src', event.target.result);
+
+                $("#photo").show();
+                $("#errorText").hide();
+                $("#download").show();
+                $("#samplePic").hide();
+                LockScreen(true);
+                imgtmp.onload = renderImage;
+                imgtmp.src = event.target.result;
+            }
+            reader.readAsDataURL(e.target.files[0]);
+
+
+        }
+    }
+
+    </text>);
+</script>

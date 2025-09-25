@@ -1,0 +1,153 @@
+﻿@using WBBEntity;
+
+@(Html.Kendo().Window()
+    .Name("HistoryPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("")
+    .Width(850)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Content(@<text>
+<div class="row i-no-over i-gap-left-1" id="HistoryPopupPanel">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-5 i-gap-left-2">        
+                <div class="form-group">
+                    <label>Name</label>
+                    <div class="i-fg-data-entry">                
+                         @(Html.Kendo().DropDownList()
+                                              .Name("ddlRefNameHP")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectHistoryLogRefName", "MasterData", new { application = "" });
+                                                  });
+                                              })
+                                             // .Events(e => e.Change("onDdlRefNameHP_Select").Select("onDdlRefNameHP_Select"))
+                                                                                        
+                                        )
+                    </div>
+               
+                </div>
+            </div>
+
+            <div class="col-md-5">        
+                <div class="form-group">
+                    <label>Search &nbsp;<i class="fa fa-search"></i></label>
+                    <div class="i-fg-data-entry">
+                        <input type="text" id="txtRefKeyHP" class="k-textbox form-control" maxlength="50"  />
+                    </div>                
+                </div>
+            </div>
+        </div>   
+
+        <div class="row">
+            <div class="col-md-11 i-gap-left-2">     
+                @(Html.Kendo().Grid<WBBEntity.Models.FBB_HISTORY_LOG>()
+                    .Name("GridHistoryLog")                     
+                    .Columns(columns =>
+                    {
+                        columns.Bound(p => p.CREATED_DATE).Title("Date").Format("{0:dd/MM/yyyy HH:mm:ss}").Width(160);
+                        columns.Bound(p => p.DESCRIPTION).Title("Description").Width(320);
+                        columns.Bound(p => p.CREATED_BY).Title("Create By").Width(80);
+                        columns.Bound(p => p.ACTION).Title("Action").Width(80);                          
+                    })
+                    .Pageable(p => p.Input(true)
+                            .Numeric(true)
+                            .PageSizes(true)
+                        )
+                    .Sortable()
+                    .Filterable()
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Sort(s => s.Add("CREATED_DATE").Descending())
+                        .PageSize(5)
+                        .Read(read => read.Action("ReadHistoryLog", "MasterData").Data("onGridHistoryLog_DataBind"))
+                        .ServerOperation(true)
+                    )
+                    .AutoBind(false)
+                    .Events(e => e.DataBound("onGridHistoryLog_DataBound"))  
+                    
+                )
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-11 i-gap-left-2">        
+                <div class="form-group">
+                    <div class="btn-group pull-right i-gap-top-1">
+                        <a class="btn btn-default i-width-sm-2" onclick="onHistoryPopup_Cancel()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                        <button class="btn btn-info i-width-sm-2" onclick="onHistoryPopup_Search()"><i class="fa fa-search fa-lg"></i>&nbsp; Search</button>                    
+                    </div>
+                </div>
+            </div>
+        </div>  
+        
+        <div>
+            <input type="hidden" id="hdApplicationHP" value="" />
+            <input type="hidden" id="hdRefName" value="" />
+        </div>  
+    </div>
+</div>
+</text>)
+)
+
+<script>
+    function onHistoryPopUp_Show(title,application,refKey,refName) {
+        clearPageScrollUp("#GridHistoryLog");
+        $("#HistoryPopup_wnd_title").text(title + " History");
+
+        $("#hdApplicationHP").val("");
+        $("#txtRefKeyHP").val("");
+        $("#hdRefName").val("");
+        $("#ddlRefNameHP").data("kendoDropDownList").dataSource.read({ application: "" });
+        $("#GridHistoryLog").data("kendoGrid").dataSource.read({ application: "", refKey: "", refName: "", firstLoadFlag: false });
+        $("#GridHistoryLog").data("kendoGrid").dataSource.page(1);
+
+        $("#hdApplicationHP").val(application);
+        $("#txtRefKeyHP").val(refKey);
+        $("#hdRefName").val(refName);
+        $("#ddlRefNameHP").data("kendoDropDownList").dataSource.read({ application: $("#hdApplicationHP").val() });
+        $("#ddlRefNameHP").data("kendoDropDownList").value(refName);
+
+        $("#GridHistoryLog").data("kendoGrid").dataSource.read({ application: $("#hdApplicationHP").val(), refKey: $("#txtRefKeyHP").val(), refName: refName, firstLoadFlag: true });        
+        
+        $("#HistoryPopup").data("kendoWindow").open();
+        $("#HistoryPopup").data("kendoWindow").center();        
+    }
+
+    function onDdlRefNameHP_Bind() {   
+        $("#ddlRefNameHP").data("kendoDropDownList").value($("#hdRefName").val());
+    }
+
+    function onDdlRefNameHP_Select() {
+        $("#hdRefName").val($("#ddlRefNameHP").data("kendoDropDownList").value());
+    }     
+
+    function onGridHistoryLog_DataBind() {
+        return {
+            application: $("#hdApplicationHP").val(),
+            refKey: $("#txtRefKeyHP").val(),
+            refName: $("#ddlRefNameHP").data("kendoDropDownList").value(),
+            firstLoadFlag: true
+        };
+    }
+
+    function onGridHistoryLog_DataBound() {
+        clearPageScrollUp("#GridHistoryLog");
+        setButton();
+    }
+
+    function onHistoryPopup_Search() {
+        $("#GridHistoryLog").data("kendoGrid").dataSource.read({ application: $("#hdApplicationHP").val(), refKey: $("#txtRefKeyHP").val(), refName: $("#ddlRefNameHP").data("kendoDropDownList").value(), firstLoadFlag: false });
+    }
+
+    function onHistoryPopup_Cancel() {
+        $("#HistoryPopup").data("kendoWindow").close();
+    }
+</script>

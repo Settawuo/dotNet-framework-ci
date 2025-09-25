@@ -1,0 +1,649 @@
+﻿@using WBBEntity.PanelModels
+
+@{
+    var menuFirstPage = "";
+    var menuFirstPageUrl = "";
+    var menuPayment = "";
+    var menuReportProblem = "";
+    var menuLogout = "";
+    var menuLogoutController = "";
+
+    if (ViewBag.LogoutController != null)
+    {
+        menuLogoutController = ViewBag.LogoutController;
+    }
+    if (ViewBag.LabelFBBOR_MENU != null)
+    {
+        var lovlist = (List<LovScreenValueModel>)ViewBag.LabelFBBOR_MENU;
+
+        var lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_MENU_FIRST_PAGE") ?? new LovScreenValueModel();
+        menuFirstPage = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_MENU_FIRST_PAGE_URL") ?? new LovScreenValueModel();
+        menuFirstPageUrl = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_MENU_PAYMENT") ?? new LovScreenValueModel();
+        menuPayment = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_MENU_REPORT_PROBLEM") ?? new LovScreenValueModel();
+        menuReportProblem = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_MENU_LOG_OUT") ?? new LovScreenValueModel();
+        menuLogout = lovScreenValueModel.DisplayValue;
+
+    }
+
+    Layout = null; 
+}
+
+
+<html class="no-js" lang="th">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10,9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0" />
+    <meta name="date" content="2016-03-12" />
+    <meta name="sitecode" content="TH" />
+
+    <title>AIS Fibre Broadband ความเร็วสูง 1 Gbps</title>
+
+    <!-- Cahing Browser -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <meta name="description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์">
+    <meta name="KeyWords" content="ais, เอไอเอส, เน็ต, อินเทอร์เน็ต, ไฟเบอร์" />
+    <meta name="thumbnail" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+    <meta name="thumbnail_height" content="110">
+    <!--Fix ขนาดของความสูง ไว้เท่านี้ ไม่เปลี่ยน-->
+    <meta name="thumbnail_width" content="75">
+    <!--Fix ขนาดของความกว้าง ไว้เท่านี้ ไม่เปลี่ยน-->
+
+    <!-- Facebook Propertie แชร์ Facebook -->
+    <meta property="og:title" content="AIS Fibre Broadband ความเร็วสูง 1 Gbps" />
+    <meta property="og:description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์" />
+    <meta property="og:image" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+
+    <!-- Tweet Propertie แชร์ Tweet -->
+    <meta property="tw:description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์" />
+
+    <!-- Google Plus แชร์  Google -->
+    <meta itemprop="name" content="AIS Fibre Broadband ความเร็วสูง 1 Gbps">
+    <meta itemprop="description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์">
+    <meta itemprop="image" content="https://www.ais.co.th/fibre_postpaid/share.jpg">
+
+    <!--Include Style Script-->
+    <link href="http://localhost:50960/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+    <link href="~/Scripts/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+
+    @Scripts.RenderFormat("<script src='{0}' defer></script>", "~/bundles/js/jsRedesignResponsive")
+
+    <link href="~/Content/Content2016/css/fibrepostpaid.css" rel="stylesheet" />
+    <link href="~/Content/Content2016/css/menutypeahead.css" rel="stylesheet" />
+    <link href="~/Content/Content2016/css/navais.min.css" rel="stylesheet" />
+    <link href="~/Content/Content2016/css/dna.global.css" rel="stylesheet" />
+    <link href="~/Content/Content2016/css/helvetica.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/select2.min.css"  rel="stylesheet" />
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Content2016/css/menuresponsive.css" rel="stylesheet" />
+    <link href="~/css/toastr.min.css" rel="stylesheet" />
+    
+    
+    
+    <script src="~/Content/Content2016/js/jquery-1.11.3.min.js"></script>
+    <script src="~/Content/Content2016/js/menutypeahead.min.js"></script>
+    <script src="~/Content/Content2016/js/jquery.mainnav.min.js"></script>
+    <script src="~/js/select2.min.js"></script>
+    <script src="~/js/jquery.matchHeight.min.js"></script>
+    <script src="~/js/Main.min.js"></script>
+    <script src="~/Scripts/js/bootstrap.min.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+
+
+</head>
+    <style>
+        
+        .i-hidden {
+            display: none;
+        }
+
+        .btnP1, .btnP1:hover, .btnP2 {
+            background-color: #8dc63f;
+            color: #fff;
+        }
+
+        .btnP1:hover {
+            cursor: not-allowed;
+        }
+
+        .btnP2:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .btnP3, .btnP3:hover {
+            color: #fff;
+        }
+
+        .btnP3 {
+            background-color: #ccc;
+        }
+
+        .btnP3:hover {
+            background-color: #aaa;
+            text-decoration: none;
+        }
+
+        fieldset {
+            border: 2px solid #83ad47;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            -khtml-border-radius: 5px;
+            -moz-border-radius: 5px;
+        }
+
+        #tbl-popup {
+            width: 100%;
+        }
+
+        .btnmodal {
+            padding: 10px 15px;
+            background-color: #58AA0C;
+            color: #fff;
+        }
+
+        .btnmodal:hover {
+            padding: 10px 15px;
+            background-color: #4a831c;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .modal-dialog-center {
+            margin-top: 10%;
+        }
+
+        .btn1 {
+            background-color: #8dc63f;
+            color: #fff;
+        }
+
+        .btn1:hover {
+            background-color: #8dc63f;
+            color: #fff;
+            cursor: not-allowed;
+        }
+
+        .btn2 {
+            background-color: #8dc63f;
+            color: #fff;
+        }
+
+        .btn2:hover {
+            background-color: black;
+            color: #fff;
+        }
+
+        .btn3 {
+            background-color: #ccc;
+            color: #fff;
+        }
+
+        .btn3:hover {
+            background-color: #aaa;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #box1P_holder {
+            background-image: url(../../Content/Content2016/images/postpaid/fibre-banner.jpg);
+            background-position: center 50px;
+            background-size: initial;
+            background-repeat: no-repeat;
+            background-attachment: initial;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: white;
+            min-height: 690px;
+        }
+
+        .user_tool_content {
+            display: table;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .box_border {
+            display: inline-block;
+            width: 100%;
+            margin-left: auto;
+            position: relative;
+            margin-top: 34px;
+        }
+
+        .user_tool_box_set {
+            display: table-cell;
+        }
+
+        .user_tool_box_set > li {
+            float: left;
+            height: auto;
+            list-style: outside none none;
+            margin: 0;
+            padding: 0;
+            width: auto;
+        }
+
+        .a.bd-icon {
+            background-color: transparent;
+            font-size: 16px;
+            font-weight: normal;
+            color: transparent;
+        }
+        .bd-2 {
+            border-left: 1px solid #c3c2c2;
+            border-right: 1px solid #c3c2c2;
+        }
+
+        .bd-3 {
+            border-right: 1px solid #c3c2c2;
+        }
+
+        .bd-4 {
+            border-right: 1px solid #c3c2c2;
+        }
+
+        .bd-2:hover {
+            background-color: #8dc63f;
+            cursor: pointer;
+        }
+
+        .bd-3:hover {
+            background-color: #8dc63f;
+            cursor: pointer;
+            color: white;
+            text-decoration: underline;
+        }
+
+        .bd-4:hover {
+            background-color: #8dc63f;
+            cursor: pointer;
+        }
+
+        .bd-5:hover {
+            background-color: #8dc63f;
+            cursor: pointer;
+        }
+
+        .bd-target {
+            background-color: #8dc63f;
+        }
+
+        .user_tool_box {
+            color: #000000;
+            display: block;
+            padding: 58px 8px 6px;
+            position: relative;
+            text-align: center;
+            width: 130px;
+        }
+
+        .user_tool_box:hover {
+            color: #FFF;
+            text-decoration: underline;
+        }
+
+        .interface_header_fibre {
+            background-color: rgba(0, 0, 0, 0.3);
+            height: 50px;
+            left: 0;
+            padding: 15px 0;
+            position: fixed;
+            top: 50px;
+            width: 100%;
+            z-index: 15;
+        }
+
+        .user_tool_box.fibrelogo {
+            background-image: url(../../Content/images/postpaid/fibre_logo.png);
+            background-position: center 5px;
+            background-size: 100px 60px;
+            background-repeat: no-repeat;
+            background-attachment: initial;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0);
+            display: block;
+            height: 75px;
+            width: 149px;
+        }
+
+        .user_tool_box.home {
+            background-image: url(../../Content/Content2016/images/postpaid/Home_p_ic.png);
+            background-position: center 2px;
+            background-size: 50px 50px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user_tool_box.home:hover {
+            background-image: url(../../Content/Content2016/images/postpaid/Home_p_ic_white.png);
+            background-position: center 2px;
+            background-size: 50px 50px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user_tool_box.pay {
+            background-image: url(../../Content/Content2016/images/postpaid/payment_ic.png);
+            background-position: center 0;
+            background-size: 60px 60px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user_tool_box.pay:hover {
+            background-image: url(../../Content/Content2016/images/postpaid/payment_ic_white.png);
+            background-position: center 0;
+            background-size: 60px 60px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user_tool_box.reportproblem {
+            background-image: url(../../Content/Content2016/images/postpaid/report_po_ic.png);
+            background-position: center 0;
+            background-size: 60px 60px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user_tool_box.reportproblem:hover {
+            background-image: url(../../Content/Content2016/images/postpaid/report_po_ic_white.png);
+            background-position: center 0;
+            background-size: 60px 60px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user_tool_box.logout {
+            background-image: url(../../Content/Content2016/images/postpaid/logout_p_ic.png);
+            background-position: center 3px;
+            background-size: 50px 55px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user_tool_box.logout:hover {
+            background-image: url(../../Content/Content2016/images/postpaid/logout_p_ic_white.png);
+            background-position: center 3px;
+            background-size: 50px 55px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        li.active{
+            background-color: #8dc63f;
+            cursor: pointer;
+            color: white;
+        }
+        li.active .user_tool_box.pay.active {
+            background-image: url(../../Content/Content2016/images/postpaid/payment_ic_white.png);
+            background-position: center 0;
+            background-size: 60px 60px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        li.active .user_tool_box.reportproblem.active {
+            background-image: url(../../Content/Content2016/images/postpaid/report_po_ic_white.png);
+            background-position: center 0;
+            background-size: 60px 60px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        #ais_topbar {
+            display: block;
+        }
+
+        #ais_topbar .topbar_ribbon {
+            padding-left:10px;
+            float: left;
+            height: 60px;
+        }
+
+        #ribbonking{ width:100%; height:60px;  background: url("/Images/bg1366.jpg") no-repeat center;  background-color:#000;}
+        #ribbonking_wrapper{height:60px; margin: 0 auto; max-width: 1140px;}
+
+        .panel_temp_ribbon {
+            width: 100vw;
+            height: 60px;
+            background-color: transparent;
+        }
+
+        
+        .errorinput {
+            border: 2px solid #ff988a !important;
+        }
+
+    </style>
+
+    <div id="ais_topbar">
+        
+        @*<div id="ribbonking">
+            <div id="ribbonking_wrapper">
+                <div class="topbar_ribbon"><img src="~/Images/iconribbon.png" alt="ais logo"></div>
+            </div>
+        </div>*@
+
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_MenuTH")
+        }
+        else
+        {
+            @Html.Partial("_MenuEN")
+        }
+    </div>
+    
+    <div id="" class="panel_temp_ribbon"></div>
+
+    <div id="fibre_container">
+
+        <div id="col-form">
+            <div id="container">
+                <div id="box1P_holder" class="box1P-holder">
+
+                    <!--  Put Content Here เริ่มต้นเนื้อหา  -->
+                    <div class="text-center" id="regis_menu_scroll_1">
+                        <div id="divBdTopbar" class="user_tool_box_top bd-topbar">
+                            <div id="lblMenuIcon" class="a bd-icon glyphicon glyphicon-list" onclick="menuResponsiveClick()"></div>
+                        </div>
+                        <div class="box_border">
+
+                            <div class="user_tool_content">
+                                <ul class="user_tool_box_set" id="menuMain">
+                                    <li id="liLogo" class="bd-1 equal-item">
+                                        <a target="">
+                                            <div id="divLogo" class="user_tool_box fibrelogo equal-item">
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li id="liHome" class="bd-2 equal-item">
+                                        <a href="@Url.Action("RedirectPage", "Payment")">
+                                            <div id="divHome" class="user_tool_box home equal-item">
+                                                @menuFirstPage
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li id="liPayment" class="bd-3 equal-item">
+                                        <a href="@Url.Action("Index", "Payment")">
+                                            <div id="divPay" class="user_tool_box pay equal-item">
+                                                @menuPayment
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li id="liProblem" class="bd-4 equal-item">
+                                        <a href="@Url.Action("Index", "ReportProblem")">
+                                            <div id="divReportproblem" class="user_tool_box reportproblem equal-item">
+                                                @menuReportProblem
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li id="liLogout" class="bd-5 equal-item">
+                                        <a href="@Url.Action("Logout", menuLogoutController)">
+                                            <div id="divLogout" class="user_tool_box logout equal-item">
+                                                @menuLogout
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--  Put Content Here จบเนื้อหา  -->
+
+                    <div id="body">
+                        @RenderBody()
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div id="aisfooter">
+                    @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+                    {
+                        @Html.Partial("_FooterTH")
+                    }
+                    else
+                    {
+                        @Html.Partial("_FooterEN")
+                    }
+
+                </div>
+                <div class="truehits-bg">&nbsp;</div>
+
+            </div>
+            <div class="truehits-bg">&nbsp;</div>
+
+        </div>
+
+        <div>
+            <input type="hidden" id="LanguagePage" />
+        </div>
+
+    </div>
+
+<!-- /.modal -->
+<script type="text/javascript">
+    function menuResponsiveClick() {
+        var x = document.getElementById("menuMain");
+        if (x.className === "user_tool_box_set") {
+            x.className += " responsive";
+            $('#lblMenuIcon').removeClass("glyphicon-list");
+            $('#lblMenuIcon').addClass("glyphicon-chevron-down");
+        } else {
+            x.className = "user_tool_box_set";
+            $('#lblMenuIcon').removeClass("glyphicon-chevron-down");
+            $('#lblMenuIcon').addClass("glyphicon-list");
+        }
+    }
+
+    $('.user_tool_box.pay').click(function () {
+        $(this).addClass('active').siblings().removeClass('active');
+
+    });
+
+    $(document).ready(function () {
+        ais_interface_setup('mini-menu', 'postpaid', 'th', '', false);
+    });
+
+    function Reload() {
+        window.location.href = window.location.href;
+    }
+
+    function ClosePopupReload() {
+        if (success == 'True') {
+            Reload();
+        }
+    }
+
+    $(function () {
+        $.post('/WBB/GetCurrentCulture').done(function (x) {
+            $("#LanguagePage").val(x);
+        });
+
+        $("#frmPayment").attr("action", "@ViewBag.SetAction");
+    });
+
+    //============================================== EqualHeight ================================
+    $(document).ready(function() {
+        $('.equal-item').matchHeight({
+            byRow: true,
+            property: 'min-height'
+        });
+    });
+
+    $(window).resize(function () {
+
+        var x = document.getElementById("menuMain");
+        if (x.className === "user_tool_box_set responsive") {
+            x.className = "user_tool_box_set";
+            $('#lblMenuIcon').removeClass("glyphicon-chevron-down");
+            $('#lblMenuIcon').addClass("glyphicon-list");
+        }
+
+        var medsize = window.matchMedia("(min-width: 720px)");
+        if (!medsize.matches) {
+            $('#divLogo').attr('style', 'min-height: 10px;');
+            $('#divHome').attr('style', 'min-height: 10px;');
+            $('#divPay').attr('style', 'min-height: 10px;');
+            $('#divReportproblem').attr('style', 'min-height: 10px;');
+            $('#divLogout').attr('style', 'min-height: 10px;');
+            $('#liLogo').attr('style', 'min-height: 10px;');
+            $('#liHome').attr('style', 'min-height: 10px;');
+            $('#liPayment').attr('style', 'min-height: 10px;');
+            $('#liProblem').attr('style', 'min-height: 10px;');
+            $('#liLogout').attr('style', 'min-height: 10px;');
+        }
+    });
+
+
+    
+
+</script>
+
+</html>

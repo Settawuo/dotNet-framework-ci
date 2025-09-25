@@ -1,0 +1,255 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationEventsSearchModel
+@using WBBEntity.PanelModels;
+
+@{
+    ViewBag.Title = "Index";
+
+    string L_EVENT_CODE = "";
+
+    string B_NEW = "";
+    string B_EDIT = "";
+    
+    string G_EVENT_CODE = "";
+    string G_EFFECTIVE_DATE = "";
+    string G_EXPIRE_DATE = "";
+    string G_TECHNOLOGY = "";
+    string G_PROVICE = "";
+    string G_AMPHUR = "";
+    string G_TUMBON = "";
+    string G_ZIPCODE = "";
+    string G_PLUG_AND_PLAY_FLAG = "";
+
+    string G_EVENT_CODE_ENABLE = "";
+    string G_EFFECTIVE_DATE_ENABLE = "";
+    string G_EXPIRE_DATE_ENABLE = "";
+    string G_TECHNOLOGY_ENABLE = "";
+    string G_PROVICE_ENABLE = "";
+    string G_AMPHUR_ENABLE = "";
+    string G_TUMBON_ENABLE = "";
+    string G_ZIPCODE_ENABLE = "";
+    string G_PLUG_AND_PLAY_FLAG_ENABLE = "";
+
+    string B_SEARCH = "";
+    string B_CLEAR = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_EVENT_CODE = configscreen.Any(f => f.Name == "L_EVENT_CODE") ? configscreen.First(f => f.Name == "L_EVENT_CODE").LovValue1 : "";
+
+        B_NEW = configscreen.Any(f => f.Name == "B_NEW") ? configscreen.First(f => f.Name == "B_NEW").LovValue1 : "";
+        B_EDIT = configscreen.Any(f => f.Name == "B_EDIT") ? configscreen.First(f => f.Name == "B_EDIT").LovValue1 : "";
+
+        G_EVENT_CODE = configscreen.Any(f => f.Name == "G_EVENT_CODE") ? configscreen.First(f => f.Name == "G_EVENT_CODE").LovValue1 : "";
+        G_EVENT_CODE_ENABLE = configscreen.Any(f => f.Name == "G_EVENT_CODE") ? configscreen.First(f => f.Name == "G_EVENT_CODE").Text : "N";
+
+        G_EFFECTIVE_DATE = configscreen.Any(f => f.Name == "G_EFFECTIVE_DATE") ? configscreen.First(f => f.Name == "G_EFFECTIVE_DATE").LovValue1 : "";
+        G_EFFECTIVE_DATE_ENABLE = configscreen.Any(f => f.Name == "G_EFFECTIVE_DATE") ? configscreen.First(f => f.Name == "G_EFFECTIVE_DATE").Text : "N";
+
+        G_EXPIRE_DATE = configscreen.Any(f => f.Name == "G_EXPIRE_DATE") ? configscreen.First(f => f.Name == "G_EXPIRE_DATE").LovValue1 : "";
+        G_EXPIRE_DATE_ENABLE = configscreen.Any(f => f.Name == "G_EXPIRE_DATE") ? configscreen.First(f => f.Name == "G_EXPIRE_DATE").Text : "N";
+
+        G_TECHNOLOGY = configscreen.Any(f => f.Name == "G_TECHNOLOGY") ? configscreen.First(f => f.Name == "G_TECHNOLOGY").LovValue1 : "";
+        G_TECHNOLOGY_ENABLE = configscreen.Any(f => f.Name == "G_TECHNOLOGY") ? configscreen.First(f => f.Name == "G_TECHNOLOGY").Text : "N";
+
+        G_PROVICE = configscreen.Any(f => f.Name == "G_PROVICE") ? configscreen.First(f => f.Name == "G_PROVICE").LovValue1 : "";
+        G_PROVICE_ENABLE = configscreen.Any(f => f.Name == "G_PROVICE") ? configscreen.First(f => f.Name == "G_PROVICE").Text : "N";
+
+        G_AMPHUR = configscreen.Any(f => f.Name == "G_AMPHUR") ? configscreen.First(f => f.Name == "G_AMPHUR").LovValue1 : "";
+        G_AMPHUR_ENABLE = configscreen.Any(f => f.Name == "G_AMPHUR") ? configscreen.First(f => f.Name == "G_AMPHUR").Text : "N";
+
+        G_TUMBON = configscreen.Any(f => f.Name == "G_TUMBON") ? configscreen.First(f => f.Name == "G_TUMBON").LovValue1 : "";
+        G_TUMBON_ENABLE = configscreen.Any(f => f.Name == "G_TUMBON") ? configscreen.First(f => f.Name == "G_TUMBON").Text : "N";
+
+        G_ZIPCODE = configscreen.Any(f => f.Name == "G_ZIPCODE") ? configscreen.First(f => f.Name == "G_ZIPCODE").LovValue1 : "";
+        G_ZIPCODE_ENABLE = configscreen.Any(f => f.Name == "G_ZIPCODE") ? configscreen.First(f => f.Name == "G_ZIPCODE").Text : "N";
+
+        G_PLUG_AND_PLAY_FLAG = configscreen.Any(f => f.Name == "G_PLUG_AND_PLAY_FLAG") ? configscreen.First(f => f.Name == "G_PLUG_AND_PLAY_FLAG").LovValue1 : "";
+        G_PLUG_AND_PLAY_FLAG_ENABLE = configscreen.Any(f => f.Name == "G_PLUG_AND_PLAY_FLAG") ? configscreen.First(f => f.Name == "G_PLUG_AND_PLAY_FLAG").Text : "N";
+
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.First(f => f.Name == "B_SEARCH").LovValue1 : "";
+        B_CLEAR = configscreen.Any(f => f.Name == "B_CLEAR") ? configscreen.First(f => f.Name == "B_CLEAR").LovValue1 : "";
+
+    }
+    
+    <div class="page-header i-header-fit" id="HeadPage1">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">Configuration Event</h3>
+                <ol class="breadcrumb">
+                    <li class="active">Main Page</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="SearchPane">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>Search Event</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 200px;">
+                        <div id="SearchRow1" class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_EVENT_CODE</label>
+                                @Html.TextBoxFor(t => t.EventCode, new { maxlength = 50, @class = "dis k-textbox form-control" })
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                
+                            </div>
+                        </div>
+                        <div id="SearchRow2" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                            </div>
+                        </div>
+                        @*end row2*@
+                        <div id="SearchRow3" class="row i-gap-top-1">
+                            <div class="col-sm-12 col-md-12 ">
+                                <div id="gridresult" class="row">
+                                    @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationEventSearchData>()
+                                                .Name("gridEvents")
+                                                .Columns(columns =>
+                                        {
+                                            columns.Command(command =>
+                                            {
+                                                command.Custom("Edit").Click("editConfigEvent").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + @B_EDIT);
+                                            }).Width(100);
+                                            if (@G_EVENT_CODE_ENABLE == "Y")
+                                            {
+                                                columns.Bound(p => p.event_code).Title(@G_EVENT_CODE).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            }
+                                            else
+                                            {
+                                                columns.Bound(p => p.event_code).Title(@G_EVENT_CODE).HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                            }
+                                            if (@G_PLUG_AND_PLAY_FLAG_ENABLE == "Y")
+                                                columns.Bound(p => p.plug_and_play_flag).Title(@G_PLUG_AND_PLAY_FLAG).HtmlAttributes(new { style = "text-align:center;" }).Width(200);
+                                            if (@G_EFFECTIVE_DATE_ENABLE == "Y")
+                                                columns.Bound(p => p.effective_date).Title(@G_EFFECTIVE_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                                            if (@G_EXPIRE_DATE_ENABLE == "Y")
+                                                columns.Bound(p => p.expire_date).Title(@G_EXPIRE_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                                            if (@G_TECHNOLOGY_ENABLE == "Y")
+                                                columns.Bound(p => p.technology).Title(@G_TECHNOLOGY).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            if (@G_PROVICE_ENABLE == "Y")
+                                                columns.Bound(p => p.provice).Title(@G_PROVICE).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            if (@G_AMPHUR_ENABLE == "Y")
+                                                columns.Bound(p => p.amphur).Title(@G_AMPHUR).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            if (@G_TUMBON_ENABLE == "Y")
+                                                columns.Bound(p => p.tumbon).Title(@G_TUMBON).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            if (@G_ZIPCODE_ENABLE == "Y")
+                                                columns.Bound(p => p.zipcode).Title(@G_ZIPCODE).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+
+                                        })
+                                        .ToolBar(toolbar => toolbar.Template("" +
+                                            "<div class='pull-right'>" + "<a onclick='addNewConfigEvent()' id='addnew' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp;" + @B_NEW + "</a>&nbsp;</div>"
+
+                                        ))
+                                            .Pageable(pageable => pageable
+                                            .PageSizes(false)
+                                            .Numeric(true)
+                                            )
+                                            .Scrollable(scrollable => scrollable.Height("auto"))
+                                            .Sortable()
+                                            .AutoBind(false)
+                                            .DataSource(dataSource => dataSource
+                                                .Ajax()
+                                                .PageSize(20)
+                                                .Sort(sort => sort.Add("EVENT_CODE").Ascending())
+                                                .Read(read => read.Action("SearchDataSourceRequest", "ConfigurationEvents").Data("bindingValue"))
+                                                )
+                                            .Events(e => e.DataBound("onGridDataBound"))
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        @*end row3*@
+
+                    </div>
+                </div>
+                @*end SearchPanel*@
+            </div>
+        </div>
+    </div>
+    <script>
+
+        var SaveStatus = '@ViewBag.SaveStatus';
+        $(document).ready(function () {
+            $.ajaxSetup({
+                // Disable caching of AJAX responses
+                cache: false
+            });
+            if (SaveStatus != "") {
+                if (SaveStatus.substring(0,18) == "Saved successfully") {
+                    showFeedback("success", SaveStatus);
+                }
+                else {
+                    showFeedback("error", SaveStatus);
+                }
+            }
+        });
+
+        var AWConfigurationEventModel = function () {
+            SERVICE: "";
+            VENDOR: "";
+            ORDER_TYPE: "";
+        }
+
+        function defaultData() {
+
+            var searchModel = new AWConfigurationEventModel();
+            searchModel.EventCode = $("#EventCode").val();
+
+            return searchModel;
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS: JSON.stringify(model)
+            };
+        }
+
+        function onGridDataBound() {
+            Loading(0);
+        }
+
+        function _Search() {
+
+            var model = defaultData();
+            Loading();
+            var grid = $("#gridEvents").data("kendoGrid");
+            grid.dataSource.page(1);
+
+        }
+
+        function _Clear() {
+            $("#EventCode").val("");
+            $("#gridEvents").data("kendoGrid").dataSource.data([]);
+        }
+
+        function addNewConfigEvent() {
+            Loading();
+            var url = '@Url.Action("ConfigurationEventsEdit", "ConfigurationEvents")';
+            url = url + "?EventCode=N";
+            window.location.href = url;
+        }
+
+        function editConfigEvent(e) {
+            Loading();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var url = '@Url.Action("ConfigurationEventsEdit", "ConfigurationEvents")';
+            url = url + "?EventCode=" + dataItem.event_code;
+        window.location.href = url;
+    }
+    </script>
+     
+}

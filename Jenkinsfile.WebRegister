@@ -1,0 +1,427 @@
+@Library('jenkins-awesome-library') _
+/****************
+//global variable for use
+"${MSBUILD}"
+"${GIT}"
+"${CURL}"
+"${MSBUILD12}"
+"${MSBUILD19}"
+"${MSDEPLOY}"
+"${NUGET_CACHE}"
+****************/
+
+
+
+pipeline {
+    agent {
+        label 'windows-slave-new'
+    }
+    environment{
+        MSBUILD = "msbuild"
+        MSDEPLOY = "msdeploy"
+		//NUGET_CACHE = "D:\\NugetPackageCache"
+
+        //HTTP_PROXY = "http://10.252.163.82:80"
+        //HTTPS_PROXY = "http://10.252.163.82:80"
+
+        BUILDSOLUTIONFILE = "Fixed_Broadband.sln"
+        BUILDPROJECTFRONTPATH = "Presentation\\Web\\WBBWeb"
+        BUILDPROJECTADMINPATH = "Presentation\\Web\\FBBConfig"
+        BUILDPROJECTBACKPATH = "WebServices\\WBBWebService"
+        BUILDPROJECTBACKEXTPATH = "WebServices\\WBBExternalService"
+        BUILDPROJECTBACKEXTAPIPATH = "WebServices\\WBBExternalAPI"
+
+        ZIPFRONT = "fbbWebRegister.zip"
+        ZIPADMIN = "fbbConfig.zip"
+        ZIPBACK = "fbbWebRegisterWs.zip"
+        ZIPBACKEXT = "fbbWebRegisterWsext.zip"
+        ZIPBACKEXTAPI = "fbbWebRegisterExtApi.zip"
+
+        GROUPID = "fbbWebRegister-new"
+        ARTIFACTIDFRONT = "fbbWebRegister"
+        ARTIFACTIDADMIN = "fbbConfig"
+        ARTIFACTIDBACK = "fbbWebRegisterWs"
+        ARTIFACTIDBACKEXT = "fbbWebRegisterWsext"
+        ARTIFACTIDBACKEXTAPI = "fbbWebRegisterExtApi"
+
+        PRODUCTVERSION = buildVersion()
+        BUILDTARGET = 'debug'
+        STEP = "";
+        buildSolutionEnv = "debug"
+
+    }
+
+    stages{
+
+        stage('Prepare Environment Anyfeature'){
+            when {
+                expression { branch('feature')}
+            }
+            steps {
+                script {
+
+                    STEP = 'Prepare Environment Anyfeature'
+
+                    BUILDTARGET = 'debug'
+                    credentialsId = ''
+                }
+            }
+        }
+
+        stage('Prepare Environment Master'){
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+
+                    STEP = 'Prepare Environment Master'
+
+                    BUILDTARGET = 'debug'
+                    // nameFront = 'staging-fbbportal.ais.co.th/changepackagefieldwork'
+                    // nameBack = 'staging-fbbportalws.ais.co.th/changepackfieldworkapi'
+                    // credentialsId = 'deploy.fbb.staging.credential'
+                    // urlFront = 'https://10.137.28.43:8172/MsDeploy.axd?site=staging-fbbportal.ais.co.th'
+                    // urlBack = 'https://10.138.44.31:8172/MsDeploy.axd?site=staging-fbbportalws.ais.co.th'
+                }
+            }
+        }
+
+        
+        stage('Nuget Restore'){
+			when {
+                expression { branch('develop','release','master')}
+            }
+            steps{
+                script{
+
+                    STEP = 'Nuget Restore'
+                    //bat "nuget restore $BUILDSOLUTIONFILE"
+                    //nugetRestore(BUILDSOLUTIONFILE)
+					
+					bat "where nuget"
+					bat "nuget sources"
+					def cmd = [
+						"nuget",
+						"restore",
+						"${env.WORKSPACE}\\${BUILDSOLUTIONFILE}",
+						"-OutputDirectory ${env.WORKSPACE}\\packages"
+					].join(' ')
+
+					bat "${cmd}"
+                }
+            }
+        }
+
+
+        stage('Build'){
+            when {
+                expression { branch('develop','release','master')}
+            }
+            steps {
+                script {
+
+                    STEP = 'Build'
+
+                    //buildProject(BUILDSOLUTIONFILE, BUILDTARGET, PRODUCTVERSION)
+					
+					def buildVersion=16.0
+					def cmd = [
+						"${MSBUILD}",
+						"${env.WORKSPACE}\\${BUILDSOLUTIONFILE}",
+						"/p:VisualStudioVersion=${buildVersion}",
+						"/p:ProductVersion=${PRODUCTVERSION}",
+						"/p:Configuration=${BUILDTARGET};AutoParameterizationWebConfigConnectionStrings=False",
+						"/p:Platform=\"Any CPU\"",
+						"/p:DeployOnBuild=true",
+						"/p:DeployTarget=PipelinePreDeployCopyAllFilesToOneFolder",
+						//"/t:rebuild"
+						//"/t:restore,build"
+						//-t:build -restore
+						//"/t:Clean,Build"
+						"/t:Clean,Build"
+					].join(' ')
+					bat "${cmd}"
+
+
+                    STEP = 'Build: Prepare Deploy'
+
+                    def paths = [buildDir(BUILDPROJECTFRONTPATH, BUILDTARGET),
+                                buildDir(BUILDPROJECTADMINPATH, BUILDTARGET), 
+                                buildDir(BUILDPROJECTBACKPATH, BUILDTARGET), 
+                                buildDir(BUILDPROJECTBACKEXTPATH, BUILDTARGET),
+                                buildDir(BUILDPROJECTBACKEXTAPIPATH, BUILDTARGET)]
+                    paths.each{
+                        path ->
+                        deleteFile(path+"\\obj\\${buildSolutionEnv}\\Package\\PackageTmp", "Web.config", "bin\\Oracle.DataAccess.dll", "log4net.config")
+                    }
+                }
+            }
+        }
+
+		stage('deploy backend develop'){
+            when {
+                expression{ branch('develop') }
+            }
+            steps {
+                script {
+
+                    STEP = 'deploy backend develop'
+
+					// dir("${env.WORKSPACE}"){
+                    //     webDeployWithCredential(webService, BUILDPROJECTBACKPATH, BUILDTARGET)
+                    //     webDeployWithCredential(externalService, BUILDPROJECTBACKEXTPATH, BUILDTARGET)
+                    //     webDeployWithCredential(externalApi, BUILDPROJECTBACKEXTAPIPATH, BUILDTARGET)
+                    // }
+					dir("${env.WORKSPACE}"){
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTBACKPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\dev-fixedbbws.ais.co.th\\WebServices',ComputerName='https://10.138.72.216:8172/MsDeploy.axd?site=dev-fixedbbws.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTBACKEXTPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\dev-fixedbbws.ais.co.th\\ExWebServices',ComputerName='https://10.138.72.216:8172/MsDeploy.axd?site=dev-fixedbbws.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+                        
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTBACKEXTAPIPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\dev-fixedbbws.ais.co.th\\ExWebAPI',ComputerName='https://10.138.72.216:8172/MsDeploy.axd?site=dev-fixedbbws.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+                    }
+                }
+            }
+        }
+
+		stage('deploy backend release'){
+            when {
+                expression {
+                    return (env.BRANCH_NAME.startsWith("release/"));
+                }
+            }
+            steps {
+                script {
+
+                    STEP = 'deploy backend release'
+
+					// dir("${env.WORKSPACE}"){
+                    //     webDeployWithCredential(webService, BUILDPROJECTBACKPATH, BUILDTARGET)
+                    //     webDeployWithCredential(externalService, BUILDPROJECTBACKEXTPATH, BUILDTARGET)
+                    //     webDeployWithCredential(externalApi, BUILDPROJECTBACKEXTAPIPATH, BUILDTARGET)
+                    // }
+					dir("${env.WORKSPACE}"){
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTBACKPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\staging-fixedbbws.ais.co.th\\WebServices',ComputerName='https://10.138.72.217:8172/MsDeploy.axd?site=staging-fixedbbws.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",             
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTBACKEXTPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\staging-fixedbbws.ais.co.th\\ExWebServices',ComputerName='https://10.138.72.217:8172/MsDeploy.axd?site=staging-fixedbbws.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+                        
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTBACKEXTAPIPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\staging-fixedbbws.ais.co.th\\ExWebAPI',ComputerName='https://10.138.72.217:8172/MsDeploy.axd?site=staging-fixedbbws.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('deploy frontend develop'){
+            when {
+                expression{ branch('develop') }
+            }
+            steps {
+                script {
+
+                    STEP = 'deploy frontend develop'
+
+					// dir("${env.WORKSPACE}"){
+                    //     webDeployWithCredential(web, BUILDPROJECTFRONTPATH, BUILDTARGET)
+                    //     webDeployWithCredential(webAdmin, BUILDPROJECTADMINPATH, BUILDTARGET)
+                    // }
+
+					dir("${env.WORKSPACE}"){
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTFRONTPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\dev-newfibre.ais.co.th',ComputerName='https://10.137.44.97:8172/MsDeploy.axd?site=dev-newfibre.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTADMINPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\dev-admin.fixedbb.ais.co.th',ComputerName='https://10.137.44.97:8172/MsDeploy.axd?site=dev-admin.fixedbb.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+                    }
+                }
+            }
+        }
+        stage('deploy frontend release'){
+            when {
+                expression {
+                    return (env.BRANCH_NAME.startsWith("release/"));
+                }
+            }
+            steps {
+                script {
+
+                    STEP = 'deploy frontend release'
+
+					// dir("${env.WORKSPACE}"){
+                    //     webDeployWithCredential(web, BUILDPROJECTFRONTPATH, BUILDTARGET)
+                    //     webDeployWithCredential(webAdmin, BUILDPROJECTADMINPATH, BUILDTARGET)
+                    // }
+
+					dir("${env.WORKSPACE}"){
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTFRONTPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\staging-newfibre.ais.co.th',ComputerName='https://10.137.44.96:8172/MsDeploy.axd?site=staging-newfibre.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+
+                        withCredentials([usernamePassword(credentialsId: "deploy.fbb-register.dev.credential", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                            def cmd = [
+                                "-verb:sync",
+                                "-source:iisapp='${env.WORKSPACE}\\${BUILDPROJECTADMINPATH}\\obj\\${buildSolutionEnv}\\Package\\PackageTmp'",
+                                "-dest:iisapp='C:\\Application\\staging-admin.fixedbb.ais.co.th',ComputerName='https://10.137.44.96:8172/MsDeploy.axd?site=staging-admin.fixedbb.ais.co.th',UserName=$USERNAME,Password=$PASSWORD,AuthType='Basic'",
+                                "-enableRule:DoNotDeleteRule",
+                                "-allowUntrusted",
+                                "-disableLink:AppPoolExtension",
+                                "-disableLink:ContentExtension",
+                                "-disableLink:CertificateExtension",
+                            ].join(" ")
+                            bat "${MSDEPLOY} ${cmd}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Artifact'){
+            when {
+                expression{ branch('master') }
+            }         
+            steps {
+                script {
+
+                    STEP = 'Artifact'
+
+                    artifactWeb(ZIPFRONT, ARTIFACTIDFRONT, BUILDPROJECTFRONTPATH, BUILDTARGET, PRODUCTVERSION)
+                    artifactWeb(ZIPADMIN, ARTIFACTIDADMIN, BUILDPROJECTADMINPATH, BUILDTARGET, PRODUCTVERSION)
+                    artifactWeb(ZIPBACK, ARTIFACTIDBACK, BUILDPROJECTBACKPATH, BUILDTARGET, PRODUCTVERSION)
+                    artifactWeb(ZIPBACKEXT, ARTIFACTIDBACKEXT, BUILDPROJECTBACKEXTPATH, BUILDTARGET, PRODUCTVERSION)
+                    artifactWeb(ZIPBACKEXTAPI, ARTIFACTIDBACKEXTAPI, BUILDPROJECTBACKEXTAPIPATH, BUILDTARGET, PRODUCTVERSION)
+                }
+            }
+        }
+
+        stage('Publishing to Repo1') {
+            when {
+                expression{ branch('master') }
+            }   
+            steps {
+                script {
+
+                    STEP = 'Publishing to Repo1'
+
+                    uploadRepo1(GROUPID, ZIPFRONT, ARTIFACTIDFRONT, PRODUCTVERSION)
+                    uploadRepo1(GROUPID, ZIPADMIN, ARTIFACTIDADMIN, PRODUCTVERSION)
+                    uploadRepo1(GROUPID, ZIPBACK, ARTIFACTIDBACK, PRODUCTVERSION)
+                    uploadRepo1(GROUPID, ZIPBACKEXT, ARTIFACTIDBACKEXT, PRODUCTVERSION)
+                    uploadRepo1(GROUPID, ZIPBACKEXTAPI, ARTIFACTIDBACKEXTAPI, PRODUCTVERSION)
+                }//script
+            }//step
+        }
+    }
+
+    options {
+        office365ConnectorWebhooks([[
+            notifySuccess: true,
+            notifyFailure: true,
+            name: "WebRegister-Mulibranch",
+                url: 'https://ais.matadorsuite.com/msnotify/198ef46a-82c8-4cba-8c3a-01c4296531d1@833df664-61c8-4af0-bcce-b9eed5f10e5a/JenkinsCI/e49e0e9f01f44441be38545a1036f040/d09852c7-fff4-4cac-93ff-2dabbc8f3454'
+        ]]
+        )
+    }
+}

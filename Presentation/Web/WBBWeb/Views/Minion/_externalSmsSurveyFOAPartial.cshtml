@@ -1,0 +1,151 @@
+﻿@model WBBContract.Minions.MinionProcMainCommand
+@{
+    ViewBag.Title = "ExternalSmsSurvey";
+}
+@using (Html.BeginForm("ExternalSmsSurvey", "Minion", FormMethod.Post, new { @id = "frmExternalSmsSurvey" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="row form-data">
+        <p class="clearfix"></p>
+        <strong class="col-md-2">SMS</strong>
+        <div id="btnAddSMS" class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i></div>
+        <p class="clearfix"></p>
+        <div id="SmsSurvey">
+            
+        </div>       
+    </div>
+    
+    <div class="row raw-xml hidden">
+        <div class="col-md-12">
+            <textarea class="form-control" id="xmlString"  rows="20" spellcheck="false"></textarea>
+            <textarea class="form-control hidden" id="hdnxmlString" name="xmlString" rows="20"></textarea>
+
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit" id="btnSendSmsSurvey" class="btn btn-primary" data-toggle="modal">Send</button>
+            <button type="reset" class="btn btn-default" data-toggle="modal">Reset</button>
+        </div>
+    </div>
+
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var indexSms = 0;
+
+        function htmlEscape(s) {
+            return s
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;');
+        }
+
+        $('#btnAddSMS').click(function () {
+            $('#SmsSurvey').append(addSms(indexSms));
+            indexSms++;
+        });
+
+        function addSms(index) {
+            var strBuilder = "";
+            strBuilder += "<div id='sms" + index + "' class='form-group'>";
+            strBuilder += "<div class='col-md-12'><div class='btn btn-danger' style = 'float: right;' onclick='$(\"#sms" + index + "\").hide();$(\"#SmsStatus_" + index + "\").val(\"D\");' ><i class='fa fa-trash-o' aria-hidden='true'></i></div>";
+            strBuilder += "</div>";
+            strBuilder += "<p class='clearfix'></p>";
+            strBuilder += "<div class='col-md-12'>";
+            strBuilder += "<div class='col-md-6'>";
+            strBuilder += "<div class='input-group col-md-12'><div class='input-group-addon' style='width: 220px; text-align: left;'>Ord No</div><input name='ExternalSmsSurveyFoaList[" + index + "].OrderNo' class='form-control'/></div> </div>";
+            strBuilder += "<div class='col-md-6'>";
+            strBuilder += "<div class='input-group col-md-12'><div class='input-group-addon' style='width: 220px; text-align: left;'>Non Mobile</div><input name='ExternalSmsSurveyFoaList[" + index + "].NonMobile' class='form-control'/></div> </div>";
+            strBuilder += "<div class='col-md-6'>";
+            strBuilder += "<div class='input-group col-md-12'><div class='input-group-addon' style='width: 220px; text-align: left;'>Interface ID</div><input name='ExternalSmsSurveyFoaList[" + index + "].InterfaceId' class='form-control' /></div> </div>";
+            strBuilder += "</div>";
+           
+            strBuilder += "</div><input type='hidden' id='SmsStatus_" + index + "' name='ExternalSmsSurveyFoaList[" + index + "].status' /><p class='clearfix'></p></div>";
+
+            return strBuilder;
+        }
+
+        $('button[type=reset]').click(function () {
+            $('#dvResponse').addClass('hidden');
+            $('#response-xml pre').html('');
+            $('#response-json pre').html('');
+
+            $('#rdoResponseXml').prop('checked', true);
+            $('#response-xml').removeClass('hidden');
+            $('#response-json').addClass('hidden');
+
+            if ($('.ajaxOption.hidden').length == 0) {
+                $('.ajaxOption').addClass('hidden');
+            }
+            $('#rdoPost').prop('checked', true);
+            $("#ddlAjaxType").val("json");
+
+            indexSms = 0;
+
+            $('#SmsSurvey').html('');
+
+        });
+
+        $('#frmExternalSmsSurvey').submit(function (e) {
+            $('#ProgressLoading').modal('show');
+
+            $('#response-xml pre').html('');
+            $('#response-json pre').html('');
+
+            if ($('input[name=rdoRequest]:checked').val() == 'raw-xml') {
+                if (!!$('#frmExternalSmsSurvey #xmlString').val()) {
+                    $('#frmExternalSmsSurvey #hdnxmlString').val(htmlEscape($('#frmExternalSmsSurvey #xmlString').val()));
+                }
+            } else {
+                $('#frmExternalSmsSurvey #hdnxmlString').val('');
+            }
+
+            var $this = $(this);
+            var frmValues = $this.serialize();
+            console.log(frmValues);
+            $.ajax({
+                url: $('#inpEndPoint').val(),
+                type: $('input[name=rdoAjaxType]:checked').val(),
+                dataType: $("#ddlAjaxType").val(),
+                data: frmValues,
+                success: function (result) {
+
+                    if (!!result) {
+
+                        if (result.status == "T") {
+                            $('#form_Login').submit();
+                        }
+
+                        $('#response-xml pre').text(result.rawxml);
+
+                        var jsonObj = JSON.parse(result.rawjson);
+                        var jsonPretty = JSON.stringify(jsonObj, null, '\t');
+
+                        $('#response-json pre').text(jsonPretty);
+
+                    }
+
+                    $('#ProgressLoading').modal('hide');
+                    $('#dvResponse').removeClass('hidden');
+
+                },
+                error: function (jqXhr) {
+
+                    $('#response-xml pre').text(jqXhr.responseText);
+
+                    $('#ProgressLoading').modal('hide');
+                    $('#dvResponse').removeClass('hidden');
+
+                }
+            });
+
+            return false;
+        });
+
+    });
+</script>

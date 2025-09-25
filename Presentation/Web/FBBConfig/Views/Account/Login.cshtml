@@ -1,0 +1,63 @@
+﻿@model WBBEntity.PanelModels.LoginPanelModel
+@{
+    Layout = null;         
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="icon" href="~/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    @*fix CSS device*@
+    <title>Fixed Broadband Web Config</title>
+   
+	@Scripts.Render("~/bundles/js/jquery")	
+
+	@Scripts.Render("~/bundles/js/kendo")
+
+    @Scripts.Render("~/bundles/js/login")
+    @Styles.Render("~/bundles/css/login")
+
+</head>
+
+<body id="login">
+    <div class="background-top"></div>
+    <div class="background-bottom"></div>
+    <div class="header"></div>
+    <div class="content">
+        <div class="panel-login">
+            @using (Html.BeginForm(new { returnUrl = ViewBag.ReturnUrl, }))
+            { 
+              
+                <div class="title-image"></div>
+                <div class="field-group">
+                    <div class="field field-inline" id="field-username">
+                        <div class="caption">Username</div>
+                        <div class="input">@Html.TextBoxFor(m => m.UserName)</div>
+                       
+                        <div class="clear"></div>
+                    </div>
+                    <div class="field field-inline" id="field-password">
+                        <div class="caption">Password</div>
+                        <div class="input">@Html.PasswordFor(m => m.Password)</div>
+                        <!-- bug in IE7 - the left space of input under div element -->
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="msg-error">
+                    @Html.ValidationSummary()
+                    @*@Html.ValidationMessageFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.Password)*@
+                    @*@Html.ValidationMessage("V01-003")*@
+                </div>
+                <button class="btn" type="submit">Login</button>
+            }
+        </div>
+    </div>
+    <div class="footer"></div>
+
+</body>
+</html>
+
+
+

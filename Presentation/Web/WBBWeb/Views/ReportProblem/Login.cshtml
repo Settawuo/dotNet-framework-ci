@@ -1,0 +1,678 @@
+﻿@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+
+    string lMyAccount = "";
+    string lWelcome1 = "";
+    string lWelcome2 = "";
+    string lWelcome3 = "";
+    string lWelcome4 = "";
+    string lWelcome5 = "";
+    string fbbConInputTaxId = "";
+    string fbbConInputMonkCert = "";
+    string fbbConInputGovLet = "";
+    string fbbConInputPassport = "";
+    string fbbConInputEmbLet = "";
+    string fbbConInputImmCard = "";
+    string fbbConInputStaLet = "";
+    string fbbConInputHillCard = "";
+    string fbbConInputCertFound = "";
+    string fbbConInputIdCard = "";
+    string fbbConInputRoyLet = "";
+    string fbbConLengthIdCardNumberTaxId = "";
+    string fbbConLengthIdCardNumberMonkCert = "";
+    string fbbConLengthIdCardNumberGovLet = "";
+    string fbbConLengthIdCardNumberPassport = "";
+    string fbbConLengthIdCardNumberEmbLet = "";
+    string fbbConLengthIdCardNumberImmCard = "";
+    string fbbConLengthIdCardNumberStaLet = "";
+    string fbbConLengthIdCardNumberHillCard = "";
+    string fbbConLengthIdCardNumberCertFound = "";
+    string fbbConLengthIdCardNumberIdCard = "";
+    string fbbConLengthIdCardNumberRoyLet = "";
+    string lCardType = "";
+    string L_TITLE_WEB = "";
+    string PageShow = "";
+
+    if (null != ViewBag.ErrorLogin)
+    {
+        PageShow = ViewBag.ErrorLogin;
+    }
+    
+    
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var labelFbbtr001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        var lovMyAccount = labelFbbtr001.FirstOrDefault(c => c.Name == "L_MY_ACCOUNT");
+        if (lovMyAccount != null)
+        {
+            lMyAccount = labelFbbtr001.Any(c => c.Name == "L_MY_ACCOUNT") ? lovMyAccount.DisplayValue : "";
+        }
+        L_TITLE_WEB = labelFbbtr001.Any(c => c.Name == "L_TITLE_WEB") ? labelFbbtr001.FirstOrDefault(c => c.Name == "L_TITLE_WEB").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFbbtr003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        var lovCardType = labelFbbtr003.FirstOrDefault(c => c.Name == "L_CARD_TYPE");
+        if (lovCardType != null)
+        {
+            lCardType = labelFbbtr003.Any(c => c.Name == "L_CARD_TYPE") ? lovCardType.DisplayValue : "";
+        }
+    }
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var fbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        fbbConLengthIdCardNumberHillCard = fbbConstant.Any(f => f.Field == "Length ID Card Number HILL_CARD") ? fbbConstant.First(f => f.Field == "Length ID Card Number HILL_CARD").Validation : "";
+        fbbConLengthIdCardNumberIdCard = fbbConstant.Any(f => f.Field == "Length ID Card Number ID_CARD") ? fbbConstant.First(f => f.Field == "Length ID Card Number ID_CARD").Validation : "";
+        fbbConLengthIdCardNumberImmCard = fbbConstant.Any(f => f.Field == "Length ID Card Number IMM_CARD") ? fbbConstant.First(f => f.Field == "Length ID Card Number IMM_CARD").Validation : "";
+        fbbConLengthIdCardNumberMonkCert = fbbConstant.Any(f => f.Field == "Length ID Card Number MONK_CERT") ? fbbConstant.First(f => f.Field == "Length ID Card Number MONK_CERT").Validation : "";
+        fbbConLengthIdCardNumberStaLet = fbbConstant.Any(f => f.Field == "Length ID Card Number STA_LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number STA_LET").Validation : "";
+        fbbConLengthIdCardNumberRoyLet = fbbConstant.Any(f => f.Field == "Length ID Card Number ROY_LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number ROY_LET").Validation : "";
+        fbbConLengthIdCardNumberEmbLet = fbbConstant.Any(f => f.Field == "Length ID Card Number EMB_LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number EMB_LET").Validation : "";
+        fbbConLengthIdCardNumberCertFound = fbbConstant.Any(f => f.Field == "Length ID Card Number CERT_FOUND") ? fbbConstant.First(f => f.Field == "Length ID Card Number CERT_FOUND").Validation : "";
+        fbbConLengthIdCardNumberTaxId = fbbConstant.Any(f => f.Field == "Length ID Card Number TAX_ID") ? fbbConstant.First(f => f.Field == "Length ID Card Number TAX_ID").Validation : "";
+        fbbConLengthIdCardNumberPassport = fbbConstant.Any(f => f.Field == "Length ID Card Number PASSPORT") ? fbbConstant.First(f => f.Field == "Length ID Card Number PASSPORT").Validation : "";
+        fbbConLengthIdCardNumberGovLet = fbbConstant.Any(f => f.Field == "Length ID Card Number GOV LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number GOV LET").Validation : "";
+        fbbConInputCertFound = fbbConstant.Any(f => f.Field == "Input CERT_FOUND") ? fbbConstant.First(f => f.Field == "Input CERT_FOUND").Validation : "";
+        fbbConInputEmbLet = fbbConstant.Any(f => f.Field == "Input EMB_LET") ? fbbConstant.First(f => f.Field == "Input EMB_LET").Validation : "";
+        fbbConInputHillCard = fbbConstant.Any(f => f.Field == "Input HILL_CARD") ? fbbConstant.First(f => f.Field == "Input HILL_CARD").Validation : "";
+        fbbConInputIdCard = fbbConstant.Any(f => f.Field == "Input ID_CARD") ? fbbConstant.First(f => f.Field == "Input ID_CARD").Validation : "";
+        fbbConInputImmCard = fbbConstant.Any(f => f.Field == "Input IMM_CARD") ? fbbConstant.First(f => f.Field == "Input IMM_CARD").Validation : "";
+        fbbConInputMonkCert = fbbConstant.Any(f => f.Field == "Input MONK_CERT") ? fbbConstant.First(f => f.Field == "Input MONK_CERT").Validation : "";
+        fbbConInputPassport = fbbConstant.Any(f => f.Field == "Input PASSPORT") ? fbbConstant.First(f => f.Field == "Input PASSPORT").Validation : "";
+        fbbConInputRoyLet = fbbConstant.Any(f => f.Field == "Input ROY_LET") ? fbbConstant.First(f => f.Field == "Input ROY_LET").Validation : "";
+        fbbConInputStaLet = fbbConstant.Any(f => f.Field == "Input STA_LET") ? fbbConstant.First(f => f.Field == "Input STA_LET").Validation : "";
+        fbbConInputTaxId = fbbConstant.Any(f => f.Field == "Input TAX_ID") ? fbbConstant.First(f => f.Field == "Input TAX_ID").Validation : "";
+        fbbConInputGovLet = fbbConstant.Any(f => f.Field == "Input GOV_LET") ? fbbConstant.First(f => f.Field == "Input GOV_LET").Validation : "";
+    }
+
+    if (ViewBag.LabelFBBOR015 != null)
+    {
+        var labelFbbor015 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR015;
+        lWelcome1 = labelFbbor015.Any(c => c.Name == "L_WELCOME_1") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_1").DisplayValue : "";
+        lWelcome2 = labelFbbor015.Any(c => c.Name == "L_WELCOME_2") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_2").DisplayValue : "";
+        lWelcome3 = labelFbbor015.Any(c => c.Name == "L_WELCOME_3") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_3").DisplayValue : "";
+        lWelcome4 = labelFbbor015.Any(c => c.Name == "L_WELCOME_4") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_4").DisplayValue : "";
+        lWelcome5 = labelFbbor015.Any(c => c.Name == "L_WELCOME_5") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_5").DisplayValue : "";
+    }
+}
+<script>
+    (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+
+            '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+
+    })(window, document, 'script', 'dataLayer', 'GTM-NS998W');
+</script>
+<!-- End Google Tag Manager -->
+
+<html class="no-js" lang="th">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10,9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0" />
+    <meta name="date" content="2016-03-12" />
+    <meta name="sitecode" content="TH" />
+
+    <title>@L_TITLE_WEB</title>
+
+    <!-- Cahing Browser -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <meta name="description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์">
+    <meta name="KeyWords" content="ais, เอไอเอส, เน็ต, อินเทอร์เน็ต, ไฟเบอร์" />
+    <meta name="thumbnail" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+    <meta name="thumbnail_height" content="110">
+    <!--Fix ขนาดของความสูง ไว้เท่านี้ ไม่เปลี่ยน-->
+    <meta name="thumbnail_width" content="75">
+    <!--Fix ขนาดของความกว้าง ไว้เท่านี้ ไม่เปลี่ยน-->
+    <!-- Facebook Propertie แชร์ Facebook -->
+    <meta property="og:title" content="AIS Fibre Broadband ความเร็วสูง 1 Gbps" />
+    <meta property="og:description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์" />
+    <meta property="og:image" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+
+    <!-- Tweet Propertie แชร์ Tweet -->
+    <meta property="tw:description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์" />
+
+    <!-- Google Plus แชร์  Google -->
+    <meta itemprop="name" content="AIS Fibre Broadband ความเร็วสูง 1 Gbps">
+    <meta itemprop="description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์">
+    <meta itemprop="image" content="https://www.ais.co.th/fibre_postpaid/share.jpg">
+
+    <!--Include Style Script-->
+    @*<link rel="stylesheet" href="~/Content/Content2016/css/dna.global.css" />*@
+    @*<link rel="stylesheet" href="~/Content/Content2016/css/foundation.css" />*@
+    <link rel="stylesheet" href="~/Content/Content2016/css/fibrepostpaid.css" />
+
+    <!--Include Style Script-->
+    <link rel="stylesheet" href="~/Content/Content2016/plugin/sod/selectordie.css">
+    @*<link rel="stylesheet" href="~/Content/Content2016/css/menutypeahead.css">*@
+    @*<link rel="stylesheet" href="~/Content/Content2016/css/jquery.typeahead.css">*@
+    <link rel="stylesheet" href="~/Content/Content2016/css/index.css" />
+    <link rel="stylesheet" href="~/Content/Content2016/css/navais.min.css" />
+    <link rel="stylesheet" href="~/Content/Content2016/css/dna.global.css" />
+    @*<link rel="stylesheet" href="~/Content/Content2016/css/foundation.css" />*@
+    <link rel="stylesheet" href="~/Content/Content2016/fonts/helvetica.css" />
+    @*<link rel="stylesheet" href="~/Content/css/bootstrap.min.css">*@
+
+    <script src="~/Content/Content2016/js/jquery-1.11.3.min.js"></script>
+    @*<script src="~/Content/Content2016/js/tweenmax.js"></script>*@
+    @*<script src="~/Content/Content2016/js/dna.global.js"></script>*@
+    <script src="~/Content/Content2016/js/jquery.mainnav.min.js"></script>
+
+    @*<script src="~/Content/Content2016/plugin/sod/selectordie.js"></script>*@
+    <script src="~/Content/Content2016/js/menutypeahead.js"></script>
+    <script src="~/Content/Content2016/js/jquery.typeahead.min.js"></script>
+
+    <link href="~/Content/Content2016/plugin/sod/selectordie_theme.css" rel="stylesheet" type="text/css">
+    <script src="~/Content/Content2016/plugin/sod/selectordie.min.js"></script>
+
+    <!--slick -->
+    @*<link rel="stylesheet" type="text/css" href="~/Content/Content2016/plugin/slick/slick.css" />*@
+    @*<link rel="stylesheet" type="text/css" href="~/Content/Content2016/plugin/slick/slick-theme.css" />*@
+    @*<script type="text/javascript" src="~/Content/Content2016/plugin/slick/slick.min.js"></script>*@
+
+    <!-- start old -->
+    @*<link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">*@
+    <link href="~/Content/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="http://localhost:50960/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+    <link href="~/Scripts/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+    <!-- end old -->
+
+    @Styles.Render("~/Content/css/bootsrapcss")
+    @Scripts.Render("~/bundles/js/rabbit")
+    @Scripts.Render("~/bundles/js/boostrapjs")
+
+</head>
+
+<style>
+    fieldset {
+        border: 2px solid #83ad47;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        -khtml-border-radius: 5px;
+        -moz-border-radius: 5px;
+    }
+
+    #tbl-popup {
+        width: 100%;
+    }
+
+    .btnmodal {
+        padding: 10px 15px;
+        background-color: #58AA0C;
+        color: #fff;
+    }
+
+        .btnmodal:hover {
+            padding: 10px 15px;
+            background-color: #4a831c;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .modal-dialog-center {
+        margin-top: 10%;
+    }
+
+    .btn1 {
+        background-color: #8dc63f;
+        color: #fff;
+    }
+
+        .btn1:hover {
+            background-color: #8dc63f;
+            color: #fff;
+            cursor: not-allowed;
+        }
+
+    .btn2 {
+        background-color: #8dc63f;
+        color: #fff;
+    }
+
+        .btn2:hover {
+            background-color: black;
+            color: #fff;
+        }
+
+    .btn3 {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+        .btn3:hover {
+            background-color: #aaa;
+            color: #fff;
+            text-decoration: none;
+        }
+</style>
+
+<style>
+    .subheader-th {
+        font-size: 34px;
+        color: #000000;
+        font-family: 'db_helvethaicaais_x55_regular';
+        padding-right: 100px;
+        background: url(../Content/Content2016/images/postpaid/speedeffect.png) right center no-repeat;
+        max-width: 405px;
+        margin-top: 30px;
+    }
+
+        .subheader-th span {
+            color: #8dc63f;
+        }
+
+    .subheader-en {
+        font-size: 34px;
+        color: #000000;
+        font-family: 'db_helvethaicaais_x55_regular';
+        padding-right: 100px;
+        background: url(../Content/Content2016/images/postpaid/speedeffect.png) right center no-repeat;
+        max-width: 405px;
+        margin-top: 30px;
+    }
+
+        .subheader-en span {
+            color: #8dc63f;
+        }
+
+    #ais_topbar {
+        display: block;
+    }
+
+    #ais_topbar .topbar_ribbon {
+	    padding-left:10px;
+        float: left;
+        height: 60px;
+    }
+
+    #ribbonking{ width:100%; height:60px;  background: url("/Images/bg1366.jpg") no-repeat center;  background-color:#000;}
+    #ribbonking_wrapper{height:60px; margin: 0 auto; max-width: 1140px;}
+
+</style>
+
+    <div id="ais_topbar">
+        
+        @*<div id="ribbonking">
+            <div id="ribbonking_wrapper">
+                <div class="topbar_ribbon"><img src="~/Images/iconribbon.png" alt="ais logo"></div>
+            </div>
+        </div>*@
+
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_MenuTH")
+        }
+        else
+        {
+            @Html.Partial("_MenuEN")
+        }
+    </div>
+
+    <div id="fibre_container">
+        <div id="container">
+            <div id="box1_holder">
+                <div class="panel_ais paddingmedium">
+                    <div class="row_ais">
+                        <p class="clearfix"></p>
+                        <p class="clearfix"></p>
+                        <div class="col-xs-12 col-sm-12 col-md-12" style="max-width: 1500px;">
+                            <div class="col-xs-12" style="text-align: right;">
+                                <a id="btnTh" href="~/WBB/ChangeCurrentCulture?culture=2" class="hide" onclick="sessionStorage.setItem('detectedIE', '');">
+                                    <img src="~/Content/Content2016/images/lang_th.png" alt="" border="0" /></a>
+                                <a id="btnEn" href="~/WBB/ChangeCurrentCulture?culture=1" class="i-hidden hide" onclick="sessionStorage.setItem('detectedIE', '');">
+                                    <img src="~/Content/Content2016/images/lang_en.png" alt="" border="0" /></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row_ais">
+                        <div class="column large-12">
+                            <div class="fibrelogo">
+                                <img src="~/Content/images/postpaid/fibre_logo.png" alt="" /></div>
+                            <div class="welcometext">@lMyAccount</div>
+                        </div>
+                    </div>
+                    <div class="row_ais">
+                        <div class="column large-4">
+                            <div id="welcome_msg" class="subheader">@lWelcome1 <span>@lWelcome2</span></div>
+                            <div class="detailtext">
+                                @lWelcome3<br>
+                                @lWelcome4<br>
+                                @lWelcome5
+                            </div>
+                        </div>
+                    </div>
+                    <div class="boxform pay-topspace">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "frmLoginData" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Partial("~/Views/ReportProblem/LoginPartialMain.cshtml")
+                            @Html.Partial("~/Views/ReportProblem/LoginPartialError.cshtml")
+                        }
+                    </div>
+                </div>
+                <div class="boxfootshader" style="background: none"></div>
+            </div>
+            <div style="clear: both;"></div>
+            <div id="aisfooter">
+                @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+                {
+                    @Html.Partial("_FooterTH")
+                }
+                else
+                {
+                    @Html.Partial("_FooterEN")
+                }
+                <div class="footer_content" style="text-align: center;">
+                    <script type="text/javascript" src="https://lvs.truehits.in.th/datasecure/s0029135.js"></script>
+
+                    <script src='http://hits.truehits.in.th/data/s0029135.js'></script>
+                </div>
+            </div>
+            <div class="truehits-bg">&nbsp;</div>
+        </div>
+        <div>
+            <input type="hidden" id="LanguagePage" />
+        </div>
+
+    </div>
+
+    <div id="ProgressIcon" class="modal fade">
+        <div class="modal-dialog" style="top:38%;">
+            <div class="row" style="margin-left:auto; margin-right:auto; width:150px; height:100px; color:white;">
+                <div>
+                    <i class="fa-li fa fa-spinner fa-spin fa-5x" style="position:inherit;"></i>
+                </div>
+                <div id="txtLoading" style="text-align:center;">
+                    LOADING
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    @functions{
+        public string GetAntiForgeryToken()
+        {
+            string cookieToken, formToken;
+            AntiForgery.GetTokens(null, out cookieToken, out formToken);
+            return cookieToken + "," + formToken;
+        }
+    }
+
+    $(document).ready(function () {
+        if ('@PageShow' == 'Login Fail') {
+            $("#divLoginMain").addClass('hidden');
+            $("#divLoginError").removeClass('hidden');
+        }
+    });
+</script>
+<input type="hidden" id="forgeryToken" value="@GetAntiForgeryToken()" />
+
+    <script>
+
+        $(document).ready(function () {
+            ais_interface_setup('mini-menu', 'postpaid', 'th', '', false);
+        });
+
+        $(function () {
+            $.post('/WBB/GetCurrentCulture').done(function (x) {
+                $("#LanguagePage").val(x);
+                changeLanguage();
+            });
+
+            getCustomerCardTypes();
+
+            $("#AisAirNumber").keyup(function () {
+                CheckKeyUps("AisAirNumber", "[0-9]");
+                CheckAirNumber8("AisAirNumber");
+                checkBeforeProcess();
+            });
+
+            $("#AisAirNumber").keydown(function (e) {
+
+                var valAisAirNumber = $("#AisAirNumber").val().trim();
+                var ctrlDown = false;
+                var delKey = 8;
+                var ctrlKey = 17;
+                var cmdKey = 91;
+
+                if (e.keyCode == ctrlKey || e.keyCode == cmdKey || e.keyCode == delKey) {
+                    ctrlDown = true;
+                }
+                if ((valAisAirNumber.length > 0) && (valAisAirNumber.charAt(0) == '8')) {
+                    ctrlDown = true;
+                }
+
+                if (!ctrlDown) {
+                    CheckKeyUps("AisAirNumber", "[0-9]");
+                    CheckAirNumber8("AisAirNumber");
+                }
+            });
+
+            $("#L_CARD_NOs").keyup(function () {
+                if ($("#ID_CARD_NAMEs :selected").val() == "TAX_ID")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputTaxId");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "MONK_CERT")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputMonkCert");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "GOV_LET")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputGovLet");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "PASSPORT")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputPassport");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "EMB_LET")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputEmbLet");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "IMM_CARD")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputImmCard");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "STA_LET")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputStaLet");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "HILL_CARD")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputHillCard");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "CERT_FOUND")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputCertFound");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "ID_CARD")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputIdCard");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "ROY_LET")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputRoyLet");
+
+                checkBeforeProcess();
+            });
+
+            setCardMaxlength();
+        });
+
+function changeLanguage() {
+    if ($("#LanguagePage").val() == "1") {
+        $("#btnEn").addClass('hide');
+        $("#btnTh").removeClass('hide');
+    } else {
+        $("#btnTh").addClass('hide');
+        $("#btnEn").removeClass('hide');
+    }
+}
+
+function getCustomerCardTypes() {
+    $('#ID_CARD_NAMEs').empty();
+
+    $.ajax({
+        type: "GET",
+        url: "/MasterData/GetCustomerCardType",
+        data: { 'customerType': "All" },
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            var strBuilder = "";
+            var firstStr = "<option value='' disabled>" + "@lCardType" + "</option>";
+                    $.each(data, function (i, e) {
+                        if (e.DefaultValue != undefined)
+                            strBuilder += '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                        else
+                            strBuilder += '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    });
+                    strBuilder = firstStr + strBuilder;
+                    $('#ID_CARD_NAMEs').append(strBuilder);
+                    $("#ID_CARD_NAMEs").selectOrDie();
+                }
+            });
+        }
+
+        function checkBeforeProcess() {
+
+            var ml = "";
+            if ($("#ID_CARD_NAMEs :selected").val() == "TAX_ID")
+                ml = "@fbbConLengthIdCardNumberTaxId";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "MONK_CERT")
+                ml = "@fbbConLengthIdCardNumberMonkCert";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "GOV_LET")
+                ml = "@fbbConLengthIdCardNumberGovLet";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "PASSPORT")
+                ml = "@fbbConLengthIdCardNumberPassport";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "EMB_LET")
+                ml = "@fbbConLengthIdCardNumberEmbLet";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "IMM_CARD")
+                ml = "@fbbConLengthIdCardNumberImmCard";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "STA_LET")
+                ml = "@fbbConLengthIdCardNumberStaLet";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "HILL_CARD")
+                ml = "@fbbConLengthIdCardNumberHillCard";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "CERT_FOUND")
+                ml = "@fbbConLengthIdCardNumberCertFound";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "ID_CARD")
+                ml = "@fbbConLengthIdCardNumberIdCard";
+            else if ($("#ID_CARD_NAMEs :selected").val() == "ROY_LET")
+                ml = "@fbbConLengthIdCardNumberRoyLet";
+
+    if ((($("#L_CARD_NOs").val() != "" && $("#ID_CARD_NAMEs :selected").val() != "ID_CARD")
+            || ($("#L_CARD_NOs").val().length == ml && $("#ID_CARD_NAMEs :selected").val() == "ID_CARD"))
+        && $("#AisAirNumber").val().length == 10) {
+        $(".btn1").hide();
+        $(".btn2").show();
+    } else {
+        $(".btn2").hide();
+        $(".btn1").show();
+    }
+}
+
+function setCardMaxlength() {
+    if ($("#ID_CARD_NAMEs :selected").val() == "TAX_ID")
+        $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberTaxId");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "MONK_CERT")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberMonkCert");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "GOV_LET")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberGovLet");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "PASSPORT")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberPassport");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "EMB_LET")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberEmbLet");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "IMM_CARD")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberImmCard");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "STA_LET")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberStaLet");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "HILL_CARD")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberHillCard");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "CERT_FOUND")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberCertFound");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "ID_CARD")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberIdCard");
+            else if ($("#ID_CARD_NAMEs :selected").val() == "ROY_LET")
+                $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberRoyLet");
+}
+
+function onChangeID_CARD_NAMEs() {
+    $("#L_CARD_NOs").val("");
+    $(".btn2").hide();
+    $(".btn1").show();
+
+    setCardMaxlength();
+}
+
+function CheckKeyUps(id, rexStr) {
+    var strKey = $("#" + id).val();
+    var strBuilder = "";
+    var filter = new RegExp(rexStr);
+    for (var i = 0; i < strKey.length; i++) {
+        if (filter.test(strKey.substr(i, 1))) {
+            strBuilder += strKey.substr(i, 1);
+        }
+    }
+    $("#" + id).val(strBuilder);
+}
+
+function CheckAirNumber8(id) {
+    var strKey = $("#" + id).val();
+    var strBuilder = "";
+    var filter = new RegExp("[8]");
+    for (var i = 0; i < strKey.length; i++) {
+        if (i < 1) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        } else {
+            strBuilder += strKey.substr(i, 1);
+        }
+    }
+    $("#" + id).val(strBuilder);
+}
+
+$('#btnCheckProcess').click(function (e) {
+    e.preventDefault();
+    LockScreen(true, "");
+
+    $.ajax({
+        url: '/ReportProblem/Login',
+        type: 'post',
+        dataType: 'json',
+        headers: {
+            'VerificationToken': $("#forgeryToken").val()
+        },
+        data: $('#frmLoginData').serialize(),
+        success: function (res) {
+            $("#forgeryToken").val("@GetAntiForgeryToken()")
+            if (res.result == 'Redirect') {
+                window.location = res.url;
+                LockScreen(false);
+            }
+            else {
+                $("#divLoginMain").addClass('hidden');
+                $("#divLoginError").removeClass('hidden');
+                LockScreen(false);
+            }
+        }
+    });
+});
+
+$('#btnError').click(function (e) {
+    e.preventDefault();
+    $("#divLoginError").addClass('hidden');
+    $("#divLoginMain").removeClass('hidden');
+});
+
+function LockScreen(x, txt) {
+    if (x) {
+        $('#ProgressIcon #txtLoading').html(txt);
+        $('#ProgressIcon').modal({
+            backdrop: "static",
+            keyboard: true,
+            show: true
+        });
+    }
+    else {
+        $('#ProgressIcon').modal('hide');
+    }
+}
+
+    </script>
+
+</html>
+

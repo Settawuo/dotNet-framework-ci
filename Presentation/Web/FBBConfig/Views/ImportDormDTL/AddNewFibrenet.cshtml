@@ -1,0 +1,457 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.DormitoryMasterModel
+@using WBBEntity.PanelModels;
+
+@{
+    ViewBag.Title = "Index";
+
+    string L_PROVINCE = "";
+    string L_DORMITORY_NAME = "";
+    string L_BUILDING_NAME = "";
+    
+    string L_BUILDING_TH = "";
+    string L_BUILDING_EN = "";
+    string L_SUB_CONTRACT_CODE = "";
+    string L_SUB_CONTRACT_NAME = "";
+    string L_OTY_ROOM = "";
+    string B_SEARCH = "";
+    string B_CLEAR = "";
+
+    string B_NEW = "";
+    string B_VIEW = "";
+    string B_SAVE = "";
+
+  //  string G_DORMITORY_ID = "";
+    string G_DORMITORY_PROVINCE = "";
+    string G_DORMITORY_NAME = "";
+    string G_BUILDING_NO = "";
+    string G_ROOM_AMOUNT = "";
+    string G_DESCRIPTION = ""; // ไม่มี LOV
+    string G_ADDRESS_ID = "";
+    string G_SUBCONTRACT = ""; //ไม่มี lov
+    string G_STATUS = ""; //ไม่มี lov
+    string G_DORMITORY_VIEW = "";
+    string H_ONOFF = "";
+    string G_REGION = "";
+    
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_PROVINCE = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        L_DORMITORY_NAME = configscreen.Any(f => f.Name == "L_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_DORMITORY_NAME").LovValue2 : "";
+        L_BUILDING_NAME = configscreen.Any(f => f.Name == "L_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_BUILDING_NAME").LovValue2 : "";
+        H_ONOFF = configscreen.Any(f => f.Name == "H_DORMITORY_SUB_MENU_1_11") ? configscreen.FirstOrDefault(f => f.Name == "H_DORMITORY_SUB_MENU_1_11").LovValue2 : "";
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue2 : "";
+        B_CLEAR = configscreen.Any(f => f.Name == "B_CLEAR") ? configscreen.FirstOrDefault(f => f.Name == "B_CLEAR").LovValue2 : "";
+
+        B_NEW = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        B_VIEW = configscreen.Any(f => f.Name == "B_EDIT") ? configscreen.FirstOrDefault(f => f.Name == "B_EDIT").LovValue2 : "";
+        B_SAVE = configscreen.Any(f => f.Name == "B_SAVE") ? configscreen.FirstOrDefault(f => f.Name == "B_SAVE").LovValue2 : "";
+
+        G_DORMITORY_PROVINCE = configscreen.Any(f => f.Name == "G_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "G_PROVINCE").LovValue2 : "";
+        G_BUILDING_NO = configscreen.Any(f => f.Name == "L_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_BUILDING_NAME").LovValue2 : "";
+        G_DESCRIPTION = configscreen.Any(f => f.Name == "L_DESCRIPTION") ? configscreen.FirstOrDefault(f => f.Name == "L_DESCRIPTION").LovValue2 : "";
+        G_DORMITORY_NAME = configscreen.Any(f => f.Name == "G_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "G_DORMITORY_NAME").LovValue2 : "";
+        G_ROOM_AMOUNT = configscreen.Any(f => f.Name == "G_ROOM_AMOUNT") ? configscreen.FirstOrDefault(f => f.Name == "G_ROOM_AMOUNT").LovValue2 : "";
+        G_STATUS = configscreen.Any(f => f.Name == "L_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "L_STATUS").LovValue2 : "";
+        G_ADDRESS_ID = configscreen.Any(f => f.Name == "G_ADDRESS_ID") ? configscreen.FirstOrDefault(f => f.Name == "G_ADDRESS_ID").LovValue2 : "";
+        G_SUBCONTRACT = configscreen.Any(f => f.Name == "L_SUBCONTRACT") ? configscreen.FirstOrDefault(f => f.Name == "L_SUBCONTRACT").LovValue2 : "";
+        G_REGION = configscreen.Any(f => f.Name == "G_REGION") ? configscreen.FirstOrDefault(f => f.Name == "G_REGION").LovValue2 : "";
+        L_BUILDING_TH = configscreen.Any(f => f.Name == "G_BUILDING_NAME") ? configscreen.First(f => f.Name == "G_BUILDING_NAME").LovValue1 : "";
+        L_BUILDING_EN = configscreen.Any(f => f.Name == "G_BUILDING_NAME") ? configscreen.First(f => f.Name == "G_BUILDING_NAME").LovValue2 : "";
+        L_OTY_ROOM = configscreen.Any(f => f.Name == "G_ROOM_AMOUNT") ? configscreen.First(f => f.Name == "G_ROOM_AMOUNT").LovValue2 : "";
+            
+    }
+    }
+    <div class="page-header i-header-fit" id="HeadPage1">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">Configuration Dormitory Master</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="SearchPane">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@H_ONOFF</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 200px;">
+                        <div id="SearchRow1" class="row">
+                                  <div class="col-sm-3 col-md-3">
+                            <label>Region</label>
+                            @(Html.Kendo().DropDownList()
+                                .Name("RegionCode")
+                                .DataTextField("DISPLAY_VAL")
+                                .DataValueField("LOV_NAME")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("SelectRegion", "DormitoryMaster"); 
+                                    });
+                                })
+                                .Events(e => e.Change("onRegionChange"))
+                                      
+                            )
+                    </div>
+                                <div class="col-sm-3 col-md-3">
+                                <label>@L_PROVINCE </label>
+                                @(Html.Kendo().DropDownListFor(t => t.Province_TH)
+                                              .Name("DORMITORY_PROVINCE")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectProvinceForSearch", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                            </div>
+                               <div class="col-sm-3 col-md-3">
+                                <label>@L_DORMITORY_NAME</label>
+                                 @(Html.Kendo().DropDownListFor(t => t.dormitory_name_th)
+                                              .Name("DORMITORY_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAllDormitory", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                            </div>
+                               <div class="col-sm-3 col-md-3">
+                                <label>@L_BUILDING_NAME</label>
+                                 @(Html.Kendo().DropDownListFor(t => t.TUMBON_TH)
+                                              .Name("BUILDING_NO")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAllBuilding", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                            </div>
+                        </div>
+                        <div id="SearchRow2" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                            </div>
+                        </div>
+                        <br />
+                        @*end row2*@
+                        <div id="SearchRow4" class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <label>ข้อมูลหอพัก</label>
+                                @Html.TextBoxFor(t => t.dormitory_name_th, new { @class = "dis k-textbox form-control" })
+                            </div>
+                    </div>
+                    <div id="SearchRow3" class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <label>รายละเอียดของอาคาร/ตึก</label>
+                        </div>
+                        <div class="col-sm-12 col-md-12 i-gap-top-1">
+                            <div class=" panel panel-default">
+                                <div id="panelbody2" class="panel-body">
+                                    <div class="col-sm-12 col-md-12 ">
+                                        <div id="gridresult" class="row">
+                                            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.AddnewPrepaidNonMobile>()
+                                                            .Name("gridBuilding")
+                                                            .Columns(columns =>
+                                                                {
+                                                                    columns.Bound(p => p.indexPrefix).Title("Index").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                                                    columns.Bound(p => p.prefix).Title("Prefix").HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                                                    columns.Bound(p => p.floor).Title("Floor").HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                                                    columns.Bound(p => p.from).Title("From").HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                                                    columns.Bound(p => p.to).Title("To").HtmlAttributes(new { style = "text-align:right;" }).Width(200);
+                                                                    columns.Command(command =>
+                                                                    {
+                                                                        command.Custom("Edit").Click("editBuilding").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + "EDIT");
+                                                                    }).Width(100);
+                                                                })
+                                                            .ToolBar
+                                                            (
+                                                                toolbar => toolbar.Template
+                                                                (
+                                                                    "<div class='pull-right'>" + "<a onclick='addNewMobile()' id='addnew' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp;" + "Add NewMobile" + "</a>&nbsp;</div>"
+                                                                )
+                                                            )
+                                                            .Pageable
+                                                            (
+                                                                pageable => pageable
+                                                                    .PageSizes(false)
+                                                                    .Numeric(true)
+                                                            )
+                                                            .Scrollable
+                                                            (
+                                                                scrollable => scrollable.Height("auto")
+                                                            )
+
+                                                            .AutoBind(true)
+                                                            .DataSource
+                                                            (
+                                                                dataSource => dataSource
+                                                                .Ajax()
+                                                                .PageSize(10)
+                                                                .Read(read => read.Action("BuildingData", "DormitoryMaster"))
+                                                            )
+                                                            .Events(e => e.DataBound("onGridDataBound"))
+                                                        )
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wrap01 col-sm-12 col-md-12" style="margin-top: -10px">
+                            <ul id="error" class="i-red"></ul>
+                        </div>
+                        <div id="panelbody4" class="panel-body">
+                            <div id="row8" class="row">
+                                <div class="col-sm-12 col-md-12 i-text-align-center">
+                                    <a class="btn btn-default" onclick="_SaveDormitory();"><i class="fa fa-floppy-o fa-lg"></i>&nbsp;&nbsp;@B_SAVE</a>&nbsp;&nbsp;
+                                            <a class="btn btn-default" onclick="_Back();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Back</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*end row3*@
+
+                </div>
+                </div>
+                @*end SearchPanel*@
+            </div>
+        </div>
+        <div>
+                <input type="hidden" id="DormNames" />
+                <input type="hidden" id="Buildingnos" />
+                <input type="hidden" id="StatusOnoffs" />
+               <input type="hidden" id="StatusOnoffolds" />
+        </div>
+    </div>
+      
+    <script>
+        var gridTotal = 0;
+        function change() {
+            var value = $("#Choice").val();
+        }
+        var SaveStatus = '@ViewBag.SaveStatus';
+        $(document).ready(function () {
+            $.ajaxSetup({
+                // Disable caching of AJAX responses
+                cache: false
+            });
+            if (SaveStatus != "") {
+                if (SaveStatus.substring(0, 18) == "Saved successfully") {
+                    showFeedback("success", SaveStatus, "SaveDormitory Master");
+                }
+                else {
+                    showFeedback("error", SaveStatus);
+                }
+            }
+
+        });
+
+        var AWConfigurationDormitoryModel = function () {
+            Region: "";
+            Province: "";
+            DormitoryName: "";
+            Building: "";
+        }
+
+
+        function defaultData() {
+
+            var searchModel = new AWConfigurationDormitoryModel();
+            searchModel.Region = $("#RegionCode").val();
+            searchModel.Province = $("#DORMITORY_PROVINCE").val();
+            searchModel.DormitoryName = $("#DORMITORY_NAME").val();
+            searchModel.Building = $("#BUILDING_NO").val();
+            return searchModel;
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS: JSON.stringify(model)
+            };
+        }
+
+        $('#btnAdd').attr('disabled', 'disabled');
+
+        function onGridDataBound() {
+            Loading(0);
+            gridTotal = this.dataSource.view().length;
+            $('#btnAdd').attr('disabled', 'disabled');
+        }
+
+        function _Search() {
+
+            var model = defaultData();
+            Loading();
+            var grid = $("#gridDormitory").data("kendoGrid");
+            grid.dataSource.page(1);
+        }
+        function _Clear() {
+            var dropdownlist1 = $("#DORMITORY_PROVINCE").data("kendoDropDownList");
+            dropdownlist1.select(0);
+            var dropdownlist2 = $("#DORMITORY_NAME").data("kendoDropDownList");
+            dropdownlist2.select(0);
+            var dropdownlist3 = $("#BUILDING_NO").data("kendoDropDownList");
+            dropdownlist3.select(0);
+            var dropdownlist4 = $("#RegionCode").data("kendoDropDownList");
+            dropdownlist4.select(0);
+            $("#gridDormitory").data("kendoGrid").dataSource.data([]);
+        }
+        function onRegionChange() {
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").dataSource.read({ regionCode: $("#RegionCode").data("kendoDropDownList").value() });
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), regionCode: $("#RegionCode").val() });
+            $("#BUILDING_NO").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), regionCode: $("#RegionCode").val(), Dormitory_Name: $("#DORMITORY_NAME").val() });
+        }
+
+        function onProvinceChange() {
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), regionCode: $("#RegionCode").val() });
+            $("#BUILDING_NO").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), regionCode: $("#RegionCode").val(), Dormitory_Name: $("#DORMITORY_NAME").val() });
+        }
+        function onStatusChange() {
+
+            $('#btnAdd').removeAttr('disabled');
+        }
+        var UpdateConfigOnOffServiceModel = function () {
+            dormitory_name: "";
+            BUILDING: "";
+            Status: "";
+            StatusOld: "";
+        }
+
+        function defaultSaveData(saveDataRow) {
+            var saveModel = new UpdateConfigOnOffServiceModel();
+
+            saveModel.dormitory_name = (saveDataRow.dormitory_name != undefined) ? saveDataRow.dormitory_name : '';
+            saveModel.BUILDING = (saveDataRow.BUILDING != undefined) ? saveDataRow.BUILDING : '';
+            saveModel.Status = (saveDataRow.Status != undefined) ? saveDataRow.Status : '';
+            saveModel.StatusOld = (saveDataRow.StatusOld != undefined) ? saveDataRow.StatusOld : '';
+
+            return saveModel;
+        }
+        function editConfigOnOffService() {
+
+            var grid = $("#gridDormitory").data("kendoGrid");
+            var saveModel;
+            var saveModels = [];
+            for (var i = 0; i < gridTotal; i++) {
+                var dataRow = $("#gridDormitory").data("kendoGrid").dataSource.data()[i];
+                saveModel = defaultSaveData(dataRow);
+                saveModels.push(saveModel);
+            }
+            $.ajax({
+                url: '/DormitoryOnOffWebService/UpdateOnOffServices',
+                data: JSON.stringify({ saveModels: saveModels }),
+                dataType: "text",
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response == "Success") {
+                        _Search();
+                        showFeedback("success", " Save Success", "Edit ON/OFF Status");
+                        $("#EditOnOffPopup").data("kendoWindow").close();
+                    }
+                    else {
+                        _Search();
+                        showFeedback("success", " Save Success", "Edit ON/OFF Status");
+                        $("#EditOnOffPopup").data("kendoWindow").close();
+                    }
+                },
+                failure: function (err) {
+                    _Search();
+                    showFeedback("error", " Save Fail", "Edit ON/OFF Status");
+                    $("#EditOnOffPopup").data("kendoWindow").close();
+                }
+            });
+            var grid = $("#gridDormitory").data("kendoGrid");
+            grid.dataSource.page(1);
+        }
+        function _SaveOnOFF() {
+            $("#DormNames").val(dataItem.dormitory_name);
+            $("#Buildingnos").val(dataItem.BUILDING);
+            $("#StatusOnoffs").val(dataItem.Status);
+            $("#StatusOnoffolds").val(dataItem.StatusOld);
+            $("#Index").val(dataItem.indexBuilding);
+
+            $.ajax({
+                type: "POST",
+                url: "/DormitoryOnOffWebService/EditOnOffServices",
+                data: {
+                    "DORMITORY_NAME_TH": $("#DormNames").val()
+                    , "DORMITORY_NO_TH": $("#Buildingnos").val()
+                    , "Status": $("#StatusOnoffs").val()
+                    , "StatusOld": $("#StatusOnoffolds").val()
+                    , "Index": $("#Index").val()
+                },
+                dataType: "text",
+                async: false,
+                success: function (response) {
+                    if (response == "Success") {
+                        _Search();
+                        showFeedback("success", " Save Success", "Edit ON/OFF Status");
+                        $("#EditOnOffPopup").data("kendoWindow").close();
+                    }
+                    else {
+                        //_Search();
+                        //showFeedback("error", " No Change Status", "Edit ON/OFF Status");
+                        //$("#EditOnOffPopup").data("kendoWindow").close();
+                    }
+
+                },
+                failure: function (err) {
+                    showFeedback("error", " No Change Status", "Edit ON/OFF Status");
+                    $("#EditOnOffPopup").data("kendoWindow").close();
+                }
+            });
+            var grid = $("#gridDormitory").data("kendoGrid");
+            grid.dataSource.page(1);
+            $("#EditOnOffPopup").data("kendoWindow").close();
+        }
+
+        function onCloseEditOnOff() {
+            ClearTextValidation("EditOnOffPopupPanel");
+        }
+
+        function onGridEdit(arg) {
+
+            var indexCell = arg.container.context.cellIndex;
+
+            var grid = $('#gridDormitory').data('kendoGrid');
+
+            var dataRow = $("#gridDormitory").data("kendoGrid").dataSource.data()[grid.select()[0].rowIndex];
+
+            if (indexCell != 'undefined' && grid.columns[indexCell].title == "Status") {
+                if (dataRow.ADDRESS_ID == undefined || dataRow.Subcontract == undefined) {
+                    $('#gridDormitory').data("kendoGrid").closeCell();
+                }
+
+            }
+
+        }
+    </script>

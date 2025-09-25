@@ -1,0 +1,84 @@
+﻿@model List<WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationEventSubContactData>
+@using WBBEntity.PanelModels;
+@{
+    string SubContactIndex = ViewBag.SubContactIndex;
+    string SetShow = "";
+
+    string L_SUB_CONTRACT = "";
+    string L_SUB_TEAM = "";
+    string L_ENGINEER_START_JOB = "";
+    string L_ENGINEER_END_JOB = "";
+
+    string B_EDIT = "";
+    string B_DELETE_SUB_CONTRACT = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_SUB_CONTRACT = configscreen.Any(f => f.Name == "L_SUB_CONTRACT") ? configscreen.First(f => f.Name == "L_SUB_CONTRACT").LovValue1 : "";
+        L_SUB_TEAM = configscreen.Any(f => f.Name == "L_SUB_TEAM") ? configscreen.First(f => f.Name == "L_SUB_TEAM").LovValue1 : "";
+        L_ENGINEER_START_JOB = configscreen.Any(f => f.Name == "L_ENGINEER_START_JOB") ? configscreen.First(f => f.Name == "L_ENGINEER_START_JOB").LovValue1 : "";
+        L_ENGINEER_END_JOB = configscreen.Any(f => f.Name == "L_ENGINEER_END_JOB") ? configscreen.First(f => f.Name == "L_ENGINEER_END_JOB").LovValue1 : "";
+
+        B_EDIT = configscreen.Any(f => f.Name == "B_EDIT") ? configscreen.First(f => f.Name == "B_EDIT").LovValue1 : "";
+        B_DELETE_SUB_CONTRACT = configscreen.Any(f => f.Name == "B_DELETE_SUB_CONTRACT") ? configscreen.First(f => f.Name == "B_DELETE_SUB_CONTRACT").LovValue1 : "";
+
+    }
+}
+@if (Model[0].is_delete)
+{
+    SetShow = "i-hidden";
+}
+else
+{
+    SetShow = "";
+}
+<div class="panel panel-default SubContactRow @SetShow" id='SubContactRow_@SubContactIndex'>
+    @Html.Hidden("ConfigurationEventSubContactDataList["+SubContactIndex+"].is_delete", @Model[0].is_delete)
+    @Html.Hidden("ConfigurationEventSubContactDataList["+SubContactIndex+"].service_option", @Model[0].service_option)
+    <div class="panel-body" style="min-height: 200px;">
+        <div class="row  i-gap-top-1">
+            <div class="col-sm-6 col-md-6">
+                <label>@L_SUB_CONTRACT</label>
+                @Html.Hidden("ConfigurationEventSubContactDataList["+SubContactIndex+"].sub_contact_id",Model[0].sub_contact_id)
+                @Html.TextBox("ConfigurationEventSubContactDataList["+SubContactIndex+"].sub_contact",Model[0].sub_contact , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <label>@L_SUB_TEAM</label>
+                @Html.Hidden("ConfigurationEventSubContactDataList["+SubContactIndex+"].sub_team_id",Model[0].sub_team_id)
+                @Html.TextBox("ConfigurationEventSubContactDataList["+SubContactIndex+"].sub_team",Model[0].sub_team , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+            </div>
+        </div>
+        @*end row1*@
+        <div class="row i-gap-top-1">
+            <div class="col-sm-6 col-md-6">
+                <label>@L_ENGINEER_START_JOB</label>
+                @Html.TextBox("ConfigurationEventSubContactDataList["+SubContactIndex+"].start_date_event",Model[0].start_date_event , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <label>@L_ENGINEER_END_JOB</label>
+                @Html.TextBox("ConfigurationEventSubContactDataList["+SubContactIndex+"].end_date_event",Model[0].end_date_event , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+            </div>
+        </div>
+        @*end row2*@
+        <div class="row i-gap-top-1">
+            <div class="col-sm-12 col-md-12">
+                @{Html.RenderPartial("_SubName", @Model[0].SubNameList);}
+            </div>
+        </div>
+        @*end row3*@
+        @if(@Model[0].ShownButtom == "")
+        {
+        <div class="row i-gap-top-1">
+            <div class="col-sm-6 col-md-6">
+            </div>
+            <div class="col-sm-6 col-md-6 i-text-align-right">
+                <a class="btn btn-default" onclick="EditSubContact(@SubContactIndex)"><i class="fa fa-pencil-square-o fa-lg"></i>&nbsp;&nbsp;@B_EDIT</a>&nbsp;&nbsp;
+                <a class="btn btn-danger" onclick="DeleteSubContact(@SubContactIndex)"><i class="fa fa-trash-o fa-lg"></i>&nbsp;&nbsp;@B_DELETE_SUB_CONTRACT</a>
+            </div>
+        </div>
+        @*end row4*@
+        }
+    </div>
+</div>

@@ -1,0 +1,271 @@
+﻿@model WBBEntity.PanelModels.WebServiceModels.SeibelResultModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using FBBConfig.Extensions
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var Version = "";
+    if (ViewBag.Version != null)
+    {
+        Version = Version + "-" + ViewBag.Version;
+    }
+
+    string L_LOGIN_LOCATION_CODE = "";
+    string L_LOGIN_ASC_CODE = "";
+    string L_LOGIN_EMPLOYEE_CODE = "";
+    string B_LOGIN_CANCEL = "";
+    string B_LOGIN_CONFIRM = "";
+    string V_LOGIN_LOCATION_CODE = "";
+    string V_LOGIN_ASC_CODE = "";
+    string V_LOGIN_EMPLOYEE_CODE = "";
+    string ERROR_MESSAGE_LOGIN = "";
+    string P_ALERT_HEAD = "";
+    string E_MESSAGE_03 = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_LOGIN_LOCATION_CODE = configscreen.Any(f => f.Name == "L_LOGIN_LOCATION_CODE") ? configscreen.FirstOrDefault(f => f.Name == "L_LOGIN_LOCATION_CODE").LovValue1 : "";
+        L_LOGIN_ASC_CODE = configscreen.Any(f => f.Name == "L_LOGIN_ASC_CODE") ? configscreen.FirstOrDefault(f => f.Name == "L_LOGIN_ASC_CODE").LovValue1 : "";
+        L_LOGIN_EMPLOYEE_CODE = configscreen.Any(f => f.Name == "L_LOGIN_EMPLOYEE_CODE") ? configscreen.FirstOrDefault(f => f.Name == "L_LOGIN_EMPLOYEE_CODE").LovValue1 : "";
+
+        B_LOGIN_CONFIRM = configscreen.Any(f => f.Name == "B_LOGIN_CONFIRM") ? configscreen.FirstOrDefault(f => f.Name == "B_LOGIN_CONFIRM").LovValue1 : "";
+        B_LOGIN_CANCEL = configscreen.Any(f => f.Name == "B_LOGIN_CANCEL") ? configscreen.FirstOrDefault(f => f.Name == "B_LOGIN_CANCEL").LovValue1 : "";
+
+        E_MESSAGE_03 = configscreen.Any(f => f.Name == "E_MESSAGE_03") ? configscreen.FirstOrDefault(f => f.Name == "E_MESSAGE_03").LovValue1 : "";
+
+        V_LOGIN_LOCATION_CODE = configscreen.Any(f => f.Name == "V_LOGIN_LOCATION_CODE") ? configscreen.First(f => f.Name == "V_LOGIN_LOCATION_CODE").LovValue1 : "";
+        V_LOGIN_ASC_CODE = configscreen.Any(f => f.Name == "V_LOGIN_ASC_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_LOGIN_ASC_CODE").LovValue1 : "";
+        V_LOGIN_EMPLOYEE_CODE = configscreen.Any(f => f.Name == "V_LOGIN_EMPLOYEE_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_LOGIN_EMPLOYEE_CODE").LovValue1 : "";
+
+        ERROR_MESSAGE_LOGIN = configscreen.Any(f => f.Name == "ERROR_MESSAGE_LOGIN") ? configscreen.FirstOrDefault(f => f.Name == "ERROR_MESSAGE_LOGIN").LovValue1 : "";
+        P_ALERT_HEAD = configscreen.Any(f => f.Name == "P_ALERT_HEAD") ? configscreen.FirstOrDefault(f => f.Name == "P_ALERT_HEAD").LovValue1 : "";
+    }
+    
+}
+
+<style type="text/css">
+    .errorinput {
+        border: 2px solid #ff988a !important;
+    }
+</style>
+
+<form id="bulklogin" method="post" action="/RegisterBulkCorp/Index">
+    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12 add-border-rounded-green grayscale">
+        <p class="clearfix"></p>
+        <span>
+            <img src="~/Content/images/bulkcorp/fibre_logo.png" class="center-block img-responsive">
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+        </span>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3 col-xs-12">
+            @L_LOGIN_LOCATION_CODE
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3 col-xs-12">
+            <input type="text" class="form-control" id="LcCode" name="LcCode">
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3">@L_LOGIN_ASC_CODE</div>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3">
+            <input type="text" class="form-control" id="ASCCode" name="ASCCode">
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3">@L_LOGIN_EMPLOYEE_CODE</div>
+        <p class="clearfix"></p>
+        <div class="col-md-6 col-md-offset-3">
+            <input type="text" class="form-control" id="EmployeeID" name="EmployeeID">
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-xs-12  text-center">
+            <button id="btn1" type="button" class="btn btn-default btn-for-xs">&nbsp; @B_LOGIN_CANCEL &nbsp; </button>
+            <button id="btn2" type="button" class="btn btn-success btn-for-xs" onclick="">&nbsp; @B_LOGIN_CONFIRM &nbsp; </button>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+    <input id="outType" name="outType" type="hidden" />
+    <input id="outSubType" name="outSubType" type="hidden" />
+    <div class="modal fade" id="modalloginError" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content add-border-rounded-green">
+                <div class="modal-header" style="border-bottom-color: none; background-color: #8dc63f; color: white;">
+                    @P_ALERT_HEAD
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p class="clearfix"></p>
+                        <h5 class="text-center" style="font-weight: bold; color: grey;">@ERROR_MESSAGE_LOGIN</h5>
+                        <p class="clearfix"></p>
+                        <div class="col-md-12 text-center">
+                            <p class="clearfix"></p>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="_closeloginErrorModal()">OK </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    var chk;
+    $(function () {
+        $('#LcCode').keyup(function () {
+            CheckKeyUps('LcCode', '@V_LOGIN_LOCATION_CODE');
+        });
+
+        $('#ASCCode').keyup(function () {
+            CheckKeyUps('ASCCode', '@V_LOGIN_ASC_CODE');
+        });
+
+        $('#EmployeeID').keyup(function () {
+            CheckKeyUps('EmployeeID', '@V_LOGIN_EMPLOYEE_CODE');
+        });
+    });
+
+    $('#btn2').click(function () {
+        Loading(0);
+        Loading();
+        chk = true;
+        $('#LcCode').removeClass('form-control errorinput').addClass('form-control');
+        $("#ASCCode").removeClass('form-control errorinput').addClass('form-control');
+        $("#EmployeeID").removeClass('form-control errorinput').addClass('form-control');
+
+        if ($('#LcCode').val() == "" && $('#ASCCode').val() == "" && $('#EmployeeID').val() == "") {
+            $("#LcCode").removeClass('form-control').addClass('form-control errorinput');
+            $("#ASCCode").removeClass('form-control').addClass('form-control errorinput');
+            $("#EmployeeID").removeClass('form-control').addClass('form-control errorinput');
+            chk = false;
+            Loading(0);
+            $("#modalloginError").modal();
+            return;
+        }
+
+        if ($('#LcCode').val() != "") {
+            if ($('#EmployeeID').val() == "" && $('#ASCCode').val() == "") {
+                $("#ASCCode").removeClass('form-control').addClass('form-control errorinput');
+                $("#EmployeeID").removeClass('form-control').addClass('form-control errorinput');
+                chk = false;
+                Loading(0);
+                $("#modalloginError").modal();
+                return;
+            }
+        }
+
+        if ($('#LcCode').val() == "" && $('#EmployeeID').val() != "") {
+            $("#LcCode").removeClass('form-control').addClass('form-control errorinput');
+            chk = false;
+            Loading(0);
+            $("#modalloginError").modal();
+            return;
+        }
+
+        if ($('#EmployeeID').val() != "" && !CheckEmpCode($('#EmployeeID').val())) {
+            $("#EmployeeID").removeClass('form-control').addClass('form-control errorinput');
+            chk = false;
+            Loading(0);
+            $("#modalloginError").modal();
+            return;
+        }
+
+        if (chk) {
+            var get_location_code = $('#LcCode').val();
+            var get_asc_code = $('#ASCCode').val();
+            var get_employee_id = $('#EmployeeID').val();
+            $.ajax({
+                url: '/RegisterBulkCorp/CheckSeibel',
+                data: { LocationCode: get_location_code, ASCCode: get_asc_code },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (response) {
+                    if (response.outStatus == "Error") {
+                        $("#ASCCode").removeClass('form-control').addClass('form-control errorinput');
+                        Loading(0);
+                        $("#modalloginError").modal();
+                    }
+                    else {
+                        $('#outType').val(response.outType);
+                        $('#outSubType').val(response.outSubType);
+                        $('#LcCode').val(response.outLocationCode);
+
+                        sessionStorage.setItem('login_LcCode', get_location_code);
+                        sessionStorage.setItem('login_ASCCode', get_asc_code);
+                        sessionStorage.setItem('login_EmpID', get_employee_id);
+
+                        GoToIndex();
+                    }
+                    Loading(0);
+                },
+                error: function (response) {
+                    Loading(0);
+                    $("#modalloginError").modal();
+                }
+            });
+        }
+        else {
+            Loading(0);
+            $("#modalloginError").modal();
+        }
+    });
+
+    $('#btn1').click(function () {
+        $('#LcCode').val("");
+        $('#ASCCode').val("");
+        $('#EmployeeID').val("");
+        $("#LcCode").removeClass('form-control errorinput').addClass('form-control');
+        $("#ASCCode").removeClass('form-control errorinput').addClass('form-control');
+        $("#EmployeeID").removeClass('form-control errorinput').addClass('form-control');
+    });
+</script>
+
+<script type="text/javascript">
+    function GoToIndex() {
+        window.location.href = '@Url.Action("Index", "RegisterBulkCorp")';
+    }
+
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function _closeloginErrorModal() {
+        $('#modalloginError').modal('hide');
+        //$('.modal-backdrop').remove();
+    }
+
+    function CheckEmpCode(EmpCode) {
+        var IsEmp = false;
+        $.ajax({
+            url: '/RegisterBulkCorp/CheckEmpCode',
+            data: { empCode: EmpCode },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response == "Y") {
+                    IsEmp = true;
+                }
+            }
+        });
+        return IsEmp;
+    }
+</script>

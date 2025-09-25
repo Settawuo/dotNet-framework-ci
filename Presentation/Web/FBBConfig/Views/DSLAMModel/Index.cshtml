@@ -1,0 +1,505 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.DSLAMModels
+@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.Models;
+
+@Html.Partial("~/Views/Shared/_PartialPopupHistory.cshtml")
+@{
+    ViewBag.Title = "DSLAM Model";
+}
+
+    @*<style>    
+       .table > thead > tr > th,
+       .table > tbody > tr > th, 
+       .table > tfoot > tr > th, 
+       .table > thead > tr > td, 
+       .table > tbody > tr > td, 
+       .table > tfoot > tr > td {
+            border:none;
+        }
+        
+        .col-md-10 {
+            width:99%;
+        }
+
+        @@media
+         only screen and (max-width: 875px), 
+         only screen and (max-width: 320px),
+         only screen and (max-width: 360px),
+         only screen and (max-width: 768px),
+         only screen and (max-width: 800px),
+         only screen and (max-width: 980px){
+            .col-md-10 {
+                width:98.5%;
+            }
+        }
+    </style>*@
+
+@{
+    var o = (List<WBBEntity.PanelModels.Account.ComponentModel>)ViewBag.User.ComponentModel;
+    var g = (List<decimal>)ViewBag.User.Groups;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderByDescending(des => des.ReadOnlyFlag).ToList();
+    
+    string FBB_CFG003_1_ADD = "";
+    string FBB_CFG003_1_EDIT = "";
+    string FBB_CFG003_1_DELETE = "";
+    
+    if (o != null)
+    {
+        FBB_CFG003_1_ADD = o.Any(c => c.ComponentName == "FBB_CFG003_1_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG003_1_ADD").ReadOnlyFlag : "";
+        FBB_CFG003_1_EDIT = o.Any(c => c.ComponentName == "FBB_CFG003_1_EDIT") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG003_1_EDIT").ReadOnlyFlag : "";
+        FBB_CFG003_1_DELETE = o.Any(c => c.ComponentName == "FBB_CFG003_1_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG003_1_DELETE").ReadOnlyFlag : "";
+    }
+    
+    
+    
+    
+    
+    
+    
+}
+
+    <script>
+
+        function CM_SaveModel() {
+            var chk = ValidationProcessing("FrameworkPanel");
+            if (chk)
+                showFeedback("success", "Delete Successfully.");
+            else
+                showFeedback("error", "Please correct the errors and try again.");
+        }
+
+        //$(function () {
+        //    var validateModel = [];
+        //    validateModel.push({ id: "Subject" });
+        //    validateModel.push({ id: "Description" });
+        //    validateModel.push({ id: "SendTo" });
+        //    validateModel.push({ id: "CC" });
+        //    SetRequired(validateModel);
+        //});
+
+    </script>
+
+
+        <div class="page-header i-header-fit">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <h3 style="margin-top: 0">DSLAM Model Configuration</h3>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-12">
+        @(Html.Kendo().Grid<DSLAMModels>()
+            .Name("GridDSLAMModels") // Change pull-left to pull-right at Show History B. + Add pull-left at Add New Data B. -- P'Boy
+            .ToolBar(toolbar => toolbar.Template("" +
+            "<div class='pull-right'><a onclick='showPopupHistoryLog()' class='btn btn-default pull-right'><i class='fa fa-history'></i>&nbsp; Show History</a> &nbsp;" +
+            "<a id='btnShowDSLAMPanel' onclick='onAddPopup()' class='btn btn-default pull-left'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a></div>"))
+        
+            .Columns(columns =>
+            {
+            columns.Bound(p => p.MODEL).Title("Model").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.BRAND).Title("Brand ").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.MAXSLOT).Title("Max Slot ").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.SLOTSTARTINDEX).Title("Start Index  ").HtmlAttributes(new { @class = "i-text-align-center" });
+           
+            columns.Command(command =>
+            {
+                if (FBB_CFG003_1_EDIT !="")
+                {
+                    command.Custom("Edit").Click("editGrid").Text("<i class='fa fa-pencil-square-o fa-lg  '></i>&nbsp; Edit");
+                }
+                if (FBB_CFG003_1_DELETE !="")
+                {
+                    command.Custom("Delete").Click("deleteGrid").Text("<i class='fa fa-times-circle fa-lg '></i>&nbsp; Delete");
+                }
+            });
+        })
+        
+        .Filterable()
+        .Pageable(p => p.Input(true)
+        .Numeric(true)
+        .PageSizes(true)
+        )
+        //.HtmlAttributes(new { style = "text-align:rigth;" })
+        //.Reorderable(r => r.Columns(true))
+        //.Groupable()
+        .Sortable()
+        .Pageable(p => p.Input(true)
+        .Numeric(true)
+        .PageSizes(true)
+        )
+     
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Read(read => read.Action("ReadDSLAMModel", "DSLAMModel"))
+                .PageSize(10)
+                //.Events(events => events.RequestEnd("CheadckFlagCardModel"))
+                //.Model(model => model.Id(p => p.DSLAMMODELID))
+                )
+                .Events(e => e.DataBound("onGridDataBound"))
+                )
+
+        </div>
+    </div>
+
+        @(Html.Kendo().Window()
+            .Name("AddPopup")
+            .HtmlAttributes(new { @class = "i-gap-popup" })
+            .Title("Add DSLAM Model Configuration")
+            .Width(350)
+            .Draggable()
+            .Visible(false)
+            .Modal(true)
+            .Content(@<text>
+
+<div class="row i-no-over" id="AddPopupPanel">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Model <span id="requiredfor-MODEL"></span></label>
+            <div class="i-fg-data-entry">
+                 @Html.TextBoxFor(Model => Model.MODEL,
+                    new
+                    {
+                         @type = "text",
+                         @id = "MODEL",
+                         @class = "k-textbox form-control",
+                         @maxlength = 50
+                    })
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-MODEL"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Brand <span id="requiredfor-BRAND"></span></label>
+            <div class="i-fg-data-entry">
+                    @(Html.Kendo().ComboBox()
+                        .Name("BRAND")
+                        .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                        .DataTextField("Band")
+                        .DataValueField("Band")
+                        .Filter("contains")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("SelectModelNmaeDLSAM", "MasterData", new { label = false });
+                            });
+                        })
+                        )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-BRAND"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Brand-คำย่อ <span id="requiredfor-SH_BRAND"></span></label>
+            <div class="i-fg-data-entry">
+                     @Html.TextBoxFor(Model => Model.SH_BRAND,
+                     new
+                     {
+                         @type = "text",
+                         @id = "SH_BRAND",
+                         @class = "k-textbox form-control",
+                         @maxlength = 20
+                     })
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-SH_BRAND"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Start Index <span id="requiredfor-StartIndex222"></span></label>
+            <div class="i-fg-data-entry">
+            @(Html.Kendo().NumericTextBox()
+                .Name("StartIndex222")
+                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                .Format("n0")
+                .Spinners(false)
+                .Min(0)
+                .Max(9)
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-StartIndex222"></div>
+        </div>
+    </div>
+
+      <div class="col-md-12">
+        <div class="form-group">
+            <label>Max Slot <span id="requiredfor-MaxSlot"></span></label>
+            <div class="i-fg-data-entry">
+             @(Html.Kendo().NumericTextBox()
+                .Name("MaxSlot")
+                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                .Format("n0")
+                .Spinners(false)
+                //.Min(0)
+                .Min(1)
+                .Max(99)
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-MaxSlot"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+
+        <div class="btn-group i-gap-top-1 pull-right" id="btnSave">        
+            <button class="btn btn-default i-width-sm-2" onclick="ClearFromDsalam()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</button>
+            <button class="btn btn-success i-width-sm-2" onclick="onSave('ADD')"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Save</button>
+        </div>
+
+        <div class="btn-group i-gap-top-1 pull-right i-hidden" id="btnUpdate">        
+            <button class="btn btn-default i-width-sm-2" onclick="ClearFromDsalam()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</button>
+            <button class="btn btn-success i-width-sm-2" onclick="onSave('UPDATE')"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Update</button>
+        </div>
+    </div>
+    
+</div>
+</text>)
+)
+
+<input type="hidden" id="DSLAMMODEIDADDHD" value="0"/>
+
+    <script>
+        function onGridDataBound() {
+            setButton();
+        }
+
+        $(function () {
+            //debugger
+            if ("@FBB_CFG003_1_ADD" =="") $("#btnShowDSLAMPanel").hide();
+        });
+    
+        function ClearFromDsalam() {
+
+        $("#MODEL").val("");
+        $("#BRAND").data("kendoComboBox").value("");
+        $("#SH_BRAND").val("");
+        $("#StartIndex222").data("kendoNumericTextBox").value("");
+        $("#MaxSlot").data("kendoNumericTextBox").value("");
+        $("#AddPopup").data("kendoWindow").close();
+
+    }
+
+        function onAddPopup() {
+        // checkidRadioDataFlag();
+
+        //debugger
+        $("#DSLAMMODEIDADDHD").val();
+        $("#MODEL").val("");
+        $("#BRAND").data("kendoComboBox").value("");
+        $("#SH_BRAND").val("");
+        $("#StartIndex222").data("kendoNumericTextBox").value("");
+        $("#MaxSlot").data("kendoNumericTextBox").value("");
+        // checkidRadioDataFlag();
+
+        ClearTextValidation("AddPopup");
+
+            var validateModel = [];
+            validateModel.push({ id: "MODEL" });
+            validateModel.push({ id: "BRAND" });
+            validateModel.push({ id: "SH_BRAND" });
+            validateModel.push({ id: "StartIndex222" });
+            validateModel.push({ id: "MaxSlot" });
+
+            SetRequired(validateModel);
+
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+
+            $("#AddPopup_wnd_title").text("Add DSLAM Model Configuration");
+
+            $("#AddPopup").data("kendoWindow").open();
+            $("#AddPopup").data("kendoWindow").center();
+        }
+
+        function onSave(ResultCommand) {
+
+            var chk = ValidationProcessing("AddPopupPanel");
+            if (chk) {
+
+                Loading();
+
+                // alert(ResultCommand);
+                $.ajax({
+                    url: '/DSLAMModel/Add_DSALAMModel',
+                    data: {
+                        ResultCommand: ResultCommand,
+                        Model: $("#MODEL").val(), Band: $("#BRAND").val(), SH_BRAND: $("#SH_BRAND").val(), StartIndex222: $("#StartIndex222").val(),
+                        MaxSlot: $("#MaxSlot").val(), DSLAMMODELID: $("#DSLAMMODEIDADDHD").val()
+                    },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        // alert(response);
+                        if (response != null) {
+                            $("#GridDSLAMModels").data("kendoGrid").dataSource.read();
+                            Loading(0);
+                            $("#AddPopup").data("kendoWindow").close();
+                            CheadckFlagCardModel(response)
+                            // alert(response);
+
+                        } else if (response == "ADD") {
+                            Loading(0);
+                            CheadckFlagCardModel(response)
+
+                        } else if (response == "UPDATE") {
+                            Loading(0);
+                            CheadckFlagCardModel(response)
+
+                        } else if (response == "DELETE") {
+                            Loading(0);
+                            CheadckFlagCardModel(response)
+                        }
+                    },
+                    error: function (err) {
+
+                        $("#AddPopup").data("kendoWindow").close();
+                        showFeedback("error", err);
+                    }
+
+                });
+
+            }
+        }
+
+        function deleteGrid(e) {
+
+            var dataItem33 = this.dataItem($(e.currentTarget).closest("tr"));
+            $("#DSLAMMODEIDADDHD").val(dataItem33.DSLAMMODELID);
+            $("#MODEL").val(dataItem33.MODEL);
+            $("#BRAND").data("kendoComboBox").value(dataItem33.BRAND);
+            $("#SH_BRAND").val(dataItem33.SH_BRAND);
+            $("#StartIndex222").data("kendoNumericTextBox").value(dataItem33.SLOTSTARTINDEX);
+            $("#MaxSlot").data("kendoNumericTextBox").value(dataItem33.MAXSLOT);
+
+            //var c = confirm("Are you sure you want to delete " + dataItem.Province + " " + dataItem.Amphur + " " + dataItem.OwnerProduct + " ?");
+            var clr = confirm("Are you sure you want to delete?");
+            if (clr) {
+                onSave('DELETE');
+            }
+        }
+
+        function editGrid(e) {
+
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $("#MODEL").val(dataItem.MODEL);
+            $("#BRAND").data("kendoComboBox").value(dataItem.BRAND);
+            $("#SH_BRAND").val(dataItem.SH_BRAND);
+            $("#StartIndex222").data("kendoNumericTextBox").value(dataItem.SLOTSTARTINDEX);
+            $("#MaxSlot").data("kendoNumericTextBox").value(dataItem.MAXSLOT);
+            $("#DSLAMMODEIDADDHD").val(dataItem.DSLAMMODELID);
+
+            ClearTextValidation("AddPopup");
+
+            var validateModel = [];
+            validateModel.push({ id: "MODEL" });
+            validateModel.push({ id: "BRAND" });
+            validateModel.push({ id: "SH_BRAND" });
+            validateModel.push({ id: "RESERVEPORTSPARE" });
+            validateModel.push({ id: "StartIndex222" });
+            validateModel.push({ id: "MaxSlot" });
+            SetRequired(validateModel);
+
+            $("#btnSave").hide();
+            $("#btnUpdate").show();
+
+            $("#AddPopup_wnd_title").text("Edit DSLAM Model Configuration");
+
+            $("#AddPopup").data("kendoWindow").open();
+            $("#AddPopup").data("kendoWindow").center();
+        }
+
+        function CheadckFlagCardModel(resultFlag) {
+
+            var returnDesc = "";
+            var Return_Code = "";
+
+            if (resultFlag == "ADD") {
+                $.ajax({
+                    url: '/DSLAMModel/DataDesc',
+                    //data: { },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        returnDesc = response[0];
+                        Return_Code = response[1];
+
+                        if (Return_Code == 0) {
+                            Loading(0);
+                            showFeedback('warning', returnDesc);
+                        } else {
+                            Loading(0);
+                            showFeedback('success', returnDesc);
+                        }
+                    }
+                });
+
+            }
+
+            else if (resultFlag == "UPDATE") {
+                $.ajax({
+                    url: '/DSLAMModel/DataDesc',
+                    //data: { },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        returnDesc = response[0];
+                        Return_Code = response[1];
+
+                        if (Return_Code == 0) {
+                            Loading(0);
+                            showFeedback('warning', returnDesc);
+                        } else {
+                            Loading(0);
+                            showFeedback('success', returnDesc);
+                        }
+                    }
+                });
+
+            }
+
+            else if (resultFlag == "DELETE") {
+                $.ajax({
+                    url: '/DSLAMModel/DataDesc',
+                    //data: { },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        returnDesc = response[0];
+                        Return_Code = response[1];
+
+                        if (Return_Code == 0) {
+                            Loading(0);
+                            showFeedback('warning', returnDesc);
+                        } else {
+                            Loading(0);
+                            showFeedback('success', returnDesc);
+                        }
+                    }
+                });
+
+            }
+        }
+
+        function showPopupHistoryLog() {
+            var title = "DSLAM Model";
+            var application = "FBB_CFG003_1"; //Code "FBB_CFG_003_1" is "DSLAMModel"
+            var refKey = "";
+            var refName = "DSLAM MODEL";
+            //var refKey = "";
+            //var refName = "";
+            //var refKey = $("#MODEL").val();
+            //var refName = "MODEL";
+
+            onHistoryPopUp_Show(title, application, refKey, refName);
+        }
+    
+    </script>

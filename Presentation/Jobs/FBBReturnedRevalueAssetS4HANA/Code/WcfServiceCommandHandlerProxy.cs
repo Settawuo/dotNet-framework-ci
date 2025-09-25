@@ -1,0 +1,36 @@
+﻿using FBBReturnedRevalueAssetS4HANA.CommandServices;
+using System.Linq;
+using WBBContract;
+
+namespace FBBReturnedRevalueAssetS4HANA.Code
+{
+
+    public sealed class WcfServiceCommandHandlerProxy<TCommand> : ICommandHandler<TCommand>
+    {
+        public void Handle(TCommand command)
+        {
+            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            using (var service = new CommandServiceClient())
+            {
+                object result = service.Execute(command);
+
+                Update(source: result, destination: command);
+            }
+        }
+
+        private static void Update(object source, object destination)
+        {
+            var properties =
+                from property in destination.GetType().GetProperties()
+                where property.CanRead && property.CanWrite
+                select property;
+
+            foreach (var property in properties)
+            {
+                object value = property.GetValue(source, null);
+
+                property.SetValue(destination, value, null);
+            }
+        }
+    }
+}

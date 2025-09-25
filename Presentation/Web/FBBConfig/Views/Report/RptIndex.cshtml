@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "RptIndex";   
+}
+
+@*<h2>My Report</h2>*@
+@*<div class="box">
+   
+    <h4>Search</h4>
+       <input type="text" value="0" id="textboxID" class="k-textbox form-control"/>
+            <button class="toggleGroup k-button" onclick="getMyReport();">Search</button>  
+           
+</div>
+
+<div id="resultID">
+
+
+</div>*@
+
+    <style> /**/
+        .classnamediv1
+        { 
+            border-style: solid;
+            border-width: 1px;
+            margin-left: 40px;
+            margin-right: 40px;
+            margin-bottom: 40px;
+        }
+    </style>
+
+        <div style="margin-left:40px;">
+            <i class="fa fa-book"><font face="verdana" color="green"><b> My Report </b></font></i>
+            <p></p>
+        </div>
+
+        <div class ="classnamediv1">
+            <div style="margin-left:20px; margin-right:20px; margin-top:20px; margin-bottom:20px;">
+
+
+<div id="clientsDb">
+    
+    @(Html.Kendo().Grid<WBBEntity.Models.FBB_RPT_LOG>()
+        .Name("grid")
+        .Columns(columns =>
+        {
+            columns.Command(command => command.Custom("Download").Click("showDetails")).Width(75);
+            columns.Bound(c => c.REPORT_ID).Width(110);
+            columns.Bound(c => c.REPORT_CODE).Width(190);
+            columns.Bound(c => c.REPORT_NAME).Width(190); ;
+            columns.Bound(c => c.REPORT_STATUS).Width(110);
+            columns.Bound(c => c.FILE_PATH).Hidden();
+        })
+        .HtmlAttributes(new { style = "height: 380px;" })
+        .Scrollable()
+        .Groupable()
+        .Sortable()
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Read(read => read.Action("RPTLogs_Read", "MyReport"))
+        )
+    )
+        </div>
+    </div>
+
+
+    
+
+<script type="text/javascript">
+    
+    function showDetails(e) {
+        //e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        alert(dataItem.REPORT_NAME);
+    }
+</script>
+
+</div>
+
+@*<style scoped>
+    #clientsDb {
+        width: 952px;
+        height: 396px;
+        margin: 20px auto 0;
+        padding: 51px 4px 0 4px;
+        background: url('@Url.Content("~/content/web/grid/clientsDb.png")') no-repeat 0 0;
+    }
+</style>*@
+       
+
+
+
+<script>
+    function getMyReport() {
+
+        $('#resultID').empty();
+
+        $.ajax({
+            type: "GET",
+            url: "/MyReport/GetMyReport?Username=" + $('#textboxID').val(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder ="";
+                strBuilder += '<table>';
+                $.each(data, function (i, e) {
+                    strBuilder += '<tr><td>' + e.REPORT_CODE + '</td><td>' + e.REPORT_NAME + '</td><td>' + e.REPORT_STATUS + '</td></tr>';
+                });
+                strBuilder += '</table>';
+                $('#resultID').append(strBuilder);
+            }
+        });
+ }
+    </script>

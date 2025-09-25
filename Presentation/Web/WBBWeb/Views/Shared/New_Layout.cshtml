@@ -1,0 +1,1059 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels;
+
+@{
+    Layout = "~/Views/Shared/_LayoutReferences.cshtml";
+
+    Logger.Info("Hello New UI Fibre");
+
+    var VasDatalala22 = "";
+    if (ViewBag.Vas22 != null)
+    {
+        VasDatalala22 = ViewBag.Vas22;
+    }
+
+    var Version = "Ver. R15.9.29.290915";
+    if (ViewBag.Version != null)
+    {
+        Version = Version + "-" + ViewBag.Version;
+    }
+
+    var vas_flag = "";
+    if (ViewBag.Vas != null)
+    {
+        vas_flag = ViewBag.Vas;
+    }
+
+    var topup_flag = "";
+    if (ViewBag.TopUp != null)
+    {
+        topup_flag = ViewBag.TopUp;
+    }
+
+    var toppup = "";
+    if (@Model != null)
+    {
+        if (@Model.TopUp != null)
+        {
+            toppup = @Model.TopUp;
+        }
+    }
+
+    var chkCoverage = false;
+    if (null != ViewBag.chkCoverage)
+    {
+        chkCoverage = ViewBag.chkCoverage;
+    }
+
+    var FBB_Input_MobileNo = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_Input_MobileNo = FbbConstant.Any(f => f.Field == "Input_MobileNo") ? FbbConstant.First(f => f.Field == "Input_MobileNo").Validation : "";
+    }
+
+    //R24.04 Add loading block screen on /topup, /topupinternet and /topupmesh by max kunlp885
+    bool hasLoadingBlock = ViewBag.hasLoadingBlock != null;
+}
+
+<style>
+    /*a, a:link, a:active, a:visited, a:hover, a:focus {
+        color: #fff;
+    }*/
+
+    .nav-nopadding {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        width: 20%;
+        background-color: #8DC63F;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .vertical-alignment-helper {
+        display: table;
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .vertical-align-center {
+        display: table-cell;
+        vertical-align: middle;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        pointer-events: all;
+    }
+
+    .fa-6 {
+        font-size: 10em;
+    }
+
+    .preview-img {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+    }
+
+    .preview-pdf {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+        border: 1px solid black;
+    }
+
+    #ais_topbar {
+        display: block;
+    }
+
+        #ais_topbar .topbar_ribbon {
+            padding-left: 10px;
+            float: left;
+            height: 60px;
+        }
+
+    #ribbonking {
+        width: 100%;
+        height: 60px;
+        background: url("/Images/bg1366.jpg") no-repeat center;
+        background-color: #000;
+    }
+
+    #ribbonking_wrapper {
+        height: 60px;
+        margin: 0 auto;
+        max-width: 1140px;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //R24.04 Add loading block screen on /topup, /topupinternet and /topupmesh by max kunlp885
+        @if (hasLoadingBlock)
+        {
+            <text>
+            LockScreen(true);
+            //console.log('Max test: hasLoadingBlock');
+            </text>
+        }
+        //end R24.04 Add loading block screen on /topup, /topupinternet and /topupmesh by max kunlp885
+
+        if ("@Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString()" == "1") {
+            $("#LanguagePage").val(1);
+            ais_interface_setup('mini-menu', 'postpaid', 'th', '', false);
+        }
+        else {
+            $("#LanguagePage").val(2);
+            ais_interface_setup('mini-menu', 'postpaid', 'en', '', false);
+        }
+    });
+</script>
+
+<div id="ais_topbar">
+    @*<div id="ribbonking">
+            <div id="ribbonking_wrapper">
+                <div class="topbar_ribbon"><img src="~/Images/iconribbon.png" alt="ais logo"></div>
+            </div>
+        </div>*@
+    @if (chkCoverage)
+    {
+        if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_MenuTH")
+        }
+        else
+        {
+            @Html.Partial("_MenuEN")
+        }
+    }
+</div>
+
+<div id="ProgressIcon" class="modal fade">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="text-center" style="color:white;">
+                <div>
+                    <i class="fa fa-spinner fa-spin fa-6" style="position:inherit;"></i>
+                </div>
+                <div id="txtLoading" style="text-align:center;">
+                    LOADING
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="container">
+
+    @*R18.11 IdCard Reader on PC*@
+    <div id="divIdCardReaderPc" style="display: none; position: fixed; top: 0; left: 0; width: 100%; z-index: 5;">
+        <div class="modal-content" style="border: 0;">
+            <div class="progress" style="height: 4px; margin-bottom: 0px; background-color: #f5f5f5; border-radius: 0px;">
+                <div id="barIdCardReaderPc" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:0%; background-color: #8dc63f">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="box1N_holder">
+        <div class="row_ais">
+            <div class="column large-11 large-centered">
+                <div class="hidden-xs" style="display: none; margin-top: 50px;" id="status_plugandnplay">
+                    <img src="~/Images/Header_appform.jpg" class="img-responsive">
+                </div>
+                <div class="container" id="mainHeader">
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div id="wrapSwitchLanguage" class="col-xs-12 text-right nopading">
+                        <a id="btn_th" class="btn-sm btn-success" href="~/WBB/ChangeCurrentCulture?culture=1" role="button"
+                           style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">ภาษาไทย</a>&nbsp;&nbsp;
+                        <a id="btn_en" class="btn-sm btn-default" href="~/WBB/ChangeCurrentCulture?culture=2" role="button"
+                           style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">English</a>&nbsp;&nbsp;
+                        @if (VasDatalala22 == "Logout")
+                        {
+                            <a id="btn_en" class="btn-sm btn-info"
+                               href="/AccountService/Logout" role="button"><i class="fa fa-power-off"></i></a>
+                        }
+                    </div>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+
+                    <div class="col-md-2 hidden-xs hidden-sm" id="logo_div" style=" margin-top: 12px;">
+                        <img src="~/Content/images/postpaid/fibre_logo.png" class="img-responsive left">
+                    </div>
+
+                    @if (VasDatalala22 == "Logout")
+                    {
+                        <div class="col-md-9 col-xs-12 hidden-xs">
+                            <img src="~/img/choose-service_th.png" class="img-responsive center-block ">
+                        </div>
+                    }
+                    else
+                    {
+                        if (vas_flag == "4" || vas_flag == "2" || topup_flag == "1" && !chkCoverage)
+                        {
+
+                            <div class="col-md-10 col-xs-12 hidden-xs" id="add_service_th_div">
+
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="add_service_th_1_imgo">
+                                    <p><img src="~/Content/images/postpaid/step6_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">ตรวจสอบข้อมูล</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="add_service_th_2_imgo">
+                                    <p><img src="~/Content/images/postpaid/step3_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">เลือกบริการเสริม</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="add_service_th_3_imgo">
+                                    <p><img src="~/Content/images/postpaid/step5_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">สรุปข้อมูล</span></p>
+                                </div>
+
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%;" id="add_service_th_1_imgf">
+                                    <p><img src="~/Content/images/postpaid/step6_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">ตรวจสอบ</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%;" id="add_service_th_2_imgf">
+                                    <p><img src="~/Content/images/postpaid/step3_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">เลือกบริการเสริม</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%;" id="add_service_th_3_imgf">
+                                    <p><img src="~/Content/images/postpaid/step5_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">สรุปข้อมูล</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-9 col-xs-12 hidden-xs" id="add_service_en_div" style="display: none;">
+
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="add_service_en_1_imgo">
+                                    <p><img src="~/Content/images/postpaid/step6_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Checking Coverage</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="add_service_en_2_imgo">
+                                    <p><img src="~/Content/images/postpaid/step3_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Choose VAS Service</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="add_service_en_3_imgo">
+                                    <p><img src="~/Content/images/postpaid/step5_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Summary</span></p>
+                                </div>
+
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="add_service_en_1_imgf">
+                                    <p><img src="~/Content/images/postpaid/step6_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Checking Coverage</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="add_service_en_2_imgf">
+                                    <p><img src="~/Content/images/postpaid/step3_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Choose VAS Service</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="add_service_en_3_imgf">
+                                    <p><img src="~/Content/images/postpaid/step5_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Summary</span></p>
+                                </div>
+                            </div>
+                        }
+                        else if (!chkCoverage)
+                        {
+                            <div class="col-md-10 col-xs-12 hidden-xs" id="status_th_div">
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_th_1_imgo">
+                                    <p><img src="~/Content/images/postpaid/step1_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">ตรวจสอบพื้นที่ให้บริการ</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_th_2_imgo">
+                                    <p><img src="~/Content/images/postpaid/step2_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">เลือกแพ็กเกจหลัก</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_th_3_imgo">
+                                    <p><img src="~/Content/images/postpaid/step3_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">เลือกบริการเสริม</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_th_4_imgo">
+                                    <p><img src="~/Content/images/postpaid/step4_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">ข้อมูลส่วนตัว</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_th_5_imgo">
+                                    <p><img src="~/Content/images/postpaid/step5_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">สรุปข้อมูล</span></p>
+                                </div>
+
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_th_1_imgf">
+                                    <p><img src="~/Content/images/postpaid/step1_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">ตรวจสอบพื้นที่ให้บริการ</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_th_2_imgf">
+                                    <p><img src="~/Content/images/postpaid/step2_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">เลือกแพ็กเกจหลัก</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_th_3_imgf">
+                                    <p><img src="~/Content/images/postpaid/step3_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">เลือกบริการเสริม</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_th_4_imgf">
+                                    <p><img src="~/Content/images/postpaid/step4_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">ข้อมูลส่วนตัว</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_th_5_imgf">
+                                    <p><img src="~/Content/images/postpaid/step5_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">สรุปข้อมูล</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-10 col-xs-12 hidden-xs" id="status_en_div" style="display: none;">
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_en_1_imgo">
+                                    <p><img src="~/Content/images/postpaid/step1_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Checking Coverage</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_en_2_imgo">
+                                    <p><img src="~/Content/images/postpaid/step2_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Choose Package</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_en_3_imgo">
+                                    <p><img src="~/Content/images/postpaid/step3_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Choose VAS Service</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_en_4_imgo">
+                                    <p><img src="~/Content/images/postpaid/step4_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Your Information</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_en_5_imgo">
+                                    <p><img src="~/Content/images/postpaid/step5_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Summary</span></p>
+                                </div>
+
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_en_1_imgf">
+                                    <p><img src="~/Content/images/postpaid/step1_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Checking Coverage</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_en_2_imgf">
+                                    <p><img src="~/Content/images/postpaid/step2_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Choose Package</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_en_3_imgf">
+                                    <p><img src="~/Content/images/postpaid/step3_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Choose VAS Service</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_en_4_imgf">
+                                    <p><img src="~/Content/images/postpaid/step4_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Your Information</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_en_5_imgf">
+                                    <p><img src="~/Content/images/postpaid/step5_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Summary</span></p>
+                                </div>
+                            </div>
+                        }
+                    }
+
+
+                </div>
+                <input type="hidden" id="LanguagePage" />
+
+
+
+            </div>
+        </div>
+
+        <div class="panel_ais">
+            <div class="row_ais">
+                <div class="column large-11 large-centered">
+                    <div class="content-menu">
+                        <div class="row_ais">
+                            <div class="column large-12 medium-12 small-12">
+                                <div class="detail-for-menu">
+                                    <div class="innercontent">
+                                        <div class="row_ais">
+                                            <div class="column large-10">
+                                                <div id="renderBody" class="card"></div>
+                                                @RenderBody()
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        @functions{
+            public string GetAntiForgeryToken()
+            {
+                string cookieToken, formToken;
+                AntiForgery.GetTokens(null, out cookieToken, out formToken);
+                return cookieToken + "," + formToken;
+            }
+        }
+
+    </script>
+    <input type="hidden" id="forgeryToken" value="@GetAntiForgeryToken()" />
+
+
+    <!--  Put Content Here จบเนื้อหา  -->
+    <div style="clear:both;"></div>
+    <div id="aisfooter">
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_FooterTH")
+        }
+        else
+        {
+            @Html.Partial("_FooterEN")
+        }
+
+    </div>
+    <div class="truehits-bg">&nbsp;</div>
+
+</div>
+
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+    var language = "";
+    var oldIE;
+
+    $(function () {
+
+        ais_interface_process('mini-menu', 'postpaid', 'th', '', false);
+
+        changeLanguage();
+
+        if ($("#LanguagePage").val() == 1)
+            language = "th";
+        else
+            language = "en";
+
+        $('.responsive').slick({
+            dots: false,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 5,
+            slidesToScroll: 1,
+
+            responsive: [
+              {
+                  breakpoint: 1024,
+                  settings: {
+                      slidesToShow: 5,
+                      slidesToScroll: 1
+                  }
+              },
+              {
+                  breakpoint: 720,
+                  settings: {
+                      slidesToShow: 3,
+                      slidesToScroll: 2,
+                      dots: false,
+                      infinite: true
+
+                  }
+              }
+            ]
+        });
+
+        $('#page1').bind('show', function () {
+            changePageHeader(1);
+        });
+
+        $('#page2').bind('show', function () {
+            changePageHeader(2);
+        });
+
+        //R18.1 FTTB Sell Router
+        $('#pageSelectRouter').bind('show', function () {
+            changePageHeader(2);
+        });
+
+        $('#page2_1').bind('show', function () {
+            if ("@ViewBag.Vas" == "2" || "@ViewBag.TopUp" == "1") {
+                changePageHeader_Vas(2);
+            } else {
+                changePageHeader(3);
+            }
+        });
+
+        $('#page2_2').bind('show', function () {
+            if ("@ViewBag.Vas" == "2" || "@ViewBag.TopUp" == "1") {
+                changePageHeader_Vas(2);
+            } else {
+                changePageHeader(3);
+            }
+        });
+
+        $('#PackageDetailPage').bind('show', function () {
+            changePageHeader(3);
+        });
+
+        $('#page3').bind('show', function () {
+            changePageHeader(4);
+        });
+
+        $('#page4').bind('show', function () {
+            if ("@ViewBag.Vas" == "2" || "@ViewBag.TopUp" == "1" || "@ViewBag.Vas" == "4") {
+                changePageHeader_Vas(3);
+            } else {
+                if($("#page4").is(":visible"))
+                    changePageHeader(5);
+            }
+        });
+
+        $('#SelectOntopPage').bind('show', function () {
+            changePageHeader_Vas(2);
+        });
+
+        $('#OntopDetailPage').bind('show', function () {
+            changePageHeader_Vas(2);
+        });
+
+        // Detecting IE
+        if ($('html').is('.lt-ie7, .lt-ie8, .lt-ie9')) {
+            oldIE = true;
+        }
+
+        if (oldIE) {
+            if (sessionStorage.getItem('detectedIE') != 'detected') {
+                var oldIENoticeMassage = 'เว็ปไซต์สามารถใช้งานได้ดีกับ Microsoft Internet Explorer 9 ขึ้นไป หรือ Google Chrome / Firefox เวอร์ชั่นล่าสุด',
+                oldIEBtnMessage = 'ตกลง';
+
+                if (language == 'en') {
+                    oldIENoticeMassage = 'This site is best viewed using Internet Explorer 9, Chrome, Safari and browser later.';
+                    oldIEBtnMessage = 'Okay';
+                }
+
+                sessionStorage.setItem('detectedIE', 'detected');
+                bootbox.dialog({
+                    message:
+                            "<p class='clearfix'></p>" +
+                            "<div class='add-border-rounded-green'>" +
+                                "<p class='clearfix'></p>" +
+                                "<h3 class='text-center'>" +
+                                oldIENoticeMassage +
+                                "</h3>" +
+                            "</div>" +
+                            "<p class='clearfix'></p>",
+                    buttons: {
+                        success: {
+                            label: oldIEBtnMessage,
+                            className: "btn-success",
+                        }
+                    }
+                });
+            }
+        }
+    });
+    </text>)
+</script>
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#ProgressIcon #txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+
+    function configScreenPage() {
+        window.scrollTo(0, 0);
+        $("#silder").css("visibility", "hidden");
+        $("body").css("overflow-y", "hidden");
+    }
+
+    function changeLanguage() {
+        if ($("#LanguagePage").val() == "1") {
+            $("#btn_th").addClass('btn-success');
+            $("#btn_en").removeClass('btn-success').addClass('btn-default');
+            $("#footer_th").show();
+            $("#footer_en").hide();
+        }
+        else {
+            $("#btn_th").removeClass('btn-success').addClass('btn-default');
+            $("#btn_en").addClass('btn-success');
+            $("#footer_th").hide();
+            $("#footer_en").show();
+        }
+    }
+
+    function hideHeader() {
+        $("#status_th_div").children().hide();
+        $("#status_en_div").children().hide();
+        $("#add_service_th_div").children().hide();
+        $("#add_service_en_div").children().hide();
+        $("#logo_div").children().hide();
+    }
+
+    function changePageHeader(operNo) {
+        toastr.clear();
+
+        if ('@ViewBag.IsCheckCoverage' == 'Y') {
+            $("#wrapSwitchLanguage").show();
+        }
+        else {
+            if (operNo == 1 && "@ViewBag.Vas" != "3") {
+                $("#wrapSwitchLanguage").show();
+            }
+            else {
+                $("#wrapSwitchLanguage").hide();
+            }
+            if (operNo == 1 && "@ViewBag.Vas" == "") {
+                $("#wrapSwitchLanguage").hide();
+            }
+
+            if (operNo == 1 && "@ViewBag.Vas" == "1") {
+                $("#wrapSwitchLanguage").hide();
+            }
+            if (operNo == 1 && "@ViewBag.Vas" == "" && "@toppup" == "7") {
+                $("#wrapSwitchLanguage").show();
+            }
+        }
+        $("#logo_div").show();
+        $("#mainHeader").show();
+        $("#status_th_div").children().hide();
+        $("#status_en_div").children().hide();
+        $("#status_plugandnplay").hide();
+        $(".content-menu").removeAttr("style");
+
+        if ($("#LanguagePage").val() === "1") {
+            $("#status_th_div").show();
+            $("#status_en_div").hide();
+            for (var i = 1; i <= operNo; i++) {
+                $("#status_th_div").children("#status_th_" + i + "_imgo").show();
+            }
+            for (var i = operNo + 1; i <= 5; i++) {
+                $("#status_th_div").children("#status_th_" + i + "_imgf").show();
+            }
+
+        } else {
+            $("#status_th_div").hide();
+            $("#status_en_div").show();
+            for (var i = 1; i <= operNo; i++) {
+                $("#status_en_div").children("#status_en_" + i + "_imgo").show();
+            }
+            for (var i = operNo + 1; i <= 5; i++) {
+                $("#status_en_div").children("#status_en_" + i + "_imgf").show();
+            }
+        }
+    }
+
+    function changePageHeader_Vas(operNo) {
+        toastr.clear();
+        if (operNo == 1) {
+            $("#wrapSwitchLanguage").show();
+        } else {
+            $("#wrapSwitchLanguage").hide();
+        }
+        $("#add_service_th_div").children().hide();
+        $("#add_service_en_div").children().hide();
+        if ($("#LanguagePage").val() === "1") {
+            $("#add_service_th_div").show();
+            $("#add_service_en_div").hide();
+            for (var i = 1; i <= operNo; i++) {
+                $("#add_service_th_div").children("#add_service_th_" + i + "_imgo").show();
+                console.log("Show ON : " + i)
+            }
+            for (var i = operNo + 1; i <= 3; i++) {
+                $("#add_service_th_div").children("#add_service_th_" + i + "_imgf").show();
+                console.log("Show Off : " + i)
+            }
+        } else {
+            $("#add_service_th_div").hide();
+            $("#add_service_en_div").show();
+            for (var i = 1; i <= operNo; i++) {
+                $("#add_service_en_div").children("#add_service_en_" + i + "_imgo").show();
+            }
+            for (var i = operNo + 1; i <= 3; i++) {
+                $("#add_service_en_div").children("#add_service_en_" + i + "_imgf").show();
+            }
+        }
+    }
+
+    function ValidationProcessing(validateModel, err) {
+        var chk = true;
+        var error = "#" + err;
+        var temp = "";
+        $(error).html(temp);
+        $(validateModel).each(function (index, e) {
+            if (e.id == undefined) {
+                var vgroup = e.vgroup;
+                if (vgroup != undefined) {
+                    var tempkid = "";
+                    var vchk = false;
+                    $.each(vgroup, function (j, k) {
+                        var kid = "#" + k.id;
+                        var kvalue = $(kid).val();
+                        if (j == 0) tempkid = $(kid);
+
+                        if ($.trim(kvalue) != "")
+                            vchk = true;
+                    });
+                    if (vchk) {
+                        $(tempkid)[0].className = "form-control";
+                    } else {
+                        chk = false;
+                        $(tempkid)[0].className = "form-control errorinput";
+                        if ($("#LanguagePage").val() == "1")
+                            temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                        else
+                            temp = "Please Fill In All Required Fields."
+                    }
+                }
+            } else {
+                var id = "#" + e.id;
+                var value = $(id).val();
+                var lb = $(id)[0].placeholder;
+                var cond = e.condition;
+                var required = e.required;
+                if (required == undefined) required = true;
+                if ($.trim(value) == "" && required) {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                            theme: "classic"
+                        });
+                    } else if ($(id)[0].className == "form-control" || $(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control errorinput";
+                    } else {
+                        $(id)[0].className = "form-control errorinput";
+                    }
+
+                    if ($("#LanguagePage").val() == "1") {
+                        temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                    }
+                    else {
+                        temp = "Please Fill In All Required Fields."
+                    }
+                    chk = false;
+                } else if (cond != undefined) {
+                    var cchk = true;
+                    if ((!required && value != "") || required) {
+                        if (cond == "IDCard")
+                            cchk = validateIdCard(value);
+                        else if (cond == "Email")
+                            cchk = validateEmail(value);
+                        else if (cond == "Birthday")
+                            cchk = validateBirthDay(value);
+                        else if (cond == "Place")
+                            cchk = validatePlace(value);
+                        else if (cond == "HomeNo")
+                            cchk = validateHomeNumber(value);
+                        else if (cond == "LatLong")
+                            cchk = validateLatLong(value);
+                        else if (cond == "Number")
+                            cchk = validateNumber(value);
+                        else if (cond == "Name")
+                            cchk = validateName(value);
+                        else if (cond == "FreePhone")
+                            cchk = validateFreePhone(value);
+                        else if (cond == "MobileNumber") {
+                            cchk = chkInputMobile(value);
+                        }
+                        else if (cond == "HomePhone") {
+                            cchk = chkInputHomePhone(value);
+                        }
+                        else if (cond == "HomePhoneFixedline") {
+                            cchk = chkInputHomePhoneFixedline(value);
+                        }
+
+                    }
+
+                    if (!cchk) {
+                        $(id)[0].className = "form-control errorinput";
+                        chk = false;
+
+                        if ($("#LanguagePage").val() == "1")
+                            temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                        else
+                            temp = "Please Fill In All Required Fields."
+                    } else {
+                        if ($(id)[0].className == "form-control"
+                                || $(id)[0].className.indexOf("errorinput") > -1) {
+                            $(id)[0].className = "form-control";
+                        } else
+                            $(id)[0].className = "form-control";
+                    }
+                } else {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                        });
+                    } else if ($(id)[0].className == "form-control errorinput") {
+                        $(id)[0].className = "form-control";
+                    } else if ($(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control";
+                    }
+                }
+            }
+        });
+
+        if (temp) {
+            toastrErrorMessage(temp);
+        }
+        return chk;
+    }
+
+    function validateEmail(email) {
+        var filter = /^(((([a-zA-Z0-9\_\-]{1,50})+(([\.]{1,50}[a-zA-Z0-9\_\-]{1,50}){0,50})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        if (email.substr(0, 2) == "-@@" || email.substr(0, 2) == "_@@") {
+            return false;
+        }
+        if (filter.test(email)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateHomeNumber(value) {
+        var rex = /^[0-9/\-]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumber(value) {
+        var RexStr = "@FBB_Input_MobileNo";
+        var filterM = new RegExp(RexStr, "g");
+        if (value.match(filterM) != null && value.match(filterM).length > 0) {
+            if (value.match(filterM)[0].length < 10) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else
+            return false;
+    }
+
+    function validatePlace(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\/\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateLatLong(value) {
+        var rex = /^(-)?[0-9]*[.]{1}[0-9]{6}$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateNumber(value) {
+        var rex = /^[0-9]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateName(value) {
+        var rex = /^[ก-๙a-zA-Z\.\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateFreePhone(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumberOR(id, error) {
+
+        var temp = "";
+        var iid = "#" + id;
+        if ($(iid).val() != "") {
+            if ($(iid).val().length < 10) {
+
+                $(iid)[0].className = "form-control errorinput";
+
+                if ($("#LanguagePage").val() == "1")
+                    temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                else
+                    temp = "Please fill in all required fields."
+
+                toastrErrorMessage(temp);
+                return false;
+            }
+            else if ($(iid).val().length == 10)
+            {
+                var value = $(iid).val();
+                var chkMobile2 = false;
+                ////// Begin add new function to check mobile2 by using LOV /////
+                chkMobile2 = chkInputMobile(value);
+                if (chkMobile2 == false) {
+                    $(iid)[0].className = "form-control errorinput";
+
+                    if ($("#LanguagePage").val() == "1")
+                        temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                    else
+                        temp = "Please fill in all required fields."
+
+                    toastrErrorMessage(temp);
+                    return false;
+
+                } else {
+                    $(iid)[0].className = "form-control";
+                    return true;
+                }
+                ////// End add new function to check mobile2 by using LOV /////
+            }
+            else {
+                $(iid)[0].className = "form-control";
+                $("#" + error).html(temp);
+                return true;
+            }
+        }
+        else {
+            $(iid)[0].className = "form-control";
+            $("#" + error).html(temp);
+            return true;
+        }
+    }
+
+    function toastrErrorMessage(message) {
+        toastr.options.positionClass = "toast-top-center";
+        toastr.options.closeButton = true;
+        toastr.error(message)
+    }
+
+    function chkInputMobile(MobileNo) {
+        var cchk = false;
+        var value = MobileNo;
+        var validmobile = validateMobileNumber(value);
+        if (validmobile == false) {
+            cchk = false;
+        } else {
+            $.ajax({
+                url: '/CustomerRegister/CheckInputMobileList',
+                data: {
+                    lMobile: value
+                },
+                dataType: 'json',
+                async: false,
+                type: 'POST',
+                success: function (data) {
+                    if (data) {
+                        cchk = false;
+                    }
+                    else {
+                        cchk = true;
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        return cchk;
+    }
+
+    function chkInputHomePhone(HomePhone) {
+        if (HomePhone.length < 9) {
+                return false;
+            }
+            else {
+                return true;
+            }
+    }
+
+    function chkInputHomePhoneFixedline(HomePhoneFixedline) {
+        if (HomePhoneFixedline.length > 0 && HomePhoneFixedline.length < 9) {
+                return false;
+            }
+            else {
+                return true;
+            }
+    }
+
+    var get_current_language = $.ajax({
+        type: "GET",
+        url: "/WBB/GetCurrentCulture",
+        async: false,
+        success: function (x) {
+            $("#LanguagePage").val(x);
+            return x;
+        }
+    });
+    </text>)
+</script>

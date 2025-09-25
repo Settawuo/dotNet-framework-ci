@@ -1,0 +1,36 @@
+﻿@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.MemberGetMemberModel
+@{
+    
+    string L_MGM_CONDITION_HEADER = "";
+
+    var L_MGM_CONDITION = new List<LovScreenValueModel>();
+
+
+    if (ViewBag.LabelFBBOR022 != null)
+    {
+        var LabelFBBOR022 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR022;
+        L_MGM_CONDITION_HEADER = LabelFBBOR022.Any(c => c.Name == "L_MGM_CONDITION_HEADER") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_MGM_CONDITION_HEADER").DisplayValue : "";
+        L_MGM_CONDITION = LabelFBBOR022.Where(w => w.Name == "L_MGM_CONDITION").OrderBy(o => o.OrderByPDF).ToList();
+    }
+}
+
+<div style="padding-top: 10px;">
+    <p class="clearfix"></p>
+    <div id="divRemark" class=" col-xs-12 ">
+        <div class="add-rounded-gray">
+            <p class="clearfix"></p>
+            <b>@Html.Raw(@L_MGM_CONDITION_HEADER)</b>
+            <div id="divMutipleRemarkDatail">
+                <ul style="list-style-type: decimal; padding-left: 40px;">
+                    @foreach (var remarkDatail in L_MGM_CONDITION)
+                    {
+                        <li>@Html.Raw(@remarkDatail.DisplayValue)</li>
+                    }
+                </ul>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+    <p class="clearfix"></p>
+</div>

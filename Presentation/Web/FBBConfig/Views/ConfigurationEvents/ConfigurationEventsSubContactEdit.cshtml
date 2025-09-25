@@ -1,0 +1,132 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationEventSubContactData
+@using WBBEntity.PanelModels;
+@{
+
+    string L_SUB_CONTRACT = "";
+    string L_SUB_TEAM = "";
+    string L_ENGINEER_START_JOB = "";
+    string L_ENGINEER_END_JOB = "";
+
+    string B_ADD = "";
+    string B_CANCEL = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_SUB_CONTRACT = configscreen.Any(f => f.Name == "L_SUB_CONTRACT") ? configscreen.First(f => f.Name == "L_SUB_CONTRACT").LovValue1 : "";
+        L_SUB_TEAM = configscreen.Any(f => f.Name == "L_SUB_TEAM") ? configscreen.First(f => f.Name == "L_SUB_TEAM").LovValue1 : "";
+        L_ENGINEER_START_JOB = configscreen.Any(f => f.Name == "L_ENGINEER_START_JOB") ? configscreen.First(f => f.Name == "L_ENGINEER_START_JOB").LovValue1 : "";
+        L_ENGINEER_END_JOB = configscreen.Any(f => f.Name == "L_ENGINEER_END_JOB") ? configscreen.First(f => f.Name == "L_ENGINEER_END_JOB").LovValue1 : "";
+
+        B_ADD = configscreen.Any(f => f.Name == "B_ADD") ? configscreen.First(f => f.Name == "B_ADD").LovValue1 : "";
+        B_CANCEL = configscreen.Any(f => f.Name == "B_CANCEL") ? configscreen.First(f => f.Name == "B_CANCEL").LovValue1 : "";
+
+    }
+}
+@using (Html.BeginForm("AddSubContactToTmp", "ConfigurationEvents", FormMethod.Post, new { id = "frmAddSubContactToTmp", @enctype = "multipart/form-data" }))
+{
+<div class="panel panel-default SubContactRow">
+    @Html.HiddenFor(t=> t.is_delete,@Model.is_delete)
+    @Html.HiddenFor(t=> t.service_option,@Model.service_option)
+    @Html.HiddenFor(t=> t.indexData,@Model.indexData)
+    @Html.HiddenFor(t=> t.event_code,@Model.event_code)
+    <div class="panel-body" style="min-height: 200px;">
+        <div class="row  i-gap-top-1">
+            <div class="col-sm-6 col-md-6">
+                <label>@L_SUB_CONTRACT</label>
+                @Html.HiddenFor(t=> t.sub_contact_id,@Model.sub_contact_id)
+                @Html.TextBox("sub_contact",Model.sub_contact , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <label>@L_SUB_TEAM</label>
+                @Html.HiddenFor(t=> t.sub_team_id,@Model.sub_team_id)
+                @Html.TextBox("sub_team",Model.sub_team , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+            </div>
+        </div>
+        @*end row1*@
+        <div class="row i-gap-top-1">
+            <div class="col-sm-6 col-md-6">
+                <label>@L_ENGINEER_START_JOB</label>
+                     @Html.TextBox("start_date_event",Model.start_date_event , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <label>@L_ENGINEER_END_JOB</label>
+                    @Html.TextBox("end_date_event",Model.end_date_event , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+            </div>
+        </div>
+        @*end row2*@
+        <div class="row i-gap-top-1">
+            <div class="col-sm-12 col-md-12">
+                @{Html.RenderPartial("_SubNameEdit", @Model.SubNameList);}
+            </div>
+        </div>
+        @*end row3*@
+        <div class="row i-gap-top-1">
+            <div class="col-sm-6 col-md-6">
+            </div>
+            <div class="col-sm-6 col-md-6 i-text-align-right">
+                <a class="btn btn-default" onclick="Add()"><i class="fa fa-plus fa-lg"></i>&nbsp;&nbsp;@B_ADD</a>&nbsp;&nbsp;
+                <a class="btn btn-default" onclick="Cancel()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CANCEL</a>
+            </div>
+        </div>
+        @*end row4*@
+    </div>
+</div>
+}
+<script>
+
+    var IndexData = '@Model.indexData';
+    var EventCode = '@Model.event_code';
+    $(document).ready(function () {
+        var ModeSubContact = '@Model.sub_contact_id';
+        $.ajaxSetup({
+            // Disable caching of AJAX responses
+            cache: false
+        });
+    });
+
+    function Add() {
+        var CheckSelect = false;
+        $(".SubCheck").each(function () {
+            if ($(this).is(":checked")) {
+                CheckSelect = CheckSelect || true;
+            }
+        });
+
+        if (CheckSelect) {
+
+            Loading();
+            $('#frmAddSubContactToTmp').submit();
+
+            @*var url = '@Url.Action("ConfigurationEventsEdit", "ConfigurationEvents")';
+            if (EventCode == "") {
+                url = url + "?EventCode=N&HasSearch=Y";
+            }
+            else {
+                url = url + "?EventCode=" + EventCode + "&HasSearch=Y";
+            }
+            window.location.href = url;*@
+
+        }
+        else {
+            showFeedback("warning", "Please select staff.");
+        }
+    }
+
+    function Cancel() {
+
+        Loading();
+        var url = '@Url.Action("ConfigurationEventsEdit", "ConfigurationEvents")';
+        if (EventCode == "") {
+            url = url + "?EventCode=N&HasSearch=Y";
+        }
+        else {
+            url = url + "?EventCode=" + EventCode + "&HasSearch=Y";
+        }
+        window.location.href = url;
+
+    }
+
+
+</script>

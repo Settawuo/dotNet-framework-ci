@@ -1,0 +1,1226 @@
+﻿@using WBBEntity.PanelModels.Account;
+
+@{
+    Layout = "~/Views/Shared/_LayoutReference.cshtml";
+
+    UserModel userModel = new UserModel();
+    if (ViewBag.User != null)
+    {
+        userModel = ViewBag.User;
+    }
+}
+
+<style>
+    .breadcrumb > li + li:before {
+        content: ">> ";
+    }
+</style>
+
+<script type="text/kendo-template" id="errorMessage">
+    <div class='k-block k-error-colored' style='margin: 0.5em; display: block; width: 100%;'>
+          <span class='k-icon k-warning'> </span> #=message#
+      </div>
+</script>
+
+<script type="text/kendo-template" id="successMessage">
+    <div class='k-block k-success-colored' style='margin: 0.5em; display: block; width: 100%;'>
+        <span class='k-icon k-warning'> </span> #=message#
+    </div>
+</script>
+
+<script>
+    $(function () {
+        $("#submitAction").show();
+        $("[id*=lbAc]").hide();
+        $("#closeSubMenu").click();
+        $("#closeSubReportMenu").click();
+
+    });
+
+    // popup kendo ui
+    function modePopup(mode) {
+        $('#modepopup').val(mode);
+    }
+
+    function changeTitlePopup(e) {
+        if ($('#modepopup').val() == 'add') {
+            $(".k-window-title").text("Add");//title
+            $("a.k-grid-update")[0].innerHTML = "<span class='k-icon k-update'></span>Add";//button
+        } else {
+            $(".k-window-title").text("Edit");//title
+            $("a.k-grid-update")[0].innerHTML = "<span class='k-icon k-update'></span>Update";//button
+        }
+    }
+    // popup kendo ui
+</script>
+<!-- popup no page view or / no permission for payg -->
+@if (Session["PageView"] == null)
+{
+    <div class="modal" tabindex="-1" role="dialog" id="modal-page-view">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>ไม่พบข้อมูล User ในระบบ / Username not found</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="~/Account/LogOut" type="button" class="btn btn-primary">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $("#modal-page-view").modal({ backdrop: 'static', keyboard: false })
+        });
+    </script>
+}
+
+<!-- popup kendo ui -->
+<input type="hidden" id="modepopup" value="add" />
+<!-- popup kendo ui -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid i-gap i-header">
+
+        <div class="row">
+
+            <div class="col-sm-6 col-md-4" style="padding: 0">
+                @* <img src="~/Content/images/logo.png" /> *@
+                <table>
+                    <tr>
+                        <td>
+                            <img src="~/Content/images/logo-ais.png" width="104" height="39" />
+                        </td>
+                        <td>
+                            <h4 style="margin: 7px 0 0 12px; text-transform: uppercase;">Admin Fixed Broadband</h4>
+                            <h5 style="margin: 1px 0 0 12px; color: #bbb; font-size: 80%">© 2014 Advanced Info Service PLC. All Rights Reserved.</h5>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-sm-6 col-md-8" style="text-align: right; padding-top: 5px;">
+            </div>
+
+            @* //Common *@
+
+        </div>
+
+    </div>
+</div>
+
+<div class="i-enter-8"></div>
+
+<div class="container-fluid i-gap-body-left">
+
+    <div class="alert alert-danger alert-dismissable i-hidden" id="error-box-bar">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <span id="error-msg-bar"></span>
+    </div>
+
+    <div class="alert alert-success alert-dismissable i-hidden" id="success-box-bar">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <span id="success-msg-bar"></span>
+    </div>
+
+    @RenderBody()
+</div>
+
+<div class="i-enter-6"></div>
+
+<div class="container-fluid i-gap-body-left i-footer">
+    <p>
+        © 2014 Advanced Info Service PLC. All Rights Reserved.
+        <span class="pull-right">
+            Admin Fixed Broadband Web Config @Session["ProgramVersion"]
+
+        </span>
+    </p>
+</div>
+
+
+<div class="modal fade" id="MessageFeedbackPopUp" tabindex="-1" role="dialog" aria-labelledby="MessageFeedbackPopUpLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="headerMessageFeedback">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="MessageFeedbackPopUpLabel">Notification</h4>
+            </div>
+            <div class="modal-body">
+                <label id="lbMessageFeedback"></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="mainMenu" class="span2">
+    <div id="submenu">
+        <div class="panel-setting">
+            <div class="label-username"></div>
+            <div class="icon-settion">
+                <a href="#" onclick="CloseSubMenu();" id="closeSubMenu"><i class="fa fa-arrow-circle-o-left fa-lg"></i></a>
+            </div>
+
+        </div>
+
+        <ul id="detailProfile" class="i-hidden">
+            <li>
+                <ul>
+                    <li><a class="override-submenu-gap"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;@userModel.UserFullNameInThai</a></li>
+                    <li><a class="override-submenu-gap"><i class="fa fa-envelope fa-lg"></i>&nbsp;&nbsp;Email: @userModel.Email</a></li>
+                    <li><a class="override-submenu-gap"><i class="fa fa-phone fa-lg"></i>&nbsp;&nbsp;&nbsp;Tel.  @userModel.MobileNumber</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul id="navigationSubmenu">
+            <li>
+                @if (userModel.ProgramModel != null)
+                {
+                    foreach (var a in userModel.ProgramModel)
+                    {
+                        if (a.ProgramModels.Any())
+                        {
+                            <ul id='SUB_@a.ProgramCode'>
+                                @foreach (var s in a.ProgramModels)
+                                {
+                                    if (s.ProgramCode == "FBB_RPTPORT001")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "MyReport", "Report", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_RPTPORT002")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "RptPerformanceByRegion", "Report", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_RPTPORT003")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Assignment", "Report", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_RPTPORT004")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "SummaryPort", "Report", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_RPTPORT005")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "ReportActive", "Report", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+
+                                    else if (s.ProgramCode == "FBB_CFG001_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "Coverage_Search", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_CFG001_2")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "CoverageManagement", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_CFG001_3")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "CoverageManagement", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_CFG001_4")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "CoverageManagement", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_CFG002_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "DSLAMMaster", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_CFG003_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "DSLAMModel", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_CFG004_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "CARDModel", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+
+                                    else if (s.ProgramCode == "FBB_CFG005_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "FTTxCoverage", "FTTx", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+
+                                    else if (s.ProgramCode == "FBB_CFG006_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "AirNetSearch", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_CFG006_2")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "", "", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_CFG006_3")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "TAirnet", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBBOR012")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ConfigurationPackages", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBBOR012")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ConfigurationPackages", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBBOR013")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ConfigurationEvents", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBBSAPONLINE_CF_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ConfigurationSAPOnline", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+
+                                    else if (s.ProgramCode == "FBBREPORT_SUBMIT_FOA")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "SubmitFOAReport", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "RESEND_FOA")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "Resendfoa", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "REVERSE_ASSET")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ReverseAsset", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "UPDATE_ASSET")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "UpdateAsset", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_LMR_EMAIL_INFO")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ConfigurationLMREmail", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_CONFIG_COST_INS")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ConfigurationCostInstallation", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FOAWRITEOFF")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "FoaWriteOff", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_SUBCONTRACT_EMAIL_INFO")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ConfigurationSubContractEmailInfo", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "CONFIG_LOOKUP")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ConfigurationLookup", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "CONFIG_RULE_PRIORITY")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ConfigurationRulePriority", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    @*
+                                        else if (s.ProgramCode == "FBBDORM001_1")
+                                        {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "DormitoryMaster", new { }, new { @class = "override-submenu-gap" })</li>
+                                        }
+                                        else if (s.ProgramCode == "FBBDORM001_2")
+                                        {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "DormitorySubcontract", new { }, new { @class = "override-submenu-gap" })</li>
+                                        }
+                                        else if (s.ProgramCode == "FBBDORM001_3")
+                                        {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "ImportDormDTL", new { }, new { @class = "override-submenu-gap" })</li>
+                                        } *@
+
+                                    else if (s.ProgramCode == "FBBOR014_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "index", "GiftVoucher", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBBBULK001_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Login", "RegisterBulkCorp", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBB_RESEND_1")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "ResendOrder", "ResendOrder", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    else if (s.ProgramCode == "FBBREPORT_PAYG")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'PAYG'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (s.ProgramCode == "FBBREPORT_DORM")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'DORM'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (s.ProgramCode == "FBBDORM_ADMIN001")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'CONFIGDORM1'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (s.ProgramCode == "FBBREPORT_MRK")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            @*<a href="#" onclick="OpenSubReportMenuNKT('@s.ProgramName','@s.ProgramCode','SUB_Report_@s.ProgramCode', true);" title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName</a>*@
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'NKT'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (s.ProgramCode == "FBBREPORT_SALE")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'SALE'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (s.ProgramCode == "FBBDORM_ADMIN002")
+                                    {
+                                        @*<li>@Html.ActionLink((string)s.ProgramName, "ViewPrepaidNonMobile", "ImportDormDTL", new { }, new { @class = "override-submenu-gap" })</li> *@
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'CONFIGDORM2'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (s.ProgramCode == "FBBREPORT_SLA_AP")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'SLA'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+
+                                    else if (s.ProgramCode == "FBBREPORT_PAYMENT")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'PAYMENT'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (s.ProgramCode == "FBBREPORT_PROBLEM")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'PROBLEM'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (s.ProgramCode == "FBBREPORT_LOG_INTERFACE")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'LOGINTERFACE'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    @*else if (s.ProgramCode == "FBBREPORT_RESEND_SFF_SUBMIT_FOA")
+                                        {
+                                            <li id="@s.ProgramCode">
+                                                <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'RESENDSFFSUBMITFOA'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                    @s.ProgramName</a>
+                                            </li>
+                                        }*@
+                                    else if (s.ProgramCode == "FIXED_ASSET_INVENTORY")
+                                    {
+                                        <li id="@s.ProgramCode">
+                                            <a href="#" onclick=" OpenSubReportMenu('@s.ProgramName', '@s.ProgramCode', 'SUB_Report_@s.ProgramCode', 'FIXASSET'); " title="@s.ProgramName" class="override-submenu-gap">
+                                                @s.ProgramName
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (s.ProgramCode == "FIXED_ASSET_LASTMILE")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "LastMileByDistance", new { }, new { @class = "override-submenu-gap" })</li>
+                                    }
+                                    // ReportInstallationCostbyOrder
+                                    else if (s.ProgramCode == "REPORT_INSTALL_COST_ORDER")
+                                    {
+                                        <li>@Html.ActionLink((string)s.ProgramName, "Index", "ReportInstallationCostbyOrder", new { }, new { @class = "override-submenu-gap" })</li>
+
+                                    }
+                                }
+
+                            </ul>
+                        }
+                    }
+                }
+            </li>
+        </ul>
+
+    </div>
+    <div id="menu">
+        <ul class="navscroll" style="background-color: #424450; height: auto !important; margin: 0px; left: 0px; list-style: outside none none; z-index: 99999; position: relative; padding: 40px 0px 5px;">
+            <li>
+                <a href="#" id="scrollUp" style="padding: 0 0 0 29px; color: white;">
+                    <i class="fa fa-caret-up fa-2x"></i>
+                </a>
+            </li>
+        </ul>
+        <ul id="navigation" style="padding-top:70px">
+            @if (userModel.ProgramModel != null)
+            {
+                foreach (var a in userModel.ProgramModel)
+                {
+                    if (a.ProgramCode == "FBB_RPTPORT000")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-bar-chart-o fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+                    }
+                    else if (a.ProgramCode == "FBB_CFG001_0")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-cogs fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+                    }
+                    else if (a.ProgramCode == "FBB_CFG005_0")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-globe fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+                    }
+                    else if (a.ProgramCode == "FBB_CFG006_0")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-rss fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+
+                    }
+                    else if (a.ProgramCode == "FBBOR012")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-cog fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+
+                    }
+                    else if (a.ProgramCode == "FBBDORM001")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-building fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+
+                    }
+                    else if (a.ProgramCode == "FBBOR014")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-gift fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+
+                    }
+                    else if (a.ProgramCode == "FBBREPORT")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-file-text-o fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+                    }
+                    else if (a.ProgramCode == "FBBBULK001")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-cubes fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+                    }
+                    else if (a.ProgramCode == "FBB_RESEND")
+                    {
+                        <li id="@a.ProgramCode">
+                            <a href="#" onclick=" OpenSubMenu('@a.ProgramName', '@a.ProgramCode', 'SUB_@a.ProgramCode'); " title="@a.ProgramName" class="override-icon-menu">
+                                <i class="fa fa-pencil-square-o fa-2x"></i>
+                            </a>
+                            <div class="text"><span>@a.ProgramName</span></div>
+                        </li>
+                    }
+                }
+            }
+            <li class="updatebuild">
+                <a href="javascript:UpdateBuild();" title="Update Building" class="override-icon-menu"><i class="fa fa-plus-square fa-2x"></i></a>
+                <div class="text"><span>Update Building</span></div>
+            </li>
+
+            <li class="logout">
+                <a href="/Account/Logout" title="Logout" class="override-icon-menu"><i class="fa fa-power-off fa-2x"></i></a>
+                <div class="text"><span>Logout&nbsp;</span></div>
+            </li>
+        </ul>
+        <ul class="navscroll" style="background-color: #424450; height: auto !important; margin: 0px; left: 0px; list-style: outside none none; z-index: 99999; position: relative; padding: 5px 0px 5px;">
+            <li>
+                <a href="#" id="scrollDown" style="padding: 14px 0px 0px 29px; color: white;">
+                    <i class="fa fa-caret-down fa-2x"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div id="subrptmenu">
+        <div class="panelrpt-setting">
+            <div class="labelrpt-username"></div>
+            <div class="iconrpt-settion">
+                <a href="#" onclick="CloseSubRptMenu();" id="closeSubReportMenu"><i class="fa fa-arrow-circle-o-left fa-lg"></i></a>
+            </div>
+        </div>
+
+        <div id="reportmenu">
+            @if (userModel.ProgramModel != null)
+            {
+
+                foreach (var a in userModel.ProgramModel)
+                {
+                    if (a.ProgramModels.Any())
+                    {
+                        <div>
+                            @foreach (var rpt in a.ProgramModels)
+                            {
+                                if (rpt.ProgramCode == "FBBREPORT_PAYG" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptPG in rpt.ProgramModels)
+                                        {
+                                            if (rptPG.ProgramCode == "FBBREPORT_PAYG1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptPG.ProgramName, "LastmileAndCPETransactions", "PAYGReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptPG.ProgramCode == "FBBREPORT_PAYG2")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptPG.ProgramName, "DetailLastmileAndCPETransactions", "PAYGReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptPG.ProgramCode == "FBBREPORT_PAYG3")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptPG.ProgramName, "InputFileLoad", "PAYGReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptPG.ProgramCode == "FBBREPORT_PAYG4")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptPG.ProgramName, "UpdatePaidStatus", "PAYGReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptPG.ProgramCode == "FBBREPORT_PAYG5")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptPG.ProgramName, "OLTReport", "PAYGReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptPG.ProgramCode == "FBBREPORT_PAYG6")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptPG.ProgramName, "OSPReport", "PAYGReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptPG.ProgramCode == "FBBREPORT_PAYG7")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptPG.ProgramName, "index", "MasterConfigPhase", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FBBREPORT_DORM" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBREPORT_DORM1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "CustomerInstallTrack", "DormitoryReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FBBREPORT_DORM2")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "CustomerNotRegister", "DormitoryReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FBBREPORT_DORM8")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "SumInstallPerformance", "DormitoryReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FBBREPORT_DORM9")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "OverviewStatusReport", "DormitoryReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+
+                                        }
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FBBDORM_ADMIN001" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBDORM_ADMIN001_1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "index", "DormitoryMaster", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FBBDORM_ADMIN001_2")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "index", "DormitorySubcontract", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+
+                                            else if (rptDorm.ProgramCode == "FBBDORM_ADMIN001_3")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "index", "ConfigurationAddressID", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FBBDORM_ADMIN001_4")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "index", "DormitoryOnOffWebService", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FBBDORM_ADMIN001_5")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "RequestFormReport", "RequestFormReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                        }
+                                        @*<li>@Html.ActionLink((string) "Resend Order", "ResendOrder", "ResendOrder", new {}, new {@class = "override-subrptmenu-gap"})</li>*@
+                                        @*                                  <li>@Html.ActionLink((string)"Request Form Report", "RequestFormReport", "RequestFormReport", new { }, new { @class = "override-subrptmenu-gap" })</li> *@
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FBBREPORT_MRK" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBREPORT_MRK1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "index", "CheckDuplicateMobileReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FBBREPORT_MRK2")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "TrackingCompetitorReport", "MarketingReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FBBREPORT_SALE" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBREPORT_SALE_1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "SaleTracking", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FBBDORM_ADMIN002" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBDORM_ADMIN002_1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "ViewPrepaidNonMobile", "ImportDormDTL", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FBBDORM_ADMIN002_2")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "ImportDormDTL", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+
+                                        }
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FBBREPORT_SLA_AP" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBREPORT_SLA_AP_1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "AppointmentDetail", "SLAReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FBBREPORT_SLA_AP_2")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "AppointmentSummary", "SLAReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+
+                                        }
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FBBREPORT_PAYMENT" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBREPORT_PAYMENT1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Report", "Payment", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FBBREPORT_PROBLEM" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBREPORT_PROBLEM1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Report", "ReportProblem", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                                @*else if (rpt.ProgramCode == "FBBFULLCONN" && rpt.ProgramModels.Any())
+                                    {
+                                        <ul id="SUB_Report_@rpt.ProgramCode">
+                                           @foreach (var rptSTD in rpt.ProgramModels)
+                                           {
+                                               if (rptSTD.ProgramCode == "FBBFULLCONN_F1")
+                                               {
+                                                    <li>@Html.ActionLink((string)@rptSTD.ProgramName, "StandardFullConnection", "StandardAddress", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                               }
+
+
+                                           }
+                                        </ul>
+                                    }*@
+                                else if (rpt.ProgramCode == "FBBREPORT_LOG_INTERFACE" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBREPORT_LOG_INTERFACE1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "LogInterface", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FBBREPORT_RESEND_SFF_SUBMIT_FOA" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FBBREPORT_RESEND_SFF_SUBMIT_FOA1")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "ResendSFFSubmitFOA", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                                else if (rpt.ProgramCode == "FIXED_ASSET_INVENTORY" && rpt.ProgramModels.Any())
+                                {
+                                    <ul id="SUB_Report_@rpt.ProgramCode">
+                                        @foreach (var rptDorm in rpt.ProgramModels)
+                                        {
+                                            if (rptDorm.ProgramCode == "FIXED_ASSET_RPT")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "FixedAssetInventoryReport", "FixedAssetInventoryReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+
+                                            else if (rptDorm.ProgramCode == "RESEND_ORDER")
+                                            {
+
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "SubmitFOAReport", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "RESEND_FOA")
+                                            {
+
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "Resendfoa", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "REVERSE_ASSET")
+                                            {
+
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "ReverseAsset", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "UPDATE_ASSET")
+                                            {
+
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "UpdateAsset", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "FOAWRITEOFF")
+                                            {
+
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "FoaWriteOff", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "PATCH_CPE")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "PatchCpe", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                            else if (rptDorm.ProgramCode == "NAS_PORTAL")
+                                            {
+                                                <li>@Html.ActionLink((string)@rptDorm.ProgramName, "Index", "NasPortal", new { }, new { @class = "override-subrptmenu-gap" })</li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+
+                            }
+                        </div>
+                    }
+                }
+            }
+
+        </div>
+    </div>
+</div>
+<div class="profile-img">
+    <div class="circle" style="background-image: url('/Content/images/nopic.png')" onclick="OpenProfiles();"></div>
+</div>
+
+@(Html.Kendo().Window()
+    .Name("PopupLoading")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title(false)
+    .Modal(true)
+    .Visible(false)
+    .Content(@<text>
+<div style="margin: 0 80px;"><font size="4">Loading &nbsp;<i class="fa fa-refresh fa-spin"></i></font></div>
+</text>)
+    )
+
+<script type="text/javascript">
+    $(function () {
+        CloseSubMenu();
+        UpDown_Menu();
+    });
+
+    function UpDown_Menu()
+    {
+        // some problem can't use animate({scrolltop:50})
+        //console.log("Start window : " + $(window).height() + " top :" + $("#navigation").css('top') + " bottom :" + $("#navigation").css('bottom') + "Result : " + ($(window).height() - $("#navigation").css('top').replace("px", "")));
+        $("#scrollUp").bind("click", function (event) {
+            if ($("#navigation").css('top').replace("px", "") < 135) {
+                $("#navigation").animate({ "top": "+=50px" }, 150);
+            }
+            //console.log("window : " + $(window).height() + " top :" + $("#navigation").css('top') + " bottom :" + $("#navigation").css('bottom') + "Result : " + ($(window).height() - $("#navigation").css('top').replace("px", "")));
+        });
+
+        $("#scrollDown").bind("click", function (event) {
+            if ($("#navigation").css('top').replace("px", "") > -215) {
+                $("#navigation").animate({ "top": "-=50px" }, 150);
+            }
+            //console.log("window : " + $(window).height() + " top :" + $("#navigation").css('top') + " bottom :" + $("#navigation").css('bottom') + "Result : " + ($(window).height() - $("#navigation").css('top').replace("px", "")));
+        });
+    }
+    function OpenProfiles() {
+        OpenSubMenu();
+        $("#navigationSubmenu").hide();
+        $(".label-username").html("<span>@userModel.UserName</span>");
+        $("#detailProfile").show();
+    }
+    function CloseSubMenu() {
+        CloseSubRptMenu();
+        $("#submenu").animate({ "left": "-350px" }, 200);
+    }
+    function OpenSubMenu(value, id, sub_id) {
+        CloseSubMenu();
+        if (id != null || id != undefined) {
+            $("#detailProfile").hide();
+            $("#navigationSubmenu").show();
+            $("#navigationSubmenu ul").hide();
+            $("#" + sub_id).show();
+        }
+        $(".label-username").html("<span>" + value + "</span>");
+        $("#navigation li").removeClass("selected");
+        $("#" + id).addClass("selected");
+        $("#submenu").animate({ "left": "0px" }, 200);
+    }
+    function UpdateBuild() {
+        $.ajax({
+            url: '/MasterData/UpdateChangeBuilding',
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                if (response) {
+                    showFeedback("success", "Update completed");
+                }
+                else {
+                    showFeedback("warning", "Has no Update");
+                }
+
+            }
+            , error: function (err) {
+
+                showFeedback("error", err);
+            }
+        });
+    }
+
+    function CloseSubRptMenu() {
+        $("#subrptmenu").animate({ "left": "-250px" }, 200);
+    }
+
+    function OpenSubReportMenu(value, id, sub_id, menuName) {
+        if (id != null || id != undefined) {
+            switch (menuName) {
+                case "DORM":
+                    $("#SUB_Report_FBBREPORT_DORM").show();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "PAYG":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").show();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "CONFIGDORM1":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").show();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "CONFIGDORM2":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").show();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "NKT":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").show();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "SALE":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").show();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "STD":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBFULLCONN").show();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "PAYMENT":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").show();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "PROBLEM":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").show();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "SLA":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").show();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "LOGINTERFACE":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").show();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "RESENDSFFSUBMITFOA":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").show();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").hide();
+                    break;
+                case "FIXASSET":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    $("#SUB_Report_FBBFULLCONN").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBREPORT_PAYMENT").hide();
+                    $("#SUB_Report_FBBREPORT_PROBLEM").hide();
+                    $("#SUB_Report_FBBREPORT_SLA_AP").hide();
+                    $("#SUB_Report_FBBREPORT_LOG_INTERFACE").hide();
+                    $("#SUB_Report_FBBREPORT_RESEND_SFF_SUBMIT_FOA").hide();
+                    $("#SUB_Report_FIXED_ASSET_INVENTORY").show();
+                    break;
+
+            }
+
+            $(".labelrpt-username").html("<span>" + value + "</span>");
+            $("#navigationSubmenu li").removeClass("selected");
+            $("#" + id).addClass("selected");
+            $("#subrptmenu").animate({ "left": "350px" }, 200);
+        }
+
+    }
+
+    //function OpenSubReportMenu(value, id, sub_id, isDorm)
+    //{
+    //    if (id != null || id != undefined)
+    //    {
+    //        if (isDorm)
+    //        {
+    //            $("#SUB_Report_FBBREPORT_DORM").show();
+    //            $("#SUB_Report_FBBREPORT_PAYG").hide();
+    //            $("#SUB_Report_FBBDORM_ADMIN001").hide();
+    //            $("#SUB_Report_FBBREPORT_MRK").hide();
+    //        }
+    //        else
+    //        {
+    //            $("#SUB_Report_FBBREPORT_DORM").hide();
+    //            $("#SUB_Report_FBBREPORT_PAYG").show();
+    //            $("#SUB_Report_FBBDORM_ADMIN001").hide();
+    //            $("#SUB_Report_FBBREPORT_MRK").hide();
+    //        }
+
+    //        $("#" + sub_id).show();
+    //    }
+    //    $(".labelrpt-username").html("<span>" + value + "</span>");
+    //    $("#navigationSubmenu li").removeClass("selected");
+    //    $("#" + id).addClass("selected");
+    //    $("#subrptmenu").animate({ "left": "350px" }, 200);
+    //}
+    //function OpenSubReportMenuDorm(value, id, sub_id) {
+    //    if (id != null || id != undefined) {
+    //            $("#SUB_Report_FBBREPORT_DORM").hide();
+    //            $("#SUB_Report_FBBREPORT_PAYG").hide();
+    //            $("#SUB_Report_FBBDORM_ADMIN001").show();
+    //            $("#SUB_Report_FBBREPORT_MRK").hide();
+    //        $("#" + sub_id).show();
+    //    }
+    //    $(".labelrpt-username").html("<span>" + value + "</span>");
+    //    $("#navigationSubmenu li").removeClass("selected");
+    //    $("#" + id).addClass("selected");
+    //    $("#subrptmenu").animate({ "left": "350px" }, 200);
+    //}
+    //function OpenSubReportMenuNKT(value, id, sub_id) {
+    //    if (id != null || id != undefined) {
+    //        $("#SUB_Report_FBBREPORT_DORM").hide();
+    //        $("#SUB_Report_FBBREPORT_PAYG").hide();
+    //        $("#SUB_Report_FBBDORM_ADMIN001").hide();
+    //        $("#SUB_Report_FBBREPORT_MRK").show();
+    //        $("#" + sub_id).show();
+    //    }
+    //    $(".labelrpt-username").html("<span>" + value + "</span>");
+    //    $("#navigationSubmenu li").removeClass("selected");
+    //    $("#" + id).addClass("selected");
+    //    $("#subrptmenu").animate({ "left": "350px" }, 200);
+    //}
+
+</script>
+
+

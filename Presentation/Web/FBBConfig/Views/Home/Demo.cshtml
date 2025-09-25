@@ -1,0 +1,159 @@
+﻿<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span>Framework</span>
+            <a data-toggle="collapse" class="pull-right" href="#FrameworkPanel" onclick="onPanelToggle(this);" id="FrameworkPanelHeader"><i class="fa fa-chevron-down" id="CoverageResultPanelHeaderArrow"></i></a>
+        </h3>
+    </div>
+    <div id="FrameworkPanel" class="panel-collapse collapse in">
+        <div class="panel-body">
+            @Framework()
+        </div>
+    </div>
+</div>
+
+
+@helper Framework()
+{
+    
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            @(Html.Kendo().TabStrip()
+          .Name("tabstrip")
+          .Items(tabstrip =>
+          {
+              tabstrip.Add().Text("Tutorial")
+                  .Selected(true)
+                  .Content(@<text>
+
+            <div>
+                <p class="i-gap-top-1 i-gap-left-lg">Kendo UI Demos: <a href="http://demos.telerik.com/kendo-ui/web/overview/index.html" target="_blank">http://demos.telerik.com/kendo-ui/web/overview/index.html</a></p>
+                <p class="i-gap-top-1 i-gap-left-lg">Bootstrap: <a href="http://getbootstrap.com/css/" target="_blank">http://getbootstrap.com/css/</a></p>
+                <p class="i-gap-top-1 i-gap-left-lg">Font Awesome Icons: <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">http://fortawesome.github.io/Font-Awesome/icons/</a></p>
+            </div>
+
+            </text>);
+
+              tabstrip.Add().Text("Pop Up Message")
+                  .Content(@<text>
+
+            <div>
+                <p class="i-gap-top-1">
+                    <a class="btn btn-default" onclick="showFeedback('default','');">Default</a>
+                    <a class="btn btn-primary" onclick="showFeedback('primary','');">Primary</a>
+                    <a class="btn btn-success" onclick="showFeedback('success','');">Success</a>
+                    <a class="btn btn-info" onclick="showFeedback('info','');">Info</a>
+                    <a class="btn btn-warning" onclick="showFeedback('warning','');">Warning</a>
+                    <a class="btn btn-danger" onclick="showFeedback('error','');">Error</a>
+                </p>
+
+                <p>
+                    <a class="btn btn-default" onclick="showFeedback('','a','Set Title Text');">Set Title Text</a>
+                </p>
+            </div>
+
+            </text>);
+
+
+          })
+              )
+        </div>
+    </div>
+    
+    <div class="i-enter-4"></div>
+    
+    <div class="row">
+        <div class="col-sm-6 col-md-3">
+            <label>Subject <span id="requiredfor-Subject"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="Subject" class="k-textbox form-control" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-Subject"></div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <label>Description <span id="requiredfor-Description"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="Description" class="k-textbox form-control" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-Description"></div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <label>Send To <span id="requiredfor-SendTo"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="SendTo" class="k-textbox form-control" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-SendTo"></div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <label>CC To <span id="requiredfor-CC"></span></label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DropDownList()
+                      .Name("CC")
+                      .DataTextField("Text")
+                      .DataValueField("Value")
+                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                      .BindTo(new List<SelectListItem>() {
+                          new SelectListItem() {
+                              Text = "Please Select",
+                              Value = ""
+                          },
+                          new SelectListItem() {
+                              Text = "Thongchai Arunothaiwattana",
+                              Value = "1"
+                          },
+                          new SelectListItem() {
+                              Text = "Rink Frederick",
+                              Value = "2"
+                          }
+                      })
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-CC"></div>
+        </div>
+    </div>
+    
+    <div class="row i-gap-top-2">
+        <div class="col-sm-12 col-md-12">
+            <div class="btn-group">
+                <a class="btn btn-primary i-width-sm" onclick="Save();"><i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Save</a>
+                <a class="btn btn-info i-width-sm" onclick="Reset();"><i class="fa fa-undo fa-lg"></i>&nbsp;&nbsp;Reset</a>
+                <a class="btn btn-default i-width-md" onclick="Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Not Required</a>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+
+
+    $(function () {
+        var validateModel = [];
+        validateModel.push({ id: "Subject" });
+        validateModel.push({ id: "Description" });
+        validateModel.push({ id: "SendTo" });
+        validateModel.push({ id: "CC" });
+        SetRequired(validateModel);
+    });
+
+    function Save() {
+        var chk = ValidationProcessing("FrameworkPanel");
+        if (chk)
+            showFeedback("success", "Save Successfully.");
+        else
+            showFeedback("error", "Please correct the errors and try again.");
+    }
+
+    function Clear() {
+        RemoveRequired("FrameworkPanel");
+    }
+
+    function Reset() {
+        var validateModel = [];
+        validateModel.push({ id: "SendTo" });
+        validateModel.push({ id: "CC" });
+        RemoveValidate(validateModel);
+    }
+</script>

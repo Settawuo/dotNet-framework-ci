@@ -1,0 +1,2182 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.CoverageSitePanelModel
+@using WBBEntity.PanelModels.FBBWebConfigModels;
+@Html.Partial("~/Views/Shared/_PartialPopupHistory.cshtml")
+
+@{
+    ViewBag.Title = "Manage Coverage";
+    var g = (List<decimal>)ViewBag.User.Groups;
+
+    var o = (List<WBBEntity.PanelModels.Account.ComponentModel>)ViewBag.User.ComponentModel;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderBy(des => des.ReadOnlyFlag).ToList();
+
+    string FBB_CFG001_2_DELETE = "";
+    string FBB_CFG001_2_SAVE = "";
+    string FBB_CFG001_2_BUILDING_ADD = "";
+    string FBB_CFG001_2_BUILDING_EDIT = "";
+    string FBB_CFG001_2_BUILDING_DELETE = "";
+    string FBB_CFG001_2_SITE_CODE_SAVE = "";
+    string FBB_CFG001_2_COV_INFO_BUILDING_CODE = "";
+    string FBB_CFG001_2_COV_INFO_ON_TARGET_DATE = "";
+    string FBB_CFG001_2_COV_INFO_STATUS = "";
+    string FBB_CFG001_2_COV_INFO_CHECKING = "";
+    string FBB_CFG001_2_COV_INFO_ADD = "";
+    string FBB_CFG001_2_COV_INFO_CONFIG = "";
+    string FBB_CFG001_2_COV_INFO_EDIT = "";
+    string FBB_CFG001_2_COV_INFO_DELETE = "";
+    string FBB_CFG001_2_INSTALL_NOTE = "";
+    string FBB_CFG001_2_COVERAGE_TIE = "";
+
+    if (o != null)
+    {
+        FBB_CFG001_2_DELETE = o.Any(c => c.ComponentName == "FBB_CFG001_2_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_DELETE").ReadOnlyFlag : "";
+        FBB_CFG001_2_SAVE = o.Any(c => c.ComponentName == "FBB_CFG001_2_SAVE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_SAVE").ReadOnlyFlag : "";
+        FBB_CFG001_2_BUILDING_ADD = o.Any(c => c.ComponentName == "FBB_CFG001_2_BUILDING_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_BUILDING_ADD").ReadOnlyFlag : "";
+        FBB_CFG001_2_BUILDING_EDIT = o.Any(c => c.ComponentName == "FBB_CFG001_2_BUILDING_EDIT") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_BUILDING_EDIT").ReadOnlyFlag : "";
+        FBB_CFG001_2_BUILDING_DELETE = o.Any(c => c.ComponentName == "FBB_CFG001_2_BUILDING_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_BUILDING_DELETE").ReadOnlyFlag : "";
+        FBB_CFG001_2_SITE_CODE_SAVE = o.Any(c => c.ComponentName == "FBB_CFG001_2_SITE_CODE_SAVE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_SITE_CODE_SAVE").ReadOnlyFlag : "";
+        FBB_CFG001_2_COV_INFO_ADD = o.Any(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_ADD").ReadOnlyFlag : "";
+        FBB_CFG001_2_COV_INFO_CONFIG = o.Any(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_CONFIG") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_CONFIG").ReadOnlyFlag : "";
+        FBB_CFG001_2_COV_INFO_EDIT = o.Any(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_EDIT") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_EDIT").ReadOnlyFlag : "";
+        FBB_CFG001_2_COV_INFO_DELETE = o.Any(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_DELETE").ReadOnlyFlag : "";
+
+        FBB_CFG001_2_COV_INFO_BUILDING_CODE = o.Any(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_BUILDING_CODE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_BUILDING_CODE").ReadOnlyFlag : "";
+        FBB_CFG001_2_COV_INFO_ON_TARGET_DATE = o.Any(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_ON_TARGET_DATE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_ON_TARGET_DATE").ReadOnlyFlag : "";
+        FBB_CFG001_2_COV_INFO_STATUS = o.Any(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_STATUS") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_STATUS").ReadOnlyFlag : "";
+        FBB_CFG001_2_COV_INFO_CHECKING = o.Any(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_CHECKING") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_COV_INFO_CHECKING").ReadOnlyFlag : "";
+        FBB_CFG001_2_INSTALL_NOTE = o.Any(c => c.ComponentName == "FBB_CFG001_2_INSTALL_NOTE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_INSTALL_NOTE").ReadOnlyFlag : "";
+        FBB_CFG001_2_COVERAGE_TIE = o.Any(c => c.ComponentName == "FBB_CFG001_2_COVERAGE_TIE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG001_2_COVERAGE_TIE").ReadOnlyFlag : "";
+    }
+
+    var r_NodeType = Model.Coverage == null ? "" : Model.Coverage.NodeType;
+    var r_NodeNameTH = Model.Coverage == null ? "" : Model.Coverage.NodeNameTH;
+    var r_NodeNameEN = Model.Coverage == null ? "" : Model.Coverage.NodeNameEN;
+    var r_ContactNumber = Model.Coverage == null ? "" : Model.Coverage.ContactNumber;
+    var r_FaxNumber = Model.Coverage == null ? "" : Model.Coverage.FaxNumber;
+    var r_ProvinceTH = Model.Coverage == null ? "" : Model.Coverage.ProvinceTH;
+    var r_AumphurTH = Model.Coverage == null ? "" : Model.Coverage.AmphurTH;
+    var r_TumbonTH = Model.Coverage == null ? "" : Model.Coverage.TumbonTH;
+    var r_MooTH = Model.Coverage == null ? "" : Model.Coverage.MooTH.ToString();
+    var r_SoiTH = Model.Coverage == null ? "" : Model.Coverage.SoiTH;
+    var r_RoadTH = Model.Coverage == null ? "" : Model.Coverage.RoadTH;
+    var r_ZipCodeTH = Model.Coverage == null ? "" : Model.Coverage.ZipCodeTH;
+    var r_ProvinceEN = Model.Coverage == null ? "" : Model.Coverage.ProvinceEN;
+    var r_AumphurEN = Model.Coverage == null ? "" : Model.Coverage.AmphurEN;
+    var r_TumbonEN = Model.Coverage == null ? "" : Model.Coverage.TumbonEN;
+    var r_MooEN = Model.Coverage == null ? "" : Model.Coverage.MooEN.ToString();
+    var r_SoiEN = Model.Coverage == null ? "" : Model.Coverage.SoiEN;
+    var r_RoadEN = Model.Coverage == null ? "" : Model.Coverage.RoadEN;
+    var r_ZipCodeEN = Model.Coverage == null ? "" : Model.Coverage.ZipCodeEN;
+    var r_RegionCode = Model.Coverage == null ? "" : Model.Coverage.RegionCode;
+
+    var r_IpranSiteCode = Model.Coverage == null ? "" : Model.Coverage.IpRanSiteCode;
+    var r_CondoCode = Model.Coverage == null ? "" : Model.Coverage.CondoCode;
+    var r_Lat = Model.Coverage == null ? "" : Model.Coverage.Lat;
+    var r_Long = Model.Coverage == null ? "" : Model.Coverage.Long; 
+}
+
+<style>
+    #gridBuilding table {
+        table-layout: fixed;
+    }
+
+    #gridBuilding td {
+        word-wrap: break-word;
+    }
+</style>
+
+<form id="formCoverageArea">
+    <div class="page-header i-header-fit">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0;">Site/Coverage</h3>
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Coverage_Search")">Main Page</a></li>
+                    <li class="active">Site/Coverage</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 i-gap-bottom-1" id="divDeleteAll">
+            @{if (FBB_CFG001_2_DELETE != "")
+              {
+                <a href="#" id="btnDeleteAllCoverage" onclick="onDeleteAllCoverage_Click()" class="btn btn-danger pull-right"><i class='fa fa-trash-o fa-lg'></i>&nbsp; Delete</a>
+              }
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            @Summary()
+        </div>
+    </div>
+    <div class="row well i-no-over" style="margin: auto">
+        <div id="SiteInformationPanel" class="col-md-12">
+            @SiteInfoPanel()
+            @AreaTHPanel()
+            @AreaENPanel()
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group pull-right">
+                        <a class='btn btn-default' onclick="showPopupHistoryLog('Site Information')">
+                            <i class='fa fa-history'></i>&nbsp; Show History</a>
+                    </div>
+
+                    <div class="btn-group pull-right i-gap-right-1">
+                        @if (FBB_CFG001_2_SAVE != "")
+                        {
+                            <a class="btn btn-default i-width-sm" onclick="onCancelSiteInformation_Click();">
+                                <i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                            <a class="btn btn-success i-width-sm" onclick="onSaveCoverageArea(1);">
+                                <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Save</a>                                           
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row i-gap-top-2">
+        <div class="col-md-12">
+            @Building_SiteCode(FBB_CFG001_2_BUILDING_EDIT, FBB_CFG001_2_BUILDING_DELETE, FBB_CFG001_2_SITE_CODE_SAVE)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @CoverageInformation(FBB_CFG001_2_COV_INFO_CONFIG, FBB_CFG001_2_COV_INFO_EDIT, FBB_CFG001_2_COV_INFO_DELETE)
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.Coverage.ContactId, new { @id = "hdContactId", @value = "" })
+    @Html.HiddenFor(model => model.Coverage.UpdateCoverageType, new { @id = "hdUpdateCoverageType", @value = "0" })
+    @Html.HiddenFor(model => model.Coverage.RegionCode, new { @id = "hdRegionCode", @value = "" })
+    @Html.HiddenFor(model => model.Coverage.ZipCodeTH, new { @id = "hdZipCodeTH", @value = "" })
+</form>
+
+@helper Summary()
+{    
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                @{
+                    var nodeNameText = Model.Coverage == null ? "Node name" : Model.Coverage.NodeNameTH;
+                }
+                <span>
+                    <label id="lblNodeName">@nodeNameText</label></span>
+                <a data-toggle="collapse" class="pull-right" href="#Summary" onclick="onPanelToggle(this);" id="SummaryHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SummaryHeaderArrow"></i></a>
+            </h3>
+        </div>
+        <div id="Summary" class="panel-collapse collapse in">
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn btn-primary i-total-box-2">
+                                            <div class="row">
+                                                <div class="col-md-12 i-text-align-center">
+                                                    @{
+                                                        var condoCodeText = Model.Coverage == null ? "0" : Model.Coverage.CondoCode;
+                                                    }
+                                                    <span class="i-f1" id="L_TotalSite">@condoCodeText</span><br />
+                                                    <span class="i-f2">Condo Code</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn btn-primary i-total-box-2">
+                                            <div class="row">
+                                                <div class="col-md-12 i-text-align-center">
+                                                    <span class="i-f1" id="L_TotalCoverage">@Model.TotalCoverage</span><br />
+                                                    <span class="i-f2">Total Coverage</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn btn-primary i-total-box-2">
+                                            <div class="row">
+                                                <div class="col-md-12 i-text-align-center">
+                                                    <span class="i-f1" id="L_TotalPort">@Model.TotalPort</span><br />
+                                                    <span class="i-f2">Total Port</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn btn-primary i-total-box-2">
+                                            <div class="row">
+                                                <div class="col-md-12 i-text-align-center">
+                                                    <span class="i-f1" id="L_PortAvailable">@Model.Available</span><br />
+                                                    <span class="i-f2">Available</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn btn-primary i-total-box-2">
+                                            <div class="row">
+                                                <div class="col-md-12 i-text-align-center">
+                                                    <span class="i-f1" id="L_PortActive">@Model.Active</span><br />
+                                                    <span class="i-f2">Active</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn btn-primary i-total-box-2">
+                                            <div class="row">
+                                                <div class="col-md-12 i-text-align-center">
+                                                    <span class="i-f1" id="L_PortReserve">@Model.Reserve</span><br />
+                                                    <span class="i-f2">Reserve</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn btn-primary i-total-box-2">
+                                            <div class="row">
+                                                <div class="col-md-12 i-text-align-center">
+                                                    <span class="i-f1" id="L_PortOutOfService">@Model.OutOfService</span><br />
+                                                    <span class="i-f2">Out Of Service</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn btn-primary i-total-box-2">
+                                            <div class="row">
+                                                <div class="col-md-12 i-text-align-center">
+                                                    <span class="i-f1" id="L_PortPendingTerminate">@Model.PendingTerminate</span><br />
+                                                    <span class="i-f2">Pending Terminate</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>    
+}
+
+@helper SiteInfoPanel()
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Site Information</span>
+                <a data-toggle="collapse" class="pull-right" href="#SiteInfoPanel" onclick="onPanelToggle(this);" id="SiteInfoPanelHeader">
+                    <i class="fa fa-chevron-circle-down fa-lg" id="SiteInfoPanelHeaderArrow"></i>
+                </a>
+            </h3>
+        </div>
+        <div id="SiteInfoPanel" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Node Type<span id="requiredfor-Coverage_NodeType"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                              .Name("Coverage.NodeType")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectLov", "MasterData", new { type = "COVERAGETYPE" });
+                                                  });
+                                              })
+
+                                        )
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_NodeType"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Node Name TH<span id="requiredfor-Coverage_NodeNameTH"></span></label>
+                            <div class="i-fg-data-entry">
+                                @Html.TextBoxFor(model => model.Coverage.NodeNameTH, new { @class = "k-textbox form-control", @maxlength = "250" })
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_NodeNameTH"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Node Name EN<span id="requiredfor-Coverage_NodeNameEN"></span></label>
+                            <div class="i-fg-data-entry">
+                                @Html.TextBoxFor(model => model.Coverage.NodeNameEN, new { @class = "k-textbox form-control", @maxlength = "250" })
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_NodeNameEN"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Lat<span id="requiredfor-txtLat"></span></label>
+                            <div class="i-fg-data-entry">
+                                @* @Html.TextBoxFor(model => model.Coverage.Lat, new { @id = "txtLat", @class = "k-textbox form-control" })*@
+                                @(Html.Kendo().NumericTextBox()
+                                .Name("Coverage.Lat")
+                                .HtmlAttributes(new { @id = "txtLat", @class = "form-control i-form-control-extend", @maxlength = "10" })
+                                .Format("0.000000")
+                                .Spinners(false)
+                                .Min(1)
+                                .Max(999.999999)
+                                .Decimals(7)
+                                )
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-txtLat"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Long<span id="requiredfor-txtLong"></span></label>
+                            <div class="i-fg-data-entry">
+                                @*    @Html.TextBoxFor(model => model.Coverage.Long, new { @id = "txtLong", @class = "k-textbox form-control" })*@
+                                @(Html.Kendo().NumericTextBox()
+                                .Name("Coverage.Long")
+                                .HtmlAttributes(new { @id = "txtLong", @class = "form-control i-form-control-extend", @maxlength = "10" })
+                                .Format("0.000000")
+                                .Spinners(false)
+                                .Min(1)
+                                .Max(999.999999)
+                                .Decimals(7)
+                                )
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-txtLong"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Contact Number<span id="requiredfor-Coverage.ContactNumber"></span></label>
+                            <div class="i-fg-data-entry">
+                                @Html.TextBoxFor(model => model.Coverage.ContactNumber, new { @class = "k-textbox form-control", @maxlength = "50" })
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage.ContactNumber"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Fax Number<span id="requiredfor-Coverage.FaxNumber"></span></label>
+                            <div class="i-fg-data-entry">
+                                @Html.TextBoxFor(model => model.Coverage.FaxNumber, new { @class = "k-textbox form-control", @maxlength = "50" })
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage.FaxNumber"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@helper AreaTHPanel()
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Area TH</span>
+                <a data-toggle="collapse" class="pull-right" href="#AreaTHPanel" onclick="onPanelToggle(this);" id="AreaTHPanelHeader">
+                    <i class="fa fa-chevron-circle-down fa-lg" id="AreaTHPanelHeaderArrow"></i>
+                </a>
+            </h3>
+        </div>
+        <div id="AreaTHPanel" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>จังหวัด<span id="requiredfor-Coverage_ProvinceTH"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                            .Name("Coverage.ProvinceTH")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .DataTextField("DISPLAY_VAL")
+                                            .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectProvince", "MasterData");
+                                                });
+                                            })
+                                    )
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_ProvinceTH"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>อำเภอ<span id="requiredfor-Coverage_AmphurTH"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                            .Name("Coverage.AmphurTH")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .DataTextField("DISPLAY_VAL")
+                                            .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAmphur", "MasterData").Data("filterAmphurTH");
+                                                }).ServerFiltering(true);
+                                            })
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .CascadeFrom("Coverage_ProvinceTH")
+                                        )
+                            </div>
+                            <script>
+                                function filterAmphurTH() {
+                                    return {
+                                        province: $("#Coverage_ProvinceTH").val()
+                                    };
+                                }
+                            </script>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_AmphurTH"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>ตำบล<span id="requiredfor-Coverage_TumbonTH"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                            .Name("Coverage.TumbonTH")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .DataTextField("DISPLAY_VAL")
+                                            .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectTumbon", "MasterData").Data("filterTumbonTH");
+                                                }).ServerFiltering(true);
+                                            })
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .CascadeFrom("Coverage_AmphurTH")
+                                    )
+                            </div>
+                            <script>
+                                function filterTumbonTH() {
+                                    return {
+                                        province: $("#Coverage_ProvinceTH").val(),
+                                        aumphur: $("#Coverage_AmphurTH").val()
+                                    };
+                                }
+                            </script>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_TumbonTH"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>หมู่<span id="requiredfor-Coverage_MooTH"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().NumericTextBox()
+                                        .Name("Coverage.MooTH")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend", @maxlength = "2" })
+                                        .Format("n0")
+                                        .Spinners(false)
+                                        .Min(1)
+                                        .Max(99)
+                                        )
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_MooTH"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>ซอย<span id="requiredfor-Coverage_SoiTH"></span></label>
+                            <div class="i-fg-data-entry">
+                                @Html.TextBoxFor(model => model.Coverage.SoiTH, new { @class = "k-textbox form-control", @maxlength = "50" })
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_SoiTH"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>ถนน<span id="requiredfor-Coverage_RoadTH"></span></label>
+                            <div class="i-fg-data-entry">
+                                @Html.TextBoxFor(model => model.Coverage.RoadTH, new { @class = "k-textbox form-control", @maxlength = "50" })
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_RoadTH"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>รหัสไปรษณีย์<span id="requiredfor-ddlZipCodeTH"></span></label>
+                            <div class="i-fg-data-entry">
+                                @{
+                                    var zipCodeText = Model.Coverage == null ? "" : Model.Coverage.ZipCodeTH;
+                                }
+
+                                @(Html.Kendo().DropDownList()
+                                            .Name("ddlZipCodeTH")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .DataTextField("ZipCode")
+                                            .DataValueField("RegionCode")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectZipCode", "MasterData").Data("filterZipCodeTH");
+                                                }).ServerFiltering(true);
+                                            })
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .CascadeFrom("Coverage_TumbonTH")
+                                                    .Events(e => { e.Select("onZipCodeTH_Select").DataBound("onZipCodeTH_Select"); })
+                                            .Text(zipCodeText)
+                                    )
+                            </div>
+                            <script>
+                                function filterZipCodeTH() {
+                                    return {
+                                        province: $("#Coverage_ProvinceTH").val(),
+                                        aumphur: $("#Coverage_AmphurTH").val(),
+                                        tumbon: $("#Coverage_TumbonTH").val()
+                                    };
+                                }
+                            </script>
+                            <div class="i-fg-data-entry-validation" id="validatefor-ddlZipCodeTH"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@helper AreaENPanel()
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Area EN</span>
+                <a data-toggle="collapse" class="pull-right" href="#AreaENPanel" onclick="onPanelToggle(this);" id="AreaENPanelHeader">
+                    <i class="fa fa-chevron-circle-down fa-lg" id="AreaENPanelHeaderArrow"></i>
+                </a>
+            </h3>
+        </div>
+        <div id="AreaENPanel" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Province<span id="requiredfor-Coverage_ProvinceEN"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                            .Name("Coverage.ProvinceEN")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .DataTextField("DISPLAY_VAL")
+                                            .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectProvince", "MasterData", new { langFlag = "Y" });
+                                                });
+                                            })
+                                    )
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_ProvinceEN"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Amphur<span id="requiredfor-Coverage_AmphurEN"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                            .Name("Coverage.AmphurEN")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .DataTextField("DISPLAY_VAL")
+                                            .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAmphur", "MasterData").Data("filterAmphurEN");
+                                                }).ServerFiltering(true);
+                                            })
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .CascadeFrom("Coverage_ProvinceEN")
+                                        )
+                            </div>
+                            <script>
+                                function filterAmphurEN() {
+                                    return {
+                                        langFlag: "Y",
+                                        province: $("#Coverage_ProvinceEN").val()
+                                    };
+                                }
+                            </script>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_AmphurEN"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Tumbon<span id="requiredfor-Coverage_TumbonEN"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                            .Name("Coverage.TumbonEN")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .DataTextField("DISPLAY_VAL")
+                                            .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectTumbon", "MasterData").Data("filterTumbonEN");
+                                                }).ServerFiltering(true);
+                                            })
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .CascadeFrom("Coverage_AmphurEN")
+                                    )
+                            </div>
+                            <script>
+                                function filterTumbonEN() {
+                                    return {
+                                        langFlag: "Y",
+                                        province: $("#Coverage_ProvinceEN").val(),
+                                        aumphur: $("#Coverage_AmphurEN").val()
+                                    };
+                                }
+                            </script>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_TumbonEN"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Moo<span id="requiredfor-Coverage_MooEN"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().NumericTextBox()
+                                        .Name("Coverage.MooEN")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend", @readonly = "readonly" })
+                                        .Format("n0")
+                                        .Spinners(false)
+                                        .Min(1)
+                                        .Max(99)
+
+                                        )
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_MooEN"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Soi<span id="requiredfor-Coverage.SoiEN"></span></label>
+                            <div class="i-fg-data-entry">
+                                @Html.TextBoxFor(model => model.Coverage.SoiEN, new { @class = "k-textbox form-control", @maxlength = "50" })
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage.SoiEN"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Road<span id="requiredfor-Coverage.RoadEN"></span></label>
+                            <div class="i-fg-data-entry">
+                                @Html.TextBoxFor(model => model.Coverage.RoadEN, new { @class = "k-textbox form-control", @maxlength = "50" })
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage.RoadEN"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Postcode<span id="requiredfor-Coverage_ZipCodeEN"></span></label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                            .Name("Coverage.ZipCodeEN")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                            .DataTextField("ZipCode")
+                                            .DataValueField("ZipCode")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectZipCode", "MasterData").Data("filterZipCodeEN");
+                                                }).ServerFiltering(true);
+                                            })
+                                            .Enable(false)
+                                            .AutoBind(false)
+                                            .CascadeFrom("Coverage_TumbonEN")
+                                    )
+                            </div>
+                            <script>
+                                function filterZipCodeEN() {
+                                    return {
+                                        langFlag: "Y",
+                                        province: $("#Coverage_ProvinceEN").val(),
+                                        aumphur: $("#Coverage_AmphurEN").val(),
+                                        tumbon: $("#Coverage_TumbonEN").val()
+                                    };
+                                }
+                            </script>
+                            <div class="i-fg-data-entry-validation" id="validatefor-Coverage_ZipCodeEN"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@helper Building_SiteCode(string FBB_CFG001_2_BUILDING_EDIT, string FBB_CFG001_2_BUILDING_DELETE, string FBB_CFG001_2_SITE_CODE_SAVE)
+{     
+    <div id="divBuildingSiteCode" class="row  well i-no-over i-hidden" style="margin: auto;">
+        @* grid *@
+        <div class="col-md-9 col-sm-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>Building</span>
+                        <a data-toggle="collapse" class="pull-right" href="#BuildingPanel" onclick="onPanelToggle(this);" id="BuildingPanelHeader">
+                            <i class="fa fa-chevron-circle-down fa-lg" id="BuildingPanelHeaderArrow"></i>
+                        </a>
+                    </h3>
+                </div>
+                <div id="BuildingPanel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">
+                    <div id="divBuilding" class="panel-body tab-pane fade active in" style="min-height: 330px;">
+
+                        @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.BuildingPanel>()
+                        .Name("gridBuilding")
+                        .ToolBar(toolBar => toolBar.Template("" +
+        "<div class='pull-right'><a id='btnAddBuilding' onclick='onGridBuilding_Add()' class='btn btn-default pull-left'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a>&nbsp;" +
+        "<a onclick=\"showPopupHistoryLog('Building')\" class='btn btn-default pull-right'><i class='fa fa-history'></i>&nbsp; Show History</a></div>"))
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.Tower).Title("Building");
+                            columns.Bound(p => p.TowerTH).Title("Building TH");
+                            columns.Bound(p => p.TowerEN).Title("Building EN");
+                            columns.Bound(p => p.InstallNote).Title("Install Note");
+                            columns.Command(command =>
+                            {
+                                if (FBB_CFG001_2_BUILDING_EDIT != "")
+                                {
+                                    command.Custom("Edit").Click("onGridBuilding_Edit").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; Edit");
+                                }
+                                if (FBB_CFG001_2_BUILDING_DELETE != "")
+                                {
+                                    command.Custom("Delete").Click("onGridBuilding_Delete").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete");
+                                }
+                            }).Width(260);
+                        })
+
+                            .Pageable(p => p.Input(true)
+                                .Numeric(true)
+                                .PageSizes(true)
+                            )
+                            .Reorderable(r => r.Columns(true))
+                            .Sortable()
+                            .Filterable()
+                             .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .Sort(s => s.Add("UpdateDate").Descending())
+                                .PageSize(5)
+                                .Read(read => read.Action("ReadBuildingToGrid", "Coverage_Manage", new { contactId = Model.Coverage != null ? Model.Coverage.ContactId : 0 }))
+                             )
+                             .Events(e => e.DataBound("onGridBuilding_DataBound"))
+                        )
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* site code *@
+        <div class="col-md-3 col-sm-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>Site Code</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SiteCodePanel" onclick="onPanelToggle(this);" id="SiteCodePanelHeader">
+                            <i class="fa fa-chevron-circle-down fa-lg" id="SiteCodePanelHeaderArrow"></i>
+                        </a>
+                    </h3>
+                </div>
+                <div id="SiteCodePanel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1">
+                    <div class="panel-body" style="min-height: 340px;">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+
+                                <div class="form-group">
+                                    <label>IPRAN Site Code <span id="requiredfor-txtIpranSiteCode"></span></label>
+                                    <div class="i-fg-data-entry">
+                                        @Html.TextBoxFor(model => model.Coverage.IpRanSiteCode, new { @id = "txtIpranSiteCode", @class = "k-textbox form-control", @maxlength = "50" })
+                                    </div>
+                                    <div class="i-fg-data-entry-validation" id="validatefor-txtIpranSiteCode"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Condo Code <span id="requiredfor-txtCondoCode"></span></label>
+                                    <div class="i-fg-data-entry">
+                                        @Html.TextBoxFor(model => model.Coverage.CondoCode, new { @id = "txtCondoCode", @class = "k-textbox form-control", @maxlength = "50" })
+                                    </div>
+                                    <div class="i-fg-data-entry-validation" id="validatefor-txtCondoCode"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="i-enter-4"></div>
+
+                        <div class="row i-gap-top-10">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="btn-group pull-right">
+                                    @if (FBB_CFG001_2_SITE_CODE_SAVE != "")
+                                    {
+                                        <a class="btn btn-default i-width-sm" onclick="onCancelSiteCode_Click();">
+                                            <i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                                        <a class="btn btn-success i-width-sm" id="btnSiteCode" onclick="onSaveCoverageArea(2);">
+                                            <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Save</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@helper CoverageInformation(string FBB_CFG001_2_COV_INFO_CONFIG, string FBB_CFG001_2_COV_INFO_EDIT, string FBB_CFG001_2_COV_INFO_DELETE)
+{    
+    <div id="divCoverageInformation" class="panel panel-success i-gap-top-2 i-hidden">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Coverage Information</span>
+                <a data-toggle="collapse" class="pull-right" href="#CoverageInformationPanel" onclick="onPanelToggle(this);" id="CoverageInformationPanelHeader">
+                    <i class="fa fa-chevron-circle-down fa-lg" id="CoverageInformationPanelHeaderArrow"></i>
+                </a>
+            </h3>
+        </div>
+        <div id="CoverageInformationPanel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1">
+            <div id="CoverageInfo" class="tab-pane fade active in">
+                <div class="i-gap-top-2" style="margin-bottom: 10px;">
+                    @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.CoverageAreaPanel>()
+                .Name("GridCoverageInfo")
+                .ToolBar(toolbar => toolbar.Template("<div class='pull-right'>" +
+                    "<a id='btnShowPopup' onclick=\"showPopup()\" class='btn btn-default pull-left'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a>&nbsp;" +
+                    "<a onclick=\"showPopupHistoryLog('Coverage')\" class='btn btn-default pull-right'><i class='fa fa-history'></i>&nbsp; Show History</a>" +
+                    "</div>"))
+                .Columns(columns =>
+                {
+                    //columns.Bound(p => p.CVRId).Title("CVRID").Hidden();
+                    //columns.Bound(p => p.ContactId).Title("ContactId").Hidden();
+                    columns.Bound(p => p.BuildingCode).Title("Building Code");
+                    columns.Bound(p => p.OnTargetDateIn).Title("On Target Date In").Format("{0:dd/MM/yyyy}");
+                    columns.Bound(p => p.OnTargetDateEx).Title("On Target Date Ex").Format("{0:dd/MM/yyyy}");
+                    columns.Bound(p => p.Status).Title("Status");
+                    columns.Bound(p => p.ConfigComplete).ClientTemplate(
+                    "# if (ConfigComplete == '') { #" +
+                        "<input type='checkbox' name='chkConfigComplete' disabled> Complete" +
+                    "# } else { #" +
+                            "<input type='checkbox' name='chkConfigComplete' checked='true' disabled> Complete" +
+                    "# } #").HtmlAttributes(new { @class = "i-text-align-center" }).Title("Checking");
+                    columns.Bound(p => p.TieFlag).ClientTemplate(
+                    "# if (TieFlag == '') { #" +
+                        "<input type='checkbox' name='chkTieFlag' disabled> TIE" +
+                    "# } else { #" +
+                            "<input type='checkbox' name='chkTieFlag' checked='true' disabled> TIE" +
+                    "# } #").HtmlAttributes(new { @class = "i-text-align-center" }).Title("TIE");
+                    columns.Command(command =>
+                    {
+                        if (FBB_CFG001_2_COV_INFO_CONFIG != "")
+                        {
+                            command.Custom("Config").Click("gridCoverageConfig").Text("<i class='fa fa-cog fa-lg'></i>&nbsp; Config");
+                        }
+                        if (FBB_CFG001_2_COV_INFO_EDIT != "")
+                        {
+                            command.Custom("Edit").Click("gridCoverageEdit").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; Edit");
+                        }
+                        if (FBB_CFG001_2_COV_INFO_DELETE != "")
+                        {
+                            command.Custom("Delete").Click("gridCoverageDelete").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete");
+                        }
+                    });
+                })
+                .Pageable(p => p.Input(true)
+                        .Numeric(true)
+                        .PageSizes(true)
+                    )
+                .Sortable()
+                .Filterable()
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Sort(s => s.Add("UpdateDate").Descending())
+                    .PageSize(10)
+                    .Read(read => read.Action("ReadCoverageAreaToGrid", "Coverage_Manage", new { contactId = Model.Coverage != null ? Model.Coverage.ContactId : 0 }))
+                )
+                .Events(e => e.DataBound("onGridCoverage_DataBound"))
+                            //.AutoBind(false)
+
+            )
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@(Html.Kendo().Window()
+    .Name("BuildingPopUp")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Add Building")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Content(@<text>
+<div class="row i-no-over" id="BuildingPopUpPanel">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Building <span id="requiredfor-mc_Pop_Building"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="mc_Pop_Building" class="k-textbox form-control" maxlength="10" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-mc_Pop_Building"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Building TH<span id="requiredfor-mc_Pop_BuildingTH"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="mc_Pop_BuildingTH" class="k-textbox form-control" maxlength="20" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-mc_Pop_BuildingTH"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Building EN<span id="requiredfor-mc_Pop_BuildingEN"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="mc_Pop_BuildingEN" class="k-textbox form-control" maxlength="20" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-mc_Pop_BuildingEN"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Install Note<span id="requiredfor-mc_Pop_Note"></span></label>
+            <div class="i-fg-data-entry">
+                @if (FBB_CFG001_2_INSTALL_NOTE != "")
+                {
+@*<input type="text" id="mc_Pop_Note" class="k-textbox form-control" maxlength="100" />*@
+                    <textarea id="mc_Pop_Note" class="k-textbox form-control" rows="4" maxlength="100"></textarea>
+                }
+                else
+                {
+@*<input type="text" id="mc_Pop_Note" class="k-textbox form-control" maxlength="100" readonly="readonly" />*@
+                    <textarea id="mc_Pop_Note" class="k-textbox form-control" rows="4" readonly="readonly" maxlength="100"></textarea>
+                }
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-mc_Pop_Note"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="btn-group pull-right i-gap-top-1">
+                <a class="btn btn-default i-width-sm-2" onclick="onGridBuilding_Cancel()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                <button class="btn btn-success i-width-sm-2" onclick="onGridBuilding_Save('Create')" id="btnMC_GridBuilding_Save"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Save</button>
+                <button class="btn btn-success i-width-sm-2" onclick="onGridBuilding_Save('Update')" id="btnMC_GridBuilding_Update"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Update</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+</text>)
+                                        )
+
+@(Html.Kendo().Window()
+    .Name("Popupz")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Add Coverage")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Content(@<text>
+<div class="row i-no-over" id="PopupzPanel">
+    @if (FBB_CFG001_2_COV_INFO_BUILDING_CODE != "")
+    {
+        <div class="col-md-12" id="colBuilding">
+            <div class="form-group">
+                <label>Building <span id="requiredfor-hddBuilding"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                            .Name("Buildingz")
+                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetBuilding", "Coverage_Manage");
+                                });
+                            })
+                            .AutoBind(false)
+                            .Events(e => e.Change("onBuildingz_Change"))
+                    )
+                    <input type="hidden" id="hddBuilding" value="" />
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-hddBuilding"></div>
+            </div>
+        </div>
+    }
+
+    @if (FBB_CFG001_2_COV_INFO_STATUS != "")
+    {
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Status <span id="requiredfor-Statusz"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                                .Name("Statusz")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataTextField("DISPLAY_VAL")
+                                .DataValueField("LOV_NAME")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("SelectCoverageStatus", "Coverage_Manage");
+                                    });
+                                })
+                                .AutoBind(false)
+                        )
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-Statusz"></div>
+            </div>
+        </div>
+    }
+
+    @if (FBB_CFG001_2_COV_INFO_ON_TARGET_DATE != "")
+    {
+        <div class="col-md-12 colEdit" id="divOnTargetDateIn">
+            <div class="form-group">
+                <label>On Target Date In<span id="requiredfor-TargetDatezIn"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DatePicker()
+                            .Name("TargetDatezIn")
+                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                            //.Min(DateTime.Now)                            
+                            .Format("dd/MM/yyyy")
+                    )
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-TargetDatezIn"></div>
+            </div>
+        </div>
+        <div class="col-md-12 colEdit" id="divOnTargetDateEx">
+            <div class="form-group">
+                <label>On Target Date Ex<span id="requiredfor-TargetDatezEx"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DatePicker()
+                            .Name("TargetDatezEx")
+                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                            //.Min(DateTime.Now)                            
+                            .Format("dd/MM/yyyy")
+                    )
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-TargetDatezEx"></div>
+            </div>
+        </div>
+    }
+
+    <div class="col-md-12">
+        <div class="row">
+            @if (FBB_CFG001_2_COV_INFO_CHECKING != "")
+            {
+                <div class="col-md-5 colEdit">
+                    <div class="form-group">
+                        <label>Config Complete</label>
+                        <div class="i-fg-data-entry">
+                            <input type="checkbox" value="Y" id="ConfigCompletez" onclick="onConfigCompletez_Click()" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>TIE</label>
+                    <div class="i-fg-data-entry">
+                        @if (FBB_CFG001_2_COVERAGE_TIE != "")
+                        {
+                            <input type="checkbox" value="Y" id="chkTie" onclick="onChkTie_Checked()" />
+                        }
+                        else
+                        {
+                            <input type="checkbox" value="Y" id="chkTie" disabled="disabled" />
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div>
+        <input type="hidden" id="hddCvrId" value="" />
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="btn-group pull-right i-gap-top-1">
+                <a class="btn btn-default i-width-sm-2" onclick="onPopupCancel_Click()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                <button class="btn btn-success i-width-sm-2" onclick="onPopupSave('Create')" id="btnPopupzSave"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Save</button>
+                <button class="btn btn-success i-width-sm-2" onclick="onPopupSave('Update')" id="btnPopupzUpdate"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Update</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+</text>)
+                                        )
+
+<div>
+    <input id="hdNodeType" type="hidden" value="" />
+    <input id="hdNodeNameTH" type="hidden" value="" />
+    <input id="hdNodeNameEN" type="hidden" value="" />
+    <input id="hdContactNumber" type="hidden" value="" />
+    <input id="hdFaxNumber" type="hidden" value="" />
+    <input id="hdProvinceTH" type="hidden" value="" />
+    <input id="hdAumphurTH" type="hidden" value="" />
+    <input id="hdTumbonTH" type="hidden" value="" />
+    <input id="hdMooTH" type="hidden" value="" />
+    <input id="hdSoiTH" type="hidden" value="" />
+    <input id="hdRoadTH" type="hidden" value="" />
+    <input id="hdZipCodeTH_r" type="hidden" value="" />
+    <input id="hdProvinceEN" type="hidden" value="" />
+    <input id="hdAumphurEN" type="hidden" value="" />
+    <input id="hdTumbonEN" type="hidden" value="" />
+    <input id="hdMooEN" type="hidden" value="" />
+    <input id="hdSoiEN" type="hidden" value="" />
+    <input id="hdRoadEN" type="hidden" value="" />
+    <input id="hdZipCodeEN" type="hidden" value="" />
+    <input id="hdRegionCode_r" type="hidden" value="" />
+
+    <input id="hdIpranSiteCode" type="hidden" value="" />
+    <input id="hdCondoCode" type="hidden" value="" />
+    <input id="hdLat" type="hidden" value="" />
+    <input id="hdLong" type="hidden" value="" />
+</div>
+
+<script>
+    $(function () {
+
+        if ("@FBB_CFG001_2_BUILDING_ADD" == "") $("#btnAddBuilding").hide();
+        if ("@FBB_CFG001_2_COV_INFO_ADD" == "") $("#btnShowPopup").hide();
+
+        var validateModel = [];
+        validateModel.push({ id: "Coverage_NodeType" });
+        validateModel.push({ id: "Coverage_NodeNameTH" });
+        validateModel.push({ id: "Coverage_NodeNameEN" });
+        ////validateModel.push({ id: "txtContactNumber" });
+        ////validateModel.push({ id: "txtFaxNumber" });
+
+        validateModel.push({ id: "Coverage_ProvinceTH" });
+        validateModel.push({ id: "Coverage_AmphurTH" });
+        validateModel.push({ id: "Coverage_TumbonTH" });
+        validateModel.push({ id: "ddlZipCodeTH" });
+
+        validateModel.push({ id: "Coverage_ProvinceEN" });
+        validateModel.push({ id: "Coverage_AmphurEN" });
+        validateModel.push({ id: "Coverage_TumbonEN" });
+        validateModel.push({ id: "Coverage_ZipCodeEN" });
+
+        validateModel.push({ id: "txtIpranSiteCode" });
+        validateModel.push({ id: "txtCondoCode" });
+        validateModel.push({ id: "txtLat" });
+        validateModel.push({ id: "txtLong" });
+        SetRequired(validateModel);
+
+        $("#Coverage_MooTH").keyup(function (e) {
+            if (e.keyCode >= 37 && e.keyCode <= 40) {
+                return true;
+            }
+            else {
+                $("#Coverage_MooEN").data("kendoNumericTextBox").value(this.value);
+            }
+        });
+
+        onLoad();
+
+        //$("#TargetDatezIn").keyup(function (e) {            
+        //    if(e.keyCode == 8 || e.keyCode == 46) {                
+        //        $("#TargetDatezIn").data("kendoDatePicker").value('');
+        //    }
+        //});
+
+        //$("#TargetDatezEx").keyup(function (e) {
+        //    if (e.keyCode == 8 || e.keyCode == 46) {                
+        //        $("#TargetDatezEx").data("kendoDatePicker").value('');
+        //    }
+        //});
+
+        $('#mc_Pop_Building').keyup(function (e) {
+            if (e.keyCode >= 37 && e.keyCode <= 40) {
+                return true;
+            }
+            else {
+                CheckKeyUp("mc_Pop_Building", "^[ก-๙a-zA-Z0-9\b]+$");
+            }
+        });
+
+        $('#mc_Pop_BuildingTH').keyup(function (e) {
+            if (e.keyCode >= 37 && e.keyCode <= 40) {
+                return true;
+            }
+            else {
+                CheckKeyUp("mc_Pop_BuildingTH", "^[ก-๙0-9-\b ]+$");
+            }
+        });
+
+        $('#mc_Pop_BuildingEN').keyup(function (e) {
+            if (e.keyCode >= 37 && e.keyCode <= 40) {
+                return true;
+            }
+            else {
+                CheckKeyUp("mc_Pop_BuildingEN", "^[a-zA-Z0-9-\b ]+$");
+            }
+        });
+
+        $('#Coverage_NodeNameTH').keyup(function (e) {
+            if (e.keyCode >= 37 && e.keyCode <= 40) {
+                return true;
+            }
+            else {
+                CheckKeyUp("Coverage_NodeNameTH", "^[ก-๙0-9-\b ().@@/]+$");
+            }
+        });
+
+        $('#Coverage_NodeNameEN').keyup(function (e) {
+            if (e.keyCode >= 37 && e.keyCode <= 40) {
+                return true;
+            }
+            else {
+                CheckKeyUp("Coverage_NodeNameEN", "^[a-zA-Z0-9-\b ().@@/]+$");
+            }
+        });
+
+        // Check maxlength for textarea
+        var txts = document.getElementsByTagName('TEXTAREA')
+        for (var i = 0, l = txts.length; i < l; i++) {
+            if (/^[0-9]+$/.test(txts[i].getAttribute("maxlength"))) {
+                var func = function () {
+                    var len = parseInt(this.getAttribute("maxlength"), 10);
+
+                    if (this.value.length > len) {
+                        //alert('Maximum length exceeded: ' + len);
+                        this.value = this.value.substr(0, len);
+                        return false;
+                    }
+                }
+
+                txts[i].onkeyup = func;
+                txts[i].onblur = func;
+            }
+        }
+        ////////////////////////////////
+    });
+
+    function onLoad() {
+        if ("@Model.Coverage" != "") {
+
+            $("#divBuildingSiteCode").show();
+            $("#divCoverageInformation").show();
+            $("#divDeleteAll").show();
+
+            $("#hdNodeType").val("@r_NodeType");
+            $("#hdNodeNameTH").val("@r_NodeNameTH");
+            $("#hdNodeNameEN").val("@r_NodeNameEN");
+            $("#hdContactNumber").val("@r_ContactNumber");
+            $("#hdFaxNumber").val("@r_FaxNumber");
+            $("#hdProvinceTH").val("@r_ProvinceTH");
+            $("#hdAumphurTH").val("@r_AumphurTH");
+            $("#hdTumbonTH").val("@r_TumbonTH");
+            $("#hdMooTH").val("@r_MooTH");
+            $("#hdSoiTH").val("@r_SoiTH");
+            $("#hdRoadTH").val("@r_RoadTH");
+            $("#hdZipCodeTH_r").val("@r_ZipCodeTH");
+            $("#hdProvinceEN").val("@r_ProvinceEN");
+            $("#hdAumphurEN").val("@r_AumphurEN");
+            $("#hdTumbonEN").val("@r_TumbonEN");
+            $("#hdMooEN").val("@r_MooEN");
+            $("#hdSoiEN").val("@r_SoiEN");
+            $("#hdRoadEN").val("@r_RoadEN");
+            $("#hdZipCodeEN").val("@r_ZipCodeEN");
+            $("#hdRegionCode_r").val("@r_RegionCode");
+            $("#hdIpranSiteCode").val("@r_IpranSiteCode");
+            $("#hdCondoCode").val("@r_CondoCode");
+            $("#hdLat").val("@r_Lat");
+            $("#hdLong").val("@r_Long");
+        }
+        else {
+
+            $("#divBuildingSiteCode").hide();
+            $("#divCoverageInformation").hide();
+            $("#divDeleteAll").hide();
+        }
+    }
+
+    function onChkTie_Checked() {
+        var gridBuildingCount = $("#gridBuilding").data("kendoGrid").dataSource.total();
+
+        if (gridBuildingCount > 1) {
+            return true;
+        }
+        else {
+            alert("Please create building before check tie flag.");
+            $("#chkTie").prop("checked", false);
+            return false;
+        }
+    }
+
+    function showPopupHistoryLog(panel) {
+        var title = panel;
+        var application = "";
+        var refKey = $("#Coverage_NodeNameTH").val();
+        var refName = "Node Name TH";
+
+        if (panel == "Site Information") {
+            application = "FBB_CFG001_2_SiteInformation";
+        }
+        else if (panel == "Building") {
+            application = "FBB_CFG001_2_Building";
+        }
+        else if (panel == "Coverage") {
+            application = "FBB_CFG001_2_Coverage";
+        }
+
+        onHistoryPopUp_Show(title, application, refKey, refName);
+    }
+
+    function CheckKeyUp(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function onSaveCoverageArea(type) {
+
+        var chk = type == 1 ? ValidationProcessing("SiteInformationPanel") : ValidationProcessing("SiteCodePanel");
+
+        if (chk) {
+            Loading();
+            if ($("#hdContactId").val() == "") {
+                $.ajax({
+                    url: "/Coverage_Manage/SaveCoverageArea",
+                    type: 'post',
+                    data: $("#formCoverageArea").serialize(),
+                    success: function (data) {
+                        Loading(0);
+                        $("#hdContactId").val(data.CoverageAreaPanel.ContactId);
+                        $("#hdUpdateCoverageType").val(0);
+
+                        if (data.Return_Code == 1) {
+                            showFeedback("success", data.Return_Desc);
+                            onGridCoverage_DataBind();
+                            $("#divBuildingSiteCode").show();
+                            $("#divDeleteAll").show();
+                            $("#lblNodeName").html(data.CoverageAreaPanel.NodeNameTH);
+                        }
+                        else if (data.Return_Code == 0) {
+                            showFeedback("warning", data.Return_Desc);
+                        }
+                        else {
+                            showFeedback("error", data.Return_Desc);
+                        }
+                    },
+                    error: function () {
+                        Loading(0);
+                        showFeedback("error", "Error");
+                    }
+                });
+            }
+            else {
+                $("#hdUpdateCoverageType").val(type);
+
+                $.ajax({
+                    url: "/Coverage_Manage/UpdateCoverageArea",
+                    type: 'post',
+                    data: $("#formCoverageArea").serialize(),
+                    success: function (data) {
+                        Loading(0);
+                        if (data.Return_Code == 1) {
+                            $("#lblNodeName").html(data.CoverageAreaPanel.NodeNameTH);
+                            mapModelAfterUpdate(data);
+                            showFeedback("success", data.Return_Desc);
+                            $("#divCoverageInformation").show();
+                        }
+                        else if (data.Return_Code == 0) {
+                            showFeedback("warning", data.Return_Desc);
+                        }
+                        else {
+                            showFeedback("error", data.Return_Desc);
+                        }
+                    },
+                    error: function () {
+                        Loading(0);
+                        showFeedback("error", "Error");
+                    }
+                });
+            }
+        }
+    }
+
+    function onDeleteAllCoverage_Click() {
+        var c = confirm("Are you sure you want to delete?");
+
+        if (c) {
+            Loading();
+            if ($("#hdContactId").val() != "") {
+                $.ajax({
+                    url: '/Coverage_Manage/DeleteCoverageArea',
+                    data: {
+                        contactId: $("#hdContactId").val()
+                    },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        Loading(0);
+                        if (response.Return_Code == 1) {
+                            showFeedback("success", response.Return_Desc);
+                            window.location.href = "/Coverage_Search/Index";
+                        }
+                        else if (response.Return_Code == 0) {
+                            showFeedback("warning", response.Return_Desc);
+                        }
+                        else {
+                            showFeedback("error", response.Return_Desc);
+                        }
+                    },
+                    error: function (err) {
+                        Loading(0);
+                        showFeedback("error", "Error");
+                    }
+                });
+            }
+            else {
+                Loading(0);
+                showFeedback("warning", "Cannot delete.");
+            }
+        }
+    }
+
+    function onConfigCompletez_Click() {
+        $.ajax({
+            url: '/Coverage_Manage/CheckCompleteFlag',
+            data: {
+                cvrId: $("#hddCvrId").val()
+            },
+            dataType: "json",
+            type: 'GET',
+            success: function (response) {
+                if (response) {
+                    $("#ConfigCompletez").prop("checked", true);
+                }
+                else {
+                    $("#ConfigCompletez").prop("checked", false);
+                    alert("Please create port before check complete flag.");
+                }
+            },
+            error: function (err) {
+            }
+        });
+    }
+
+    function onZipCodeTH_Select() {
+        $("#hdZipCodeTH").val($("#ddlZipCodeTH").data("kendoDropDownList").text());
+        $("#hdRegionCode").val($("#ddlZipCodeTH").data("kendoDropDownList").value());
+    }
+    //Grid Building
+    function onGridBuilding_Add() {
+        clearPageScrollUp("#gridBuilding");
+
+        $("#mc_Pop_Building").val("");
+        $("#mc_Pop_BuildingTH").val("");
+        $("#mc_Pop_BuildingEN").val("");
+        $("#mc_Pop_Note").val("");
+
+        ClearTextValidation("BuildingPopUp");
+
+        var validateModel = [];
+        validateModel.push({ id: "mc_Pop_Building" });
+        validateModel.push({ id: "mc_Pop_BuildingTH" });
+        validateModel.push({ id: "mc_Pop_BuildingEN" });
+        SetRequired(validateModel);
+
+        $("#mc_Pop_Building").removeAttr("readonly");
+        $("#btnMC_GridBuilding_Save").show();
+        $("#btnMC_GridBuilding_Update").hide();
+
+        $("#BuildingPopUp_wnd_title").text("Add Coverage");
+
+        $("#BuildingPopUp").data("kendoWindow").open();
+        $("#BuildingPopUp").data("kendoWindow").center();
+    }
+
+    function onGridBuilding_Edit(e) {
+        clearPageScrollUp("#gridBuilding");
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $("#mc_Pop_Building").val(dataItem.Tower);
+        $("#mc_Pop_BuildingTH").val(dataItem.TowerTH);
+        $("#mc_Pop_BuildingEN").val(dataItem.TowerEN);
+        $("#mc_Pop_Note").val(dataItem.InstallNote);
+
+        ClearTextValidation("BuildingPopUp");
+
+        var validateModel = [];
+        validateModel.push({ id: "mc_Pop_Building" });
+        validateModel.push({ id: "mc_Pop_BuildingTH" });
+        validateModel.push({ id: "mc_Pop_BuildingEN" });
+        SetRequired(validateModel);
+
+        $("#mc_Pop_Building").attr("readonly", "true");
+        $("#btnMC_GridBuilding_Save").hide();
+        $("#btnMC_GridBuilding_Update").show();
+
+        $("#BuildingPopUp_wnd_title").text("Edit Coverage");
+
+        $("#BuildingPopUp").data("kendoWindow").open();
+        $("#BuildingPopUp").data("kendoWindow").center();
+    }
+
+    function onGridBuilding_Delete(e) {
+        var c = confirm("Are you sure you want to delete?");
+        if (c) {
+            Loading();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            $.ajax({
+                url: '/Coverage_Manage/DeleteBuilding',
+                data: {
+                    building: dataItem.Tower,
+                    contactId: dataItem.ContactId,
+                    refKey: $("#Coverage_NodeNameTH").val(),
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    Loading(0);
+
+                    if (response.Return_Code == 1) {
+                        onGridBuilding_DataBind();
+                        showFeedback("success", "Deleted complete.");
+                    }
+                    else if (response.Return_Code == 0) {
+                        showFeedback("warning", response.Return_Desc);
+                    }
+                    else {
+                        showFeedback("error", response.Return_Desc);
+                    }
+                },
+                error: function (err) {
+                    Loading(0);
+                    showFeedback("error", err);
+                }
+            });
+        }
+    }
+
+    function onGridBuilding_Save(action) {
+        var chk = ValidationProcessing("BuildingPopUpPanel");
+        if (chk) {
+            Loading();
+
+            $.ajax({
+                url: '/Coverage_Manage/SaveBuilding',
+                data: {
+                    action: action,
+                    building: $("#mc_Pop_Building").val(),
+                    buildingTH: $("#mc_Pop_BuildingTH").val(),
+                    buildingEN: $("#mc_Pop_BuildingEN").val(),
+                    installNote: $('#mc_Pop_Note').val(),
+                    contactId: $("#hdContactId").val(),
+                    refKey: $("#Coverage_NodeNameTH").val()
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    Loading(0);
+
+                    if (response.Return_Code == 1) {
+                        $("#BuildingPopUp").data("kendoWindow").close();
+                        onGridBuilding_DataBind();
+                        showFeedback("success", action + "d complete.");
+                    }
+                    else if (response.Return_Code == 0) {
+                        $("#BuildingPopUp").data("kendoWindow").close();
+                        showFeedback("warning", response.Return_Desc);
+                    }
+                    else {
+                        $("#BuildingPopUp").data("kendoWindow").close();
+                        showFeedback("error", response.Return_Desc);
+                    }
+                },
+                error: function (err) {
+                    Loading(0);
+                    $("#BuildingPopUp").data("kendoWindow").close();
+                    showFeedback("error", err);
+                }
+            });
+        }
+    }
+
+    function onGridBuilding_Cancel() {
+        $("#BuildingPopUp").data("kendoWindow").close();
+    }
+
+    function onGridBuilding_DataBound() {
+        clearPageScrollUp("#gridBuilding");
+        setButton();
+    }
+
+    function onGridBuilding_DataBind() {
+        $("#gridBuilding").data('kendoGrid').dataSource.read({ contactId: $("#hdContactId").val() });
+    }
+    //Grid Coverage
+    function showPopup(action) {
+
+        if ($("#GridCoverageInfo").data('kendoGrid').dataSource._data.length == 1) {
+            if ($("#GridCoverageInfo").data('kendoGrid').dataSource._data[0].BuildingCode == undefined ||
+                $("#GridCoverageInfo").data('kendoGrid').dataSource._data[0].BuildingCode == null ||
+                $("#GridCoverageInfo").data('kendoGrid').dataSource._data[0].BuildingCode == "") {
+                showFeedback("warning", "Please select building in first coverage before add new coverage.");
+                return;
+            }
+        }
+
+        $(".colEdit").hide();
+        $("#colBuilding").show();
+
+        if ($("#Buildingz").data("kendoDropDownList") != null) {
+            $("#Buildingz").data("kendoDropDownList").dataSource.read({ contactId: $("#hdContactId").val() });
+            $("#Buildingz").data("kendoDropDownList").enable();
+            $("#Buildingz").data("kendoDropDownList").value("");
+        }
+
+        if ($("#Statusz").data("kendoDropDownList") != null) {
+            $("#Statusz").data("kendoDropDownList").dataSource.read({ type: "COVERAGESTATUS", status: "ON_PROGRESS", label: false });
+            $("#Statusz").data("kendoDropDownList").enable();
+        }
+
+        if ($("#TargetDatezIn").data("kendoDatePicker") != null) {
+            $("#TargetDatezIn").data("kendoDatePicker").enable();
+        }
+
+        if ($("#TargetDatezEx").data("kendoDatePicker") != null) {
+            $("#TargetDatezEx").data("kendoDatePicker").enable();
+        }
+
+        $("#chkTie").prop("checked", false);
+        $("#ConfigCompletez").prop("checked", false);
+
+        $("#hddBuilding").val("");
+        ClearTextValidation("PopupzPanel");
+
+        var validateModel = [];
+        validateModel.push({ id: "hddBuilding" });
+        SetRequired(validateModel);
+
+        $("#btnPopupzSave").show();
+        $("#btnPopupzUpdate").hide();
+
+        $("#Popupz_wnd_title").text("Add Coverage");
+        $("#Popupz").data("kendoWindow").open();
+        $("#Popupz").data("kendoWindow").center();
+
+    }
+
+    function gridCoverageEdit(e) {
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        
+        $("#hddBuilding").val(dataItem.BuildingCode);
+        $("#hddCvrId").val(dataItem.CVRId);
+        $(".colEdit").show();
+
+        var validateModel = [];
+        validateModel.push({ id: "TargetDatezIn" });
+        //validateModel.push({ id: "TargetDatezEx" });
+        validateModel.push({ id: "hddBuilding" });
+        RemoveValidation(validateModel);
+        validateModel = [];
+
+        if ($("#Statusz").data("kendoDropDownList") != null) {
+            $("#Statusz").data("kendoDropDownList").dataSource.read({ type: "COVERAGESTATUS", status: dataItem.StatusValue, label: false });
+            $("#Statusz").data("kendoDropDownList").value(dataItem.StatusValue);
+
+            if ("@FBB_CFG001_2_COV_INFO_STATUS" == "Y")
+                $("#Statusz").data("kendoDropDownList").readonly();
+            else
+                $("#Statusz").data("kendoDropDownList").enable();
+        }
+
+        if (dataItem.TieFlag) {
+            $("#chkTie").prop("checked", "checked");
+        }
+        else {
+            $("#chkTie").prop("checked", false);
+        }
+
+        if (dataItem.ConfigComplete) {
+
+            var d = new Date();
+
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+
+            var currentDate = d.getFullYear() + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (day < 10 ? '0' : '') + day;
+
+            $("#TargetDatezIn").data("kendoDatePicker").min(new Date(1990, 1, 1));
+            $("#TargetDatezEx").data("kendoDatePicker").min(new Date(1990, 1, 1));
+
+            $("#ConfigCompletez").prop("checked", "checked");
+            $("#ConfigCompletez").prop("disabled", true);
+            
+            if ($("#TargetDatezIn").data("kendoDatePicker") != null) {
+                $("#divOnTargetDateIn").show();
+
+                $("#TargetDatezIn").data("kendoDatePicker").value(dataItem.OnTargetDateIn == undefined ? "" : dataItem.OnTargetDateIn);
+
+                if ("@FBB_CFG001_2_COV_INFO_ON_TARGET_DATE" == "Y") {
+                    $("#TargetDatezIn").data("kendoDatePicker").readonly();
+                }
+                else {                    
+                    $("#TargetDatezIn").data("kendoDatePicker").enable();
+                    validateModel.push({ id: "TargetDatezIn" });                   
+                }
+                
+                
+
+                if (dataItem.OnTargetDateIn != undefined && dataItem.OnTargetDateIn != null) {
+                    if ((new Date(dataItem.OnTargetDateIn) < new Date(currentDate)) && dataItem.StatusValue != "ON_PROGRESS") {
+                        $("#TargetDatezIn").data("kendoDatePicker").readonly();
+                        $("#TargetDatezIn").data("kendoDatePicker").min(new Date(1990, 1, 1));
+                    }
+                    else {
+                        $("#TargetDatezIn").data("kendoDatePicker").min(new Date(currentDate));
+                    }
+                }
+                else {
+                    $("#TargetDatezIn").data("kendoDatePicker").min(new Date(currentDate));
+                }
+            }
+
+            if ($("#TargetDatezEx").data("kendoDatePicker") != null) {
+                $("#divOnTargetDateEx").show();
+                $("#TargetDatezEx").data("kendoDatePicker").value(dataItem.OnTargetDateEx == undefined ? "" : dataItem.OnTargetDateEx);
+
+                if ("@FBB_CFG001_2_COV_INFO_ON_TARGET_DATE" == "Y") {
+                    $("#TargetDatezEx").data("kendoDatePicker").readonly();
+                }
+                else {
+                    $("#TargetDatezEx").data("kendoDatePicker").enable();
+                    //validateModel.push({ id: "TargetDatezEx" });                    
+                }
+
+                if (dataItem.OnTargetDateEx != undefined && dataItem.OnTargetDateEx != null) {
+                    if ((new Date(dataItem.OnTargetDateEx) < new Date(currentDate)) && dataItem.StatusValue != "ON_PROGRESS") {
+                        $("#TargetDatezEx").data("kendoDatePicker").readonly();
+                        $("#TargetDatezEx").data("kendoDatePicker").min(new Date(1990, 1, 1));
+                    }
+                    else {
+                        $("#TargetDatezEx").data("kendoDatePicker").min(new Date(currentDate));
+                    }
+                }
+                else {
+                    $("#TargetDatezEx").data("kendoDatePicker").min(new Date(currentDate));
+                }
+            }
+        }
+        else {
+            $("#ConfigCompletez").removeAttr("checked");
+
+            if ("@FBB_CFG001_2_COV_INFO_CHECKING" == "Y")
+                $("#ConfigCompletez").prop("disabled", true);
+            else
+                $("#ConfigCompletez").removeAttr("disabled");
+
+
+            $("#divOnTargetDateIn").hide();
+            $("#divOnTargetDateEx").hide();
+        }
+
+        if (dataItem.StatusValue != "ON_PROGRESS") {
+            $("#ConfigCompletez").prop("disabled", true);
+        }
+
+        if ($("#Buildingz").data("kendoDropDownList") != null) {
+            $("#Buildingz").data("kendoDropDownList").dataSource.read({ contactId: $("#hdContactId").val() });
+
+            if (dataItem.BuildingCode != "" && dataItem.BuildingCode != undefined) {
+                $("#colBuilding").hide();
+                $("#Buildingz").data("kendoDropDownList").value(dataItem.BuildingCode);
+            }
+            else {
+                $("#colBuilding").show();
+
+                if ("@FBB_CFG001_2_COV_INFO_BUILDING_CODE" == "Y") {
+                    $("#Buildingz").data("kendoDropDownList").readonly();
+                }
+                else {
+                    $("#Buildingz").data("kendoDropDownList").enable();
+                    validateModel.push({ id: "hddBuilding" });
+                }
+            }
+        }
+
+        SetRequired(validateModel);
+        ClearTextValidation("PopupzPanel");
+
+        $("#btnPopupzSave").hide();
+        $("#btnPopupzUpdate").show();
+
+        $("#TargetDatezIn").attr("readonly", "readonly");
+        $("#TargetDatezEx").attr("readonly", "readonly");
+        $("#Popupz_wnd_title").text("Edit Coverage");
+        $("#Popupz").data("kendoWindow").open();
+        $("#Popupz").data("kendoWindow").center();
+    }
+
+    function gridCoverageDelete(e) {
+
+        var c = confirm("Are you sure you want to delete?");
+
+        if (c) {
+            Loading();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $.ajax({
+                url: '/Coverage_Manage/DeleteCoverageAreaInformation',
+                data: {
+                    cvrId: dataItem.CVRId,
+                    contactId: $("#hdContactId").val(),
+                    status: dataItem.Status
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+                    Loading(0);
+
+                    if (response.Return_Code == 1) {
+                        onGridCoverage_DataBind();
+                        showFeedback("success", "Deleted complete.");
+
+                        if (response.FlagDelectAll == true)
+                            window.location.href = "/Coverage_Search/Index";
+                    }
+                    else if (response.Return_Code == 0) {
+                        showFeedback("warning", response.Return_Desc);
+                    }
+                    else {
+                        showFeedback("error", response.Return_Desc);
+                    }
+                },
+                error: function (err) {
+                    Loading(0);
+                    showFeedback("error", err);
+                }
+            });
+        }
+    }
+
+    function onPopupSave(action) {
+
+        var chk = ValidationProcessing("PopupzPanel");
+        if (chk) {
+            if (action == "Create") {
+                Loading();
+                $.ajax({
+                    url: '/Coverage_Manage/SaveCoverageAreaInformation',
+                    data: {
+                        contactId: $("#hdContactId").val(),
+                        building: $("#hddBuilding").val(),
+                        status: $("#Statusz").val(),
+                        tieFlag: $("#chkTie").is(":checked")
+                    },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        Loading(0);
+
+                        if (response.Return_Code == 1) {
+                            $("#Popupz").data("kendoWindow").close();
+                            onGridCoverage_DataBind();
+                            showFeedback("success", action + "d complete.");
+                        }
+                        else if (response.Return_Code == 0) {
+                            $("#Popupz").data("kendoWindow").close();
+                            showFeedback("warning", response.Return_Desc);
+                        }
+                        else {
+                            $("#Popupz").data("kendoWindow").close();
+                            showFeedback("error", response.Return_Desc);
+                        }
+                    },
+                    error: function (err) {
+                        Loading(0);
+                        $("#Popupz").data("kendoWindow").close();
+                        showFeedback("error", err);
+                    }
+                });
+            }
+            else if (action == "Update") {
+                Loading();
+                $.ajax({
+                    url: '/Coverage_Manage/UpdateCovarageAreaInformation',
+                    data: {
+                        cvrId: $("#hddCvrId").val(),
+                        contactId: $("#hdContactId").val(),
+                        building: $("#hddBuilding").val(),
+                        status: $("#Statusz").data("kendoDropDownList").value(),
+                        onTargetDateIn: $("#TargetDatezIn").val(),
+                        onTargetDateEx: $("#TargetDatezEx").val(),
+                        completeFlag: $("#ConfigCompletez").is(":checked"),
+                        tieFlag: $("#chkTie").is(":checked")
+                    },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.Return_Code == 1) {
+                            Loading(0);
+                            $("#Popupz").data("kendoWindow").close();
+                            onGridCoverage_DataBind();
+                            showFeedback("success", action + "d complete.");
+                        }
+                        else if (response.Return_Code == 0) {
+                            Loading(0);
+                            $("#Popupz").data("kendoWindow").close();
+                            showFeedback("warning", response.Return_Desc);
+                        }
+                        else {
+                            Loading(0);
+                            $("#Popupz").data("kendoWindow").close();
+                            showFeedback("error", response.Return_Desc);
+                        }
+                    },
+                    error: function (err) {
+                        Loading(0);
+                        $("#Popupz").data("kendoWindow").close();
+                        showFeedback("error", "errors");
+                    }
+                });
+            }
+
+        }
+
+    }
+
+    function onPopupCancel_Click() {
+        $("#Popupz").data("kendoWindow").close();
+    }
+
+    function onGridCoverage_DataBound() {
+        clearPageScrollUp("#GridCoverageInfo");
+        setButton();
+    }
+
+    function onGridCoverage_DataBind() {
+        $("#GridCoverageInfo").data('kendoGrid').dataSource.read({ contactId: $("#hdContactId").val() });
+    }
+
+    function gridCoverageConfig(e) {
+
+        var validateModel = [];
+        validateModel.push({ id: "txtCondoCode" });
+        validateModel.push({ id: "txtIpranSiteCode" });
+        SetRequired(validateModel);
+
+        var chk = ValidationProcessing("SiteCodePanel");
+
+        if (chk) {
+            if ($("#hdIpranSiteCode").val() != null && $("#hdIpranSiteCode").val() != "" && $("#hdIpranSiteCode").val() != undefined
+                && $("#hdCondoCode").val() != null && $("#hdCondoCode").val() != "" && $("#hdCondoCode").val() != undefined) {
+
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                if (dataItem.BuildingCode == undefined || dataItem.BuildingCode == "") {
+                    showFeedback("warning", "Cannot config because do not have a building.");
+                }
+                else {
+                    window.location.href = "/Coverage_Dslam/Index?cvrId=" + dataItem.CVRId + "&nodeNameTH=" + $("#Coverage_NodeNameTH").val();
+                }
+
+            }
+            else {
+                showFeedback("warning", "Cannot config because do not have a site code.");
+            }
+        }
+        else {
+            showFeedback("warning", "Cannot config because do not have a site code.");
+        }
+    }
+
+    function onBuildingz_Change() {
+        if ($("#Buildingz").data("kendoDropDownList").value() != "" || $("#Buildingz").data("kendoDropDownList").value() != undefined) {
+            $("#hddBuilding").val($("#Buildingz").data("kendoDropDownList").value());
+        }
+    }
+
+    function onCancelSiteCode_Click() {
+        $("#txtIpranSiteCode").val($("#hdIpranSiteCode").val());
+        $("#txtCondoCode").val($("#hdCondoCode").val());
+    }
+
+    function mapModelAfterUpdate(model) {
+        //to do           
+        $("#hdNodeType").val(model.CoverageAreaPanel.NodeType);
+        $("#hdNodeNameTH").val(model.CoverageAreaPanel.NodeNameTH);
+        $("#hdNodeNameEN").val(model.CoverageAreaPanel.NodeNameEN);
+        $("#hdContactNumber").val(model.CoverageAreaPanel.ContactNumber);
+        $("#hdFaxNumber").val(model.CoverageAreaPanel.FaxNumber);
+        $("#hdProvinceTH").val(model.CoverageAreaPanel.ProvinceTH);
+        $("#hdAumphurTH").val(model.CoverageAreaPanel.AmphurTH);
+        $("#hdTumbonTH").val(model.CoverageAreaPanel.TumbonTH);
+        $("#hdMooTH").val(model.CoverageAreaPanel.MooTH);
+        $("#hdSoiTH").val(model.CoverageAreaPanel.SoiTH);
+        $("#hdRoadTH").val(model.CoverageAreaPanel.RoadTH);
+        $("#hdZipCodeTH_r").val(model.CoverageAreaPanel.ZipCodeTH);
+        $("#hdProvinceEN").val(model.CoverageAreaPanel.ProvinceEN);
+        $("#hdAumphurEN").val(model.CoverageAreaPanel.AmphurEN);
+        $("#hdTumbonEN").val(model.CoverageAreaPanel.TumbonEN);
+        $("#hdMooEN").val(model.CoverageAreaPanel.MooEN);
+        $("#hdSoiEN").val(model.CoverageAreaPanel.SoiEN);
+        $("#hdRoadEN").val(model.CoverageAreaPanel.RoadEN);
+        $("#hdZipCodeEN").val(model.CoverageAreaPanel.ZipCodeEN);
+        $("#hdRegionCode_r").val(model.CoverageAreaPanel.RegionCode);
+        $("#hdLat").val(model.CoverageAreaPanel.Lat);
+        $("#hdLong").val(model.CoverageAreaPanel.Long);
+
+        $("#hdIpranSiteCode").val(model.CoverageAreaPanel.IpRanSiteCode);
+        $("#hdCondoCode").val(model.CoverageAreaPanel.CondoCode);
+    }
+
+    function onCancelSiteInformation_Click() {
+        for (var i = 0; i < 2; i++) {
+
+            $("#Coverage_ProvinceTH").data("kendoDropDownList").value($("#hdProvinceTH").val());
+            $("#Coverage_ProvinceEN").data("kendoDropDownList").value($("#hdProvinceEN").val());
+            $("#Coverage_AmphurTH").data("kendoDropDownList").value($("#hdAumphurTH").val());
+            $("#Coverage_AmphurEN").data("kendoDropDownList").value($("#hdAumphurEN").val());
+
+            $("#Coverage_NodeType").data("kendoDropDownList").value($("#hdNodeType").val());
+            $("#Coverage_NodeNameTH").val($("#hdNodeNameTH").val());
+            $("#Coverage_NodeNameEN").val($("#hdNodeNameEN").val());
+            $("#Coverage_ContactNumber").val($("#hdContactNumber").val());
+            $("#Coverage_FaxNumber").val($("#hdFaxNumber").val());
+            $("#Coverage_MooTH").data("kendoNumericTextBox").value($("#hdMooTH").val());
+            $("#Coverage_SoiTH").val($("#hdSoiTH").val());
+            $("#Coverage_RoadTH").val($("#hdRoadTH").val());
+            $("#ddlZipCodeTH").data("kendoDropDownList").text($("#hdZipCodeTH_r").val());
+            $("#Coverage_MooEN").data("kendoNumericTextBox").value($("#hdMooEN").val());
+            $("#Coverage_SoiEN").val($("#hdSoiEN").val());
+            $("#Coverage_RoadEN").val($("#hdRoadEN").val());
+            $("#Coverage_ZipCodeEN").data("kendoDropDownList").value($("#hdZipCodeEN").val());
+            $("#hdZipCodeTH").val($("#hdZipCodeTH_r").val());
+            $("#hdRegionCode").val($("#hdRegionCode_r").val());
+            $("#txtLat").data("kendoNumericTextBox").value($("#hdLat").val());
+            $("#txtLong").data("kendoNumericTextBox").value($("#hdLong").val());
+
+            $("#Coverage_TumbonEN").data("kendoDropDownList").value($("#hdTumbonEN").val());
+            $("#Coverage_TumbonTH").data("kendoDropDownList").value($("#hdTumbonTH").val());
+        }
+    }
+</script>
+

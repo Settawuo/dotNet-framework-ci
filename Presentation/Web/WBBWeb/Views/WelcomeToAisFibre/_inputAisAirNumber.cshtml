@@ -1,0 +1,349 @@
+﻿@using WBBWeb.Extension
+@using WBBEntity.PanelModels;
+@model WBBWeb.Models.WelcomeAisModel
+@{
+    string W_LOGIN_1 = "";
+    string W_LOGIN_2 = "";
+    string W_LOGIN_3 = "";
+    string W_LOGIN_4 = "";
+    string W_LOGIN_5 = "";
+    string W_LOGIN_6 = "";
+    string W_LOGIN_7 = "";
+    string W_LOGIN_8 = "";
+    string W_LOGIN_9 = "";
+    string W_LOGIN_10 = "";
+    string W_LOGIN_11 = "";
+    string W_LOGIN_12 = "";
+
+    if (ViewBag.LabelFBBOR051 != null)
+    {
+        var LabelFBBOR051 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR051;
+        W_LOGIN_1 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_1") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_1").DisplayValue : "";
+        W_LOGIN_2 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_2") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_2").DisplayValue : "";
+        W_LOGIN_3 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_3") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_3").DisplayValue : "";
+        W_LOGIN_4 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_4") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_4").DisplayValue : "";
+        W_LOGIN_5 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_5") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_5").DisplayValue : "";
+        W_LOGIN_6 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_6") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_6").DisplayValue : "";
+        W_LOGIN_7 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_7") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_7").DisplayValue : "";
+        W_LOGIN_8 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_8") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_8").DisplayValue : "";
+        W_LOGIN_9 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_9") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_9").DisplayValue : "";
+        W_LOGIN_10 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_10") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_10").DisplayValue : "";
+        W_LOGIN_11 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_11") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_11").DisplayValue : "";
+        W_LOGIN_12 = LabelFBBOR051.Any(c => c.Name == "W_LOGIN_12") ? LabelFBBOR051.FirstOrDefault(c => c.Name == "W_LOGIN_12").DisplayValue : "";
+
+    }
+
+    string INPUT_FIBRENET_ID = "";
+    string INPUT_OTP = "";
+    string INPUT_LENGTH_FIBRENET_ID = "";
+    string INPUT_LENGTH_OTP = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        INPUT_FIBRENET_ID = FbbConstant.Any(f => f.Field == "INPUT_FIBRENET_ID") ? FbbConstant.First(f => f.Field == "INPUT_FIBRENET_ID").Validation : "";
+        INPUT_OTP = FbbConstant.Any(f => f.Field == "INPUT_OTP") ? FbbConstant.First(f => f.Field == "INPUT_OTP").Validation : "";
+        INPUT_LENGTH_FIBRENET_ID = FbbConstant.Any(f => f.Field == "INPUT_LENGTH_FIBRENET_ID") ? FbbConstant.First(f => f.Field == "INPUT_LENGTH_FIBRENET_ID").Validation : "";
+        INPUT_LENGTH_OTP = FbbConstant.Any(f => f.Field == "INPUT_LENGTH_OTP") ? FbbConstant.First(f => f.Field == "INPUT_LENGTH_OTP").Validation : "";
+    }
+
+    string MOBILE_CALL_TIMEOUT = string.Empty;
+
+    if (ViewBag.Config != null)
+    {
+        var fbbConfig = (List<ConfigModel>)ViewBag.Config;
+
+        MOBILE_CALL_TIMEOUT = fbbConfig.Where(d => d.Key == "MOBILE_CALL_TIMEOUT").Select(d => string.IsNullOrEmpty(d.Value1) ? "3600" : d.Value1).FirstOrDefault();
+    }
+}
+
+<style type="text/css">
+    #fbwe_p1_step_mobile {
+        display: none;
+    }
+
+    .fbwe_p1_pos1_m {
+        padding: 0 40px;
+    }
+
+    @@media(min-width:920px) {
+        .fbwe_p1_pos1_m {
+            position: absolute;
+            text-align: center;
+            top: 47%;
+            left: 54%;
+            width: 470px;
+        }
+    }
+
+    @@media(max-width:480px) {
+        .fbwe_p1_pos1_m {
+            padding: 0 15px;
+        }
+    }
+</style>
+<div>
+    @Html.Hidden("hdEnServiceMobileNo", "")
+    @Html.Hidden("hdShowServiceMobileNo", "")
+    @Html.Hidden("hdShowMobileNumber", "")
+    @Html.Hidden("GSSO_transactionID", "")
+</div>
+<div id="divInputAisAirNumber" class="fbwe_p1_wrap" style="display:none;">
+    <div class="fbwe_p1_wrap-in">
+        <picture>
+            <source media="(min-width: 920px)" srcset="~/Content/ContentWelcome/images/login/area_sp-pc.png" />
+            <img src="~/Content/ContentWelcome/images/welcome/fbwe_p1_sp.png" width="640" alt="welcometoaisfibre">
+        </picture>
+
+        <div class="fbwe_p1_pos1">
+            <div class="fbwe_p1_p_pc">@W_LOGIN_2</div>
+            <div class="fbwe_p1_box1">
+                <div class="">
+                    <input id="AisAirNumber" name="telephone" type="text" maxlength="@INPUT_LENGTH_FIBRENET_ID" placeholder="@W_LOGIN_3" class="fbwe_info_input" autocomplete="off">
+                </div>
+                <button id="btnContinue1" class="fbwe_button">@W_LOGIN_4</button>
+                <button id="btnContinue2" onclick="btnGetpass()" class="fbwe_button" style="display: none;">@W_LOGIN_4</button>
+            </div>
+            <div class="fbwe_p1_p2" id="divErrorSendOTP" style="display:none;">
+                <label id="lblErrorSendOTP" style="color:#F88379;"></label>
+            </div>
+            <div class="fbwe_p1_p2">
+                @W_LOGIN_5 <br>
+                @W_LOGIN_6
+            </div>
+        </div>
+        <div id="fbwe_p1_step_otp" class="fbwe_p1_pos2" style="display:none;">
+            <hr id="line_login" class="new2">
+            <h2 class="fbwe_p1_h2">@W_LOGIN_7</h2>
+            <span class="fbwe_p1_p3">
+                <label id="lblServiceMobileNo"></label><br>
+                @W_LOGIN_9<br>
+                <label id="lblErrorComfirmOTP" style="color:#F88379;display: none;"></label>
+            </span>
+            <input id="passOTP" class="fbwe_otp" type="password" autocomplete="one-time-code" maxlength="@INPUT_LENGTH_OTP" placeholder="@W_LOGIN_12" required/>
+            <button id="btnContinue3" class="fbwe_button_submit">@W_LOGIN_10</button>
+            <button id="btnContinue4" onclick="SubmitOTP()" class="fbwe_button_submit" style="display:none;">@W_LOGIN_10</button>
+            <a onclick="resentOTP()" class="fbwe_p1_p_pc2">@W_LOGIN_11</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var _mobileCallTimeout;
+    try {
+        _mobileCallTimeout = @MOBILE_CALL_TIMEOUT * 1000;
+    } catch (err) {
+        _mobileCallTimeout = 3600 * 1000;
+    }
+    
+    $(document).ready(function () {
+
+        $("#AisAirNumber").keyup(function () {
+            CheckKeyUps("AisAirNumber", "@INPUT_FIBRENET_ID");
+
+            if ($("#AisAirNumber").val().length == "@INPUT_LENGTH_FIBRENET_ID") {
+                $("#btnContinue1").hide();
+                $("#btnContinue2").show();
+            }
+            else {
+                $("#btnContinue1").show();
+                $("#btnContinue2").hide();
+            }
+
+        });
+
+        $("#passOTP").keyup(function () {
+            CheckKeyUps("passOTP", "@INPUT_OTP");
+
+            if ($("#passOTP").val().length == "@INPUT_LENGTH_OTP") {
+                $("#btnContinue3").hide();
+                $("#btnContinue4").show();
+            }
+            else {
+                $("#btnContinue3").show();
+                $("#btnContinue4").hide();
+            }
+        });
+
+        if ('OTPCredential' in window) {
+            window.addEventListener('DOMContentLoaded', e => {
+                const input = document.querySelector('input[autocomplete="one-time-code"]');
+                if (!input) return;
+                const ac = new AbortController();
+                const form = input.closest('form');
+                if (form) {
+                    form.addEventListener('submit', e => {
+                        ac.abort();
+                    });
+                }
+                navigator.credentials.get({
+                    otp: { transport: ['sms'] },
+                    signal: ac.signal
+                }).then(otp => {
+                    input.value = otp.code;
+                    if (form) form.submit();
+                }).catch(err => {
+                    console.log(err);
+                });
+            });
+        }
+
+    });
+
+    function btnGetpass() {
+
+        $("#lblErrorSendOTP").text("");
+        $("#divErrorSendOTP").hide();
+        $("#lblErrorComfirmOTP").text("");
+        $("#lblErrorComfirmOTP").hide();
+        document.getElementById("AisAirNumber").style.color = null;
+
+        var isSuccess = getCheckMobileNumberSentOTP();
+        if (isSuccess) {
+            //have mobile
+            //รหัส OTP ส่งไปยังหมายเลขติดต่อของคุณ {x}
+
+            var strW_LOGIN_8 = "@W_LOGIN_8";
+            var strServiceMobileNo = $("#hdShowServiceMobileNo").val();
+            strW_LOGIN_8 = strW_LOGIN_8.replace("{x}", strServiceMobileNo);
+
+            $("#lblServiceMobileNo").html(strW_LOGIN_8);
+
+            var windowSize = $(window).width();
+
+            if (windowSize <= 919) {
+                $('#fbwe_p1_step_otp').show();
+            }
+            else {
+                $('#fbwe_p1_step_otp').show();
+                $('.fbwe_p1_pos1').hide();
+            }
+        }
+        else {
+            //don't have mobile
+            if ($("#lblErrorSendOTP").text() != "") $("#divErrorSendOTP").show();
+            document.getElementById("AisAirNumber").style.color = "red";
+        }
+    }
+
+    function getCheckMobileNumberSentOTP() {
+        LockScreen(true);
+        var isCheckMobile = false;
+        var twoMobileNo = $("#AisAirNumber").val().substr(0, 2);
+
+        if (twoMobileNo == "88") {
+
+            $.ajax({
+                url: '/WelcomeToAisFibre/getCheckMobileNumberSentOTP',
+                data: {
+                    mobileNo: $("#AisAirNumber").val(),
+                    option: "4"
+                },
+                dataType: "json",
+                type: 'POST',
+                async: false,
+                timeout: _mobileCallTimeout,
+                success: function (response) {
+                    var data = response.data;
+                    if (data.errorMessage == "") {
+                        $("#hdEnServiceMobileNo").val(data.EnServiceMobileNo);
+                        $("#hdShowServiceMobileNo").val(data.ShowServiceMobileNo);
+                        $("#hdShowMobileNumber").val(data.ShowMobileNumber);
+                        $("#GSSO_transactionID").val(data.transactionID);
+                        isCheckMobile = true;
+                    }
+                    else if (data.errorMessage == "No Profile") {
+                        isCheckMobile = false;
+                    }
+                    else {
+                        $("#lblErrorSendOTP").text(data.errorMessage);
+                        isCheckMobile = false;
+                    }
+                },
+                error: function (x) {
+                    isCheckMobile = false;
+                }
+            });
+        }
+        LockScreen(false);
+        return isCheckMobile;
+    }
+
+    function resentOTP() {
+        LockScreen(true);
+        $("#lblErrorComfirmOTP").text("");
+        $("#lblErrorComfirmOTP").hide();
+
+        $("#passOTP").val("");
+
+        $.ajax({
+            url: '/WelcomeToAisFibre/SendOneTimePW',
+            data: { msisdn: $("#hdEnServiceMobileNo").val() },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            timeout: _mobileCallTimeout,
+            success: function (response) {
+                var data = response.data;
+                if (data.errorMessage == "") {
+                    $("#GSSO_transactionID").val(data.transactionID);
+                }
+                else {
+                    $("#lblErrorComfirmOTP").text(data.errorMessage);
+                    $("#lblErrorComfirmOTP").show();
+                }
+            }
+        });
+        LockScreen(false);
+    }
+
+    function SubmitOTP() {
+        LockScreen(true);
+        $("#lblErrorComfirmOTP").text("");
+        $("#lblErrorComfirmOTP").hide();
+
+        $.ajax({
+            url: '/WelcomeToAisFibre/ConfirmOneTimePW',
+            data: {
+                nonMobile: $("#AisAirNumber").val(),
+                msisdn: $("#hdEnServiceMobileNo").val(),
+                pwd: $('#passOTP').val(),
+                transactionID: $('#GSSO_transactionID').val()
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            timeout: _mobileCallTimeout,
+            success: function (response) {
+                var data = response.data;
+                if (data.errorMessage == "" && data.status == true) {
+                    $("#hdEnServiceMobileNo").val("");
+                    $("#GSSO_transactionID").val(data.transactionID);
+                    $("#MobileNo").val(data.MobileNo);
+
+                    LockScreen(false);
+                    nextPagePdpaConfirm();
+                }
+                else {
+                    LockScreen(false);
+                    $("#lblErrorComfirmOTP").text(data.errorMessage);
+                    $("#lblErrorComfirmOTP").show();
+                }
+            }
+        });
+    }
+
+    function nextPagePdpaConfirm() {
+        $('input[name=privilege]').prop('checked', false);
+        $('input[name=service]').prop('checked', false);
+        if ($('.chkbox_privilege').hasClass('errorinput')) $('.chkbox_privilege').removeClass(' errorinput');
+        if ($('.chkbox_service').hasClass('errorinput')) $('.chkbox_service').removeClass(' errorinput');
+
+        $("#divInputAisAirNumber").hide();
+        $("#divPdpaConfirm").show();
+        $("#divMian").hide();
+    }
+
+</script>

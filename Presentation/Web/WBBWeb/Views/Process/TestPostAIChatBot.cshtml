@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Test Post AI Chat Bot";
+    Layout = "~/Views/Shared/New_Layout.cshtml";
+
+    ViewBag.TestPostAIChatBotUrl = "http://localhost:50960/";
+}
+
+@using (Html.BeginForm("AIChatBotBypass", "Process", FormMethod.Post, new { id = "iFormAIpost", enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    <div style="text-align:center;">
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <h2>AI Chat Bot Bypass</h2>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <input type="text" class="inputform" id="txtAIChatBotData" maxlength="1000" placeholder="INPUT DATA (REQUIRE)" autocomplete="off" style="width: 95%; max-width: 95%; font-size: 8px; text-align: center;" />
+        <h5 id="lblerror" style="display:none; color: red;">กรุณากรอกข้อมูลให้ครบถ้วน</h5>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <input id="btnAIChatBotData" class="btn2 btn btn-success" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important;" value="POST DATA" onclick="postAIChatBotData()" />
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+    @Html.Hidden("Data","")
+}
+
+<div style="text-align:center;">
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <h4>AI Chat Bot Encrypt</h4>
+    <input type="text" class="inputform" id="txtAIChatBotDataEncrypt" maxlength="1000" placeholder="INPUT DATA (REQUIRE)" autocomplete="off" style="width: 95%; max-width: 95%; font-size: 12px; text-align: center;" />
+    <h5 id="lblerrorEncrypt" style="display:none; color: red;">กรุณากรอกข้อมูลให้ครบถ้วน</h5>
+    <p class="clearfix"></p>
+    <label id="lblEncryptResult" style="display: none; color: cornflowerblue; font-size: 12px; overflow: scroll; width: 90%; max-width: 90%;"></label>
+    <p class="clearfix"></p>
+    <input id="btnAIChatBotDataEncrypt" class="btn2 btn btn-success" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important;" value="ENCRYPT DATA" onclick="postAIChatBotDataEncrypt()" />
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+</div>
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+
+    function postAIChatBotData() {
+        var data = $("#txtAIChatBotData").val();
+        if (data != undefined && data != null && data != "") {
+            $("#Data").val(data);
+            $("#iFormAIpost").submit();
+        }
+        else {
+            $("#lblerror").show();
+        }
+    }
+
+    function postAIChatBotDataEncrypt() {
+        $("#lblerrorEncrypt").hide();
+        $("#lblEncryptResult").hide();
+        $("#lblEncryptResult").text("");
+        var data = $("#txtAIChatBotDataEncrypt").val();
+        if (data != undefined && data != null && data != "") {
+
+            $.ajax({
+                url: '/Process/AIChatBotEncrypt',
+                data: {
+                    data: data,
+                },
+                dataType: "text",
+                type: 'POST',
+                async: false,
+                success: function (response) {
+                    if (response != undefined && response != null && response != "") {
+                        $("#lblEncryptResult").text(response);
+                        $("#lblEncryptResult").show();
+                    }
+                    else {
+                        $("#lblerrorEncrypt").show();
+                    }
+                }
+            });
+        }
+        else {
+            $("#lblerrorEncrypt").show();
+        }
+    }
+
+    $(document).ready(function () {
+        var defaultData = "";
+
+        //channel=AI_CHATBOT&mobileNo=0910010694&chargeType=Postpaid&cardType=ID_CARD&cardNo=9443437235273&language=TH
+        //defaultData = "B5317EA845F272D825BF963C43B7951C20BB6FE91BD47830ECF25AD1AD8C74B26D1C38169C552579FE7A2E84ACEEC61C51B9F9034B8F04DFDA55FA2DC61FC2FD920BD24855F084A31C90A317D7DF6D0BE2873C806E1FAF7E80A6A3E06F1AACD660C7E88B95FEABDDEE18FEC62844640E";
+
+
+        //channel=AI_CHATBOT&mobileNo=0910010693&chargeType=Postpaid&cardType=ID_CARD&cardNo=9442535113899&language=EN
+        //defaultData = "B5317EA845F272D825BF963C43B7951C20BB6FE91BD47830ECF25AD1AD8C74B2C984C6F5C611DD8B9A56FF3F02341E7451B9F9034B8F04DFDA55FA2DC61FC2FD920BD24855F084A31C90A317D7DF6D0B3E5376F9325AC017F8F0AEA48883AE694CBC736935F278C25DF3FFAED0B0FCA0";
+
+
+        //channel=AI_CHATBOT&mobileNo=0910010833&chargeType=Postpaid&cardType=TAX_ID&cardNo=5419414541656&language=TH
+        //defaultData = "B5317EA845F272D825BF963C43B7951C20BB6FE91BD47830ECF25AD1AD8C74B2BF92FBD815DD791603D93D6509E013C351B9F9034B8F04DFDA55FA2DC61FC2FD60B8795AE18ABB02F763E2D06B0D2A80E0944C264D4B7D94BF48A24F415C4309FA9ECBA24FCBC1E84ACF0919E4E4711C";
+
+        $("#txtAIChatBotData").val(defaultData);
+    });
+
+    </text>)
+</script>

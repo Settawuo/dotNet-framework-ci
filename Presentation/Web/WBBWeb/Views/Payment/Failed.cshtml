@@ -1,0 +1,82 @@
+﻿@using WBBEntity.PanelModels
+@{
+    Layout = "~/Views/Shared/_LayoutPaymentAndReportProblem.cshtml";
+
+    var lHeaderPayment = "เกิดข้อผิดพลาด";
+    var lSuggestion1 = "ไม่สามารถทำรายการได้";
+    var lSuggestion2 = "กรุณาติดต่อ AIS FIBRE Contact Center 1175";
+    var lBack = "กลับสู่หน้าหลัก";
+
+    if (ViewBag.LabelFBBOR019 != null)
+    {
+        var lovlist = (List<LovScreenValueModel>)ViewBag.LabelFBBOR019;
+        var lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_FAILED_HEADER") ?? new LovScreenValueModel();
+        lHeaderPayment = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_SUGGESTION_1") ?? new LovScreenValueModel();
+        lSuggestion1 = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_SUGGESTION_2") ?? new LovScreenValueModel();
+        lSuggestion2 = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_BACK") ?? new LovScreenValueModel();
+        lBack = lovScreenValueModel.DisplayValue;
+
+    }
+
+}
+
+
+@*<div class="row_ais">
+    <div class="row">
+        <p class="col-sm-6 col-sm-offset-6  col-md-6 col-md-offset-6 col-lg-6 col-lg-offset-6 payment-headtext payment-box">@lHeaderPayment</p>
+        <p class="col-sm-6 col-sm-offset-6  col-md-6 col-md-offset-6 col-lg-6 col-lg-offset-6 payment-status-text3">@lSuggestion1</p>
+        <p class="col-sm-6 col-sm-offset-6  col-md-6 col-md-offset-6 col-lg-6 col-lg-offset-6 payment-status-text3">@lSuggestion2</p>
+    </div>
+</div>
+
+<div id="divMainDetailBoxData" class="user_tool_content mainDetail-boxData">
+    <div class="row_ais">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-8 col-md-4 col-md-offset-8 col-lg-4 col-lg-offset-8 payment-box-btn">
+                <a href="@lUrlFirstPage" class="btn2 btn btn-for-xs">
+                    @lBack
+                </a>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<div id="divMainDetailBoxData" class="boxPayment">
+    <div class="row_ais">
+        <div class="row">
+            <p class="col-sm-12 col-md-12 col-lg-12 payment-headtext payment-box">@lHeaderPayment</p>
+        </div>
+        <div class="row">
+            <dl class="col-sm-12 col-md-12 col-lg-12 dl-horizontal">
+                <dt style="text-align: left"  class="payment-detail-text1">@lSuggestion1</dt>
+                <dt style="text-align: left" class="payment-detail-text1">@lSuggestion2</dt>
+           
+            </dl>
+        </div>
+        <div class="row_ais">
+            <form class="form-inline">
+                <div class="form-group payment-box-btn-firstpage">
+                    <a href="@Url.Action("RedirectPage", "Payment")" class="form-group btn2 btn btn-for-xs">
+                        @lBack
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('li').removeClass('active');
+        $('.bd-3').addClass('active');
+        $('.pay').addClass('active');
+    });
+</script>

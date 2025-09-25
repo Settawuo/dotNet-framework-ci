@@ -1,0 +1,215 @@
+﻿@*@model WBBEntity.PanelModels.FBBWebConfigModels.LastmileAndCPEReportModel*@
+@using WBBEntity.PanelModels;
+@{
+    string L_PAGE_SEARCH = "Show Pending";
+    string L_PAGE_SEARCH_PANEL = "Search Panel";
+    string L_PAGE_NAME = "Report Name : Resend SFF Submit FOA";
+
+    string L_GRID_ORDER_NUMBER = "Order";
+    string L_GRID_ACCESS_NO = "Access Number";
+    string L_GRID_SIM_CARD = "Simcard";
+    string L_GRID_ORDER_DATE = "Order Date";
+
+    string B_SEND_TO = "Send To";
+    
+    string L_POPUP_PRODUCT_LIST = "Submit FOA Resend";
+    
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+    }   
+    
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style>
+        .col-sm-3 {
+            width: 23.4%;
+        }
+        .col-sm-3, .col-xs-6 {
+            position: relative;
+            min-height: 1px;
+            padding-left: 15px;
+            padding-right: inherit;
+        }
+        #product-list thead th {
+            text-align: center;
+        }
+        .calendar-resend.k-textbox .k-icon {
+            top: 54%;
+            margin: -8px 0 0;
+            position: absolute;
+            left: 19%;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header i-header-fit">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">@L_PAGE_NAME</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">      
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">            
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@L_PAGE_SEARCH_PANEL</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" >                                           
+                        <div id="row3" class="row i-gap-top-1">                   
+                            <div class="col-sm-6 col-md-6 i-text-align-left">         
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@L_PAGE_SEARCH</a>                                                                                                                                  
+                            </div>    
+                        </div>            
+                    </div>
+                </div>  
+            </div> 
+        </div>
+    </div>
+    <div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12 " >
+            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ListPendingSFFSubmitFOA>()
+            .Name("gridResendSFFSubmitFOARpt")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.ACCESS_NUMBER).Title(@L_GRID_ACCESS_NO).HtmlAttributes(new { style = "text-align:center;" });
+                columns.Bound(p => p.ORDER_NO).Title(@L_GRID_ORDER_NUMBER).HtmlAttributes(new { style = "text-align:center;" });
+                columns.Bound(p => p.SN).Title(@L_GRID_SIM_CARD).HtmlAttributes(new { style = "text-align:center;" });
+                columns.Bound(p => p.ORDER_DATE).Title(@L_GRID_ORDER_DATE).HtmlAttributes(new { style = "text-align:center;" });
+            })
+            .ToolBar(toolBar =>
+            {
+                toolBar.Template("" + "<div class='pull-right'><a onclick='modalConfirmShow()' id='btnSendTo'  class='btn btn-default'><i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + B_SEND_TO + "</a>&nbsp;</div>");
+            })
+            .Scrollable(scrollable => scrollable.Height("auto"))                  
+            .Pageable(pageable => pageable
+            //.PageSizes(true)
+            .Numeric(true)                            
+            .PageSizes(new int[] {20, 50, 100})
+            )
+            .Sortable()
+            .AutoBind(false)
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(20)
+                //.ServerOperation(false)
+                .Read(read => read.Action("ResendSFFSubmitFOAReportAsync", "ResendSFFSubmitFOA").Data("bindingValue"))
+                )
+            .Events(e => e.DataBound("onGridDataBound"))
+            )
+          </div>                
+    </div>    
+
+@(Html.Kendo().Window()
+    .Name("MyPopupLoading")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title(false)
+    .Modal(true)
+    .Visible(false)
+    .Content(@<text>
+    <div style="margin: 0 80px;"><font size="4">Loading &nbsp;<i class="fa fa-refresh fa-spin"></i></font></div>
+</text>)
+)
+
+
+
+</body>
+<div class="modal fade cancel-sm-box" tabindex="-1" id="modal_confirm" data-order-id="" role="dialog" aria-labelledby="modal_confirm_label">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header" style="padding-bottom: 25px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+            </div>
+            <p class="clearfix"></p>
+            <h4 class="text-center">Confirm Resend</h4>
+            <button type="button" class="btn btn-xs btn-default" onclick="ResendTo(); $.modal.close();">&nbsp; Ok &nbsp;</button>
+            <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">&nbsp; Cancel &nbsp; </button>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#btnSendTo').attr("disabled", true);
+    });
+
+    function modalConfirmShow(e) {
+        $("#modal_confirm").modal();
+    }
+
+    function ResendTo() {
+
+        SendRequest();
+
+        Loading();
+        var grid = $("#gridResendSFFSubmitFOARpt").data("kendoGrid");
+        grid.dataSource.page(1);
+        $("#modal_confirm").modal('hide');
+
+    }
+
+    function SendRequest() {
+        $.ajax({
+            type: "GET",
+            url: "/ResendSFFSubmitFOA/ResendToSFFSubmitFOA",
+            data: {
+                dataS: null
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                alert(data.RETURN_MSG);
+            },
+            error: function (data) {
+                alert(data.RETURN_MSG);
+            }
+        });
+    }
+
+    function bindingValue() {
+        return {
+            dataS: null
+        };
+    }
+    function _Search() {
+        Loading();
+        var grid = $("#gridResendSFFSubmitFOARpt").data("kendoGrid");
+        grid.dataSource.page(1);
+    }
+
+    function onGridDataBound() {
+        Loading(0);
+        if (this.dataSource.view().length == 0) {
+
+            //insert empty row
+
+            var colspan = this.thead.find("th").length;
+            //alert(colspan)
+            var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+            this.tbody.html(emptyRow);
+
+            //workarounds for IE lt 9
+            //this.table.width(800);
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+            $('#btnSendTo').attr("disabled", true);
+        }
+        else {
+            $(".k-grid-content").height("auto");
+            $('#btnSendTo').attr("disabled", false);
+            //this.dataSource.total = 100;
+        }
+    }
+</script>
+</html>

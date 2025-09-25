@@ -1,0 +1,588 @@
+﻿﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using System.Text.RegularExpressions;
+@using WBBEntity.Extensions;
+@using WBBWeb.Controllers;
+@model WBBEntity.PanelModels.QuickWinPanelModel
+
+@{
+    string lLIMIT_FILE = "";
+    string lBROWSE = "";
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        lLIMIT_FILE = labelFBBTR003.Any(c => c.Name == "L_LIMIT_FILE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_LIMIT_FILE").DisplayValue : "";
+        lBROWSE = labelFBBTR003.Any(c => c.Name == "L_BROWSE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_BROWSE").DisplayValue : "";
+    }
+    string p_address_duplicated_flag = "";
+    string p_id_duplicated_flag = "";
+    string p_contact_duplicated_flag = "";
+    string p_contact_not_active_flag = "";
+    string p_contact_no_fmc_flag = "";
+    string p_watch_list_dealer_flag = "";
+    string p_sale_dealer_direct_sale_flag = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        p_address_duplicated_flag = FbbConstant.Any(c => c.Field == "FRAUD_REASON_ADD_DUP") ? FbbConstant.FirstOrDefault(c => c.Field == "FRAUD_REASON_ADD_DUP").Validation : "";
+        p_id_duplicated_flag = FbbConstant.Any(c => c.Field == "FRAUD_REASON_ID_DUP") ? FbbConstant.FirstOrDefault(c => c.Field == "FRAUD_REASON_ID_DUP").Validation : "";
+        p_contact_duplicated_flag = FbbConstant.Any(c => c.Field == "FRAUD_REASON_CONT_DUP") ? FbbConstant.FirstOrDefault(c => c.Field == "FRAUD_REASON_CONT_DUP").Validation : "";
+        p_contact_not_active_flag = FbbConstant.Any(c => c.Field == "FRAUD_REASON_CONT_ACT") ? FbbConstant.FirstOrDefault(c => c.Field == "FRAUD_REASON_CONT_ACT").Validation : "";
+        p_contact_no_fmc_flag = FbbConstant.Any(c => c.Field == "FRAUD_REASON_CONT_FMC") ? FbbConstant.FirstOrDefault(c => c.Field == "FRAUD_REASON_CONT_FMC").Validation : "";
+        p_watch_list_dealer_flag = FbbConstant.Any(c => c.Field == "FRAUD_REASON_WATC_DEA") ? FbbConstant.FirstOrDefault(c => c.Field == "FRAUD_REASON_WATC_DEA").Validation : "";
+        p_sale_dealer_direct_sale_flag = FbbConstant.Any(c => c.Field == "FRAUD_REASON_SALE_DEA") ? FbbConstant.FirstOrDefault(c => c.Field == "FRAUD_REASON_SALE_DEA").Validation : "";
+    }
+    /*test*/
+    Model.CoveragePanelModel.SAVEORDER_FMPA_FLAG = "C";
+    Model.CoveragePanelModel.Serenade_Flag = "C";
+    Model.CoveragePanelModel.SAVEORDER_CVM_FLAG = "C";
+    Model.CoveragePanelModel.SAVEORDER_FMC_SPECIAL_FLAG = "C";
+    Model.CoveragePanelModel.SAVEORDER_MOU_FLAG = "C";
+    Model.CoveragePanelModel.EXISTING_MOBILE_FLAG = "C";
+
+    var specialOfferFlags = Model.CoveragePanelModel.GetType().GetProperties()
+                        .Where(property => property.GetValue(Model.CoveragePanelModel) != null &&
+                        property.Name.IndexOf("flag", StringComparison.OrdinalIgnoreCase) >= 0);
+
+    var CheckFraudSpecialOffer = new List<string>();
+
+    foreach (var property in specialOfferFlags)
+    {
+        var value = property.GetValue(Model.CoveragePanelModel) as string; // Safely cast to string
+        if (value == "Y" || value == "C")
+        {
+            var propertyName = property.Name.StartsWith("SAVEORDER")
+                            ? property.Name.Substring(10)
+                            : property.Name;
+            CheckFraudSpecialOffer.Add(propertyName);
+        }
+    }
+}
+@Html.HiddenFor(model => model.CustomerRegisterPanelModel.CS_NOTE_POPUP, new { @id = "csnotefraud", @value = "" })
+@Html.HiddenFor(model => model.CustomerRegisterPanelModel.address_duplicated_flag, new { @id = "address_duplicated_flag", @value = "" })
+@Html.HiddenFor(model => model.CustomerRegisterPanelModel.id_duplicated_flag, new { @id = "id_duplicated_flag", @value = "" })
+@Html.HiddenFor(model => model.CustomerRegisterPanelModel.contact_duplicated_flag, new { @id = "contact_duplicated_flag", @value = "" })
+@Html.HiddenFor(model => model.CustomerRegisterPanelModel.contact_not_active_flag, new { @id = "contact_not_active_flag", @value = "" })
+@Html.HiddenFor(model => model.CustomerRegisterPanelModel.contact_no_fmc_flag, new { @id = "contact_no_fmc_flag", @value = "" })
+@Html.HiddenFor(model => model.CustomerRegisterPanelModel.watch_list_dealer_flag, new { @id = "watch_list_dealer_flag", @value = "" })
+@Html.HiddenFor(model => model.CustomerRegisterPanelModel.sale_dealer_direct_sale_flag, new { @id = "sale_dealer_direct_sale_flag", @value = "" })
+@*check fraud*@
+<div class="modal fade" id="modal-checkfraud" tabindex="-1" role="dialog" aria-labelledby="modal-checkfraud_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row" id="popupfraud" style="display:none;">
+                    <div class="text-center">
+                        <label style="font-size:25px;color:black">Fraud Reason message</label>
+                    </div>
+                    <p class="clearfix"></p>
+                    <div class="col-sm-12">
+                        <input type="file" id="fraudinput" name="fraudinput" data-fileimage="textImagefraud" data-imageno="1" accept="image/*" style="display:none;">
+                        <input id="textImagefraud" class="form-control" type="text" readonly="readonly" style="display:none;"/>
+                    </div>
+                    <div class="col-sm-9">
+                        <input id="fraudFileName" style="width:100%" placeholder="สำเนาบัตรประชาชน พร้อมลายเซ็น" disabled>
+                        <span class="label" style="padding: 0 0 0 0 !important; white-space: normal !important;">@Html.Raw(lLIMIT_FILE)</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <label role="button" class="btn btn-success" style="display:inherit;" for="fraudinput">@lBROWSE</label>
+                    </div>
+                    <div class="col-md-4">
+                        <div id="fraudoutput" class="fraudoutput" style="display:none;"></div>
+                    </div>
+                    <div class="col-sm-12">
+                        <label style="font-size:25px;color:black">CS Note</label>
+                    </div>
+                    <div class="col-sm-12">
+                        <textarea id="csnotefraud"  style="width:100%" placeholder="หมายเหตุ" rows="3"></textarea>
+                    </div>
+                </div>
+                <h3 class="text-center" id="messagefraud" style="display:none">
+                    "Fraud reason message."
+                </h3>
+                <div class="col-md-12 text-center">
+                    <p id="notimessagefraud"></p>
+                    <p class="clearfix"></p>
+                    <button type="button" id="buttonnogofraud" class="btn btn-default" data-dismiss="modal" onclick="nextToCheckFraudCentralize()" style="display:none">&nbsp; Close &nbsp; </button>
+                    &nbsp;&nbsp;
+                    <button type="button" id="buttongofraud" class="btn btn-success" data-dismiss="modal" style="display:none">&nbsp; Go &nbsp;</button>
+                </div>
+            </div>
+        <div class="modal-footer" style="border-top: none;">
+        </div>
+</div>
+    </div>
+    <div id="listCheckFraudInfo"></div>
+</div>
+@*end check fraud*@
+
+<script>
+    //R23.04 Max(kunlp885) create getOnlineAuthen(), getCheckFraud()
+    function getOnlineAuthenToken() {
+        //$("#TransactionID").val(generateTransactionId());
+    $.ajax({
+        type: "GET",
+        url: "/Process/OnlineAuthen",
+        dataType: "json",
+        async: false,
+        data: {
+            'Transaction_Id': $("#L_MOBILE").val() //$("#TransactionID").val()
+        },
+        success: function (data) {
+            if (data.returnCode == "50000") {
+                toastrErrorMessage("Can't generate transaction Id.");
+                return;
+            } else {
+                onlineAuthenToken = data.returnData.appToken;
+            }
+        },
+        error: function (err) {
+             //toastrErrorMessage(_L_ERROR_LOAD_CARD);
+            toastrErrorMessage(err);
+            return;
+        }
+    });
+    }
+    $("#address_duplicated_flag").val('@p_address_duplicated_flag');
+    $("#id_duplicated_flag").val('@p_id_duplicated_flag');
+    $("#contact_duplicated_flag").val('@p_contact_duplicated_flag');
+    $("#contact_not_active_flag").val('@p_contact_not_active_flag');
+    $("#contact_no_fmc_flag").val('@p_contact_no_fmc_flag');
+    $("#watch_list_dealer_flag").val('@p_watch_list_dealer_flag');
+    $("#sale_dealer_direct_sale_flag").val('@p_sale_dealer_direct_sale_flag');
+    var checkFraudData = {
+        "CONTACT_MOBILE_NO": "0860000000",
+        "CUSTOMER_TYPE": "Residentail",
+        "AIS_FLAG": "Y",
+        "CUSTOMER_NAME": "Test test",
+        "ID_CARD": "0000000000000",
+        "CARD_TYPE": "บัตรประชาชน",
+        "AIS_MOBILE_SEGMENT": "Classic",
+        "SERVICE_YEAR": "0",
+        "SERVICE_LEVEL": "L",
+        "LIMIT_MOBILE": "",
+        "CHARGE_TYPE": "Pre-Paid",
+        "SLOT_WAITING_LIST_FLAG": "N",
+        "INSTALL_REGION": "CB",
+        "USE_ID_CARD_ADDRESS_FLAG": "Y",
+        "INSTALL_ADDRESS_INFO": {
+            "HOUSE_NO": "11/12",
+            "MOO_NO": "",
+            "MOO_BAAN": "เทส",
+            "BUILDING_NAME": "พหลเพรส",
+            "FLOOR": "55",
+            "ROOM": "56",
+            "SOI": "57",
+            "ROAD": "58",
+            "TUMBON": "สายลม",
+            "AMPHUR": "พญาไท",
+            "PROVICNE": "กรุงเทพ",
+            "ZIP_CODE": "10400"
+        },
+        "SALE_CHANNEL": "ACC Shop",
+        "LOCATION_SUB_REGION": "CB",
+        "LOCATION_PROVINCE": "กรุงเทพ",
+        "LOCATION_CODE": "1001",
+        "ASC_CODE": "3",
+        "ENTRY_FEE": "800",
+        "CS_NOTE": "test",
+        "ADDRESS_ID": "123",
+        "PROMOTIONLIST": [
+            {
+                "PROMOTION_CODE": "P200902878",
+                "PROMOTION_NAME": "POWER4 Online Package 100/100 Mbps up to 300/300 Mbps 449 THB for 12 months (AIS PLAYBOX)",
+                "PROMOTION_TYPE": "Main",
+                "PROMOTION_PRICE": "999.33"
+            },
+            {
+                "PROMOTION_CODE": "P12345232",
+                "PROMOTION_NAME": "FBB Discount 500 THB for 24 months",
+                "PROMOTION_TYPE": "On-Top",
+                "PROMOTION_PRICE": "999.33"
+            }
+        ],
+        "OFFERING": ["CVM","CSM","PURGE"],
+        "OPERATOR": "3BB",
+        "EMPLOYEE_CODE": "555555"
+};
+    function nextToCheckFraud() {
+        getCheckFraudBody();
+        console.log('checkFraudData : ', checkFraudData)
+        $.ajax({
+            type: "GET",
+            url: "/Process/GetCheckFraud",
+            //url: "/Process/GetCheckFraudLocal",
+            dataType: "json",
+            async: false,
+            data: checkFraudData,
+            success: function (data) {
+                //onRemoveUpload_Click(event, 'textImage', 'file', 'fileTakePhoto', 'imgPhoto');
+                console.log('GetCheckFraudData - ', data);
+                setHtmlListCheckFraudInfo(data);
+                if (data.CHECK_FRAUD_INFO.NOTIFY_POPUP == "Y") {
+                    showCheckFruadPopup('700px', '300px', data);
+                    if (data.CHECK_FRAUD_INFO.FLAG_GO_NOGO == "Go") {
+                        $('#buttongofraud').css('display', 'unset');
+                        $('#popupfraud').css('display', 'block');
+                        //setHtmlListCheckFraudInfo(data);
+                    } else {
+                        $('#buttonnogofraud').css('display', 'unset');
+                        $('#messagefraud').css('display', 'block');
+                        $('#notimessagefraud').text(data.CHECK_FRAUD_INFO.NOTIFY_MESSAGE);
+                    }
+                }
+            },
+            error: function (err) {
+                onlineAuthenToken = '';
+                toastrErrorMessage(err);
+            }
+        });
+}
+const input = document.getElementById("fraudinput")
+const output = document.getElementById("fraudoutput")
+let imagesArray = null
+input.addEventListener("change", () => {
+    const file = input.files
+    imagesArray = file[0]
+    $('#fraudFileName').val(file[0].name);
+    if (imagesArray != null) {
+        displayImages();
+    }
+})
+function displayImages() {
+    LockScreen(true);
+    let images = ""
+        images += `<div class="image">
+            <img src="${URL.createObjectURL(imagesArray)}" alt="image">
+          </div>`
+    output.innerHTML = images
+    var formData = new FormData();
+    formData.append("fileIDCard", $("#fraudinput")[0].files[0]);
+    console.log(formData);
+    formData.append("cateType", $("input[name=typeselect]:checked").val());
+    formData.append("cardNo", $("#L_CARD_NO").val());
+    formData.append("cardType", $("#select2-ID_CARD_NAME-container").text());
+    formData.append("register_dv", $("#Register_device").val());
+    formData.append("AisAirNumber", sessionStorage["AisAirNumber"].toString());
+    $.ajax({
+        type: "POST",
+        url: '/Process/UploadImageFraud',
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        async: false,
+        success: function (response) {
+            if (response) {
+                $.each(response, function (i, e) {
+                    htmlstr += "<input id='CustomerRegisterPanelModel_ListImageFile_" + 7 + "__FileName' name='CustomerRegisterPanelModel.ListImageFile[" + 7 + "].FileName' value='" + response[7].FileName + "'></input>";
+                })
+                $("#ListImageName").append(htmlstr);
+                console.log($("#ListImageName").val());
+            }
+            }
+    });
+    LockScreen(false)
+    }
+
+    let onlineAuthenToken = '';
+function getCheckFraudBody() {
+    checkFraudData = {};
+    if (onlineAuthenToken === '') {
+        getOnlineAuthenToken();
+    }
+    checkFraudData['ONLINEAUTH_TOKEN'] = onlineAuthenToken;
+    getSpecialOfferCheckFraud();
+    getPromotionListCheckFraud();
+    getParamBodyCheckFraud();
+    getInstallAddressInfoCheckFraud();
+    //getLimitAssetWatchList();
+}
+
+    function getSpecialOfferCheckFraud() {
+        checkFraudData['OFFERINGJSON'] = [];
+        if (@CheckFraudSpecialOffer.Count > 0) {
+            checkFraudData['OFFERINGJSON'] = JSON.stringify(@Html.Raw(Json.Encode(CheckFraudSpecialOffer)));
+        }
+    }
+
+    var promotionMain = '';
+function getPromotionListCheckFraud() {
+    let promotionList = [];
+    promotionList = objMonthlyMainPackageArry.map(function (item) {
+        return {
+            "PROMOTION_CODE": item.SffPromotionCode,
+            "PROMOTION_NAME": item.Name,//NameSFF
+            "PROMOTION_TYPE": "Main",
+            "PROMOTION_PRICE": item.Value.toFixed(2)
+        };
+    });
+    promotionMain = promotionList[0];
+    
+    let mappedPromotions = package_list_order.map(content => {
+        let promoCode = content.split('_')[1];
+        let detail = package_list_checkfraud.find(detail => detail.PROMOTION_CODE === promoCode);
+        return detail || { error: "No matching promotion found for " + promoCode };
+    });
+
+    promotionList.push(...mappedPromotions)
+    checkFraudData['PROMOTIONLISTJSON'] = JSON.stringify(promotionList);
+}
+
+function getParamBodyCheckFraud() {
+    checkFraudData['CONTACT_MOBILE_NO'] = $("#L_MOBILE").val();
+    checkFraudData['CUSTOMER_TYPE'] = $('#HdchkAC_Category').val();
+    checkFraudData['AIS_FLAG'] = $("#MOBILE_IS_AIS").val();
+    checkFraudData['CUSTOMER_NAME'] = $("#L_FIRST_NAME").val() + ' ' + $("#L_LAST_NAME").val();
+    checkFraudData['ID_CARD'] = $("#L_CARD_NO").val();
+    checkFraudData['CARD_TYPE'] = $('#ID_CARD_NAME :selected').text();
+    checkFraudData['AIS_MOBILE_SEGMENT'] = $("#CustomerRegisterPanelModel_RELATE_MOBILE_SEGMENT").val();
+    checkFraudData['SERVICE_LEVEL'] = $("#ServiceLevel").val();
+    checkFraudData['CHARGE_TYPE'] = $("#CoveragePanelModel_ChargeType").val();
+    checkFraudData['SLOT_WAITING_LIST_FLAG'] = 'N',
+    checkFraudData['INSTALL_REGION'] = $("#CoveragePanelModel_SAVEORDER_REGION").val();
+    checkFraudData['USE_ID_CARD_ADDRESS_FLAG'] = $("#chkSameAsIdCardAddr").prop("checked") ? "Y" : "N";
+    checkFraudData['SALE_CHANNEL'] = $("#CoveragePanelModel_SAVEORDER_SALE_CHANNEL").val();
+    checkFraudData['LOCATION_REGION'] = $("#CoveragePanelModel_SAVEORDER_REGION").val();
+    checkFraudData['LOCATION_PROVINCE'] = $("#CoveragePanelModel_SAVEORDER_PROVINCE").val();
+    checkFraudData['LOCATION_CODE'] = $("#CustomerRegisterPanelModel_L_LOC_CODE").val();
+    checkFraudData['ASC_CODE'] = $("#CustomerRegisterPanelModel_L_ASC_CODE").val();
+    checkFraudData['ENTRY_FEE'] = $('#RECURRING_CHARGE').val();
+    checkFraudData['CS_NOTE'] = $('#L_FOR_CS_TEAM').val();
+    checkFraudData['ADDRESS_ID'] = $("#CoveragePanelModel_Address_AddressId").val();
+    checkFraudData['OPERATOR'] = $("#CoveragePanelModel_SAVEORDER_OWNER_PRODUCT").val();
+    checkFraudData['EMPLOYEE_CODE'] = $("#CustomerRegisterPanelModel_L_STAFF_ID").val();
+    checkFraudData['SALE_REPRESENTATIVE'] = $("#L_SALE_REP").val()
+}
+
+function getInstallAddressInfoCheckFraud() {
+    const fieldMapping = {
+        "CoveragePanelModel_Address_L_HOME_NUMBER_1": "HOUSE_NO",
+        "CoveragePanelModel_Address_L_MOO": "MOO_NO",
+        "CoveragePanelModel_Address_L_MOOBAN": "MOO_BAAN",
+        "DataBypass_BuildName": "BUILDING_NAME",
+        "CoveragePanelModel_Address_L_FLOOR": "FLOOR",
+        "AddressPanelModelSendDocIDCard_L_ROOM": "ROOM",
+        "CoveragePanelModel_Address_L_SOI": "SOI",
+        "CoveragePanelModel_Address_L_ROAD": "ROAD",
+        "COVERAGE_L_TUMBOL": "TUMBON",
+        "COVERAGE_L_AMPHUR": "AMPHUR",
+        "COVERAGE_L_PROVINCE": "PROVINCE",
+        "CoveragePanelModel_Address_L_ZIPCODE": "ZIP_CODE"
+    };
+
+    // Initialize checkFraudData and INSTALL_ADDRESS_INFO objects
+    const checkFraudData = {};
+    checkFraudData.INSTALL_ADDRESS_INFO = {};
+
+    // Loop through the fieldMapping object to populate INSTALL_ADDRESS_INFO
+    for (const fieldId in fieldMapping) {
+        const propertyName = fieldMapping[fieldId];
+        const propertyValue = $(`#${fieldId}`).val();
+        checkFraudData.INSTALL_ADDRESS_INFO[propertyName] = propertyValue;
+    }
+}
+
+function getLimitAssetWatchList() {
+    $.ajax({
+        type: "GET",
+        url: "/Process/GetLimitAssetWatchList",
+        dataType: "json",
+        async: false,
+        data: {
+            'Transaction_Id': $("#TransactionID").val(),
+            'idCardNo': $("#L_CARD_NO").val(),
+            'locationCode': $("#CustomerRegisterPanelModel_L_LOC_CODE").val(),
+            'cardType': $('#ID_CARD_NAME :selected').text(),
+            'assetType': $("#CoveragePanelModel_ChargeType").val(),
+        },
+        success: function (data) {
+            checkFraudData['LIMIT_MOBILE'] = data.resultData[0].limitAsset.mobileCount;
+        },
+        error: function (err) {
+            //toastrErrorMessage(_L_ERROR_LOAD_CARD);
+            toastrErrorMessage(err);
+            checkFraudData['LIMIT_MOBILE'] = '5';
+            return;
+        }
+    });
+}
+
+    var fraudReasons = '';
+function setHtmlListCheckFraudInfo(data_) {
+    const { NOTIFY_POPUP, NOTIFY_MESSAGE, FLAG_GO_NOGO, VERIFY_REASON, AUTO_CREATE_PROSPECT, FRAUD_SCORE, CEN_FRAUD_FLAG, FRAUD_REASONS } = data_.CHECK_FRAUD_INFO;
+    fraudReasons = FRAUD_REASONS.map(reason => reason.REASON);//R24.01 31Jan24
+    //const strCheckFraudInfo = `<input type='hidden' name='CustomerRegisterPanelModel.CHECK_FRAUD_INFO.NOTIFY_POPUP' value='${NOTIFY_POPUP}'/>
+    //      <input type='hidden' name='CustomerRegisterPanelModel.CHECK_FRAUD_INFO.NOTIFY_MESSAGE' value='${NOTIFY_MESSAGE}'/>
+    //      <input type='hidden' name='CustomerRegisterPanelModel.CHECK_FRAUD_INFO.FLAG_GO_NOGO' value='${FLAG_GO_NOGO}'/>
+    //      <input type='hidden' name='CustomerRegisterPanelModel.CHECK_FRAUD_INFO.VERIFY_REASON' value='${VERIFY_REASON}'/>
+    //      <input type='hidden' name='CustomerRegisterPanelModel.CHECK_FRAUD_INFO.AUTO_CREATE_PROSPECT' value='${AUTO_CREATE_PROSPECT}'/>
+    //      <input type='hidden' name='CustomerRegisterPanelModel.CHECK_FRAUD_INFO.FRAUD_SCORE' value='${FRAUD_SCORE}'/>
+    //      <input type='hidden' name='CustomerRegisterPanelModel.CHECK_FRAUD_INFO.CEN_FRAUD_FLAG' value='${CEN_FRAUD_FLAG}'/>
+    //      ${FRAUD_REASONS.map((reason, i) => `
+    //        <input type='hidden' name='CustomerRegisterPanelModel.CHECK_FRAUD_INFO.FRAUD_REASONS[${i}].REASON' value='${reason.REASON}'/>
+    //        <input type='hidden' name='CustomerRegisterPanelModel.CHECK_FRAUD_INFO.FRAUD_REASONS[${i}].SCORE' value='${reason.SCORE}'/>
+    //        `).join('')}`;
+    //$("#listCheckFraudInfo").html(strCheckFraudInfo);
+
+            //id
+    $('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FRAUDSCORE').val(FRAUD_SCORE);
+    $('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_CEN_FRAUDFLAG').val(CEN_FRAUD_FLAG);
+    $('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_VERIFYREASON').val(VERIFY_REASON);
+    $('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FRAUDREASONS').val(FRAUD_REASONS);
+    $('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_NOTIFYPOPUP').val(NOTIFY_POPUP);
+    $('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_NOTIFYMESSAGE').val(NOTIFY_MESSAGE);
+    $('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_AUTOCREATEPROSPECT').val(AUTO_CREATE_PROSPECT);
+    $('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FLAGGONOGO').val(FLAG_GO_NOGO);
+    //
+
+    //        console.log($('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FRAUDSCORE').val());
+    //console.log($('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_CEN_FRAUDFLAG').val());
+    //        console.log($('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_VERIFYREASON').val());
+    //        console.log($('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FRAUDREASONS').val());
+    //        console.log($('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_NOTIFYPOPUP').val());
+    //        console.log($('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_NOTIFYMESSAGE').val());
+    //        console.log($('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_AUTOCREATEPROSPECT').val());
+    //        console.log($('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FLAGGONOGO').val());
+
+
+            
+
+    
+}
+
+function showCheckFruadPopup(width_, height_, data_) {
+    $("#modal-checkfraud").modal()
+    $('#modal-checkfraud').css('display', 'block');
+
+    var div1 = $('#simplemodal-container');
+    if (width_ != null) { div1.css('width', width_); }
+    if (height_ != null) { div1.css('height', height_); }
+    div1.css('margin-left', '10%');
+
+    console.log('closecheckfruadpopup');
+    return false;
+}
+    //end R23.04 Max(kunlp885)
+
+    //R23.11 Max(kunlp885)
+    $(document).ready(function () {
+        $("button[onclick='nextToVatOrPage()']").attr('onclick', 'nextToCheckFraud()');
+        $('#buttongofraud').attr('onclick', 'nextToVatOrPage()');
+        $('#previewfile').show()
+    });
+    //end R23.11 Max(kunlp885)
+
+    //R24.01 Check fraud by Max kunlp885
+    var package_list_checkfraud = [];//R24.01 Check fraud by Max kunlp885
+    function addPromotionToPackageList(e) {
+        package_list_checkfraud.push({
+            "PROMOTION_CODE": e.SFF_PROMOTION_CODE,
+            "PROMOTION_NAME": e.SFF_PRODUCT_NAME,
+            "PROMOTION_TYPE": e.PACKAGE_TYPE_DESC,
+            "PROMOTION_PRICE": parseFloat(e.PRICE_CHARGE).toFixed(2)
+        });
+    }
+
+    function generateTransactionId() {
+        var now = new Date();
+
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var day = String(now.getDate()).padStart(2, '0');
+        var hour = String(now.getHours()).padStart(2, '0');
+        var minute = String(now.getMinutes()).padStart(2, '0');
+        var second = String(now.getSeconds()).padStart(2, '0');
+        var millisecond = String(now.getMilliseconds()).padStart(3, '0');
+
+        var randomPart = String(Math.floor(Math.random() * 100000)).padStart(5, '0');
+
+        var transactionId = year + month + day + hour + minute + second + millisecond + randomPart;
+        return transactionId;
+    }
+
+    function nextToCheckFraudCentralize() {
+        getCheckFraudCentralizeBody();
+        console.log('checkFraudCentralizeData : ', checkFraudCentralizeData)
+        $.ajax({
+            type: "POST",
+            url: "/Process/CheckFraudCentralize",
+            dataType: "json",
+            async: false,
+            data: checkFraudCentralizeData,
+            success: function (data) {
+                SaveRegisterFraudNoGo(data.returnCode, data.returnMessage);
+            },
+            error: function (err) {
+                //window.location.reload()
+                //window.location.href = '/Process/ProcessLineOfficer';
+                toastrErrorMessage(err);
+            }
+        });
+    }
+
+    var checkFraudCentralizeData = '';
+    function getCheckFraudCentralizeBody() {
+        console.log('package_list_order - ',package_list_order);
+
+        checkFraudCentralizeData = {};
+        checkFraudCentralizeData['Customer_type'] = checkFraudData.CUSTOMER_TYPE;
+        checkFraudCentralizeData['Customer_name'] = checkFraudData.CUSTOMER_NAME;
+        checkFraudCentralizeData['Id_card_no'] = checkFraudData.ID_CARD;
+        checkFraudCentralizeData['Install_address'] = JSON.stringify(checkFraudData.INSTALL_ADDRESS_INFO);
+        checkFraudCentralizeData['Product_subtype'] = JSON.parse($("#ZTEAccessModeSerializer").val())?.[0]?.AccessMode || "Product_subtype";
+        checkFraudCentralizeData['Entry_fee'] = parseInt(checkFraudData.ENTRY_FEE) ?? 0;
+        checkFraudCentralizeData['Operator'] = checkFraudData.OPERATOR;
+        checkFraudCentralizeData['Promotion_name'] = promotionMain.PROMOTION_NAME;
+        checkFraudCentralizeData['Promotion_ontop'] = promotionOntopDiscount.PROMOTION_NAME;//ดึงจาก mapping ของ main ว่าเป็น type 4 รึเปล่า
+        checkFraudCentralizeData['Promotion_price'] = parseInt(promotionMain.PROMOTION_PRICE);
+        checkFraudCentralizeData['Price_net'] = parseInt(promotionMain.PROMOTION_PRICE) - parseInt(promotionOntopDiscount?.DISCOUNT_VALUE) ?? 0;
+        checkFraudCentralizeData['Cs_note'] = $("#csnotefraud").val();// checkFraudData.CS_NOTE;
+        checkFraudCentralizeData['Location_code'] = checkFraudData.LOCATION_CODE;
+        checkFraudCentralizeData['Location_name'] = $("#CustomerRegisterPanelModel_PartnerName").val();
+        checkFraudCentralizeData['Channel_sales'] = checkFraudData.SALE_CHANNEL;
+        checkFraudCentralizeData['Asc_code'] = checkFraudData.ASC_CODE;
+        checkFraudCentralizeData['Asc_name'] = $("#outASCPartnerName").val();
+        checkFraudCentralizeData['Region_customer'] = $("#outLocationRegion").val();
+        checkFraudCentralizeData['Region_sale'] = $("#CoveragePanelModel_SAVEORDER_REGION").val();
+        checkFraudCentralizeData['Fraud_score'] = parseInt($('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FRAUDSCORE').val());
+        checkFraudCentralizeData['Project_name'] = $("#CustomerRegisterPanelModel_Project_name").val();
+        checkFraudCentralizeData['Waiting_time_slot_flag'] = "N";// $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val();//
+        checkFraudCentralizeData['Address_duplicated_flag'] = checkReasonForFlag($("#address_duplicated_flag").val());
+        checkFraudCentralizeData['Id_duplicated_flag'] = checkReasonForFlag($("#id_duplicated_flag").val());
+        checkFraudCentralizeData['Contact_duplicated_flag'] =checkReasonForFlag($("#contact_duplicated_flag").val());
+        checkFraudCentralizeData['Contact_not_active_flag'] =checkReasonForFlag($("#contact_not_active_flag").val());
+        checkFraudCentralizeData['Contact_no_fmc_flag'] =checkReasonForFlag($("#contact_no_fmc_flag").val());
+        checkFraudCentralizeData['Watch_list_dealer_flag'] =checkReasonForFlag($("#watch_list_dealer_flag").val());
+        checkFraudCentralizeData['Sale_dealer_direct_sale_flag'] =checkReasonForFlag($("#sale_dealer_direct_sale_flag").val());
+        checkFraudCentralizeData['Relate_mobile_segment'] = checkFraudData.AIS_MOBILE_SEGMENT;
+        checkFraudCentralizeData['Charge_type'] = checkFraudData.CHARGE_TYPE;
+        checkFraudCentralizeData['Service_month'] = $("#CoveragePanelModel_SffServiceYear").val();
+        checkFraudCentralizeData['Use_id_card_address_flag'] = checkFraudData.USE_ID_CARD_ADDRESS_FLAG;
+        checkFraudCentralizeData['Reason_verify'] = $('#CustomerRegisterPanelModel_CHECK_FRAUD_INFO_VERIFYREASON').val().substring(0, 100);
+    }
+
+    function checkReasonForFlag(flag) {
+        return fraudReasons.includes(flag) ? 'Y' : 'N';
+    }
+
+    //end R24.01 Check fraud by Max kunlp885
+    function SaveRegisterFraudNoGo(status,message) {
+        $.ajax({
+            type: "GET",
+            url: "/Process/SaveRegisterFraudNoGo",
+            dataType: "json",
+            async: false,
+            data: $('form').serialize(), status, message,
+            success: function () {
+
+            },
+            error: function (err) {
+                toastrErrorMessage(err);
+                checkFraudData['LIMIT_MOBILE'] = '5';
+                return;
+            }
+        });
+    }
+</script>

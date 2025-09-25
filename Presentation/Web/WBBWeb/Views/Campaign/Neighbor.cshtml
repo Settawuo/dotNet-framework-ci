@@ -1,0 +1,521 @@
+﻿@model WBBEntity.PanelModels.CampaignModel
+@using WBBWeb.Extension;
+@using WBBEntity.PanelModels
+@{
+    Layout = "~/Views/Shared/_NewLayoutReferences.cshtml";
+    
+    string UrlRef = "";
+
+    if (ViewBag.UrlRef != null)
+    {
+        UrlRef = ViewBag.UrlRef;
+    }
+
+    int TotalDdlNeighbor = 0;
+
+    if (!string.IsNullOrEmpty(ViewBag.TotalMember))
+    {
+        TotalDdlNeighbor = !string.IsNullOrEmpty(ViewBag.TotalMember) ? Convert.ToInt32(ViewBag.TotalMember) : 0;
+    }
+
+    string L_TITLE_NB = "";
+    string L_TITLE_INFO = "";
+    string L_NAME = "";
+    string L_SURNAME = "";
+    string L_EMPLOYEE_ID = "";
+    string L_CONTACT_MOBILE_NO = "";
+    string L_NO_OF_FRIENDS = "";
+    string B_CANCEL = "";
+    string B_REGISTER = "";
+    string B_CLOSE = "";    
+    string L_SUCCESS_NB = "";
+    string L_NOT_SUCCESS_NB = "";
+    string L_INVALID_STAFF_ID = "";
+    string L_PLEASE_SELECT = "";
+    if (ViewBag.LabelFBBOR021 != null)
+    {
+        var LabelFBBOR021 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR021;
+        L_NO_OF_FRIENDS = LabelFBBOR021.Any(c => c.Name == "L_NO_OF_FRIENDS") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_NO_OF_FRIENDS").DisplayValue : "";
+        L_CONTACT_MOBILE_NO = LabelFBBOR021.Any(c => c.Name == "L_CONTACT_MOBILE_NO") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_CONTACT_MOBILE_NO").DisplayValue : "";
+        L_EMPLOYEE_ID = LabelFBBOR021.Any(c => c.Name == "L_EMPLOYEE_ID") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_EMPLOYEE_ID").DisplayValue : "";
+        B_CANCEL = LabelFBBOR021.Any(c => c.Name == "B_CANCEL") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "B_CANCEL").DisplayValue : "";
+        L_TITLE_NB = LabelFBBOR021.Any(c => c.Name == "L_TITLE_NB") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_TITLE_NB").DisplayValue : "";
+        L_TITLE_INFO = LabelFBBOR021.Any(c => c.Name == "L_TITLE_INFO") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_TITLE_INFO").DisplayValue : "";
+        L_SUCCESS_NB = LabelFBBOR021.Any(c => c.Name == "L_SUCCESS_NB") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_SUCCESS_NB").DisplayValue : "";
+        L_NOT_SUCCESS_NB = LabelFBBOR021.Any(c => c.Name == "L_NOT_SUCCESS_NB") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_NOT_SUCCESS_NB").DisplayValue : "";
+        L_NAME = LabelFBBOR021.Any(c => c.Name == "L_NAME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_NAME").DisplayValue : "";
+        L_SURNAME = LabelFBBOR021.Any(c => c.Name == "L_SURNAME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_SURNAME").DisplayValue : "";
+        B_REGISTER = LabelFBBOR021.Any(c => c.Name == "B_REGISTER") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "B_REGISTER").DisplayValue : "";
+        B_CLOSE = LabelFBBOR021.Any(c => c.Name == "B_CLOSE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        L_INVALID_STAFF_ID = LabelFBBOR021.Any(c => c.Name == "L_INVALID_STAFF_ID") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_INVALID_STAFF_ID").DisplayValue : "";
+        L_PLEASE_SELECT = LabelFBBOR021.Any(c => c.Name == "L_PLEASE_SELECT") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_PLEASE_SELECT").DisplayValue : "";
+        
+    }
+
+
+    string FBB_Con_CharNotonName = "";
+    string FBB_Input_MobileNo = "";
+
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_Con_CharNotonName = FbbConstant.Any(f => f.Field == "Char Not on Name") ? FbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        FBB_Input_MobileNo = FbbConstant.Any(f => f.Field == "Input_MobileNo") ? FbbConstant.First(f => f.Field == "Input_MobileNo").Validation : "";
+    }
+}
+@using (Html.BeginForm("SaveRegister", "Campaign", FormMethod.Post, new { id = "RegisterForm", enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    <div id="page_one">
+        <h4 class="page-header tgreen">@L_TITLE_NB</h4>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <p class="text-center tgreen">
+                    @Html.Raw(Html.Encode(L_TITLE_INFO).Replace("\n", "<br />"))
+                </p>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        <div class="row">
+            @Html.Label("L_EMP_NAME", L_NAME, new{ @class = "control-label col-xs-4 col-sm-3"})
+            <div class="col-xs-8 col-sm-4">
+                @Html.TextBoxFor(m => m.EMP_NAME, "",
+                        new
+                        {
+                            @class = "form-control",
+                            @title = L_NAME,
+                            @maxlength = 50
+                        })
+                <p class="clearfix"></p>
+            </div>
+            @Html.Label("L_EMP_SURNAME", L_SURNAME, new{ @class = "control-label col-xs-4 col-sm-1"})
+            <div class="col-xs-8 col-sm-4">
+                @Html.TextBoxFor(m => m.EMP_SURNAME, "",
+                        new
+                        {
+                            @class = "form-control",
+                            @title = L_SURNAME,
+                            @maxlength = 50
+                        })
+                <p class="clearfix"></p>
+            </div>
+        </div>
+        <div class="row">
+            @Html.Label("L_EMP_CODE", L_EMPLOYEE_ID, new{ @class = "control-label col-xs-4 col-sm-3"})
+            <div class="col-xs-8 col-sm-4">
+                @Html.TextBoxFor(m => m.EMP_CODE, "",
+                        new
+                        {
+                            @class = "form-control",
+                            @title = L_EMPLOYEE_ID,
+                            @maxlength = 8
+                        })
+                <p class="clearfix"></p>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.INTERNET_CODE)
+        <div class="row">
+            @Html.Label("L_MOBILE_CALLBACK", L_CONTACT_MOBILE_NO, new{ @class = "control-label col-xs-4 col-sm-3"})
+            <div class="col-xs-8 col-sm-4">
+                @Html.TextBoxFor(m => m.MOBILE_CALLBACK, "",
+                        new
+                        {
+                            @class = "form-control",
+                            @title = L_CONTACT_MOBILE_NO,// L_MOBILE_CALLBACK,
+                            @maxlength = 10
+                        })
+                <p class="clearfix"></p>
+            </div>
+        </div>
+        <div class="row">
+            @Html.Label("L_TOTAL_FRIEND", L_NO_OF_FRIENDS, new
+       {
+           @class = "control-label col-xs-4 col-sm-3"
+       })
+            <div class="col-xs-8 col-sm-4">
+                <select class="select" style="width: 100%" id="TOTAL_FRIEND" name="TOTAL_FRIEND" onchange='ddlTotalFriendChange(this);' >
+                </select>
+
+                <p class="clearfix"></p>
+            </div>
+        </div>
+    </div>
+    <div id="divCustomer">
+        
+         @Html.Partial("_NeighborCustomer", Model.FRIENDS)
+
+        <p class="clearfix"></p>
+
+    </div>
+  
+    <p class="clearfix page-header"></p>
+    <div class="col-md-12 text-center">
+        <button id="btnReset" type="button" class="btn btn-default">
+            &nbsp; @B_CANCEL&nbsp; 
+        </button>
+        <button id="btnRegister" type="button" style="display: none;" class="btn btn-success">
+            &nbsp; @B_REGISTER&nbsp; 
+        </button>
+        <p class="clearfix"></p>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: none;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="Clear()"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-border-rounded-green">
+                        <p class="clearfix"></p>
+                        <h5 id="modal001txt" class="text-center">
+                            <span id="LastPopupMessage"></span>
+                        </h5>
+                        <p class="clearfix"></p>
+                        <div class="col-md-12 text-center">
+                            <p class="clearfix"></p>
+                            <button type="button" id="modal001btn" class="btn btn-default" data-dismiss="modal" onclick="Clear()">&nbsp; @B_CLOSE &nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div id="ProgressIcon" class="modal fade">
+    <div class="modal-dialog" style="top: 38%;">
+        <div class="row" style="margin-left: auto; margin-right: auto; width: 150px; height: 100px; color: white;">
+            <div>
+                <i class="fa-li fa fa-spinner fa-spin fa-5x" style="position: inherit;"></i>
+            </div>
+            <div id="txtLoading" style="text-align: center;">
+                LOADING
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        getProvince();
+        getContactTime();
+        getNoFriend();
+
+        $('#EMP_NAME').keyup(function () {
+            CheckKeyUps("EMP_NAME", "@FBB_Con_CharNotonName");
+        });
+        $('#EMP_SURNAME').keyup(function () {
+            CheckKeyUps("EMP_SURNAME", "@FBB_Con_CharNotonName");
+        });
+        $("#MOBILE_CALLBACK").keyup(function () {
+            CheckKeyUps("MOBILE_CALLBACK", '@FBB_Input_MobileNo','M');
+        });
+        $("#EMP_CODE").keyup(function () {
+            CheckKeyUps("EMP_CODE", '[0-9]');
+        });
+
+        $("#btnRegister").on('click', function () {
+            if (ValidateNeighnor()) {
+                var dataObj = genDataSubmit();
+                LockScreen(true, "");
+                $.ajax({
+                    type: "POST",
+                    url: "/Campaign/SaveRegister",
+                    contentType: 'application/json',
+                    data: dataObj,
+                    async: true,
+                    success: function (response) {
+                        if (response.SaveStatus == "Y") {
+                            LockScreen(false, "");
+                            PopupMessage('@Html.Raw(L_SUCCESS_NB)');
+                            reset();
+
+                        } else {
+                            LockScreen(false, "");
+                            PopupMessage('@Html.Raw(L_NOT_SUCCESS_NB)');
+                        }
+                        $('#myModal').modal('show');
+                    }
+                });
+
+            }
+        });
+
+        $("#btnReset").on('click', function () {
+            reset();
+        });
+
+    });
+
+    function CheckKeyUps(id, RexStr, checkMobile) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        if (checkMobile == undefined || checkMobile != "M") {
+            var filter = new RegExp(RexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+        }
+        else {
+            var filterM = new RegExp(RexStr, "g");
+            strBuilder = strKey.match(filterM);
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function CheckEmpCode(EmpCode) {
+        var IsEmp = false;
+        $.ajax({
+            url: '/Campaign/CheckEmpCode',
+            data: { empCode: EmpCode },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.result1 != "") {
+                    IsEmp = true;
+                    //console.log("EmpName", response.result1);
+                }
+            }
+        });
+        LockScreen(false, "");
+        return IsEmp;
+    }
+
+    function ddlTotalFriendChange(ddl) {
+        var a = [];
+        a.push({ id: "EMP_NAME" });
+        a.push({ id: "EMP_SURNAME" });
+        a.push({ id: "EMP_CODE" });
+        a.push({ id: "MOBILE_CALLBACK" });
+
+        var isValidateSuccess = ValidationProcessing(a, "err001");
+        if (isValidateSuccess) {
+
+            if ($("#MOBILE_CALLBACK").val().length == 10) {
+                $("#MOBILE_CALLBACK").removeClass("errorinput");
+                if (CheckEmpCode($("#EMP_CODE").val())) {
+                    $("#EMP_CODE").removeClass("errorinput");
+                    $('.Customer').hide();
+                    var total = parseInt(ddl.value);
+                    for (var i = 1; i <= total; i++) {
+                        $("#Customer" + i.toString()).show();
+                        $('#ContactNo' + i.toString()).blur(function () {
+                            contactNoFocusout(this);
+                        });
+                    }
+                    $('#EMP_NAME').attr('readonly', 'true');
+                    $('#EMP_SURNAME').attr('readonly', 'true');
+                    $('#EMP_CODE').attr('readonly', 'true');
+                    $('#MOBILE_CALLBACK').attr('readonly', 'true');
+                    $("#btnRegister").show();
+                } else {
+                    toastrErrorMessage("@L_INVALID_STAFF_ID");
+                    $("#EMP_CODE")[0].className = "form-control errorinput";
+                    getNoFriend();
+                    $("#btnRegister").hide();
+                }
+            }
+            else {
+                toastrErrorMessage("เบอร์มือถือไม่ถูกต้อง");
+                $("#MOBILE_CALLBACK")[0].className = "form-control errorinput";
+                getNoFriend();
+                $("#btnRegister").hide();
+            }
+        } else {
+            getNoFriend();
+            $("#btnRegister").hide();
+        }
+    }
+
+    function getNoFriend() {
+
+        $('#TOTAL_FRIEND').empty();
+        var str = '<option disabled selected value="">' + "@L_PLEASE_SELECT" + '</option>';
+
+        $('#TOTAL_FRIEND').append(str);
+        var strBuilder = '';
+        var total = parseInt("@TotalDdlNeighbor");
+        for (i = 1; i <= total; i++) {
+            strBuilder += '<option value="' + i + '">' + i + '</option>';
+        }
+
+        $('#TOTAL_FRIEND').append(strBuilder);
+        $('#TOTAL_FRIEND').select2();
+
+    }
+
+    function reset() {
+        $("#EMP_NAME").removeAttr("readonly");
+        $("#EMP_SURNAME").removeAttr("readonly");
+        $("#EMP_CODE").removeAttr("readonly");
+        $("#MOBILE_CALLBACK").removeAttr("readonly");
+        $('.form-control').val('');
+        $(".form-control").removeClass("errorinput");
+        getNoFriend();
+        clearDetial();
+        $("#btnRegister").hide();
+    }
+
+    function ValidateNeighnor() {
+        var a = [];
+        a.push({ id: "EMP_NAME" });
+        a.push({ id: "EMP_SURNAME" });
+        a.push({ id: "EMP_CODE" });
+        a.push({ id: "MOBILE_CALLBACK", condition: "MobileNumber" });
+        a.push({ id: "TOTAL_FRIEND" });
+
+        var isSubmit = ValidationProcessing(ValidateDetail(a, CheckKeyDetail()), "err001");
+
+        return isSubmit;
+    }
+
+    function ValidateDetail(a, keyDetail) {
+
+        var totalFriend = $('#TOTAL_FRIEND').val();
+        var total = parseInt(totalFriend);
+
+        for (i = 1; i <= total; i++) {
+            if (checkDetail(i)) {
+                a.push({ id: "FRIENDS_" + i + "__NAME" });
+                a.push({ id: "FRIENDS_" + i + "__SURNAME" });
+                a.push({ id: "ContactNo" + i, condition: "MobileNumber" });
+                if ($("#FRIENDS_" + i + "__EMAIL").val() != "") {
+                    a.push({ id: "FRIENDS_" + i + "__EMAIL", condition: "Email" });
+                } else {
+                    $("#FRIENDS_" + i + "__EMAIL").removeClass("form-control errorinput ").addClass("form-control");
+                }
+
+                a.push({ id: "FRIENDS_" + i + "__BUILDING" });
+                a.push({ id: "Province" + i });
+                a.push({ id: "District" + i });
+                a.push({ id: "SubDistrict" + i });
+                a.push({ id: "PostalCode" + i });
+                a.push({ id: "FRIENDS_" + i + "__HOUSE_NO" });
+                a.push({ id: "ContactTime" + i });
+            } else if (!keyDetail) {
+
+                a.push({ id: "FRIENDS_" + i + "__NAME" });
+                a.push({ id: "FRIENDS_" + i + "__SURNAME" });
+                a.push({ id: "ContactNo" + i, condition: "MobileNumber" });
+                if ($("#FRIENDS_" + i + "__EMAIL").val() != "") {
+                    a.push({ id: "FRIENDS_" + i + "__EMAIL", condition: "Email" });
+                } else {
+                    $("#FRIENDS_" + i + "__EMAIL").removeClass("form-control errorinput ").addClass("form-control");
+                }
+                a.push({ id: "FRIENDS_" + i + "__BUILDING" });
+                a.push({ id: "Province" + i });
+                a.push({ id: "District" + i });
+                a.push({ id: "SubDistrict" + i });
+                a.push({ id: "PostalCode" + i });
+                a.push({ id: "FRIENDS_" + i + "__HOUSE_NO" });
+                a.push({ id: "ContactTime" + i });
+            }
+        }
+        return a;
+    }
+
+    function CheckKeyDetail() {
+        var a = [];
+
+        var totalFriend = $('#TOTAL_FRIEND').val();
+        var total = parseInt(totalFriend);
+        var keyDetail = false;
+        for (i = 1; i <= total; i++) {
+            if (checkDetail(i)) {
+                keyDetail = true;
+            }
+        }
+        return keyDetail;
+    }
+
+    function checkDetail(i) {
+
+        var key = false;
+        if ($("#FRIENDS_" + i + "__NAME").val().trim() != ""
+            || $("#FRIENDS_" + i + "__SURNAME").val().trim() != ""
+            || $("#ContactNo" + i).val().trim() != ""
+            || $("#FRIENDS_" + i + "__EMAIL").val().trim() != ""
+            || $("#FRIENDS_" + i + "__BUILDING").val().trim() != ""
+            || $("#FRIENDS_" + i + "__HOUSE_NO").val().trim() != ""
+            || $("#FRIENDS_" + i + "__SOI").val().trim() != ""
+            || $("#FRIENDS_" + i + "__ROAD").val().trim() != ""
+            || $("#Province" + i).val() != null
+            || $("#District" + i).val() != null
+            || $("#SubDistrict" + i).val() != null
+            || $("#PostalCode" + i).val() != null
+            || $("#ContactTime" + i).val() != null) {
+            key = true;
+        }
+        return key;
+    }
+
+    function genDataSubmit() {
+
+        var dataDetail = [];
+        var total = parseInt($("#TOTAL_FRIEND :selected").text());
+        for (var i = 1; i <= total; i++) {
+
+            if (checkDetail(i)) {
+
+                dataDetail.push({
+                    NAME: $("#FRIENDS_" + i + "__NAME").val().trim(),
+                    SURNAME: $("#FRIENDS_" + i + "__SURNAME").val().trim(),
+                    CONTACT_MOBILE: $("#ContactNo" + i).val().trim(),
+                    MOBILE_IS_AIS: $("#MOBILE_IS_AIS" + i).val(),
+                    EMAIL: $("#FRIENDS_" + i + "__EMAIL").val().trim(),
+                    SELECT_ADDRESS_TYPE: $("#FRIENDS_" + i + "__SELECT_ADDRESS_TYPE").val().trim(),
+                    BUILDING: $("#FRIENDS_" + i + "__BUILDING").val().trim(),
+                    PROVINCE: $("#Province" + i).val(),
+                    DISTRICT: $("#District" + i).val(),
+                    SUB_DISTRICT: $("#SubDistrict" + i).val(),
+                    POSTAL_CODE: $("#PostalCode" + i).val(),
+                    HOUSE_NO: $("#FRIENDS_" + i + "__HOUSE_NO").val().trim(),
+                    SOI: $("#FRIENDS_" + i + "__SOI").val().trim(),
+                    ROAD: $("#FRIENDS_" + i + "__ROAD").val().trim(),
+                    CONTACT_TIME: $("#ContactTime" + i).val()
+                });
+
+            }
+        }
+
+        var dataObject = JSON.stringify({
+            EMP_NAME: $("#EMP_NAME").val(),
+            EMP_SURNAME: $("#EMP_SURNAME").val(),
+            EMP_CODE: $("#EMP_CODE").val(),
+            INTERNET_CODE: "",
+            MOBILE_CALLBACK: $("#MOBILE_CALLBACK").val(),
+            TOTAL_FRIEND: $("#TOTAL_FRIEND :selected").text(),
+            FRIENDS: dataDetail
+        });
+
+        return dataObject.toString();
+    }
+
+    function PopupMessage(msg) {
+        $('#LastPopupMessage').html(msg);
+    }
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#ProgressIcon #txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+</script>

@@ -1,0 +1,294 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using System.Text.RegularExpressions;
+@using WBBEntity.Extensions;
+@model WBBEntity.PanelModels.QuickWinPanelModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutReferences.cshtml";
+
+    string language = "";
+    
+    if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+    {
+        language = "th";
+    }
+    else
+    {
+        language = "en";
+    }
+}
+
+<style>
+    fieldset {
+        border: 2px solid #83ad47;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        -khtml-border-radius: 5px;
+        -moz-border-radius: 5px;
+    }
+
+    #tbl-popup {
+        width: 100%;
+    }
+
+    .btnmodal {
+        padding: 10px 15px;
+        background-color: #58AA0C;
+        color: #fff !important;
+    }
+
+        .btnmodal:hover {
+            padding: 10px 15px;
+            background-color: #4a831c;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .modal-dialog-center {
+        margin-top: 10%;
+    }
+
+    .fa-fibre-s {
+        width: 30px;
+        height: 29px;
+        background: url("../../Content/images/tracking/i-fibre-s.png") no-repeat 100%;
+        margin-top: 6px;
+        margin-left: 5px;
+    }
+
+    .panel-title a:hover, a:focus {
+        color: #8cc43b;
+        text-decoration: none;
+    }
+
+    .panel-heading [data-toggle="collapse"]:after {
+        font-family: 'FontAwesome';
+        content: "\f106";
+        float: right;
+        color: grey;
+        margin-top: 18px;
+    }
+
+    .panel-heading [data-toggle="collapse"].collapsed:after {
+        content: "\f107";
+    }
+
+    #ais_topbar {
+        display: block;
+    }
+
+    #ais_topbar .topbar_ribbon {
+	    padding-left:10px;
+        float: left;
+        height: 60px;
+    }
+
+    #ribbonking{ width:100%; height:60px;  background: url("/Images/bg1366.jpg") no-repeat center;  background-color:#000;}
+    #ribbonking_wrapper{height:60px; margin: 0 auto; max-width: 1140px;}
+
+</style>
+@*<header>
+    <div class="container">
+        <div id="wrapSwitchLanguage" class="col-xs-12 text-right nopading">
+            <a id="btn_th" class="btn-sm btn-success rippler rippler-default" href="~/WBB/ChangeCurrentCulture?culture=1" role="button"
+               style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">ภาษาไทย</a>&nbsp;&nbsp;
+            <a id="btn_en" class="btn-sm btn-default rippler rippler-default" href="~/WBB/ChangeCurrentCulture?culture=2" role="button"
+               style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">English</a>&nbsp;&nbsp;
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <div class="col-md-9 col-xs-12 hidden-xs" id="status_th_div">
+            <img src="~/Content/images/tracking/status-1.png"
+                 class="img-responsive center-block">
+        </div>
+        <div class="col-md-9 col-xs-12 hidden-xs" id="status_en_div" style="display: none;">
+            <img src="~/Content/images/tracking/status-2.png"
+                 class="img-responsive center-block bottom">
+        </div>
+        <div class="col-md-3 hidden-xs hidden-sm" id="logo_div" style=" margin-top: 12px;">
+            <img src="~/img/img-logo.png" class="img-responsive right bottom">
+        </div>
+    </div>
+    <input type="hidden" id="LanguagePage" />
+</header>*@
+
+<body>
+    <div id="ais_topbar">
+        @*<div id="ribbonking">
+	        <div id="ribbonking_wrapper">
+    	        <div class="topbar_ribbon"><img src="~/Images/iconribbon.png" alt="ais logo"></div>
+            </div>
+        </div>*@
+    </div>
+<div id="container">
+    <!--  Put Content Here เริ่มต้นเนื้อหา  -->
+    	
+    <div id="box1N_holder" style="padding-top:0">
+      <div class="row_ais">
+      <div class="column large-11 large-centered">
+
+    <div class="container">
+          <div id="wrapSwitchLanguage" class="col-xs-12 text-right nopading">
+                <a id="btn_th" class="btn-sm btn-success rippler rippler-default" href="~/WBB/ChangeCurrentCulture?culture=1" role="button"
+                   style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">ภาษาไทย</a>&nbsp;&nbsp;
+                <a id="btn_en" class="btn-sm btn-default rippler rippler-default" href="~/WBB/ChangeCurrentCulture?culture=2" role="button"
+                   style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">English</a>&nbsp;&nbsp;
+            </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+
+        <div class="col-md-2 hidden-xs hidden-sm" id="logo_div" style=" margin-top: 12px;">
+            <img src="~/Content/images/postpaid/fibre_logo.png" class="img-responsive left">
+        </div>
+        <div class="col-md-8 col-xs-12 hidden-xs" id="status_th_div" style="@(language=="th"?"":"display: none;")">
+            <img src="~/Content/images/tracking/status-1.png"
+                 class="img-responsive center-block">
+        </div>
+        <div class="col-md-8 col-xs-12 hidden-xs" id="status_en_div" style="@(language=="en"?"":"display: none;")">
+            <img src="~/Content/images/tracking/status-2.png"
+                 class="img-responsive center-block bottom">
+        </div>
+        
+    </div>
+    <input type="hidden" id="LanguagePage" />
+
+      </div>
+      </div>
+      <div class="panel_ais">
+       <div class="row_ais">
+      <div class="column large-11 large-centered">
+       <div class="content-menu">
+      <div class="row_ais">
+        <div class="column large-12 medium-12 small-12">
+            <div class="detail-for-menu bg-inn-chkstatus">
+             <div class="innercontent">
+              <div class="row_ais">
+                <div class="column large-10">
+                    <div id="renderBody" class="card"></div>
+
+
+    @using (Html.BeginForm("Index", "Tracking", FormMethod.Post, new { id = "trackingForm", @enctype = "multipart/form-data" }))
+    {
+        <div class="col-md-1 sm-hidden"></div>
+        <div class="container col-md-12 col-sm-12 addrounded" style="background: transparent;">
+            @*//R20.04 Data Privacy*@
+            @Html.Partial("~/Views/Shared/_DataPrivacy.cshtml")
+
+            @Html.Partial("~/Views/Tracking/_TrackingCheckProcess.cshtml")
+            @Html.Partial("~/Views/Tracking/_TrackingDisplayResult.cshtml")
+        </div>
+        <div class="col-md-1 sm-hidden"></div>
+    }
+                    </div>
+              </div> 
+             </div> 
+            </div>
+        </div>
+      </div>
+      </div>
+      
+         </div>
+      </div>
+      </div>
+      
+      
+    </div>
+    
+   
+    <script>
+        @functions{
+ public string GetAntiForgeryToken()
+ {
+ string cookieToken, formToken;
+ AntiForgery.GetTokens(null, out cookieToken, out formToken);
+ return cookieToken + "," + formToken;
+ }
+ }
+
+    </script>
+    <input type="hidden" id="forgeryToken" value="@GetAntiForgeryToken()" />
+    
+    <!--  Put Content Here จบเนื้อหา  -->
+
+    <div style="clear:both;"></div>
+    <div id="aisfooter">
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_FooterTH")
+        }
+        else
+        {
+            @Html.Partial("_FooterEN")
+        }
+        
+        </div>
+        <div class="truehits-bg">&nbsp;</div> 
+
+    </div>
+</body>
+
+<script type="text/javascript">
+    var language = '@language';
+    var digitalData = {};
+    digitalData.page = {};
+    digitalData.page.pageInfo = {};
+
+    $(document).ready(function () {
+
+        ais_interface_process('mini-menu', 'postpaid', 'th', '', false);
+
+        digitalData.page = {
+            pageInfo: {
+                pageName: "Tracking:" + language + ":TrackingLogin",
+                site: "Tracking",
+                language: language
+            },
+            category: {
+                pageType: "content page",
+                primaryCategory: "newfibre:" + language + ":TrackingLogin",
+                subCategory1: "",
+                subCategory2: ""
+            }
+        }
+        
+
+    });
+
+    $(function () {
+
+        var get_current_language = $.ajax({
+            type: "GET",
+            url: "/WBB/GetCurrentCulture",
+            async: false,
+            success: function (x) {
+                $("#LanguagePage").val(x);
+                return x;
+            }
+        });
+        changeLanguage();
+        changePageHeader(1);
+    });
+
+    function changeLanguage() {
+        if ($("#LanguagePage").val() == "1") {
+            $("#btn_th").addClass('btn-success');
+            $("#btn_en").removeClass('btn-success').addClass('btn-default');
+        }
+        else {
+            $("#btn_th").removeClass('btn-success').addClass('btn-default');
+            $("#btn_en").addClass('btn-success');
+        }
+    }
+
+    function changePageHeader(operNo) {
+        if ($("#LanguagePage").val() === "1") {
+            $("#status_th_div").show();
+            $("#status_en_div").hide();
+        } else {
+            $("#status_th_div").hide();
+            $("#status_en_div").show();
+        }
+    }
+
+</script>

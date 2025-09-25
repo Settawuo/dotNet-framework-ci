@@ -1,0 +1,601 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CBB4E8A5-5566-4D64-B557-6062507407D7}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WBBExternalService</RootNamespace>
+    <AssemblyName>WBBExternalService</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Data.Services.5.2.0\lib\net40\Microsoft.Data.Services.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Data.Services.Client.5.2.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=4.0.8.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.4.0.8\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.Wcf, Version=4.0.8.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.Integration.Wcf.4.0.8\lib\net40\SimpleInjector.Integration.Wcf.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Packaging, Version=4.0.8.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.Packaging.4.0.8\lib\net40\SimpleInjector.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.Spatial, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="encrypt-suk.intra.ais_2019.cer" />
+    <Content Include="FbbCpGwInterface.svc" />
+    <Content Include="FBBPAYG_LMD_Interface.svc" />
+    <Content Include="FBBProfileCustomer.svc" />
+    <Content Include="FbbQueryOrderChangePackFieldWork.svc" />
+    <Content Include="FbbQueryStatusLeaveMessageInterface.svc" />
+    <Content Include="FBBQuota_SubContract.svc" />
+    <Content Include="FBBSAPOnline.svc" />
+    <Content Include="Global.asax" />
+    <Content Include="LastmilePayment.svc" />
+    <Content Include="SBNCheckCoverage.svc" />
+    <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Deploy_External_service.pubxml" />
+    <None Include="Properties\PublishProfiles\Game EXWS Publish.pubxml" />
+    <None Include="Properties\PublishProfiles\New Game ExWebWs Publish.pubxml" />
+    <None Include="Properties\PublishProfiles\Siway175.pubxml" />
+    <None Include="Properties\PublishProfiles\Tinglee EXWS Publish.pubxml" />
+    <Content Include="FBBPreOrder.svc" />
+    <None Include="Service References\CommandService\CommandService.wsdl" />
+    <None Include="Service References\CommandService\CommandService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService15.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService16.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService18.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService19.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService20.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService22.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CommandService\CommandService9.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService.disco" />
+    <None Include="Service References\QueryService\configuration91.svcinfo" />
+    <None Include="Service References\QueryService\configuration.svcinfo" />
+    <None Include="Service References\QueryService\QueryService25.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService251.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService252.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService253.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService26.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService29.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService291.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService292.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService30.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService36.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService37.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService371.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService38.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService381.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService39.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService40.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService401.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService402.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService411.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService412.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService413.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService414.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService42.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService43.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\CommandService\CommandService.disco" />
+    <None Include="Service References\CommandService\configuration91.svcinfo" />
+    <None Include="Service References\CommandService\configuration.svcinfo" />
+    <None Include="Service References\CommandService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="log4net.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configurations.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="FBBPAYG_LMD_Interface.svc.cs">
+      <DependentUpon>FBBPAYG_LMD_Interface.svc</DependentUpon>
+    </Compile>
+    <Compile Include="FbbQueryOrderChangePackFieldWork.svc.cs">
+      <DependentUpon>FbbQueryOrderChangePackFieldWork.svc</DependentUpon>
+    </Compile>
+    <Compile Include="FbbQueryStatusLeaveMessageInterface.svc.cs">
+      <DependentUpon>FbbQueryStatusLeaveMessageInterface.svc</DependentUpon>
+    </Compile>
+    <Compile Include="IFBBPAYG_LMD_Interface.cs" />
+    <Compile Include="IFBBPreOrder.cs" />
+    <Compile Include="Customization\MainPackageNotFoundException.cs" />
+    <Compile Include="Customization\SaveOrderResWasNoValue.cs" />
+    <Compile Include="FbbCpGwInterface.svc.cs">
+      <DependentUpon>FbbCpGwInterface.svc</DependentUpon>
+    </Compile>
+    <Compile Include="FBBProfileCustomer.svc.cs">
+      <DependentUpon>FBBProfileCustomer.svc</DependentUpon>
+    </Compile>
+    <Compile Include="FBBQuota_SubContract.svc.cs">
+      <DependentUpon>FBBQuota_SubContract.svc</DependentUpon>
+    </Compile>
+    <Compile Include="FBBSAPOnline.svc.cs">
+      <DependentUpon>FBBSAPOnline.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="IFbbCpGwInterface.cs" />
+    <Compile Include="IFBBProfileCustomer.cs" />
+    <Compile Include="IFbbQueryOrderChangePackFieldWork.cs" />
+    <Compile Include="IFbbQueryStatusLeaveMessageInterface.cs" />
+    <Compile Include="IFBBQuota_SubContract.cs" />
+    <Compile Include="IFBBSAPOnline.cs" />
+    <Compile Include="ILastmilePayment.cs" />
+    <Compile Include="ISBNCheckCoverage.cs" />
+    <Compile Include="LastmilePayment.svc.cs">
+      <DependentUpon>LastmilePayment.svc</DependentUpon>
+    </Compile>
+    <Compile Include="MessageInspector.cs" />
+    <Compile Include="Models\Request\TransferFileToStorageRequest.cs" />
+    <Compile Include="Models\Response\TransferFileToStorageResponse.cs" />
+    <Compile Include="Models\WBBExternalModel.cs" />
+    <Compile Include="ProcessorAsync.cs" />
+    <Compile Include="SBNCheckCoverage.svc.cs">
+      <DependentUpon>SBNCheckCoverage.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\CommandService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\QueryService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Solid\Code\ErrorHandler.cs" />
+    <Compile Include="Solid\Code\ErrorHandlerElement.cs" />
+    <Compile Include="Solid\Code\WcfServiceCommandHandlerProxy.cs" />
+    <Compile Include="Solid\Code\WcfServiceQueryHandlerProxy.cs" />
+    <Compile Include="Solid\CompositionRoot\Bootstrapper.cs" />
+    <Compile Include="Solid\CompositionRoot\DebugLogger.cs" />
+    <Compile Include="Solid\CompositionRoot\DynamicQueryProcessor.cs" />
+    <Compile Include="Solid\CrossCuttingConcerns\FromWcfFaultTranslatorCommandHandlerDecorator.cs" />
+    <Compile Include="Solid\CrossCuttingConcerns\FromWcfFaultTranslatorQueryHandlerDecorator.cs" />
+    <Compile Include="FBBPreOrder.svc.cs">
+      <DependentUpon>FBBPreOrder.svc</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\QueryService\QueryService.wsdl" />
+    <None Include="Service References\QueryService\QueryService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService15.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService16.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService18.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService19.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService20.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService22.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService23.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService24.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService27.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService28.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService33.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService34.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService35.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QueryService\QueryService9.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\CommandService\" />
+    <WCFMetadataStorage Include="Service References\QueryService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\AIRNETEntity\AIRNETEntity.csproj">
+      <Project>{c39cd420-64d2-42e1-ac13-23e4a22bc61e}</Project>
+      <Name>AIRNETEntity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\WBBBusinessLayer\WBBBusinessLayer.csproj">
+      <Project>{89b88516-c7e4-4442-9734-c94b627b32b4}</Project>
+      <Name>WBBBusinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\WBBContract\WBBContract.csproj">
+      <Project>{b2b6ac71-9b7d-4e71-b5fa-fa453bacda3f}</Project>
+      <Name>WBBContract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\WBBEntity\WBBEntity.csproj">
+      <Project>{41681256-03e6-4034-a050-146bd09adf2d}</Project>
+      <Name>WBBEntity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'staging|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'staging|x64'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'staging|x86'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50325</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60425/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>del "$(TargetDir)Oracle.DataAccess.dll" /q</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

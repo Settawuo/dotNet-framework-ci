@@ -1,0 +1,604 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+@{#region
+    string L_SUMM_DETAIL5 = "";
+    string L_SUMM_DETAIL8 = "";
+    string L_BAHT = "";
+    string L_SUMMARY = "";
+    string SCREEN_SELECT_4 = "";
+    string SCREEN_SELECT_7 = "";
+    string FBBOR041_OTP_2 = "";
+    string FBBOR041_OTP_3 = "";
+    string FBBOR041_OTP_5 = "";
+    string lRESIDENTIAL = "";
+    string lGOVERNMENT = "";
+    string lBUSINESS = "";
+    string lNAME = "";
+
+    string lCARD_TYPE = "";
+    string lCARD_NO = "";
+    string lGENDER = "";
+    string lBIRTHDAY = "";
+    string lCONTACT_PHONE = "";
+    string lSPECIFIC_TIME = "";
+    string L_INSTALLATION_DATE = "";
+
+    string USE_COST = "";
+    string L_USE_COST = "";
+    string L_USE_DISCOUNT = "";
+    string L_IPCAM_INSTALL = "";
+    string L_IPCamera_Point = "";//
+    string IPCamInstallCost = "";//
+
+    var IPCAMERA_TERM_1 = new List<LovScreenValueModel>();
+    var IPCAMERA_TERM_2 = new List<LovScreenValueModel>();
+    var IPCAMERA_TERM_3 = new List<LovScreenValueModel>();
+
+    if (ViewBag.LabelFBBTR002 != null)
+    {
+        var labelFBBTR002 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR002;
+        L_SUMM_DETAIL5 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL5") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL5").DisplayValue : "";
+        L_SUMM_DETAIL8 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL8") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL8").DisplayValue : "";
+        L_BAHT = labelFBBTR002.Any(c => c.Name == "L_BAHT") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_BAHT").DisplayValue : "";
+        L_SUMMARY = labelFBBTR002.Any(c => c.Name == "L_SUMMARY") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMMARY").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        lRESIDENTIAL = labelFBBTR003.Any(c => c.Name == "L_RESIDENTIAL") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_RESIDENTIAL").DisplayValue : "";
+        lGOVERNMENT = labelFBBTR003.Any(c => c.Name == "L_GOVERNMENT") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_GOVERNMENT").DisplayValue : "";
+        lBUSINESS = labelFBBTR003.Any(c => c.Name == "L_BUSINESS") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_BUSINESS").DisplayValue : "";
+        lNAME = labelFBBTR003.Any(c => c.Name == "L_NAME") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_NAME").DisplayValue : "";
+        lCARD_TYPE = labelFBBTR003.Any(c => c.Name == "L_CARD_TYPE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_CARD_TYPE").DisplayValue : "";
+        lCARD_NO = labelFBBTR003.Any(c => c.Name == "L_CARD_NO") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_CARD_NO").DisplayValue.Substring(1) : "";
+        lGENDER = labelFBBTR003.Any(c => c.Name == "L_GENDER") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_GENDER").DisplayValue : "";
+        lBIRTHDAY = labelFBBTR003.Any(c => c.Name == "L_BIRTHDAY") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_BIRTHDAY").DisplayValue.Substring(1) : "";
+        lCONTACT_PHONE = labelFBBTR003.Any(c => c.Name == "L_CONTACT_PHONE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_CONTACT_PHONE").DisplayValue : "";
+        lSPECIFIC_TIME = labelFBBTR003.Any(c => c.Name == "L_SPECIFIC_TIME") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_SPECIFIC_TIME").DisplayValue : "";
+        L_INSTALLATION_DATE = labelFBBTR003.Any(c => c.Name == "L_INSTALLATION_DATE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_INSTALLATION_DATE").DisplayValue : "";
+    }
+
+    string SUMMARY_02_01 = "";
+    string SUMMARY_02_02 = "";
+    string SUMMARY_02_03 = "";
+    string SUMMARY_02_04 = "";
+    string SUMMARY_02_05 = "";
+    string SUMMARY_02_06 = "";
+    string SUMMARY_02_07 = "";
+    string SUMMARY_02_08 = "";
+    if (ViewBag.LabelFBBORV41 != null)
+    {
+        var LabelFBBORV41 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV41;
+        FBBOR041_OTP_2 = LabelFBBORV41.Any(c => c.Name == "FBBOR041_OTP_2") ? LabelFBBORV41.First(c => c.Name == "FBBOR041_OTP_2").DisplayValue : "";
+        FBBOR041_OTP_3 = LabelFBBORV41.Any(c => c.Name == "FBBOR041_OTP_3") ? LabelFBBORV41.First(c => c.Name == "FBBOR041_OTP_3").DisplayValue : "";
+        FBBOR041_OTP_5 = LabelFBBORV41.Any(c => c.Name == "FBBOR041_OTP_5") ? LabelFBBORV41.First(c => c.Name == "FBBOR041_OTP_5").DisplayValue : "";
+
+        SUMMARY_02_01 = LabelFBBORV41.Any(c => c.Name == "SUMMARY_02_01") ? LabelFBBORV41.First(c => c.Name == "SUMMARY_02_01").DisplayValue : "";
+        SUMMARY_02_02 = LabelFBBORV41.Any(c => c.Name == "SUMMARY_02_02") ? LabelFBBORV41.First(c => c.Name == "SUMMARY_02_02").DisplayValue : "";
+        SUMMARY_02_03 = LabelFBBORV41.Any(c => c.Name == "SUMMARY_02_03") ? LabelFBBORV41.First(c => c.Name == "SUMMARY_02_03").DisplayValue : "";
+        SUMMARY_02_04 = LabelFBBORV41.Any(c => c.Name == "SUMMARY_02_04") ? LabelFBBORV41.First(c => c.Name == "SUMMARY_02_04").DisplayValue : "";
+        SUMMARY_02_05 = LabelFBBORV41.Any(c => c.Name == "SUMMARY_02_05") ? LabelFBBORV41.First(c => c.Name == "SUMMARY_02_05").DisplayValue : "";
+        SUMMARY_02_06 = LabelFBBORV41.Any(c => c.Name == "SUMMARY_02_06") ? LabelFBBORV41.First(c => c.Name == "SUMMARY_02_06").DisplayValue : "";
+        SUMMARY_02_07 = LabelFBBORV41.Any(c => c.Name == "SUMMARY_02_07") ? LabelFBBORV41.First(c => c.Name == "SUMMARY_02_07").DisplayValue : "";
+        SUMMARY_02_08 = LabelFBBORV41.Any(c => c.Name == "SUMMARY_02_08") ? LabelFBBORV41.First(c => c.Name == "SUMMARY_02_08").DisplayValue : "";
+    }
+
+    if (ViewBag.IpCamera != null)
+    {
+        var ipCamera = (List<LovScreenValueModel>)ViewBag.IpCamera;
+        SCREEN_SELECT_4 = ipCamera.Any(c => c.Name == "IPCamera_Rent") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Rent").DisplayValue : "";
+        SCREEN_SELECT_7 = ipCamera.Any(c => c.Name == "SCREEN_SELECT_7") ? ipCamera.FirstOrDefault(c => c.Name == "SCREEN_SELECT_7").DisplayValue : "";
+        IPCAMERA_TERM_1 = ipCamera.Where(w => w.Name == "IPCamera_Term_Sum_First_Text").ToList();
+        IPCAMERA_TERM_2 = ipCamera.Where(w => w.Name == "IPCamera_Term_Sum_Cont_Text").ToList();
+        IPCAMERA_TERM_3 = ipCamera.Where(w => w.Name == "IPCamera_Term_Sum_Last_Text").ToList();
+        USE_COST = ipCamera.Any(c => c.Name == "IPCamera_Use_Cost") ? double.Parse(ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Use_Cost").DisplayValue).ToString("N2") : "";
+        L_USE_COST = ipCamera.Any(c => c.Name == "IPCamera_Use_Cost_Text") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Use_Cost_Text").DisplayValue : "";
+        L_USE_DISCOUNT = ipCamera.Any(c => c.Name == "IPCamera_Use_discount_Text") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Use_discount_Text").DisplayValue : "";
+        L_IPCAM_INSTALL = ipCamera.Any(c => c.Name == "IPCamera_Install_at_date") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Install_at_date").DisplayValue : "";
+        L_IPCamera_Point = ipCamera.Any(c => c.Name == "IPCamera_Use_Point") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Use_Point").DisplayValue : "";
+        //IPCamera_Install_at_date_cost
+        IPCamInstallCost = ipCamera.Any(c => c.Name == "IPCamera_Install_at_date_cost") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Install_at_date_cost").DisplayValue : "";
+    }
+
+    string FlagOTP = "";
+    string ChnOTP = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        FlagOTP = FbbConstant.Any(f => f.Field == "FLAG_OTP_IPCamera") ? FbbConstant.First(f => f.Field == "FLAG_OTP_IPCamera").Validation : "";
+        ChnOTP = FbbConstant.Any(f => f.Field == "CHANNEL_OTP_IPCamera") ? FbbConstant.First(f => f.Field == "CHANNEL_OTP_IPCamera").Validation : "";
+    }
+
+    string Channel = ViewBag.Channel ?? "";
+    bool IsSubContact = ViewBag.IsSubContact ?? false;
+    #endregion
+}
+
+@*HTML form's Sidebar Summary*@
+<div class="divSidebarSummaryHidden" style="display:none">
+    <div class="col-md-4 col-xs-12 addrounded pull-right hidden-sm hidden-xs">
+        <p class="clearfix"></p>
+        <h4 class="greenheader page-header twhite" id="lblSumHeaderVas"></h4>
+        <div class="page-dot" id="divInstallIPCamera">
+            <i class="fa fa-chevron-right tgreen"></i>
+            <span class="tgreen" id="o2Vas">
+                @L_SUMM_DETAIL5
+            </span>
+            <p class="clearfix"></p>
+            <div id="trInstallIPCameraPlus" style="display:none">
+                <div class="divInstallIPCamera">
+                    <span class="col-xs-8" id="lbInstallIPCameraPlus">
+                        @L_IPCAM_INSTALL
+                    </span>
+                    <span class="col-xs-4 text-right">
+                        <span id="InstallIPCameraCost">@IPCamInstallCost.00</span>
+                        @L_BAHT
+                    </span>
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+            <div id="spaceInstallIPCameraPlus" style="display:none"><p class="clearfix"></p><p class="clearfix"></p></div>
+            <div id="trUseIPCameraPlus">
+                <div class="divUseIPCamera0">
+                    <span class="col-xs-8" id="lbUseIPCamera">
+                        @L_USE_COST
+                    </span>
+                    <span class="col-xs-4 text-right">
+                        <span>@USE_COST </span>@L_BAHT
+                    </span>
+                    <p class="clearfix"></p>
+                    <span class="col-xs-8" id="lbDiscountUseIPCamera">
+                        @L_USE_DISCOUNT
+                    </span>
+                    <span class="col-xs-4 text-right">
+                        <span id="DiscountIPCameraCost">@USE_COST </span>@L_BAHT
+                    </span>
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+            <p class="clearfix"></p> <p class="clearfix"></p>
+            <strong>
+                <span class="col-xs-8" id="lblsummTotalInstallIPCameraRental">
+                    @L_SUMM_DETAIL8
+                </span>
+                <span class="col-xs-4 text-right">
+                    <span id="summTotalInstallIPCamera">0.00 </span>
+                    @L_BAHT
+                </span>
+            </strong>
+            <p class="clearfix"></p>
+        </div>
+        <div class="page-dot" id="divServiceIPCamera">
+            <i class="fa fa-chevron-right tgreen"></i>
+            <span class="tgreen" id="o2VasMultiplePlaybox">
+                @SCREEN_SELECT_4
+            </span>
+            <p class="clearfix"></p>
+            <div id="trServiceIPCameraPlus"></div>
+            <p class="clearfix"></p><p class="clearfix"></p><p class="clearfix"></p>
+            <strong>
+                <span class="col-xs-8" id="oVasIPCamera">
+                    @L_SUMM_DETAIL8
+                </span>
+                <span class="col-xs-4 text-right">
+                    <span id="summTotalIPCamera"></span>
+                    @L_BAHT
+                </span>
+                <span class="col-xs-12" id="oVasIPCameraDtail">
+                    @SCREEN_SELECT_7
+                </span>
+            </strong>
+            <p class="clearfix"></p>
+        </div>
+        <div class="page-dot" id="divSummaryIPCamera" style="display:none">
+            <span style='font-weight: bold'>@SUMMARY_02_03</span>
+            <p class="clearfix"></p>
+            <span class="col-xs-8">@SUMMARY_02_04</span>
+            <span class="col-xs-4 text-right"><span id="TotalPerDayIPCamera"></span> @L_BAHT</span>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <span style='font-weight: bold' class="col-xs-8">@SUMMARY_02_05</span>
+            <span class="col-xs-4 text-right"><span id="summTotalMonthly"></span> @L_BAHT</span>
+            <p class="clearfix"></p>
+            <span style='font-weight: bold' class="col-xs-8">@SUMMARY_02_06</span>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+</div>
+
+<div class="divUseIPCameraHidden" style="display:none">
+    <span class="col-xs-8" id="lbUseIPCamera">
+        @L_USE_COST     @L_IPCamera_Point
+    </span>
+    <span class="col-xs-4 text-right">
+        <span>@USE_COST </span>@L_BAHT
+    </span>
+    <p class="clearfix"></p>
+    <span class="col-xs-8" id="lbDiscountUseIPCamera">
+        @L_USE_DISCOUNT     @L_IPCamera_Point
+    </span>
+    <span class="col-xs-4 text-right">
+        <span id="DiscountIPCameraCost">@USE_COST </span>@L_BAHT
+    </span>
+    <p class="clearfix"></p>
+</div>
+
+<div class="divServiceIPCameraPlusHidden" style="display:none">
+    <span class="col-xs-8" id="lbServiceIPCameraPlus">
+    </span>
+    <span class="col-xs-4 text-right">
+        <span id="lbServiceIPCameraCost"></span>
+        @L_BAHT
+    </span>
+</div>
+<script>
+    MergeHidden('.divSidebarSummary');
+
+    function BindHidden(className) {
+        $(className).html() == '' || $(className).html() == undefined ? $(className).html($(className + 'Hidden').html()).show() : $(className).show();
+    }
+
+    function MergeHidden(className) {
+        BindHidden(className);
+        $(className + 'Hidden').remove();
+    }
+
+    function setFormSummaryLine2() {
+        $('#lblSumHeaderVas').text("@L_SUMMARY");//สรุปรายการทั้งหมด
+        $('#summTotalIPCamera').text('0');
+    }
+
+    function drawSummaryHidden() {
+        createDivHidden('lbSummary1', BindLbSummary1());
+        createDivHidden('lbSummary2', '');
+
+        for (var i = 1; i < 4; i++) {
+            getTermCon(i);
+        }
+
+        if (isSubContact &"@FlagOTP" == "Y"&"@ChnOTP" == "@Channel") {
+            createDivHidden('lbSummaryOTP', getOTP());
+            let currentContent = $('#msgOTP').text();
+            let updatedContent = currentContent.replace('{mobile}', privacyMsisdn(phoneNo));
+            $('#msgOTP').text(updatedContent);
+        }
+        createDivHidden('lbSummaryCaptcha', bindCaptcha());
+    }
+
+    function createDivHidden(idName, data) {
+        var lbSummary2Div = $('<div>').attr('id', idName);
+        lbSummary2Div.html(data);
+        lbSummary2Div.css('display', 'none');
+        $('body').append(lbSummary2Div);
+    }
+
+    function BindLbSummary1() {
+        getPhoneNummberCustomer();
+        let installDate = $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val();
+        const installTime = $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val();
+        if (isSubContact) {
+            const installDateArray = installDate.split('/');
+            installDate = installDateArray[2] + "/" + installDateArray[1] + "/" + installDateArray[0];
+        }
+        var nameMarked = "<span>@Model.CustomerRegisterPanelModel.L_TITLE@Model.outPrimaryContactFirstName " + privacyNameSurname('@Model.outContactLastName') + "</span>";
+
+        const fields = [
+            "@lNAME",
+            nameMarked,
+            "@lCARD_TYPE",
+            "@Model.IDCardType",
+            "@lCARD_NO",
+            privacyInfoCard("@Model.IDCardNo"),
+            "@lGENDER",
+            "",
+            "@lBIRTHDAY",
+            "@Model.outBirthDate",
+            "@lCONTACT_PHONE",
+            privacyMsisdn(phoneNo),
+            "Email",
+            privacyEmail("@Model.outEmail","20"),
+            "@lSPECIFIC_TIME",
+            $("#LanguagePage").val() == 1 ? "08:00 - 17:00 น." : "8:00 AM - 5:00 PM",
+            "@L_INSTALLATION_DATE",
+            `<span>${installDate} ${installTime}</span>`
+        ];
+
+        const summary1 = generateLbSummary1(fields);
+        return summary1;
+    }
+
+    function generateLbSummary1(fields) {
+        const selValue = "@Model.outcardType";
+        var categoryLabel = "";
+
+        switch (selValue) {
+            case "R": categoryLabel = "@lRESIDENTIAL"; break;
+            case "G": categoryLabel = "@lGOVERNMENT"; break;
+            case "B": categoryLabel = "@lBUSINESS"; break;
+            default: break;
+        }
+
+        let summary1Str = `<div class="col-md-3 col-xs-12">
+        ${categoryLabel} </div ><div class="col-md-3 col-xs-12"></div>`;
+
+        for (let i = 0; i < fields.length; i += 2) {
+            summary1Str += `<div class="col-md-3 col-xs-6" id="Summary1Detail${i}">
+            ${fields[i]}</div><div class="col-md-3 col-xs-6" id="Summary1Detail${i + 1}"><span>
+            ${fields[i + 1]}</span></div>`;
+            if (i % 4 === 0) {
+                summary1Str += "<p class='clearfix'></p>";
+            }
+        }
+        return summary1Str;
+    }
+
+    function setTotalPerDay() {
+        let summTotalMonthly = parseInt($("#summTotalIPCamera").text().replace(/[^0-9.]/g, ''), 10);
+        $("#summTotalMonthly").text(summTotalMonthly.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+        if ($('input[name="diy-option"]:checked').val() == 'N') {
+            const summTotalInstall= parseInt($("#summTotalInstallIPCamera").text().replace(/[^0-9.]/g, ''), 10);
+            summTotalMonthly += summTotalInstall;
+        }
+
+        var daysInMonth = new Date().getDaysInMonth();
+        if (summTotalMonthly > 0) {
+            const summTotalDaily = summTotalMonthly / daysInMonth;
+            const summTotalPlusDaily = summTotalMonthly + summTotalDaily;
+            $("#TotalPerDayIPCamera").text(summTotalDaily.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+            $("#summTotalMonthly").text(summTotalPlusDaily.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        }
+    }
+
+    function setSummary2() {
+        const content = $("#divInstallIPCamera").html() + $("#divServiceIPCamera").html() + $("#divSummaryIPCamera").html();
+        const summary2Topic = $('.summarytab2 .add-border-rounded-green span.hightlight').text();
+        $('.summarytab2').html($('.summarytabHidden').html());
+        $('.summarytab2 .hightlight').html(summary2Topic);
+        $('.summarytab2').find('#summarytabWrite').replaceWith(content)
+        $('.summarytab2 strong').remove();
+        $(".summarytab2 #o2Vas, .summarytab2 #o2VasMultiplePlaybox").removeClass("tgreen").wrap('<strong></strong>');
+        $(".summarytab2").find("i.fa-chevron-right.tgreen").remove();
+    }
+
+    function setTermCond() {
+        $(".summarytab5 .divTermCond").css('margin-top', '30px');
+        if (!$("#checkboxTermConIPCam").length) {
+            $(".summarytab7 .divTermCond")
+                .css("overflow", "hidden")
+                .css("height", "")
+                .css("display", "flex")
+                .prepend($('<input>', {
+                    name: 'checkboxTermConIPCam',
+                    type: 'checkbox',
+                    id: 'checkboxTermConIPCam',
+                    style: 'transform: scale(1.5); margin: 8px 16px 24px 5px;',
+                    disabled: true,
+                    change: function () {
+                        EnableSummit(this.checked);
+                    }
+                }));
+
+            $('#btnSubmitIPcamera').prop('disabled', true);
+        }
+    }
+
+    function getTermCon(num) {
+        var ipcTermCond = null;
+        switch (num) {
+            case 1: ipcTermCond = @Html.Raw(Json.Encode(ViewBag.IPCameraServiceCondition)); break;
+            case 2: ipcTermCond = @Html.Raw(Json.Encode(ViewBag.IPCameraLegalCondition)); break;
+            case 3: ipcTermCond = @Html.Raw(Json.Encode(ViewBag.IPCameraConfirmCondition)); break;
+        }
+        generateTableRows(ipcTermCond, num)
+    }
+
+    function generateTableRows(data, num) {
+        var isLangTH = $("#LanguagePage").val() == 1;
+        var tableRowsHtml = '';
+        tableRowsHtml += `<div class="divTermCond" style="overflow-x: auto; height: 100%; max-height: 120px; margin-bottom: 24px; " onscroll="CheckTermConScrolled(this)">`;
+        tableRowsHtml += `<span id="TermCon${num}"><table id="tbTermCon" class="tbl"><tbody>`;
+
+        for (var i = 0; i < data.length; i++) {
+            tableRowsHtml += '<tr><td style="vertical-align:top;" colspan="2">';
+            tableRowsHtml += data[i].DisplayValue;
+            tableRowsHtml += '</td></tr>';
+        }
+        tableRowsHtml += '</tbody></table></span></div>';
+        let tabSeq = parseInt(num) + 4;
+
+        $('#lbSummary4').after($('<span>').attr('id', "lbSummary" + tabSeq).html(tableRowsHtml).css('display', 'none'));
+    }
+
+    function bindCaptcha() {
+        return '<p class="clearfix"></p><p class="clearfix"></p><div class="col-sm-4 col-xs-12 text-center"><input type="text" id="defaultReal" name="defaultReal" class="form-control"></div>';
+    }
+
+    function setCaptcha() {
+        $(function () {
+            $('#defaultReal').realperson({
+                length: 5,
+                regenerate: 'Change',
+                dot: '*',
+                dots: $.realperson.defaultDots,
+                chars: $.realperson.alphanumeric
+            });
+        });
+    }
+
+    function getOTP() {
+        return `<p class="clearfix"></p>
+                <div class="col-sm-4 col-xs-12" style="color: #666;">
+                    <span id="msgOTP">
+                        @FBBOR041_OTP_2
+                    </span>
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-sm-4 col-xs-12 text-center">
+                    <input type="password" id="otppwd" name="otppwd" class="form-control">
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-sm-4 col-xs-12 text-center">
+                    <button type="button" class="btn btn-success" onclick="sendOTP();">
+                        <i class="fa fa-repeat"></i> &nbsp; @FBBOR041_OTP_3
+                    </button>
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-sm-12 col-xs-12" style="color: #666;">
+                    @FBBOR041_OTP_5
+                </div>
+                <p class="clearfix"></p>`;
+    }
+
+    var phoneNo = "";
+    function getPhoneNummberCustomer() {
+        var aisNumber = sessionStorage.getItem("AisAirNumber");
+        var idCardType = sessionStorage.getItem("IDCardType");
+        var idCardNo = sessionStorage.getItem("IDCardNo");
+        if (aisNumber == "" || idCardType == "" || idCardNo == "") {
+            return "";
+        }
+        $.ajax({
+            url: '/CheckCoverage/getPhoneNummberCustomer',
+            data: {
+                mobileNo: aisNumber,
+                cardNo: idCardNo,
+                cardType: idCardType,
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                var result = response;
+                if (result != "") {
+                    phoneNo = result.ServiceMobileNo;
+                    $('#CustomerRegisterPanelModel_L_MOBILE').val(phoneNo);
+                }
+            }
+        });
+        return phoneNo;
+    }
+
+    function setGender() {
+        //hide summarytab1 line2,3  chats885 12/12/2023
+        $('#Summary1Detail2').hide();
+        $('#Summary1Detail3').hide();
+        $('#Summary1Detail4').hide();
+        $('#Summary1Detail5').hide();
+        $('#Summary1Detail6').hide();
+        $('#Summary1Detail7').hide();
+        $('#Summary1Detail8').hide();
+        $('#Summary1Detail9').hide();
+        $('#Summary1Clearfix4').hide();
+        $('#Summary1Clearfix8').hide();
+        $.ajax({
+            url: '/Process/GetOtherInformation',
+            data: {
+                mobileno: sessionStorage.getItem("AisAirNumber"),
+                caid: @Model.outServiceAccountNumber,
+                baid: @Model.outBillingAccountNumber,
+                selectvalue: 'GENDER'
+            },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                if (response == "") {//chats885 30/11/2023
+                    $('#Summary1Detail7 span').append($("#LanguagePage").val() == 1 ? '' : '');
+                }else {
+                    $('#Summary1Detail7 span').append(response);
+                    $('#CustomerRegisterPanelModel_L_GENDER').val(response);
+                }
+            }, error: function () {
+                $('#Summary1Detail7 span').append($("#LanguagePage").val() == 1 ? '' : '');
+            }
+        });
+    }
+
+    var tmpTransactionID = "";
+    function sendOTP() {
+        var contactPhoneSendOTP = "";
+        if (phoneNo != undefined && phoneNo != "") {
+            contactPhoneSendOTP = phoneNo;
+        }
+        else {
+            contactPhoneSendOTP = "";
+        }
+
+        if (contactPhoneSendOTP != undefined && contactPhoneSendOTP != "") {
+            $.ajax({
+                url: '/Process/SMSIPCamera',
+                data: { MobileNo: contactPhoneSendOTP },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (response) {
+                    tmpTransactionID = response;
+                }
+            });
+        }
+    }
+
+    var tmpPackageDataDeviceContract;
+    var prompcodeArray = [];
+    function GetListDeviceContractOnlineQuery() {
+        prompcodeArray.push({ SFF_PROMOTION_CODE: '@Model.v_sff_main_promotionCD' });
+        var findOntop = $("[name=SelectCamera]");
+        $.each(findOntop, function (i, e) {
+            prompcodeArray.push({ SFF_PROMOTION_CODE: $("#SFF_PROMOTION_CODE" + e.value).val() });
+        });
+        if (prompcodeArray.length > 0) {
+            $.ajax({
+                type: "GET",
+                url: "/SelectPackage/GetListDeviceContractOnlineQuery",
+                data: {
+                    "AisAirNumber": sessionStorage.getItem("AisAirNumber"),
+                    "P_CHANNEL": "WEB",
+                    "P_EVENT": "Existing",
+                    "PROMOTION_CODE_ARRAY": JSON.stringify(prompcodeArray),
+                    "P_PRODUCT_SUBTYPE": '@Model.v_package_subtype',
+                    "P_OWNER_PRODUCT": '@Model.v_owner_product',
+                    "P_SALE_CHANNEL": $("#Location_Code").val() != "" ? 'OFFICER' : 'CUSTOMER',
+                    "accessMode": "",
+                    "isPartner": "",
+                    "partnerName": "",
+                    "addressId": ""
+                },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    tmpPackageDataDeviceContract = data; //set data dcontract
+                    //$('#InstallIPCameraCost').text(parseFloat(data.ContractDeviceList[0].PENALTY_CHARGE).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
+                }
+            });
+        }
+    }
+
+    function drawSummaryExtension() {
+        setTotalPerDay();
+        setSummary2();
+        setTermCond();
+
+        $(".summarytab2 #trUseIPCameraPlus [class^='divUseIPCamera'] *").css("color", "#666");
+        $(".summarytab3 .col-xs-10.col-xs-offset-1.add-border-rounded-green").append('<p class="clearfix"></p>');
+        $(".summarytab4 .col-xs-10.col-xs-offset-1.add-border-rounded-green").append('<p class="clearfix"></p>');
+        $('.summarytab5 .hightlight').removeClass('hightlight');
+        $(".summarytab5 .table-responsive").css("margin-top", "30px");
+
+        if ($('input[name="diy-option"]:checked').val() == 'Y') {
+            for (let i = 14; i <= 17; i++) {
+                $("#Summary1Detail" + i).hide();
+            }
+        } else {
+            $(".summarytab2 #trInstallIPCameraPlus").show();
+            for (let i = 14; i <= 17; i++) {
+                $("#Summary1Detail" + i).show();
+            }
+        }
+
+        if ($("select[name='ddlPurchaseNo0']").val() == 1) {
+            $(".divUseIPCamera0").show();
+        }
+    }
+</script>

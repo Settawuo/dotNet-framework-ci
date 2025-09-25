@@ -1,0 +1,629 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.DormitorySearchModel
+@using WBBEntity.PanelModels;
+
+@{
+    ViewBag.Title = "Index";
+
+    string L_DORMITORY_PROVINCE = "";
+    string L_DORMITORY_NAME = "";
+
+    string B_SEARCH = "";
+    string B_CLEAR = "";
+
+    string B_NEW = "";
+    string B_VIEW = "";
+
+    string G_DORMITORY_ID = "";
+    string G_DORMITORY_PROVINCE = "";
+    string G_DORMITORY_NAME = "";
+    string G_DORMITORY_ROOMCOUNT = "";
+    string G_DORMITORY_STATUS = "";
+    string G_DORMITORY_VIEW = "";
+    string G_Succontract_Code = "";
+    string G_Succontract_Name_TH = "";
+    string G_Succontract_Name_EN = "";
+    string G_Price = "";
+    string B_SAVE = "";
+    string G_REGION = "";
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_DORMITORY_PROVINCE = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        L_DORMITORY_NAME = configscreen.Any(f => f.Name == "L_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_DORMITORY_NAME").LovValue2 : "";
+
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue2 : "";
+        B_CLEAR = configscreen.Any(f => f.Name == "B_CLEAR") ? configscreen.FirstOrDefault(f => f.Name == "B_CLEAR").LovValue2 : "";
+
+        B_NEW = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        B_VIEW = configscreen.Any(f => f.Name == "B_EDIT") ? configscreen.FirstOrDefault(f => f.Name == "B_EDIT").LovValue2 : "";
+        B_SAVE = configscreen.Any(f => f.Name == "B_SAVE") ? configscreen.FirstOrDefault(f => f.Name == "B_SAVE").LovValue2 : "";
+
+        G_DORMITORY_ID = configscreen.Any(f => f.Name == "G_DORMITORY_ID") ? configscreen.First(f => f.Name == "G_DORMITORY_ID").LovValue1 : "ID";
+        G_DORMITORY_PROVINCE = configscreen.Any(f => f.Name == "G_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "G_PROVINCE").LovValue2 : "";
+        G_DORMITORY_NAME = configscreen.Any(f => f.Name == "G_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "G_DORMITORY_NAME").LovValue2 : "";
+        G_DORMITORY_ROOMCOUNT = configscreen.Any(f => f.Name == "G_ROOM_AMOUNT") ? configscreen.FirstOrDefault(f => f.Name == "G_ROOM_AMOUNT").LovValue2 : "";
+        G_DORMITORY_STATUS = configscreen.Any(f => f.Name == "L_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "L_STATUS").LovValue2 : "";
+        G_DORMITORY_VIEW = configscreen.Any(f => f.Name == "G_DORMITORY_VIEW") ? configscreen.First(f => f.Name == "G_DORMITORY_VIEW").LovValue1 : "Information";
+        G_Succontract_Code = configscreen.Any(f => f.Name == "G_SUBCONTRACT_CODE") ? configscreen.FirstOrDefault(f => f.Name == "G_SUBCONTRACT_CODE").LovValue2 : "";
+        G_Succontract_Name_TH = configscreen.Any(f => f.Name == "G_SUBCONTRACT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "G_SUBCONTRACT_NAME").LovValue1 : "";
+        G_Succontract_Name_EN = configscreen.Any(f => f.Name == "G_SUBCONTRACT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "G_SUBCONTRACT_NAME").LovValue2 : "";
+        G_Price = configscreen.Any(f => f.Name == "G_PRICE") ? configscreen.FirstOrDefault(f => f.Name == "G_PRICE").LovValue1 : "";
+        G_REGION = configscreen.Any(f => f.Name == "G_REGION") ? configscreen.FirstOrDefault(f => f.Name == "G_REGION").LovValue2 : "";
+    }
+    string INPUT_Succontract_Code = "";
+    string INPUT_Succontract_Name_TH = "";
+    string INPUT_Succontract_Name_EN = "";
+    string INPUT_Price = "";
+    string LENGHT_Succontract_Code = "";
+    string LENGHT_Succontract_Name_TH = "";
+    string LENGHT_Succontract_Name_EN = "";
+    string LENGHT_Price = "";
+
+    if (ViewBag.DormConstant != null)
+    {
+        var DormConstant = (List<FbbConstantModel>)ViewBag.DormConstant;
+        INPUT_Succontract_Code = DormConstant.Any(f => f.Field == "V_ADDRESS_ID") ? DormConstant.First(f => f.Field == "V_ADDRESS_ID").Validation : "";
+        INPUT_Succontract_Name_TH = DormConstant.Any(f => f.Field == "V_SUBCONTRACT_NAME_TH") ? DormConstant.First(f => f.Field == "V_SUBCONTRACT_NAME_TH").Validation : "";
+        INPUT_Succontract_Name_EN = DormConstant.Any(f => f.Field == "V_SUBCONTRACT_NAME_EN") ? DormConstant.First(f => f.Field == "V_SUBCONTRACT_NAME_EN").Validation : "";
+        INPUT_Price = DormConstant.Any(f => f.Field == "V_PRICE") ? DormConstant.First(f => f.Field == "V_PRICE").Validation : "";
+        LENGHT_Succontract_Code = DormConstant.Any(f => f.Field == "INPUT_SUBCONTRACT_CODE") ? DormConstant.First(f => f.Field == "INPUT_SUBCONTRACT_CODE").Validation : "";
+        LENGHT_Succontract_Name_TH = DormConstant.Any(f => f.Field == "INPUT_SUBCONTRACT_NAME") ? DormConstant.First(f => f.Field == "INPUT_SUBCONTRACT_NAME").Validation : "";
+        LENGHT_Price = DormConstant.Any(f => f.Field == "INPUT_PRICE") ? DormConstant.First(f => f.Field == "INPUT_PRICE").Validation : "";
+        LENGHT_Succontract_Name_EN = DormConstant.Any(f => f.Field == "INPUT_SUBCONTRACT_NAME") ? DormConstant.First(f => f.Field == "V_SOI_TH").Validation : "";
+    }
+}
+
+<div class="page-header i-header-fit" id="HeadPage1">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Configuration Dormitory Master</h3>
+        </div>
+    </div>
+</div>
+<div class="row" id="SearchPane">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Configuration Subcontract</span>
+                    <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="SearchPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div id="SearchRow0" class="row">
+                            <div class="col-sm-4 col-md-4">
+                                <label for="chkNullAddID" style="font-weight: normal !important" class="checkbox-inline">
+                                <input name="AddID_NULL"
+                                       id="chkNullAddID" type="checkbox" onclick=""
+                                       value="AddID_NULL" />
+                                    Subcontract is Null
+                                </label>
+                            </div>
+                        </div>
+                        <div id="SearchRow1" class="row i-gap-top-1">
+                              <div class="col-sm-4 col-md-4">
+                            <label>Region</label>
+                            @(Html.Kendo().DropDownList()
+                                .Name("RegionCode")
+                                .DataTextField("DISPLAY_VAL")
+                                .DataValueField("LOV_NAME")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("SelectRegion", "DormitoryMaster"); 
+                                    });
+                                })
+                                .Events(e => e.Change("onRegionChange"))
+                                      
+                            )
+                    </div>
+                          <div class="col-sm-4 col-md-4">
+                            <label>@L_DORMITORY_PROVINCE</label>
+                            @(Html.Kendo().DropDownListFor(t => t.DormitoryProvincr)
+                                              .Name("DORMITORY_PROVINCE")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectProvinceForSearch", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <label>@L_DORMITORY_NAME</label>
+                            @(Html.Kendo().DropDownListFor(t => t.DormitoryName)
+                                              .Name("DORMITORY_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAllDormitory", "DormitoryMaster");
+                                                });
+                                            })
+                                            //.Events(e => e.Change("onProvinceChange"))
+                                        )
+                        </div>
+                    </div>
+                    <div id="SearchRow2" class="row i-gap-top-1">
+                        <div class="col-sm-6 col-md-6">
+                        </div>
+                        <div class="col-sm-6 col-md-6 i-text-align-right">
+                            <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                            <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                        </div>
+                    </div>
+                    @*end row2*@
+                    <div id="SearchRow3" class="row i-gap-top-1">
+                        <div class="col-sm-12 col-md-12 ">
+                            <div id="gridresult" class="row">
+                                @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationDormitorySubcontract>()
+                                        .Name("gridDormitory")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(p => p.dormitory_id).Title(@G_DORMITORY_ID).HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                          //  columns.Bound(p => p.region_code).Title(@G_REGION).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.DORMITORY_NAME_TH).Title(@G_DORMITORY_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.SUB_CONTRACT_LOCATION_CODE).Title(@G_Succontract_Code).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                            columns.Bound(p => p.SUB_CONTRACT_NAME_TH).Title(@G_Succontract_Name_TH).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.SUB_CONTRACT_NAME_EN).Title(@G_Succontract_Name_EN).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.PRICE_INSTALL).Title(@G_Price).HtmlAttributes(new { style = "text-align:right;" }).Width(200);
+                                            columns.Command(command =>
+                                            {
+                                                command.Custom(@G_DORMITORY_VIEW).Click("editConfigDormitory").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + @B_VIEW);
+                                            }).Width(100);
+
+                                        })
+                                        .ToolBar(toolbar => toolbar.Template("" +
+                                             "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp;" + "Export to Excel" + "</a>&nbsp;</div>"                                            
+                                        ))
+                                            .Pageable(pageable => pageable
+                                              .PageSizes(new int[] {20, 50, 100})
+                                            .Numeric(true)
+                                            )
+                                            .Scrollable(scrollable => scrollable.Height("auto"))
+                                            .AutoBind(false)
+                                            .DataSource(dataSource => dataSource
+                                                .Ajax()
+                                                .PageSize(20)
+                                                .Read(read => read.Action("SearchDataSourceRequest", "DormitorySubcontract").Data("bindingValue"))
+                                                )
+                                            .Events(e => e.DataBound("onGridDataBound"))
+                                    )
+                            </div>
+                        </div>
+                    </div>
+                    @*end row3*@
+
+                </div>
+            </div>
+            @*end SearchPanel*@
+        </div>
+    </div>
+
+</div>
+@(Html.Kendo().Window()
+    .Name("EditSubcontractPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("EditSubcontract")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Events(events => events.Close("onCloseEditSubcontract"))
+    .Content(@<text>
+<div class="row i-no-over" id="EditSubcontractPopupPanel">
+    @Html.Hidden("Index")
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@L_DORMITORY_NAME</label>
+            <input type="text" id="DormitoryTH" class="dis k-textbox form-control" maxlength="250" disabled="disabled" />
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_Succontract_Code<span id="requiredfor-SubcontractCode"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="SubcontractCode" class="dis k-textbox form-control" maxlength="250" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-SubcontractCode"></div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_Succontract_Name_TH<span id="requiredfor-SubcontractNameTH"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="SubcontractNameTH" class="dis k-textbox form-control" maxlength="255" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-SubcontractNameTH"></div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_Succontract_Name_EN<span id="requiredfor-SubcontractNameEN"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="SubcontractNameEN" class="dis k-textbox form-control" maxlength="255" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-SubcontractNameEN"></div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_Price<span id="requiredfor-Price"></span></label>
+            <div class="i-fg-data-entry">
+                <input type="text" id="Price" class="dis k-textbox form-control" maxlength="255" />
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-Price"></div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-default i-gap-top-1 pull-right" onclick="_SaveBuilding('Add')" id="btnAdd"><i class="fa fa-check-circle fa-lg"></i>&nbsp; @B_SAVE</button>
+        <button class="btn btn-default i-gap-top-1 i-hidden pull-right" onclick="_SaveSubcontract()" id="btnEdit"><i class="fa fa-check-circle fa-lg"></i>&nbsp; @B_SAVE</button>
+    </div>
+
+</div>
+</text>)
+)
+
+
+<script>
+    var validateModel003R = new Array();
+    var validateModel = [];
+    validateModel.push({ id: "DormitoryTH" });
+    validateModel.push({ id: "SubcontractCode" });
+    validateModel.push({ id: "SubcontractNameTH" });
+    validateModel.push({ id: "SubcontractNameEN" });
+    validateModel.push({ id: "Price" });
+    $(function () {
+        SetRequired(validateModel);
+
+    });
+
+    var SaveStatus = '@ViewBag.SaveStatus';
+
+    var criteriaVal = '';
+    var dateVal = '';
+
+        $(document).ready(function () {
+            $.ajaxSetup({
+                // Disable caching of AJAX responses
+                cache: false
+            });
+            if (SaveStatus != "") {
+                if (SaveStatus.substring(0, 18) == "Saved successfully") {
+                    showFeedback("success", SaveStatus, "SaveDormitory Master");
+                }
+                else {
+                    showFeedback("error", SaveStatus);
+                }
+            }
+
+            $('#btnExport').attr("disabled", true);
+            $('#chkNullAddID').removeAttr('checked');
+        });
+
+
+        var AWConfigurationDormitoryModel = function () {
+            Region: "";
+            Province: "";
+            DormitoryName: "";
+            FibrenetIDFlag: "";
+        }
+
+        function defaultData() {
+
+            var searchModel = new AWConfigurationDormitoryModel();
+            searchModel.Region = $("#RegionCode").val();
+            searchModel.Province = $("#DORMITORY_PROVINCE").val();
+            searchModel.DormitoryName = $("#DORMITORY_NAME").val();
+
+            searchModel.FibrenetIDFlag = ($('#chkNullAddID')[0].checked) ? "T" : "F";
+
+            return searchModel;
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS: JSON.stringify(model)
+            };
+        }
+
+        function onGridDataBound() {
+            Loading(0);
+            $('#btnExport').attr("disabled", !(this.dataSource.view().length != 0));
+        }
+
+        function _Search() {
+
+            var model = defaultData();
+            Loading();
+            var grid = $("#gridDormitory").data("kendoGrid");
+            grid.dataSource.page(1);
+
+        }
+        function _Clear() {
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").dataSource.read({ regionCode: "" });
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").select(0);
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: "" });
+            $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+            var dropdownlist3 = $("#RegionCode").data("kendoDropDownList");
+            dropdownlist3.select(0);
+            $("#gridDormitory").data("kendoGrid").dataSource.data([]);
+
+            $('#chkNullAddID').removeAttr('checked');
+        }
+
+        function onRegionChange() {
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").dataSource.read({ regionCode: $("#RegionCode").data("kendoDropDownList").value() });
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), regionCode: $("#RegionCode").val() });
+
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").select(0);
+            $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+        }
+
+        function onProvinceChange() {
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), regionCode: $("#RegionCode").val() });
+            $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+
+        }
+        function editConfigDormitory(e) {
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $("#DormitoryTH").val(dataItem.DORMITORY_NAME_TH);
+            $("#SubcontractCode").val(dataItem.SUB_CONTRACT_LOCATION_CODE);
+            $("#SubcontractNameTH").val(dataItem.SUB_CONTRACT_NAME_TH);
+            $("#SubcontractNameEN").val(dataItem.SUB_CONTRACT_NAME_EN);
+            $("#Price").val(dataItem.PRICE_INSTALL);
+            $("#Index").val(dataItem.indexBuilding);
+
+            var validateModel = [];
+            validateModel.push({ id: "DormitoryTH" });
+            validateModel.push({ id: "SubcontractCode" });
+            validateModel.push({ id: "SubcontractNameTH" });
+            validateModel.push({ id: "SubcontractNameEN" });
+            validateModel.push({ id: "Price" });
+            SetRequired(validateModel);
+
+            $("#btnAdd").hide();
+            $("#btnEdit").show();
+
+            $("#EditSubcontractPopup").prev().find(".k-window-title").text("Edit Subcontract");
+            $("#EditSubcontractPopup").data("kendoWindow").center();
+            $("#EditSubcontractPopup").data("kendoWindow").open();
+        }
+        function _SaveSubcontract() {
+
+            var chk = ValidationProcessingRequired("EditSubcontractPopupPanel");
+            if (chk) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/DormitorySubcontract/EditSubcontractData",
+                    data: {
+                        "DormitoryTH": $("#DormitoryTH").val()
+                        , "SubcontractCode": $("#SubcontractCode").val()
+                        , "SubcontractNameTH": $("#SubcontractNameTH").val()
+                        , "SubcontractNameEN": $("#SubcontractNameEN").val()
+                        , "Price": $("#Price").val()
+                        , "Index": $("#Index").val()
+                    },
+                    dataType: "text",
+                    async: false,
+                    success: function (response) {
+                        if (response == "Success") {
+                            _Search();
+                            showFeedback("success", " Complete", "Edit Subcontract");
+                            $("#EditSubcontractPopup").data("kendoWindow").close();
+                        }
+                        else {
+
+                            _Search();
+                            showFeedback("error", " Save Fail", "Edit Subcontract");
+                            $("#EditSubcontractPopup").data("kendoWindow").close();
+                        }
+                    },
+                    failure: function (err) {
+                        showFeedback("Fail", " Save Fail");
+                    }
+                });
+                _Search();
+                var grid = $("#gridDormitory").data("kendoGrid");
+                grid.dataSource.page(1);
+                $("#EditSubcontractPopup").data("kendoWindow").close();
+            }
+
+        }
+
+        function onCloseEditSubcontract() {
+
+            $("#DormitoryTH").val("").enabled = false;
+            $("#SubcontractCode").val("");
+            $("#SubcontractNameTH").val("");
+            $("#SubcontractNameEN").val("");
+            $("#Price").val("");
+
+            ClearTextValidation("EditSubcontractPopupPanel");
+        }
+        function ValidationIcon() {
+            return "<i class='fa fa-warning i-red'></i> ";
+        }
+
+        function ValidationProcessingRequired(panel) {
+            var chk = true;
+            $("#" + panel + " .i-required").each(function (index, e) {
+                var field = e.id.split('requiredfor-')[1];
+                var value = $("#" + field).val();
+                if ($.trim(value) == "") {
+                    $("#validatefor-" + field).html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + field).html("");
+                }
+            });
+
+            if (chk) {
+                $("#" + panel + " .i-validate-length").each(function (index, e) {
+                    var field = e.id.split('validatefor-')[1];
+                    var value = $("#" + field).val();
+                    var length = parseInt(e.className.split('i-length-')[1]);
+                    var val_length = 0;
+                    if (value != "") {
+                        val_length = value.length;
+                    }
+
+                    if (val_length > length) {
+                        $("#" + e.id).html(ValidationIcon() + "This maxlength field is " + length + ".");
+                        chk = false;
+                    }
+                    else {
+                        $("#" + e.id).html("");
+                    }
+                });
+            }
+
+            return chk;
+        }
+
+        function SetRequired(validateModel) {
+            var i = 0;
+            for (i = 0; i < validateModel.length; i++) {
+                var id = validateModel[i].id;
+                $("#requiredfor-" + id).addClass("label label-danger i-gap-left-md i-required");
+                $("#requiredfor-" + id).text("Required");
+            }
+        }
+
+        function SetValidateLength(validateLengthModel) {
+            var i = 0;
+            for (i = 0; i < validateLengthModel.length; i++) {
+                var id = validateLengthModel[i].id;
+                var length = validateLengthModel[i].length;
+                if (length !== undefined) {
+                    $("#validatefor-" + id).addClass("i-validate-length i-length-" + length);
+                }
+            }
+        }
+
+        function RemoveRequired(panel) {
+            $("#" + panel + " span[id*=requiredfor-]").removeClass("label label-danger i-gap-left-md i-required");
+            $("#" + panel + " span[id*=requiredfor-]").text("");
+            ClearTextValidation(panel);
+        }
+
+        function ClearTextValidation(panel) {
+            $("#" + panel + " .i-required").each(function (index, e) {
+                var field = e.id.split('requiredfor-')[1];
+                $("#validatefor-" + field).text("");
+            });
+        }
+
+        function RemoveValidation(validateModel) {
+            var i = 0;
+            for (i = 0; i < validateModel.length; i++) {
+                var id = validateModel[i].id;
+                $("#validatefor-" + id).html("");
+            }
+        }
+
+        function CheckKeyUps(id, RexStr) {
+            var strKey = $("#" + id).val();
+            var strBuilder = "";
+            var filter = new RegExp(RexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+            $("#" + id).val(strBuilder);
+
+        }
+        $("#SubcontractCode").keyup(function () {
+            CheckKeyUps("SubcontractCode", '@INPUT_Succontract_Code');
+        });
+            $("#SubcontractNameTH").keyup(function () {
+                CheckKeyUps("SubcontractNameTH", '@INPUT_Succontract_Name_TH');
+        });
+        $("#SubcontractNameEN").keyup(function () {
+            CheckKeyUps("SubcontractNameEN", '@INPUT_Succontract_Name_EN');
+        });
+        $("#Price").keyup(function () {
+            CheckKeyUps("Price", '@INPUT_Price');
+        });
+
+    //Add code for Export data to excel.
+    function criterData() {
+        var searchCriter = new CriterModel();
+        searchCriter.REPORT = 'Configuration Subcontract';
+        searchCriter.CRITERIA = 'Criteria: ' + criteriaVal;
+        searchCriter.REPORT_DATE = 'Run report date/time: ' + dateVal;
+
+        return searchCriter;
+    }
+
+    var CriterModel = function () {
+        REPORT: "";
+        CRITERIA: "";
+        REPORT_DATE: "";
+    }
+
+    function _ExportToExcel() {
+        var model = new defaultData();
+        ReplaceCariteris(model);
+        var criterModel = new criterData();
+
+        window.open("/DormitorySubcontract/ExportReport?dataS=" + JSON.stringify(model) + "&criteria=" + JSON.stringify(criterModel) + "");
+    }
+
+    function ReplaceCariteris(model) {
+        var region = "Region";
+        var province = "Province";
+        var dormitoryName = "DormitoryName";
+
+        var regionVal = (model.Region == '') ? 'ALL' : model.Region;
+        var provinceVal = (model.Province == '') ? 'ALL' : model.Province;
+        var dormitoryNameVal = (model.DormitoryName == '') ? 'ALL' : model.DormitoryName;
+        var AddressIDVal = (model.FibrenetIDFlag == 'T') ? 'Subcontract is Null' : 'Subcontract is not Null';
+
+        var text = region + " : " + regionVal + " and " + province + " : " + provinceVal + " and " + dormitoryName + " : " + dormitoryNameVal + " and " + AddressIDVal;
+
+        criteriaVal = text;
+
+        ReplaceDateTimeReport();
+    }
+
+    function ReplaceDateTimeReport() {
+        var currDate = new Date();
+        var month = new Array();
+        month[0] = "Jan";
+        month[1] = "Feb";
+        month[2] = "Mar";
+        month[3] = "Apr";
+        month[4] = "May";
+        month[5] = "Jun";
+        month[6] = "Jul";
+        month[7] = "Aug";
+        month[8] = "Sep";
+        month[9] = "Oct";
+        month[10] = "Nov";
+        month[11] = "Dec";
+
+        var dateTxt = currDate.getDate() + ' ' + month[currDate.getMonth()] + ' ' + currDate.getFullYear() + ' ' + currDate.toLocaleTimeString();
+
+        dateVal = dateTxt;
+    }
+</script>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WBBContract.Commands" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WBBContract.Commands" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:59221/CommandService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WBBContract.Queries.ExWebServices" />
+  <xs:import schemaLocation="http://localhost:59221/CommandService.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/WBBEntity.PanelModels" />
+  <xs:complexType name="AssignVOIPIPCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="REFF_KEY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="REFF_USER" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RESULT" nillable="true" type="tns:AssignVOIPIPCommand.RESULTModel" />
+      <xs:element minOccurs="0" name="RETURN_CODE" type="xs:int" />
+      <xs:element minOccurs="0" name="RETURN_DESC" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WBBContract.Queries.ExWebServices" minOccurs="0" name="SBNResponse" nillable="true" type="q1:ArrayOfGetAssign_VOIP_IPListQuery" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AssignVOIPIPCommand" nillable="true" type="tns:AssignVOIPIPCommand" />
+  <xs:complexType name="AssignVOIPIPCommand.RESULTModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IP" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PORT" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AssignVOIPIPCommand.RESULTModel" nillable="true" type="tns:AssignVOIPIPCommand.RESULTModel" />
+  <xs:complexType name="AvailableVOIPIPCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FlaxData" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IP_ADDRESS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="REFF_KEY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="REFF_USER" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Return_Code" type="xs:int" />
+      <xs:element minOccurs="0" name="Return_Desc" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AvailableVOIPIPCommand" nillable="true" type="tns:AvailableVOIPIPCommand" />
+  <xs:simpleType name="ActionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Insert" />
+      <xs:enumeration value="Update" />
+      <xs:enumeration value="Delete" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ActionType" nillable="true" type="tns:ActionType" />
+  <xs:complexType name="InterfaceLogCommand">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommandBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CREATED_BY" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CREATED_DATE" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="INTERFACE_NODE" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IN_ID_CARD_NO" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IN_TRANSACTION_ID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IN_XML_PARAM" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="METHOD_NAME" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OUT_ERROR_RESULT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OUT_RESULT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OUT_XML_PARAM" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OutInterfaceLogId" type="xs:long" />
+          <xs:element minOccurs="0" name="REQUEST_STATUS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SERVICE_NAME" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UPDATED_BY" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UPDATED_DATE" nillable="true" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InterfaceLogCommand" nillable="true" type="tns:InterfaceLogCommand" />
+  <xs:complexType name="CommandBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActionBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ActionDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ActionType" type="tns:ActionType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommandBase" nillable="true" type="tns:CommandBase" />
+  <xs:complexType name="ReportActiveCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Create_By" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReportParam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Report_Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Return_Code" type="xs:int" />
+      <xs:element minOccurs="0" name="Return_Desc" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReportActiveCommand" nillable="true" type="tns:ReportActiveCommand" />
+  <xs:complexType name="SaveCardModelCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ACTIVEFLAG" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BRAND" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CARDMODELID" type="xs:decimal" />
+      <xs:element minOccurs="0" name="CREATED_BY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CREATED_DATE" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DATAONLY_FLANG" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MAXSLOT" type="xs:decimal" />
+      <xs:element minOccurs="0" name="MODEL" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="POSTSTARTINDEX" type="xs:decimal" />
+      <xs:element minOccurs="0" name="RESERVE" type="xs:decimal" />
+      <xs:element minOccurs="0" name="RESERVEPORTSPARE" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ResultCommand" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Return_Code" type="xs:int" />
+      <xs:element minOccurs="0" name="Return_Desc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UPDATED_BY" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UPDATED_DATE" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SaveCardModelCommand" nillable="true" type="tns:SaveCardModelCommand" />
+  <xs:complexType name="CoverageResultCommand">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommandBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ADDRESS_NO" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CONTACTNUMBER" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="COVERAGERESULT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="COVERAGETYPE" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CVRID" type="xs:decimal" />
+          <xs:element minOccurs="0" name="FIRSTNAME" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FLOOR" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ISONLINENUMBER" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LASTNAME" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LATITUDE" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LONGITUDE" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MOO" type="xs:decimal" />
+          <xs:element minOccurs="0" name="NODENAME" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OWNER" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PREFIXNAME" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PRODUCTTYPE" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RESULT_ID" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ROAD" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReturnCode" type="xs:int" />
+          <xs:element minOccurs="0" name="ReturnMessage" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReturnOrder" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SOI" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TOWER" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TRANSACTION_ID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ZIPCODE_ROWID" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CoverageResultCommand" nillable="true" type="tns:CoverageResultCommand" />
+  <xs:complexType name="CustRegisterCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CoverageResultId" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="CreateBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreateTS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentCulture" type="xs:int" />
+      <xs:element minOccurs="0" name="CustomerId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InterfaceCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InterfaceDesc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InterfaceOrder" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WBBEntity.PanelModels" minOccurs="0" name="QuickWinPanelModel" nillable="true" type="q2:QuickWinPanelModel" />
+      <xs:element minOccurs="0" name="UpdateBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdateTS" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustRegisterCommand" nillable="true" type="tns:CustRegisterCommand" />
+  <xs:complexType name="MailLogCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CustomerId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReturnCode" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ReturnDesc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RunningNo" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MailLogCommand" nillable="true" type="tns:MailLogCommand" />
+  <xs:complexType name="NotificationCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CurrentCulture" type="xs:int" />
+      <xs:element minOccurs="0" name="CustomerId" nillable="true" type="xs:string" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WBBEntity.PanelModels" minOccurs="0" name="EmailModel" nillable="true" type="q3:EmailModel" />
+      <xs:element minOccurs="0" name="ReturnCode" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ReturnDesc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RunningNo" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NotificationCommand" nillable="true" type="tns:NotificationCommand" />
+  <xs:complexType name="PortAssignmentCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Create_By" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReportParam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Report_Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Return_Code" type="xs:int" />
+      <xs:element minOccurs="0" name="Return_Desc" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PortAssignmentCommand" nillable="true" type="tns:PortAssignmentCommand" />
+  <xs:complexType name="ProfileCustomerCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Rec_Cust_Address" nillable="true" type="tns:ArrayOfREC_CUST_ADDRESS" />
+      <xs:element minOccurs="0" name="Rec_Cust_Contact" nillable="true" type="tns:ArrayOfREC_CUST_CONTACT" />
+      <xs:element minOccurs="0" name="Rec_Cust_Package" nillable="true" type="tns:ArrayOfREC_CUST_PACKAGE" />
+      <xs:element minOccurs="0" name="Rec_Cust_Profile" nillable="true" type="tns:ArrayOfREC_CUST_PROFILE" />
+      <xs:element minOccurs="0" name="Return_Code" type="xs:int" />
+      <xs:element minOccurs="0" name="Return_Desc" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProfileCustomerCommand" nillable="true" type="tns:ProfileCustomerCommand" />
+  <xs:complexType name="ArrayOfREC_CUST_ADDRESS">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="REC_CUST_ADDRESS" nillable="true" type="tns:REC_CUST_ADDRESS" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfREC_CUST_ADDRESS" nillable="true" type="tns:ArrayOfREC_CUST_ADDRESS" />
+  <xs:complexType name="REC_CUST_ADDRESS">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Addr_Type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Address_In_Seq" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Address_Vat" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Building_Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Floor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="House_No" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Moo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Mooban" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Room" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Soi" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Street_Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Zipcode_Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ba_id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ca_id" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="REC_CUST_ADDRESS" nillable="true" type="tns:REC_CUST_ADDRESS" />
+  <xs:complexType name="ArrayOfREC_CUST_CONTACT">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="REC_CUST_CONTACT" nillable="true" type="tns:REC_CUST_CONTACT" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfREC_CUST_CONTACT" nillable="true" type="tns:ArrayOfREC_CUST_CONTACT" />
+  <xs:complexType name="REC_CUST_CONTACT">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address_In_Seq" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Contact_Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Contact_First_Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Contact_Home_Phone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Contact_Last_Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Contact_Mobile_Phone1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Contact_Mobile_Phone2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ba_id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ca_id" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="REC_CUST_CONTACT" nillable="true" type="tns:REC_CUST_CONTACT" />
+  <xs:complexType name="ArrayOfREC_CUST_PACKAGE">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="REC_CUST_PACKAGE" nillable="true" type="tns:REC_CUST_PACKAGE" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfREC_CUST_PACKAGE" nillable="true" type="tns:ArrayOfREC_CUST_PACKAGE" />
+  <xs:complexType name="REC_CUST_PACKAGE">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Cust_Non_Mobile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Download_Speed" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Fax_Flag" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Home_Ip" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Home_Port" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Idd_Flag" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Initiation_Charge" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Mobile_Forward" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Package_Bill_Tha" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Package_Class" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Package_Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Package_Group" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Package_Owner" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Package_Subtype" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Package_Type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Pre_Initiation_Charge" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Pre_Recurring_Charge" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Recurring_Charge" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Recurring_Discount_Exp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Recurring_End_Dt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Recurring_Start_Dt" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Technology" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Upload_Speed" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="package_Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="package_Status" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="REC_CUST_PACKAGE" nillable="true" type="tns:REC_CUST_PACKAGE" />
+  <xs:complexType name="ArrayOfREC_CUST_PROFILE">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="REC_CUST_PROFILE" nillable="true" type="tns:REC_CUST_PROFILE" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfREC_CUST_PROFILE" nillable="true" type="tns:ArrayOfREC_CUST_PROFILE" />
+  <xs:complexType name="REC_CUST_PROFILE">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Ba_Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Ca_Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Condo_Area" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Condo_Direction" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Condo_Limit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Condo_Type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Birthday" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Category" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Gender" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Id_Card_Num" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Id_Card_Type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Nationality" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Non_Mobile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Sub_Category" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Surname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cust_Title" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cvr_Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Document_Type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Home_Area" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Home_Type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Ia_Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Installation_Date" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Network_Type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Online_Number" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Order_No" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Port_Active_Date" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Port_Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Relate_Mobile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Relate_Non_Mobile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remark" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Sa_Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Service_Day" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="REC_CUST_PROFILE" nillable="true" type="tns:REC_CUST_PROFILE" />
+  <xs:complexType name="RegAisRabbitCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IdCard" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Non_Mobile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Return_Code" type="xs:int" />
+      <xs:element minOccurs="0" name="Return_Desc" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RegAisRabbitCommand" nillable="true" type="tns:RegAisRabbitCommand" />
+  <xs:complexType name="StatLogCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="REQ_IPADDRESS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReturnCode" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ReturnDesc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SelectPage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VisitType" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StatLogCommand" nillable="true" type="tns:StatLogCommand" />
+  <xs:complexType name="SummaryPortCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Create_By" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReportParam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Report_Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Return_Code" type="xs:int" />
+      <xs:element minOccurs="0" name="Return_Desc" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SummaryPortCommand" nillable="true" type="tns:SummaryPortCommand" />
+  <xs:complexType name="TrackingLogCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IDCard" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ResultCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReturnOrder" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TrackingLogCommand" nillable="true" type="tns:TrackingLogCommand" />
+</xs:schema>

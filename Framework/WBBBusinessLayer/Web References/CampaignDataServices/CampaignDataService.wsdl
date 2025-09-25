@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ax25="http://pojo.crm.bis.mmt.com/xsd" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns="http://service.crm.bis.mmt.com" xmlns:ns1="http://org.apache.axis2/xsd" targetNamespace="http://service.crm.bis.mmt.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+  <wsdl:types>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://pojo.crm.bis.mmt.com/xsd">
+      <xs:complexType name="OBJRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="method" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="parameter" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="user" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CampResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codeResponse" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="param1" nillable="true" type="ax25:Parameter" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="param2" nillable="true" type="ax25:ListParameter" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Parameter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ListParameter">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="params" nillable="true" type="ax25:Parameter" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema xmlns:ax26="http://pojo.crm.bis.mmt.com/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.crm.bis.mmt.com">
+      <xs:import namespace="http://pojo.crm.bis.mmt.com/xsd" />
+      <xs:element name="execute">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="objRequest" nillable="true" type="ax26:OBJRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="executeResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="ax26:CampResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="executeRequest">
+    <wsdl:part name="parameters" element="ns:execute" />
+  </wsdl:message>
+  <wsdl:message name="executeResponse">
+    <wsdl:part name="parameters" element="ns:executeResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CampaignDataServicePortType">
+    <wsdl:operation name="execute">
+      <wsdl:input wsaw:Action="urn:execute" message="ns:executeRequest" />
+      <wsdl:output wsaw:Action="urn:executeResponse" message="ns:executeResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CampaignDataServiceSoap11Binding" type="ns:CampaignDataServicePortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="execute">
+      <soap:operation soapAction="urn:execute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CampaignDataServiceSoap12Binding" type="ns:CampaignDataServicePortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="execute">
+      <soap12:operation soapAction="urn:execute" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CampaignDataServiceHttpBinding" type="ns:CampaignDataServicePortType">
+    <http:binding verb="POST" />
+    <wsdl:operation name="execute">
+      <http:operation location="execute" />
+      <wsdl:input>
+        <mime:content part="parameters" type="application/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="parameters" type="application/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CampaignDataService">
+    <wsdl:port name="CampaignDataServiceHttpSoap11Endpoint" binding="ns:CampaignDataServiceSoap11Binding">
+      <soap:address location="http://10.13.181.71:8280/CampaignWS/services/CampaignDataService.CampaignDataServiceHttpSoap11Endpoint/" />
+    </wsdl:port>
+    <wsdl:port name="CampaignDataServiceHttpSoap12Endpoint" binding="ns:CampaignDataServiceSoap12Binding">
+      <soap12:address location="http://10.13.181.71:8280/CampaignWS/services/CampaignDataService.CampaignDataServiceHttpSoap12Endpoint/" />
+    </wsdl:port>
+    <wsdl:port name="CampaignDataServiceHttpEndpoint" binding="ns:CampaignDataServiceHttpBinding">
+      <http:address location="http://10.13.181.71:8280/CampaignWS/services/CampaignDataService.CampaignDataServiceHttpEndpoint/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

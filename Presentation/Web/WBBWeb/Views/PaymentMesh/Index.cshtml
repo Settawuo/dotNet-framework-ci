@@ -1,0 +1,127 @@
+﻿@using WBBWeb.Extension
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+
+@{
+    Layout = "~/Views/Shared/_LayoutScpe.cshtml";
+    string B_CLOSE = "";
+
+    if (ViewBag.LabelFBBOR041 != null)
+    {
+        var LabelFBBOR041 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR041;
+        B_CLOSE = LabelFBBOR041.Any(c => c.Name == "B_CLOSE") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+    }
+    string InternetNo = "";
+    if (ViewBag.InternetNo != null && ViewBag.InternetNo != "")
+    {
+        InternetNo = ViewBag.InternetNo;
+    }
+    string MobileNo = "";
+    if (ViewBag.MobileNo != null && ViewBag.MobileNo != "")
+    {
+        MobileNo = ViewBag.MobileNo;
+    }
+    string PayMentOrderID = "";
+    if (ViewBag.PayMentOrderID != null && ViewBag.PayMentOrderID != "")
+    {
+        PayMentOrderID = ViewBag.PayMentOrderID;
+    }
+    string PayMentRecurringChargeVAT = "";
+    if (ViewBag.PayMentRecurringChargeVAT != null && ViewBag.PayMentRecurringChargeVAT != "")
+    {
+        PayMentRecurringChargeVAT = ViewBag.PayMentRecurringChargeVAT;
+    }
+    string MsgERROR = "";
+    if (ViewBag.MsgERROR != null && ViewBag.MsgERROR != "")
+    {
+        MsgERROR = ViewBag.MsgERROR;
+    }
+    string SffPromotionCode = "";
+    if (ViewBag.SffPromotionCode != null && ViewBag.SffPromotionCode != "")
+    {
+        SffPromotionCode = ViewBag.SffPromotionCode;
+    }
+    string SuperDuperProductName = "";
+    if (ViewBag.SuperDuperProductName != null && ViewBag.SuperDuperProductName != "")
+    {
+        SuperDuperProductName = ViewBag.SuperDuperProductName;
+    }
+    string SuperDuperServiceName = "";
+    if (ViewBag.SuperDuperServiceName != null && ViewBag.SuperDuperServiceName != "")
+    {
+        SuperDuperServiceName = ViewBag.SuperDuperServiceName;
+    }
+
+    //R20.10 ref1 = ba
+    string Ba = "";
+    if (ViewBag.Ba != null && ViewBag.Ba != "")
+    {
+        Ba = ViewBag.Ba;
+    }
+
+}
+
+@using (Html.BeginForm("Index", "PaymentMesh", FormMethod.Post, new { id = "iForm", enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    @Html.Hidden("InternetNo");
+    @Html.Hidden("MobileNo");
+    @Html.Hidden("PayMentOrderID");
+    @Html.Hidden("PayMentMethod");
+    @Html.Hidden("PayMentPointType");
+    @Html.Hidden("PayMentRecurringChargeVAT");
+    @Html.Hidden("MobilePoints");
+    @Html.Hidden("InternetPoints");
+    @Html.Hidden("SffPromotionCode");
+    @Html.Hidden("SuperDuperProductName");
+    @Html.Hidden("SuperDuperServiceName");
+    @Html.HiddenFor(model => model.CoveragePanelModel.P_MOBILE);
+    @Html.Partial("~/Views/PaymentMesh/_Information.cshtml");
+    @Html.HiddenFor(model => model.outBillingAccountNumber);
+
+    if (MsgERROR == "")
+    {
+        @Html.Partial("~/Views/PaymentMesh/_PayMentMesh.cshtml");
+        @Html.Partial("~/Views/PaymentMesh/_MPayQrCode.cshtml");
+    }
+}
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupMessage" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#wrapSwitchLanguage').hide();
+        $('#InternetNo').val('@InternetNo');
+        $('#MobileNo').val('@MobileNo');
+        $('#PayMentOrderID').val('@PayMentOrderID');
+        $('#PayMentRecurringChargeVAT').val('@PayMentRecurringChargeVAT');
+        $('#SffPromotionCode').val('@SffPromotionCode');
+        $('#CoveragePanelModel_P_MOBILE').val('@InternetNo');
+        $('#outBillingAccountNumber').val('@Ba');
+    });
+
+    function PopupMessage(msg) {
+        $('#LastPopupMessage').html(msg);
+    }
+</script>

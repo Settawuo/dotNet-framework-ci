@@ -1,0 +1,920 @@
+﻿@model WBBEntity.PanelModels.WebServiceModels.ConfigurationReportModel
+@{
+    Layout = "~/Views/Fbbsaleportal/_Layout.cshtml";
+    
+    string L_REQUIRED = "This field is required.";
+    string L_REQUIRED_QUERY = "Please add query.";
+    string L_VALIDATE_EMAIL = "This field is validate format email.";
+    string L_REPORT_NAME = "";
+    string L_SCHDULER = "";
+
+    if (!string.IsNullOrEmpty(ViewBag.ReportName))
+    {
+        L_REPORT_NAME = ViewBag.ReportName;
+    }
+    if (!string.IsNullOrEmpty(ViewBag.Scheduler))
+    {
+        L_SCHDULER = ViewBag.ReportName;
+    }
+
+}
+
+
+<html>
+    <style>
+        .rowFormat {
+            margin-bottom: 15px;
+        }
+
+        .header-table {
+            color: white;
+            background-color: #7fc71f;
+            text-align: center;
+        }
+        .table-center {
+            text-align: center;
+        }
+
+        .tab-content {
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            border-radius: 0px 0px 5px 5px;
+        }
+
+        .tab-content-model {
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+            border-radius: 5px 5px 5px 5px;
+        }
+
+        .lblRequired {
+            color: red;
+        }
+
+        .lblSuccess {
+            color: green;
+        }
+        a.linkTable { 
+            cursor: pointer;
+        }
+
+
+        table#tblNeighbor td label {
+            word-break:break-all;
+
+        }
+
+    </style>
+
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Configuration Information</title>
+    </head>
+    <body>
+        <div class="page-header i-header-fit">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <h3 style="margin-top: 0">Configuration Information</h3>
+                    <ol class="breadcrumb">  
+                        <li><a class="linkTable" onclick="back()">Configuration Auto Mail Report</a></li>
+                        <li class="active">Configuration Information</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#report" class="headerTab">Configuration Report</a></li>
+                    <li><a data-toggle="tab" href="#email" class="headerTab">Configuration Email</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-12 col-md-12">
+                <div class="tab-content">
+                    <p class="clearfix"></p>
+                    
+                    <div id="report" class="tab-pane fade in active">
+                        <div class="col-sm-6 col-md-6 ">
+                            <label>Report Name <span class="lblRequired">*</span></label>
+                            @Html.TextBox("report_name",Model != null ? Model.REPORT_NAME : "", new { maxlength = 150, @class = "k-textbox form-control",onkeyup="nameKeyup(this);" })
+                            <div class="i-fg-data-entry-validation" id="validatefor-report_name"></div>
+                            @Html.Hidden("report_id", Model != null ? Model.REPORT_ID : 0)
+                        </div>
+                        
+                        <p class="clearfix"></p>
+                        <div class="col-sm-6 col-md-6 ">
+                            <label>Scheduler</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                      .Name("scheduler")
+                                      .DataTextField("Value")
+                                      .DataValueField("Text")
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .DataSource(source => source.Read(read => read.Action("GetScheduler", "Fbbsaleportal", new { report_type = "EDIT" })))
+                                      .Events(e =>
+                                      {
+                                        e.Select("Scheduler_Change");
+                                      })
+                                      //.Text("Weekly")
+                                      //.Value("Weekly")
+                                      
+                                      )
+                            </div>
+                        </div>
+                        
+                        <p class="clearfix"></p>
+                        <div id="divDayOfWeek" class="col-sm-6 col-md-6" @if (string.IsNullOrEmpty(Model != null ? Model.DAY_OF_WEEK : ""))
+                                                                         {
+                                                                             <text>style = "display: none;" </text>
+                                                                         } >
+                            <label>Day Of Week</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                      .Name("day_of_week")
+                                      .DataTextField("Value")
+                                      .DataValueField("Text")
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .DataSource(source => source.Read(read => read.Action("GetDayOfWeek", "Fbbsaleportal", new { report_type = "EDIT" })))
+                                      
+                                      )
+                            </div>
+                        </div>
+
+                         <p class="clearfix"></p>
+                        <div id="divMonthofYear" class="col-sm-6 col-md-6" @if (string.IsNullOrEmpty(Model != null ? Model.MONTH_OF_YEAR : ""))
+                                                                         {
+                                                                             <text>style = "display: none;" </text>
+                                                                         } >
+                            <label>Month Of Year</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                      .Name("month_of_year")
+                                      .DataTextField("Value")
+                                      .DataValueField("Text")
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .DataSource(source => source.Read(read => read.Action("GetMonthOfYear", "Fbbsaleportal", new { report_type = "EDIT" })))
+                                      
+                                      )
+                            </div>
+                        </div>
+
+                        <p class="clearfix"></p>
+                        <div id="divEverydayofMonth" class="col-sm-6 col-md-6" @if (string.IsNullOrEmpty(Model != null ? Model.DAY_OF_MONTH : ""))
+                                                                         {
+                                                                             <text>style = "display: none;" </text>
+                                                                         } >
+                            <label>Every Day Of Month</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                      .Name("day_of_month")
+                                      .DataTextField("Value")
+                                      .DataValueField("Text")
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .DataSource(source => source.Read(read => read.Action("GetEverydayOfMonth", "Fbbsaleportal", new { report_type = "EDIT" })))
+                                      
+                                      )
+                            </div>
+                        </div>
+                        
+                        
+                        <p class="clearfix"></p>
+                        
+                        <div class="col-sm-6 col-md-6 ">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" @if (Model == null ||  Model.ACTIVE_FLAG != "N")
+                                                                         {
+                                                                             <text>checked="checked" </text>
+                                                                         }  name="active_flag" id="active_flag"> Active
+                                </label>
+                            </div>
+                        </div>
+                    
+                        <p class="clearfix"></p>
+                        <div class="col-sm-6 col-md-6 i-text-align-left">          
+                            <a class="btn btn-primary" onclick="AddQuery_Click();"><i class="fa fa-plus fa-lg"></i>&nbsp;&nbsp;Add Query</a>            
+                        </div>
+
+                        <p class="clearfix"></p>
+                        <div class="col-sm-12 col-md-12"  style="height: 400px;overflow-y: scroll">
+                            <div class="i-fg-data-entry-validation" id="validatefor-query"></div>
+                            <table id="tblNeighbor" class="table" style="border-collapse: collapse;">
+                                <tr>
+                                    <th class="header-table" style="width: 10%;"><span></span></th>
+                                    <th class="header-table" style="width: 15%;"><span>Sheet Name</span></th>
+                                    <th class="header-table" style="width: 15%;"><span>Query 1</span></th>
+                                    <th class="header-table" style="width: 15%;"><span>Query 2</span></th>
+                                    <th class="header-table" style="width: 15%;"><span>Query 3</span></th>
+                                    <th class="header-table" style="width: 15%;"><span>Query 4</span></th>
+                                    <th class="header-table" style="width: 15%;"><span>Query 5</span></th>
+                                </tr>
+                                @if (Model != null && Model.ConfigurationQueryList != null)
+                                {
+                                    for (int index = 1; index <= Model.ConfigurationQueryList.Count; index++)
+                                    {
+                                        <tr id="@index"  style="line-height: 8px; height: 8px;">
+                                            <td><a class="linkTable" onclick=' EditQuery_Click(@index) '>Edit</a>&nbsp;&nbsp;<a class="linkTable" onclick=' DeleteQuery_Click(@index) '>Delete</a></td>
+                                            <td>@Html.Label("ConfigurationQueryList[" + index + "].SHEET_NAME", !string.IsNullOrEmpty(Model.ConfigurationQueryList[index - 1].SHEET_NAME) ? Model.ConfigurationQueryList[index - 1].SHEET_NAME : "", new {id = "ConfigurationQueryList_" + index + "__SHEET_NAME"})
+                                                @Html.Hidden("ConfigurationQueryList[" + index + "].QUERY_ID", Model.ConfigurationQueryList[index - 1].QUERY_ID)
+                                                @Html.Hidden("ConfigurationQueryList[" + index + "].QUERY_TYPE", "E")
+                                                @Html.Hidden("ConfigurationQueryList[" + index + "].OWNER_DB", Model.ConfigurationQueryList[index - 1].OWNER_DB)
+                                            </td>
+                                            <td>@Html.Label("ConfigurationQueryList[" + index + "].QUERY_1", !string.IsNullOrEmpty(Model.ConfigurationQueryList[index - 1].QUERY_1) ? Model.ConfigurationQueryList[index - 1].QUERY_1 : " ", new {id = "ConfigurationQueryList_" + index + "__QUERY_1"}) </td>
+                                            <td>@Html.Label("ConfigurationQueryList[" + index + "].QUERY_2", !string.IsNullOrEmpty(Model.ConfigurationQueryList[index - 1].QUERY_2) ? Model.ConfigurationQueryList[index - 1].QUERY_2 : " ", new {id = "ConfigurationQueryList_" + index + "__QUERY_2"}) </td>
+                                            <td>@Html.Label("ConfigurationQueryList[" + index + "].QUERY_3", !string.IsNullOrEmpty(Model.ConfigurationQueryList[index - 1].QUERY_3) ? Model.ConfigurationQueryList[index - 1].QUERY_3 : " ", new {id = "ConfigurationQueryList_" + index + "__QUERY_3"}) </td>
+                                            <td>@Html.Label("ConfigurationQueryList[" + index + "].QUERY_4", !string.IsNullOrEmpty(Model.ConfigurationQueryList[index - 1].QUERY_4) ? Model.ConfigurationQueryList[index - 1].QUERY_4 : " ", new {id = "ConfigurationQueryList_" + index + "__QUERY_4"}) </td>
+                                            <td>@Html.Label("ConfigurationQueryList[" + index + "].QUERY_5", !string.IsNullOrEmpty(Model.ConfigurationQueryList[index - 1].QUERY_5) ? Model.ConfigurationQueryList[index - 1].QUERY_5 : " ", new {id = "ConfigurationQueryList_" + index + "__QUERY_5"}) </td>
+                                        </tr>
+                                    }
+                                }
+                            </table>
+
+                            @Html.Hidden("lastIndex", Model != null ? Model.ConfigurationQueryList != null ? Model.ConfigurationQueryList.Count : 0 : 0)
+                        </div>
+                        
+                    </div>
+                    
+                    <div id="email" class="tab-pane fade">
+                        
+                        <div class="col-sm-6 col-md-6">
+                            <label>To. <span class="lblRequired">*</span></label>
+                            @Html.TextBox("email_to",Model != null ? Model.EMAIL_TO : "", new { maxlength = 255, @class = "k-textbox form-control" })
+                            <div class="i-fg-data-entry-validation" id="validatefor-email_to"></div>
+                        </div>
+                        <p class="clearfix"></p>
+                        <div class="col-sm-6 col-md-6">
+                            <label>CC</label>
+                            @Html.TextBox("email_cc",Model != null ?  Model.EMAIL_CC : "", new { maxlength = 255, @class = "k-textbox form-control" })
+                            <div class="i-fg-data-entry-validation" id="validatefor-email_cc"></div>
+                        </div>
+                        <p class="clearfix"></p>
+                        <div class="col-sm-6 col-md-6">
+                            <label>From <span class="lblRequired">*</span></label>
+                            @Html.TextBox("email_from",Model != null ?  Model.EMAIL_FROM : "", new { maxlength = 255, @class = "k-textbox form-control" })
+                            <div class="i-fg-data-entry-validation" id="validatefor-email_from"></div>
+                        </div>
+                        <p class="clearfix"></p>
+                        <div class="col-sm-6 col-md-6">
+                            <label>Subject <span class="lblRequired">*</span></label>
+                            @Html.TextBox("email_subject",Model != null ?  Model.EMAIL_SUBJECT : "", new { maxlength = 255, @class = "k-textbox form-control" })
+                            <div class="i-fg-data-entry-validation" id="validatefor-email_subject"></div>
+                        </div>
+                        <p class="clearfix"></p>
+                        <div class="col-sm-6 col-md-6">
+                            <label>Content</label>
+                            @Html.TextArea("email_content",Model != null ?  Model.EMAIL_CONTENT : "", new { maxlength = 3000, @class = "k-textbox form-control", rows = 15 })
+                        </div>
+                        <p class="clearfix"></p>
+                        <div class="col-sm-6 col-md-6">
+                            <label>Administrator's email <span class="lblRequired">*</span></label>
+                            @Html.TextBox("email_to_admin",Model != null ?  Model.EMAIL_TO_ADMIN : "", new { maxlength = 255, @class = "k-textbox form-control" })
+                            <div class="i-fg-data-entry-validation" id="validatefor-email_to_admin"></div>
+                        </div>
+                        <p class="clearfix"></p>
+                    </div>
+                    
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+        
+            <p class="clearfix"></p>
+            <div class="col-sm-12 col-md-12  i-text-align-center">
+                <p class="clearfix"></p>
+                <a class="btn btn-success" onclick="Save_Click();"><i class="fa fa-floppy-o fa-lg"></i>&nbsp;&nbsp;Save</a>   
+                        
+            </div>
+
+        </div>
+    
+        
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal001_label" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document" style="width: 65%;">
+                <div class="modal-content">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <h3 style="margin-top: 0">Query Information</h3>
+                                </div>
+                            </div>
+                            
+                            <div id="divQueryInfo" class="tab-content-model text-center" style="max-height: 430px;overflow-y: scroll;">
+                                <div class="row">
+                                    <div class="col-sm-2 col-md-2 text-right"><label>Sheet Name <span class="lblRequired">*</span> : </label></div>
+                                    <div class="col-sm-10 col-md-10 text-left">
+                                        @Html.Hidden("hndquery_id", "")
+                                        @Html.Hidden("hndIndex", "")
+                                        @Html.TextBox("txtSheet_name", "", new { maxlength = 31, @class = "k-textbox form-control",onkeyup="nameKeyup(this);" })
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtSheet_name"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2 col-md-2 text-right"><label>Owner <span class="lblRequired">*</span> : </label></div>
+                                    <div class="col-sm-2 col-md-2 text-left">
+                                        @Html.RadioButton("rdoOwner_db","WBB",true,new {@id="rdoWbb"}) Wbb
+                                    </div>
+                                    <div class="col-sm-8 col-md-8 text-left">
+                                        @Html.RadioButton("rdoOwner_db","AIR_ADMID",false,new {@id="rdoAir_Admin"}) Air_Admin + Wbb
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2 col-md-2 text-right"><label>Query 1 <span class="lblRequired">*</span> : </label></div>
+                                    <div class="col-sm-10 col-md-10 text-left">
+                                        @Html.TextArea("txtQuery_1", "", new { maxlength = 3000, @class = "k-textbox form-control", rows = 20 })
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtQuery_1"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-2 col-md-2 text-right"><label>Query 2 : </label></div>
+                                    <div class="col-sm-10 col-md-10">
+                                        @Html.TextArea("txtQuery_2", "", new { maxlength = 3000, @class = "k-textbox form-control", rows = 20 })
+                                        <div class="i-fg-data-entry-validation" id=""></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-2 col-md-2 text-right"><label>Query 3 : </label></div>
+                                    <div class="col-sm-10 col-md-10">
+                                        @Html.TextArea("txtQuery_3", "", new { maxlength = 3000, @class = "k-textbox form-control", rows = 20 })
+                                        <div class="i-fg-data-entry-validation" id=""></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-2 col-md-2 text-right"><label>Query 4 : </label></div>
+                                    <div class="col-sm-10 col-md-10">
+                                        @Html.TextArea("txtQuery_4", "", new { maxlength = 3000, @class = "k-textbox form-control", rows = 20 })
+                                        <div class="i-fg-data-entry-validation" id=""></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-2 col-md-2 text-right"><label>Query 5 : </label></div>
+                                    <div class="col-sm-10 col-md-10">
+                                        @Html.TextArea("txtQuery_5", "", new { maxlength = 3000, @class = "k-textbox form-control", rows = 20 })
+                                        <div class="i-fg-data-entry-validation" id=""></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="clearfix"></p>
+                            <div class="col-md-6 text-left">
+                                <p class="clearfix"></p>
+                                <button type="button" id="btnTestQuery" onclick="TestQuery_Click();" class="btn btn-primary" >&nbsp; Test Query &nbsp; </button>
+                                
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <p class="clearfix"></p>
+                                <button type="button" id="btnBack" class="btn btn-default" data-dismiss="modal" >&nbsp; Cancel &nbsp; </button>
+                                <button type="button" id="btnOk" class="btn btn-success" onclick="Done_Click();" >&nbsp; Done &nbsp; </button>
+                            </div>
+                            <p class="clearfix"></p>
+                            <div class="col-md-8 text-left">
+                                <label id="lblCheckQuery"></label>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <label id="lblDupSheetName" class="lblRequired"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="border-top: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="modal fade" id="modalConfirmation" tabindex="-1" role="dialog" aria-labelledby="MessageFeedbackPopUpLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header btn-danger" id="">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="">Confirmation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label id="lblModal"></label>
+                        <p class="clearfix"></p>
+                        <div class="text-right">
+                            <button class="btn btn-danger" id="yesButton" data-dismiss="modal" aria-hidden="true"><i class="fa fa-trash-o fa-lg"></i> Delete</button>
+                            <button class="btn btn-default" id="noButton" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-lg"></i> Cancel</button>
+                        </div>
+                        <p class="clearfix"></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="MessageFeedbackPopUpLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header btn-success" id="">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="">Information</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label>Saved successfully.</label>
+                        <p class="clearfix"></p>
+                        <div class="text-right">
+                            <button class="btn btn-success"  onclick="back();" data-dismiss="modal" aria-hidden="true"> OK </button>
+                        </div>
+                        <p class="clearfix"></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <form id="form_Config" method="POST" action="@(Url.Action("ConfigurationAutoMailReport"))">
+            @Html.Hidden("reportName", L_REPORT_NAME, new{@class="hndReportName"})
+            @Html.Hidden("scheduler", L_SCHDULER, new{@class="hndScheduler"})
+        </form>
+        
+        <form id="form_Login" method="GET" action="@(Url.Action("Login","Fbbsaleportal"))">
+        </form>
+
+    </body>
+    
+    <script>
+
+        $(document).ready(function() {
+            if ("@Model.SCHEDULER" != "") {
+                $('#scheduler').data("kendoDropDownList").text("@Model.SCHEDULER");
+                $('#scheduler').data("kendoDropDownList").value("@Model.SCHEDULER");
+            }
+            else {
+                $('#scheduler').data("kendoDropDownList").text('Daily');
+                $('#scheduler').data("kendoDropDownList").value('Daily');
+            }
+            if ("@Model.DAY_OF_WEEK" != "") {
+                $('#day_of_week').data("kendoDropDownList").text("@Model.DAY_OF_WEEK");
+                $('#day_of_week').data("kendoDropDownList").value("@Model.DAY_OF_WEEK");
+            }
+            if ("@Model.MONTH_OF_YEAR" != "") {
+                $('#month_of_year').data("kendoDropDownList").text("@Model.MONTH_OF_YEAR");
+                $('#month_of_year').data("kendoDropDownList").value("@Model.MONTH_OF_YEAR");
+            }
+            if ("@Model.DAY_OF_MONTH" != "") {
+                $('#day_of_month').data("kendoDropDownList").text("@Model.DAY_OF_MONTH");
+                $('#day_of_month').data("kendoDropDownList").value("@Model.DAY_OF_MONTH");
+            }
+
+        });
+
+        function AddQuery_Click() {
+            resetModal();
+            $('#myModal').modal('show');
+        }
+
+        function EditQuery_Click(index) {
+            resetModal();
+            setModal(index);
+            $('#myModal').modal('show');
+        }
+
+        function Scheduler_Change(e) {
+            if (e.item) {
+                var dataItem = this.dataItem(e.item);
+                if (dataItem.Text == "Weekly") {
+                    $("#day_of_week").data("kendoDropDownList").select(0);
+                    $('#divDayOfWeek').show();
+                } else {
+                    $('#divDayOfWeek').hide();
+                }
+                if (dataItem.Text == "Monthly") {
+                    $("#month_of_year").data("kendoDropDownList").select(0);
+                    $('#divMonthofYear').show();
+                    $("#month_of_year").data("kendoDropDownList").select(0);
+                    $('#divEverydayofMonth').show();
+                } else {
+                    $('#divMonthofYear').hide();
+                    $('#divEverydayofMonth').hide();
+                }
+            }
+        }
+
+        function Back_Click() {
+            back();
+        }
+
+        function back() {
+            $('#form_Config').submit();
+        }
+
+        function Save_Click() {
+            Loading();
+            var chk = ValidateSave();
+            if (chk) {
+                var model = getDataConfigInfo();
+                $.ajax({
+                    type: "POST",
+                    url: "/Fbbsaleportal/SaveConfigurationInformation",
+                    contentType: 'application/json',
+                    data: model,
+                    async: false,
+                    success: function (response) {
+
+                        if (response.saveStatus == "Y") {
+                            $("#modalSuccess").modal('show');
+                        }
+                        else if (response.saveStatus == "D") {
+                            showFeedback("warning", "Duplicate report name.", "Warning");
+                        }
+                        else if (response.saveStatus == "T") {
+                            $('#form_Login').submit();
+                        }
+                        else {
+                            showFeedback("error", "Save Failed : " + response.errMsg, "Error");
+                        }
+                    }
+                });
+            }
+            Loading(0);
+
+        }
+
+        function ValidateSave() {
+
+            var chk = true;
+            var focus = false;
+
+            if ($.trim($("#report_name").val()) == "") {
+                $("#validatefor-report_name").html(ValidationIcon() + '@L_REQUIRED');
+                chk = false;
+                if (!focus) {
+                    $('.nav-tabs a[href="#report"]').tab('show');
+                }
+                focus = true;
+            } else {
+                $("#validatefor-report_name").html("");
+            }
+
+            var numOfVisibleRows = $('#tblNeighbor tr').filter(function () {
+                return $(this).css('display') == 'none';
+            }).length;
+
+
+            if ($('#tblNeighbor tr').length - 1 == 0 || $('#tblNeighbor tr').length - numOfVisibleRows - 1 == 0) {
+                $("#validatefor-query").html(ValidationIcon() + '@L_REQUIRED_QUERY');
+                chk = false;
+                if (!focus) {
+                    $('.nav-tabs a[href="#report"]').tab('show');
+                }
+                focus = true;
+            } else {
+                $("#validatefor-query").html("");
+            }
+
+            if ($.trim($("#email_to").val()) == "") {
+                $("#validatefor-email_to").html(ValidationIcon() + '@L_REQUIRED');
+                chk = false;
+                if (!focus) {
+                    $('.nav-tabs a[href="#email"]').tab('show');
+                }
+                focus = true;
+            } else if (!validateTextEmail($.trim($("#email_to").val()))) {
+                $("#validatefor-email_to").html(ValidationIcon() + '@L_VALIDATE_EMAIL');
+                    chk = false;
+                    if (!focus) {
+                        $('.nav-tabs a[href="#email"]').tab('show');
+                    }
+                    focus = true;
+                } else {
+                    $("#validatefor-email_to").html("");
+                }
+
+            if ($.trim($("#email_from").val()) == "") {
+                $("#validatefor-email_from").html(ValidationIcon() + '@L_REQUIRED');
+                chk = false;
+                if (!focus) {
+                    $('.nav-tabs a[href="#email"]').tab('show');
+                }
+                focus = true;
+            } else if (!validateTextEmail($.trim($("#email_from").val()))) {
+                $("#validatefor-email_from").html(ValidationIcon() + '@L_VALIDATE_EMAIL');
+                    chk = false;
+                    if (!focus) {
+                        $('.nav-tabs a[href="#email"]').tab('show');
+                    }
+                    focus = true;
+                } else {
+                    $("#validatefor-email_from").html("");
+                }
+
+            if ($.trim($("#email_subject").val()) == "") {
+                $("#validatefor-email_subject").html(ValidationIcon() + '@L_REQUIRED');
+                chk = false;
+                if (!focus) {
+                    $('.nav-tabs a[href="#email"]').tab('show');
+                }
+                focus = true;
+            } else {
+                $("#validatefor-email_subject").html("");
+            }
+
+            if ($.trim($("#email_to_admin").val()) == "") {
+                $("#validatefor-email_to_admin").html(ValidationIcon() + '@L_REQUIRED');
+                chk = false;
+                if (!focus) {
+                    $('.nav-tabs a[href="#email"]').tab('show');
+                }
+                focus = true;
+            } else if (!validateTextEmail($.trim($("#email_to_admin").val()))) {
+                $("#validatefor-email_to_admin").html(ValidationIcon() + '@L_VALIDATE_EMAIL');
+                    chk = false;
+                    if (!focus) {
+                        $('.nav-tabs a[href="#email"]').tab('show');
+                    }
+                    focus = true;
+                } else {
+                    $("#validatefor-email_to_admin").html("");
+                }
+
+            if ($.trim($("#email_cc").val()) != "" && !validateTextEmail($.trim($("#email_cc").val()))) {
+                $("#validatefor-email_cc").html(ValidationIcon() + '@L_VALIDATE_EMAIL');
+                chk = false;
+                if (!focus) {
+                    $('.nav-tabs a[href="#email"]').tab('show');
+                }
+                focus = true;
+            } else {
+                $("#validatefor-email_cc").html("");
+            }
+
+            return chk;
+        }
+
+        function getDataConfigInfo() {
+
+            var configuAutoMailModel = JSON.stringify({
+                report_id: parseInt($.trim($("#report_id").val())),
+                report_name: $.trim($("#report_name").val()),
+                report_type: parseInt($.trim($("#report_id").val())) == 0 ? "A" : "E",
+                active_flag: $("#active_flag").is(':checked') ? "Y" : "N",
+                scheduler: $("#scheduler").data("kendoDropDownList").text(),
+                day_of_week: $("#scheduler").data("kendoDropDownList").text() == "Daily" ? "" : $("#day_of_week").data("kendoDropDownList").text(),
+                month_of_year: $("#scheduler").data("kendoDropDownList").text() == "Daily" ? "" : $("#month_of_year").data("kendoDropDownList").text(),
+                day_of_month: $("#scheduler").data("kendoDropDownList").text() == "Daily" ? "" : $("#day_of_month").data("kendoDropDownList").text(),
+                day_of_week: $("#scheduler").data("kendoDropDownList").text() == "Monthly" ? "" : $("#day_of_week").data("kendoDropDownList").text(),
+                month_of_year: $("#scheduler").data("kendoDropDownList").text() == "Weekly" ? "" : $("#month_of_year").data("kendoDropDownList").text(),
+                day_of_month: $("#scheduler").data("kendoDropDownList").text() == "Weekly" ? "" : $("#day_of_month").data("kendoDropDownList").text(),
+                day_of_week: $("#scheduler").data("kendoDropDownList").text() == "Weekly" ? $("#day_of_week").data("kendoDropDownList").text() : "",
+                month_of_year: $("#scheduler").data("kendoDropDownList").text() == "Monthly" ? $("#month_of_year").data("kendoDropDownList").text(): "",
+                day_of_month: $("#scheduler").data("kendoDropDownList").text() == "Monthly" ? $("#day_of_month").data("kendoDropDownList").text() : "",
+                email_to: $.trim($("#email_to").val()),
+                email_cc: $.trim($("#email_cc").val()),
+                email_from: $.trim($("#email_from").val()),
+                email_subject: $.trim($("#email_subject").val()),
+                email_content: $.trim($("#email_content").val()),
+                email_to_admin: $.trim($("#email_to_admin").val()),
+                ConfigurationQueryList: getDatatConfigQuery()
+            });
+
+            return configuAutoMailModel.toString();
+        }
+
+        function getDatatConfigQuery() {
+            var listQuery = [];
+            for (index = 1; index <= $('#tblNeighbor tr').length - 1; index++) {
+                listQuery.push({
+                    query_id: parseInt($.trim($("#ConfigurationQueryList_" + index + "__QUERY_ID").val())),
+                    sheet_name: $.trim($("#ConfigurationQueryList_" + index + "__SHEET_NAME").text()),
+                    query_type: $.trim($("#ConfigurationQueryList_" + index + "__QUERY_TYPE").val()),
+                    owner_db: $.trim($("#ConfigurationQueryList_" + index + "__OWNER_DB").val()),
+                    query_1: $.trim($("#ConfigurationQueryList_" + index + "__QUERY_1").text()),
+                    query_2: $.trim($("#ConfigurationQueryList_" + index + "__QUERY_2").text()),
+                    query_3: $.trim($("#ConfigurationQueryList_" + index + "__QUERY_3").text()),
+                    query_4: $.trim($("#ConfigurationQueryList_" + index + "__QUERY_4").text()),
+                    query_5: $.trim($("#ConfigurationQueryList_" + index + "__QUERY_5").text())
+                });
+            }
+            return listQuery;
+        }
+
+        var ConfigurationAutoMailModel = function () {
+            report_id: "";
+            report_name: "";
+            active_flag: "";
+            scheduler: "";
+            day_of_week: "";
+            month_of_year: "";
+            day_of_month: "";
+            email_to: "";
+            email_cc: "";
+            email_from: "";
+            email_subject: "";
+            email_content: "";
+            email_to_admin: "";
+            ConfigurationQueryList: [];
+        }
+
+        function Done_Click() {
+            if (ValidateQuery()) {
+                $("#lblDupSheetName").text("");
+                if ($("#hndquery_id").val() == "") {
+                    var index = parseInt($("#lastIndex").val()) + 1;
+                    $('#tblNeighbor tr:last').after("<tr id=\"" + index + "\"><td><a  class='linkTable' onclick='EditQuery_Click(" + index + ")'>Edit</a>&nbsp;&nbsp;<a class='linkTable' onclick='DeleteQuery_Click(" + index + ")'>Delete</a></td>"
+                        + '<td><label id="ConfigurationQueryList_' + index + '__SHEET_NAME">' + $.trim($("#txtSheet_name").val()) + '</label>'
+                        + '<input type="hidden" id="ConfigurationQueryList_' + index + '__QUERY_ID" value="0" />'
+                        + '<input type="hidden" id="ConfigurationQueryList_' + index + '__QUERY_TYPE" value="A" /></td>'
+                        + '<input type="hidden" id="ConfigurationQueryList_' + index + '__OWNER_DB" value="' + $('input[name=rdoOwner_db]:checked').val() + '" /></td>'
+                        + '<td><label id="ConfigurationQueryList_' + index + '__QUERY_1">' + $.trim($("#txtQuery_1").val()) + '</label></td>'
+                        + '<td><label id="ConfigurationQueryList_' + index + '__QUERY_2">' + $.trim($("#txtQuery_2").val()) + '</label></td>'
+                        + '<td><label id="ConfigurationQueryList_' + index + '__QUERY_3">' + $.trim($("#txtQuery_3").val()) + '</label></td>'
+                        + '<td><label id="ConfigurationQueryList_' + index + '__QUERY_4">' + $.trim($("#txtQuery_4").val()) + '</label></td>'
+                        + '<td><label id="ConfigurationQueryList_' + index + '__QUERY_5">' + $.trim($("#txtQuery_5").val()) + '</label></td>');
+
+                    $("#lastIndex").val(index);
+                } else {
+                    var indexEdit = $("#hndIndex").val();
+                    $('#ConfigurationQueryList_' + indexEdit + '__SHEET_NAME').text($.trim($("#txtSheet_name").val()));
+                    $('#ConfigurationQueryList_' + indexEdit + '__QUERY_ID').val($("#hndquery_id").val());
+                    $('#ConfigurationQueryList_' + indexEdit + '__QUERY_TYPE').val($("#hndquery_id").val() == "0" ? "A" : "E");
+                    $('#ConfigurationQueryList_' + indexEdit + '__OWNER_DB').val($('input[name=rdoOwner_db]:checked').val());
+                    $('#ConfigurationQueryList_' + indexEdit + '__QUERY_1').text($.trim($("#txtQuery_1").val()));
+                    $('#ConfigurationQueryList_' + indexEdit + '__QUERY_2').text($.trim($("#txtQuery_2").val()));
+                    $('#ConfigurationQueryList_' + indexEdit + '__QUERY_3').text($.trim($("#txtQuery_3").val()));
+                    $('#ConfigurationQueryList_' + indexEdit + '__QUERY_4').text($.trim($("#txtQuery_4").val()));
+                    $('#ConfigurationQueryList_' + indexEdit + '__QUERY_5').text($.trim($("#txtQuery_5").val()));
+
+                }
+                $('#myModal').modal('hide');
+                resetModal();
+            } else {
+                $('#divQueryInfo').animate({ scrollTop: (0) }, 'slow');
+            }
+        }
+
+        function resetModal() {
+            $("#txtSheet_name").val('');
+            $("#txtQuery_1").val('');
+            $("#txtQuery_2").val('');
+            $("#txtQuery_3").val('');
+            $("#txtQuery_4").val('');
+            $("#txtQuery_5").val('');
+            $("#hndIndex").val('');
+            $("#hndquery_id").val('');
+            $("#lblCheckQuery").text("");
+            $('#divQueryInfo').animate({ scrollTop: (0) }, 'slow');
+            $("#lblDupSheetName").text("");
+            $("#validatefor-txtSheet_name").html("");
+            $("#validatefor-txtQuery_1").html("");
+            $('#rdoWbb').prop('checked', true);
+        }
+
+        function setModal(index) {
+            $("#hndquery_id").val($('#ConfigurationQueryList_' + index + '__QUERY_ID').val());
+            $("#hndIndex").val(index);
+            $("#txtSheet_name").val($('#ConfigurationQueryList_' + index + '__SHEET_NAME').text());
+            $("#txtQuery_1").val($('#ConfigurationQueryList_' + index + '__QUERY_1').text());
+            $("#txtQuery_2").val($('#ConfigurationQueryList_' + index + '__QUERY_2').text());
+            $("#txtQuery_3").val($('#ConfigurationQueryList_' + index + '__QUERY_3').text());
+            $("#txtQuery_4").val($('#ConfigurationQueryList_' + index + '__QUERY_4').text());
+            $("#txtQuery_5").val($('#ConfigurationQueryList_' + index + '__QUERY_5').text());
+
+            if ($('#ConfigurationQueryList_' + index + '__OWNER_DB').val() == $('#rdoWbb').val()) {
+                $('#rdoWbb').prop('checked', true);
+            } else {
+                $('#rdoAir_Admin').prop('checked', true);
+            }
+        }
+
+
+        function DeleteQuery_Click(index) {
+            $("#lblModal").text("Do you want to delete the query?");
+            $("#modalConfirmation").modal('show');
+
+            $("#yesButton").click(function () {
+                $("#" + index).closest("tr").hide();
+                $('#ConfigurationQueryList_' + index + '__QUERY_TYPE').val("D");
+            });
+
+        }
+
+        function TestQuery_Click() {
+            var txtQuery = $.trim($("#txtQuery_1").val()) + ' ' + $.trim($("#txtQuery_2").val()) + ' ' + $.trim($("#txtQuery_3").val())
+                + ' ' + $.trim($("#txtQuery_4").val()) + ' ' + $.trim($("#txtQuery_5").val());
+
+            Loading();
+            $.ajax({
+                type: "POST",
+                url: "/Fbbsaleportal/CheckQueryReport",
+                contentType: 'application/json',
+                data: JSON.stringify({ query: txtQuery, owner: $('input[name=rdoOwner_db]:checked').val() }),
+                async: false,
+                success: function (response) {
+                    if (response.status == "Y") {
+                        $("#lblCheckQuery").text("Success").removeClass("lblRequired").addClass("lblSuccess");
+                    }
+                    else if (response.status == "T") {
+                        $('#form_Login').submit();
+                    } else {
+                        $("#lblCheckQuery").text("Failed : " + response.errMsg).removeClass("lblSuccess").addClass("lblRequired");
+                    }
+                }
+            });
+            Loading(0);
+        }
+
+        function ValidateQuery() {
+            var chk = true;
+            var focus = false;
+
+            if ($.trim($("#txtSheet_name").val()) == "") {
+                $("#validatefor-txtSheet_name").html(ValidationIcon() + '@L_REQUIRED');
+                chk = false;
+                if (!focus) {
+                    $('.nav-tabs a[href="#report"]').tab('show');
+                }
+                focus = true;
+            } else {
+                $("#validatefor-txtSheet_name").html("");
+            }
+
+            if ($.trim($("#txtQuery_1").val()) == "") {
+                $("#validatefor-txtQuery_1").html(ValidationIcon() + '@L_REQUIRED');
+                chk = false;
+                if (!focus) {
+                    $('.nav-tabs a[href="#report"]').tab('show');
+                }
+                focus = true;
+            } else {
+                $("#validatefor-txtQuery_1").html("");
+            }
+
+            if (chk) {
+
+                for (index = 1; index <= $('#tblNeighbor tr').length - 1; index++) {
+                    if ($("#ConfigurationQueryList_" + index + "__QUERY_ID").val() == "0"
+                        && $("#ConfigurationQueryList_" + index + "__QUERY_TYPE").val() == "D") {
+                        continue;
+                    }
+
+                    if ($("#ConfigurationQueryList_" + index + "__SHEET_NAME").text().toLowerCase() == $.trim($("#txtSheet_name").val().toLowerCase())
+                        && $("#ConfigurationQueryList_" + index + "__QUERY_ID").val() != $("#hndquery_id").val()) {
+
+                        $("#lblDupSheetName").text("Duplicate sheet name");
+                        return false;
+                    }
+                }
+            }
+
+            return chk;
+        }
+
+        function validateTextEmail(email) {
+
+
+            var emailSplit = email.split(",");
+            var filter = /^(((([a-zA-Z0-9\_\-]{1,50})+(([\.]{1,50}[a-zA-Z0-9\_\-]{1,50}){0,50})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+
+            var response = false;
+
+            for (index = 0; index <= emailSplit.length - 1; index++) {
+
+                if (emailSplit[index].indexOf('@@') == -1) {
+                    return false;
+                }
+                if (emailSplit[index].indexOf('.') == -1) {
+                    return false;
+                }
+
+                if (emailSplit[index].substr(0, 2) == "-@@" || emailSplit[index].substr(0, 2) == "_@@") {
+                    return false;
+                }
+                if (filter.test(emailSplit[index])) {
+                    response = true;
+                }
+                else {
+                    return false;
+                }
+            }
+            return response;
+        }
+
+        function nameKeyup(input) {
+            CheckKeyUps(input.id, '^[ก-๙a-zA-Z0-9 .()_-]+$');
+        }
+
+        function CheckKeyUps(id, rexStr) {
+            var strKey = $("#" + id).val();
+            var strBuilder = "";
+            var filter = new RegExp(rexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+            $("#" + id).val(strBuilder);
+        }
+
+    </script>
+</html>

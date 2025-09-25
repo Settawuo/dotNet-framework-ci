@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10,9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0" />
+
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
+    <title id="txttitle"></title>
+
+    @{
+        string th = "";
+        string en = "";
+        var dataTitle = WBBWeb.Extension.WebExtension.Get_TitleName();
+        if (dataTitle.Any())
+        {
+            var data = dataTitle.FirstOrDefault();
+            th = data.LovValue1.ToString();
+            en = data.LovValue2.ToString();
+        }
+    }
+
+
+    @Styles.Render("~/bundles/css/2016")
+    @Styles.Render("~/Content/Content2016/fibrepostpaid")
+    @Styles.Render("~/Content/Content2016/helvetica")
+    @Styles.Render("~/bundles/css/2016plugin")
+    @Styles.Render("~/Content/css/bootsrapcss")
+    @Styles.Render("~/Content/css/typeaheadcss")
+    @Styles.Render("~/bundles/css/vendor")
+    @Styles.Render("~/bundles/css/responsivefibre")
+
+    @Styles.Render("~/Content/themes/base/css")
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @*@Scripts.Render("~/bundles/jqueryui")*@
+    <style>
+        iframe, object, embed {
+            width: 100%;
+            display: block !important;
+        }
+    </style>
+
+    @Scripts.Render("~/bundles/js/jquery")
+    @Scripts.Render("~/bundles/js/jquerymigrate")
+    @Scripts.Render("~/bundles/js/boostrapjs")
+    @Scripts.Render("~/bundles/js/qrcodejs")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/signalR")
+
+    <script type="text/javascript">
+        $.salt = '978692';
+    </script>
+    @Scripts.RenderFormat("<script src='{0}' defer></script>", "~/bundles/js/fibrenet")
+    @Scripts.RenderFormat("<script src='{0}' defer></script>", "~/bundles/js/wbb")
+    @Scripts.RenderFormat("<script src='{0}' defer></script>", "~/bundles/js/typeaheadjs")
+    @Scripts.RenderFormat("<script src='{0}' defer></script>", "~/bundles/js/responsivefibrejs")
+
+    <script src="~/Scripts/js.cookie.js"></script>
+    <script src="~/Scripts/signature_pad.js"></script>
+    <script src="~/Scripts/html2canvas.js"></script>
+    @* @if (System.Configuration.ConfigurationManager.AppSettings["AdobeAnalytic"] == "STG")
+    {
+        <script src="~/js/analytic/satelliteLib-2756bab2480cb6c2674fb064e707912a7e9432b2-staging.js"></script>
+    }
+    @if (System.Configuration.ConfigurationManager.AppSettings["AdobeAnalytic"] == "PROD")
+    {
+        <script src="~/js/analytic/satelliteLib-2756bab2480cb6c2674fb064e707912a7e9432b2.js"></script>
+    } *@
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-NS998W');
+    </script>
+    <!-- End Google Tag Manager -->
+
+
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NS998W"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    @RenderBody()
+    <input type="hidden" id="txtTH" value="@th" />
+    <input type="hidden" id="txtEN" value="@en" />
+</body>
+
+</html>
+
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/WBB/GetCurrentCulture",
+            dataType: "json",
+            //async: false,
+            success: function (x) {
+                if (x == 1) {
+                    $('#txttitle').html($('#txtTH').val());
+                }
+                else {
+                    $('#txttitle').html($('#txtEN').val());
+                }
+
+                return false;
+            }
+        });
+    });
+    </text>)
+</script>

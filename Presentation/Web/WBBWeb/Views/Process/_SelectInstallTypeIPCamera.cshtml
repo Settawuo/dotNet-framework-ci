@@ -1,0 +1,112 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension;
+@{
+    string Channel = ViewBag.Channel ?? "";
+
+    string SCREEN_DIY = "";
+    string SCREEN_TECH = "";
+    var IPCamera_Cont_DIY = new List<LovScreenValueModel>();
+    if (ViewBag.IpCamera != null)
+    {
+        var ipCamera = (List<LovScreenValueModel>)ViewBag.IpCamera;
+        SCREEN_DIY = ipCamera.Any(c => c.Name == "IPCamera_INS_TYPE_DIY") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_INS_TYPE_DIY").DisplayValue : "";
+        SCREEN_TECH = ipCamera.Any(c => c.Name == "IPCamera_INS_TYPE_TECH") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_INS_TYPE_TECH").DisplayValue : "";
+        IPCamera_Cont_DIY = ipCamera.Where(c => c.Name == "IPCamera_Cont_DIY_Text").ToList();
+    }
+
+    string DIYFlag = "";
+    string ChnOTP = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        DIYFlag = FbbConstant.Any(f => f.Field == "IPCamera_Use_DIY_Flag") ? FbbConstant.First(f => f.Field == "IPCamera_Use_DIY_Flag").Validation : "";
+        ChnOTP = FbbConstant.Any(f => f.Field == "CHANNEL_OTP_IPCamera") ? FbbConstant.First(f => f.Field == "CHANNEL_OTP_IPCamera").Validation : "";
+    }
+}
+
+<div class="divInstallTypeHidden" style="display:none">
+    <input type="radio" id="diyRadioDIY" name="diy-option" value="Y">
+    <label for="diyRadioDIY" style="display: none;">@SCREEN_DIY</label>
+    <input type="radio" id="diyRadioTechnician" name="diy-option" value="N" checked>
+    <label for="diyRadioTechnician">@SCREEN_TECH</label>
+</div>
+
+<div class="InstallTypeConditionHidden" style="display:none">
+    <p class="clearfix"></p><p class="clearfix">
+        <label class="radio-inline" for="R_BUILD">
+            <input type="radio" name="Agreement" id="Agreement" value="Agree" onclick="onAgreeChange()">ยอมรับ
+        </label>
+    </p>
+    <p class="clearfix"></p>
+</div>
+
+<style>
+    .divInstallType {
+        display: flex;
+        align-items: center;
+    }
+
+        .divInstallType input[type="radio"] {
+            display: none;
+        }
+
+        .divInstallType label {
+            display: inline-block;
+            cursor: pointer;
+            padding: 10px 20px;
+            color: white;
+            margin-right: 20px;
+            min-width: 30%;
+            text-align: center;
+            background-color: #ccc;
+        }
+
+        .divInstallType input[type="radio"]:checked + label {
+            background-color: #8DC63F;
+            color: #fff;
+        }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var diyCond = @Html.Raw(Json.Encode(IPCamera_Cont_DIY));
+        var diyCondText = "";
+
+        diyCond.forEach((item, index) => {
+            diyCondText += '<p class="clearfix">' + item.DisplayValue + '</p>';
+        });
+
+        $(".InstallTypeConditionHidden").append(diyCondText);
+    });
+
+    $("#diyRadioDIY, #diyRadioTechnician").on("click", function () {
+        if (!$(this).prop("checked")) {
+            $(this).prop("checked", true);
+        }
+    });
+
+    function onAgreeChange() {
+        $("#btnVasNextPage").prop("disabled", false);
+        setClick("onBtnInstallTypeSelect_Click()", "onBtnInstallTypeBack_Click()")
+    }
+
+    function setInstallTypeCondition() {
+        $(".divInstallType").after('<div class="InstallTypeCondition"></div><div id="divInstallTypeDIY" class="container addrounded" style="display: none; width: auto;"></div><div class="InstallTypeTechnician"></div>');
+        MergeHidden('.InstallTypeTechnician');
+
+        if ("@Channel" != "@ChnOTP") {
+            setTimeSlotConfigSelectDateVas();
+        }
+        MergeHidden('.divInstallType');
+        if ('@DIYFlag' == 'Y') {
+            $('label[for="diyRadioDIY"]').show();
+            $("#diyRadioDIY").prop("checked", true);
+            $("#diyRadioTechnician").prop("checked", false);
+            $(".InstallTypeTechnician").hide()
+            $('#trInstallIPCameraPlus').hide();
+            $('#spaceInstallIPCameraPlus').hide();
+            $("#summTotalInstallIPCamera").text("0.00 ")
+        }
+    }
+</script>

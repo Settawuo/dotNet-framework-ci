@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="WS_AUTHENDB_DBConfig">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strProjectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_AUTHENDB_DBConfigResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WS_AUTHENDB_DBConfigResult" type="tns:DatabaseAccount" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DatabaseAccount">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DatabaseName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServerName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Detail" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="WS_AUTHENDB_USERConfig">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strProjectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_AUTHENDB_USERConfigResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WS_AUTHENDB_USERConfigResult" type="tns:UserAccount" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="UserAccount">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DomainName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Detail" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="WS_AUTHENDB_DBConfigSoapIn">
+    <wsdl:part name="parameters" element="tns:WS_AUTHENDB_DBConfig" />
+  </wsdl:message>
+  <wsdl:message name="WS_AUTHENDB_DBConfigSoapOut">
+    <wsdl:part name="parameters" element="tns:WS_AUTHENDB_DBConfigResponse" />
+  </wsdl:message>
+  <wsdl:message name="WS_AUTHENDB_USERConfigSoapIn">
+    <wsdl:part name="parameters" element="tns:WS_AUTHENDB_USERConfig" />
+  </wsdl:message>
+  <wsdl:message name="WS_AUTHENDB_USERConfigSoapOut">
+    <wsdl:part name="parameters" element="tns:WS_AUTHENDB_USERConfigResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WebDBConfigServiceSoap">
+    <wsdl:operation name="WS_AUTHENDB_DBConfig">
+      <wsdl:input message="tns:WS_AUTHENDB_DBConfigSoapIn" />
+      <wsdl:output message="tns:WS_AUTHENDB_DBConfigSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WS_AUTHENDB_USERConfig">
+      <wsdl:input message="tns:WS_AUTHENDB_USERConfigSoapIn" />
+      <wsdl:output message="tns:WS_AUTHENDB_USERConfigSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WebDBConfigServiceSoap" type="tns:WebDBConfigServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WS_AUTHENDB_DBConfig">
+      <soap:operation soapAction="http://tempuri.org/WS_AUTHENDB_DBConfig" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_AUTHENDB_USERConfig">
+      <soap:operation soapAction="http://tempuri.org/WS_AUTHENDB_USERConfig" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WebDBConfigServiceSoap12" type="tns:WebDBConfigServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WS_AUTHENDB_DBConfig">
+      <soap12:operation soapAction="http://tempuri.org/WS_AUTHENDB_DBConfig" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_AUTHENDB_USERConfig">
+      <soap12:operation soapAction="http://tempuri.org/WS_AUTHENDB_USERConfig" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WebDBConfigService">
+    <wsdl:port name="WebDBConfigServiceSoap" binding="tns:WebDBConfigServiceSoap">
+      <soap:address location="http://dblogintest.ais.co.th/wsAuthenDB/webDBconfigService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WebDBConfigServiceSoap12" binding="tns:WebDBConfigServiceSoap12">
+      <soap12:address location="http://dblogintest.ais.co.th/wsAuthenDB/webDBconfigService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

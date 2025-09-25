@@ -1,0 +1,79 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension;
+@{
+    string B_PAY = "";
+
+    if (ViewBag.LabelFBBOR041 != null)
+    {
+        var LabelFBBOR041 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR041;
+        B_PAY = LabelFBBOR041.Any(c => c.Name == "B_PAY") ? LabelFBBOR041.First(c => c.Name == "B_PAY").DisplayValue : "";
+    }
+
+    string MsgInfo = "";
+    if (ViewBag.MsgInfo != null && ViewBag.MsgInfo != "")
+    {
+        MsgInfo = ViewBag.MsgInfo;
+    }
+    string MsgERROR = "";
+    if (ViewBag.MsgERROR != null && ViewBag.MsgERROR != "")
+    {
+        MsgERROR = ViewBag.MsgERROR;
+    }
+    bool IsSucces = false;
+    if (ViewBag.IsSucces != null)
+    {
+        IsSucces = ViewBag.IsSucces;
+    }
+
+    if (MsgInfo != "")
+    {
+        <div id="divInformation" class="container addrounded">
+            <h4 class="page-header tgreen"></h4>
+            <p class="clearfix"></p>
+            @Html.Raw(MsgInfo)           
+            <p class="clearfix page-header"></p>
+            <div class="col-md-12 text-center">
+                <p class="clearfix"></p>
+                <div id="conditions2">
+                    <div class="col-md-12 text-center">
+                        <p class="clerfix visible-xs"></p>
+                        @if(!IsSucces){
+                        <button id="btnPaid" type="button" class="btn btn-success btn-for-xs" onclick="">
+                            &nbsp; @B_PAY &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                        </button>
+                        }
+                    </div>
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+    }
+    if (MsgERROR != "")
+    {
+        <div id="divERROR" class="text-center" >
+            <h4 class="page-header tgreen"></h4>
+            <p class="clearfix"></p>
+            @Html.Raw(MsgERROR)
+            <p class="clearfix page-header"></p>
+            <div class="col-md-12 text-center">
+                <p class="clearfix"></p>
+                <div id="conditions2">
+                    <div class="col-md-12 text-center">
+                        <p class="clerfix visible-xs"></p>
+                    </div>
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+    }
+
+    <script type="text/javascript">
+        $('#btnPaid').click(function () {
+            $('#divInformation').hide();
+            $('#divPayMent').show();
+        });
+    </script>
+}

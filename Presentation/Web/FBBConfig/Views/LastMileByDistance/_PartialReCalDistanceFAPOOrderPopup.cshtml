@@ -1,0 +1,485 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.LastMileByDistanceModel
+@{
+    string L_RECAL = "RECAL ตามหัวข้อที่กำหนด";
+    string L_FIBRENET_ID = "Fibrenet ID";
+    string L_EXISTING_RULE = "Existing Rule";
+    string L_NEW_RULE = "New Rule";
+    string L_TOTAL_PRICE = "Total Price";
+    string L_REMARK = "Remark";
+
+    string B_SAVE = "SAVE";
+    string B_CANCEL = "CANCEL";
+}
+
+
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+        <div class="GrFibreNetid" id="GrFibreNetid">
+            <label>@L_RECAL</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class=" col-sm-12 col-md-9">
+        <div id="cal_radio" class="form-inline">
+            <input type="radio" value="price" id="cal_radio1" name="cal_radio" onclick="SwitchPartial(this);" checked> ราคา (Rule Id)
+            &emsp;&emsp;
+            <input type="radio" value="distance" id="cal_radio2" name="cal_radio" onclick="SwitchPartial(this);"> ระยะทาง (Distance)
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class=" col-sm-12 col-md-3">
+        <div class="GrFibreNetid" id="GrFibreNetid">
+            <label>@L_FIBRENET_ID</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+            @Html.TextBoxFor(t => t.ACCESS_NO, new { @readonly = "readonly", @id = "FIBRENET_ID", @name = "FIBRENET_ID", @class = "k-textbox form-control", style = "display: none;" })
+            <input type="text" class="k-textbox form-control" name="FIBRENET_ID_SHOW" id="FIBRENET_ID_SHOW" value="" readonly/>
+            <div class="i-fg-data-entry-validation" id="validatefor-ValidateFibrenetid"></div>
+            <input id="OrderNoForRecal" name="OrderNoForRecal" type="hidden" />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="GrExistingRule" id="GrExistingRule">
+            <div class="col-sm-12 col-md-3">
+                <label>@L_EXISTING_RULE</label>
+                @Html.TextBoxFor(t => t.EXISTING_RULE, new { @readonly = "readonly", @class = "k-textbox form-control" })
+
+            </div>
+        </div>
+        <div class=" col-sm-12 col-md-3">
+            <label>@L_NEW_RULE <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label style="color:red;font-size:15px">*</label>
+            <div class="i-fg-data-entry">
+                @*@Html.TextBoxFor(t => t.NEW_RULE, new { @class = "k-textbox form-control" })*@
+
+                @(Html.Kendo().DropDownList()
+						  .Name("NEW_RULE")
+						   .Filter("contains")
+						  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+				//                .DataTextField("ruleid")
+				//                .DataValueField("ruleid")
+				//.DataSource(source =>
+				//{
+				//    source.Read(read =>
+				//    {
+				//        read.Action("GetRuleId", "LastMileByDistance").Type(HttpVerbs.Post);
+
+				//    }).ServerFiltering(false);;
+                          .SelectedIndex(0)
+                          .Events(e => e.Change("FAPOChangeDropDown"))
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-NewRule"></div>
+            @*<div class="i-fg-data-entry-validation" id="validatefor-ddlReason"></div>*@
+        </div>
+        <div class="col-sm-12 col-md-2">
+            <label>@L_TOTAL_PRICE</label>
+            @Html.TextBoxFor(t => t.TOTAL_PRICE, new { @readonly = "readonly", @class = "k-textbox form-control", @Value = "0", @id = "TOTAL_PRICE" })
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_REMARK</label>
+        @*@Html.TextBoxFor(t => t.REMARK, new { @id = "REMARK_RE-CAL", @Name = "REMARK_RE-CAL", maxlength = 500, @class = "k-textbox form-control" })*@
+        @Html.TextArea("REMARK_RE-CAL", new { maxlength = 500, @rows = 3, @style = "resize:none; width:437px", @class = "k-textbox form-control", @id = "REMARK_RE-CAL" })
+    </div>
+
+</div>
+<div class="row">
+    <br />
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-3 i-text-align-right">
+        <a class="btn btn-info" id="saveFapoRecalDistance" onclick="FAPOConfirmRecalDistance();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+        <a class="btn btn-info" id="saveAllChkFapoRecalDistance" onclick="CheckBoxAllFAPOConfirmRecalDistance();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+    </div>
+    <div class="col-sm-6 col-md-3 i-text-align-left">
+        <a class="btn btn-info" onclick="CancelEditFAPORecalDistanceConfig();"><i class="fa fa-times"></i>&nbsp;&nbsp;@B_CANCEL</a>
+    </div>
+</div>
+<script>
+    function CancelEditFAPORecalDistanceConfig() {
+        $("#EditConfigPopupFOA").data("kendoWindow").close();
+        $("#NEW_RULE").data('kendoDropDownList').select(0);
+        $("#TOTAL_PRICE").val("");
+
+        //$("#ddlreasonother").val("");
+        //$("#_OtherReason").attr("style", "display:none");
+    }
+    //$("#VALIDATE_DIS").keyup(function () {
+    //    CheckKeyUps("VALIDATE_DIS", "[0-9.]");
+
+    //});
+    $(document).ready(function () {
+        //  $('#ddlreasonother').attr("disabled", true);
+        // $("#ddlreasonother").val("");
+        //  $("#_OtherReason").attr("style", "display:none");
+        //  alert($("#ddlReason").val());
+		//k-window-actions
+        $("#validatefor-NewRule").html("");
+        $("#REMARK_RE-CAL").val("");
+        $("#TOTAL_PRICE").val("");
+        LoadRuleID();
+        $("#NEW_RULE").data('kendoDropDownList').select(0);
+        var dropdownlist = $("#NEW_RULE").data("kendoDropDownList");
+        dropdownlist.bind("change", FAPOChangeDropDown);
+    });
+
+    function FAPOChangeDropDown(e) {
+        var new_ruid = $("#NEW_RULE").data("kendoDropDownList").value();
+        console.log(new_ruid);
+
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            url: "/LastMileByDistance/GetTotalPrice",
+            data: JSON.stringify({ 'new_ruid': new_ruid }),
+            async: false,
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+
+                $("#TOTAL_PRICE").val(response[0]);
+            },
+            failure: function (msg) {
+            }
+        });
+
+        //var ddlreason = $("#ddlReason").val();
+        ////alert(ddlreason);
+        //if (ddlreason == "อื่นๆ") {
+    }
+
+	function LoadRuleID() {
+		$.ajax({
+			cache: false,
+			type: "GET",
+			async: false,
+			url: "/LastMileByDistance/GetRuleId",
+			dataType: "json",
+			success: function (data) {
+				//Add : virtual valueMapper ที่ data มากกว่า 500 
+				//data : 11/02/2564
+				if (data.length > 500) {
+					//#region data > 500 use virtual
+					try {
+						$("#NEW_RULE").data({});
+						$("#NEW_RULE").kendoDropDownList({
+							dataTextField: "ruleid",
+							dataValueField: "ruleid",
+							filter: "contains",
+							virtual: {
+								itemHeight: 26,
+								valueMapper: function (options) {
+									var values = convertValues(options.value);
+									var indices = [];
+									if (values && values.length > 0) {
+										for (var j = 0; j < data.length; j++) {
+											var rule = data[j];
+											if (values.indexOf(rule.ruleid) > -1) {
+												indices.push(j);
+											}
+										}
+									}
+									options.success(indices);
+								}
+							},
+							height: 520,
+							dataSource: {
+								data: data,
+								schema: {
+									model: {
+										fields: {
+											ruleid: { type: "string" },
+											rule_name: { type: "string" }
+										}
+									}
+								},
+								pageSize: 80
+							}
+
+						});
+					} catch (ex) {
+						console.log(ex);
+					}
+
+					//#endregion data > 500 use virtual
+				} else {
+					//#region data <= 500 not use virtual
+
+					try {
+						$("#NEW_RULE").data({});
+						$("#NEW_RULE").kendoDropDownList({
+							dataTextField: "ruleid",
+							dataValueField: "ruleid",
+							filter: "contains",
+							height: 200,
+							dataSource: {
+								data: data,
+								pageSize: 80
+							}
+						});
+					} catch (ex) {
+						console.log(ex);
+					}
+
+					//#endregion data <= 500 not use virtual
+
+				}
+
+				var widget = $("#NEW_RULE").data("kendoDropDownList");
+
+				widget.ul.parent().on("wheel", function (e) {
+					var container = this;
+
+					if ((container.scrollTop == 0 && e.originalEvent.deltaY < 0) ||
+						(container.scrollTop == container.scrollHeight - container.offsetHeight &&
+							e.originalEvent.deltaY > 0)) {
+						e.preventDefault();
+						e.stopPropagation();
+					}
+				});
+			}
+		});
+	}
+    //function FAPOChangeDropDown() {
+    //    //var ddlreason = $("#ddlReason").val();
+    //    ////alert(ddlreason);
+    //    //if (ddlreason == "อื่นๆ") {
+
+        //    //  $('#ddlreasonother').attr("visibled", true);
+        //    $("#_OtherReason").attr("style", "display:normal");
+        //}
+        //else {
+        //    $("#_OtherReason").val("");
+        //    $("#_OtherReason").attr("style", "display:none");
+        //}
+
+
+    //}
+    function ValidationDateFAPOStatus() {
+        if ($("#FAPOWorkFlowStatus").val() == '') {
+            $("#validatefor-FAPOWorkFlowStatus").html(ValidationIcon() + "This field is required.");
+            chk = false;
+
+        }
+        else {
+            $("#validatefor-FAPOWorkFlowStatus").html("");
+        }
+    }
+    function ValidationDateRecalALLValue() {
+
+        var chk = ValidationProcessing("dateselect");
+
+        if (chk) //check blank value
+        {
+            /// alert("ValidationBlankValue");
+            if ($("#NEW_RULE").val() == '' || $("#NEW_RULE").val() == 'ALL') {
+                $("#validatefor-NewRule").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+                $("#validatefor-NewRule").html("");
+            }
+        }
+        return chk;
+    }
+    function ValidationDateRecalValue() {
+        $("#validatefor-ValidateFibrenetid").html("");
+        //    $("#validatefor-ddlReason").html("");
+        var chk = ValidationProcessing("dateselect");
+        // console.log("chk=" + chk);
+        //  alert("SCMValidation");
+        if (chk) //check blank value
+        {
+            /// alert("ValidationBlankValue");
+            if ($("#NEW_RULE").val() == '' || $("#NEW_RULE").val() == 'ALL') {
+                $("#validatefor-NewRule").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+                $("#validatefor-NewRule").html("");
+            }
+
+            if ($("#FIBRENET_ID").val() == '') {
+                $("#validatefor-ValidateFibrenetid").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+                $("#validatefor-ValidateFibrenetid").html("");
+            }
+
+        }
+        return chk;
+    }
+    var AccessList = function () {
+        ACCESS_NUMBER = "";
+        ORDER_NO = "";
+        NEW_RULE_ID = "";
+        REMARK = "";
+        FLAG_RECAL = "";
+        DISTANCE = "";
+        REASON = "";
+    }
+
+    function FAPOConfirmRecalDistance(checked) {
+        $("#chkall").val("False");
+
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateRecalValue();
+
+        if (chk) {
+            //FAPO Value
+            var new_ruid = $("#NEW_RULE").val();
+            var existing_rule = $("#EXISTING_RULE").val();
+            var remark = $("#REMARK_RE-CAL").val();
+            var dbk_ORD_NO = $("#OrderNoForRecal").val();
+            var AccNO = $("#FIBRENET_ID").val();
+            //--------------------
+            var res = dbk_ORD_NO.split("_");
+
+            // ADD LIST MODEL
+            var AccessListModel = new AccessList();
+            AccessListModel.ACCESS_NUMBER = $("#FIBRENET_ID").val();
+            AccessListModel.NEW_RULE_ID = new_ruid;
+            AccessListModel.REMARK = remark;
+            AccessListModel.ORDER_NO = res[0];
+            AccessListModel.FLAG_RECAL = "RECAL";
+            AccessListModel.DISTANCE = "";
+            AccessListModel.REASON = "";
+            idsToSend.push(AccessListModel);
+            // console.log(checked);
+            //  console.log(idsToSend);
+
+            index++;
+            data = JSON.stringify({
+                'LastMileRecalList': idsToSend, "AccNO": AccNO, 'new_ruid': new_ruid, 'remark': remark
+            });
+
+
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json',
+                url: "/LastMileByDistance/RecalDistanceByOrder",
+                data: data,
+                async: true,
+                dataType: "json",
+                success: function (response) {
+                    LoadRuleID();
+                    var dropdownlist = $("#NEW_RULE").data("kendoDropDownList");
+                    dropdownlist.bind("change", FAPOChangeDropDown);
+                    if (response.Code === "0") {
+                        // $("#ddlReason").data('kendoDropDownList').value("จ่ายตามระยะจริง")
+                        $("#REMARK_RE-CAL").val("");
+                        $("#FIBRENET_ID").val("");
+                        $("#EditConfigPopupFOA").data("kendoWindow").close();
+
+                        //var dropdownlist = $("#NEW_RULE").data("kendoDropDownList");
+                        //dropdownlist.refresh();
+                        //  $('#FAPOView').data('kendoGrid').refresh();
+
+                        showFeedback("success", response.message, "System Information");
+                    }
+                    else {
+                        $("#EditConfigPopupFOA").data("kendoWindow").close();
+                        showFeedback("error", response.message, "System Information");
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+            $("#NEW_RULE").data('kendoDropDownList').select(0);
+            var dropdownlist = $("#NEW_RULE").data("kendoDropDownList");
+            dropdownlist.bind("change", FAPOChangeDropDown);
+
+            $("#FAPOView").data("kendoGrid").dataSource.read();
+        }
+
+    }
+    function CheckBoxAllFAPOConfirmRecalDistance(checked) {
+        // console.log(checked);
+        Loading();
+        //$("#chk").val("False");
+        //$("#chkall").val("False");
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateRecalALLValue();
+
+        if (chk) {
+
+            var AccNO = $("#accNo").val();
+            //FAPO Value
+            var status = $("#ddlFAPOWorkFlowStatus").val();
+            // console.log("status=" + status)
+            //  console.log("checked=" + checked)
+
+            var remark = $("#REMARK_RE-CAL").val();
+            var NEW_RULE = $("#NEW_RULE").val();
+
+
+            data = JSON.stringify({
+                'LastMileRecalList': checked, 'AccNO': AccNO, 'Status': status, 'remark': remark, 'new_rule_id': NEW_RULE
+            });
+            //  console.log("checkeds="+checkeds);
+            if (checked != null) {
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/LastMileByDistance/RecalAllByOrder",
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        LoadRuleID();
+                        var dropdownlist = $("#NEW_RULE").data("kendoDropDownList");
+                        dropdownlist.bind("change", FAPOChangeDropDown);
+                        if (response.Code == "0") {
+
+                            $("#REMARK_RE-CAL").val("");
+                            $("#EditConfigPopupFOA").data("kendoWindow").close();
+                            //  $('#FAPOView').data('kendoGrid').refresh();
+                            showFeedback("success", response.message, "System Information");
+                        }
+                        else {
+                            $("#EditConfigPopupFOA").data("kendoWindow").close();
+                            showFeedback("error", response.message, "System Information");
+                        }
+                        var grid = getGridName();
+                        grid.dataSource.read();
+                    },
+                    failure: function (msg) {
+                    }
+                });
+                $("#NEW_RULE").data('kendoDropDownList').select(0);
+                var dropdownlist = $("#NEW_RULE").data("kendoDropDownList");
+                dropdownlist.bind("change", FAPOChangeDropDown);
+                $("#FAPOView").data("kendoGrid").dataSource.read();
+
+
+            }
+        }
+        Loading(0);
+    }
+
+    function convertValues(value) {
+        var data = [];
+        value = $.isArray(value) ? value : [value];
+        for (var idx = 0; idx < value.length; idx++) {
+            data.push(value[idx]);
+        }
+        return data;
+    }
+</script>

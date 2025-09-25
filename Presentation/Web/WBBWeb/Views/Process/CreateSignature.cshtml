@@ -1,0 +1,662 @@
+﻿@{
+    ViewBag.Title = "CreateSignature";
+    Layout = null;
+}
+
+@Styles.Render("~/Content/css/bootsrapcss")
+@Styles.Render("~/Content/css/typeaheadcss")
+@Styles.Render("~/bundles/css/vendor")
+@*@Styles.Render("~/bundles/css/responsivefibre")*@
+<header>
+    <meta charset="utf-8">
+</header>
+<script src="~/Scripts/html2canvas.js"></script>
+<script src="~/Scripts/jquery.min.js"></script>
+<script src="~/Scripts/jquery.watermark.min.js"></script>
+<link type="text/css" href="~/Content/signature-pad.css" rel="stylesheet" />
+<style>
+    #rcorners2 {
+        border-radius: 25px;
+        border: 2px solid #73AD21;
+        padding: 20px;
+        width: 200px;
+        height: 150px;
+    }
+
+    div.solid {
+        border-style: solid;
+        border: 2px solid #73AD21;
+        background-color: #dbf395;
+        border-radius: 10px;
+        width: 400px;
+        height: 205px;
+    }
+
+    .divcardgreen {
+        border-style: solid;
+        border: 2px solid #73AD21;
+        background-color: #dbf395;
+        border-radius: 10px;
+        width: 400px;
+        height: 205px;
+    }
+
+    #pbcard {
+        border-radius: 10px;
+        /* background: #73AD21; */
+        padding: 20px;
+        width: 440px;
+        height: 250px;
+        /*float:left;*/
+        background-image: none;
+        background: #bbde6a; /* For browsers that do not support gradients */
+    }
+
+    .card_title {
+        text-align: left;
+        border: 0px solid red;
+        width: 100%;
+        min-height: 10px;
+        font-size: 14px;
+        color: #191f17;
+    }
+
+    .card_body1 {
+        border: 0px solid red;
+        width: 100%;
+        min-height: 120px;
+        display: block;
+    }
+
+    .card_body2 {
+        border: 0px solid red;
+        width: 100%;
+        min-height: 30px;
+    }
+
+    .card_footer {
+        border: 0px solid red;
+        width: 100%;
+        min-height: 30px;
+        text-align: left;
+    }
+
+    .card_footer_left {
+        border: 0px solid red;
+        width: 30%;
+        min-height: 30px;
+        float: left;
+        text-align: center;
+    }
+
+    .card_footer_right {
+        border: 0px solid red;
+        width: 30%;
+        min-height: 30px;
+        float: right;
+        text-align: center;
+    }
+
+    .card_img {
+        border: 0px solid blue;
+        width: 80px;
+        height: 100px;
+        float: left;
+    }
+
+    .card_img_logo {
+        border: 0px solid blue;
+        width: 125px;
+        min-height: 50px;
+        float: right;
+    }
+
+    .card_profile {
+        border: 0px solid blue;
+        width: 300px;
+        height: 100px;
+        float: left;
+        /*padding: 1px;*/
+        padding-top: 1px;
+        padding-left: 10px;
+    }
+
+    .card_label {
+        text-align: justify;
+        width: 125px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .card_label_name {
+        text-align: justify;
+        width: 70px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .card_label_add {
+        text-align: justify;
+        width: 30px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .card_txt {
+        text-align: justify;
+        width: 50%;
+        font-size: 11px;
+    }
+
+    .card_txt_add {
+        text-align: justify;
+        width: 365px;
+        font-size: 11px;
+    }
+
+    .card_row {
+        width: 300px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        text-align: left;
+    }
+
+    .card_exp_left {
+        text-align: justify;
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        /*text-align: center;*/
+    }
+
+    .card_exp_right {
+        text-align: justify;
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        /*text-align: center;*/
+    }
+
+    .card_exp_center {
+        text-align: justify;
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        /*text-align: right;*/
+    }
+
+    .card_label_en {
+        text-align: justify;
+        font-size: 12px;
+        font-weight: bold;
+        color: #1D528D;
+    }
+
+
+    .card_img_watermark {
+        width: 100%;
+        min-height: 120px;
+        display: block;
+        min-height: 50px;
+        float: right;
+    }
+
+    .card_watermark {
+        position: absolute;
+        top: 7%;
+        left: 39%;
+        z-index: 99;
+        color: white;
+        opacity: 0.5;
+        font-size: 50px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+        display: block;
+    }
+
+    #watermarkCont {
+        position: absolute;
+        color: white;
+        font-size: 1.0em;
+        font-weight: bold;
+        top: 35%;
+        /*left: 10%;*/
+        opacity: 0.5;
+        -ms-transform: rotate(-30deg); /* IE 9 */
+        -webkit-transform: rotate(-30deg); /* Chrome, Safari, Opera */
+        transform: rotate(-30deg);
+    }
+
+    #watermark {
+        background-image: url("img/device.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        width: 400px;
+        height: 210px;
+        position: absolute;
+        /*z-index: 99;
+        top:30%;
+        left:35%;*/
+    }
+</style>
+
+<div id="content_img">
+    <div id="content_img_pbcard" align="center">
+        @* Update 17.5 Comment เนื่องจากเอาลายเซ็นออก 
+        <label id="statusComplete" style="color: green"></label>
+        <label id="statusError" style="color: red"></label>*@
+        @*   <div class="solid">*@
+        <div id="pbcard" class="divcardgreen">
+            <div class="card_title">
+                ข้อมูลผู้ใช้บริการ
+            </div>
+            <div class=" card_body1">
+                <div class="card_img">
+                    <img id="imgPhoto" src="" alt="Holder photo" height="100" width="80" />
+                </div>
+                <div id="watermark">
+                    <div id="watermarkCont"></div>
+                </div>
+                <div class="card_profile">
+                    <div class="card_row">
+                        <label class="card_label">เลขประจำตัวประชาชน</label>
+                        <label id="Card_id_card" class="card_txt"></label>
+                        <div>
+                            <label class="card_label_en">Identification number</label>
+                        </div>
+                    </div>
+                    @*<div class="card_watermark" id="card_watermark"></div>*@
+
+
+                    <div class="card_row">
+                        <label class="card_label_name">ชื่อ/นามสกุล</label>
+                        <label id="Card_l_TITLE_TH" class="card_txt"></label>@*<label id="Card_f_name" class="card_txt"></label>&nbsp;&nbsp;<label id="Card_l_name" class="card_txt"></label>*@
+                    </div>
+                    <div class="card_row">
+                        <label class="card_label_en">name</label>
+                        <label id="Card_l_TITLE_EN" class="card_label_en"></label>@*<label id="Card_f_name_en" class="card_label_en"></label>*@
+                    </div>
+
+                    @*<div class="card_row">
+                        <label class="card_label_en">last name</label>
+                        <label id="Card_l_name_en" class="card_label_en"></label>
+                    </div>*@
+                    <div class="card_row">
+                        <label class="card_label_name">วันเกิดวันที่</label>
+                        <label id="card_BIRTHDATE" class="card_txt"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card_footer">
+                <label class="card_label_add">ที่อยู่</label>
+                <label id="Card_houseNo" class="card_txt_add"></label>@*&nbsp;
+                    <label id="Card_moo" class="card_txt"></label>&nbsp;
+                    <label id="Card_soi" class="card_txt"></label>&nbsp;
+                    <label id="Card_road" class="card_txt"></label>&nbsp;
+                    <label id="Card_subDistrict" class="card_txt"></label>&nbsp;
+                    <label id="Card_district" class="card_txt"></label>&nbsp;
+                    <label id="Card_province" class="card_txt"></label>*@
+            </div>
+
+            <div class="card_footer_left">
+                <div class="card_exp_left">
+                    <label class="card_label_name">วันออกบัตร</label>
+                    <div>
+                        <label id="card_ISSUEDATE" class="card_label_en"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="card_footer_left">
+                <div class="card_exp_center">
+                    <div class="card_img_logo">
+                        <img src="~/img/AIS3G.png" />
+                    </div>
+                </div>
+            </div>
+            <div class="card_footer_right">
+                <div class="card_exp_right">
+                    <label class="card_label_name">วันหมดอายุ</label>
+                    <div>
+                        <!--<label class="card_label_en">28 ?.? 2527</label>-->
+                        <label id="card_EXPIREDATE" class="card_label_en"></label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    @*  Update 17.5 Comment เนื่องจากเอาลายเซ็นออก ย้ายไปไว้กับปุ่ม เพื่อไม่ให้แสดง
+    <br />
+    <div align="center" style="display:none;">
+        <div id="signature-pad" class="m-signature-pad">
+            <div class="m-signature-pad--body" id="haveval">
+                <canvas id="myCanvas" class="m-signature-pad"></canvas>
+            </div>
+            <div class="m-signature-pad--footer">
+                <button type="button" class="btn btn-warning" data-action="clear" id="btnclear" style="display: none">&nbsp;Clear&nbsp; </button>
+                &nbsp;&nbsp;&nbsp;
+            </div>
+            <div></div>
+        </div>
+    </div>*@
+
+</div>
+
+@*<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />*@
+
+<div align="center" style="display: none;">
+    @* Update 17.5 Comment เนื่องจากเอาลายเซ็นออก ย้ายมาเพื่อไม่ให้แสดง*@
+    <div id="signature-pad" class="m-signature-pad">
+        <div class="m-signature-pad--body" id="haveval">
+            <canvas id="myCanvas" class="m-signature-pad"></canvas>
+        </div>
+        <div class="m-signature-pad--footer">
+            <button type="button" class="btn btn-warning" data-action="clear" id="btnclear" style="display: none">&nbsp;Clear&nbsp; </button>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+        <div></div>
+    </div>
+    @*-----End signature-pad-----*@
+    <button type="button" class="btn btn-warning" onclick="clearSignature()" id="btnClearSignature" style="display: none;">&nbsp;Clear&nbsp; </button>
+    &nbsp;&nbsp;&nbsp;
+    <button type="button" class="btn btn-success" id="btnSaveSignature" style="display: none;">&nbsp;Save&nbsp; <i class="fa fa-arrow-circle-o-right "></i></button>
+    &nbsp;&nbsp;&nbsp;
+</div>
+
+@*<canvas id="myCanvas_null" ></canvas>*@
+
+<img class="watermark" id="previewImage" hidden="hidden" src="" />
+<img id="previewTmp" hidden="hidden" src="" />
+
+@*<div class="sigPad" id="linear" style="width:404px; text-align:center;">
+    <div class="sig sigWrapper" style="height:auto;">
+    <div class="typed"></div>
+    <canvas id="myCanvas" class="pad" width="400" height="90" style=" border-radius: 25px; border: 2px solid #73AD21;"></canvas>
+    <input type="hidden" name="output" class="output">
+    <BR><BR>
+    <button class="clearButton" style="font-size: 17px; border: 0 !important; border-radius: 0 !important; display: none;">Clear Signature</button>
+    </div>
+    </div>*@
+
+<script src="~/Scripts/signature_pad.js"></script>
+<script src="~/Scripts/app.js"></script>
+
+@*<script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/numeric-1.2.6.min.js"></script>
+    <script src="~/Scripts/bezier.js"></script>
+    <script src="~/Scripts/jquery.signaturepad.js"></script>
+    <script src="~/Scripts/json2.min.js"></script>*@
+
+
+<script>
+    var currentStatus;
+    var lastStatus;
+    var gotProfile;
+    var gotPhoto;
+    var timerID;
+    var watermarkcardtxt;
+
+    $(document).ready(function () {
+
+        if (typeof aisNative == "undefined" || typeof aisNative == "" || typeof aisNative == null) {
+            //    if (1 != 1) { //test
+        }
+        else {
+            //try{
+
+            var base64str = aisNative.sendIccCommand(0, 5, "");
+            if (base64str && base64str.length > 0) {
+                var img = document.getElementById("imgPhoto");
+                img.setAttribute("src", 'data:image/jpg;base64,' + base64str + '');
+                sessionStorage.setItem('Card_PICTURE', base64str);
+            }
+
+            var fieldValues = aisNative.sendIccCommand(0, 4, "").split("#");
+            document.getElementById("card_EXPIREDATE").innerHTML = fieldValues[2];
+            var NATIONALID = fieldValues[2];
+
+            var TITLE_TH = fieldValues[3];
+
+            var FIRSTNAME_TH = fieldValues[4];
+            var LASTNAME_TH = fieldValues[6];
+
+            var TITLE_EN = fieldValues[7];
+            var FIRSTNAME_EN = fieldValues[8];
+            var LASTNAME_EN = fieldValues[10];
+
+            var SEX = fieldValues[12];
+
+            var ADDRESS = fieldValues[13];
+
+            var MOO = "";
+            if (!isEmpty(fieldValues[14])) {
+                MOO = "หมู่ " + fieldValues[14];
+            }
+
+            var ALLEY = "";
+            if (!isEmpty(fieldValues[15])) {
+                ALLEY = fieldValues[15];
+            }
+
+            var SOI = "";
+            if (!isEmpty(fieldValues[16])) {
+                SOI = "ซอย" + fieldValues[16];
+            }
+
+            var STREET = "";
+            if (!isEmpty(fieldValues[17])) {
+                STREET = "ถนน" + fieldValues[17];
+            }
+
+            var SUBDISTRICT = "";
+            var DISTRICT = "";
+            var PROVINCE = (fieldValues[20] == "กรุงเทพมหานคร");
+
+            if (PROVINCE) {
+                SUBDISTRICT = "แขวง" + fieldValues[18];
+            } else {
+                SUBDISTRICT = "ต." + fieldValues[18];
+            }
+
+            if (PROVINCE) {
+                DISTRICT = "เขต" + fieldValues[19];
+            } else {
+                DISTRICT = "อ." + fieldValues[19];
+            }
+
+            if (PROVINCE) {
+                PROVINCE = " " + fieldValues[20];
+            } else {
+                PROVINCE = "จ." + fieldValues[20];
+            }
+
+            var day = fieldValues[11].substring(0, 2);
+            var month = fieldValues[11].substring(3, 5);
+            var year = fieldValues[11].substring(6, 10);
+            var BIRTHDATE = day + "-" + month + "-" + year;
+
+            var ISSUEPLACE = fieldValues[21];
+
+            var day_open = fieldValues[22].substring(0, 2);
+            var month_open = fieldValues[22].substring(3, 5);
+            var year_open = fieldValues[22].substring(6, 10);
+            var ISSUEDATE = day_open + "-" + month_open + "-" + year_open;
+
+            var day_exp = fieldValues[23].substring(0, 2);
+            var month_exp = fieldValues[23].substring(3, 5);
+            var year_exp = fieldValues[23].substring(6, 10);
+            var EXPIREDATE = day_exp + "-" + month_exp + "-" + year_exp;
+
+            document.getElementById("Card_l_TITLE_TH").innerHTML = TITLE_TH + '' + FIRSTNAME_TH + '  ' + LASTNAME_TH;
+            document.getElementById("Card_l_TITLE_EN").innerHTML = TITLE_EN + '' + FIRSTNAME_EN + '  ' + LASTNAME_EN;
+            document.getElementById("Card_id_card").innerHTML = NATIONALID;
+            document.getElementById("Card_houseNo").innerHTML = ADDRESS + ' ' + SOI + ' ' + STREET + ' ' + SUBDISTRICT + ' ' + DISTRICT + ' ' + PROVINCE;
+            document.getElementById("card_ISSUEDATE").innerHTML = ISSUEDATE;
+            document.getElementById("card_EXPIREDATE").innerHTML = EXPIREDATE;
+            document.getElementById("card_BIRTHDATE").innerHTML = BIRTHDATE;
+
+            // Update 17.5 Update 17.5 Comment เนื่องจากเอาลายเซ็นออก 
+            //var element = $("#content_img"); // global variable
+
+            var element = $("#content_img_pbcard"); // global variable
+            var getCanvas; // global variable
+
+            document.getElementById('btnSaveSignature').addEventListener('click', function () {
+                // Update 17.5 Update 17.5 Comment เนื่องจากเอาลายเซ็นออก 
+                //var canvas = document.getElementById("myCanvas");
+                var canvas = "";
+
+                var is_blank = isCanvasBlank(document.getElementById('myCanvas'));
+
+                // Update 17.5 Update 17.5 Comment เนื่องจากเอาลายเซ็นออก
+                //if (is_blank) {
+
+                //    document.getElementById("statusError").innerHTML = 'Signature Empty !';
+                //    document.getElementById("statusComplete").innerHTML = '';
+
+                //    $.ajax({
+                //        type: "POST",
+                //        url: "/Process/signature_flag",
+                //        data: { 'status': 'N' },
+                //        dataType: "json",
+                //        success: function (data) {
+
+                //        }
+                //    });
+
+                //}
+                //else {
+
+                //document.getElementById("statusComplete").innerHTML = 'Create Completed';
+                //document.getElementById("statusError").innerHTML = '';
+
+                html2canvas(element, {
+                    onrendered: function (canvas) {
+                        var img_64str = canvas.toDataURL("image/jpg");
+                        var rawData = "";
+                        rawData = img_64str.replace("data:image/png;base64,", "");
+
+                        document.getElementById('previewImage').src = img_64str;
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Process/StoreBase64Photo",
+                            data: { 'base64photo': rawData, 'fileType': 'fileTakePhoto' },
+                            dataType: "json",
+                            success: function (data) {
+                                document.getElementById("btnClearSignature").disabled = true;
+                                document.getElementById("btnSaveSignature").disabled = true;
+
+                                /// Begin clear usesData_flag 25Jan2017 PatthamawadeeH.
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Process/usesData_flag",
+                                    data: { 'status': '' },
+                                    dataType: "json",
+                                    success: function (data) {
+
+                                    }
+                                });
+                                /// End
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Process/signature_flag",
+                                    data: { 'status': 'Y', 'pic64signature': img_64str },
+                                    dataType: "json",
+                                    success: function (data) {
+                                        // $("#signaturePhoto").val(rawData);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+
+                //}
+
+            });
+
+            // Update 17.5 Click Auto
+            $('#btnSaveSignature').click();
+        }
+    });
+
+    ///Get LOV for Watermark /// Created by Patthamawadeeh. 20Feb2017
+    function getWatermark() {
+
+        var watermarkcardtxt = "";
+
+        $.ajax({
+            type: "GET",
+            url: "/Process/getWatermark",
+            dataType: "json",
+            async: false,
+            success: function (txtdata) {
+                watermarkcardtxt = txtdata;
+            },
+            error: function () {
+                watermarkcardtxt = "use for registration at AIS FIBRE only";
+            }
+
+        });
+
+        // Update 17.5 Comment เนื่องจากเอาลายเซ็นออก
+        //$('#card_watermark').html(watermarkcardtxt);
+        $('#watermarkCont').html(watermarkcardtxt);
+    }
+
+    getWatermark();
+
+    function isEmpty(str) {
+        return (!str || 0 === str.length);
+    }
+
+    function isCanvasBlank(canvas) {
+        var blank = document.createElement('canvas');
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+
+        return canvas.toDataURL() == blank.toDataURL();
+    }
+
+    function chk_empty() {
+        var canvas = isCanvasBlank(document.getElementById('myCanvas'));
+
+        if (canvas) {
+            alert('blank!');
+        }
+        else {
+            alert('save it');
+        }
+    }
+
+    function save_canvas2img() {
+        var canvas = document.getElementById("myCanvas");
+
+        var value_null = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABWUAAAG/CAYAAAAw+bVwAAAJcElEQVR4nO3BMQEAAADCoPVPbQo/oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7gaxVgABaTqx4gAAAABJRU5ErkJggg==";
+
+        if (canvas.toDataURL("image/jpg") == value_null) {
+            // Update 17.5 Comment เนื่องจากเอาลายเซ็นออก
+            //document.getElementById("statusError").innerHTML = 'Signature Empty !';
+            //document.getElementById("statusComplete").innerHTML = '';
+        }
+        else {
+            // Update 17.5 Comment เนื่องจากเอาลายเซ็นออก
+            //document.getElementById("statusComplete").innerHTML = 'Create Completed';
+            //document.getElementById("statusError").innerHTML = '';
+        }
+    }
+
+    function clearSignature() {
+        document.getElementById("btnclear").click();
+        // Update 17.5 Comment เนื่องจากเอาลายเซ็นออก
+        //document.getElementById("statusError").innerHTML = '';
+        //document.getElementById("statusComplete").innerHTML = '';
+    }
+
+</script>

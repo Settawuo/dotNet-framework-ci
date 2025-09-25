@@ -1,0 +1,976 @@
+﻿@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+
+    string L_WELCOME = "";
+    string L_WELCOME_DESC = "";
+    string L_ENTER_MOBILE = "";
+    string L_MOBILE_NO = "";
+    string L_MOBILE_NO_EX = "";
+    string FBB_Con_Length_Mobile_No = "";
+    string FBB_Con_Input_Moblie_No = "";
+    string B_CONTINUE = "";
+    string L_FILL_OUT = "";
+    string PREPAID_USAGE = "";
+
+    string L_ERRCAMOBILE = "";
+    string L_ERR_NOT_FOUND = "not found";
+
+    string B_CANCEL = "";
+
+    string FBB_Con_Length_OTP = "4";
+    string FBB_Con_Input_OTP = "";
+    string C_CHANGE_CONTACT_MOBILE = "";
+    string L_WELCOME_1 = "";
+    string L_WELCOME_2 = "";
+    string L_WELCOME_3 = "";
+    string L_WELCOME_4 = "";
+    string L_WELCOME_5 = "";
+    string L_LOGIN_FAILED = "";
+    string L_MY_ACCOUNT = "";
+    string L_AIS_FIBRE_NO = "";
+    string[] CheckSerenadeArray = null;
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        FBB_Con_Length_Mobile_No = FbbConstant.Any(f => f.Field == "Mobile Length") ? FbbConstant.First(f => f.Field == "Mobile Length").Validation : "";
+        FBB_Con_Input_Moblie_No = FbbConstant.Any(f => f.Field == "Input_MobileNo") ? FbbConstant.First(f => f.Field == "Input_MobileNo").Validation : "";
+        PREPAID_USAGE = FbbConstant.Any(f => f.Field == "PREPAID_USAGE") ? FbbConstant.First(f => f.Field == "PREPAID_USAGE").Validation : "";
+        FBB_Con_Input_OTP = FbbConstant.Any(f => f.Field == "Input_OTPPass") ? FbbConstant.First(f => f.Field == "Input_OTPPass").Validation : "";
+        CheckSerenadeArray = FbbConstant.Where(p => p.Field == "SERENADE_MOBILE_SEGMENT").Select(p => p.Validation).ToArray();
+    }
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        B_CONTINUE = LabelFBBTR001.Any(c => c.Name == "B_CONTINUE") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "B_CONTINUE").DisplayValue : "";
+        L_FILL_OUT = LabelFBBTR001.Any(c => c.Name == "L_FILL_OUT") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_FILL_OUT").DisplayValue : "";
+        L_MY_ACCOUNT = LabelFBBTR001.Any(c => c.Name == "L_MY_ACCOUNT") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_MY_ACCOUNT").DisplayValue : "";
+        L_AIS_FIBRE_NO = LabelFBBTR001.Any(c => c.Name == "L_AIS_FIBRE_NO") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_AIS_FIBRE_NO").DisplayValue : "";
+
+        L_LOGIN_FAILED = LabelFBBTR001.Any(c => c.Name == "L_LOGIN_FAILED") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_LOGIN_FAILED").DisplayValue : "";
+
+    }
+
+    if (ViewBag.LabelFBBTR016 != null)
+    {
+        var labelFBBTR016 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR016;
+        L_MOBILE_NO = labelFBBTR016.Any(c => c.Name == "L_MOBILE_NO") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_MOBILE_NO").DisplayValue : "";
+        L_WELCOME = labelFBBTR016.Any(c => c.Name == "L_WELCOME") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_WELCOME").DisplayValue : "";
+        L_WELCOME_DESC = labelFBBTR016.Any(c => c.Name == "L_WELCOME_DESC") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_WELCOME_DESC").DisplayValue : "";
+        L_ENTER_MOBILE = labelFBBTR016.Any(c => c.Name == "L_ENTER_MOBILE") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_ENTER_MOBILE").DisplayValue : "";
+        L_MOBILE_NO_EX = labelFBBTR016.Any(c => c.Name == "L_MOBILE_NO_EX") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_MOBILE_NO_EX").DisplayValue : "";
+        L_ERRCAMOBILE = labelFBBTR016.Any(c => c.Name == "L_ERRCAMOBILE") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_ERRCAMOBILE").DisplayValue : "";
+        C_CHANGE_CONTACT_MOBILE = labelFBBTR016.Any(c => c.Name == "C_CHANGE_CONTACT_MOBILE") ? labelFBBTR016.FirstOrDefault(c => c.Name == "C_CHANGE_CONTACT_MOBILE").DisplayValue : "";
+
+    }
+
+    if (ViewBag.LabelFBBOR015 != null)
+    {
+        var LabelFBBOR015 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR015;
+
+        L_WELCOME_1 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_1") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_1").DisplayValue : "";
+        L_WELCOME_2 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_2") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_2").DisplayValue : "";
+        L_WELCOME_3 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_3") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_3").DisplayValue : "";
+        L_WELCOME_4 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_4") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_4").DisplayValue : "";
+        L_WELCOME_5 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_5") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_5").DisplayValue : "";
+
+    }
+
+
+    if (ViewBag.LabelLovScreen != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.labelLovScreen;
+
+        B_CANCEL = labelLovScreen.Any(c => c.Name == "B_CANCEL") ? labelLovScreen.First(c => c.Name == "B_CANCEL").DisplayValue : "";
+    }
+
+
+    string L_INPUT_OTP = "";
+    //string L_PASSWORD = "";
+    string L_PW = "";
+    string L_EXISTING_FIBRE_CONDITION = "";
+    string L_EXISTING_FIBRE_CONDITION_DETAIL = "";
+    string L_EXISTING_FIBRE_OTP_DEFAULT = "";
+    string B_OK = "";
+
+    if (ViewBag.LabelLovScreenFBBWEB031 != null)
+    {
+        var LabelLovScreenFBBWEB031 = (List<LovScreenValueModel>)ViewBag.LabelLovScreenFBBWEB031;
+
+        L_INPUT_OTP = LabelLovScreenFBBWEB031.Any(c => c.Name == "L_INPUT_OTP") ? LabelLovScreenFBBWEB031.FirstOrDefault(c => c.Name == "L_INPUT_OTP").DisplayValue : "";
+        L_PW = LabelLovScreenFBBWEB031.Any(c => c.Name == "L_PASSWORD") ? LabelLovScreenFBBWEB031.FirstOrDefault(c => c.Name == "L_PASSWORD").DisplayValue : "";
+        L_EXISTING_FIBRE_CONDITION = LabelLovScreenFBBWEB031.Any(c => c.Name == "L_EXISTING_FIBRE_CONDITION") ? LabelLovScreenFBBWEB031.First(c => c.Name == "L_EXISTING_FIBRE_CONDITION").DisplayValue : "N";
+        L_EXISTING_FIBRE_CONDITION_DETAIL = LabelLovScreenFBBWEB031.Any(c => c.Name == "L_EXISTING_FIBRE_CONDITION_DETAIL") ? LabelLovScreenFBBWEB031.First(c => c.Name == "L_EXISTING_FIBRE_CONDITION_DETAIL").DisplayValue : "N";
+        L_EXISTING_FIBRE_OTP_DEFAULT = LabelLovScreenFBBWEB031.Any(c => c.Name == "L_EXISTING_FIBRE_OTP_DEFAULT") ? LabelLovScreenFBBWEB031.First(c => c.Name == "L_EXISTING_FIBRE_OTP_DEFAULT").DisplayValue : "";
+        B_OK = LabelLovScreenFBBWEB031.Any(c => c.Name == "B_OK") ? LabelLovScreenFBBWEB031.FirstOrDefault(c => c.Name == "B_OK").DisplayValue : "";
+    }
+
+    var IdCard = "";
+    var CardType = "";
+    if (null != ViewBag.IdCard)
+    {
+        IdCard = ViewBag.IdCard;
+    }
+    if (null != ViewBag.CardType)
+    {
+        CardType = ViewBag.CardType;
+    }
+}
+
+
+
+    <div  id="col-formInputMobileNo">
+    <div id="container">
+    <!--  Put Content Here เริ่มต้นเนื้อหา  -->
+    	
+    <div id="box1_holder">
+      <div class="panel_ais paddingmedium" >
+          <div class="row_ais">
+                <p class="clearfix"></p>
+                <p class="clearfix"></p>
+                <div class="col-xs-12 col-sm-12 col-md-12"  style="max-width: 1500px; padding-left: 0 !important; padding-right: 0 !important">
+                    <div class="col-xs-12" style="text-align: right; padding-left: 0 !important; padding-right: 0 !important">
+                        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+                        {
+                            <a id="btnTh" href="~/WBB/ChangeCurrentCulture?culture=2" onclick="sessionStorage.setItem('detectedIE', '');">
+                            <img src="~/Content/Content2016/images/lang_th.png" alt="" border="0" /></a>
+                        }
+                        else
+                        {
+                            <a id="btnEn" href="~/WBB/ChangeCurrentCulture?culture=1" class="i-hidden" onclick="sessionStorage.setItem('detectedIE', '');">
+                            <img src="~/Content/Content2016/images/lang_en.png" alt="" border="0" /></a>
+                        }
+                        @*<a id="btnTh" href="~/WBB/ChangeCurrentCulture?culture=2" onclick="sessionStorage.setItem('detectedIE', '');">
+                            <img src="~/Content/Content2016/images/lang_th.png" alt="" border="0" /></a>
+                        <a id="btnEn" href="~/WBB/ChangeCurrentCulture?culture=1" class="i-hidden" onclick="sessionStorage.setItem('detectedIE', '');">
+                            <img src="~/Content/Content2016/images/lang_en.png" alt="" border="0" /></a>*@
+                    </div>
+                </div>
+            </div>
+      <div class="row_ais">
+        <div class="column large-12">
+            <div class="fibrelogo"><img src="~/Content/images/postpaid/fibre_logo.png" alt=""/></div>
+            <div class="welcometext">@L_MY_ACCOUNT</div>
+        </div>
+      </div>
+      <div class="row_ais">
+          <div class="column large-4">
+          <div class="subheader">@L_WELCOME_1 <span>@L_WELCOME_2</span></div>
+          <div class="detailtext">
+            @L_WELCOME_3<br>
+            @L_WELCOME_4<br>
+            @L_WELCOME_5
+          </div>
+          </div>
+      </div>
+     
+      <div class="boxform pay-topspace">
+      <div class="row_ais">
+         <div class="column large-5 medium-6 small-12" >  
+           <div class="labeltext">@L_MOBILE_NO</div>
+           <div class="mobile-number">
+            <input type="text" class="inputform" id="L_MOBILE_NOs" maxlength="@FBB_Con_Length_Mobile_No" placeholder="@L_FILL_OUT" autocomplete="off" />
+           </div>
+         </div>
+          
+
+      </div>
+      <div class="row_ais">
+      <div class="column large-5">
+      <div class="submit-manual" id="div_btn_MobileNO">
+        
+        <input id="btnSendOTP1" class="btn1 btn btn-for-xs" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; " value="@B_CONTINUE" />
+        
+        <input id="btnSendOTP2" class="btn2 btn btn-for-xs i-hidden" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; display: none;" value="@B_CONTINUE" onclick="CheckChangeContactBeforeOTP()" />
+        
+          
+         
+      </div>  
+      
+
+       
+      </div>
+      </div>
+        <div class="row_ais">
+            <div class="column large-5 medium-12 small-12 i-hidden" id="col-ChangeContactMobile">
+               @* <div class="column large-5">*@
+                    <div class="submit-manual">
+                        <div class="labeltext"><input type="checkbox" id="chkChangeContactMobile" onclick="IsChangeContactMobile(this);" /> 
+                            @C_CHANGE_CONTACT_MOBILE</div>
+                        <input type="hidden" id="returnContactMobile" />
+                    </div>  
+                @*</div>*@
+            </div>  
+        </div>
+
+      <!--  show password otp  -->
+      <div id="col-formInputOTP" style="display: none;">
+      <div class="row_ais">
+         <div class="column large-5 medium-6 small-12">  
+           <div class="labeltext">@(Html.Raw(L_INPUT_OTP))</div>
+           <div class="mobile-number">
+            <input id="L_OTP_Pass" class="inputform" type="password" autocomplete="off" maxlength="@FBB_Con_Length_OTP" placeholder="@L_FILL_OUT">
+           </div>
+          
+         </div>
+      </div>
+
+      <div class="row_ais">
+      <div class="column large-5">
+      <div class="submit-manual">
+           <input type="checkbox" id="chkShowPass"> Show Password
+      </div>  
+      </div>
+      </div>
+
+      <div class="row_ais">
+      <div class="column large-5">
+      <div class="submit-manual">
+
+            @*<input id="otpOK1" class="btnP1 btn btn-for-xs" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; " value="@B_OK" />
+            <input id="otpOK2" class="btnP2 btn btn-for-xs i-hidden" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; " onclick="SubmitOTP()" value="@B_OK" />
+            <input id="otpCancle" class="btnP3 btn btn-for-xs" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; " onclick="Back()" value="@B_BACK" />
+            *@
+            <input id="btnConfirmOTP1" class="btn1 btn btn-for-xs" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; " value="@B_OK" />
+        
+            <input id="btnConfirmOTP2" class="btn2 btn btn-for-xs i-hidden" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; display: none;" value="@B_OK" onclick="nextToPersonalInfo()" />
+            &nbsp;
+            <input id="btnCancel" class="btn2 btn btn-for-xs" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; " value="@B_CANCEL"  onclick="window.location.href = window.location.href;"/>
+           
+      
+      </div>  
+      </div>
+      </div>
+      </div>
+
+
+
+
+
+      </div>
+
+      </div>
+      
+      <div class="boxfootshader">
+      <div class="panel_ais">
+      <div class="row_ais">
+      <div class="column large-8">
+      <div class="foottext">
+         <div class="condition-head">@(Html.Raw(L_EXISTING_FIBRE_CONDITION))</div>
+        <ol>
+          <div class="t_inline">@(Html.Raw(L_EXISTING_FIBRE_CONDITION_DETAIL))</div>
+         </ol>
+          @*<h5 style="color:white">@(Html.Raw(@L_BUNDLING_CONDITION_DETAIL))</h5>*@
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      
+      
+    </div>
+    
+    <div id="box2_holder">
+      
+    </div>
+    <div id="box3_holder">
+      
+    </div>
+    
+    
+    
+    <!--  Put Content Here จบเนื้อหา  -->
+
+    <div style="clear:both;"></div>
+    <div id="aisfooter">
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_FooterTH")
+        }
+        else
+        {
+            @Html.Partial("_FooterEN")
+        }
+        
+        </div>
+        <div class="truehits-bg">&nbsp;</div> 
+
+    </div>  
+        
+        <div class="truehits-bg">&nbsp;</div> 
+
+    </div>
+    <div>
+        <input type='hidden' name='GSSO_transactionID' id='GSSO_transactionID' />
+        <input type='hidden' name='PREPAID_USAGE' id='PREPAID_USAGE' value="@PREPAID_USAGE" />
+        <input type='hidden' name='IsAPRUEnough' id='IsAPRUEnough' />
+    </div>
+
+
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#L_MOBILE_NOs").keyup(function () {
+            CheckKeyUps("L_MOBILE_NOs", "@FBB_Con_Input_Moblie_No","M");
+            checkBeforeNextProcess();
+        });
+        $("#L_MOBILE_NOs").watermark("@L_MOBILE_NO_EX");
+    });
+    //function changeLanguage() {
+    //    if ($("#LanguagePage").val() == "1") {
+    //        $("#btnTh").show();
+    //        $("#btnEn").hide();
+    //    }
+    //    else {
+    //        $("#btnTh").hide();
+    //        $("#btnEn").show();
+
+    //    }
+    //}
+    function checkBeforeNextProcess() {
+        if ($("#L_MOBILE_NOs").val().length == "@FBB_Con_Length_Mobile_No") {
+            var firstMobileNo = $("#L_MOBILE_NOs").val().substr(0, 1);
+            var threeMobileNo = $("#L_MOBILE_NOs").val().substr(0, 3);
+            if (firstMobileNo == "0" && threeMobileNo != "007") {
+                $("#btnSendOTP1").hide();
+                $("#btnSendOTP2").show();
+            }
+            else {
+                $("#btnSendOTP1").show();
+                $("#btnSendOTP2").hide();
+            }
+        }
+        else {
+            $("#btnSendOTP1").show();
+            $("#btnSendOTP2").hide();
+        }
+    }
+
+    function CheckChangeContactBeforeOTP() {
+        //GetCCCustInfo();
+        LockScreen(true);//R24.04 Add loading block screen by max kunlp885
+        GetCheckMobileOnlineQuery();//R22.07 Issue Check Mobile OnlineQuery
+
+        if ($("#L_MOBILE_NOs").val() != $("#old_relate_mobile").val()) {
+            if ($("#old_relate_mobile").val() == "") {
+                if ($("#CoveragePanelModel_ChargeType").val() == "NONAIS") {
+                    $("#relate_mobile_action").val("");
+                }
+                else {
+                    //Add
+                    $("#relate_mobile_action").val("Add");
+                }
+            }
+            else {
+                if ($("#CoveragePanelModel_ChargeType").val() == "NONAIS") {
+                    //Delete
+                    $("#relate_mobile_action").val("Delete");
+                }
+                else {
+                    //Replace
+                    $("#relate_mobile_action").val("Replace");
+                }
+            }
+        }
+        RequestOTPFunc();
+    }
+
+    function RequestOTPFunc() {
+        $("#btnSendOTP2").hide();
+        $("#col-Condition").hide();
+        $("#outMobileNo").val($("#L_MOBILE_NOs").val());
+        $("#CustomerRegisterPanelModel_L_MOBILE").val($("#L_MOBILE_NOs").val());
+
+        //if ($('#CoveragePanelModel_ChargeType').val() == "PREPAID") {
+        if ('@L_EXISTING_FIBRE_OTP_DEFAULT' == "Y") {
+
+            $.ajax({
+                url: '/Process/SendOneTimePW',
+                //data: { msisdn: $.trim($("#L_MOBILE_NOs").val()), accountType: $("#CoveragePanelModel_ChargeType").val() },
+                data: { msisdn: $.trim($("#L_MOBILE_NOs").val()), accountType: 'all' },
+                dataType: "json",
+                type: 'POST',
+                async: false,
+                success: function (data3) {
+                    if (data3 != null) {
+                        if (data3.code == "000") {
+                            $('#GSSO_transactionID').val(data3.transactionID);
+                            //SubmitOTP();
+                            $("#FromPage").val("col-formInputMobileNo");
+                            $("#col-formInputOTP").show();
+                        }
+                        else {
+                            $('#col-form').hide();
+                            $("#col-ChangeContactMobile").hide();
+                            $('#col-formInputMobileNo').hide();
+                            $("#FromPage").val("col-formInputOTP");
+                            $('#col-OTP').hide();
+                            $('#lb-failed').html('@L_ERR_NOT_FOUND');
+                            $('#col-err').show();
+                        }
+                    } else {
+                        $('#col-form').hide();
+                        $("#col-ChangeContactMobile").hide();
+                        $('#col-formInputMobileNo').hide();
+                        $("#FromPage").val("col-formInputOTP");
+                        $('#col-OTP').hide();
+                        $('#lb-failed').html('@L_ERR_NOT_FOUND');
+                        $('#col-err').show();
+                    }
+      
+                }
+            });
+        }
+        else {
+            if (!$("#col-err").is(":visible")) {
+                nextToPersonalInfo();
+            }
+        }
+    }
+
+    function GetCCCustInfo() {
+        //debugger;
+        $.ajax({
+            url: '/CheckCoverage/GetCCCustInfoQuery',
+            data: { mobileNo: $.trim($("#L_MOBILE_NOs").val()) },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                var data = response.data;
+                if (data) {
+                    $.ajax({
+                        url: '/CheckCoverage/GetCCCustInfo',
+                        data: { key: data.GUIDKEY, },
+                        dataType: "json",
+                        type: 'POST',
+                        async: false,
+                        success: function (response) {
+
+                            var data = response.data;
+
+                            var mobseg = base64_decode(data.V1);
+                            var nettype = base64_decode(data.V2);
+                            var chkMobileStatus = data.STATE.toUpperCase();
+                            $('#CoveragePanelModel_MobileStatus').val(data.STATE);
+
+                            $('#CoveragePanelModel_MobileSegment').val(mobseg);
+                            var chkNetworkType = nettype;
+
+                            $("#chkSubNetworkType").val(data.TYPE);
+                            var chkSubNetworkType = data.TYPE;
+
+                            if (chkSubNetworkType == "Pre-paid") {
+                                $('#CoveragePanelModel_ChargeType').val("PREPAID");
+                            }
+                            else if (chkSubNetworkType == "Post-paid") {
+                                $('#CoveragePanelModel_ChargeType').val("POSTPAID");
+                                $.ajax({
+                                    url: '/CheckCoverage/evESeServiceQueryMassCommonAccountInfo',
+                                    data: { mobileNo: codefbb.fbbMessage($("#L_MOBILE_NOs").val()), SubNetworkType: "POSTPAID", cardNo: "@IdCard", cardType: "@CardType" },
+                                    dataType: "json",
+                                    type: 'POST',
+                                    async: false,
+                                    success: function (response) {
+                                        var data4 = response.data;
+
+                                        $.ajax({
+                                            url: '/CheckCoverage/GetCheckChanvePackageProcess',
+                                            data: { key: data4.GUIDKEY, },
+                                            dataType: "json",
+                                            type: 'POST',
+                                            async: false,
+                                            success: function (response) {
+                                                var data5 = response.data;
+
+                                                if (data5.errorMessage == "" && data5.outAccountNumber != $("#outAccountNumber").val()) {
+                                                    $("#col-formInputMobileNo").hide();
+                                                    $("#col-ChangeContactMobile").hide();
+                                                    $("#col-err").show();
+                                                    $("#lb-failed").html("@L_ERRCAMOBILE.");
+                                                    $("#FromPage").val("col-formInputMobileNo");
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                $('#CoveragePanelModel_ChargeType').val(chkSubNetworkType);
+                            }
+
+                            $('#CustomerRegisterPanelModel_L_CARD_NO').val($.trim($("#L_MOBILE_NOs").val()));
+
+                            if (chkNetworkType == "01") {
+                                $('#CoveragePanelModel_NetworkType').val("2G");
+                            } else if (chkNetworkType == "23") {
+                                $('#CoveragePanelModel_NetworkType').val("2G");
+                            } else if (chkNetworkType == "03") {
+                                $('#CoveragePanelModel_NetworkType').val("3G");
+                            } else {
+                                $('#CoveragePanelModel_NetworkType').val(chkNetworkType);
+                            }
+
+                            //TODO : Validate Promotion 10%
+                            var statusPromotion = false;
+                            $.ajax({
+                                url: '/Process/CheckMobileNumberSerenade',
+                                data: { msisdn: $.trim($("#L_MOBILE_NOs").val()) },
+                                dataType: "json",
+                                type: 'POST',
+                                async: false,
+                                success: function (result) {
+                                    if (result != null && result.ResultFlag == 'Y') {
+                                        statusPromotion = result.IsStatus;
+                                    }
+                                }
+                            });
+
+                            //debugger;
+                            var outMobileSegment = "";
+                            outMobileSegment = mobseg.toUpperCase();
+
+                            var myCheckSerenadeArray = [];
+                            @if (CheckSerenadeArray != null)
+                            {
+                                foreach (var checkSerenadeItem in CheckSerenadeArray)
+                                {
+                                    @:myCheckSerenadeArray.push("@checkSerenadeItem");
+                                                            }
+                            }
+
+                            if (statusPromotion) { //Validate Promotion 10%
+                                $("#HdchkSerenade_Flag").val('');
+                                $('#CoveragePanelModel_Serenade_Flag').val('');
+                            } else if (myCheckSerenadeArray.indexOf(outMobileSegment) >= 0) {//check serenade
+                                $("#HdchkSerenade_Flag").val('Y');
+                                $('#CoveragePanelModel_Serenade_Flag').val('Y');
+                            } else if (outMobileSegment == "CLASSIC" && $('#CoveragePanelModel_ChargeType').val() == "POSTPAID") {
+                                $("#HdchkSerenade_Flag").val("N");
+                                $('#CoveragePanelModel_Serenade_Flag').val("N");
+                            } else {
+                                var ARPU = 0;
+                                if ("Pre-paid" == chkSubNetworkType) {
+                                    $.ajax({
+                                        url: '/CheckCoverage/GetMobileDataUsage',
+                                        data: { mobileNo: $.trim($("#L_MOBILE_NOs").val()), networkType: $('#CoveragePanelModel_ChargeType').val() },
+                                        dataType: "json",
+                                        type: 'POST',
+                                        async: false,
+                                        success: function (data3) {
+                                            if (data3 != null) {
+                                                if (data3.ARPU != undefined) {
+                                                    $('#CoveragePanelModel_ARPU').val(data3.ARPU);
+                                                    ARPU = data3.ARPU;
+                                                }
+                                            }
+                                        }
+                                    });
+
+                                    if (parseFloat(ARPU) >= parseFloat('@PREPAID_USAGE')) {
+                                        $("#IsAPRUEnough").val("Y");
+                                        $("#HdchkSerenade_Flag").val("N");
+                                        $('#CoveragePanelModel_Serenade_Flag').val("N");
+                                    }
+                                    else {
+                                        $("#IsAPRUEnough").val("N");
+                                        $("#HdchkSerenade_Flag").val("");
+                                        $('#CoveragePanelModel_Serenade_Flag').val("");
+                                    }
+                                }
+                                else if ("Post-paid" == chkSubNetworkType) {
+                                    $("#HdchkSerenade_Flag").val("N");
+                                    $('#CoveragePanelModel_Serenade_Flag').val("N");
+                                }
+                                else {
+                                    $("#HdchkSerenade_Flag").val("");
+                                    $('#CoveragePanelModel_Serenade_Flag').val("");
+                                }
+                            }
+
+                            if (chkNetworkType == "03" &&
+                                (chkMobileStatus == "ACTIVE" || chkMobileStatus == "SA" || chkMobileStatus == "SS" || chkMobileStatus.indexOf("SUSPEND") > -1)) {//เป็นหมายเลขAIS
+                                if ($("#HdchkSerenade_Flag").val() == "") {
+                                    $("#CoveragePanelModel_ChargeType").val("NONAIS");
+                                }
+                                else {
+                                    $.ajax({
+                                        url: '/Process/evESeServiceQueryMassCommonAccountInfo',
+                                        data: {
+                                            mobileNo: codefbb.fbbMessage($("#L_MOBILE_NOs").val()),
+                                            SubNetworkType: "PREPAID",
+                                            idCardNo: "@IdCard",
+                                            idCardType: "@CardType"
+                                        },
+                                        dataType: "json",
+                                        type: 'POST',
+                                        async: false,
+                                        success: function (response) {
+                                            var data2 = response.data;
+                                            if (data2.errorMessage == "") {
+                                                $.ajax({
+                                                    url: '/Process/GetCheckProcess',
+                                                    data: { key: data2.GUIDKEY, },
+                                                    dataType: "json",
+                                                    type: 'POST',
+                                                    async: false,
+                                                    success: function (response) {
+                                                        var data2 = response.data;
+
+                                                        //var ProjectName = "";
+                                                        //if (data2.projectName != undefined) {
+                                                        //    ProjectName = data2.projectName.toUpperCase();
+                                                        //}
+                                                        //if ($("#L_MOBILE_NOs").is('[readonly]') == false && (ProjectName == "TRIPLE PLAY" || ProjectName == "FMB1")) {
+                                                        //    $("#HdchkSerenade_Flag").val("");
+                                                        //    $('#CoveragePanelModel_Serenade_Flag').val("");
+                                                        //}
+                                                        $('#returnContactMobile').val(data2.outServiceMobileNo);
+                                                    }
+                                                });
+
+                                            }
+                                            else {
+                                                $("#HdchkSerenade_Flag").val("");
+                                                $('#CoveragePanelModel_Serenade_Flag').val("");
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                            else {
+                                $("#CoveragePanelModel_ChargeType").val("NONAIS");
+                                $("#HdchkSerenade_Flag").val("");
+                                $('#CoveragePanelModel_Serenade_Flag').val("");
+                            }
+                        }
+                    });
+                }
+                else {
+                    $("#CoveragePanelModel_ChargeType").val("NONAIS");
+                    $("#HdchkSerenade_Flag").val("");
+                    $('#CoveragePanelModel_Serenade_Flag').val("");
+                }
+            }
+        });
+    }
+
+    //R22.07 Issue Check Mobile OnlineQuery
+    function GetCheckMobileOnlineQuery() {
+        $.ajax({
+            url: '/CheckCoverage/GetCheckMobileOnlineQuery',
+            data: {
+                mobileNo: $.trim($("#L_MOBILE_NOs").val()),
+                fibreID: '',
+                locationCode: ''
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+
+                var data = response.PersonalInfo;
+
+                var mobseg = data.MOBILE_SEGMENT.toUpperCase();
+                var nettype = data.NETWORK_TYPE;
+
+                var chkMobileStatus = data.MOBILE_NO_STATUS.toUpperCase();
+                $('#CoveragePanelModel_MobileStatus').val(data.MOBILE_NO_STATUS);
+
+                $('#CoveragePanelModel_MobileSegment').val(mobseg);
+                var chkNetworkType = nettype;
+
+                $("#chkSubNetworkType").val(data.SUB_NETWORK_TYPE);
+                var chkSubNetworkType = data.SUB_NETWORK_TYPE;
+
+                if (chkSubNetworkType == "Pre-paid") {
+                    $('#CoveragePanelModel_ChargeType').val("PREPAID");
+                }
+                else if (chkSubNetworkType == "Post-paid") {
+                    $('#CoveragePanelModel_ChargeType').val("POSTPAID");
+                    $.ajax({
+                        url: '/CheckCoverage/evESeServiceQueryMassCommonAccountInfo',
+                        data: { mobileNo: codefbb.fbbMessage($("#L_MOBILE_NOs").val()), SubNetworkType: "POSTPAID", cardNo: "@IdCard", cardType: "@CardType" },
+                        dataType: "json",
+                        type: 'POST',
+                        async: false,
+                        success: function (response) {
+                            var data4 = response.data;
+
+                            $.ajax({
+                                url: '/CheckCoverage/GetCheckChanvePackageProcess',
+                                data: { key: data4.GUIDKEY, },
+                                dataType: "json",
+                                type: 'POST',
+                                async: false,
+                                success: function (response) {
+                                    var data5 = response.data;
+
+                                    if (data5.errorMessage == "" && data5.outAccountNumber != $("#outAccountNumber").val()) {
+                                        $("#col-formInputMobileNo").hide();
+                                        $("#col-ChangeContactMobile").hide();
+                                        $("#col-err").show();
+                                        $("#lb-failed").html("@L_ERRCAMOBILE.");
+                                        $("#FromPage").val("col-formInputMobileNo");
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    $('#CoveragePanelModel_ChargeType').val(chkSubNetworkType);
+                }
+
+                $('#CustomerRegisterPanelModel_L_CARD_NO').val($.trim($("#L_MOBILE_NOs").val()));
+
+                if (chkNetworkType == "01") {
+                    $('#CoveragePanelModel_NetworkType').val("2G");
+                } else if (chkNetworkType == "23") {
+                    $('#CoveragePanelModel_NetworkType').val("2G");
+                } else if (chkNetworkType == "03") {
+                    $('#CoveragePanelModel_NetworkType').val("3G");
+                } else {
+                    $('#CoveragePanelModel_NetworkType').val(chkNetworkType);
+                }
+
+                //TODO : Validate Promotion 10%
+                var statusPromotion = false;
+                $.ajax({
+                    url: '/Process/CheckMobileNumberSerenade',
+                    data: { msisdn: $.trim($("#L_MOBILE_NOs").val()) },
+                    dataType: "json",
+                    type: 'POST',
+                    async: false,
+                    success: function (result) {
+                        if (result != null && result.ResultFlag == 'Y') {
+                            statusPromotion = result.IsStatus;
+                        }
+                    }
+                });
+
+                //debugger;
+                var outMobileSegment = "";
+                outMobileSegment = mobseg.toUpperCase();
+
+                var myCheckSerenadeArray = [];
+                @if (CheckSerenadeArray != null)
+                {
+                    foreach (var checkSerenadeItem in CheckSerenadeArray)
+                    {
+                        @:myCheckSerenadeArray.push("@checkSerenadeItem");
+                                                }
+                }
+
+                if (statusPromotion) { //Validate Promotion 10%
+                    $("#HdchkSerenade_Flag").val('');
+                    $('#CoveragePanelModel_Serenade_Flag').val('');
+                } else if (myCheckSerenadeArray.indexOf(outMobileSegment) >= 0) {//check serenade
+                    $("#HdchkSerenade_Flag").val('Y');
+                    $('#CoveragePanelModel_Serenade_Flag').val('Y');
+                } else if (outMobileSegment == "CLASSIC" && $('#CoveragePanelModel_ChargeType').val() == "POSTPAID") {
+                    $("#HdchkSerenade_Flag").val("N");
+                    $('#CoveragePanelModel_Serenade_Flag').val("N");
+                } else {
+                    var ARPU = 0;
+                    if ("Pre-paid" == chkSubNetworkType) {
+                        $.ajax({
+                            url: '/CheckCoverage/GetMobileDataUsage',
+                            data: { mobileNo: $.trim($("#L_MOBILE_NOs").val()), networkType: $('#CoveragePanelModel_ChargeType').val() },
+                            dataType: "json",
+                            type: 'POST',
+                            async: false,
+                            success: function (data3) {
+                                if (data3 != null) {
+                                    if (data3.ARPU != undefined) {
+                                        $('#CoveragePanelModel_ARPU').val(data3.ARPU);
+                                        ARPU = data3.ARPU;
+                                    }
+                                }
+                            }
+                        });
+
+                        if (parseFloat(ARPU) >= parseFloat('@PREPAID_USAGE')) {
+                            $("#IsAPRUEnough").val("Y");
+                            $("#HdchkSerenade_Flag").val("N");
+                            $('#CoveragePanelModel_Serenade_Flag').val("N");
+                        }
+                        else {
+                            $("#IsAPRUEnough").val("N");
+                            $("#HdchkSerenade_Flag").val("");
+                            $('#CoveragePanelModel_Serenade_Flag').val("");
+                        }
+                    }
+                    else if ("Post-paid" == chkSubNetworkType) {
+                        $("#HdchkSerenade_Flag").val("N");
+                        $('#CoveragePanelModel_Serenade_Flag').val("N");
+                    }
+                    else {
+                        $("#HdchkSerenade_Flag").val("");
+                        $('#CoveragePanelModel_Serenade_Flag').val("");
+                    }
+                }
+
+                if (chkNetworkType == "03" &&
+                    (chkMobileStatus == "ACTIVE" || chkMobileStatus == "SA" || chkMobileStatus == "SS" || chkMobileStatus.indexOf("SUSPEND") > -1)) {//เป็นหมายเลขAIS
+                    if ($("#HdchkSerenade_Flag").val() == "") {
+                        $("#CoveragePanelModel_ChargeType").val("NONAIS");
+                    }
+                    else {
+                        $.ajax({
+                            url: '/Process/evESeServiceQueryMassCommonAccountInfo',
+                            data: {
+                                mobileNo: codefbb.fbbMessage($("#L_MOBILE_NOs").val()),
+                                SubNetworkType: "PREPAID",
+                                idCardNo: "@IdCard",
+                                idCardType: "@CardType"
+                            },
+                            dataType: "json",
+                            type: 'POST',
+                            async: false,
+                            success: function (response) {
+                                var data2 = response.data;
+                                if (data2.errorMessage == "") {
+                                    $.ajax({
+                                        url: '/Process/GetCheckProcess',
+                                        data: { key: data2.GUIDKEY, },
+                                        dataType: "json",
+                                        type: 'POST',
+                                        async: false,
+                                        success: function (response) {
+                                            var data2 = response.data;
+                                            $('#returnContactMobile').val(data2.outServiceMobileNo);
+                                        }
+                                    });
+
+                                }
+                                else {
+                                    $("#HdchkSerenade_Flag").val("");
+                                    $('#CoveragePanelModel_Serenade_Flag').val("");
+                                }
+                            }
+                        });
+                    }
+                }
+                else {
+                    $("#CoveragePanelModel_ChargeType").val("NONAIS");
+                    $("#HdchkSerenade_Flag").val("");
+                    $('#CoveragePanelModel_Serenade_Flag').val("");
+                }
+            }         
+        });
+    }
+
+    function base64_decode(str) {
+        if (window.atob) // Internet Explorer 10 and above
+            return decodeURIComponent(escape(window.atob(str)));
+        else {
+            // Cross-Browser Method (compressed)
+
+            // Create Base64 Object
+            var Base64 = { _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", encode: function (e) { var t = ""; var n, r, i, s, o, u, a; var f = 0; e = Base64._utf8_encode(e); while (f < e.length) { n = e.charCodeAt(f++); r = e.charCodeAt(f++); i = e.charCodeAt(f++); s = n >> 2; o = (n & 3) << 4 | r >> 4; u = (r & 15) << 2 | i >> 6; a = i & 63; if (isNaN(r)) { u = a = 64 } else if (isNaN(i)) { a = 64 } t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a) } return t }, decode: function (e) { var t = ""; var n, r, i; var s, o, u, a; var f = 0; e = e.replace(/[^A-Za-z0-9\+\/\=]/g, ""); while (f < e.length) { s = this._keyStr.indexOf(e.charAt(f++)); o = this._keyStr.indexOf(e.charAt(f++)); u = this._keyStr.indexOf(e.charAt(f++)); a = this._keyStr.indexOf(e.charAt(f++)); n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2; i = (u & 3) << 6 | a; t = t + String.fromCharCode(n); if (u != 64) { t = t + String.fromCharCode(r) } if (a != 64) { t = t + String.fromCharCode(i) } } t = Base64._utf8_decode(t); return t }, _utf8_encode: function (e) { e = e.replace(/\r\n/g, "\n"); var t = ""; for (var n = 0; n < e.length; n++) { var r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r) } else if (r > 127 && r < 2048) { t += String.fromCharCode(r >> 6 | 192); t += String.fromCharCode(r & 63 | 128) } else { t += String.fromCharCode(r >> 12 | 224); t += String.fromCharCode(r >> 6 & 63 | 128); t += String.fromCharCode(r & 63 | 128) } } return t }, _utf8_decode: function (e) { var t = ""; var n = 0; var r = c1 = c2 = 0; while (n < e.length) { r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r); n++ } else if (r > 191 && r < 224) { c2 = e.charCodeAt(n + 1); t += String.fromCharCode((r & 31) << 6 | c2 & 63); n += 2 } else { c2 = e.charCodeAt(n + 1); c3 = e.charCodeAt(n + 2); t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63); n += 3 } } return t } }
+            // Encode the String
+            return decodeURIComponent(escape(Base64.decode(str)));
+        }
+    }
+
+    /*** script OTP ***/
+    $(function () {
+        $("#L_OTP_Pass").keyup(function () {
+            //CheckKeyUps("L_OTP_NOs", "@FBB_Con_Input_OTP");
+            checkBeforeGotoPersonalInfo();
+        });
+
+        $("#chkShowPass").change(function () {
+            if (this.checked) {
+                $("#L_OTP_Pass").attr('type', 'text');
+            }
+            else {
+                $("#L_OTP_Pass").attr('type', 'password');
+            }
+        });
+    });
+
+    function IsChangeContactMobile(cb) {
+        if (cb.checked) {
+            if ($("#L_MOBILE_NOs").val() != $("#returnContactMobile").val()) {
+                $("#mobileNumberContact").val($("#L_MOBILE_NOs").val());
+            }
+            else {
+                $("#mobileNumberContact").val("");
+            }
+        }
+        else {
+            $("#mobileNumberContact").val("");
+        }
+    }
+
+    function checkBeforeGotoPersonalInfo() {
+
+        if ($("#L_OTP_Pass").val().length == "@FBB_Con_Length_OTP") {
+            $("#btnConfirmOTP1").hide();
+            $("#btnConfirmOTP2").show();
+        }
+        else {
+            $("#btnConfirmOTP1").show();
+            $("#btnConfirmOTP2").hide();
+        }
+    }
+
+    function nextToPersonalInfo() {
+        if ('@L_EXISTING_FIBRE_OTP_DEFAULT' == "N") {
+        //if ($('#CoveragePanelModel_ChargeType').val() == "POSTPAID") {
+            $("#SearchProfilefrm").submit();
+        }
+        //else if ($('#CoveragePanelModel_ChargeType').val() == "PREPAID") {
+        else if ('@L_EXISTING_FIBRE_OTP_DEFAULT' == "Y") {
+            $.ajax({
+                url: '/Process/ConfirmOneTimePW',
+                data: { msisdn: $.trim($("#L_MOBILE_NOs").val()), pwd: $('#L_OTP_Pass').val(), transactionID: $('#GSSO_transactionID').val() },
+                dataType: "json",
+                type: 'POST',
+                success: function (data) {
+                    if (data != null) {
+                        if (data.code == "000" && data.transactionID == $('#GSSO_transactionID').val()) {
+                            $("#SearchProfilefrm").submit();
+                        }
+                        else {
+                            //OTP is not Correct
+                            $('#col-form').hide();
+                            $("#col-ChangeContactMobile").hide();
+                            $('#col-formInputMobileNo').hide();
+                            $('#col-formInputOTP').hide();
+                            $('#lb-failed').html('@L_ERR_NOT_FOUND');
+                            $('#col-err').show();
+                            $('#FromPage').val('col-formInputOTP');
+                        }
+                    }
+                    else {
+                        //OTP is not Correct
+                        $('#col-form').hide();
+                        $("#col-ChangeContactMobile").hide();
+                        $('#col-formInputMobileNo').hide();
+                        $('#col-formInputOTP').hide();
+                        $('#lb-failed').html('@L_ERR_NOT_FOUND');
+                        $('#col-err').show();
+                        $('#FromPage').val('col-formInputOTP');
+                    }
+                }
+            });
+        }
+        else {
+            $("#outMobileNo").val($("#L_MOBILE_NOs").val());
+            $("#SearchProfilefrm").submit();
+        }
+    }
+
+    function backToChangeContactMobile() {
+        $("#col-ChangeContactMobile").show();
+        $("#col-ChangeContactMobile").show();
+        $("#btnSendOTP2").show();
+        $("#col-Condition").show();
+    }
+</script>
+   

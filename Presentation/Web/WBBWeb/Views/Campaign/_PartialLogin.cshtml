@@ -1,0 +1,444 @@
+﻿@using WBBEntity.PanelModels
+@{
+
+    string lWelcome1 = "";
+    string lWelcome2 = "";
+    string lWelcome3 = "";
+    string lWelcome4 = "";
+    string lWelcome5 = "";
+    string lMyAccount = "";
+
+    string fbbConInputTaxId = "";
+    string fbbConInputMonkCert = "";
+    string fbbConInputGovLet = "";
+    string fbbConInputPassport = "";
+    string fbbConInputEmbLet = "";
+    string fbbConInputImmCard = "";
+    string fbbConInputStaLet = "";
+    string fbbConInputHillCard = "";
+    string fbbConInputCertFound = "";
+    string fbbConInputIdCard = "";
+    string fbbConInputRoyLet = "";
+
+    string fbbConLengthIdCardNumberTaxId = "";
+    string fbbConLengthIdCardNumberMonkCert = "";
+    string fbbConLengthIdCardNumberGovLet = "";
+    string fbbConLengthIdCardNumberPassport = "";
+    string fbbConLengthIdCardNumberEmbLet = "";
+    string fbbConLengthIdCardNumberImmCard = "";
+    string fbbConLengthIdCardNumberStaLet = "";
+    string fbbConLengthIdCardNumberHillCard = "";
+    string fbbConLengthIdCardNumberCertFound = "";
+    string fbbConLengthIdCardNumberIdCard = "";
+    string fbbConLengthIdCardNumberRoyLet = "";
+    string lCardType = "";
+    string B_LOGOUT = "";//R22.05
+
+    if (ViewBag.LabelFBBOR015 != null)
+    {
+        var labelFbbor015 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR015;
+        lWelcome1 = labelFbbor015.Any(c => c.Name == "L_WELCOME_1") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_1").DisplayValue : "";
+        lWelcome2 = labelFbbor015.Any(c => c.Name == "L_WELCOME_2") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_2").DisplayValue : "";
+        lWelcome3 = labelFbbor015.Any(c => c.Name == "L_WELCOME_3") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_3").DisplayValue : "";
+        lWelcome4 = labelFbbor015.Any(c => c.Name == "L_WELCOME_4") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_4").DisplayValue : "";
+        lWelcome5 = labelFbbor015.Any(c => c.Name == "L_WELCOME_5") ? labelFbbor015.FirstOrDefault(c => c.Name == "L_WELCOME_5").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var labelFbbtr001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        var lovMyAccount = labelFbbtr001.FirstOrDefault(c => c.Name == "L_MY_ACCOUNT");
+        if (lovMyAccount != null)
+        {
+            lMyAccount = labelFbbtr001.Any(c => c.Name == "L_MY_ACCOUNT") ? lovMyAccount.DisplayValue : "";
+        }
+    }
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var fbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        fbbConLengthIdCardNumberHillCard = fbbConstant.Any(f => f.Field == "Length ID Card Number HILL_CARD") ? fbbConstant.First(f => f.Field == "Length ID Card Number HILL_CARD").Validation : "";
+        fbbConLengthIdCardNumberIdCard = fbbConstant.Any(f => f.Field == "Length ID Card Number ID_CARD") ? fbbConstant.First(f => f.Field == "Length ID Card Number ID_CARD").Validation : "";
+        fbbConLengthIdCardNumberImmCard = fbbConstant.Any(f => f.Field == "Length ID Card Number IMM_CARD") ? fbbConstant.First(f => f.Field == "Length ID Card Number IMM_CARD").Validation : "";
+        fbbConLengthIdCardNumberMonkCert = fbbConstant.Any(f => f.Field == "Length ID Card Number MONK_CERT") ? fbbConstant.First(f => f.Field == "Length ID Card Number MONK_CERT").Validation : "";
+        fbbConLengthIdCardNumberStaLet = fbbConstant.Any(f => f.Field == "Length ID Card Number STA_LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number STA_LET").Validation : "";
+        fbbConLengthIdCardNumberRoyLet = fbbConstant.Any(f => f.Field == "Length ID Card Number ROY_LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number ROY_LET").Validation : "";
+        fbbConLengthIdCardNumberEmbLet = fbbConstant.Any(f => f.Field == "Length ID Card Number EMB_LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number EMB_LET").Validation : "";
+        fbbConLengthIdCardNumberCertFound = fbbConstant.Any(f => f.Field == "Length ID Card Number CERT_FOUND") ? fbbConstant.First(f => f.Field == "Length ID Card Number CERT_FOUND").Validation : "";
+        fbbConLengthIdCardNumberTaxId = fbbConstant.Any(f => f.Field == "Length ID Card Number TAX_ID") ? fbbConstant.First(f => f.Field == "Length ID Card Number TAX_ID").Validation : "";
+        fbbConLengthIdCardNumberPassport = fbbConstant.Any(f => f.Field == "Length ID Card Number PASSPORT") ? fbbConstant.First(f => f.Field == "Length ID Card Number PASSPORT").Validation : "";
+        fbbConLengthIdCardNumberGovLet = fbbConstant.Any(f => f.Field == "Length ID Card Number GOV LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number GOV LET").Validation : "";
+        fbbConInputCertFound = fbbConstant.Any(f => f.Field == "Input CERT_FOUND") ? fbbConstant.First(f => f.Field == "Input CERT_FOUND").Validation : "";
+        fbbConInputEmbLet = fbbConstant.Any(f => f.Field == "Input EMB_LET") ? fbbConstant.First(f => f.Field == "Input EMB_LET").Validation : "";
+        fbbConInputHillCard = fbbConstant.Any(f => f.Field == "Input HILL_CARD") ? fbbConstant.First(f => f.Field == "Input HILL_CARD").Validation : "";
+        fbbConInputIdCard = fbbConstant.Any(f => f.Field == "Input ID_CARD") ? fbbConstant.First(f => f.Field == "Input ID_CARD").Validation : "";
+        fbbConInputImmCard = fbbConstant.Any(f => f.Field == "Input IMM_CARD") ? fbbConstant.First(f => f.Field == "Input IMM_CARD").Validation : "";
+        fbbConInputMonkCert = fbbConstant.Any(f => f.Field == "Input MONK_CERT") ? fbbConstant.First(f => f.Field == "Input MONK_CERT").Validation : "";
+        fbbConInputPassport = fbbConstant.Any(f => f.Field == "Input PASSPORT") ? fbbConstant.First(f => f.Field == "Input PASSPORT").Validation : "";
+        fbbConInputRoyLet = fbbConstant.Any(f => f.Field == "Input ROY_LET") ? fbbConstant.First(f => f.Field == "Input ROY_LET").Validation : "";
+        fbbConInputStaLet = fbbConstant.Any(f => f.Field == "Input STA_LET") ? fbbConstant.First(f => f.Field == "Input STA_LET").Validation : "";
+        fbbConInputTaxId = fbbConstant.Any(f => f.Field == "Input TAX_ID") ? fbbConstant.First(f => f.Field == "Input TAX_ID").Validation : "";
+        fbbConInputGovLet = fbbConstant.Any(f => f.Field == "Input GOV_LET") ? fbbConstant.First(f => f.Field == "Input GOV_LET").Validation : "";
+    }
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFbbtr003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        var lovCardType = labelFbbtr003.FirstOrDefault(c => c.Name == "L_CARD_TYPE");
+        if (lovCardType != null)
+        {
+            lCardType = labelFbbtr003.Any(c => c.Name == "L_CARD_TYPE") ? lovCardType.DisplayValue : "";
+        }
+    }
+
+    if (ViewBag.LabelFBBOR022 != null)
+    {
+        var LabelFBBOR022 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR022;
+
+        B_LOGOUT = LabelFBBOR022.Any(c => c.Name == "B_LOGOUT") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "B_LOGOUT").DisplayValue : "";
+    }
+}   
+
+@*<div id="fibre_container">*@
+    <div id="container">
+        <div id="box1_holder">
+            <div class="panel_ais paddingmedium">
+                <div class="row_ais">
+                    <div class="column large-12">
+                        <div class="fibrelogo">
+                            <img src="~/Content/images/postpaid/fibre_logo.png" alt="" /></div>
+                        <div class="welcometext">@lMyAccount</div>
+                    </div>
+                </div>
+                <div class="row_ais">
+                    <div class="column large-4">
+                        <div id="welcome_msg" class="subheader">@lWelcome1 <span>@lWelcome2</span></div>
+                        <div class="detailtext">
+                            @lWelcome3<br>
+                            @lWelcome4<br>
+                            @lWelcome5
+                        </div>
+                    </div>
+                </div>
+                <div class="boxform pay-topspace">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "frmLoginData", @style = "margin-bottom: 0px" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Partial("~/Views/Campaign/LoginPartialMain.cshtml")
+                            @Html.Partial("~/Views/Campaign/LoginPartialError.cshtml")
+                        }
+                </div>
+            </div>
+            @*<div class="boxfootshader" style="background: none"></div>*@
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+@*</div>*@
+
+
+<script>
+    $(function () {
+
+        getCustomerCardTypes();
+
+        $("#AisAirNumber").keyup(function () {
+            CheckKeyUps("AisAirNumber", "[0-9]");
+            CheckAirNumber8("AisAirNumber");
+            checkBeforeProcess();
+        });
+
+        $("#AisAirNumber").keydown(function (e) {
+
+            var valAisAirNumber = $("#AisAirNumber").val().trim();
+            var ctrlDown = false;
+            var delKey = 8;
+            var ctrlKey = 17;
+            var cmdKey = 91;
+
+            if (e.keyCode == ctrlKey || e.keyCode == cmdKey || e.keyCode == delKey) {
+                ctrlDown = true;
+            }
+            if ((valAisAirNumber.length > 0) && (valAisAirNumber.charAt(0) == '8')) {
+                ctrlDown = true;
+            }
+
+            if (!ctrlDown) {
+                CheckKeyUps("AisAirNumber", "[0-9]");
+                CheckAirNumber8("AisAirNumber");
+            }
+        });
+
+        $("#L_CARD_NOs").keyup(function () {
+            if ($("#ID_CARD_NAMEs :selected").val() == "TAX_ID")
+                CheckKeyUps("L_CARD_NOs", "@fbbConInputTaxId");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "MONK_CERT")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputMonkCert");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "GOV_LET")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputGovLet");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "PASSPORT")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputPassport");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "EMB_LET")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputEmbLet");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "IMM_CARD")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputImmCard");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "STA_LET")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputStaLet");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "HILL_CARD")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputHillCard");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "CERT_FOUND")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputCertFound");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "ID_CARD")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputIdCard");
+                else if ($("#ID_CARD_NAMEs :selected").val() == "ROY_LET")
+                    CheckKeyUps("L_CARD_NOs", "@fbbConInputRoyLet");
+
+                checkBeforeProcess();
+            });
+
+        setCardMaxlength();
+        
+        if ($("#hndNonMobileNo").val() != "" && $("#hndIdCard").val() != "" && $("#hndCardType").val() != "") {
+            $("#AisAirNumber").val($("#hndNonMobileNo").val());
+            $("#L_CARD_NOs").val($("#hndIdCard").val());
+            $("#ID_CARD_NAMEs").val($("#hndCardType").val());
+            campaignLogin();
+        }
+    });
+
+    function CheckAirNumber8(id) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp("[8]");
+        for (var i = 0; i < strKey.length; i++) {
+            if (i < 1) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            } else {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function getCustomerCardTypes() {
+        $('#ID_CARD_NAMEs').empty();
+
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetCustomerCardType",
+            data: { 'customerType': "All" },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder = "";
+                var firstStr = "<option value='' disabled>" + "@lCardType" + "</option>";
+                $.each(data, function(i, e) {
+                    if (e.DefaultValue != undefined)
+                        strBuilder += '<option value="' + e.Value + '" selected>' + e.Text + '</option>';
+                    else
+                        strBuilder += '<option value="' + e.Value + '">' + e.Text + '</option>';
+                });
+                strBuilder = firstStr + strBuilder;
+                $('#ID_CARD_NAMEs').append(strBuilder);
+                $("#ID_CARD_NAMEs").selectOrDie();
+            }
+        });
+    }
+
+    function checkBeforeProcess() {
+
+        var ml = "";
+        if ($("#ID_CARD_NAMEs :selected").val() == "TAX_ID")
+            ml = "@fbbConLengthIdCardNumberTaxId";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "MONK_CERT")
+            ml = "@fbbConLengthIdCardNumberMonkCert";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "GOV_LET")
+            ml = "@fbbConLengthIdCardNumberGovLet";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "PASSPORT")
+            ml = "@fbbConLengthIdCardNumberPassport";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "EMB_LET")
+            ml = "@fbbConLengthIdCardNumberEmbLet";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "IMM_CARD")
+            ml = "@fbbConLengthIdCardNumberImmCard";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "STA_LET")
+            ml = "@fbbConLengthIdCardNumberStaLet";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "HILL_CARD")
+            ml = "@fbbConLengthIdCardNumberHillCard";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "CERT_FOUND")
+            ml = "@fbbConLengthIdCardNumberCertFound";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "ID_CARD")
+            ml = "@fbbConLengthIdCardNumberIdCard";
+        else if ($("#ID_CARD_NAMEs :selected").val() == "ROY_LET")
+            ml = "@fbbConLengthIdCardNumberRoyLet";
+
+        if ((($("#L_CARD_NOs").val() != "" && $("#ID_CARD_NAMEs :selected").val() != "ID_CARD")
+                || ($("#L_CARD_NOs").val().length == ml && $("#ID_CARD_NAMEs :selected").val() == "ID_CARD"))
+            && $("#AisAirNumber").val().length == 10) {
+            $(".btn1").hide();
+            $(".btn2").show();
+        } else {
+            $(".btn2").hide();
+            $(".btn1").show();
+        }
+    }
+
+    function setCardMaxlength() {
+        if ($("#ID_CARD_NAMEs :selected").val() == "TAX_ID")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberTaxId");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "MONK_CERT")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberMonkCert");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "GOV_LET")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberGovLet");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "PASSPORT")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberPassport");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "EMB_LET")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberEmbLet");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "IMM_CARD")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberImmCard");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "STA_LET")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberStaLet");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "HILL_CARD")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberHillCard");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "CERT_FOUND")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberCertFound");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "ID_CARD")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberIdCard");
+        else if ($("#ID_CARD_NAMEs :selected").val() == "ROY_LET")
+            $("#L_CARD_NOs").attr("maxlength", "@fbbConLengthIdCardNumberRoyLet");
+    }
+
+    $('#btnCheckProcess').click(function (e) {
+        e.preventDefault();
+        campaignLogin();
+    });
+
+    $('#btnError').click(function(e) {
+        e.preventDefault();
+        $("#divLoginError").addClass('hidden');
+        $("#divLoginMain").removeClass('hidden');
+    });
+
+    $('#btnLogout').click(function () {
+        $.ajax({
+            url: '/Campaign/Logout',
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function () {
+            }
+        });
+        window.location.reload();
+        clearData();
+    });
+
+    function campaignLogin()
+    {
+        LockScreen(true, "");
+
+        $.ajax({
+            url: '/Campaign/Login',
+            type: 'post',
+            dataType: 'json',
+            data: $('#frmLoginData').serialize(),
+            success: function (response) {
+                if (response.loginStatus == '1') {
+                    //_Search();
+                    $('#divLogin').hide();
+                    $('#L_CUSTOMER_NAME').text(response.fullname);
+                    
+                    //R22.05
+                    //tab1
+                    $('#hndFirstName').val(response.firstName);
+                    $('#hndLastName').val(response.lastName);
+                    $('#hndInternetNo').val($("#AisAirNumber").val());
+                    $("#MobileNo").val(response.outServiceMobileNo);
+
+                    //tab2
+                    GetSummaryAmountCallIM(); //R22.06 MGM Call New WS IM Show Summary Amount Privileges
+                    $('#L_CUSTOMER_CONTACT_NUMBER').text(response.outServiceMobileNo);
+                    _Search();
+
+                    //WelcomeBox
+                    $("#lblNameVal").text(privacyNameSurname($("#L_CUSTOMER_NAME").text()));
+                    if ($("#lblNameVal").text() == "")
+                        $("#lblNameVal").text("N/A");
+                    $('#btnLogout').text(' ' + '@B_LOGOUT' + ' ');
+                    //div
+                    //$('#divCheckStaus').show();
+                    $('#divWelcomeBox').show();
+                    $('#divMemberGetMember').show();
+                }
+                else {
+                    $("#divLoginMain").addClass('hidden');
+                    $("#divLoginError").removeClass('hidden');
+                }
+                document.getElementById('btnTh').style.display = 'none';
+                document.getElementById('btnEn').style.display = 'none';
+                LockScreen(false);
+            }
+        });
+    }
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#ProgressIcon #txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        } else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+
+    function onChangeID_CARD_NAMEs() {
+        $("#L_CARD_NOs").val("");
+        $(".btn2").hide();
+        $(".btn1").show();
+
+        setCardMaxlength();
+    }
+
+    function clearData() {
+        $('#AisAirNumber').val('');
+        $('#L_CARD_NOs').val('');
+        getCustomerCardTypes();
+
+        //R22.05
+        //div
+        $('#divLogin').show();
+        $('#divWelcomeBox').hide();
+        $('#divMemberGetMember').hide();
+        //tab1
+        $('#lblSummaryAmount').val('');//R22.06
+        $('#hndFirstName').val('');
+        $('#hndLastName').val('');
+        $('#hndInternetNo').val('');
+        $("#MobileNo").val('');
+
+        //tab2
+        $('#L_CUSTOMER_NAME').text('');
+        $('#L_CUSTOMER_CONTACT_NUMBER').text('');
+        $('#tblNeighbor tr').slice(1).remove();
+
+        //WelcomeBox
+        $('#lblNameVal').text('');
+    }
+
+    //R22.06 MGM Call New WS IM Show Summary Amount Privileges
+    function GetSummaryAmountCallIM() {
+        $.ajax({
+            url: '/Campaign/GetSummaryAmountCallIM',
+            data: { language: $("#hndLanguage").val(), internetNo: $("#AisAirNumber").val() },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                $('#lblSummaryAmount').text(response.outSummaryAmount);
+            }
+        });
+    }
+
+</script>

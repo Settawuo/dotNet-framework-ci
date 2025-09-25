@@ -1,0 +1,848 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationFibrenetID
+@using WBBEntity.PanelModels;
+
+@{
+    ViewBag.Title = "Index";
+
+    string L_PROVINCE = "";
+    string L_DORMITORY_NAME = "";
+    string L_BUILDING_NAME = "";
+    string L_FLOOR = "";
+    string L_ROOM = "";
+    string L_MOBILE = "";
+    string L_PIN = "";
+    string L_STATUS = "";
+
+    string L_REGION = "Region";
+    string B_EDIT = "Edit";
+
+    string B_SEARCH = "";
+    string B_CLEAR = "";
+
+    string B_NEW = "";
+    string B_VIEW = "";
+    string LH_MOBILE = "";
+    string LD_MOBILE = "";
+    string G_DORMITORY_ID = "";
+    string G_DORMITORY_PROVINCE = "";
+    string G_DORMITORY_NAME = "";
+    string G_DORMITORY_ROOMCOUNT = "";
+    string G_DORMITORY_STATUS = "";
+    string G_DORMITORY_VIEW = "";
+    string G_BUILDING_NAME = "";
+    string G_REGION = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_PROVINCE = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        L_DORMITORY_NAME = configscreen.Any(f => f.Name == "L_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_DORMITORY_NAME").LovValue2 : "";
+        L_BUILDING_NAME = configscreen.Any(f => f.Name == "L_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_BUILDING_NAME").LovValue2 : "";
+        L_FLOOR = configscreen.Any(f => f.Name == "L_FLOOR") ? configscreen.FirstOrDefault(f => f.Name == "L_FLOOR").LovValue2 : "";
+        L_ROOM = configscreen.Any(f => f.Name == "L_ROOM") ? configscreen.FirstOrDefault(f => f.Name == "L_ROOM").LovValue2 : "";
+        L_MOBILE = configscreen.Any(f => f.Name == "L_FIBRE_NET_ID") ? configscreen.FirstOrDefault(f => f.Name == "L_FIBRE_NET_ID").LovValue2 : "";
+        L_PIN = configscreen.Any(f => f.Name == "L_PIN") ? configscreen.FirstOrDefault(f => f.Name == "L_PIN").LovValue2 : "";
+        L_STATUS = configscreen.Any(f => f.Name == "L_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "L_STATUS").LovValue2 : "";
+
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue2 : "";
+        B_CLEAR = configscreen.Any(f => f.Name == "B_CLEAR") ? configscreen.FirstOrDefault(f => f.Name == "B_CLEAR").LovValue2 : "";
+
+        B_NEW = configscreen.Any(f => f.Name == "B_ADD_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "B_ADD_MOBILE").LovValue1 : "";
+        B_VIEW = configscreen.Any(f => f.Name == "B_VIEW_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "B_VIEW_DETAIL").LovValue2 : "";
+
+        LH_MOBILE = configscreen.Any(f => f.Name == "H_DORMITORY_MOBILE") ? configscreen.First(f => f.Name == "H_DORMITORY_MOBILE").LovValue1 : "";
+        LD_MOBILE = configscreen.Any(f => f.Name == "H_DORMITORY_SUB_MENU_2_2") ? configscreen.First(f => f.Name == "H_DORMITORY_SUB_MENU_2_2").LovValue2 : "";
+        G_DORMITORY_ID = configscreen.Any(f => f.Name == "G_DORMITORY_ID") ? configscreen.First(f => f.Name == "G_DORMITORY_ID").LovValue1 : "";
+        G_DORMITORY_PROVINCE = configscreen.Any(f => f.Name == "G_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "G_PROVINCE").LovValue2 : "";
+        G_DORMITORY_NAME = configscreen.Any(f => f.Name == "G_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "G_DORMITORY_NAME").LovValue2 : "";
+        G_DORMITORY_ROOMCOUNT = configscreen.Any(f => f.Name == "G_ROOM_AMOUNT") ? configscreen.FirstOrDefault(f => f.Name == "G_ROOM_AMOUNT").LovValue2 : "";
+        G_DORMITORY_STATUS = configscreen.Any(f => f.Name == "B_VIEW_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "B_VIEW_DETAIL").LovValue2 : "";
+        G_DORMITORY_VIEW = configscreen.Any(f => f.Name == "B_VIEW_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "B_VIEW_DETAIL").LovValue2 : "";
+        G_BUILDING_NAME = configscreen.Any(f => f.Name == "G_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "G_BUILDING_NAME").LovValue2 : "";
+        G_REGION = configscreen.Any(f => f.Name == "G_REGION") ? configscreen.FirstOrDefault(f => f.Name == "G_REGION").LovValue2 : "";
+
+        B_EDIT = configscreen.Any(f => f.Name == "B_EDIT") ? configscreen.FirstOrDefault(f => f.Name == "B_EDIT").LovValue2 : "";
+    }
+    
+    <div class="page-header i-header-fit" id="HeadPage1">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">@LH_MOBILE</h3>
+              
+            </div>
+        </div>
+    </div>
+    <div class="row" id="SearchPane">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@LD_MOBILE</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">
+                    <div class="panel-body" style="min-height: 200px;">
+                        <div id="SearchRow0" class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <div class="col-sm-12 col-md-6">
+                                    <label>@L_MOBILE</label>
+                                    @Html.TextBoxFor(t => t.FibrenetID, new { maxlength = 50, @class = "dis k-textbox form-control" })
+                                    <div class="i-fg-data-entry-validation" id="validatefor-txtFibreNetID"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                
+                            </div>
+                        </div>
+                        <div id="SearchRow1" class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="col-sm-12 col-md-3">
+                                    <label>@L_REGION </label>
+                                    @(Html.Kendo().DropDownListFor(t => t.Region)
+                                                  .Name("DORMITORY_REGION")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .Filter(FilterType.Contains)
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectRegion", "DormitoryMaster");
+                                                    });
+                                                })
+                                                .Events(e => e.Change("onRegionChange"))
+                                            )
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                <label>@L_PROVINCE </label>
+                                @(Html.Kendo().DropDownListFor(t => t.Province)
+                                              .Name("DORMITORY_PROVINCE")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectProvinceForSearch", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>@L_DORMITORY_NAME</label>
+                                 @(Html.Kendo().DropDownListFor(t => t.DormitoryName)
+                                              .Name("DORMITORY_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAllDormitory", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onDormitoryChange"))
+                                        )
+                            </div>
+                              <div class="col-sm-12 col-md-3">
+                                <label>@L_BUILDING_NAME</label>
+                                 @(Html.Kendo().DropDownListFor(t => t.Building)
+                                              .Name("BUILDING_NO")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                              .Enable(false)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAllBuilding", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onBuildingChange"))
+                                        )
+                            </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <label>@L_FLOOR </label>
+                                    @(Html.Kendo().DropDownListFor(t => t.FloorNo)
+                                                  .Name("BUILDING_FLOOR")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .Filter(FilterType.Contains)
+                                                  .Enable(false)
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectDormitaryFloor", "ImportDormDTL");
+                                                    });
+                                                })
+                                                .Events(e => e.Change("onFloorChange"))
+                                            )
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <label>@L_ROOM </label>
+                                    @(Html.Kendo().DropDownListFor(t => t.RoomNo)
+                                                  .Name("BUILDING_ROOM")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .Filter(FilterType.Contains)
+                                                  .Enable(false)
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectDormitaryRoom", "ImportDormDTL");
+                                                    });
+                                                })
+                                            //.Events(e => e.Change("onProvinceChange"))
+                                            )
+                                </div>
+                                 <div class="col-sm-12 col-md-3">
+                                <label>@L_STATUS</label>
+                                 @(Html.Kendo().DropDownListFor(t => t.Status)
+                                              .Name("DORMITORY_STATUS")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectDormStatusForSearch", "ImportDormDTL");
+                                                });
+                                            })
+                                        )
+                            </div>
+                                </div>
+                        </div>
+                        <div id="SearchRow2" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                            </div>
+                        </div>
+                        @*end row2*@
+                        <div id="SearchRow3" class="row i-gap-top-1">
+                            <div class="col-sm-12 col-md-12 ">
+                                <div id="gridresult" class="row">
+                                    @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationPrepaidNonMobileData>()
+                                        .Name("gridDormitory")
+                                        .Columns(columns =>
+                                        {
+                                            //columns.Bound(p => p.dormitory_id).Title(@G_DORMITORY_ID).HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                            columns.Bound(p => p.region_code).Title(@G_REGION).HtmlAttributes(new { style = "text-align:left;" }).Width(100);
+                                            columns.Bound(p => p.province).Title(@G_DORMITORY_PROVINCE).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                            columns.Bound(p => p.dormitory_name_th).Title(@L_DORMITORY_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                                            columns.Bound(p => p.dormitory_no_th).Title(@G_BUILDING_NAME).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+                                            columns.Bound(p => p.floor_no).Title(@L_FLOOR).HtmlAttributes(new { style = "text-align:right;" }).Width(100);
+                                            columns.Bound(p => p.room_no).Title(@L_ROOM).HtmlAttributes(new { style = "text-align:right;" }).Width(100);
+                                            columns.Bound(p => p.prepaid_non_mobile).Title(@L_MOBILE).HtmlAttributes(new { style = "text-align:right;" }).Width(100);
+                                            columns.Bound(p => p.pin_code).Title(@L_PIN).HtmlAttributes(new { style = "text-align:right;" }).Width(100);
+                                            columns.Bound(p => p.service_status).Title(@L_STATUS).HtmlAttributes(new { style = "text-align:right;" }).Width(100);
+                                            columns.Command(command =>
+                                            {
+                                                command
+                                                    .Custom(@G_DORMITORY_VIEW)
+                                                    .Click("editConfigDormitory")
+                                                    .Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + @B_EDIT);
+
+                                            })
+                                            .Width(100)                
+                                            .HtmlAttributes(new { style = "text-align:center;" })
+                                            .HeaderHtmlAttributes(new { style = "text-align:center" });                                           
+
+                                        })
+                                                            .ToolBar(toolbar => toolbar.Template(""
+                                                                + "<div class='pull-right'>" + "<a onclick='exportExcel()' id='btnExport' class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp;" + "Export to Excel" + "</a>&nbsp;</div>"
+                                                                + "<div class='pull-right'  style='visibility:hidden;'>" + "<a onclick='addNewExcel()' id='addnew' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp;" + @B_NEW + "</a>&nbsp;</div>"
+                                                                + "<div class='pull-right'  style='visibility:hidden;'>" + "<a onclick='addNewFibre()' id='addnew' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp;" + "Add New Fibre" + "</a>&nbsp;</div>"
+                                                                
+                                                            ))
+                                                                .Pageable(pageable => pageable
+                                                                .PageSizes(new int[] { 20, 50, 100 })
+                                                                .Numeric(true)
+                                                                )
+                                                                .Scrollable(scrollable => scrollable.Height("auto"))
+                                                                .AutoBind(false)
+                                                                .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .PageSize(20)
+                                                                    //.Sort(sort => sort.Add("dormitory_id").Ascending())
+                                                                    .Read(read => read.Action("SearchDataSourceRequest", "ImportDormDTL").Data("bindingValue"))
+                                                                    )
+                                                                .Events(e => e.DataBound("onGridDataBound"))
+                                                        )
+                                </div>
+                            </div>
+                        </div>
+                        @*end row3*@
+
+                    </div>
+                </div>
+                @*end SearchPanel*@
+            </div>
+        </div>
+    </div>
+    
+    @(Html.Kendo().Window()
+    .Name("EditStatusPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("EditStatus")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Events(events => events.Close("onCloseEditSatus"))
+    .Content(@<text>
+<div class="row i-no-over" id="EditStatusPopupPanel">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@L_MOBILE</label>
+            <input type="text" id="MobilePopUp" class="dis k-textbox form-control" maxlength="50" disabled="disabled" />
+        </div>
+    </div>
+    <div class="col-md-12" style="display:none">
+        <div class="form-group">
+            <label>@L_DORMITORY_NAME</label>
+            <input type="text" id="DormitoryPopUp" class="dis k-textbox form-control" maxlength="250" disabled="disabled" />
+        </div>
+    </div>
+    <div class="col-md-12" style="display:none">
+        <div class="form-group">
+            <label>@L_BUILDING_NAME</label>
+                <input type="text" id="BuildingPopUp" class="dis k-textbox form-control" maxlength="250" disabled="disabled" />
+        </div>
+    </div>
+    <div class="col-sm-12" style="display:none">    
+            <div class="form-group">
+                <label>@L_FLOOR</label>
+                <input type="text" id="FloorPopUp" class="dis k-textbox form-control" maxlength="80" disabled="disabled" />
+            </div>
+    </div>
+    <div class="col-sm-12" style="display:none">  
+            <div class="form-group">
+                <label>@L_ROOM</label>
+                <input type="text" id="RoomPopUp" class="dis k-textbox form-control" maxlength="80" disabled="disabled" />
+            </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@L_STATUS<span id="requiredfor-SubcontractCode"></span></label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DropDownList()
+                            .Name("statusPopUp")
+                            .HtmlAttributes(new { style = "width:100%" })
+                            .DataTextField("DISPLAY_VAL")
+                            .DataValueField("LOV_NAME")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("SelectDormStatusForUpdate", "ImportDormDTL");
+                                });
+                            })
+
+                    )     
+            </div>
+        </div>
+    </div>    
+    <div class="col-md-12">
+        <button class="btn btn-default i-gap-top-1 pull-right" onclick="_ChangeStatus()" id="btnSave"><i class="fa fa-check-circle fa-lg"></i>&nbsp; SAVE</button>        
+    </div>
+
+</div>
+</text>)
+)
+    <label id="oldStatus" class="i-hidden"></label>
+    
+    <script>
+
+        var criteriaVal = '';
+        var dateVal = '';
+
+        var SaveStatus = '@ViewBag.SaveStatus';
+        $(document).ready(function () {
+            $('#btnExport').attr("disabled", true);
+
+            $.ajaxSetup({
+                // Disable caching of AJAX responses
+                cache: false
+            });
+            if (SaveStatus != "") {
+                if (SaveStatus.substring(0, 18) == "Saved successfully") {
+                    showFeedback("success", SaveStatus, "SaveDormitory Master");
+                }
+                else {
+                    showFeedback("error", SaveStatus);
+                }
+            }
+            
+            var specialKeys = new Array();
+            specialKeys.push(8);
+
+            $('#FibrenetID').keypress(function (event)
+            {
+                var keyCode = event.which ? event.which : event.keyCode
+                var ret = ((keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) != -1);
+                return ret;
+            });
+        });
+
+        
+
+        var AWConfigurationFibrenetID = function () {
+            //Province: "";
+            //Building: "";
+            //DormitoryName: "";
+            //STATUS: "";
+
+            FibrenetID: "";
+            Region: "";
+            Province: "";
+            DormitoryName: "";
+            Building: "";
+            FloorNo: "";
+            RoomNo: "";
+            Status: "";
+        }
+
+        function defaultData() {
+
+            //var searchModel = new AWConfigurationDormitoryModel();
+            //searchModel.Province = $("#DORMITORY_PROVINCE").val();
+            //searchModel.DormitoryName = $("#DORMITORY_NAME").val();
+            //searchModel.STATUS = $("#DORMITORY_STATUS").val();
+            //searchModel.Building = $("#BUILDING_NO").val();
+            var searchModel = new AWConfigurationFibrenetID();
+            searchModel.FibrenetID = $("#FibrenetID").val();
+            searchModel.Region = $("#DORMITORY_REGION").val();
+            searchModel.Province = $("#DORMITORY_PROVINCE").val();
+            searchModel.DormitoryName = $("#DORMITORY_NAME").val();
+            searchModel.Building = $("#BUILDING_NO").val();
+            searchModel.FloorNo = $("#BUILDING_FLOOR").val();
+            searchModel.RoomNo = $("#BUILDING_ROOM").val();
+            searchModel.Status = $("#DORMITORY_STATUS").val();
+
+            return searchModel;
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS: JSON.stringify(model)
+            };
+        }
+
+        function onGridDataBound(e)
+        {            
+            var grid = this;
+
+            grid.tbody.find("tr[role='row']").each(function ()
+            {
+                var model = grid.dataItem(this);
+                if (model.service_status != "Active_Fail")
+                {
+                    $(this).find(".k-grid-Viewdetail").addClass("k-state-disabled");
+                    $(this).find(".k-grid-Viewdetail").removeAttr("href");
+                }
+            });
+
+            //alert(grid.dataSource);
+            if (grid.dataSource.view().length > 0)
+                $('#btnExport').attr("disabled", false);
+            else
+                $('#btnExport').attr("disabled", true);
+
+            Loading(0);
+        }
+        
+
+        function _Search() {
+
+            if (!ValidationFibrenetID())
+                return;
+
+            var model = defaultData();
+            Loading();
+            var grid = $("#gridDormitory").data("kendoGrid");
+            grid.dataSource.page(1);
+
+        }
+        function _Clear()
+        {            
+            var dropdownlist1 = $("#DORMITORY_PROVINCE").data("kendoDropDownList");
+            dropdownlist1.select(0); 
+            var dropdownlist2 = $("#DORMITORY_NAME").data("kendoDropDownList");
+            dropdownlist2.select(0);
+            var dropdownlist3 = $("#BUILDING_NO").data("kendoDropDownList");
+            dropdownlist3.select(0);
+            var dropdownlist4 = $("#DORMITORY_STATUS").data("kendoDropDownList");
+            dropdownlist4.select(0);
+            $("#gridDormitory").data("kendoGrid").dataSource.data([]);
+
+            $("#FibrenetID").val("");
+            var dropdownlist5 = $("#DORMITORY_REGION").data("kendoDropDownList");
+            dropdownlist5.select(0);
+            
+            var dropdownlist6 = $("#BUILDING_FLOOR").data("kendoDropDownList");
+            dropdownlist6.select(0);
+
+            var dropdownlist7 = $("#BUILDING_ROOM").data("kendoDropDownList");
+            dropdownlist7.select(0);
+
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").dataSource.read({ regionCode: $("#DORMITORY_REGION").val() });
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val() });
+
+            $("#BUILDING_NO").data("kendoDropDownList").enable(false);
+            $("#BUILDING_FLOOR").data("kendoDropDownList").enable(false);
+            $("#BUILDING_ROOM").data("kendoDropDownList").enable(false);
+            $("#validatefor-txtFibreNetID").html("");
+
+            $('#btnExport').attr("disabled", true);
+
+            criteriaVal = '';
+            dateVal = '';
+        }
+
+        function onProvinceChange()
+        {
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val() });
+            $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+            $("#BUILDING_NO").data("kendoDropDownList").select(0);
+            $("#BUILDING_FLOOR").data("kendoDropDownList").select(0);
+            $("#BUILDING_ROOM").data("kendoDropDownList").select(0);
+
+            $("#BUILDING_NO").data("kendoDropDownList").enable(false);
+            $("#BUILDING_FLOOR").data("kendoDropDownList").enable(false);
+            $("#BUILDING_ROOM").data("kendoDropDownList").enable(false);
+        }
+
+        function addNewExcel() {
+            Loading();
+            var url = '@Url.Action("index", "ImportDormDTL")';
+         
+            window.location.href = url;
+        }
+        function addNewFibre() {
+            Loading();
+            var url = '@Url.Action("AddNewFibrenet", "ImportDormDTL")';
+
+            window.location.href = url;
+        }
+        
+        function editConfigDormitory(e)
+        {
+            //Loading();
+            //var url = '@Url.Action("ConfigurationDormitoryDetail", "DormitoryMaster")';
+            //url = url + "?DormitoryID=" + dataItem.dormitory_id;
+            //window.location.href = url;
+
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            
+            if (dataItem.service_status == "Available")
+            {
+                e.preventDefault();
+            }
+            else
+            {
+                $("#MobilePopUp").val(dataItem.prepaid_non_mobile);
+                $("#DormitoryPopUp").val(dataItem.dormitory_name_th);
+                $("#BuildingPopUp").val(dataItem.dormitory_no_th);
+                $("#FloorPopUp").val(dataItem.floor_no);
+                $("#RoomPopUp").val(dataItem.room_no);
+                $("#statusPopUp").data("kendoDropDownList").select(1);//.value("Success_Install");
+
+                $("#oldStatus").text(dataItem.service_status);
+
+                $("#EditStatusPopup").prev().find(".k-window-title").text("Edit Status");
+                $("#EditStatusPopup").data("kendoWindow").center();
+                $("#EditStatusPopup").data("kendoWindow").open();
+            }
+        }
+        
+
+        function onRegionChange()
+        {
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").dataSource.read({ regionCode: $("#DORMITORY_REGION").val() });
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").select(0);
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ regionCode: $("#DORMITORY_REGION").val(), province: $("#DORMITORY_PROVINCE").val() });
+            $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+            $("#BUILDING_NO").data("kendoDropDownList").select(0);
+            $("#BUILDING_FLOOR").data("kendoDropDownList").select(0);
+            $("#BUILDING_ROOM").data("kendoDropDownList").select(0);
+
+            $("#BUILDING_NO").data("kendoDropDownList").enable(false);
+            $("#BUILDING_FLOOR").data("kendoDropDownList").enable(false);
+            $("#BUILDING_ROOM").data("kendoDropDownList").enable(false);
+        }
+
+        function onDormitoryChange()
+        {
+            $("#BUILDING_NO").data("kendoDropDownList").enable(true);
+            $("#BUILDING_NO").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), Dormitory_Name: $("#DORMITORY_NAME").val() });
+            $("#BUILDING_NO").data("kendoDropDownList").select(0);
+            $("#BUILDING_FLOOR").data("kendoDropDownList").select(0);
+            $("#BUILDING_ROOM").data("kendoDropDownList").select(0);
+
+            $("#BUILDING_FLOOR").data("kendoDropDownList").enable(false);
+            $("#BUILDING_ROOM").data("kendoDropDownList").enable(false);
+        }
+
+        function onBuildingChange()
+        {
+            $("#BUILDING_FLOOR").data("kendoDropDownList").enable(true);
+            $("#BUILDING_FLOOR").data("kendoDropDownList").dataSource.read({ Dormitory_Name: $("#DORMITORY_NAME").val(), Building_No: $("#BUILDING_NO").val() });
+            $("#BUILDING_FLOOR").data("kendoDropDownList").select(0);
+            $("#BUILDING_ROOM").data("kendoDropDownList").select(0);
+        }
+
+        function onFloorChange()
+        {
+            $("#BUILDING_ROOM").data("kendoDropDownList").enable(true);
+            $("#BUILDING_ROOM").data("kendoDropDownList").dataSource.read({ Dormitory_Name: $("#DORMITORY_NAME").val(), Building_No: $("#BUILDING_NO").val(), Floor: $("#BUILDING_FLOOR").val() });
+            $("#BUILDING_ROOM").data("kendoDropDownList").select(0);
+        }
+
+        function onCloseEditSatus()
+        {
+            $("#MobilePopUp").val("").enabled = false;
+            $("#DormitoryPopUp").val("").enabled = false;
+            $("#BuildingPopUp").val("").enabled = false;
+            $("#FloorPopUp").val("").enabled = false;
+            $("#RoomPopUp").val("").enabled = false;
+            $("#statusPopUp").data("kendoDropDownList").select(0);
+            $("#oldStatus").text("");
+        }
+
+        function CheckKeyUps(id, RexStr)
+        {
+            var chk = true;
+            var strKey = $("#" + id).val();
+            var strBuilder = "";
+            var filter = new RegExp(RexStr);
+
+            if (!filter.test(strKey))
+            {
+                chk = false;
+            }
+            return chk;
+            
+        }
+
+        function ValidationFibrenetID()
+        {
+            if ($.trim($("#FibrenetID").val()) == '')
+            {
+                $("#validatefor-txtFibreNetID").html("");
+                return true;
+            }
+
+            var chk = CheckKeyUps("FibrenetID", "^[0-9]+$");
+
+            if (!chk)
+            {
+                $("#validatefor-txtFibreNetID").html(ValidationIcon() + "Input digits (0 - 9).");
+            }
+            else
+            {
+                $("#validatefor-txtFibreNetID").html("");
+            }
+
+            return chk;
+        }
+
+        var AWConfigurationStatus = function ()
+        {
+            FibrenetID: "";
+            //DormitoryName: "";
+            //Building: "";
+            //FloorNo: "";
+            //RoomNo: "";
+            Status: "";
+        }
+
+        function defaultDataEditStatusData()
+        {
+            var searchModel = new AWConfigurationStatus();
+            searchModel.FibrenetID = $("#MobilePopUp").val();
+            //searchModel.DormitoryName = $("#DormitoryPopUp").val();
+            //searchModel.Building = $("#BuildingPopUp").val();
+            //searchModel.FloorNo = $("#FloorPopUp").val();
+            //searchModel.RoomNo = $("#RoomPopUp").val();
+            searchModel.Status = $("#statusPopUp").val();
+
+            return searchModel;
+        }
+
+        function _ChangeStatus()
+        {
+            Loading();
+            var mobile = $("#MobilePopUp").val();
+            var dormitoryName = $("#DormitoryPopUp").val();
+            var buildingNo = $("#BuildingPopUp").val();
+            var floor = $("#FloorPopUp").val();
+            var room = $("#RoomPopUp").val();
+            var status = $("#statusPopUp").val();
+            var oldStatus = $("#oldStatus").text();
+
+            if (status == oldStatus)
+            {
+                _Search();
+                showFeedback("success", " Complete", "Edit Status");
+                $("#EditStatusPopup").data("kendoWindow").close();
+                return;
+            }
+
+            var model = defaultDataEditStatusData();                       
+
+            try
+            {
+                var response = $.ajax({
+                    url: '/ImportDormDTL/UpdateStatusData',
+                    data: { dataS: JSON.stringify(model) },
+                    dataType: "json",
+                    type: 'POST',
+                    async: false,
+                    //success: function (response) {
+                    //    if (response == "Success") {
+                    //        _Search();
+                    //        showFeedback("success", " Complete", "Edit Status");
+                    //        $("#EditStatusPopup").data("kendoWindow").close();
+                    //    }
+                    //    else {
+
+                    //        _Search();
+                    //        showFeedback("error", " Save Fail", "Edit Status");
+                    //        $("#EditStatusPopup").data("kendoWindow").close();
+                    //    }
+                    //},
+                    //failure: function (err)
+                    //{
+                    //    showFeedback("Fail", " Update Fail");
+                    //}
+                }).responseText;
+
+                var data = JSON.parse(response);
+                var title = "";
+                var msgVal = "";
+
+                title = (data.result) ? "success" : "error";
+                msgVal = data.message;
+
+                _Search();
+                showFeedback(title, "Save Data : " + data.message, "Edit Status");
+                $("#EditStatusPopup").data("kendoWindow").close();
+
+            }
+            catch (e)
+            {
+                showFeedback("Fail", e.message, "Edit Status");
+            }
+
+        }
+
+        function criterData()
+        {
+
+            var searchCriter = new CriterModel();
+            searchCriter.REPORT = '@LH_MOBILE';
+            searchCriter.CRITERIA = 'Criteria: ' + criteriaVal;
+            searchCriter.REPORT_DATE = 'Run report date/time: ' + dateVal;
+
+            return searchCriter;
+        }
+
+        var CriterModel = function ()
+        {
+            REPORT: "";
+            CRITERIA: "";
+            REPORT_DATE: "";
+        }
+
+        function exportExcel()
+        {
+            var grid = $("#gridDormitory").data("kendoGrid");
+            var parameterMap = grid.dataSource.transport.parameterMap;
+            var data = parameterMap({ sort: grid.dataSource.sort(), filter: grid.dataSource.filter(), group: grid.dataSource.group() });
+
+            var request = decodeURIComponent($.param(data));
+            var model = new defaultData();
+            ReplaceCariteris(model);
+            var criterModel = new criterData();
+            
+            window.open("/ImportDormDTL/ExportReport?dataS=" + JSON.stringify(model) + "&criteria=" + JSON.stringify(criterModel) + "");
+        }
+
+        function ReplaceCariteris(model)
+        {           
+            var fibre = "FibrenetID";
+            var region = "Region";
+            var province = "Province";
+            var dormitoryName = "DormitoryName";
+            var building = "Building";
+            var floorNo = "FloorNo";
+            var roomNo = "RoomNo";
+            var status = "Status";
+
+            var fibreVal = (model.FibrenetID == '') ? 'ALL' : model.FibrenetID;
+            var regionVal = (model.Region == '') ? 'ALL' : model.Region;
+            var provinceVal = (model.Province == '') ? 'ALL' : model.Province;
+            var dormitoryNameVal = (model.DormitoryName == '') ? 'ALL' : model.DormitoryName;
+            var buildingVal = (model.Building == '') ? 'ALL' : model.Building;
+            var floorNoVal = (model.FloorNo == '') ? 'ALL' : model.FloorNo;
+            var roomNoVal = (model.RoomNo == '') ? 'ALL' : model.RoomNo;
+            var statusVal = (model.Status == '') ? 'ALL' : model.Status;
+
+            var text = fibre + " : " + fibreVal + " and " + region + " : " + regionVal + " and " + province + " : " + provinceVal + " and " +
+                       dormitoryName + " : " + dormitoryNameVal + " and " + building + " : " + buildingVal + " and " + floorNo + " : " + floorNoVal + " and " +
+                       roomNo + " : " + roomNoVal + " and " + status + " : " + statusVal;
+
+            //$("#lblCariteris").empty();
+            //$("#lblCariteris").append(text);
+            criteriaVal = text;
+
+            ReplaceDateTimeReport();
+        }
+
+        function ReplaceDateTimeReport()
+        {
+            var currDate = new Date();
+            var month = new Array();
+            month[0] = "Jan";
+            month[1] = "Feb";
+            month[2] = "Mar";
+            month[3] = "Apr";
+            month[4] = "May";
+            month[5] = "Jun";
+            month[6] = "Jul";
+            month[7] = "Aug";
+            month[8] = "Sep";
+            month[9] = "Oct";
+            month[10] = "Nov";
+            month[11] = "Dec";
+
+            var dateTxt = currDate.getDate() + ' ' + month[currDate.getMonth()] + ' ' + currDate.getFullYear() + ' ' + currDate.toLocaleTimeString();
+
+            //$("#lblDate").empty();
+            //$("#lblDate").append(dateTxt);
+            dateVal = dateTxt;
+        }
+
+    </script>
+     
+}

@@ -1,0 +1,470 @@
+﻿@model QuickWinPanelModel
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension;
+
+@{
+    string language = Session[WebConstants.SessionKeys.CurrentUICulture] != null ? Session[WebConstants.SessionKeys.CurrentUICulture].ToString() : "";
+
+    string L_BAHT_ROUTER = "";
+    string L_CHOOSE_ROUTER = "";
+    
+    string B_BACK_ROUTER = "";
+    string B_NEXT_ROUTER = "";
+    string L_HEAD_SELECT_ROUTER = "";
+    string L_PLEASE_SELECT_ROUTER = "";
+    string L_ERROR_PLEASE_SELECT_OPTION_ROUTER = "";
+    string L_ERROR_PLEASE_SELECT_MODEL_ROUTER = "";
+    
+    string L_OPTION_INSTALL_WIFI_ROUTER_HEADER = "";
+    var L_OPTION_INSTALL_ROUTER_DETAIL = new List<LovScreenValueModel>();
+  
+    if (ViewBag.LabelFBBORV25 != null)
+    {
+        var labelFbborv25 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV25;
+
+        B_BACK_ROUTER = labelFbborv25.Any(c => c.Name == "B_BACK_ROUTER") ? labelFbborv25.FirstOrDefault(c => c.Name == "B_BACK_ROUTER").DisplayValue : "";
+        B_NEXT_ROUTER = labelFbborv25.Any(c => c.Name == "B_NEXT_ROUTER") ? labelFbborv25.FirstOrDefault(c => c.Name == "B_NEXT_ROUTER").DisplayValue : "";
+        L_HEAD_SELECT_ROUTER = labelFbborv25.Any(c => c.Name == "L_HEAD_SELECT_ROUTER") ? labelFbborv25.FirstOrDefault(c => c.Name == "L_HEAD_SELECT_ROUTER").DisplayValue : "";
+
+        L_PLEASE_SELECT_ROUTER = labelFbborv25.Any(c => c.Name == "L_PLEASE_SELECT_ROUTER") ? labelFbborv25.FirstOrDefault(c => c.Name == "L_PLEASE_SELECT_ROUTER").DisplayValue : "";
+
+        L_OPTION_INSTALL_WIFI_ROUTER_HEADER = labelFbborv25.Any(c => c.Name == "L_OPTION_INSTALL_WIFI_ROUTER_HEADER") ? labelFbborv25.FirstOrDefault(c => c.Name == "L_OPTION_INSTALL_WIFI_ROUTER_HEADER").DisplayValue : "";
+        if (labelFbborv25.FirstOrDefault(c => c.Name == "L_OPTION_INSTALL_ROUTER_DETAIL") != null)
+        {
+            L_OPTION_INSTALL_ROUTER_DETAIL = labelFbborv25.Where(s => s.Name == "L_OPTION_INSTALL_ROUTER_DETAIL").OrderBy(o => o.LovValue3).ToList();
+        }
+
+        L_ERROR_PLEASE_SELECT_OPTION_ROUTER = labelFbborv25.Any(c => c.Name == "L_ERROR_PLEASE_SELECT_OPTION_ROUTER") ? labelFbborv25.FirstOrDefault(c => c.Name == "L_ERROR_PLEASE_SELECT_OPTION_ROUTER").DisplayValue : "";
+        L_ERROR_PLEASE_SELECT_MODEL_ROUTER = labelFbborv25.Any(c => c.Name == "L_ERROR_PLEASE_SELECT_MODEL_ROUTER") ? labelFbborv25.FirstOrDefault(c => c.Name == "L_ERROR_PLEASE_SELECT_MODEL_ROUTER").DisplayValue : "";
+
+        L_BAHT_ROUTER = labelFbborv25.Any(c => c.Name == "L_BAHT_ROUTER") ? labelFbborv25.FirstOrDefault(c => c.Name == "L_BAHT_ROUTER").DisplayValue : "";
+        L_CHOOSE_ROUTER = labelFbborv25.Any(c => c.Name == "L_CHOOSE_ROUTER") ? labelFbborv25.FirstOrDefault(c => c.Name == "L_CHOOSE_ROUTER").DisplayValue : "";
+
+    }
+
+}
+
+@Html.HiddenFor(t => t.CustomerRegisterPanelModel.RouterFlag, new { @id = "CustomerRegisterPanelModel_RouterFlag" })
+@Html.Hidden("hdRouterCode")
+@Html.Hidden("hdRouterPrice")
+
+<div id="pageSelectRouter" class="container" style="display: none;">
+    
+    <div class="col-lg-12 col-md-12 col-xs-12 addrounded">
+        
+        <p class="clearfix"></p>
+        <div class="col-lg-offset-4 col-md-4 col-md-offset-4 col-md-4 col-xs-12 addrounded">
+            <div id="divOptionInstallRouter"></div>
+        </div>
+
+        <div id="divRouterDetail" style="display:none;">
+            <p class="clearfix"></p>
+            <h4 class="page-header tgreen">@*@Html.Raw(L_HEAD_SELECT_ROUTER)*@</h4>
+
+            @Html.Raw(L_PLEASE_SELECT_ROUTER)
+            <p class="clearfix"></p>
+        
+            <div id="divRouterDynamic" class="row-border"></div>
+            
+            <p class="clearfix"></p>
+            <div id="divModelRouterRemark"></div>
+
+        </div>
+
+        <p class="clearfix"></p>
+        <p class="clearfix page-header"></p>
+        <div class="col-md-12 text-center">
+            <a id="btnSelectOntopBack" href="javascript:void(0);" role="button" class="btn btn-default btn-for-xs"
+               onclick="onBtnSelectRouterBack_Click()">&nbsp; @B_BACK_ROUTER &nbsp;
+            </a>
+            <a id="btnSelectOntopNext" href="javascript:void(0);" role="button" class="btn btn-success btn-for-xs"
+               onclick="onBtnSelectRouterNext_Click()">&nbsp; @B_NEXT_ROUTER &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </a>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    
+</div>
+
+<script type="text/javascript">
+    
+    @Html.JsMinify(
+    @<text>
+
+    function getRouter() {
+        try {
+
+            LockScreen(true, "");
+
+            $("#page1").hide();
+            $("#page2").hide();
+            $("#pageSelectRouter").show();
+
+            $("#CustomerRegisterPanelModel_RouterFlag").val("");
+            $("#hdRouterCode").val("");
+            $("#hdRouterPrice").val("");
+
+            $("#divRouterDynamic").empty();
+            $("#divRouterDetail").hide();
+
+            generateOptionInstallRouter();
+
+            LockScreen(false, "");
+
+        } catch (e) {
+            LockScreen(false, "");
+            console.log(e);
+        }
+    }
+
+    function onBtnSelectRouterBack_Click() {
+
+        $("#pageSelectRouter").hide();
+        $("#page1").show();
+
+        @*if ('@Model.TopUp' == "7") {//เส้นEngineer
+            $(".wrapSwitchLanguage").show();
+        }*@
+
+        @*if ('@ViewBag.Vas' == "6") {//เส้นStaff
+            $(".wrapSwitchLanguage").show();
+        }*@
+
+        if ($("#R_OTHER").is(":checked")) {//checkแผนที่ให้ back กลับเป็น condo
+            $("#R_BUILD").prop("checked", true);
+            onBuildChange();
+        }
+        $('#UseMap').val("");
+        $('#Is3bbCoverage').val("");
+        $('#tempSplitter3BB').html("");
+        $('#tempSplitterMap').html("");
+        $("#L_SplitterListStr").val("");
+
+        if ('@Model.TopUp' == "5") // officer
+        {
+            $("#L_EVENT_CODE").val("");
+            $("#L_EVENT_CODE").trigger("focusout");
+            $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val("");
+            if ($("input[name*='CustomerRegisterPanelModel_L_CHECK_EVENT_CODE']:checked").val())
+                $("#chkEventCode").click();
+            $('#PlayBox_Serial').val("");
+            $("#CPE_Serial").val("");
+        }
+
+    }
+
+    function onBtnSelectRouterNext_Click() {
+        try {
+
+            var validateResult = true;
+
+            LockScreen(true, "");
+            if ("@Model.TopUp" == "5") {
+                $('#DEVELOPER').select2().select2('val', $('.select2 option:eq(0)').val());
+            }
+            var valOptionSelectInstallRouter = $("input[name=SelectOptionSelectInstallRouter]:checked").val();
+
+            if ((valOptionSelectInstallRouter == null) || (valOptionSelectInstallRouter == ""))
+            {
+                toastrErrorMessage("@L_ERROR_PLEASE_SELECT_OPTION_ROUTER");
+                validateResult = false;
+            }
+            else if (valOptionSelectInstallRouter == "S") {
+                var haveModelRouterChecked = false;
+                $("#divRouterDynamic input[type=checkbox]").each(function () {
+                    if (this.checked) {
+                        haveModelRouterChecked = true; //TODO: Get ค่าอีกทีหลัง AIS แจ้งว่าต้องส่งอะไรไปบ้าง
+                        return;
+                    }
+                });
+
+                if (!haveModelRouterChecked) {
+                    toastrErrorMessage("@L_ERROR_PLEASE_SELECT_MODEL_ROUTER");
+                    validateResult = false;
+                }
+            }
+
+            if (validateResult)
+            {
+                $("#pageSelectRouter").hide();
+                getPackage(0);
+            }
+            else {
+                LockScreen(false, "");
+            }
+           
+        } catch (e) {
+            LockScreen(false, "");
+            console.log(e);
+        }
+    }
+
+    function generateOptionInstallRouter() {
+
+        $("#divOptionInstallRouter").empty();
+
+        var flagCheckPlugAndPlayFlow = $('#SelectFlagCheckPlugAndPlayFlow').val();
+        var optionInstallRouterArray = [];
+        @if (L_OPTION_INSTALL_ROUTER_DETAIL != null)
+        {
+            foreach (var routerDetailRow in L_OPTION_INSTALL_ROUTER_DETAIL)
+            {
+                @:optionInstallRouterArray.push(["@Html.Raw(routerDetailRow.DisplayValue)", "@routerDetailRow.DefaultValue"]);
+            }
+        }
+
+        var HtmlInstall = "";
+        HtmlInstall += "<h4 class='title- page-header tgreen'>@Html.Raw(L_OPTION_INSTALL_WIFI_ROUTER_HEADER)</h4>";
+        //HtmlInstall += "<strong>@Html.Raw(L_OPTION_INSTALL_WIFI_ROUTER_HEADER)</strong>";
+        //HtmlInstall += "<p class='clearfix'></p>";
+        HtmlInstall += "<div class='panel panel-info'><div class='panel-heading' style='border-bottom: none; !important;'></div>";
+        HtmlInstall += "<div class='table-responsive'><table class='table table-hover'>";
+        HtmlInstall += "<tbody class='promotionDetail2'>";
+
+        $.each(optionInstallRouterArray, function (i, e) {
+
+            var radioRouterChecked = "";
+            if (e[1] == "B" && flagCheckPlugAndPlayFlow == "Y")
+            {
+                radioRouterChecked = "checked=''";
+                $("#CustomerRegisterPanelModel_RouterFlag").val(e[1]);
+            }
+
+            HtmlInstall += "<tr id='trRouter" + e[1] + "' class='promotionDetail-table' style='cursor: pointer;'>";
+            HtmlInstall += "<th style='width: 30px;'><input class='classRadioOptionRouter' id='radioRouter" + e[1] + "' type='radio' value='" + e[1] + "' onclick='onBindingSelectOptionInstallRouter()' " + radioRouterChecked + " name='SelectOptionSelectInstallRouter'></th>";
+            HtmlInstall += "<td>" + e[0] + "</td>";
+            HtmlInstall += "</tr>";
+        });
+
+        HtmlInstall += "</tbody>";
+        HtmlInstall += "</table>";
+        HtmlInstall += "</div></div>";
+
+        $("#divOptionInstallRouter").html(HtmlInstall);
+
+        if (flagCheckPlugAndPlayFlow == "Y")
+        {
+            //$("#radioRouterS").prop('disabled', true).css('pointer-events', 'none');
+            //$("#radioRouterM").prop('disabled', true).css('pointer-events', 'none');
+            //$("#radioRouterB").prop('disabled', true).css('pointer-events', 'none');
+            $(".classRadioOptionRouter").prop('disabled', true).css('pointer-events', 'none');
+        }
+        else {
+            $('#divOptionInstallRouter').find('table.table-hover').find('tbody').find('tr').attr("style", "cursor: pointer;");
+            $('#divOptionInstallRouter').find('table.table-hover').find('tbody').find('tr').click(function () {
+                $(this).find('th').find('input[type=radio]').prop('checked', true);
+                onBindingSelectOptionInstallRouter();
+            });
+        }
+    }
+
+    function onBindingSelectOptionInstallRouter() {
+        try {
+            //LockScreen(true, "");
+
+            var valOptionSelectInstallRouter = $("input[name=SelectOptionSelectInstallRouter]:checked").val();
+            $("#CustomerRegisterPanelModel_RouterFlag").val(valOptionSelectInstallRouter);
+
+            $("#hdRouterCode").val("");
+            $("#hdRouterPrice").val("");
+
+            if (valOptionSelectInstallRouter == "S") {
+                $("#divRouterDetail").show();
+                generateRouterBox();
+                generateRouterRemark();
+            }
+            else {
+                $("#divRouterDynamic").empty();
+                $("#divModelRouterRemark").empty();
+                $("#divRouterDetail").hide();
+            }
+
+            //LockScreen(false, "");
+        } catch (e) {
+            //LockScreen(false, "");
+            console.log(e);
+        }
+    }
+
+    function generateRouterBox() {
+
+        $("#divRouterDynamic").empty();
+        var strBuilder = "";
+
+        $.ajax({
+            type: "GET",
+            url: "/SelectPackage/GetListModelRouter",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data != null) {
+                    var topupGroup;
+                    var groupby = "";
+
+                    $.each(data, function (i, e2) {
+
+                        var strTemp = "";
+
+                        var strModelRouter = "";
+                        if (topupGroup != e2.TopupGroup) {
+                            topupGroup = e2.TopupGroup;
+
+                            strModelRouter += "<p class='clearfix'></p>";
+                            strModelRouter += "<h4 class='greenheader page-header twhite hide'> " + e2.TopupGroupName + "</h4>";
+                            rowLength = 0;
+                        }
+
+                        if (e2.Group != groupby) {
+                            strModelRouter += "<p class='clearfix hidden-xs'></p>";
+                            groupby = e2.Group;
+                            rowLength = 0;
+                        }
+
+                        if (e2.Group == "") {
+                            strModelRouter += "<div id='routerBox" + e2.DataName + "' class='col-sm-12 col-xs-12 text-center'>";
+                        } else {
+                            strModelRouter += "<div id='routerBox" + e2.DataName + "' class='" + e2.Group + " col-sm-12 col-xs-12 text-center'>";
+                        }
+                        strModelRouter += "<p class='clearfix'></p>";
+                        strModelRouter += "<img src='data:image/png;base64," + e2.IconPath + "' class='img-responsive center-block' style='height: auto;'>";
+                        strModelRouter += "<p class='clearfix'></p>";
+                        strModelRouter += e2.DataIconDes.replace("{0}", e2.TopupPriceText);
+                        strModelRouter += "<div class='checkbox'>";
+                        if (e2.Group == "") {
+                            strModelRouter += "<label><input type='checkbox' ontopid='routerBox" + e2.DataName + "' id='routerBox" + e2.DataName + "_chkbox' onclick='onRouterBox_Click(routerBox" + e2.DataName + ")'> @L_CHOOSE_ROUTER </label>";
+                        } else {
+                            strModelRouter += "<label><input type='checkbox' ontopgroupid='" + e2.Group + "' ontopid='routerBox" + e2.DataName + "' id='routerBox" + e2.DataName + "_chkbox' onclick='onRouterBox_Click(routerBox" + e2.DataName + ")'> @L_CHOOSE_ROUTER </label>";
+                        }
+                        strModelRouter += "</div>";
+
+                        //Hidden Feild สำหรับเก็บค่า เพื่อส่งไปหน้าอื่นๆ
+                        strModelRouter += "<input type='hidden' id='RouterCode" + e2.DataName + "' class='RouterCodeVal' value='" + e2.Group + "' />";
+                        strModelRouter += "<input type='hidden' id='RouterPrice" + e2.DataName + "' class='RouterPriceVal' value='" + e2.TopupPrice + "' />";
+
+                        strModelRouter += "</div>";
+                        strModelRouter += "<p class='clearfix visible-xs'></p>";
+
+                        @*if ("@language" == "1") {
+                            $("#lbl" + e[0] + "Detail").text($("#SFF_PROMOTION_BILL_THA" + e[1]).val());
+                        } else {
+                            $("#lbl" + e[0] + "Detail").text($("#SFF_PROMOTION_BILL_ENG" + e[1]).val());
+                        }*@
+                        strTemp = strModelRouter;
+
+                        rowLength += 1;
+                        if (rowLength == 3) {
+                            strTemp += "<p class='clearfix hidden-xs'></p>";
+                            rowLength = 0;
+                        }
+
+                        strBuilder += strTemp;
+                    });
+                }
+            }
+        });
+        //alert(strBuilder);
+        $("#divRouterDynamic").html(strBuilder);
+    }
+
+    function onRouterBox_Click(divId) {
+        if ($("#" + divId.id + "_chkbox").is(":checked")) {
+            $("#" + divId.id).addClass("add-rounded-green");
+        } else {
+            $("#" + divId.id).removeClass("add-rounded-green");
+        }
+        $("#hdRouterCode").val($("#" + divId.id + " .RouterCodeVal").val());
+        $("#hdRouterPrice").val($("#" + divId.id + " .RouterPriceVal").val());
+        //var productType = $("#" + divId.id + " input[name='productType']").val();
+        //var price = 0;
+
+        //if ($("#" + divId.id + " input[name='recurring_charge']").val() != ""
+        //    && $("#" + divId.id + " input[name='recurring_charge']").val() != undefined) {
+
+        //    $("#" + divId.id + " input[name='recurring_charge']").val($("#" + divId.id + " input[name='recurring_charge']").val().replace(',', ''));
+        //    price = parseFloat($("#" + divId.id + " input[name='recurring_charge']").val());
+        //}
+
+        //if ($("#" + divId.id + "_chkbox").is(":checked")) {
+        //    $("#tr" + productType + "Row").show();
+        //    $("#lbl" + productType + "Price").text(toNumber(price));
+        //    $("#hdSelect" + productType).val("1");
+        //}
+        //else {
+        //    $("#tr" + productType + "Row").hide();
+        //    $("#lbl" + productType + "Price").text(0);
+        //    $("#hdSelect" + productType).val("0");
+        //}
+
+        if ($("#" + divId.id + "_chkbox").attr("ontopgroupid") != undefined) {
+
+            var groupnmae = $("#" + divId.id + "_chkbox").attr("ontopgroupid");
+            $('.' + groupnmae + ' input:checkbox').each(function () {
+                if (this.id != divId.id + "_chkbox") {
+                    if ($("#" + this.id).prop('checked') == true) {
+                        $(this).removeAttr('checked');
+                        $("#" + this.id.substring(0, this.id.length - 7)).removeClass("add-rounded-green");
+
+                        //var productType = $("#" + this.id.substring(0, this.id.length - 7) + " input[name='productType']").val();
+                        //$("#tr" + productType + "Row").hide();
+                        //$("#lbl" + productType + "Price").text(0);
+                        //$("#hdSelect" + productType).val("0");
+                    }
+                }
+            });
+        }
+
+        ////Summary
+        //var Summoney = 0;
+        //$.each(arrOntopPageDetail, function (i, e) {
+        //    if ($("#lbl" + e + "Price").text() != "") {
+        //        Summoney = Summoney + parseFloat($("#lbl" + e + "Price").text().replace(',', ''));
+        //    }
+        //});
+
+        //$("#lblSumOntop").text(toNumber(Summoney));
+    }
+
+    function generateRouterRemark() {
+
+        $("#divModelRouterRemark").empty();
+        var strRouterRemark = "";
+        strRouterRemark = "<div class='getDisDetail add-rounded-gray'>" + "<p class='clearfix'></p>";
+
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetConditionLov",
+            data: {
+                lovType: 'L_MODEL_ROUTER_REMARK_DETAIL',
+                lovName: ''
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                var strRouterBuilder = '';
+
+                $.each(data, function (i, e) {
+                    if ($("#LanguagePage").val() == "2") {
+                        var str = e.LovValue2;
+                    }
+                    else {
+                        var str = e.LovValue1;
+                    }
+                    strRouterBuilder += str;
+                });
+                strRouterRemark += strRouterBuilder;
+            }
+        });
+
+        strRouterRemark += "<p class='clearfix'></p>";
+        strRouterRemark += "</div>";
+
+        $("#divModelRouterRemark").html(strRouterRemark);
+    }
+
+    </text>);
+
+</script>
+
+
+
+

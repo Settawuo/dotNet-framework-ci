@@ -1,0 +1,411 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.DormitorySearchModel
+@using WBBEntity.PanelModels;
+
+@{
+    ViewBag.Title = "Index";
+
+    string L_PROVINCE = "";
+    string L_DORMITORY_NAME = "";
+    string L_BUILDING_NAME = "";
+    
+    string B_SEARCH = "Search";
+    string B_CLEAR = "Clear";
+
+    string B_NEW = "";
+    string B_VIEW = "";
+
+  //  string G_DORMITORY_ID = "";
+    string G_DORMITORY_PROVINCE = "";
+    string G_DORMITORY_NAME = "";
+    string G_BUILDING_NO = "";
+    string G_ROOM_AMOUNT = "";
+    string G_DESCRIPTION = "รายละเอียด"; // ไม่มี LOV
+    string G_ADDRESS_ID = "";
+    string G_SUBCONTRACT = "Subcontract"; //ไม่มี lov
+    string G_STATUS = "Status"; //ไม่มี lov
+    string G_DORMITORY_VIEW = "";
+    
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_PROVINCE = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        L_DORMITORY_NAME = configscreen.Any(f => f.Name == "L_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_DORMITORY_NAME").LovValue2 : "";
+        L_BUILDING_NAME = configscreen.Any(f => f.Name == "L_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_BUILDING_NAME").LovValue2 : "";
+
+     //   B_SEARCH = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "Search";
+     //   B_CLEAR = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "Clear";
+
+        B_NEW = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        B_VIEW = configscreen.Any(f => f.Name == "B_EDIT") ? configscreen.FirstOrDefault(f => f.Name == "B_EDIT").LovValue1 : "";
+
+        G_DORMITORY_PROVINCE = configscreen.Any(f => f.Name == "G_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "G_PROVINCE").LovValue2 : "";
+        G_BUILDING_NO = configscreen.Any(f => f.Name == "L_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_BUILDING_NAME").LovValue2 : "";
+     //   G_DESCRIPTION = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        G_DORMITORY_NAME = configscreen.Any(f => f.Name == "G_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "G_DORMITORY_NAME").LovValue2 : "";
+        G_ROOM_AMOUNT = configscreen.Any(f => f.Name == "G_ROOM_AMOUNT") ? configscreen.FirstOrDefault(f => f.Name == "G_ROOM_AMOUNT").LovValue2 : "";
+        //G_STATUS = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        G_ADDRESS_ID = configscreen.Any(f => f.Name == "G_ADDRESS_ID") ? configscreen.FirstOrDefault(f => f.Name == "G_ADDRESS_ID").LovValue2 : "";
+       // G_SUBCONTRACT = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+            
+    }
+    }
+    <div class="page-header i-header-fit" id="HeadPage1">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">Configuration Dormitory Master</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="SearchPane">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>Configuration Subcontract</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 200px;">
+                        <div id="SearchRow1" class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <label>@L_PROVINCE </label>
+                                @(Html.Kendo().DropDownListFor(t => t.DormitoryProvincr)
+                                              .Name("DORMITORY_PROVINCE")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectProvinceForSearch", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <label>@L_DORMITORY_NAME</label>
+                                 @(Html.Kendo().DropDownListFor(t => t.DormitoryName)
+                                              .Name("DORMITORY_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAllDormitory", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                            </div>
+                              <div class="col-sm-12 col-md-4">
+                                <label>@L_BUILDING_NAME</label>
+                                 @(Html.Kendo().DropDownListFor(t => t.Building)
+                                              .Name("BUILDING_NO")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAllBuilding", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                            </div>
+                        </div>
+                        <div id="SearchRow2" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                            </div>
+                        </div>
+                        @*end row2*@
+                        <div id="SearchRow3" class="row i-gap-top-1">
+                            <div class="col-sm-12 col-md-12 ">
+                                <div id="gridresult" class="row">
+                                    @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationOnOffService>()
+                                        .Name("gridDormitory")
+                                        .Columns(columns =>
+                                        {
+                                           
+                                            columns.Bound(p => p.province).Title(G_DORMITORY_PROVINCE).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.DORMITORY_NAME_TH).Title(@G_DORMITORY_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.BUILDING_NO_TH).Title(@G_BUILDING_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                            columns.Bound(p => p.Room_Amount).Title(@G_ROOM_AMOUNT).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                            columns.Bound(p => p.Description).Title(@G_DESCRIPTION).HtmlAttributes(new { style = "text-align:right;" }).Width(200);
+                                            columns.Bound(p => p.ADDRESS_ID).Title(@G_ADDRESS_ID).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+                                            columns.Bound(p => p.Subcontract).Title(@G_SUBCONTRACT).HtmlAttributes(new { style = "text-align:right;" }).Width(200);
+                                            columns.Bound(p => p.Status).Title(@G_STATUS).HtmlAttributes(new { style = "text-align:right;" }).Width(100);
+                                            columns.Command(command =>
+                                            {
+                                                command.Custom(@G_DORMITORY_VIEW).Click("editConfigOnOffService").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + @B_VIEW);
+                                            }).Width(100);
+
+                                        })
+                                            .Pageable(pageable => pageable
+                                            .PageSizes(false)
+                                            .Numeric(true)
+                                            )
+                                            .Scrollable(scrollable => scrollable.Height("auto"))
+                                            .Sortable()
+                                            .AutoBind(false)
+                                            .DataSource(dataSource => dataSource
+                                                .Ajax()
+                                                .PageSize(20)
+                                                .Read(read => read.Action("SearchDataSourceRequest", "DormitoryOnOffWebService").Data("bindingValue"))
+                                                )
+                                            .Events(e => e.DataBound("onGridDataBound"))
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        @*end row3*@
+
+                    </div>
+                </div>
+                @*end SearchPanel*@
+            </div>
+        </div>
+        
+    </div>
+           @(Html.Kendo().Window()
+    .Name("EditOnOffPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("EditOnOffDorm")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Events(events => events.Close("onCloseEditOnOff"))
+    .Content(@<text>
+<div class="row i-no-over" id="EditOnOffPopupPanel">
+     @Html.Hidden("Index")   
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_DORMITORY_PROVINCE</label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="DormProvince" class="dis k-textbox form-control"  disabled="disabled" />
+            </div> 
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_DORMITORY_NAME</label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="DormName" class="dis k-textbox form-control" disabled="disabled" /> 
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@L_BUILDING_NAME</label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="Buildingno" class="dis k-textbox form-control" disabled="disabled" /> 
+            </div>   
+        </div>
+    </div>
+      <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_ROOM_AMOUNT</label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="RoomAmount" class="dis k-textbox form-control"  disabled="disabled" /> 
+            </div>         
+        </div>
+    </div>
+      <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_DESCRIPTION</label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="Description" class="dis k-textbox form-control" maxlength="255" /> 
+            </div>           
+        </div>
+    </div>
+            <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_ADDRESS_ID</label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="Addressid" class="dis k-textbox form-control" maxlength="255" /> 
+            </div>           
+        </div>
+    </div>
+            <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_SUBCONTRACT</label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="Subcontract" class="dis k-textbox form-control" maxlength="255" /> 
+            </div>           
+        </div>
+    </div>
+              <div class="col-md-12">
+        <div class="form-group">
+            <label>@G_STATUS</label>
+            <div class="i-fg-data-entry">
+               <select id="Status">
+           <option>ON</option>
+           <option>OFF</option>
+               </select>
+            </div>           
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-default i-gap-top-1 pull-right" onclick="_SaveBuilding('Add')" id="btnAdd"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Add</button>
+        <button class="btn btn-default i-gap-top-1 i-hidden pull-right" onclick="_SaveSubcontract()" id="btnEdit"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Edit</button>
+</div>
+        
+</div>  
+</text>)
+)
+    
+
+    <script>
+
+        var SaveStatus = '@ViewBag.SaveStatus';
+        $(document).ready(function () {
+            $.ajaxSetup({
+                // Disable caching of AJAX responses
+                cache: false
+            });
+            if (SaveStatus != "") {
+                if (SaveStatus.substring(0, 18) == "Saved successfully") {
+                    showFeedback("success", SaveStatus, "SaveDormitory Master");
+                }
+                else {
+                    showFeedback("error", SaveStatus);
+                }
+            }
+        });
+
+        var AWConfigurationDormitoryModel = function () {
+            Province: "";
+            DormitoryName: "";
+            Building: "";
+        }
+
+        function defaultData() {
+
+            var searchModel = new AWConfigurationDormitoryModel();
+            searchModel.Province = $("#DORMITORY_PROVINCE").val();
+            searchModel.DormitoryName = $("#DORMITORY_NAME").val();
+            searchModel.Building = $("#BUILDING_NO").val();
+            return searchModel;
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS: JSON.stringify(model)
+            };
+        }
+
+        function onGridDataBound() {
+            Loading(0);
+        }
+
+        function _Search() {
+
+            var model = defaultData();
+            Loading();
+            var grid = $("#gridDormitory").data("kendoGrid");
+            grid.dataSource.page(1);
+
+        }
+        function _Clear() {
+            var dropdownlist1 = $("#DORMITORY_PROVINCE").data("kendoDropDownList");
+            dropdownlist1.select(0);
+            var dropdownlist2 = $("#DORMITORY_NAME").data("kendoDropDownList");
+            dropdownlist2.select(0);
+            var dropdownlist3 = $("#BUILDING_NO").data("kendoDropDownList");
+            dropdownlist3.select(0);
+            $("#gridDormitory").data("kendoGrid").dataSource.data([]);
+        }
+
+        function onProvinceChange() {
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val() });
+            $("#BUILDING_NO").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), Dormitory_Name: $("#DORMITORY_NAME").val() });
+        }
+
+        function editConfigOnOffService(e) {
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $("#DormProvince").val(dataItem.province);
+            $("#DormName").val(dataItem.DORMITORY_NAME_TH);
+            $("#Buildingno").val(dataItem.BUILDING_NO_TH);
+            $("#RoomAmount").val(dataItem.Room_Amount);
+            $("#Description").val(dataItem.Description);
+            $("#Addressid").val(dataItem.ADDRESS_ID);
+            $("#Subcontract").val(dataItem.Subcontract);
+            $("#Status").val(dataItem.Status);
+            $("#Index").val(dataItem.indexBuilding);
+            var validateModel = [];
+
+            validateModel.push({ id: "SubcontractCode" });
+            validateModel.push({ id: "SubcontractNameTH" });
+            validateModel.push({ id: "SubcontractNameEN" });
+            validateModel.push({ id: "Price" });
+            SetRequired(validateModel);
+
+            $("#btnAdd").hide();
+            $("#btnEdit").show();
+
+            $("#EditSubcontractPopup").prev().find(".k-window-title").text("Edit Subcontract");
+            $("#EditSubcontractPopup").data("kendoWindow").center();
+            $("#EditSubcontractPopup").data("kendoWindow").open();
+        }
+        function _SaveSubcontract() {
+            //var chk = ValidationProcessingRequired("EditSubcontractPopup");
+            //if (chk) {
+            debugger
+            $.ajax({
+                type: "POST",
+                url: "/DormitorySubcontract/EditSubcontractData",
+                data: {
+                    "DormitoryTH": $("#DormitoryTH").val()
+                    , "SubcontractCode": $("#SubcontractCode").val()
+                    , "SubcontractNameTH": $("#SubcontractNameTH").val()
+                    , "SubcontractNameEN": $("#SubcontractNameEN").val()
+                    , "Price": $("#Price").val()
+                    , "Index": $("#Index").val()
+                },
+                dataType: "text",
+                async: false,
+                success: function (response) {
+                    if (response == "") {
+                        _Search();
+                        showFeedback("success", " Complete");
+                    }
+                    else {
+                        _Search();
+                        showFeedback("fail", " Save fail");
+                    }
+                },
+                failure: function (err) {
+                    showFeedback("fail", " Save Fail");
+                }
+            });
+            //}
+            _Search();
+            var grid = $("#gridDormitory").data("kendoGrid");
+            grid.dataSource.page(1);
+        }
+
+        function onCloseEditOnOff() {
+
+            $("#DormitoryTH").val("").enabled = false;
+            $("#SubcontractCode").val("");
+            $("#SubcontractNameTH").val("");
+            $("#SubcontractNameEN").val("");
+            $("#Price").val("");
+
+            ClearTextValidation("EditOnOffPopupPanel");
+        }
+    </script>

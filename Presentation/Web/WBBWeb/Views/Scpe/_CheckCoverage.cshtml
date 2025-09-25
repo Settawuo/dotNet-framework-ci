@@ -1,0 +1,1722 @@
+﻿@using WBBWeb.Extension
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+
+@{
+
+    string L_CHECKING_COVERAGE_AREA = "";
+    string L_LOCATION = "";
+
+    string L_SEARCH_BUILDING_NAME = "";
+    string L_HOME_NO = "";
+    string L_BUILDING_NO = "";
+    string L_FLOOR = "";
+    string L_MOO = "";
+    string L_SOI = "";
+    string L_ROAD = "";
+    string L_SUB_DISTRICT = "";
+    string L_DISTRICT = "";
+    string L_PROVINCE = "";
+    string L_ZIP_CODE = "";
+    string L_DO_YOU_HAVE_PHONE = "";
+    string L_HAVE_PHONE = "";
+    string L_NOT_HAVE_PHONE = "";
+    string L_CHECKING_COVERAGE = "";
+    string L_POPUP_BYOD_PORT_FULL = "";
+    string L_POPUP_BLACKLIST_CONDO = "";
+    List<string> BLACKLIST_CONDO_SELL_ROUTER = null;
+    List<string> TANGLE_CONDO_SELL_ROUTER = null;
+
+    string B_BACK = "";
+
+    if (ViewBag.LabelFBBOR028 != null)
+    {
+        var LabelFBBOR028 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR028;
+        L_CHECKING_COVERAGE_AREA = LabelFBBOR028.Any(c => c.Name == "L_CHECKING_COVERAGE_AREA") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_CHECKING_COVERAGE_AREA").DisplayValue : "";
+        L_LOCATION = LabelFBBOR028.Any(c => c.Name == "L_LOCATION") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_LOCATION").DisplayValue : "";
+        L_SEARCH_BUILDING_NAME = LabelFBBOR028.Any(c => c.Name == "L_SEARCH_BUILDING_NAME") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SEARCH_BUILDING_NAME").DisplayValue : "";
+        L_HOME_NO = LabelFBBOR028.Any(c => c.Name == "L_HOME_NO") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_HOME_NO").DisplayValue : "";
+        L_BUILDING_NO = LabelFBBOR028.Any(c => c.Name == "L_BUILDING_NO") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_BUILDING_NO").DisplayValue : "";
+        L_FLOOR = LabelFBBOR028.Any(c => c.Name == "L_FLOOR") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_FLOOR").DisplayValue : "";
+        L_MOO = LabelFBBOR028.Any(c => c.Name == "L_MOO") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_MOO").DisplayValue : "";
+        L_SOI = LabelFBBOR028.Any(c => c.Name == "L_SOI") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SOI").DisplayValue : "";
+        L_ROAD = LabelFBBOR028.Any(c => c.Name == "L_ROAD") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ROAD").DisplayValue : "";
+        L_SUB_DISTRICT = LabelFBBOR028.Any(c => c.Name == "L_SUB_DISTRICT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_SUB_DISTRICT").DisplayValue : "";
+        L_DISTRICT = LabelFBBOR028.Any(c => c.Name == "L_DISTRICT") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_DISTRICT").DisplayValue : "";
+        L_PROVINCE = LabelFBBOR028.Any(c => c.Name == "L_PROVINCE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_PROVINCE").DisplayValue : "";
+        L_ZIP_CODE = LabelFBBOR028.Any(c => c.Name == "L_ZIP_CODE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_ZIP_CODE").DisplayValue : "";
+        L_DO_YOU_HAVE_PHONE = LabelFBBOR028.Any(c => c.Name == "L_DO_YOU_HAVE_PHONE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_DO_YOU_HAVE_PHONE").DisplayValue : "";
+        L_HAVE_PHONE = LabelFBBOR028.Any(c => c.Name == "L_HAVE_PHONE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_HAVE_PHONE").DisplayValue : "";
+        L_NOT_HAVE_PHONE = LabelFBBOR028.Any(c => c.Name == "L_NOT_HAVE_PHONE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_NOT_HAVE_PHONE").DisplayValue : "";
+        L_CHECKING_COVERAGE = LabelFBBOR028.Any(c => c.Name == "L_CHECKING_COVERAGE") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_CHECKING_COVERAGE").DisplayValue : "";
+        L_POPUP_BYOD_PORT_FULL = LabelFBBOR028.Any(c => c.Name == "L_POPUP_BYOD_PORT_FULL") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_BYOD_PORT_FULL").DisplayValue : "";
+        L_POPUP_BLACKLIST_CONDO = LabelFBBOR028.Any(c => c.Name == "L_POPUP_BLACKLIST_CONDO") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "L_POPUP_BLACKLIST_CONDO").DisplayValue : "";
+        BLACKLIST_CONDO_SELL_ROUTER = LabelFBBOR028.Where(c => c.Name == "BLACKLIST_CONDO_SELL_ROUTER").Select(c => c.DisplayValue).ToList();
+        TANGLE_CONDO_SELL_ROUTER = LabelFBBOR028.Where(c => c.Name == "TANGLE_CONDO_SELL_ROUTER").Select(c => c.DisplayValue).ToList();
+        B_BACK = LabelFBBOR028.Any(c => c.Name == "B_BACK") ? LabelFBBOR028.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+    }
+
+    string Input_Building = "";
+    string Input_Building_No = "";
+    string Input_Mooban = "";
+    string Input_Home_Number = "";
+    string Input_Moo = "";
+    string Input_Soi = "";
+    string Input_Road = "";
+    string Input_Floor = "";
+    string Input_Lat_Long = "";
+
+    string Length_Building = "";
+    string Length_Building_No = "";
+    string Length_Mooban = "";
+    string Length_Home_Number = "";
+    string Length_Moo = "";
+    string Length_Soi = "";
+    string Length_Road = "";
+    string Length_Floor = "";
+    string Length_Lat_Long = "";
+    string ProductSpecCode = "";
+    string SHOW_TIMESLOT_ALL_BUILDING = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var LabelFbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        Input_Floor = LabelFbbConstant.Any(f => f.Field == "Input_Floor") ? LabelFbbConstant.First(f => f.Field == "Input_Floor").Validation : "";
+        Input_Building = LabelFbbConstant.Any(f => f.Field == "Input_Building") ? LabelFbbConstant.First(f => f.Field == "Input_Building").Validation : "";
+        Input_Building_No = LabelFbbConstant.Any(f => f.Field == "Input_Building_No") ? LabelFbbConstant.First(f => f.Field == "Input_Building_No").Validation : "";
+        Input_Mooban = LabelFbbConstant.Any(f => f.Field == "Input_Mooban") ? LabelFbbConstant.First(f => f.Field == "Input_Mooban").Validation : "";
+        Input_Home_Number = LabelFbbConstant.Any(f => f.Field == "Input_Home_Number") ? LabelFbbConstant.First(f => f.Field == "Input_Home_Number").Validation : "";
+        Input_Moo = LabelFbbConstant.Any(f => f.Field == "Input_Moo") ? LabelFbbConstant.First(f => f.Field == "Input_Moo").Validation : "";
+        Input_Soi = LabelFbbConstant.Any(f => f.Field == "Input_Soi") ? LabelFbbConstant.First(f => f.Field == "Input_Soi").Validation : "";
+        Input_Road = LabelFbbConstant.Any(f => f.Field == "Input_Road") ? LabelFbbConstant.First(f => f.Field == "Input_Road").Validation : "";
+        Input_Lat_Long = LabelFbbConstant.Any(f => f.Field == "Input_Lat_Long") ? LabelFbbConstant.First(f => f.Field == "Input_Lat_Long").Validation : "";
+        Length_Building = LabelFbbConstant.Any(f => f.Field == "Length_Building") ? LabelFbbConstant.First(f => f.Field == "Length_Building").Validation : "";
+        Length_Building_No = LabelFbbConstant.Any(f => f.Field == "Length_Building_No") ? LabelFbbConstant.First(f => f.Field == "Length_Building_No").Validation : "";
+        Length_Mooban = LabelFbbConstant.Any(f => f.Field == "Length_Mooban") ? LabelFbbConstant.First(f => f.Field == "Length_Mooban").Validation : "";
+        Length_Home_Number = LabelFbbConstant.Any(f => f.Field == "Length_Home_Number") ? LabelFbbConstant.First(f => f.Field == "Length_Home_Number").Validation : "";
+        Length_Moo = LabelFbbConstant.Any(f => f.Field == "Length_Moo") ? LabelFbbConstant.First(f => f.Field == "Length_Moo").Validation : "";
+        Length_Soi = LabelFbbConstant.Any(f => f.Field == "Length_Soi") ? LabelFbbConstant.First(f => f.Field == "Length_Soi").Validation : "";
+        Length_Road = LabelFbbConstant.Any(f => f.Field == "Length_Road") ? LabelFbbConstant.First(f => f.Field == "Length_Road").Validation : "";
+        Length_Floor = LabelFbbConstant.Any(f => f.Field == "Length_Floor") ? LabelFbbConstant.First(f => f.Field == "Length_Floor").Validation : "";
+        Length_Lat_Long = LabelFbbConstant.Any(f => f.Field == "Length_Lat_Long") ? LabelFbbConstant.First(f => f.Field == "Length_Lat_Long").Validation : "";
+        ProductSpecCode = LabelFbbConstant.Any(f => f.Field == "ProductSpecCode") ? LabelFbbConstant.First(f => f.Field == "ProductSpecCode").Validation : "";
+        SHOW_TIMESLOT_ALL_BUILDING = LabelFbbConstant.Any(f => f.Field == "SHOW_TIMESLOT_ALL_BUILDING") ? LabelFbbConstant.First(f => f.Field == "SHOW_TIMESLOT_ALL_BUILDING").Validation : "";
+    }
+}
+
+<div id="page1" class="container addrounded" style="display: none;">
+    <h4 class="page-header tgreen">@L_CHECKING_COVERAGE_AREA</h4>
+    <div id="cvrbody">
+        <div class="col-md-12 title-form">
+            <i class="fa fa-chevron-right tgreen"></i>@L_LOCATION
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-md-10 col-md-offset-1">
+            <div style="display: block;" id="divTower">
+                <div class="col-md-12">
+                    <div style="display: none;" id="DIV_L_BUILD_NAME">
+                        <input id="L_BUILD_NAME" value="0" type="hidden">
+                    </div>
+                    @Html.TextBoxFor(model => model.CoveragePanelModel.Address.L_BUILD_NAME_Hied,
+                        new
+                        {
+                            @class = "form-control",
+                            @title = @L_SEARCH_BUILDING_NAME,
+                            @maxlength = Length_Building,
+                            @placeholder = @L_SEARCH_BUILDING_NAME,
+                        })
+                    </div>
+                <p class="clearfix"></p>
+            </div>
+            <div id="DIV_ADDRESS">
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.CoveragePanelModel.Address.L_HOME_NUMBER_1,
+                        new
+                        {
+                            @class = "form-control",
+                            @title = @L_HOME_NO,
+                            @maxlength = Length_Home_Number,
+                            @id = "CoveragePanelModel_Address_L_HOME_NUMBER_1",
+                            @placeholder = @L_HOME_NO
+                        })
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-4 col-xs-12" id="div_l_build_no">
+                    <div id="DIV_D_L_BUILD_NO">
+                        <select class="select" style="width: 100%" id="L_BUILD_NO" name="L_BUILD_NO">
+                            <option value="" disabled selected>@L_BUILDING_NO</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="OwnerByBuild" />
+                    @Html.TextBoxFor(model => model.CoveragePanelModel.Address.L_BUILD_NO_Hied,
+                            new
+                            {
+                                @class = "form-control",
+                                @title = @L_BUILDING_NO,
+                                @Style = "display: none;",
+                                @maxlength = Length_Building_No,
+                                @placeholder = @L_BUILDING_NO
+                            })
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-4 col-xs-12" id="div_l_floor">
+                    @Html.TextBoxFor(model => model.CoveragePanelModel.Address.L_FLOOR,
+                            new
+                            {
+                                @class = "form-control",
+                                @title = @L_FLOOR,
+                                @maxlength = Length_Floor,
+                                @id = "CoveragePanelModel_Address_L_FLOOR",
+                                @placeholder = @L_FLOOR,
+                            })
+                    @Html.HiddenFor(model => model.CoveragePanelModel.L_FLOOR_CONDO)
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.CoveragePanelModel.Address.L_MOO,
+                        new
+                        {
+                            @class = "form-control",
+                            @title = @L_MOO,
+                            @maxlength = Length_Moo,
+                            @id = "CoveragePanelModel_Address_L_MOO",
+                            @placeholder = @L_MOO,
+                        })
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.CoveragePanelModel.Address.L_SOI,
+                        new
+                        {
+                            @class = "form-control",
+                            @title = @L_SOI,
+                            @maxlength = Length_Soi,
+                            @id = "CoveragePanelModel_Address_L_SOI",
+                            @placeholder = @L_SOI,
+                        })
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.CoveragePanelModel.Address.L_ROAD,
+                        new
+                        {
+                            @class = "form-control",
+                            @maxlength = Length_Road,
+                            @id = "CoveragePanelModel_Address_L_ROAD",
+                            @title = @L_ROAD,
+                            @placeholder = @L_ROAD,
+                        })
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <select class="select" style="width: 100%" id="COVERAGE_L_TUMBOL" name="COVERAGE_L_TUMBOL"
+                            onchange="getZipCode()">
+                        <option disabled selected value="">@L_SUB_DISTRICT</option>
+                    </select>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <select class="select" style="width: 100%" id="COVERAGE_L_AMPHUR" name="COVERAGE_L_AMPHUR"
+                            onchange="onAmphurChange()">
+                        <option disabled selected value="">@L_DISTRICT</option>
+                    </select>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-4 col-xs-12" id="Div_Province">
+                    <select class="select" style="width: 100%" id="COVERAGE_L_PROVINCE" name="COVERAGE_L_PROVINCE"
+                            onchange="onProvinceChange()">
+                        <option disabled selected value="">@L_PROVINCE</option>
+                    </select>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="col-sm-4 col-xs-12" id="Div_Postcode">
+                    <select class="select" style="width: 100%" name="CoveragePanelModel.Address.L_ZIPCODE"
+                            id="CoveragePanelModel_Address_L_ZIPCODE">
+                        <option disabled selected value="">@L_ZIP_CODE</option>
+                    </select>
+                    @Html.HiddenFor(model => model.CoveragePanelModel.Address.ZIPCODE_ID)
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-xs-12" id="DIV_HAVE_FIXED_LINE">
+                    <div class="radio">
+                        @L_DO_YOU_HAVE_PHONE&nbsp;&nbsp;
+                        <p class="clearfix visible-xs"></p>
+                        <label class="radio-inline">
+                            <input name="L_HAVE_FIXED_LINE" value="Y" type="radio">@L_HAVE_PHONE
+                        </label>
+                        &nbsp;&nbsp;
+                        <label class="radio-inline">
+                            <input name="L_HAVE_FIXED_LINE" value="N" type="radio">@L_NOT_HAVE_PHONE
+                        </label>
+                        &nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+
+    <p class="clearfix"></p>
+    <p class="clearfix page-header"></p>
+    <div class="col-md-12 text-right" id="cvrbodybtn">
+        <button id="btnBackPageSelectModel" type="button" class="btn btn-default btn-for-xs">&nbsp; @Html.Raw(B_BACK) &nbsp; </button>
+        <a href="javascript:void(0);" id="checkProcess" class="btn btn-success rippler rippler-default btn-for-xs" role="button">@L_CHECKING_COVERAGE</a>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+</div>
+
+<script type="text/javascript">
+
+    var bloodEngine = null;
+    var buildings = [];
+    var states = [];
+    var buildnos = [];
+    var zipcodes = [];
+    var addressIds = [];
+    var provincess = [];
+    var amphurss = [];
+    var tumbonss = [];
+    var zipcode5 = [];
+    var sitecodess = [];
+    var latitudes = [];
+    var longtitudes = [];
+    var CheckShowBuildNo = true;
+    var blacklistCondo = "";
+    var tangleListCondo = "";
+    blacklistCondo = @Html.Raw(Json.Encode(BLACKLIST_CONDO_SELL_ROUTER))
+    tangleListCondo = @Html.Raw(Json.Encode(TANGLE_CONDO_SELL_ROUTER))
+
+    $(document).ready(function () {
+
+        setTimeout(function () {
+            getBuildingBatch();
+        }, 100);
+
+        selectPage(1);
+
+        $("#CoveragePanelModel_Address_L_FLOOR").inputmask('Regex', {
+            regex: "@Input_Floor",
+        });
+
+        $('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').inputmask('Regex', {
+            regex: "@Input_Building",
+        });
+
+
+        $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").inputmask('Regex', {
+            regex: "@Input_Building_No",
+        });
+
+        $("#CoveragePanelModel_Address_L_ROAD").inputmask('Regex', {
+            regex: "@Input_Road",
+        });
+
+        $("#CoveragePanelModel_Address_L_SOI").inputmask('Regex', {
+            regex: "@Input_Soi",
+        });
+
+        $("#CoveragePanelModel_Address_L_MOO").inputmask('Regex', {
+            regex: "@Input_Moo",
+        });
+
+        $("#CoveragePanelModel_Address_L_HOME_NUMBER_1").inputmask('Regex', {
+            regex: "@Input_Home_Number",
+        });
+
+        $('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').bind('typeahead:select', function (ev, suggestion) {
+            typeaheadoncomplete(suggestion);
+            $("#CoveragePanelModel_Address_L_HOME_NUMBER_1").focus();
+        });
+
+        $('#CoveragePanelModel_Address_L_BUILD_NAME_Hied').bind('typeahead:change', function (ev, suggestion) {
+            typeaheadoncomplete(suggestion);
+            if (!CheckShowBuildNo) $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").show();
+        });
+
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").keypress(function (e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+            }
+        });
+
+        $("input:text.tt-hint").remove();
+
+        chk_RegisterDevice();
+        getProvince();
+    });
+
+    $('#btnBackPageSelectModel').click(function () {
+        $('#page1').hide();
+        $('#page0').show();
+        $("#wrapSwitchLanguage").show();
+        selectPage(1);
+    });
+
+    var checkPortFull = true;
+    $('#checkProcess').click(function () {
+        LockScreen(true, "");
+
+        checkPortFull = true;
+        var chk = false;
+        var y = true;
+        var a = [];
+
+        a.push({ id: "COVERAGE_L_PROVINCE" });
+        a.push({ id: "COVERAGE_L_AMPHUR" });
+        a.push({ id: "COVERAGE_L_TUMBOL" });
+
+        if ($("#L_BUILD_NAME").val() == "0") {
+            a.push({ id: "CoveragePanelModel_Address_L_BUILD_NAME_Hied" });
+            a.push({ id: "L_BUILD_NO" });
+
+            if ($("#DIV_D_L_BUILD_NO").css('display') == 'none') {
+                // case buildname has not buildno
+                a.pop({ id: "L_BUILD_NO" });
+            }
+        }
+        else {
+            a.push({ id: "L_BUILD_NAME" });
+            a.push({ id: "L_BUILD_NO" });
+            if ($("#DIV_D_L_BUILD_NO").css('display') == 'none') {
+                // case buildname has not buildno
+                a.pop({ id: "L_BUILD_NO" });
+            }
+        }
+
+        if ($("input[name=L_HAVE_FIXED_LINE]:checked").val() == undefined)
+            y = false;
+
+        $('#CoveragePanelModel_BuildingType').val("C");
+
+        a.push({ id: "CoveragePanelModel_Address_L_HOME_NUMBER_1" });
+        a.push({ id: "CoveragePanelModel_Address_L_SOI", required: false });
+        a.push({ id: "CoveragePanelModel_Address_L_ROAD", required: false });
+        a.push({ id: "CoveragePanelModel_Address_L_MOO", required: false });
+        a.push({ id: "CoveragePanelModel_Address_L_ZIPCODE" });
+
+        chk = ValidationProcessing(a, "err001");
+
+        if (chk == true) {
+
+            if (!y) {
+                LockScreen(false);
+                toastrErrorMessage("@L_DO_YOU_HAVE_PHONE");
+            }
+            else {
+                $("#CoveragePanelModel_CVRID").val($("#L_BUILD_NO").val());
+
+                if ($("#L_BUILD_NAME").val() == "0") {
+                    if (selected_building_obj.building_name != "") {
+                        $("#CoveragePanelModel_CVR_NODE").val(selected_building_obj.building_name);
+                    }
+                    else {
+                        $("#CoveragePanelModel_CVR_NODE").val($("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val());
+                    }
+                } else if ($("#L_BUILD_NAME").val() != "") {
+                    $("#CoveragePanelModel_CVR_NODE").val($("#L_BUILD_NAME option:selected").text());
+                }
+
+                $("#CoveragePanelModel_CVR_TOWER").val($("#L_BUILD_NO option:selected").text());
+
+                handleCheckingCoverage(function () {
+
+                    
+                        if ($("#CoveragePanelModel_CoverageResult").val() == "PLAN") {
+                            LockScreen(false);
+                            gotoOutOfCoverage();
+                        }
+                        else if ($("#CoveragePanelModel_CoverageResult").val() == "NO") {
+                            LockScreen(false);
+                            gotoOutOfCoverage();
+                        }
+                        else {
+                            if (blacklistCondo.indexOf($("#CoveragePanelModel_Address_AddressId").val()) == -1) {
+                                if (checkPortFull) {
+                                    setTimeout(function () {
+                                        try {
+                                            getPackageV2();
+                                        } catch (e) {
+                                            LockScreen(false);
+                                            console.log(e);
+                                        }
+                                    }, 10);
+                                }
+                                else {
+                                    LockScreen(false);
+                                    PopupMessage('@Html.Raw(L_POPUP_BYOD_PORT_FULL)');
+                                    $('#myModal').modal('show');
+                                }
+                            }
+                            else {
+                                LockScreen(false);
+                                PopupMessage('@Html.Raw(L_POPUP_BLACKLIST_CONDO)');
+                                $('#myModal').modal('show');
+                            }
+                        }
+                        insertFBSSCoverageResult();                   
+                });
+            }
+        } else {
+            LockScreen(false);
+        }
+    });
+
+    function handleCheckingCoverage(callback) {
+        if (!CheckBuildCoverage) {
+            $("#CoveragePanelModel_CoverageResult").val('NO');
+            gotoOutOfCoverage();
+        }
+        else {
+            checkCoverageZTE(callback);
+        }
+    }
+
+    function selectPage(operNo) {
+
+        $("#status_th_div").hide();
+        $("#status_en_div").hide();
+
+        for (var j = 1; j <= 4; j++) {
+            $("#status_th_div").children("#status_th_" + j + "_imgo").hide();
+            $("#status_en_div").children("#status_en_" + j + "_imgo").hide();
+        }
+        for (var j = 1; j <= 4; j++) {
+            $("#status_th_div").children("#status_th_" + j + "_imgf").hide();
+            $("#status_en_div").children("#status_en_" + j + "_imgf").hide();
+        }
+
+        for (var j = 1; j <= operNo; j++) {
+                if ($("#LanguagePage").val() == "1") {
+                    $("#status_th_div").children("#status_th_" + j + "_imgo").show();
+                }
+                else {
+                    $("#status_en_div").children("#status_en_" + j + "_imgo").show();
+                }
+        }
+        for (var j = operNo + 1; j <= 4; j++) {
+                if ($("#LanguagePage").val() == "1") {
+                    $("#status_th_div").children("#status_th_" + j + "_imgf").show();
+                }
+                else {
+                    $("#status_en_div").children("#status_en_" + j + "_imgf").show();
+                }
+        }
+
+        if ($("#LanguagePage").val() == "1") {
+            $("#status_th_div").show();
+        }
+        else {
+            $("#status_en_div").show();
+        }
+    }
+
+    var selected_building_obj = sgst_selected_building_obj = "";
+    function clear_building_ogj() {
+        selected_building_obj = sgst_selected_building_obj = {
+            "address_id": "",
+            "amphur": "",
+            "building_name": "",
+            "building_name_for_srh": "",
+            "lang": "",
+            "province": "",
+            "sitecode": "",
+            "tumbon": "",
+            "zipcode": "",
+            "zipcode_rowid": ""
+        };
+    };
+    clear_building_ogj();
+    function typeaheadoncomplete(suggestion, round, builono) {
+
+        if (sgst_selected_building_obj.building_name === suggestion) {
+
+            return false;
+        }
+
+        buildnos = [];
+        var lang = "T";
+        if ($("#LanguagePage").val() == "2")
+            lang = "E";
+
+        var addrType = "B";
+        var selected_building = '';
+        var addressid = addressIdMathced(suggestion);
+        var pro = '';
+        var aum = '';
+        var tum = '';
+        var zipcode = '';
+        var sitecode = '';
+        var latitude = '';
+        var longtitude = '';
+
+        $("#CoveragePanelModel_L_LAT").val("");
+        $("#CoveragePanelModel_L_LONG").val("");
+
+        selected_building = $.grep(buildings, function (e) {
+            return (e.address_id == addressid && e.lang == lang);
+        });
+
+        sgst_selected_building = $.grep(buildings, function (e) {
+            return (e.building_name_for_srh == suggestion);
+        });
+
+        if (suggestion) {
+            if (addressid && selected_building.length > 0) {
+                CheckVillCoverage = true;
+                CheckBuildCoverage = true;
+                CheckShowBuildNo = true;
+
+                selected_building_obj = selected_building[0];
+                sgst_selected_building_obj = sgst_selected_building[0];
+
+                pro = selected_building[0].province;
+                aum = selected_building[0].amphur;
+                tum = selected_building[0].tumbon;
+                zipcode = selected_building[0].zipcode;
+                sitecode = selected_building[0].sitecode;
+                latitude = selected_building[0].latitude;
+                longtitude = selected_building[0].longtitude;
+
+                getProvince(pro);
+                onProvinceChangeNew(aum, pro);
+                onAmphurChangeNew(aum, tum, pro);
+                getZipCodeNew();
+                onZipCodeChangeByBuildingName(selected_building[0].zipcode_rowid);
+
+                getBuildingNoBatch(selected_building[0].zipcode_rowid, selected_building_obj.building_name, builono);
+                $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").hide();
+                $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val("");
+                $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").typeahead('val', sgst_selected_building_obj.building_name);
+                $("#CoveragePanelModel_Address_L_ZIPCODE").attr("disabled", "disabled");
+                $("#selected_building_address_id").val(selected_building[0].address_id);
+                $("#selected_building_AccessMode").val(selected_building[0].AccessMode);
+
+                $("#CoveragePanelModel_L_LAT").val(latitude);
+                $("#CoveragePanelModel_L_LONG").val(longtitude);
+            }
+            else {
+                $("#selected_building_address_id").val("");
+                $("#selected_building_AccessMode").val("");
+                handleSuggestionNotMatched();
+                $("#CoveragePanelModel_Address_L_ZIPCODE").removeAttr("disabled");
+            }
+        }
+        else {
+            $("#selected_building_address_id").val("");
+            $("#selected_building_AccessMode").val("");
+            clear_building_ogj();
+            CheckBuildCoverage = false;
+            CheckShowBuildNo = true;
+            $("#DIV_D_L_BUILD_NO").show();
+            var strBuilder = '<option value="">' + '@L_BUILDING_NO' + '</option>';
+            $("#L_BUILD_NO").empty();
+            $("#L_BUILD_NO").append(strBuilder);
+            $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").hide();
+            $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val("");
+            $("#CoveragePanelModel_Address_L_ZIPCODE").removeAttr("disabled");
+        }
+
+        $('#COVERAGE_L_PROVINCE').select2();
+        $('#COVERAGE_L_AMPHUR').select2();
+        $('#COVERAGE_L_TUMBOL').select2();
+        $("#L_BUILD_NO").select2();
+
+        return false;
+    };
+
+    function addressIdMathced(suggestion) {
+        try {
+            return addressIds[getIndexIfObjWithOwnAttr(states, suggestion)];
+        } catch (e) {
+            return "";
+        }
+    }
+
+    function addressIdMathcedShortName(suggestion) {
+        try {
+            return addressIds[getIndexIfObjWithOwnAttrShortName(states, suggestion)];
+        } catch (e) {
+            return "";
+        }
+    }
+
+    function handleSuggestionNotMatched() {
+        CheckBuildCoverage = false;
+        CheckShowBuildNo = false;
+        $("#DIV_D_L_BUILD_NO").hide();
+        $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").show();
+    }
+
+    function chunkBloodHoudDataSet(data) {
+        var dataSources = [];
+        var i, j, chunkSize = 1000;
+        for (i = 0, j = data.length; i < j; i += chunkSize) {
+            tempArray = data.slice(i, i + chunkSize);
+            var d = $.map(tempArray, function (item) {
+                return item;
+            });
+            dataSources.push(createBloodhoundEngine(d));
+        }
+
+        return dataSources;
+    }
+
+    function createTypeahead(idName, datasets) {
+
+        $(idName).typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+        }, chunkBloodHoudDataSet(datasets));
+
+        removeTypeaheadLoading(idName);
+    };
+
+    function createBloodhoundEngine(datasets) {
+
+        var engine = new Bloodhound({
+            local: datasets,
+            limit: 1,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            datumTokenizer: function (d) {
+                var tokens;
+                var wordSprites = ["อาคาร", "บ้าน"];
+                try {
+                    var bloodHoundtokens = Bloodhound.tokenizers.whitespace(d);
+                    tokens = [d].concat(bloodHoundtokens);
+                    var dewhiteSpaceToke = bloodHoundtokens.join('');
+                    tokens.push(dewhiteSpaceToke);
+
+                    if (dewhiteSpaceToke.indexOf('-') > -1) {
+                        tokens.push(dewhiteSpaceToke.replace('-', ''));
+                    }
+
+                    for (var i = 0; i < wordSprites.length; i++) {
+                        var word = wordSprites[i];
+                        if (dewhiteSpaceToke.indexOf(word) > -1) {
+                            tokens = tokens.concat(Bloodhound.tokenizers.whitespace(dewhiteSpaceToke.replace(word, word + ' ')));
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                    tokens = [""];
+                }
+
+                return tokens;
+            },
+        });
+
+        engine.initialize();
+
+        var src = {
+            source: engine.ttAdapter(),
+        }
+        return src;
+    }
+
+    function removeTypeaheadLoading(id) {
+        $(id).removeClass('ui-autocomplete-loading');
+        $(id).removeAttr('disabled');
+    }
+
+    function showTypeaheadLoading(id) {
+        $(id).addClass('ui-autocomplete-loading');
+        $(id).attr('disabled', 'disabled');
+    }
+
+    function destroyTypeahead(idName) {
+        $(idName).typeahead('destroy');
+        if (bloodEngine) {
+            bloodEngine.clear();
+        }
+    };
+
+    function substringMatcher(strs) {
+        return function findMatches(q, cb) {
+            var matches, substringRegex;
+            matches = [];
+            substrRegex = new RegExp(q, 'i');
+            $.each(strs, function (i, str) {
+                if (substrRegex.test(str)) {
+                    matches.push(str);
+                }
+            });
+            cb(matches);
+        };
+    };
+
+    function getIndexIfObjWithOwnAttr(array, value) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] === value) {
+                return i;
+            }
+        }
+        return -1;
+    };
+
+    var bloodEngine = null;
+    var buildings = [];
+    var states = [];
+    var buildnos = [];
+    var zipcodes = [];
+    var addressIds = [];
+    var provincess = [];
+    var amphurss = [];
+    var tumbonss = [];
+    var zipcode5 = [];
+    var sitecodess = [];
+    var latitudes = [];
+    var longtitudes = [];
+    var CheckVillCoverage = false;
+    var CheckBuildCoverage = true;
+    var CheckShowBuildNo = true;
+
+    function getProvince(province) {
+        ajaxGetProvince(province, false);
+    }
+
+    function getProvinceAsync(province) {
+        ajaxGetProvince(province, true);
+    }
+
+    function ajaxGetProvince(selectedProvice, isAsync) {
+        $('#COVERAGE_L_PROVINCE').empty();
+        var str = '<option disabled selected value="">' + "@L_PROVINCE" + '</option>';
+
+        $('#COVERAGE_L_PROVINCE').append(str);
+        $.ajax({
+            type: "GET",
+            url: "/Scpe/GetProvince",
+            dataType: "json",
+            async: isAsync,
+            success: function (data) {
+                var strBuilder = '';
+                $.each(data, function (i, e) {
+                    var s = "";
+
+                    if (selectedProvice == e.Text) s = "selected";
+
+                    var str = '<option value="' + e.Value + '"' + s + '>' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+
+                $('#COVERAGE_L_PROVINCE').append(strBuilder);
+                $('#COVERAGE_L_PROVINCE').select2();
+            }
+        });
+    }
+
+    function onAmphurChangeNew(amphur, tumbol, province) {
+
+        $('#COVERAGE_L_TUMBOL').empty();
+
+        var pv = $('#COVERAGE_L_PROVINCE').val();
+
+        if (province != undefined) pv = province;
+
+        var aphur = ""
+        if ($('#COVERAGE_L_AMPHUR').val() != "" && $('#COVERAGE_L_AMPHUR').val() != null)
+            aphur = $('#COVERAGE_L_AMPHUR').val();
+        else
+            aphur = amphur;
+
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetTumbon",
+            async: false,
+            data: { 'provinceFilter': pv, 'amphurFilter': aphur },
+            dataType: "json",
+            success: function (data) {
+
+                var strBuilder = "<option value='' disabled selected >" + "@L_SUB_DISTRICT" + "</option>";
+                $.each(data, function (i, e) {
+
+                    var s = "";
+                    if (tumbol == e.Value) s = "selected";
+
+                    var str = '<option value="' + e.Value + '"' + s + '>' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+
+                $('#COVERAGE_L_TUMBOL').append(strBuilder);
+                $('#COVERAGE_L_TUMBOL').select2();
+            },
+            error: function (data) {
+                var dd = data.error;
+
+            }
+        });
+
+    }
+
+    function onAmphurChange(amphur, tumbol, province) {
+        $('#COVERAGE_L_TUMBOL').empty();
+        clearaddressPanel();
+
+        var pv = $('#COVERAGE_L_PROVINCE').val();
+
+        if (province != undefined) pv = province;
+
+        var aphur = ""
+        if ($('#COVERAGE_L_AMPHUR').val() != "" && $('#COVERAGE_L_AMPHUR').val() != null)
+            aphur = $('#COVERAGE_L_AMPHUR').val();
+        else
+            aphur = amphur;
+
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetTumbon",
+            data: { 'provinceFilter': pv, 'amphurFilter': aphur },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+
+                var strBuilder = "<option value='' disabled selected >" + "@L_SUB_DISTRICT" + "</option>";
+                $.each(data, function (i, e) {
+                    var s = "";
+                    if (tumbol == e.Value) s = "selected";
+
+                    var str = '<option value="' + e.Value + '"' + s + '>' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+
+                $('#COVERAGE_L_TUMBOL').append(strBuilder);
+            }
+        });
+        resetOrDefault();
+        $('#COVERAGE_L_TUMBOL').select2();
+    }
+
+    function onProvinceChangeNew(amphur, province) {
+
+        var pv = $('#COVERAGE_L_PROVINCE').val();
+
+        if (province != undefined) pv = province;
+
+        $('#COVERAGE_L_AMPHUR').empty();
+        $('#COVERAGE_L_TUMBOL').empty();
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetAmphur",
+            dataType: "json",
+            data: { 'provinceFilter': pv },
+            async: false,
+            success: function (data) {
+
+                var strBuilder = "<option value='' disabled selected >" + "@L_DISTRICT" + "</option>";
+                $.each(data, function (i, e) {
+                    var s = "";
+                    if (amphur == e.Value) s = "selected";
+
+                    var str = '<option value="' + e.Value + '"' + s + '>' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+                $('#COVERAGE_L_AMPHUR').append(strBuilder);
+                $('#COVERAGE_L_AMPHUR').select2();
+            }
+        });
+
+            $('#COVERAGE_L_TUMBOL').append("<option value='' disabled selected >" + "@L_SUB_DISTRICT" + "</option>");
+    }
+
+    function onProvinceChange(amphur, province) {
+
+        var pv = $('#COVERAGE_L_PROVINCE').val();
+
+        if (province != undefined) pv = province;
+
+        $('#COVERAGE_L_AMPHUR').empty();
+        $('#COVERAGE_L_TUMBOL').empty();
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetAmphur",
+            dataType: "json",
+            data: { 'provinceFilter': pv },
+            async: false,
+            success: function (data) {
+                var strBuilder = "<option value='' disabled selected >" + "@L_DISTRICT" + "</option>";
+                $.each(data, function (i, e) {
+                    var s = "";
+                    if (amphur == e.Value) s = "selected";
+
+                    var str = '<option value="' + e.Value + '"' + s + '>' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+                $('#COVERAGE_L_AMPHUR').append(strBuilder);
+            }
+        });
+
+        $('#COVERAGE_L_TUMBOL').append("<option value='' disabled selected >" + "@L_DISTRICT" + "</option>");
+        resetOrDefault();
+        $('#COVERAGE_L_AMPHUR').select2();
+        $('#COVERAGE_L_TUMBOL').select2();
+    }
+
+    function getZipCodeNew(tw, bd, p, a, t, mb, bn) {
+        $("#OwnerByBuild").val("");
+        $("#CoveragePanelModel_Address_L_ZIPCODE").removeAttr("disabled");
+        var pro = $("#COVERAGE_L_PROVINCE").val();
+        var amp = $("#COVERAGE_L_AMPHUR").val();
+        var tum = $("#COVERAGE_L_TUMBOL").val();
+
+        if (p != undefined) pro = p;
+        if (a != undefined) amp = a;
+        if (t != undefined) tum = t;
+
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetCoverageZipCode",
+            dataType: "json",
+            data: {
+                'provinceFilter': pro,
+                'amphurFilter': amp,
+                'tumbonFilter': tum,
+                "sso": ""
+            },
+            async: false,
+            success: function (data) {
+                var tempZipCode = "";
+                if (data.zipCodeList.length == 1)
+                    $("#CoveragePanelModel_Address_L_ZIPCODE option[value='']").remove();
+
+                $.each(data.zipCodeList, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    tempZipCode += str;
+                });
+                $('#CoveragePanelModel_Address_L_ZIPCODE').empty();
+                $('#CoveragePanelModel_Address_L_ZIPCODE').append(tempZipCode);
+                $('#CoveragePanelModel_Address_L_ZIPCODE').select2();
+            }
+        });
+
+    }
+
+    function getZipCode(tw, bd, p, a, t, mb, bn) {
+
+        clearaddressPanel();
+
+        $("#OwnerByBuild").val("");
+        $("#CoveragePanelModel_Address_L_ZIPCODE").removeAttr("disabled");
+
+        var pro = $("#COVERAGE_L_PROVINCE").val();
+        var amp = $("#COVERAGE_L_AMPHUR").val();
+        var tum = $("#COVERAGE_L_TUMBOL").val();
+
+        if (p != undefined) pro = p;
+        if (a != undefined) amp = a;
+        if (t != undefined) tum = t;
+
+
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetCoverageZipCode",
+            dataType: "json",
+            data: {
+                'provinceFilter': pro,
+                'amphurFilter': amp,
+                'tumbonFilter': tum,
+                "sso": ""
+            },
+            async: false,
+            success: function (data) {
+                var tempZipCode = "";
+                if (data.zipCodeList.length == 1)
+                    $("#CoveragePanelModel_Address_L_ZIPCODE option[value='']").remove();
+
+                $.each(data.zipCodeList, function (i, e) {
+                    var str = '<option value="' + e.Value + '">' + e.Text + '</option>';
+                    tempZipCode += str;
+                });
+
+                $('#CoveragePanelModel_Address_L_ZIPCODE').empty();
+                $('#CoveragePanelModel_Address_L_ZIPCODE').append(tempZipCode);
+                $('#CoveragePanelModel_Address_L_ZIPCODE').select2();
+
+                getBuildingBatch(p, a, t, mb, tw, bd);
+                onZipCodeChange();
+            }
+        });
+
+    }
+
+    function onZipCodeChangeByBuildingName(buildingZipcodeRowId) {
+        $('#CoveragePanelModel_Address_L_ZIPCODE').val(buildingZipcodeRowId);
+        $('#CoveragePanelModel_Address_L_ZIPCODE').select2();
+        $("#CoveragePanelModel_Address_ZIPCODE_ID").val(buildingZipcodeRowId);
+    }
+
+    function onZipCodeChange() {
+        $("#CoveragePanelModel_Address_ZIPCODE_ID").val($('#CoveragePanelModel_Address_L_ZIPCODE').val());
+    }
+
+    function clearaddressPanel() {
+        $("#CoveragePanelModel_Address_L_FLOOR").val("");
+        $("#CoveragePanelModel_Address_L_HOME_NUMBER_1").val("");
+        $("#CoveragePanelModel_Address_L_MOO").val("");
+        $("#CoveragePanelModel_Address_L_SOI").val("");
+        $("#CoveragePanelModel_Address_L_ROAD").val("");
+
+        $('#CoveragePanelModel_Address_L_ZIPCODE').empty();
+        $('#CoveragePanelModel_Address_L_ZIPCODE').append("<option value='' disabled selected>" + "@L_ZIP_CODE" + "</option>");
+        $('#CoveragePanelModel_Address_L_ZIPCODE').select2();
+    }
+
+    function resetOrDefault() {
+        disabledTower();
+        resetMainAddress();
+        getBuildingBatch(undefined, undefined, undefined, undefined, undefined, undefined);
+
+
+    }
+
+    function disabledTower() {
+        clear_building_ogj();
+        //$("#DIV_D_L_BUILD_NO").show();
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val("");
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").typeahead("val", "");
+        $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val("");
+        $("#CoveragePanelModel_Address_L_FLOOR").val("");
+        $("#L_BUILD_NAME option[value='']").attr("selected", "selected");
+        $("#L_BUILD_NO option[value='']").attr("selected", "selected");
+        $("input[name=L_HAVE_FIXED_LINE]").prop("checked", false);
+
+        //clear validate
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").removeClass();
+        $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").addClass("form-control");
+        $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").removeClass();
+        $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").addClass("form-control");
+
+        $("#CoveragePanelModel_Address_L_FLOOR").removeClass();
+        $("#CoveragePanelModel_Address_L_FLOOR").addClass("form-control");
+    }
+
+    function resetMainAddress() {
+        resetMainAddress2();
+        $('#CoveragePanelModel_Address_L_ZIPCODE').empty();
+        $('#CoveragePanelModel_Address_L_ZIPCODE').append("<option value='' disabled selected>" + "@L_ZIP_CODE" + "</option>");
+    }
+
+    function resetMainAddress2() {
+        $("#CoveragePanelModel_Address_L_ZIPCODE").removeAttr("disabled");
+    }
+
+    function getBuildingBatch(sffProvince, sffAmphur, sffTumbol, sffMb, sffTw, sffBb) {
+        var lang = "T";
+        var temp = "";
+
+        var province = $("#COVERAGE_L_PROVINCE").val();
+        var amphur = $("#COVERAGE_L_AMPHUR").val();
+        var tumbol = $("#COVERAGE_L_TUMBOL").val();
+
+        var loc_code = $("#CustomerRegisterPanelModel_L_LOC_CODE").val();
+
+        var valueMatch = "";
+        var pC = "";
+        var bN = "";
+
+        if (sffProvince != undefined) province = sffProvince;
+        if (sffAmphur != undefined) amphur = sffAmphur;
+        if (sffTumbol != undefined) tumbol = sffTumbol;
+
+        if ($("#LanguagePage").val() == "2")
+            lang = "E";
+
+        addrType = "B";
+        valueMatch = sffTw;
+        temp = "<option value='' disabled selected>@L_SEARCH_BUILDING_NAME</option>";
+        showTypeaheadLoading("#CoveragePanelModel_Address_L_BUILD_NAME_Hied");
+
+    $.ajax({
+        type: "GET",
+        url: "/CheckCoverage/GetBuildingChange",
+        data: {
+            "province": province, "aumphur": amphur, "tumbon": tumbol,
+            "type": addrType, "language": lang, "loc_code": loc_code,
+            "accessMode": "XDSL"
+        },
+        dataType: "json",
+        //async: false,
+        success: function (data) {
+
+            var chkMatch = false;
+
+            buildings = [];
+            states = [];
+            zipcodes = [];
+            addressIds = [];
+            provincess = [];
+            amphurss = [];
+            tumbonss = [];
+            zipcode5 = [];
+            sitecodess = [];
+            latitudes = [];
+            longtitudes = [];
+
+            $('pre').html('');
+
+            destroyTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied');
+            $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").hide();
+            $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val("");
+
+            $.each(data, function (i, e) {
+                var s = "";
+                if (valueMatch === e.Text) {
+                    s = "selected";
+                    pC = e.Value;
+                    bN = e.Text;
+                    temp = temp.replace("selected", " ");
+                    chkMatch = true;
+                }
+
+                var str = "<option value='" + e.Value + "' " + s + ">" + e.Text + "</option>";
+                temp += str;
+
+                if (e.Value && e.Value !== '0') {
+                    var building_json = JSON.parse(e.Value);
+                    buildings.push(building_json);
+                    states.push(building_json.building_name_for_srh);
+                    zipcodes.push(building_json.zipcode_rowid);
+                    addressIds.push(building_json.address_id);
+                    provincess.push(building_json.province);
+                    amphurss.push(building_json.amphur);
+                    tumbonss.push(building_json.tumbon);
+                    zipcode5.push(building_json.zipcode);
+                    sitecodess.push(building_json.sitecode);
+                    latitudes.push(building_json.latitude);
+                    longtitudes.push(building_json.longtitude);
+                    if (building_json.AccessMode) {
+                        
+                    }
+                }
+            });
+
+
+            if (addrType == "B") {
+                if (!chkMatch && sffTw != "" && sffTw != undefined) {
+                    resetMainAddress2();
+                    $("#DIV_L_BUILD_NAME").hide();
+                    $("#DIV_D_L_BUILD_NO").hide();
+
+                    destroyTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied');
+                    $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val("");
+                    clear_building_ogj();
+
+
+                    createTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied', states);
+
+                    $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").show();
+                    $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").removeAttr("disabled");
+                    $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").typeahead('val', sffTw.toUpperCase());
+                    selected_building_obj.building_name = sffTw.toUpperCase();
+
+                    $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").show();
+                    $("#L_BUILD_NAME").val("0");
+                }
+                else {
+                    $("#DIV_L_BUILD_NAME").hide();
+                    $("#DIV_D_L_BUILD_NO").hide();
+                    $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").show();
+                    $("#L_BUILD_NAME").val("0");
+
+                    if (chkMatch)
+                        $("#CoveragePanelModel_Address_L_ZIPCODE").attr("disabled", "disabled");
+
+                    destroyTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied');
+                    createTypeahead('#CoveragePanelModel_Address_L_BUILD_NAME_Hied', states);
+
+                }
+
+
+                if (!chkMatch && sffBb !== undefined && sffBb !== '') {
+                    typeaheadoncomplete(selected_building_obj.building_name);
+                };
+
+                if (chkMatch && sffBb !== undefined && sffBb !== '') {
+                    typeaheadoncomplete(sffTw, undefined, sffBb);
+                };
+            }
+            else if (addrType == "V") {
+                if (!chkMatch && sffMb != "" && sffMb != undefined) {
+                    $("#Mooban1").append(temp);
+                    $("#Mooban1").val("0");
+                    $("#divMooban1").hide();
+                    $("#Mooban2").show();
+                    $("#Mooban2").typeahead("val", sffMb);
+                    selected_building_obj.building_name = sffTw;
+                }
+                else {
+                    $("#Mooban1").empty();
+                    $("#Mooban1").append(temp);
+                    $("#Mooban1").val("0");
+                    createTypeahead('#Mooban2', states);
+                    if (chkMatch && sffMb != "" && sffMb != undefined) {
+                        $("#Mooban2").typeahead("val", sffMb);
+                        selected_building_obj.building_name = sffTw;
+                        typeaheadoncomplete(sffMb);
+                    };
+                }
+            }
+            $("input:text.tt-hint").remove();
+        }
+    });
+}
+
+    function getBuildingNoBatch(pC, bN, b) {
+
+        buildnos = [];
+
+        $("#L_BUILD_NO").empty();
+        var lang = "T";
+        var temp = "";
+        var postCode = $("#L_BUILD_NAME").val();
+        var buildName = $("#L_BUILD_NAME option:selected").text();
+        if (pC != undefined && bN != undefined) {
+            postCode = pC;
+            buildName = bN;
+        }
+        if (bN != undefined) {
+            buildName = bN;
+        }
+        if ($("#LanguagePage").val() == "2")
+            lang = "E";
+
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetBuildingNo",
+            data: {
+                "postcode": postCode, "build_name": buildName, "language": lang
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                temp += "<option value='' disabled selected>@L_BUILDING_NO</option>";
+                var s = "";
+
+                if (data.length == 1) {
+                    s = "selected";
+                    temp = temp.replace("selected", " ");
+                }
+
+                $.each(data, function (i, e) {
+
+                    if (b == e.Value && data.length > 1) {
+                        s = "selected";
+                        temp = temp.replace("selected", " ");
+                    }
+
+                    var str = '<option value="' + e.Value + '"' + s + '>' + e.Text + '</option>';
+                    temp += str;
+                    s = '';
+
+                    if (e.Value !== '0') {
+                        buildnos.push(e.Text);
+                    }
+                });
+
+                $("#L_BUILD_NO").append(temp);
+
+                if ((buildName !== undefined && buildName !== '') && data.length === 0) {
+                    $("#DIV_D_L_BUILD_NO").hide();
+                    $("#DIV_BUILD_NO_OUTER").hide();
+                } else {
+                    $("#DIV_D_L_BUILD_NO").show();
+                    $("#DIV_BUILD_NO_OUTER").show();
+                };
+
+            }
+        });
+    }
+
+    function insertFBSSCoverageResult() {
+        var addrType = "";
+        var floor = "";
+        var postCode = $("#CoveragePanelModel_Address_L_ZIPCODE option:selected").text();
+        var lang = "T";
+        var subDisName = $("#COVERAGE_L_TUMBOL").val();
+        var buildName = $("#L_BUILD_NAME option:selected").text();
+        var buildNo = $('#L_BUILD_NO option:selected').text();
+        var phoneFlag = $("input[name=L_HAVE_FIXED_LINE]:checked").val();
+        var addrNo = $("#CoveragePanelModel_Address_L_HOME_NUMBER_1").val();
+        var zipRowId = $("#CoveragePanelModel_Address_ZIPCODE_ID").val();
+        var moo = $("#CoveragePanelModel_Address_L_MOO").val();
+        var soi = $("#CoveragePanelModel_Address_L_SOI").val();
+        var road = $("#CoveragePanelModel_Address_L_ROAD").val();
+
+        if (phoneFlag == "" || phoneFlag == undefined)
+            phoneFlag = "N";
+
+        if (buildNo == "@L_BUILDING_NO")
+            buildNo = "";
+
+        if ($("#LanguagePage").val() == "2")
+            lang = "E";
+
+
+        floor = $("#CoveragePanelModel_Address_L_FLOOR").val();
+        addrType = "B";
+
+
+        if ($("#L_BUILD_NAME").val() === "0") {
+            buildName = $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val();
+            if (buildNo == "") {
+                buildNo = $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val();
+            }
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/FBSSCoverageResultCommand",
+            data: {
+                "actionType": "Insert", "addrType": addrType, "postCode": postCode, "subDistrict": subDisName,
+                "lang": lang, "buildName": buildName, "buildNo": buildNo, "phoneFlg": phoneFlag, "floor": floor, "addrNo": addrNo,
+                "moo": moo, "soi": soi, "road": road, "lat": "", "lng": "", "coverage": $("#ZTECoverage").val(), "addrId": $("#ZTEAddressID").val(),
+                "accessMode": $("#ZTEAccessModeSerializer").val(), "planSite": $("#ZTEPlanSite").val(), "isPartner": $("#ZTEIsPartner").val(),
+                "partner": $("#ZTEPartnerName").val(), "productType": "", "zipRowId": zipRowId, "owner": "", "interfaceId": $("#ZTEInterfaceLogID").val(),
+                "chkCoverage": false
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#HdResultId").val(data);
+            }
+        });
+    }
+
+    function checkCoverageZTE(callback) {
+        $("#HdCheckXDSL").val("");
+        $("#HdFunctionCoverageResult").val("");
+        $("#ZTEAccessModeFWA").val("");
+        $("#ZTECoverage").val("");
+        $("#ZTEPlanSite").val("");
+        $("#ZTEAddressID").val("");
+        $("#ZTEIsPartner").val("");
+        $("#ZTEPartnerName").val("");
+        $("#ZTEAccessModeSerializer").val("");
+        $("#ZTEInterfaceLogID").val("");
+        $("#tempDslam").html("");
+        $("#tempDslamJson").val("");
+        $("#L_SplitterFlagFirstTime").val("");
+        $("#L_SplitterFlag").val("");
+        $("#CoveragePanelModel_L_FLOWFLAG").val("");
+
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+        $('#L_INSTALL_DATE').val("");
+        $('#AppointmentDateSelect').val("");
+
+        var addrType = "";
+        var floor = "";
+        var postCode = $("#CoveragePanelModel_Address_L_ZIPCODE option:selected").text();
+        var lang = "T";
+        var subDisName = $("#COVERAGE_L_TUMBOL").val();
+        var buildName = "";
+        var buildNo = "";
+        var phoneFlag = $("input[name=L_HAVE_FIXED_LINE]:checked").val();
+
+        $("#CoveragePanelModel_L_HAVE_FIXED_LINE").val(phoneFlag);
+
+        if (phoneFlag == "" || phoneFlag == undefined)
+            phoneFlag = "N";
+
+        if ($("#LanguagePage").val() == "2")
+            lang = "E";
+
+        floor = $("#CoveragePanelModel_Address_L_FLOOR").val();
+
+        buildNo = $('#L_BUILD_NO option:selected').val();
+        if ($("#L_BUILD_NAME").val() === '0') {
+            if (buildNo == "")
+                buildNo = $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val();
+        }
+
+        addrType = "B";
+        if ($("#L_BUILD_NAME").val() == "0") {
+            if (selected_building_obj.building_name != "") {
+                buildName = selected_building_obj.building_name;
+            }
+            else {
+                buildName = $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val();
+            }
+        }
+        else {
+            buildName = $("#L_BUILD_NAME option:selected").text();
+        }
+
+        $('#P_addrtype').val(addrType);
+        $('#P_build_name').val(buildName);
+        $('#P_build_no').val(buildNo);
+        $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val(buildNo);
+
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetFBSSFeasibilityCheck",
+            data: {
+                "addrType": addrType, "postCode": postCode, "lang": lang, "subDisName": subDisName, "buildName": buildName, "buildNo": buildNo,
+                "phoneFlag": phoneFlag, "latitude": "", "longitude": "", "unitNo": "", "floor": floor, "aisAirNumber": "|"
+            },
+            dataType: "json",
+            success: function (data) {
+                var haveVDSL = false;
+                var strResult = "";
+                $("#ZTECoverage").val(data.Coverage);
+                $("#CoveragePanelModel_CoverageResult").val(data.Coverage);
+                $("#ZTEInterfaceLogID").val(data.InterfaceLogId);
+
+                if (data.Coverage == "YES" || data.Coverage == "FULL") {
+
+                    $('#HdFunctionCoverageResult').val("Y");
+                    $("#ZTEIsPartner").val(data.IsPartner);
+                    $("#ZTEPartnerName").val(data.PartnerName);
+                    $("#ZTEAddressID").val(data.AddressId);
+                    $('#CoveragePanelModel_P_FTTX_VENDOR').val(data.PartnerName);
+                    $("#CoveragePanelModel_Address_AddressId").val(data.AddressId);
+
+                    if (tangleListCondo.indexOf($("#CoveragePanelModel_Address_AddressId").val()) > -1 || '@SHOW_TIMESLOT_ALL_BUILDING' == "Y") {
+                        $("#REQUEST_SUB_FLAG").val("Y");
+                    }
+                    else {
+                        $("#REQUEST_SUB_FLAG").val("N");
+                        console.log("GetPlug");
+                        console.log($("#selected_building_address_id").val());
+                        console.log($("#selected_building_AccessMode").val());
+                        getAppointmentPlugAndPlay($("#selected_building_address_id").val(), $("#selected_building_AccessMode").val());                      
+                    }
+
+                    GetP_Region();
+                    Get_Region();// R20.5
+
+                    var checkXDSL = false;
+                    var model = [];
+                    var ResourceList = [];
+                    var tmpDslamList = [];
+                    var countDslam = 0;
+
+                    $.each(data.AccessModeList, function (i, e) {
+                        var accessModeModel = new FBSSAccessModeInfo();
+                        accessModeModel.AccessMode = e.AccessMode;
+                        accessModeModel.InserviceDate = convertToJsDate(data.AccessModeList[0].InserviceDate);
+                        if (e.AccessMode == "VDSL") {
+                            checkXDSL = true;
+                            accessModeModel.ResourceList = [];
+                            $.each(e.ResourceList, function (j, ej) {
+                                haveVDSL = true;
+                                var resourceModel = new ResourceInfo();
+                                resourceModel.ResourceName = ej.ResourceName;
+                                accessModeModel.ResourceList.push(resourceModel);
+                                tmpDslamList.push(resourceModel);
+                                strResult += "<input type='hidden' id='CoverageAreaResultModel_RESOURCE_LIST_" + countDslam + "__Dslam_Name' name='CoverageAreaResultModel.RESOURCE_LIST[" + countDslam + "].Dslam_Name' value='" + ej.ResourceName + "'>";
+                                countDslam++;
+                            });
+                        }
+                        model.push(accessModeModel);
+                    });
+
+                    if (checkXDSL) {
+                        $("#ZTEAccessModeSerializer").val(JSON.stringify(model));
+                    }
+                    else {
+                        $("#HdFunctionCoverageResult").val("N");
+                        $("#CoveragePanelModel_CoverageResult").val("NO");
+                        $("#HdCheckXDSL").val("FTTR_SELL_ROUTER");
+                    }
+
+                    if (haveVDSL) {
+                        $("#fromVDSL").val(true);
+                        $("#tempDslam").html(strResult);
+                        $("#tempDslamJson").val(JSON.stringify(tmpDslamList));
+                        getZTEResQuery("VDSL", JSON.stringify(tmpDslamList), phoneFlag);
+                        if ($("#L_SplitterFlag").val() == "3" || $("#L_SplitterFlag").val() == "5" || $("#L_SplitterFlag").val() == "6") {
+                            checkPortFull = false;
+                        }
+                    }
+                    else {
+                        $("#fromVDSL").val(false);
+                        $("#tempDslam").html("");
+                        $("#tempDslamJson").val("");
+                    }
+
+                }
+                else {
+                    $("#HdFunctionCoverageResult").val("N");
+
+                    if (data.Coverage == "PLAN") {
+                        $("#ZTEPlanSite").val(data.PlanningSite.AccessMode + "," + convertToJsDate(data.PlanningSite.InserviceDate));
+                    }
+                    else {
+                    }
+                }
+
+                if (callback) {
+                    callback();
+                }
+            }
+        });
+
+    }
+
+    function gotoOutOfCoverage() {
+        $("#page1").hide();
+        AddDetail();
+        loadAddress("@L_HOME_NO", "@L_BUILDING_NO", "@L_FLOOR", "@L_MOO", "@L_SOI", "@L_ROAD", "@L_SUB_DISTRICT", "@L_DISTRICT", "@L_PROVINCE", "@L_ZIP_CODE");
+        $("#page12").show();
+        LockScreen(false);
+    }
+
+    function GetP_Region() {
+        $.ajax({
+            url: '/CheckCoverage/GetP_Region',
+            data: { rowid: $("#CoveragePanelModel_Address_L_ZIPCODE").val() },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (data) {
+                $("#P_Region").val(data);
+            }
+        });
+    }
+
+    function Get_Region() { //R20.5
+        $.ajax({
+            url: '/CheckCoverage/Get_Region',
+            data: { rowid: $("#CoveragePanelModel_Address_L_ZIPCODE").val() },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (data) {
+                $("#CoveragePanelModel_Address_AreaRegion").val(data);
+            }
+        });
+    }
+
+    function convertToJsDate(d) {
+        var parsedDate = new Date(parseInt(d.substr(6)));
+        return new Date(parsedDate);
+    }
+
+    function FBSSAccessModeInfo() {
+        AccessMode: "";
+        InserviceDate: null;
+    }
+
+    function chk_RegisterDevice() {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $("#Register_device").val("MOBILE WEB");
+        }
+        else {
+            $("#Register_device").val("WEB BROWSER");
+        }
+
+        if (typeof aisNative != "undefined" && typeof aisNative != "" && typeof aisNative != null) {
+            $("#Register_device").val("MOBILE APP");
+        }
+    }
+
+    function getAppointmentPlugAndPlay(address_id, AccessMode) {
+
+        $("#L_INSTALL_DATE").val("");
+
+        var isThai = $("#LanguagePage").val() == "1" ? true : false;
+
+        var defaultDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day));
+        var month = defaultDate.getMonth() + 1;
+        var day = defaultDate.getDate();
+
+        var currentDateTH = (day < 10 ? '0' : '') + day + '/' +
+          (month < 10 ? '0' : '') + month + '/' +
+          (defaultDate.getFullYear() + 543);
+
+        var currentDateEN = (day < 10 ? '0' : '') + day + '/' +
+            (month < 10 ? '0' : '') + month + '/' +
+            defaultDate.getFullYear();
+        console.log("currentDateTH : ", currentDateTH);
+        console.log("currentDateEN : ", currentDateEN);
+        $.ajax({
+            type: "GET",
+            url: "/CheckCoverage/GetAppointmentPlugAndPlay",
+            data: {
+                'installation_Date': isThai ? currentDateTH : currentDateEN,
+                "access_Mode": AccessMode,
+                "productSpecCode": "@ProductSpecCode",
+                "address_Id": address_id,
+                "days": 6,
+                "isThai": isThai,
+                "serviceCode": AccessMode,
+                "district": $('#COVERAGE_L_AMPHUR :selected').text(),
+                "subDistrict": $('#COVERAGE_L_TUMBOL :selected').text(),
+                "province": $('#COVERAGE_L_PROVINCE :selected').text(),
+                "postalCode": $("#CoveragePanelModel_Address_L_ZIPCODE :selected").text(),
+                "lineSelect": 1,
+                "SubAccessMode": $("#SUB_ACCESS_MODE").val(),
+                "AisAirNumber": "|"
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+
+                if (data) {
+                    if (data.isPlugandPlay) {
+
+                        var JsonDateParsed = parseJsonDate(data.AppointmentDate.AppointmentDate);
+
+                        var DateParsedForAppointment = JsonDateParsed.split('/')[2] + "/" + JsonDateParsed.split('/')[1] + "/" + JsonDateParsed.split('/')[0];
+
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val(DateParsedForAppointment);
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val(data.AppointmentDate.InstallationCapacity);
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val(data.AppointmentDate.TimeSlot);
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val(data.AppointmentDate.TimeSlotId);
+                        $('#L_INSTALL_DATE').val(JsonDateParsed);
+                        $('#AppointmentDateSelect').val(DateParsedForAppointment);
+                    }
+                    else {
+                        var DateParsedForAppointment = "@DateTime.Now.Year" + "/" + "@DateTime.Now.Month" + "/" + "@(DateTime.Now.Day + 1)";
+                        var JsonDateParsed = "@(DateTime.Now.Day + 1)" + "/" + "@DateTime.Now.Month" + "/" + "@DateTime.Now.Year";
+
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val(DateParsedForAppointment);
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("1/1");
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("08:00-10:00");
+                        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+                        $('#L_INSTALL_DATE').val(JsonDateParsed);
+                        $('#AppointmentDateSelect').val(DateParsedForAppointment);
+                    }
+                }
+            },
+        });
+    }
+
+    function getZTEResQuery(ACCESS_MODE_LIST, RESOURCE_LIST, PHONE_FLAGE) {
+        $.ajax({
+            type: "GET",
+            url: "/Process/ZTEResQuery",
+            data: {
+                "ACCESS_MODE_LIST": ACCESS_MODE_LIST, "RESOURCE_LIST": RESOURCE_LIST, "PHONE_FLAGE": PHONE_FLAGE, "TRANSACTION_ID": "SCPE", "ADDRESS_ID": $("#CoveragePanelModel_Address_AddressId").val()
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var ShowTimeSlot = data.ShowTimeSlot;
+                var CasecodeMessage = data.CasecodeMessage;
+                if (ShowTimeSlot == "Y") {
+                    CasecodeMessage = "";
+                }
+                $("#CoveragePanelModel_L_FLOWFLAG").val(data.FlowFlag);
+                $("#L_SplitterFlagFirstTime").val(data.Casecode);
+                $("#L_SplitterFlag").val(data.Casecode);
+            }
+        });
+    }
+
+    function parseJsonDate(jsonDateString) {
+        var newdate = new Date(parseInt(jsonDateString.replace('/Date(', '')));
+
+        var day = newdate.getDate();
+        var month = newdate.getMonth() + 1;
+
+        var formatDate = (day < 10 ? '0' : '') + day + "/" + (month < 10 ? '0' : '') + month + "/" + newdate.getFullYear();
+        return formatDate;
+    }
+
+</script>

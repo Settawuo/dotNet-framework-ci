@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    @*fix CSS device*@
+    <title>Fixed Broadband Web Config</title>
+    @Styles.Render("~/Content/css/fbbwc")
+	@*@Styles.Render("~/Content/font-awesome-4.1.0")*@
+	@Styles.Render("~/Content/styles/kendo")
+    <link href="~/Content/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Respond.js proxy on external server -->
+	@*todo : deploy*@
+	<link href="http://localhost:52112/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+	<link href="~/Scripts/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+
+	@Scripts.Render("~/bundles/js/jquery")
+	@*@Scripts.Render("~/bundles/js/jqueryval")*@
+	@*@Scripts.Render("~/bundles/js/modernizr")*@
+	@Scripts.Render("~/bundles/js/bootstrap")
+	@Scripts.Render("~/bundles/js/fbbwc")
+
+    <script src="~/Scripts/respond.js"></script>
+	<script src="~/Scripts/respond.proxy.js"></script>
+    
+
+	@Scripts.Render("~/bundles/js/kendo")
+</head>
+    
+<body style="background-color: white;">    
+    <script>
+        $(function () {
+            showFeedback("error", "Temporary Log in is not Available, Please Contact Administrator.");
+
+            @*try {
+                    @{
+                        var html = @"bootbox.alert('Temporary LogIn Is Not Avaliable, Please Contact Administrator.', function() {
+                                        window.open('', '_self');
+                                        window.close();
+                                    });";
+                            
+                        @Html.Raw(html);
+                    }
+            } catch (err) {
+                alert('LogIn Error:  \n' + 'msg: ' + err.message + '\n' + 'desc: ' + err.description);
+            } *@
+        });
+
+    </script>
+
+    
+<div class="modal fade" id="MessageFeedbackPopUp" tabindex="-1" role="dialog" aria-labelledby="MessageFeedbackPopUpLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="headerMessageFeedback">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="MessageFeedbackPopUpLabel">Notification</h4>
+            </div>
+            <div class="modal-body">
+                <label id="lbMessageFeedback"></label>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+

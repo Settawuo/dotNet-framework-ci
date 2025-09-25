@@ -1,0 +1,493 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+
+    string L_REDEEM_HEADER = "";
+    string L_REDEEM_DETAIL = "";
+    string B_CLICK = "";
+    string L_INTERNET_NO = "";
+    string L_ITEM_CODE = "";
+    string B_REDEEM_CODE = "";
+    string L_ERR_CONTACT_CALL_CENTER = "";
+    string L_ERR_ALREADY_USE_ITEM = "";
+
+    if (ViewBag.LabelFBBOR042 != null)
+    {
+        var LabelFBBOR042 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR042;
+
+        L_REDEEM_HEADER = LabelFBBOR042.Any(c => c.Name == "L_REDEEM_HEADER") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_REDEEM_HEADER").DisplayValue : "";
+        L_REDEEM_DETAIL = LabelFBBOR042.Any(c => c.Name == "L_REDEEM_DETAIL") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_REDEEM_DETAIL").DisplayValue : "";
+        B_CLICK = LabelFBBOR042.Any(c => c.Name == "B_CLICK") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "B_CLICK").DisplayValue : "";
+        L_INTERNET_NO = LabelFBBOR042.Any(c => c.Name == "L_INTERNET_NO") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_INTERNET_NO").DisplayValue : "";
+        L_ITEM_CODE = LabelFBBOR042.Any(c => c.Name == "L_ITEM_CODE") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_ITEM_CODE").DisplayValue : "";
+        B_REDEEM_CODE = LabelFBBOR042.Any(c => c.Name == "B_REDEEM_CODE") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "B_REDEEM_CODE").DisplayValue : "";
+        L_ERR_CONTACT_CALL_CENTER = LabelFBBOR042.Any(c => c.Name == "L_ERR_CONTACT_CALL_CENTER") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_ERR_CONTACT_CALL_CENTER").DisplayValue : "";
+        L_ERR_ALREADY_USE_ITEM = LabelFBBOR042.Any(c => c.Name == "L_ERR_ALREADY_USE_ITEM") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_ERR_ALREADY_USE_ITEM").DisplayValue : "";
+    }
+
+    string languagePage = Session["CurrentUICulture"].ToString() == "1" ? "th" : "en";
+}
+
+<style type="text/css">
+    .section2 {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 1366px;
+        background: url('../Content/EsportsRedeem/images/esport_bg2.jpg');
+        background-size: cover;
+        padding-top: 55px;
+        padding-bottom: 120px;
+    }
+
+    .row.row840 {
+        max-width: 840px !important;
+    }
+
+    .font_green {
+        color: #b2d234;
+    }
+
+    .font_red {
+        color: #d9242e;
+    }
+
+    .text_center {
+        text-align: center;
+    }
+
+    .section2-title {
+        font-family: 'db_heaventmed_cond';
+        font-size: 43px;
+        line-height: 1;
+        padding: 0px 15px;
+    }
+
+    .section2-desc {
+        font-size: 24px;
+        color: #fff;
+        padding: 5px 15px;
+    }
+
+    .box-pack-es-redeem {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 250px;
+        background: url('../Content/EsportsRedeem/images/box_bg1.png');
+        margin-top: 10px;
+        padding: 0 13px;
+    }
+
+    .box-pack-es-redeem2 {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 250px;
+        background: url('../Content/EsportsRedeem/images/box_bg2.png') center bottom;
+        margin-bottom: 20px;
+    }
+
+    .pack-es-redeem-title {
+        font-family: 'db_heaventmed_cond';
+        font-size: 29px;
+        line-height: 1.1;
+        color: #b2d234;
+    }
+
+        .pack-es-redeem-title.pack-es-redeem-title-th {
+            font-size: 23px;
+        }
+
+    .pack-es-redeem-prize {
+        font-family: 'db_heaventmed_cond';
+        font-size: 30px;
+        line-height: 1.1;
+        color: #fff;
+    }
+
+    .pack-es-redeem-desc {
+        font-size: 17px;
+        color: #acacac;
+        padding-top: 5px;
+    }
+
+        .pack-es-redeem-desc li {
+            list-style: disc;
+            margin-left: 25px;
+        }
+
+    .pack-es-redeem-desc1 {
+        padding-left: 35px;
+        padding-right: 10px;
+    }
+
+    .pack-es-redeem-desc2 {
+        padding-left: 25px;
+        padding-right: 10px;
+    }
+
+    .pack-es-redeem-desc3 {
+        padding-left: 15px;
+        padding-right: 10px;
+    }
+
+    .wrap-btn2 {
+        background: url('../Content/EsportsRedeem/images/click_bg.png');
+        width: 188px;
+        height: 75px;
+        margin: 0 auto;
+        padding-top: 15px;
+    }
+
+    #container a.send-btn2 {
+        width: 141px;
+        height: 45px;
+        color: #000;
+        margin: 0 auto;
+        font-family: 'db_heaventmed_cond';
+        font-size: 18px;
+        line-height: 45px;
+        text-align: center;
+        margin-left: 65px;
+    }
+
+        #container a.send-btn2:hover {
+            color: #fff;
+            cursor: pointer;
+        }
+
+    .wrap-btn2-popup {
+        background: url('../Content/EsportsRedeem/images/click_bg-popup.png');
+        width: 257px;
+        height: 76px;
+        margin: 0 auto;
+        padding-top: 15px;
+    }
+
+    #container a.send-btn2-popup {
+        width: 193px;
+        height: 45px;
+        color: #000;
+        margin: 0 auto;
+        font-family: 'db_heaventmed_cond';
+        display: block;
+        font-size: 23px;
+        line-height: 45px;
+        text-align: center;
+    }
+
+    #container a.send-btn2-popup:hover {
+        color: #fff;
+        cursor: pointer;
+    }
+
+    #popup_bg , #popup_bg2{
+        position: fixed;
+        z-index: 990;
+        width: 100%;
+        height: 3000px;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    #popup_pack, #popup_pack1, #popup_pack2, #popup_pack3 , #popup_pack_alert{
+        width: 600px;
+        height: 560px;
+        background: url('../Content/EsportsRedeem/images/popup_bg.png');
+    }
+
+    #popup_bg, #popup_pack, #popup_pack1, #popup_pack2, #popup_pack3 , #popup_bg2 ,#popup_pack_alert{
+        display: none;
+    }
+
+    .popup_pack_close {
+        background: url('../Content/EsportsRedeem/images/popup_close.png');
+        width: 54px;
+        height: 54px;
+        position: absolute;
+        right: 100px;
+        top: 0px;
+        cursor: pointer;
+        background-size: 100% 200%;
+    }
+
+    .popup_pack_close:hover {
+        background-position: bottom;
+    }
+
+    .Absolute-Center {
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .Absolute-Center.is-Responsive {
+        width: 60%;
+        height: 60%;
+        min-width: 200px;
+        max-width: 400px;
+        padding: 40px;
+    }
+
+    .Absolute-Center.is-Fixed {
+        position: fixed;
+        z-index: 999;
+    }
+
+    .fifa_mo-img {
+        text-align: center;
+        padding-top: 105px;
+        margin-bottom: 10px;
+    }
+
+    .blade_soul_mo-img {
+        text-align: center;
+        padding-top: 55px;
+        margin-bottom: 10px;
+    }
+
+    .popup_title {
+        font-family: 'db_heaventmed_cond';
+        background: url('../Content/EsportsRedeem/images/form_icon1.png') no-repeat left center;
+        line-height: 24px;
+        padding-left: 45px;
+        font-style: italic;
+        font-size: 20px;
+        color: #fff;
+        margin-left: 145px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .popup_desc {
+        width: 310px;
+        margin: 0 auto;
+        font-family: 'db_heaventmed_cond';
+        color: #b2d234;
+        text-align: center;
+        line-height: 1.2;
+        font-size: 25px;
+    }
+
+    @@media (max-width:768px) {
+        .section2 {
+            padding-bottom: 50px;
+            padding-top: 30px;
+        }
+        #page_packRedeem {
+            margin-top: -23px !important;
+            margin-bottom: -25px !important;
+        }
+    }
+
+    @@media (max-width:720px) {
+        .section2-title {
+            font-size: 30px;
+        }
+
+        .section2-desc {
+            font-size: 20px;
+        }
+    }
+
+    @@media (max-width:600px) {
+        #popup_pack, #popup_pack1, #popup_pack2, #popup_pack3 , #popup_pack_alert , #popup_loading{
+            width: 95%;
+            height: 450px;
+            background: url('../Content/EsportsRedeem/images/popup_bg_mo.png');
+            background-size: 100% 100%;
+        }
+
+        .popup_pack_close {
+            background: url('../Content/EsportsRedeem/images/popup_close.png');
+            width: 35px;
+            height: 35px;
+            position: absolute;
+            right: 0px;
+            top: -5px;
+            cursor: pointer;
+            background-size: 100% 200%;
+        }
+
+        .popup_title {
+            max-width: 280px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 15px;
+        }
+
+        .fifa_mo-img {
+            padding-top: 60px;
+        }
+
+        .blade_soul_mo-img img {
+            max-width: 60%;
+        }
+    }
+</style>
+
+<div id="page_packRedeem" style="display: none; margin-top: -92px;margin-bottom: -25px;">
+<div id="popup_bg"></div>
+
+<section class="section2">
+    <div class="row row840">
+        <div class="text_center">
+            <div class="font_green section2-title">@L_REDEEM_HEADER</div>
+            <div class="section2-desc">@L_REDEEM_DETAIL</div>
+        </div>
+    </div>
+    <div id="divBoxPackESRedeem" class="row row840"></div>
+</section>
+
+</div>
+
+<script type="text/javascript">
+
+    function popupShow(id) {
+        $('#popup_bg').show();
+        $('#' + id).show();
+    }
+
+    function popupHide(id) {
+        $('#popup_bg').hide();
+        $('#' + id).hide();
+    }
+
+    function clearDivItemCode(i) {
+        document.getElementById('divItemCode' + i).innerHTML = "";
+    }
+
+    function onClickPopupRedeem(i) {
+        LockScreen(true);
+        GetCodePackRedeem(i);
+    }
+
+    function GetCodePackRedeem(i)
+    {
+        $.ajax({
+            url: '/RedeemCode/GetCodePackRedeem',
+            data: {
+                inUrlReqBarcode: $("#hdUrlReqBarcode" + i).val(),
+                inUsername: $("#hdUsername" + i).val(),
+                inPassword: $("#hdPassword" + i).val(),
+                inIPaddress: $("#hdIPaddress" + i).val(),
+                inMobileNo: $("#hdMobileNo").val(),
+                inShortCode: $("#hdShortCode" + i).val(),
+                inReqBarcode: $("#hdReqBarcode" + i).val(),
+                inIDCardNo: $("#hdIDCardNo").val(),
+                inGameName: $("#hdGameName" + i).val(),
+                inContactMobileNo: $('#hdContactMobileNo').val()
+            },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                var data = response.data;
+
+                @*var strbuilder = "<div id='POINT_BLANK_ItemCode1'>XXXXXXXXXX</div>" + "<div id='POINT_BLANK_ItemCode2'>YYYYYYYYYY</div>" + "<div id='POINT_BLANK_ItemCode3'>ZZZZZZZZZZ</div>";
+
+                document.getElementById('divItemCode' + i).innerHTML = strbuilder;
+                LockScreen(false);
+                popupShow('popup_pack' + i);*@
+
+                if (data.outCheckMsg == "SUCCESS" && $("#hdReqBarcode" + i).val() == data.outPrivilegeBarcodeData.length) {
+                    var PrivilegeBarcodeData = data.outPrivilegeBarcodeData;
+
+                    var strbuilder = "";
+                    for (var j = 0; j < PrivilegeBarcodeData.length ; j++) {
+                        strbuilder += "<div id='" + $("#hdGameName" + i).val() + "_ItemCode" + (j + 1) + "'>" + PrivilegeBarcodeData[j].MsgBarcode + "</div>";
+                    }
+                    document.getElementById('divItemCode' + i).innerHTML = strbuilder;
+                    LockScreen(false);
+                    popupShow('popup_pack' + i);
+                }
+                else if (data.outCheckMsg == "ERR_ALREADY") {
+                    LockScreen(false);
+                    $("#msgAlert").html("@L_ERR_ALREADY_USE_ITEM"); //คุณรับสิทธิ์ของเดือนนี้ไปแล้ว
+                    popupShow2("popup_pack_alert");
+                }
+                else {
+                    LockScreen(false);
+                    $("#msgAlert").html("@L_ERR_CONTACT_CALL_CENTER"); //ไม่สามารถดำเนินการได้ กรุณาติดต่อ 1175
+                    popupShow2("popup_pack_alert");
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                LockScreen(false);
+                console.log("ERROR Call url: '/RedeemCode/GetCodePackRedeem': ", xhr.responseText);
+                $("#msgAlert").html("@L_ERR_CONTACT_CALL_CENTER");
+                popupShow2("popup_pack_alert");
+            }
+        });
+    }
+
+    function onClickChangeRedeemItem(i,chkClose)
+    {
+        if (!$("#divItemCode" + i).is(':empty'))
+        {
+            //Send SMS
+            var game_name = $("#hdGameName" + i).val();
+
+            var inReqBarcode = $("#hdReqBarcode" + i).val();
+            var tmpSMSMsg = $('#hdSMSmessage' + i).val();
+            var inMessageText = tmpSMSMsg.replace("<InternetNo>", $("#hdMobileNo").val());
+
+            if (inReqBarcode == "1")
+                inMessageText = inMessageText.replace("<ItemCode>", $("#" + game_name + "_ItemCode" + "1").html());
+            else
+            {
+                inMessageText = inMessageText.replace("<ItemCode1>", $("#" + game_name + "_ItemCode" + "1").html());
+                inMessageText = inMessageText.replace("<ItemCode2>", $("#" + game_name + "_ItemCode" + "2").html());
+                inMessageText = inMessageText.replace("<ItemCode3>", $("#" + game_name + "_ItemCode" + "3").html());
+                inMessageText = inMessageText.replace("<ItemCode4>", $("#" + game_name + "_ItemCode" + "4").html());
+                inMessageText = inMessageText.replace("<ItemCode5>", $("#" + game_name + "_ItemCode" + "5").html());
+            }
+
+            $.ajax({
+                url: '/RedeemCode/SendSMSRedeemCodeItem',
+                data: {
+                    inMobileNo: $("#hdMobileNo").val(),
+                    inContactMobileNo: $('#hdContactMobileNo').val(),
+                    inMessageText: inMessageText
+                },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+
+                    // Open Game
+                    if (!chkClose) {
+                        popupHide("popup_pack" + i);
+                        clearDivItemCode(i);
+                        var win = window.open($('#hdUrlRedeem' + i).val(), '_blank');
+                        win.focus();
+                    }
+                    else { clearDivItemCode(i); }
+
+                    // 
+                    var url = document.URL;
+                    var value = url.substring(url.lastIndexOf('/') + 1);
+                    var n = value.indexOf('?');
+                    if (n > 0) value = value.substring(value.lastIndexOf('?'), 0);
+
+                    if (ValidUrl(value) || value.trim() == '') { document.location = "../" + value; }
+                    else { document.location = "../" + value; }
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log("ERROR Call url: '/RedeemCode/SendSMSRedeemCodeItem': ", xhr.responseText);
+                }
+            });
+        }
+        else {
+            $("#msgAlert").html("@L_ERR_CONTACT_CALL_CENTER"); //ไม่สามารถดำเนินการได้ กรุณาติดต่อ 1175
+            popupShow2("popup_pack_alert");
+        }
+    }
+
+</script>
+

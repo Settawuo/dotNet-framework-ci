@@ -1,0 +1,1400 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension;
+@{
+    string language = Session[WebConstants.SessionKeys.CurrentUICulture] != null ? Session[WebConstants.SessionKeys.CurrentUICulture].ToString() : "";
+
+    string VAS = "";
+    string OWNER_PRODUCT = "";
+    string ADDRESS_ID = "";
+    string PACKAGE_CODE = "";
+    string ContactMobileNo = "";
+    decimal SFF_CHKPROFILE_ID = 0;
+    decimal SffProfileLogID = 0;
+    string Channel = "";
+    string NonMobileNo = "";
+
+    if (null != ViewBag.SffProfileLogID)
+    {
+        SffProfileLogID = ViewBag.SffProfileLogID;
+    }
+
+    if (ViewBag.ContactMobileNo != null)
+    {
+        ContactMobileNo = ViewBag.ContactMobileNo;
+    }
+
+    if (ViewBag.Vas != null)
+    {
+        VAS = ViewBag.Vas;
+    }
+
+    if (ViewBag.OwnerProduct != null)
+    {
+        OWNER_PRODUCT = ViewBag.OwnerProduct;
+    }
+
+    if (ViewBag.AddressID != null)
+    {
+        ADDRESS_ID = ViewBag.AddressID;
+    }
+
+    if (ViewBag.PackageCode != null)
+    {
+        PACKAGE_CODE = ViewBag.PackageCode;
+    }
+
+    if (ViewBag.SffProfileLogID != null)
+    {
+        SFF_CHKPROFILE_ID = ViewBag.SffProfileLogID;
+    }
+
+    if (ViewBag.Channel != null)
+    {
+        Channel = ViewBag.Channel;
+    }
+
+    if (ViewBag.NonMobileNo != null)
+    {
+        NonMobileNo = ViewBag.NonMobileNo;
+    }
+
+    string L_SUM_INSTALL_RATE = "";
+    string L_SUM_MAINTEN_RATE = "";
+    string L_VAS_DATAIL = "";
+    string L_SELECT_VAS = "";
+    string L_LIST = "";
+    string L_CHARGE = "";
+    string L_INSTALL_RATE = "";
+    string L_INSTALL_RATE_VALUE = "";
+    string L_MAINTEN_FEE = "";
+    string L_MAINTEN_FEE_VALUE = "";
+    string L_BAHT_MIN = "";
+    string L_BAHT_MONTH = "";
+    string L_CALL_IN_RATE = "";
+    string L_CALL_IN_RATE_VALUE = "";
+    string L_BAHT_TIME = "";
+    string L_CALL_OUT_RATE = "";
+    string L_CALL_OUT_RATE_VALUE = "";
+    string L_CALL_FREE = "";
+    string L_MINUTE = "";
+
+    // R1608-2  //
+    string L_CALLING_RATE = "";
+    string L_PER_MIN = "";
+    string L_PER_TIME = "";
+    string L_FREE_FIXEDLINE = "";
+    string L_UNLIMITED = "";
+    string L_CALL_IN_AIS = "";
+    string L_CALL_IN_AIS_VALUE = "";
+    string L_CALL_OUT_AIS = "";
+    string L_CALL_OUT_AIS_VALUE = "";
+    string L_REMARK_VOICE_RATE = "";
+    //
+
+    string SHOW_ICON_FIXEDLINE_CUST_REGISTER = "";
+    string SHOW_ICON_FIXEDLINE_SSO_REGISTER = "";
+    string SHOW_ICON_FIXEDLINE_CUST_VAS = "";
+    string SHOW_ICON_FIXEDLINE_SSO_VAS = "";
+
+    string SHOW_ICON_PLAYBOX_CUST_REGISTER = "";
+    string SHOW_ICON_PLAYBOX_SSO_REGISTER = "";
+    string SHOW_ICON_PLAYBOX_CUST_VAS = "";
+    string SHOW_ICON_PLAYBOX_SSO_VAS = "";
+
+    string DEFAULT_ICON_PLAYBOX_CUST_REGISTER = "";
+    string DEFAULT_ICON_PLAYBOX_SSO_REGISTER = "";
+    string DEFAULT_ICON_PLAYBOX_CUST_VAS = "";
+    string DEFAULT_ICON_PLAYBOX_SSO_VAS = "";
+
+    string L_AIS_PLAYBOX = "";
+    string L_INTERNET_TV = "";
+    string L_FIXEDLINE_VOIP = "";
+    string L_FIXEDLINE_DES = "";
+    string L_CLICK_CHECKBOX = "";
+    string L_SUM_DISCOUNT_INSTALL_RATE = "";
+
+    //TODO: Mutiple Playbox
+    string L_NUMBER_OF_PLAYBOX = "0";
+    string L_MULTI_PLAYBOX_CLICK_DROPDOWN = "";
+    string L_MULTI_PLAYBOX_LABEL_DROPDOWN = "";
+    string L_MULTI_PLAYBOX_INITIATIONS_FEE = "";
+    string L_MULTI_PLAYBOX_REMARK = "";
+    var L_MULTI_PLAYBOX_REMARK_DETAIL = new List<LovScreenValueModel>();
+    string M_MOBILE_FORWARD = "";
+    string L_MULTI_PLAYBOX_MAX_SPEED_WARNING = "";
+    string L_MULTI_PLAYBOX_MAX_SPEED_LINK = "";
+    string L_MULTI_PLAYBOX_SUMM_DETAIL = "";
+    string WORDIND_MESH = ""; //R22.05 Device Contract Mesh
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        L_NUMBER_OF_PLAYBOX = LabelFBBTR001.Any(c => c.Name == "L_NUMBER_OF_PLAYBOX") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_NUMBER_OF_PLAYBOX").DisplayValue : "0";
+    }
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var LabelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        L_MULTI_PLAYBOX_CLICK_DROPDOWN = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_CLICK_DROPDOWN") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_CLICK_DROPDOWN").DisplayValue : "";
+        L_MULTI_PLAYBOX_LABEL_DROPDOWN = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_LABEL_DROPDOWN") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_LABEL_DROPDOWN").DisplayValue : "";
+        L_MULTI_PLAYBOX_INITIATIONS_FEE = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_INITIATIONS_FEE") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_INITIATIONS_FEE").DisplayValue : "";
+        L_MULTI_PLAYBOX_REMARK = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_REMARK") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_REMARK").DisplayValue : "";
+        L_MULTI_PLAYBOX_MAX_SPEED_WARNING = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_MAX_SPEED_WARNING") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_MAX_SPEED_WARNING").DisplayValue : "";
+        L_MULTI_PLAYBOX_MAX_SPEED_LINK = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_MAX_SPEED_LINK") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_MAX_SPEED_LINK").DisplayValue : "";
+        L_MULTI_PLAYBOX_SUMM_DETAIL = LabelFBBTR003.Any(c => c.Name == "L_MULTI_PLAYBOX_SUMM_DETAIL") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "L_MULTI_PLAYBOX_SUMM_DETAIL").DisplayValue : "";
+
+        L_MULTI_PLAYBOX_REMARK_DETAIL = LabelFBBTR003.Where(w => w.Name == "L_MULTI_PLAYBOX_REMARK_DETAIL").OrderBy(o => o.OrderByPDF).ToList();
+        //R22.05 Device Contract Mesh
+        WORDIND_MESH = LabelFBBTR003.Any(c => c.Name == "WORDIND_MESH") ? LabelFBBTR003.FirstOrDefault(c => c.Name == "WORDIND_MESH").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR010 != null)
+    {
+        var LabelFBBTR010 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR010;
+        L_SUM_INSTALL_RATE = LabelFBBTR010.Any(c => c.Name == "L_SUM_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SUM_INSTALL_RATE").DisplayValue : "";
+        L_SUM_MAINTEN_RATE = LabelFBBTR010.Any(c => c.Name == "L_SUM_MAINTEN_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SUM_MAINTEN_RATE").DisplayValue : "";
+        L_VAS_DATAIL = LabelFBBTR010.Any(c => c.Name == "L_VAS_DATAIL") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_VAS_DATAIL").DisplayValue : "";
+        L_SELECT_VAS = LabelFBBTR010.Any(c => c.Name == "L_SELECT_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SELECT_VAS").DisplayValue : "";
+
+        L_LIST = LabelFBBTR010.Any(c => c.Name == "L_LIST") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_LIST").DisplayValue : "";
+        L_CHARGE = LabelFBBTR010.Any(c => c.Name == "L_CHARGE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CHARGE").DisplayValue : "";
+        L_INSTALL_RATE = LabelFBBTR010.Any(c => c.Name == "L_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_INSTALL_RATE").DisplayValue : "";
+        L_INSTALL_RATE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_INSTALL_RATE").LovValue3 : "";
+        L_MAINTEN_FEE = LabelFBBTR010.Any(c => c.Name == "L_MAINTEN_FEE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MAINTEN_FEE").DisplayValue : "";
+        L_MAINTEN_FEE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_MAINTEN_FEE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MAINTEN_FEE").LovValue3 : "";
+        L_BAHT_MIN = LabelFBBTR010.Any(c => c.Name == "L_BAHT_MIN") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_BAHT_MIN").DisplayValue : "";
+        L_BAHT_MONTH = LabelFBBTR010.Any(c => c.Name == "L_BAHT_MONTH") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_BAHT_MONTH").DisplayValue : "";
+        L_CALL_IN_RATE = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_RATE").DisplayValue : "";
+        L_CALL_IN_RATE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_RATE").LovValue3 : "";
+        L_BAHT_TIME = LabelFBBTR010.Any(c => c.Name == "L_BAHT_TIME") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_BAHT_TIME").DisplayValue : "";
+        L_CALL_OUT_RATE = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_RATE").DisplayValue : "";
+        L_CALL_OUT_RATE_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_RATE").LovValue3 : "";
+        L_CALL_IN_AIS = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_AIS").DisplayValue : "";
+        L_CALL_IN_AIS_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_IN_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_IN_AIS").LovValue3 : "";
+        L_CALL_OUT_AIS = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_AIS").DisplayValue : "";
+        L_CALL_OUT_AIS_VALUE = LabelFBBTR010.Any(c => c.Name == "L_CALL_OUT_AIS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_OUT_AIS").LovValue3 : "";
+        L_FREE_FIXEDLINE = LabelFBBTR010.Any(c => c.Name == "L_FREE_FIXEDLINE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_FREE_FIXEDLINE").DisplayValue : "";
+        L_UNLIMITED = LabelFBBTR010.Any(c => c.Name == "L_UNLIMITED") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_UNLIMITED").DisplayValue : "";
+        L_PER_MIN = LabelFBBTR010.Any(c => c.Name == "L_PER_MIN") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_PER_MIN").DisplayValue : "";
+        L_PER_TIME = LabelFBBTR010.Any(c => c.Name == "L_PER_TIME") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_PER_TIME").DisplayValue : "";
+        L_CALLING_RATE = LabelFBBTR010.Any(c => c.Name == "L_CALLING_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALLING_RATE").DisplayValue : "";
+        L_REMARK_VOICE_RATE = LabelFBBTR010.Any(c => c.Name == "L_REMARK_VOICE_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_REMARK_VOICE_RATE").DisplayValue : "";
+        L_CALL_FREE = LabelFBBTR010.Any(c => c.Name == "L_CALL_FREE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CALL_FREE").DisplayValue : "";
+        L_MINUTE = LabelFBBTR010.Any(c => c.Name == "L_MINUTE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_MINUTE").DisplayValue : "";
+
+        SHOW_ICON_FIXEDLINE_CUST_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_REGISTER").DisplayValue : "";
+        SHOW_ICON_FIXEDLINE_SSO_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_REGISTER").DisplayValue : "";
+        SHOW_ICON_FIXEDLINE_CUST_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_CUST_VAS").DisplayValue : "";
+        SHOW_ICON_FIXEDLINE_SSO_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_FIXEDLINE_SSO_VAS").DisplayValue : "";
+
+        SHOW_ICON_PLAYBOX_CUST_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER").DisplayValue : "";
+        SHOW_ICON_PLAYBOX_SSO_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER").DisplayValue : "";
+        SHOW_ICON_PLAYBOX_CUST_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS").DisplayValue : "";
+        SHOW_ICON_PLAYBOX_SSO_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS").DisplayValue : "";
+
+        DEFAULT_ICON_PLAYBOX_CUST_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_REGISTER").DefaultValue : "";
+        DEFAULT_ICON_PLAYBOX_SSO_REGISTER = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_REGISTER").DefaultValue : "";
+        DEFAULT_ICON_PLAYBOX_CUST_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_CUST_VAS").DefaultValue : "";
+        DEFAULT_ICON_PLAYBOX_SSO_VAS = LabelFBBTR010.Any(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "SHOW_ICON_PLAYBOX_SSO_VAS").DefaultValue : "";
+
+        L_AIS_PLAYBOX = LabelFBBTR010.Any(c => c.Name == "L_AIS_PLAYBOX") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_AIS_PLAYBOX").DisplayValue : "";
+        L_INTERNET_TV = LabelFBBTR010.Any(c => c.Name == "L_INTERNET_TV") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_INTERNET_TV").DisplayValue : "";
+        L_FIXEDLINE_VOIP = LabelFBBTR010.Any(c => c.Name == "L_FIXEDLINE_VOIP") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_FIXEDLINE_VOIP").DisplayValue : "";
+        L_FIXEDLINE_DES = LabelFBBTR010.Any(c => c.Name == "L_FIXEDLINE_DES") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_FIXEDLINE_DES").DisplayValue : "";
+        L_CLICK_CHECKBOX = LabelFBBTR010.Any(c => c.Name == "L_CLICK_CHECKBOX") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_CLICK_CHECKBOX").DisplayValue : "";
+        L_SUM_DISCOUNT_INSTALL_RATE = LabelFBBTR010.Any(c => c.Name == "L_SUM_DISCOUNT_INSTALL_RATE") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "L_SUM_DISCOUNT_INSTALL_RATE").DisplayValue : "";
+        M_MOBILE_FORWARD = LabelFBBTR010.Any(c => c.Name == "M_MOBILE_FORWARD") ? LabelFBBTR010.FirstOrDefault(c => c.Name == "M_MOBILE_FORWARD").DisplayValue : "";
+    }
+
+    string B_VAS_CONFIRM_SKIP = "";
+
+    if (ViewBag.LabelFBBORV11 != null)
+    {
+        var LabelFBBORV11 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV11;
+        B_VAS_CONFIRM_SKIP = LabelFBBORV11.Any(c => c.Name == "B_VAS_CONFIRM_SKIP") ? LabelFBBORV11.FirstOrDefault(c => c.Name == "B_VAS_CONFIRM_SKIP").DisplayValue : "";
+    }
+
+    string B_NEXT = "";
+    string B_BACK = "";
+    string L_CLOSE = "";
+    string L_CHOOSE_TOPUP = "";
+    string B_OPEN = "";
+    string L_PLEASE_CHOOSE_VAS_SERVICE = "";
+
+    string SCREEN_SELECT_1 = "";
+    string SCREEN_SELECT_2 = "";
+    string SCREEN_SELECT_3 = "";
+    string SCREEN_SELECT_4 = "";
+    string SCREEN_SELECT_5 = "";
+    string SCREEN_SELECT_6 = "";
+    string SCREEN_SELECT_7 = "";
+    string CONFIG_CHANNEL = "";
+    string ERROR_SELECT_PACKAGE = "";
+    string TOOLTIP = "";
+
+    string SCREEN_PRICE_1 = "";
+    string SCREEN_PRICE_2 = "";
+    string SCREEN_PRICE_3 = "";
+    string SCREEN_PRICE_4 = "";
+    string SCREEN_PRICE_5 = "";
+
+    string ERROR_PENDING_ORDER_PB = ""; //R22.08
+    string BUTTON_PENDING_ORDER_PB = ""; //R22.08
+    string BUTTON_CANCEL_POPUP = ""; //R22.08
+
+    string DISPLAY_DISCOUNT = ""; //R22.11 Mesh with arpu
+    string DISPLAY_DISCOUNT_PERCENT = ""; //R22.11 Mesh with arpu
+
+
+    if (ViewBag.LabelFBBTR004 != null)
+    {
+        var LabelFBBTR004 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR004;
+        B_OPEN = LabelFBBTR004.Any(c => c.Name == "B_OPEN") ? LabelFBBTR004.FirstOrDefault(c => c.Name == "B_OPEN").DisplayValue : "";
+        L_PLEASE_CHOOSE_VAS_SERVICE = LabelFBBTR004.Any(c => c.Name == "L_PLEASE_CHOOSE_VAS_SERVICE") ? LabelFBBTR004.FirstOrDefault(c => c.Name == "L_PLEASE_CHOOSE_VAS_SERVICE").DisplayValue : "";
+    }
+
+    if (ViewBag.labelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR000;
+        B_NEXT = labelFBBTR000.Any(c => c.Name == "B_NEXT") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+        B_BACK = labelFBBTR000.Any(c => c.Name == "B_BACK") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+        L_CLOSE = labelFBBTR000.Any(c => c.Name == "B_CLOSE") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        L_CHOOSE_TOPUP = labelFBBTR000.Any(c => c.Name == "L_CHOOSE_TOPUP") ? labelFBBTR000.FirstOrDefault(c => c.Name == "L_CHOOSE_TOPUP").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBORV41 != null)
+    {
+        var LabelFBBORV41 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV41;
+        SCREEN_SELECT_1 = LabelFBBORV41.Any(c => c.Name == "SCREEN_SELECT_1") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_SELECT_1").DisplayValue : "";
+        SCREEN_SELECT_2 = LabelFBBORV41.Any(c => c.Name == "SCREEN_SELECT_2") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_SELECT_2").DisplayValue : "";
+        SCREEN_SELECT_3 = LabelFBBORV41.Any(c => c.Name == "SCREEN_SELECT_3") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_SELECT_3").DisplayValue : "";
+        SCREEN_SELECT_4 = LabelFBBORV41.Any(c => c.Name == "SCREEN_SELECT_4") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_SELECT_4").DisplayValue : "";
+        SCREEN_SELECT_5 = LabelFBBORV41.Any(c => c.Name == "SCREEN_SELECT_5") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_SELECT_5").DisplayValue : "";
+        SCREEN_SELECT_6 = LabelFBBORV41.Any(c => c.Name == "SCREEN_SELECT_6") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_SELECT_6").DisplayValue : "";
+        SCREEN_SELECT_7 = LabelFBBORV41.Any(c => c.Name == "SCREEN_SELECT_7") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_SELECT_7").DisplayValue : "";
+        CONFIG_CHANNEL = LabelFBBORV41.Any(c => c.Name == "CONFIG_CHANNEL") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "CONFIG_CHANNEL").DisplayValue : "";
+        ERROR_SELECT_PACKAGE = LabelFBBORV41.Any(c => c.Name == "ERROR_SELECT_PACKAGE") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "ERROR_SELECT_PACKAGE").DisplayValue : "";
+        TOOLTIP = LabelFBBORV41.Any(c => c.Name == "TOOLTIP") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "TOOLTIP").DisplayValue : "";
+
+        SCREEN_PRICE_1 = LabelFBBORV41.Any(c => c.Name == "SCREEN_PRICE_1") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_PRICE_1").DisplayValue : "";
+        SCREEN_PRICE_2 = LabelFBBORV41.Any(c => c.Name == "SCREEN_PRICE_2") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_PRICE_2").DisplayValue : "";
+        SCREEN_PRICE_3 = LabelFBBORV41.Any(c => c.Name == "SCREEN_PRICE_3") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_PRICE_3").DisplayValue : "";
+        SCREEN_PRICE_4 = LabelFBBORV41.Any(c => c.Name == "SCREEN_PRICE_4") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_PRICE_4").DisplayValue : "";
+        SCREEN_PRICE_5 = LabelFBBORV41.Any(c => c.Name == "SCREEN_PRICE_5") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "SCREEN_PRICE_5").DisplayValue : "";
+
+        //R22.08
+        ERROR_PENDING_ORDER_PB = LabelFBBORV41.Any(c => c.Name == "ERROR_PENDING_ORDER_PB") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "ERROR_PENDING_ORDER_PB").DisplayValue : "";
+        BUTTON_PENDING_ORDER_PB = LabelFBBORV41.Any(c => c.Name == "BUTTON_PENDING_ORDER_PB") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "BUTTON_PENDING_ORDER_PB").DisplayValue : "";
+        BUTTON_CANCEL_POPUP = LabelFBBORV41.Any(c => c.Name == "BUTTON_CANCEL_POPUP") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "BUTTON_CANCEL_POPUP").DisplayValue : "";
+
+        //R22.11 Mesh with arpu
+        DISPLAY_DISCOUNT = LabelFBBORV41.Any(c => c.Name == "DISPLAY_DISCOUNT") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "DISPLAY_DISCOUNT").DisplayValue : "";
+        DISPLAY_DISCOUNT_PERCENT = LabelFBBORV41.Any(c => c.Name == "DISPLAY_DISCOUNT") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "DISPLAY_DISCOUNT").LovValue3 : "50";
+    }
+
+    string sffProductName = "";
+    string sffServiceYear = "";
+
+    if (ViewBag.SFFProductName != null) { sffProductName = ViewBag.SFFProductName; }
+    if (ViewBag.SFFServiceYear != null) { sffServiceYear = ViewBag.SFFServiceYear; }
+
+    string L_SUMMARY = "";
+    string L_SUMM_DETAIL1 = "";
+    string L_SUMM_DETAIL_WireBB = "";
+    string L_SUMM_DETAIL_FTTx = "";
+    string L_SUMM_DETAIL5 = "";
+    string L_SUMM_DETAIL8 = "";
+    string L_SUMM_DETAIL9 = "";
+    string L_SUMM_DETAIL11 = "";
+    string L_SUMM_DETAIL13 = "";
+    string L_SUMM_DETAIL14 = "";
+    string L_SUMM_DETAIL15 = "";
+    string L_SUMM_DETAIL12 = "";
+    string L_BAHT = "";
+    string L_ONTOP_PLAYBOX_BPL = "";
+
+    string L_BUNDLING_DISCOUNT_DTL = "";
+    string L_DISCOUNT_DTL = "";
+
+    if (ViewBag.LabelFBBTR002 != null)
+    {
+        var labelFBBTR002 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR002;
+        L_SUMMARY = labelFBBTR002.Any(c => c.Name == "L_SUMMARY") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMMARY").DisplayValue : "";
+        L_SUMM_DETAIL1 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL1") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL1").DisplayValue : "";
+        L_SUMM_DETAIL_WireBB = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL_WireBB") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL_WireBB").DisplayValue : "";
+        L_SUMM_DETAIL_FTTx = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL_FTTx") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL_FTTx").DisplayValue : "";
+        L_SUMM_DETAIL5 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL5") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL5").DisplayValue : "";
+        L_SUMM_DETAIL8 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL8") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL8").DisplayValue : "";
+        L_SUMM_DETAIL9 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL9") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL9").DisplayValue : "";
+        L_SUMM_DETAIL11 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL11") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL11").DisplayValue : "";
+        L_SUMM_DETAIL13 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL13") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL13").DisplayValue : "";
+        L_SUMM_DETAIL14 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL14") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL14").DisplayValue : "";
+        L_SUMM_DETAIL15 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL15") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL15").DisplayValue : "";
+        L_SUMM_DETAIL12 = labelFBBTR002.Any(c => c.Name == "L_SUMM_DETAIL12") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL12").DisplayValue : "";
+        L_BAHT = labelFBBTR002.Any(c => c.Name == "L_BAHT") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_BAHT").DisplayValue : "";
+        L_ONTOP_PLAYBOX_BPL = labelFBBTR002.Any(c => c.Name == "L_ONTOP_PLAYBOX_BPL") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_ONTOP_PLAYBOX_BPL").DisplayValue : "";
+        L_BUNDLING_DISCOUNT_DTL = labelFBBTR002.Any(c => c.Name == "L_BUNDLING_DISCOUNT_DTL") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_BUNDLING_DISCOUNT_DTL").DisplayValue : "";
+        L_DISCOUNT_DTL = labelFBBTR002.Any(c => c.Name == "L_DISCOUNT_DTL") ? labelFBBTR002.FirstOrDefault(c => c.Name == "L_DISCOUNT_DTL").DisplayValue : "";
+    }
+
+    string URLRef = "";
+    if (ViewBag.URLRef != null)
+    {
+        URLRef = (string)ViewBag.URLRef;
+    }
+}
+
+<style>
+
+    div.click-to-top {
+        display: inline-block;
+        position: relative;
+        max-width: 100%;
+    }
+
+        div.click-to-top:hover {
+            z-index: 10;
+        }
+
+        div.click-to-top span {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #333;
+            color: #fff;
+        }
+
+        div.click-to-top:hover span {
+            display: block;
+        }
+
+    .add-rounded-green {
+        background: #8dc63f;
+    }
+
+    /*-------R22.08-------*/
+    .btn-gray {
+        color: #fff;
+        background-color: #6c757d;
+    }
+
+        .btn-gray:hover {
+            color: #fff;
+            background-color: #5a6268;
+        }
+    /*--------------------*/
+
+</style>
+
+<div id="page2_1" style="display: none;">
+    <div class=" container">
+        <div class="col-md-8-5 col-xs-12 addrounded">
+            <p class="clearfix"></p>
+            <h4 class="page-header tgreen" id="lblSelectVas">@Html.Raw(@SCREEN_SELECT_1)</h4>
+            @Html.Raw(@SCREEN_SELECT_2)
+            <h4 class="page-header tgreen">@Html.Raw(@SCREEN_SELECT_3)</h4>
+            <p class="clearfix"></p>
+            <div id="divVasBoxDynamic" class="row-border"></div>
+            <div style="padding-top: 10px;">
+                <p class="clearfix"></p>
+                <div id="divRemark" class=" col-xs-12 ">
+                    <div class="add-rounded-gray">
+                        <p class="clearfix"></p>
+                        @*<b>@L_MULTI_PLAYBOX_REMARK</b>*@
+                        <div>
+                            <ul style="list-style-type: decimal; padding-left: 40px;">
+                                <div id="divRemarkDatail"></div>
+                            </ul>
+                        </div>
+                        <p class="clearfix"></p>
+                    </div>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-sm-4 col-xs-6 text-center"></div>
+            <p class="clearfix"></p>
+            <p class="clearfix page-header"></p>
+            <div style="text-align: center;">
+                <button type="button" class="btn btn-default btn-for-xs" id="btnVasBackPage" onclick="onBtnVasBackPage_Click()">
+                    &nbsp; @B_BACK &nbsp;
+                </button>
+                <button type="button" class="btn btn-success btn-for-xs" id="btnVasNextPage" onclick="onBtnVasNextPage_Click()">
+                    &nbsp; @B_NEXT &nbsp;<i class="fa fa-arrow-circle-o-right "></i>
+                </button>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        <div id="divSelectValFormSummaryDetail">
+            <div class="col-md-4 col-xs-12 addrounded pull-right hidden-sm hidden-xs ">
+                <br />
+                <br />
+                <h4 class="greenheader page-header twhite" id="lblSumHeaderVas"></h4>
+                @*R22.05 Device Contract Mesh*@
+                <div class="page-dot" id="divInstallMeshRental" style="display:none;">
+                    <i class="fa fa-chevron-right tgreen"></i>
+                    <span class="tgreen" id="o2Vas">@Html.Raw(L_SUMM_DETAIL5)</span>
+                    <p class="clearfix"></p>
+                    <div id="trInstallMeshRentalPlus">
+                    </div>
+                    <strong>
+                        <span class="col-xs-8" id="lblsummTotalInstallMeshRental">@Html.Raw(L_SUMM_DETAIL8)</span>
+                        <span class="col-xs-4 text-right"><span id="summTotalInstallMeshRental"></span> @L_BAHT</span>
+                    </strong>
+                    <p class="clearfix"></p>
+                </div>
+                <div class="page-dot">
+                    <i class="fa fa-chevron-right tgreen"></i>
+                    <span class="tgreen" id="o2VasMultiplePlaybox">@Html.Raw(SCREEN_SELECT_4)</span>
+                    <p class="clearfix"></p>
+                    <div id="trInstallPlayBoxPlus">
+                    </div>
+                    <strong>
+                        <span class="col-xs-8" id="o4VasMultiPlaybox">@Html.Raw(SCREEN_SELECT_6)</span>
+                        <span class="col-xs-4 text-right"><span id="summTotal1VasMultiPlaybox"></span> @L_BAHT</span>
+                        <span class="col-xs-12" id="o4VasMultiPlayboxDtail">@Html.Raw(SCREEN_SELECT_7)</span>
+                    </strong>
+                    <p class="clearfix"></p>
+                </div>
+            </div>
+        </div>
+        <div style="display: none;">
+            <input type="hidden" id="ZTEVasAddressID" value="@ADDRESS_ID" />
+            <input type="hidden" id="ContactMobileNo" value="@ContactMobileNo" />
+            <input type="hidden" id="ZTEInstallAddress1" value="" />
+            <input type="hidden" id="ZTEInstallAddress2" value="" />
+            <input type="hidden" id="ZTEInstallAddress3" value="" />
+            <input type="hidden" id="ZTEInstallAddress4" value="" />
+            <input type="hidden" id="ZTEInstallAddress5" value="" />
+        </div>
+        <div id="listMulitPlaybox"></div>
+        <div id="listvas"></div>
+    </div>
+</div>
+
+<table style="display: none; border-color: red;" id="tempV2" border="1"></table>
+
+<div class="modal fade" id="myModalSpeedWarning" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <p class="clearfix"></p>
+                    <h4 id="modal001txt" class="text-center">
+                        <span id="LastPopupMessage">@Html.Raw(L_MULTI_PLAYBOX_MAX_SPEED_WARNING)</span>
+                    </h4>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-right" style="padding-top: 10px">
+                        <p class="clearfix"></p>
+                        <button type="button" id="btn02" class="btn btn-success" data-dismiss="modal" onclick="onRedirectToFirstPage()">&nbsp; @L_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+@*R22.08 Order Deadlock Change Service not allow*@
+<div class="modal fade" id="myModalOrderDeadlock" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="color: #fff;background-color: #8DC63F;border-radius: 6px 6px 0px 0px;">
+                &nbsp;
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <p class="clearfix"></p>
+                    <h4 id="modal001txt" class="text-center">
+                        <span id="LastPopupMessage">@Html.Raw(ERROR_PENDING_ORDER_PB)</span>
+                    </h4>
+                    </h4>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center" style="padding-top: 20px">
+                        <p class="clearfix"></p>
+                        <button type="button" id="btn03" class="btn btn-success" data-dismiss="modal" onclick="onClickOrderDeadlock();">&nbsp; @Html.Raw(BUTTON_PENDING_ORDER_PB) &nbsp; </button>
+                        <button type="button" id="btn04" class="btn btn-gray" data-dismiss="modal" onclick="onRedirectToFirstPage();">&nbsp; @Html.Raw(BUTTON_CANCEL_POPUP) &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: 0px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function onRedirectToFirstPage() {
+        window.location.href = "/Process/TopupMesh";
+    }
+
+    var tmpPackageDataDeviceContract;
+    var objPromotionCodeforGetDeviceArry = [];
+    function GetListDeviceContractOnlineQuery() { //R22.05 Device Contract Mesh
+        objPromotionCodeforGetDeviceArry = [];
+        var findOntop = $("[name=SelectOntopMesh]");
+        $.each(findOntop, function (i, e) {
+            var sffOptionMesh = $("#OPTION_MESH" + e.value).val();
+            if (sffOptionMesh == "R") {
+                var sffPromotionCodePboxMain = $("#PROMOTION_DEVICE" + e.value).val();
+                if (sffPromotionCodePboxMain != "" || sffPromotionCodePboxMain != undefined) { //R22.07 Isuue Bug Device Contract Mesh
+                    objPromotionCodeforGetDeviceArry.push({ SFF_PROMOTION_CODE: sffPromotionCodePboxMain });
+                }
+            }
+        });
+
+        //R22.07
+        var P_PRODUCT_SUBTYPE = '@Model.v_package_subtype';
+        var P_OWNER_PRODUCT = '@Model.v_owner_product';
+        var P_SALE_CHANNEL = sessionStorage.getItem("P_SALE_CHANNEL");
+        //-------------------------------
+
+        if (objPromotionCodeforGetDeviceArry.length > 0) {
+
+            objPromotionCodeforGetDeviceArry.push({ SFF_PROMOTION_CODE: '@Model.v_sff_main_promotionCD' });//R22.07
+
+            $.ajax({
+                type: "GET",
+                url: "/SelectPackage/GetListDeviceContractOnlineQuery",
+                data: {
+                    "AisAirNumber": sessionStorage.getItem("AisAirNumber"),
+                    "P_CHANNEL": "WEB",
+                    "P_EVENT": "Existing",
+                    "PROMOTION_CODE_ARRAY": JSON.stringify(objPromotionCodeforGetDeviceArry),
+                    //R22.07 Edit Add Parameter GetListDeviceContract OnlineQuery
+                    "P_PRODUCT_SUBTYPE": P_PRODUCT_SUBTYPE,
+                    "P_OWNER_PRODUCT": P_OWNER_PRODUCT,
+                    "P_SALE_CHANNEL": P_SALE_CHANNEL,
+                    "accessMode": "",
+                    "isPartner": "",
+                    "partnerName": "",
+                    "addressId": ""
+                    //-------------------------------
+                },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    tmpPackageDataDeviceContract = data;
+                }
+            });
+        }
+    }
+
+    function setVasForSelect() {
+
+        var strBuilder = "";
+        $('#divVasBoxDynamic').empty();
+
+        var idPlayBox = "";
+        //PlayBox
+        if (true) { //showFlag
+            var findOntop = $("[name=SelectOntopMesh]");
+
+            $.each(findOntop, function (i, e) {
+
+                var initiation = "";
+                var proSub1 = $("#PRODUCT_SUBTYPE_" + e.value).val();
+                var proSub3 = $("#PRODUCT_SUBTYPE3_" + e.value).val();
+                var optionMeshDetail = $("#OPTION_MESH_DETAIL" + e.value).val();
+
+                var runNumber = 0;
+                initiation = $("#PRICE_VALUE" + e.value).val();
+                if (idPlayBox == "")
+                    idPlayBox = "vasBox" + e.value;
+
+                strBuilder += "<div id='vasBox" + e.value + "' class='col-sm-4 col-xs-12 text-center add-rounded-gray' style='padding: 0 2px 0 2px;margin-left: 20px;margin-right: 20px;' onclick='onVasBox_Click(vasBox" + e.value + ")' > ";
+                strBuilder += "<div class='click-to-top'><div class='greenheader page-header twhite' style='margin-right: -5px;margin-left: -5px;'>" + optionMeshDetail + "</div><img src='" + $("#PIC_MESH" + e.value).val() + "' class='img-responsive center-block'></div>";
+                strBuilder += "<p class='clearfix'></p>";
+                strBuilder += "<div class='checkbox'>";
+
+                strBuilder += "<label><input type='checkbox'  vasid='vasBox" + e.value + "' id='vasBox" + e.value + "_chkbox' name='vasbox' onclick='onVasBox_Click(vasBox" + e.value + ")'> @L_CHOOSE_TOPUP </label>";
+                strBuilder += " " + $("#MESH_BRAND_NAME" + e.value).val();
+                strBuilder += "<p class='clearfix'></p>";
+
+                strBuilder += "<select name='ddlPurchaseNo" + e.value + "' onchange='onVasBox_Click(vasBox" + e.value + ")' style='width:50px;' >";
+                var selectDdl = 'selected="selected"';
+
+                while ($("#NUMBER_OF_PURCHSES" + e.value).val() > runNumber) {
+                    strBuilder += "<option " + selectDdl + " value=" + (runNumber + 1) + ">" + (runNumber + 1) + "</option>";
+                    selectDdl = "";
+                    runNumber++;
+                }
+                strBuilder += "</select>";
+                strBuilder += "</div>";
+
+                strBuilder += "<input type='hidden' name='selectpack' value='" + e.value + "' />";
+                strBuilder += "<input type='hidden' name='price' value='" + initiation + "' />";
+                strBuilder += "<input type='hidden' name='productSubType' value='" + proSub1 + "' />";
+                strBuilder += "<input type='hidden' name='detailMesh' value='" + $("#DETAIL_MESH" + e.value).val() + "' />";
+                strBuilder += "<input type='hidden' name='optionMesh' value='" + $("#OPTION_MESH" + e.value).val() + "' />";
+                strBuilder += "<input type='hidden' name='flagOption' value='" + $("#FLAG_OPTION" + e.value).val() + "' />";//R22.11 Mesh with arpu
+                strBuilder += "<input type='hidden' name='flagMesh' value='" + $("#FLAG_MESH" + e.value).val() + "' />";//R22.11 Mesh with arpu
+                strBuilder += "<p class='clearfix'></p>";
+                strBuilder += "<span><b>" + $("#WORDING_DISPLAY" + e.value).val() +  "</b></span>";
+                strBuilder += "<p class='clearfix'></p>";
+                strBuilder += "</div>";
+                strBuilder += "<p class='clearfix visible-xs'></p>";
+            });
+        }
+        else {
+            $("#divVasBoxDynamic input[type=checkbox]:checked").each(function (i, e) {
+                var selectedVasId = $(this).attr("vasid");
+                $("#" + selectedVasId + " input[type=checkbox]").prop('checked', false);
+            });
+
+            $("#divRemark").hide();
+            $('#hdGetPlayBox').val("0");
+        }
+        onVasBoxChange("0", "", "pageload");
+
+        $('#divVasBoxDynamic').append(strBuilder);
+
+        $("#" + idPlayBox + "_chkbox").trigger("click");
+    }
+
+    function setFormSummaryLine2() {
+        $('#lblSumHeaderVas').text("@L_SUMMARY");//สรุปรายการทั้งหมด
+        $('#o2VasMultiPlaybox').text("@L_MULTI_PLAYBOX_INITIATIONS_FEE"); // ค่าอุปกรณ์ที่ต้องชำระ
+        $('#summTotal1VasMultiPlaybox').text('0');
+    }
+
+    var objInstallMeshRentalArry = []; //R22.05 Device Contract Mesh
+    var objMonthlyMeshRentalArry = []; //R22.11 Mesh with arpu
+    function bindSummary(value, type, id) {
+        var lBath = "@L_BAHT";
+        var strBuilderInitiationsPlus = "";
+        var sumPrice = 0;
+        var optionMesh = "";
+        var flagOption = "";//R22.11 Mesh with arpu
+        var flagMesh = "";//R22.11 Mesh with arpu
+        var divTrInstallPlayBoxPlus = document.getElementById('trInstallPlayBoxPlus');
+        var numberMesh = 1;
+
+        if (!!id) {
+            numberMesh = $('select[name=ddlPurchaseNo' + id.replace("vasBox", "") + ']').val();
+            optionMesh = $("#" + id + " input[name='optionMesh']").val();
+            flagOption = $("#" + id + " input[name='flagOption']").val();//R22.11 Mesh with arpu
+            flagMesh = $("#" + id + " input[name='flagMesh']").val();//R22.11 Mesh with arpu
+        }
+
+        //Monthly Mesh (ค่าบริการรายเดือน)
+        objMonthlyMeshRentalArry = []; //R22.11 Mesh with arpu
+        var textMeshPrice = "";
+        if (optionMesh == "S") {
+            sumPrice = sumPrice + (value * numberMesh);
+            $("#o2VasMultiplePlaybox").html('@Html.Raw(SCREEN_SELECT_4)');
+            textMeshPrice = "@SCREEN_SELECT_5".replace("{NUMBER_MESH}", numberMesh);
+            $("#o4VasMultiPlaybox").html('@Html.Raw(SCREEN_SELECT_6)');//รวมรายการที่ต้องชำระ ( รวม VAT)
+            $("#o4VasMultiPlayboxDtail").html('@Html.Raw(SCREEN_SELECT_7)'.replace("{Point}", tmpUsePoin));//หรือใช้เอไอเอส พอยท์ {Point} พอยท์ แลกอุปกรณ์ฟรี
+
+            strBuilderInitiationsPlus += "<span class='col-xs-8'>" + textMeshPrice + "</span>";
+            strBuilderInitiationsPlus += "<span class='col-xs-4 text-right'><span>" + toNumber(sumPrice) + "</span> " + lBath + "</span>";
+            strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+        }
+        else if (optionMesh == "R") {
+            if (flagOption == "Y") {
+                //FLAG_OPTION == Y
+                if (flagMesh == "A") {
+                    //กรณีลูกค้าไม่มี MESH
+                    $("#o2VasMultiplePlaybox").html('@Html.Raw(SCREEN_PRICE_1)');//ค่าบริการรายเดือน
+
+                    if (numberMesh > 1) {
+                        //MESH Rental 2 จุดขึ้นไป
+
+                        //ค่าบริการรายเดือน MESH WiFi จุดที่
+                        textMeshPrice = "@SCREEN_PRICE_2";
+                        var runNumber = 0;
+                        var strWORDIND_MESH = "";
+                        while (runNumber < numberMesh) {
+                            strWORDIND_MESH = "@WORDIND_MESH";
+                            strWORDIND_MESH = strWORDIND_MESH.replace("{x}", (runNumber + 1).toString());
+
+                            strBuilderInitiationsPlus += "<span class='col-xs-8'>" + textMeshPrice + " " + strWORDIND_MESH + "</span>";
+                            strBuilderInitiationsPlus += "<span class='col-xs-4 text-right'><span>" + toNumber(value) + "</span> " + lBath + "</span>";
+                            strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                            objMonthlyMeshRentalArry.push({ flagOption: flagOption, flagMesh: flagMesh, Name: textMeshPrice + " " + strWORDIND_MESH, Value: value, Action: "Add" });
+
+                            sumPrice = sumPrice + value;
+                            runNumber++;
+                        }
+
+                        //ส่วนลดค่าบริการรายเดือน MESH WiFi {x}% จุดที่ {y} ( 12 เดือน) 
+                        var disPercent = "@DISPLAY_DISCOUNT_PERCENT";//50
+                        var disPriceMesh = (parseFloat(disPercent) / 100) * value;
+
+                        var runNumber = 0;
+                        var strDISPLAY_DISCOUNT = "";
+                        while (runNumber < numberMesh) {
+                            if (runNumber > 0) {
+                                strDISPLAY_DISCOUNT = "@DISPLAY_DISCOUNT";
+                                strDISPLAY_DISCOUNT = strDISPLAY_DISCOUNT.replace("{x}", disPercent);
+                                strDISPLAY_DISCOUNT = strDISPLAY_DISCOUNT.replace("{y}", (runNumber + 1).toString());
+
+                                strBuilderInitiationsPlus += "<span class='col-xs-12'>" + strDISPLAY_DISCOUNT + "</span>";
+                                strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                                objMonthlyMeshRentalArry.push({ flagOption: flagOption, flagMesh: flagMesh, Name: strDISPLAY_DISCOUNT, Value: disPriceMesh, Action: "Del" });
+                                
+                                sumPrice = sumPrice - disPriceMesh;
+                            }
+
+                            runNumber++;
+                        }
+                    }
+                    else {
+                        //MESH Rental จุดเดียว
+                        sumPrice = sumPrice + (value * numberMesh);
+                        textMeshPrice = "@SCREEN_PRICE_2";
+
+                        strBuilderInitiationsPlus += "<span class='col-xs-8'>" + textMeshPrice + "</span>";
+                        strBuilderInitiationsPlus += "<span class='col-xs-4 text-right'><span>" + toNumber(sumPrice) + "</span> " + lBath + "</span>";
+                        strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                        objMonthlyMeshRentalArry.push({ flagOption: flagOption, flagMesh: flagMesh, Name: textMeshPrice, Value: sumPrice, Action: "Add" });
+                    }
+
+                    $("#o4VasMultiPlaybox").html('@Html.Raw(SCREEN_PRICE_3)');//รวมรายการที่ต้องชำระ
+                    $("#o4VasMultiPlayboxDtail").html('@Html.Raw(SCREEN_PRICE_4)');//ราคานี้ยังไม่รวมภาษีมูลค่าเพิ่ม 7%
+                }
+                else if (flagMesh == "B") {
+                    //กรณีลูกค้ามี MESH
+                    $("#o2VasMultiplePlaybox").html('@Html.Raw(SCREEN_PRICE_1)');//ค่าบริการรายเดือน
+
+                    //ค่าบริการรายเดือน MESH WiFi จุดที่
+                    textMeshPrice = "@SCREEN_PRICE_2";
+
+                    var runNumber = 0;
+                    var strWORDIND_MESH = "";
+                    while (runNumber < numberMesh) {
+                        strWORDIND_MESH = "@WORDIND_MESH";
+                        strWORDIND_MESH = strWORDIND_MESH.replace("{x}", (runNumber + 1).toString());
+
+                        strBuilderInitiationsPlus += "<span class='col-xs-8'>" + textMeshPrice + " " + strWORDIND_MESH + "</span>";
+                        strBuilderInitiationsPlus += "<span class='col-xs-4 text-right'><span>" + toNumber(value) + "</span> " + lBath + "</span>";
+                        strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                        objMonthlyMeshRentalArry.push({ flagOption: flagOption, flagMesh: flagMesh, Name: textMeshPrice + " " + strWORDIND_MESH, Value: value, Action: "Add" });
+
+                        sumPrice = sumPrice + value;
+
+                        runNumber++;
+                    }
+
+                    //ส่วนลดค่าบริการรายเดือน MESH WiFi {x}% จุดที่ {y} ( 12 เดือน) 
+                    var disPercent = "@DISPLAY_DISCOUNT_PERCENT";//50
+                    var disPriceMesh = (parseFloat(disPercent) / 100) * value;
+
+                    var runNumber = 0;
+                    var strDISPLAY_DISCOUNT = "";
+                    while (runNumber < numberMesh) {
+                        strDISPLAY_DISCOUNT = "@DISPLAY_DISCOUNT";
+                        strDISPLAY_DISCOUNT = strDISPLAY_DISCOUNT.replace("{x}", disPercent);
+                        strDISPLAY_DISCOUNT = strDISPLAY_DISCOUNT.replace("{y}", (runNumber + 1).toString());
+                        
+                        strBuilderInitiationsPlus += "<span class='col-xs-12'>" + strDISPLAY_DISCOUNT + "</span>";
+                        strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                        objMonthlyMeshRentalArry.push({ flagOption: flagOption, flagMesh: flagMesh, Name: strDISPLAY_DISCOUNT, Value: disPriceMesh, Action: "Del" });
+
+                        sumPrice = sumPrice - disPriceMesh;
+
+                        runNumber++;
+                    }
+
+                    $("#o4VasMultiPlaybox").html('@Html.Raw(SCREEN_PRICE_3)');//รวมรายการที่ต้องชำระ
+                    $("#o4VasMultiPlayboxDtail").html('@Html.Raw(SCREEN_PRICE_4)');//ราคานี้ยังไม่รวมภาษีมูลค่าเพิ่ม 7%
+                }
+            }
+            else {
+                //FLAG_OPTION == D,P
+                $("#o2VasMultiplePlaybox").html('@Html.Raw(SCREEN_PRICE_1)');//ค่าบริการรายเดือน
+                sumPrice = sumPrice + (value * numberMesh);
+                textMeshPrice = "@SCREEN_PRICE_2";
+
+                strBuilderInitiationsPlus += "<span class='col-xs-8'>" + textMeshPrice + "</span>";
+                strBuilderInitiationsPlus += "<span class='col-xs-4 text-right'><span>" + toNumber(sumPrice) + "</span> " + lBath + "</span>";
+                strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                objMonthlyMeshRentalArry.push({ flagOption: flagOption, flagMesh: flagMesh, Name: textMeshPrice, Value: sumPrice, Action: "Add" });
+
+                $("#o4VasMultiPlaybox").html('@Html.Raw(SCREEN_PRICE_3)');//รวมรายการที่ต้องชำระ
+                $("#o4VasMultiPlayboxDtail").html('@Html.Raw(SCREEN_PRICE_4)');//ราคานี้ยังไม่รวมภาษีมูลค่าเพิ่ม 7%
+            }
+        }
+        
+        divTrInstallPlayBoxPlus.innerHTML = strBuilderInitiationsPlus;
+
+        var spanSummTotal1Vas = document.getElementById('summTotal1VasMultiPlaybox');
+        spanSummTotal1Vas.innerHTML = toNumber(sumPrice);
+
+        $("#PayMentRecurringChargeVAT").val(sumPrice);
+
+        //Install Mesh (ค่าติดตั้งและอุปกรณ์)
+        //R22.05 Device Contract Mesh
+        objInstallMeshRentalArry = [];
+        if (optionMesh == "S") {
+            var divTrInstallMeshRentalPlus = document.getElementById('trInstallMeshRentalPlus');
+            divTrInstallMeshRentalPlus.innerHTML = "";
+            $('#summTotalInstallMeshRental').text(0);
+            $("#divInstallMeshRental").hide();
+        }
+        else if (optionMesh == "R") {
+            var installPriceMeshRental = 0;
+            var installDiscountMeshRental = 0;
+            var tmpstrMeshRentalInstall = "";
+            var tmpstrMeshRentalDisInstall = "";
+            var tmpPromotionDeviceMeshRental = "";
+            var flagContractDevicePlaybox = false;
+            if (tmpPackageDataDeviceContract != undefined) {
+                if (tmpPackageDataDeviceContract.ContractDeviceList != undefined && tmpPackageDataDeviceContract.ContractDeviceList.length > 0) {
+                    var tmpContractDeviceList = tmpPackageDataDeviceContract.ContractDeviceList.filter(function (elem) {
+                        return elem.PRODUCT_SUBTYPE.indexOf("MESH") !== -1
+                    });
+                    if (tmpContractDeviceList != undefined && tmpContractDeviceList.length > 0) {
+                        flagContractDevicePlaybox = true;
+                        $.each(tmpContractDeviceList, function (i, e) {
+                            installPriceMeshRental = parseFloat(e.PENALTY_CHARGE);//Install
+                            installDiscountMeshRental = parseFloat(e.PENALTY_CHARGE);//Discount Install
+                            tmpPromotionDeviceMeshRental = e.SFF_PROMOTION_CODE;
+                            if ('@language' == "1") {
+                                tmpstrMeshRentalInstall = e.CONTRACT_DISPLAY_TH_1;
+                                tmpstrMeshRentalDisInstall = e.CONTRACT_DISPLAY_TH_2;
+                            }
+                            else {
+                                tmpstrMeshRentalInstall = e.CONTRACT_DISPLAY_EN_1;
+                                tmpstrMeshRentalDisInstall = e.CONTRACT_DISPLAY_EN_2;
+                            }
+                        });
+                    }
+                }
+            }
+
+            if (flagContractDevicePlaybox == false) {
+                var divTrInstallMeshRentalPlus = document.getElementById('trInstallMeshRentalPlus');
+                divTrInstallMeshRentalPlus.innerHTML = "";
+                $('#summTotalInstallMeshRental').text(0);
+                $("#divInstallMeshRental").hide();
+            }
+            else {
+                var divTrInstallMeshRentalPlus = document.getElementById('trInstallMeshRentalPlus');
+                var strBuilderInitiationsPlus = "";
+                var summTotalInstallMeshRental = 0;
+
+                if (numberMesh > 1) {
+                    //MESH Rental 2 จุดขึ้นไป
+                    var runNumber = 0;
+                    var strWORDIND_MESH = "";
+                    while (runNumber < numberMesh) {
+                        strWORDIND_MESH = "@WORDIND_MESH";
+                        strWORDIND_MESH = strWORDIND_MESH.replace("{x}", (runNumber + 1).toString());
+
+                        strBuilderInitiationsPlus += "<span class='col-xs-8'>" + tmpstrMeshRentalInstall + " " + strWORDIND_MESH + "</span>";
+                        strBuilderInitiationsPlus += "<span class='col-xs-4 text-right'><span>" + toNumber(installPriceMeshRental) + "</span>" + lBath + "</span>";
+                        strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                        strBuilderInitiationsPlus += "<span class='col-xs-8'>" + tmpstrMeshRentalDisInstall + " " + strWORDIND_MESH + "</span>";
+                        strBuilderInitiationsPlus += "<span class='col-xs-4 text-right'><span>" + toNumber(installDiscountMeshRental) + "</span>" + lBath + "</span>";
+                        strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                        summTotalInstallMeshRental = summTotalInstallMeshRental + (installPriceMeshRental - installDiscountMeshRental);
+                        sumPrice = sumPrice + summTotalInstallMeshRental;
+
+                        runNumber++;
+                    }
+                }
+                else {
+                    //MESH Rental จุดเดียว
+                    strBuilderInitiationsPlus += "<span class='col-xs-8'>" + tmpstrMeshRentalInstall + "</span>";
+                    strBuilderInitiationsPlus += "<span class='col-xs-4 text-right'><span>" + toNumber(installPriceMeshRental) + "</span>" + lBath + "</span>";
+                    strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                    strBuilderInitiationsPlus += "<span class='col-xs-8'>" + tmpstrMeshRentalDisInstall + "</span>";
+                    strBuilderInitiationsPlus += "<span class='col-xs-4 text-right'><span>" + toNumber(installDiscountMeshRental) + "</span>" + lBath + "</span>";
+                    strBuilderInitiationsPlus += "<p class='clearfix'></p>";
+
+                    summTotalInstallMeshRental = summTotalInstallMeshRental + (installPriceMeshRental - installDiscountMeshRental);
+                    sumPrice = sumPrice + summTotalInstallMeshRental;
+                }
+
+                objInstallMeshRentalArry.push({ SffPromotionCode: tmpPromotionDeviceMeshRental, Name: tmpstrMeshRentalInstall, Value: installPriceMeshRental, Action: "Add" });
+                objInstallMeshRentalArry.push({ SffPromotionCode: tmpPromotionDeviceMeshRental, Name: tmpstrMeshRentalDisInstall, Value: installDiscountMeshRental, Action: "Del" });
+
+                divTrInstallMeshRentalPlus.innerHTML = strBuilderInitiationsPlus;
+                $('#summTotalInstallMeshRental').text(toNumber(summTotalInstallMeshRental));
+                $("#summTotal1VasMultiPlaybox").text(sumPrice);
+                $("#divInstallMeshRental").show();
+            }
+        }
+    }
+
+    function onVasBoxChange(value, divId, type) {
+        if (value == "") {
+            $("#" + divId.id).removeClass("add-rounded-green");
+            $("#" + divId.id + "_chkbox").prop('checked', false);
+
+        } else {
+            $("#" + divId.id).addClass("add-rounded-green");
+            $("#" + divId.id + "_chkbox").prop('checked', true);
+        }
+        bindSummary(value, type, divId.id);
+    }
+
+    function onVasBox_Click(divId) {
+
+        var thisVasHasChecked = $("#" + divId.id + "_chkbox").is(":checked");
+
+        var group = "input:checkbox[name='vasbox']";
+        $(group).prop("checked", false);
+        $(group).each(function (i) {
+
+            $("#" + $(this).attr("vasid")).removeClass("add-rounded-green");
+        })
+
+        $("#" + divId.id + "_chkbox").prop("checked", true);
+        $("#" + divId.id).addClass("add-rounded-green");
+
+        var productSubType = $("#" + divId.id + " input[name='productSubType']").val();
+
+        var price = 0;
+
+        if ($("#" + divId.id + " input[name='price']").val() != "" && $("#" + divId.id + " input[name='price']").val() != undefined) {
+            $("#" + divId.id + " input[name='price']").val($("#" + divId.id + " input[name='price']").val().replace(',', ''));
+            price = parseFloat($("#" + divId.id + " input[name='price']").val());
+        }
+
+        var htmlObj = document.getElementById("divRemarkDatail");
+        htmlObj.innerHTML = $("#" + divId.id + " input[name='detailMesh']").val();
+
+        bindSummary(price, "", divId.id);
+    }
+
+    function onBtnVasNextPage_Click() {
+        LockScreen(true);
+         $('#page2_1').hide();
+         if("@Channel" != "@CONFIG_CHANNEL"){
+            setTimeSlotConfigSelectDate();
+            $("#divInstallDate").show();
+            $('#page3').show();
+            //LockScreen(false);
+         }
+         else {
+             bindPackageValue();
+             DataBindPage();
+             $('#page4').show();
+             $("#lblVasSumSelectVas").text($("#lblSelectVas").text()); //header form summary1
+             $("#btnVasSumNextPage").html($("#btnVasNextPage").html());
+             $("#btnVasSumBackPage").html($("#btnVasBackPage").html());
+             $("#divVasSumFormSummaryDetail").html($("#divSelectValFormSummaryDetail").html());
+             $("#divPromotionDetailVasSum").html($("#divPromotionDetail").html());
+             LockScreen(false);
+         }
+
+         //script Adobe Analytic
+         var lang = $("#LanguagePage").val() == 1 ? "th" : "en";
+         digitalData.page = {
+             pageInfo: {
+                 pageName: "newfibre:" + lang + ":vasSummary",
+                 site: "newfibre",
+                 language: lang
+             }
+         }
+         console.log("page load vasSummary : ", lang);
+         
+
+         // Update 17.4 Script Adobe Analytic
+         digitalData.customLinkName = "add-on:next-button";
+         console.log("custom-link-click : button btnVasNextPage");
+         
+    }
+
+    function onBtnVasBackPage_Click() {
+        window.location.href = "@Url.Action("TopupMesh", "Process")";
+
+        // Update 17.4 Script Adobe Analytic
+        digitalData.customLinkName = "add-on:cancel-button";
+        console.log("custom-link-click : button btnVasBackPage");
+        
+    }
+
+    // Line 2
+    function onLoadLine2Page2() {
+        $('#page2_1').show();
+        $('#divStepLogoLine1').hide();
+        $('#divStepLogoLine2').show();
+        $('#divPromotionDetailSum').hide();
+
+        if("@Channel" == "@CONFIG_CHANNEL"){
+            $("#btnVasBackPage").hide();
+        }
+
+        $('.wrapSwitchLanguage').hide();
+        if  (!!!sessionStorage.getItem("AisAirNumber") || sessionStorage.getItem("AisAirNumber") == "" || typeof sessionStorage.getItem("AisAirNumber") == "undefined" || sessionStorage.getItem("AisAirNumber") == "null") {
+            sessionStorage.setItem("AisAirNumber", "@NonMobileNo");
+        }
+        else if ("@NonMobileNo" != "" && sessionStorage.getItem("AisAirNumber") != "@NonMobileNo") {
+            sessionStorage.setItem("AisAirNumber", "@NonMobileNo");
+        }
+
+        setFormSummaryLine2();
+        getPackageV2();
+
+        if ($('#tempV2 tr').length != 0) {
+            GetListDeviceContractOnlineQuery();//R22.05 Device Contract Mesh
+            setVasForSelect();
+
+            //R22.08 Order Deadlock Change Service not allow
+            getListServiceAndPromotionByPackType();
+
+            if ("@Channel" != "@CONFIG_CHANNEL") {
+                var isOrderDeadlock = false;
+                isOrderDeadlock = CheckOrderDeadlock();
+                if (isOrderDeadlock) {
+                    $("#myModalOrderDeadlock").modal();
+                }
+            }
+            //--------------------------------
+        }
+        else {
+            $("#LastPopupMessage").html('@ERROR_SELECT_PACKAGE');
+            $("#myModalSpeedWarning").modal();
+            $('#divVasBoxDynamic').append('@ERROR_SELECT_PACKAGE')
+        }
+    }
+
+    var tmpPenaltyPackage = [];
+    var tmpUsePoin = "";
+    function getPackageV2() {
+        tmpPenaltyPackage = [];
+        tmpUsePoin = "";
+        var ownerProduct = "";
+        var packageCode = "";
+        var mainproCode = "";
+        var packageSubtype = "";
+        $('#MeshPoint').val('0');
+        $("#txtforPoint").hide();
+        $("#o4VasMultiPlayboxDtail").hide();
+        $("#divPaymentMethod4").hide();
+
+        if ("@VAS" == 2 || "@ViewBag.TopUp" == "1") {
+            ownerProduct = "@Model.v_owner_product";
+            packageCode = "@PACKAGE_CODE";
+            mainproCode = "@Model.v_sff_main_promotionCD";
+            packageSubtype = "@Model.v_package_subtype";
+        }
+
+        //R21.5
+        var P_SALE_CHANNEL = "CUSTOMER";
+        if (window.parent.$("#P_SALE_CHANNEL").length > 0) { P_SALE_CHANNEL = window.parent.$("#P_SALE_CHANNEL").val(); }
+        else if ($("#Location_Code").val() != "" || $("#ASC_Code").val() != "" || $("#Employee_ID").val() != "") { P_SALE_CHANNEL = "OFFICER"; }
+        console.log("P_SALE_CHANNEL : " + P_SALE_CHANNEL);
+
+        sessionStorage.setItem("P_SALE_CHANNEL", P_SALE_CHANNEL);//R22.07
+
+        //R20.6 Order Relocate change technology mesh
+        $.ajax({
+            type: "GET",
+            url: "/SelectPackage/GetListPackagebySFFPromoV2",
+            data: {
+                "P_OWNER_PRODUCT": ownerProduct,
+                "P_PRODUCT_SUBTYPE": packageSubtype,
+                "accessMode": "",
+                "P_SFF_PROMOCODE": mainproCode,
+                "P_EXISTING_REQ": "MESH",
+                "P_SALE_CHANNEL": P_SALE_CHANNEL
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.length == 0) {
+
+                }
+                else {
+                    tmpPenaltyPackage = data.filter(function (elem) {
+                        return elem.SFF_PRODUCT_PACKAGE.indexOf("Penalty Package") !== -1;
+                    });
+                    var tempV2 = "";
+                    $("#tempV2").empty();
+
+                    $.ajax({
+                        url: '/SelectPackage/GetMeshCompareDevice',
+                        data: {
+                            mobileNo: sessionStorage.getItem("AisAirNumber"),
+                            Channel: "@Channel",
+                            lang: $("#LanguagePage").val(),
+                            RegisterDate: $("#outRegisteredDate").val(),
+                            ContractFlagFbb: $("#CustomerRegisterPanelModel_ContractFlagFbb").val(),
+                            CountContractFbb: $("#CustomerRegisterPanelModel_CountContractFbb").val(),
+                            FBBLimitContract: $("#CustomerRegisterPanelModel_FBBLimitContract").val()
+                        },
+                        dataType: "json",
+                        type: 'POST',
+                        async: false,
+                        success: function (MeshCompare) {
+                            var checkPopupMsg = true;
+                            $.each(MeshCompare.RES_COMPLETE_CUR, function (i2, e2) {
+                                $.each(data, function (i, e) {
+                                    if (e2.MESH_PROMOTION_CODE == e.SFF_PROMOTION_CODE) {
+                                        if (checkPopupMsg && e2.FLAG_POPUP_MESH == "Y") {
+                                            checkPopupMsg = false;
+                                            $("#LastPopupMessage").html(e2.POPUP_ALERT);
+                                            $("#myModalSpeedWarning").modal();
+                                        }
+                                        else {
+                                            tempV2 += appendingV2(i, e, i2, e2);
+                                            //CheckUsePoin
+                                            $.ajax({
+                                                url: '/SelectPackage/CheckUsePoin',
+                                                data: { SFFPromotionCode: e.SFF_PROMOTION_CODE },
+                                                dataType: "json",
+                                                type: 'POST',
+                                                async: false,
+                                                success: function (MeshPoint) {
+                                                    $('#SffPromotiontCodeMeshSelect').val(e.SFF_PROMOTION_CODE);
+                                                    var usePoint = parseFloat(MeshPoint);
+                                                    if (usePoint > 0) {
+                                                        tmpUsePoin = accounting.formatNumber(usePoint, 0);
+                                                        var tmpTextForPoint = $("#txtforPoint").text();
+                                                        $("#txtforPoint").text("");
+                                                        tmpTextForPoint = "<b>" + tmpTextForPoint.replace('{Point}', accounting.formatNumber(usePoint, 0)) + "</b>";
+                                                        $("#txtforPoint").html(tmpTextForPoint);
+
+                                                        var tmpVasMultiPlayboxDtail = $("#o4VasMultiPlayboxDtail").text();
+                                                        $("#o4VasMultiPlayboxDtail").text("");
+                                                        tmpVasMultiPlayboxDtail = "<b>" + tmpVasMultiPlayboxDtail.replace('{Point}', accounting.formatNumber(usePoint, 0)) + "</b>";
+                                                        $("#o4VasMultiPlayboxDtail").html(tmpVasMultiPlayboxDtail);
+
+                                                        var tmpLblPayPoint = $("#lblPayPoint").text();
+                                                        $("#lblPayPoint").text("");
+                                                        tmpLblPayPoint = "<font color='black'><b>" + tmpLblPayPoint.replace('{Point}', accounting.formatNumber(usePoint, 0)) + "</b></font>";
+                                                        $("#lblPayPoint").html(tmpLblPayPoint);
+
+                                                        $("#txtforPoint").show();
+                                                        $("#o4VasMultiPlayboxDtail").show();
+                                                        $("#divPaymentMethod4").show();
+
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            });
+
+                            $("#tempV2").append(tempV2);
+                        }
+                    })
+                }
+            }
+        });
+    }
+
+    function appendingV2(i, e, i2, e2) {
+        var mc = e.MAPPING_CODE;
+        var mp = e.MAPPING_PRODUCT;
+        var key = i + "" + i2;
+
+        var getName = "SelectOntopMesh";
+
+        return "<tr>" +
+               "<td>" +
+               "<input type='text' name='" + getName + "' value='" + i + "" + i2 + "'>" +
+               "<input type='text' id='MESH_BRAND_NAME" + key + "' value='" + e2.MESH_BRAND_NAME + "'>" +
+               "<input type='text' id='PACKAGE_GROUP" + key + "' value='" + e.PACKAGE_GROUP + "'>" +
+               "<input type='text' id='DOWNLOAD_SPEED" + key + "' value='" + e.DOWNLOAD_SPEED + "'>" +
+               "<input type='text' id='UPLOAD_SPEED" + key + "' value='" + e.UPLOAD_SPEED + "'>" +
+               "<input type='text' id='PRICE_CHARGE" + key + "' value='" + e.PRICE_CHARGE + "'>" +
+               "<input type='text' id='PRE_PRICE_CHARGE" + key + "' value='" + e.PRE_PRICE_CHARGE + "'>" +
+               "<input type='text' id='PACKAGE_TYPE" + key + "' value='" + e.PACKAGE_TYPE + "'>" +
+               "<input type='text' id='PACKAGE_TYPE_DESC" + key + "' value='" + e.PACKAGE_TYPE_DESC + "'>" +
+               "<input type='text' id='PRODUCT_SUBTYPE_" + key + "' value='" + e.PRODUCT_SUBTYPE + "'>" +
+               "<input type='text' id='OWNER_PRODUCT" + key + "' value='" + e.OWNER_PRODUCT + "'>" +
+               "<input type='text' id='ACCESS_MODE" + key + "' value='" + e.ACCESS_MODE + "'>" +
+               "<input type='text' id='SERVICE_CODE" + key + "' value='" + e.SERVICE_CODE + "'>" +
+               "<input type='text' id='SFF_PROMOTION_CODE" + key + "' value='" + e.SFF_PROMOTION_CODE + "'>" +
+               "<input type='text' id='SFF_WORD_IN_STATEMENT_THA" + key + "' value='" + e.SFF_WORD_IN_STATEMENT_THA + "'>" +
+               "<input type='text' id='SFF_WORD_IN_STATEMENT_ENG" + key + "' value='" + e.SFF_WORD_IN_STATEMENT_ENG + "'>" +
+               "<input type='text' id='PACKAGE_DISPLAY_THA" + key + "' value='" + e.PACKAGE_DISPLAY_THA + "'>" +
+               "<input type='text' id='NUMBER_OF_PURCHSES" + key + "' value='" + e2.NUMBER_OF_PURCHSES + "'>" +
+               "<input type='text' id='PIC_MESH" + key + "' value='" + e2.PIC_MESH_BASE64 + "'>" +
+               "<input type='text' id='FLAG_POPUP_MESH" + key + "' value='" + e2.FLAG_POPUP_MESH + "'>" +
+               "<input type='text' id='DETAIL_MESH" + key + "' value='" + e2.DETAIL_MESH + "'>" +
+               "<input type='text' id='SFF_PRODUCT_PACKAGE" + key + "' value='" + e.SFF_PRODUCT_PACKAGE + "'>" +
+               "<input type='text' id='OPTION_MESH" + key + "' value='" + e2.OPTION_MESH + "'>" +
+               "<input type='text' id='OPTION_MESH_DETAIL" + key + "' value='" + e2.OPTION_MESH_DETAIL + "'>" +
+               "<input type='text' id='POPUP_ALERT" + key + "' value='" + e2.POPUP_ALERT + "'>" +
+               "<input type='text' id='PRICE_VALUE" + key + "' value='" + e2.PRICE_VALUE + "'>" +
+               "<input type='text' id='WORDING_DISPLAY" + key + "' value='" + e2.WORDING_DISPLAY + "'>" +
+               "<input type='text' id='CONTRACT_ID" + key + "' value='" + e2.CONTRACT_ID + "'>" +
+               "<input type='text' id='CONTRACT_NAME" + key + "' value='" + e2.CONTRACT_NAME + "'>" +
+               "<input type='text' id='DURATION" + key + "' value='" + e2.DURATION + "'>" +
+               /*R22.05 Device Contract Mesh*/
+               "<input type='text' id='PROMOTION_DEVICE" + key + "' value='" + e2.PROMOTION_DEVICE + "'>" +
+               /*R22.11 Mesh with arpu*/
+               "<input type='text' id='FLAG_OPTION" + key + "' value='" + e2.FLAG_OPTION + "'>" +
+               "<input type='text' id='FLAG_MESH" + key + "' value='" + e2.FLAG_MESH + "'>" +
+               "</td>" +
+               "</tr>";
+    }
+
+    function chk_BrowserType() {
+        if ((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1) {
+            $("#Browser_type").val('Opera');
+        }
+        else if (navigator.userAgent.indexOf("Chrome") != -1) {
+            $("#Browser_type").val('Chrome');
+        }
+        else if (navigator.userAgent.indexOf("Safari") != -1) {
+            $("#Browser_type").val('Safari');
+        }
+        else if (navigator.userAgent.indexOf("Firefox") != -1) {
+            $("#Browser_type").val('Firefox');
+        }
+        else if ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true)) //IF IE > 10
+        {
+            $("#Browser_type").val('IE');
+        }
+        else {
+            $("#Browser_type").val('unknown');
+        }
+    }
+
+    function chk_RegisterDevice() {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $("#Register_device").val("MOBILE WEB");
+        }
+        else {
+            $("#Register_device").val("WEB BROWSER");
+        }
+
+        if (typeof aisNative != "undefined" && typeof aisNative != "" && typeof aisNative != null) {
+            $("#Register_device").val("MOBILE APP");
+            $("#Browser_type").val('');
+        }
+    }
+
+    //R22.08 Order Deadlock Change Service not allow
+    var isSuccessGetListServiceAndPromotionByPackType = false;
+    function getListServiceAndPromotionByPackType() {
+        isSuccessGetListServiceAndPromotionByPackType = false;
+        $.ajax({
+            type: "POST",
+            url: "/SelectPackage/GetListServiceAndPromotionByPackType",
+            data: {
+                "mobileNo": $.trim($("#CoveragePanelModel_P_MOBILE").val()),
+                "idCard": $.trim($("#IDCardNo").val()),
+                "idCardType": $("#IDCardTypeENG").val()
+            },
+            dataType: "json",
+            async: false,
+            success: function (dataService) {
+                console.log("ErrorMessage : ", dataService.ErrorMessage);
+                if (dataService.ErrorMessage == "") {
+                    $("#CoveragePanelModel_Address_AddressId").val(dataService.addressId);
+                    $("#ZTEVasAddressID").val(dataService.addressId);
+                    $("#ZTEInstallAddress1").val(dataService.v_installAddress1);
+                    $("#ZTEInstallAddress2").val(dataService.v_installAddress2);
+                    $("#ZTEInstallAddress3").val(dataService.v_installAddress3);
+                    $("#ZTEInstallAddress4").val(dataService.v_installAddress4);
+                    $("#ZTEInstallAddress5").val(dataService.v_installAddress5);
+                    isSuccessGetListServiceAndPromotionByPackType = true;
+                }
+                else {
+                    isSuccessGetListServiceAndPromotionByPackType = false;
+                }
+            }
+        });
+    }
+
+    //R22.08 Order Deadlock Change Service not allow
+    function CheckOrderDeadlock() {
+        var isOrderDeadlock = false;
+        $.ajax({
+            type: "POST",
+            url: "/PaymentMesh/MeshCheckOrderDeadlock",
+            data: { "mobileNo": $.trim($("#CoveragePanelModel_P_MOBILE").val()) },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                isOrderDeadlock = data.isOrderDeadlock;
+            }
+        });
+        return isOrderDeadlock;
+    }
+
+    //R22.08 Order Deadlock Change Service not allow
+    function onClickOrderDeadlock() {
+
+        var contactPhone = "";
+        $.ajax({
+            url: '/Process/GetOtherInformation',
+            data: {
+                mobileno: $('#CoveragePanelModel_P_MOBILE').val(),
+                caid: $('#CoveragePanelModel_CA_ID').val(),
+                baid: $('#CoveragePanelModel_BA_ID').val(),
+                selectvalue: 'CONTACT'
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response != "") {
+                    var arrayRespon = response.split(',');
+                    contactPhone = arrayRespon[2];
+                }
+            }
+        });
+
+        var strInstallAddress = "";
+        strInstallAddress = $("#ZTEInstallAddress1").val() != undefined ? (strInstallAddress + $("#ZTEInstallAddress1").val()) : strInstallAddress;
+        strInstallAddress = $("#ZTEInstallAddress2").val() != undefined ? (strInstallAddress + " " + $("#ZTEInstallAddress2").val()) : strInstallAddress;
+        strInstallAddress = $("#ZTEInstallAddress3").val() != undefined ? (strInstallAddress + " " + $("#ZTEInstallAddress3").val()) : strInstallAddress;
+        strInstallAddress = $("#ZTEInstallAddress4").val() != undefined ? (strInstallAddress + " " + $("#ZTEInstallAddress4").val()) : strInstallAddress;
+        strInstallAddress = $("#ZTEInstallAddress5").val() != undefined ? (strInstallAddress + " " + $("#ZTEInstallAddress5").val()) : strInstallAddress;
+
+        $.ajax({
+            type: "POST",
+            url: "/PaymentMesh/MeshCreateCaseGenericFlow",
+            data: {
+                "mobileNo": $.trim($("#CoveragePanelModel_P_MOBILE").val()),
+                "contactPhone": contactPhone,
+                "installAddress": strInstallAddress
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var isStatusCreate = data.isStatusCreate;
+            }
+        });
+
+        onRedirectToFirstPage();
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        if ("@ViewBag.Vas" == "2" || "@ViewBag.TopUp" == "1") {
+            onLoadLine2Page2();
+            changePageHeader_Vas(2);
+        }
+    });
+
+    $(function () {
+        if ("@ViewBag.TopUp" == "1") {
+            $('#trBundling').hide();
+            $('#trDiscount').hide();
+        }
+
+        if ("@ViewBag.Vas" == "2") {
+            $('#trBundling').hide();
+            $('#trDiscount').hide();
+        }
+    });
+</script>

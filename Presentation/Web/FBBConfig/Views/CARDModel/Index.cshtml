@@ -1,0 +1,626 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.CardModel
+@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.Models;
+
+@Html.Partial("~/Views/Shared/_PartialPopupHistory.cshtml")
+@{
+    ViewBag.Title = "Card Model";
+}
+
+    @*<style>    
+       .table > thead > tr > th,
+       .table > tbody > tr > th, 
+       .table > tfoot > tr > th, 
+       .table > thead > tr > td, 
+       .table > tbody > tr > td, 
+       .table > tfoot > tr > td {
+            border:none;
+        }
+        
+        .col-md-10 {
+            width:99%;
+        }
+
+        @@media
+         only screen and (max-width: 875px), 
+         only screen and (max-width: 320px),
+         only screen and (max-width: 360px),
+         only screen and (max-width: 768px),
+         only screen and (max-width: 800px),
+         only screen and (max-width: 980px){
+            .col-md-10 {
+                width:98.5%;
+            }
+        }
+    </style>*@
+
+@{
+    
+    var o = (List<WBBEntity.PanelModels.Account.ComponentModel>)ViewBag.User.ComponentModel;
+    var g = (List<decimal>)ViewBag.User.Groups;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderByDescending(des => des.ReadOnlyFlag).ToList();
+    
+
+    string FBB_CFG004_1_ADD = "";
+    string FBB_CFG004_1_EDIT = "";
+    string FBB_CFG004_1_DELETE = "";
+
+
+    
+
+    
+
+    if (o != null)
+    {
+        
+        FBB_CFG004_1_ADD = o.Any(c => c.ComponentName == "FBB_CFG004_1_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG004_1_ADD").ReadOnlyFlag : "";
+        FBB_CFG004_1_EDIT = o.Any(c => c.ComponentName == "FBB_CFG004_1_EDIT") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG004_1_EDIT").ReadOnlyFlag : "";
+        FBB_CFG004_1_DELETE = o.Any(c => c.ComponentName == "FBB_CFG004_1_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG004_1_DELETE").ReadOnlyFlag : "";
+    }
+}
+
+    <script>
+
+        function CM_SaveModel() {
+            var chk = ValidationProcessing("FrameworkPanel");
+            if (chk)
+                showFeedback("success", "Delete Successfully.");
+            else
+                showFeedback("error", "Please correct the errors and try again.");
+        }
+
+        $(function () {
+            var validateModel = [];
+            validateModel.push({ id: "Subject" });
+            validateModel.push({ id: "Description" });
+            validateModel.push({ id: "SendTo" });
+            validateModel.push({ id: "CC" });
+            SetRequired(validateModel);
+        });
+
+        function Save() {
+            var chk = ValidationProcessing("FrameworkPanel");
+            if (chk)
+                showFeedback("success", "Save Successfully.");
+            else
+                showFeedback("error", "Please correct the errors and try again.");
+        }
+
+    </script>
+
+
+        <div class="page-header i-header-fit">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <h3 style="margin-top: 0">Card Model Configuration</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+        @(Html.Kendo().Grid<CardModel>()
+            .Name("GridCardModel") // Change pull-left to pull-right at Show History B. + Add pull-left at Add New Data B. -- P'Boy
+            .ToolBar(toolbar => toolbar.Template("" +
+            "<div class='pull-right'><a onclick='showPopupHistoryLog()' class='btn btn-default pull-right'><i class='fa fa-history'></i>&nbsp; Show History</a> &nbsp;" +
+            "<a id='btnShowCardPanel' onclick='onAddPopup()' class='btn btn-default pull-left'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a></div>"))
+        
+            .Columns(columns =>
+            {
+            columns.Bound(p => p.MODEL).Title("Model").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.BRAND).Title("Brand").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.MAXPORT).Title("Max Port").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.PORTSTARTINDEX).Title("Start Index").HtmlAttributes(new { @class = "i-text-align-center" });
+            columns.Bound(p => p.DATAONLY_FLAG).Title("Port Type").ClientTemplate("# if (DATAONLY_FLAG=='Y') { #" +
+                   "Data" +
+                   "# } else if(DATAONLY_FLAG=='N'){#Data<span class='replacePlus'></span>Voice#}#").HtmlAttributes(new { @class = "i-text-align-center" });
+            
+            columns.Command(command =>
+            {
+                if (FBB_CFG004_1_EDIT != "")
+                {
+                    command.Custom("Edit").Click("editGrid").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; Edit");
+                }
+                if (FBB_CFG004_1_DELETE != "")
+                {
+                    command.Custom("Delete").Click("deleteGrid").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete");
+                }
+            });
+        })
+        
+        .Filterable()
+        .Pageable(p => p.Input(true)
+        .Numeric(true)
+        .PageSizes(true)
+        )
+        //.HtmlAttributes(new { style = "text-align:rigth;" })
+        //.Reorderable(r => r.Columns(true))
+        //.Groupable()
+        .Sortable()
+        .Pageable(p => p.Input(true)
+        .Numeric(true)
+        .PageSizes(true)
+        )
+        
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Read(read => read.Action("ReadCardModel", "CARDModel"))
+                .PageSize(10)
+                .Model(model => model.Id(p => p.CARDMODELID))
+                )
+                .Events(e => e.DataBound("onDataBound"))
+                )
+
+        </div>
+</div>
+
+                @(Html.Kendo().Window()
+                    .Name("AddPopup")
+                    .HtmlAttributes(new { @class = "i-gap-popup" })
+                    .Title("Add Card Model Configuration")
+                    .Width(350)
+                    .Draggable()
+                    .Visible(false)
+                    .Modal(true)
+                    .Content(@<text>
+
+<div class="row i-no-over" id="AddPopupPanel">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Model <span id="requiredfor-MODEL"></span></label>
+            <div class="i-fg-data-entry">
+                @Html.TextBoxFor(Model => Model.MODEL,
+                     new
+                     {
+                         @type = "text",
+                         @id = "MODEL",
+                         @class = "k-textbox form-control",
+                         @maxlength = 50
+                     })
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-MODEL"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Brand <span id="requiredfor-BRAND"></span></label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().ComboBox()
+                    .Name("BRAND")
+                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                    .DataTextField("Band")
+                    .DataValueField("Band")
+                    .Filter("contains")
+                    .DataSource(source =>
+                    {
+                        source.Read(read =>
+                        {
+                            read.Action("SelectModelNmae", "MasterData", new { label = false });
+                        });
+                    })
+                    )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-BRAND"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Max Port  <span id="requiredfor-MAXPORT"></span></label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().NumericTextBox()
+                    .Name("MAXPORT")
+                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                    .Format("n0")
+                    .Spinners(false)
+                    .Min(1)
+                    .Max(99)
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-MAXPORT"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Reserve Port Spare <span id="requiredfor-RESERVEPORTSPARE"></span></label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().NumericTextBox()
+                    .Name("RESERVEPORTSPARE")
+                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                    .Format("n0")
+                    .Spinners(false)
+                    .Min(0)
+                    .Max(9)
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-RESERVEPORTSPARE"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Start Index <span id="requiredfor-PORTSTARTINDEX"></span></label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().NumericTextBox()
+                    .Name("PORTSTARTINDEX")
+                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                    .Format("n0")
+                    .Spinners(false)
+                    .Min(0)
+                    .Max(9)
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-PORTSTARTINDEX"></div>
+        </div>
+    </div>
+    
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Port Type <span id="requiredfor-Port_Type"></span></label>
+            <div class="i-fg-data-entry">
+                <div class="form-inline">
+                    <div class="radio i-gap-right-2">
+                        <label>
+                            <input type="radio" name="DATAONLY_FLAG22" id="DATAONLY_FLAG22N" value="N" checked="checked" />
+                            Data+Voice
+                        </label>
+                    </div>
+                    <div class="radio i-gap-right-2">
+                        <label>
+                            <input type="radio" name="DATAONLY_FLAG22" id="DATAONLY_FLAG22Y" value="Y" />
+                            Data
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-Port_Type"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+
+        <div class="btn-group pull-right i-gap-top-1" id="btnSave">
+            <a class="btn btn-default i-width-sm-2" onclick="ClearFrom()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+            <a class="btn btn-success i-width-sm-2" onclick="onSave('ADD')" ><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Save</a>
+        </div>
+
+        <div class="btn-group pull-right i-gap-top-1 i-hidden" id="btnUpdate">
+            <a class="btn btn-default i-width-sm-2" onclick="ClearFrom()"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+            <a class="btn btn-success i-width-sm-2" onclick="onSave('UPDATE')"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;Update</a>
+        </div>
+    </div>
+
+</div>
+</text>)
+)
+
+<input type="hidden" id="CARDMODEIDADDHD" value="0" />
+
+    <script>
+        function onDataBound() {
+            $(".replacePlus").text("+");
+            setButton();
+        }
+
+        $(function () {
+            if ("@FBB_CFG004_1_ADD" == "") $("#btnShowCardPanel").hide();
+        });
+
+        function ClearFrom() {
+
+        $("#DATAONLY_FLAG22N").prop('checked', true)
+        $("#MODEL").val("");
+        // $("input[name=DATAONLY_FLAG22]:checked").val("");
+        $("#BRAND").data("kendoComboBox").value("");
+        $("#MAXPORT").data("kendoNumericTextBox").value("");
+        $("#RESERVEPORTSPARE").data("kendoNumericTextBox").value("");
+        $("#PORTSTARTINDEX").data("kendoNumericTextBox").value("");
+        $("#AddPopup").data("kendoWindow").close();
+    }
+
+    //function test(e) {
+    //    if ($('#modepopup').val() == 'add') {
+
+    //        $("a.k-grid-update")[0].removeClass("invalid")
+
+    //    } else if ($('#modepopup').val() == 'edit') {
+
+    //        $("a.k-grid-update")[0].addClass("valid");
+    //    }
+    //    changeTitlePopup(e);
+    //}
+
+
+    //function ChangemodeName2() {
+
+    //    var user = "User";
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: '/CARDModel/IsUID_Available',
+    //        data: { modelname: $("#hdid").val(), Falg: user },
+    //        dataType: "json",
+    //        success: function (data) {
+    //            if (data == true) {
+    //                alert(data)
+    //                alert("ชื่อModel Name ช้ำ");
+    //                showFeedback('error', 'ชื่อModel Name:ซ้ำ' + data);
+
+    //            } else {
+
+    //               // showFeedback('success', '');
+    //                $("#hdid").val('');
+
+    //            }
+
+    //        }
+    //    });
+    //}
+
+
+    //function checkidRadioDataFlag(Idradio){
+
+    //    debugger
+    //    var DATAONLY_FLAG22N = $("#DATAONLY_FLAG22N").val();
+    //    var DATAONLY_FLAG22Y = $("#DATAONLY_FLAG22Y").val();
+    //    /// alert(DATAONLY_FLAG22N + "##  " + DATAONLY_FLAG22Y)
+    //    debugger
+
+
+    //    if (DATAONLY_FLAG22N=="N") {
+    //        idradio=="N";
+    //        return idradio;
+    //    }else{
+
+
+    //        idradio=="Y";
+    //        return idradio;
+
+    //    }
+    //    return "";
+
+    //    }
+
+
+        function onAddPopup() {
+        // checkidRadioDataFlag();
+        $("#DATAONLY_FLAG22N").prop('checked', true)
+        $("#CARDMODEIDADDHD").val();
+        $("#MODEL").val("");
+        // $("input[name=DATAONLY_FLAG22]:checked").val("");
+        $("#BRAND").data("kendoComboBox").value("");
+        $("#MAXPORT").data("kendoNumericTextBox").value("");
+        $("#RESERVEPORTSPARE").data("kendoNumericTextBox").value("");
+        $("#PORTSTARTINDEX").data("kendoNumericTextBox").value("");
+        // checkidRadioDataFlag();
+     
+        ClearTextValidation("AddPopup");
+
+        var validateModel = [];
+        validateModel.push({ id: "MODEL" });
+        validateModel.push({ id: "BRAND" });
+        validateModel.push({ id: "MAXPORT" });
+        validateModel.push({ id: "BRAND" });
+        validateModel.push({ id: "RESERVEPORTSPARE" });
+        validateModel.push({ id: "PORTSTARTINDEX" });
+
+        SetRequired(validateModel);
+
+        $("#btnSave").show();
+        $("#btnUpdate").hide();
+
+        $("#AddPopup_wnd_title").text("Add Card Model Configuration");
+
+        $("#AddPopup").data("kendoWindow").open();
+        $("#AddPopup").data("kendoWindow").center();
+    }
+
+        function onSave(ResultCommand) {
+            ///alert($("#CARDMODEIDADDHD").val());
+            var chk = ValidationProcessing("AddPopupPanel");
+            if (chk) {
+                
+                var DATAONLY_FLAG2222222 = "";
+
+                if ($("input[name=DATAONLY_FLAG22]:checked").val() == "Y")
+                    DATAONLY_FLAG2222222 = "Y";
+                else
+                    DATAONLY_FLAG2222222 = "N";
+
+
+                Loading();
+
+                $.ajax({
+                    url: '/CARDModel/Add_CardModel',
+                    data: {
+                        ResultCommand: ResultCommand,
+                        Model: $("#MODEL").val(), Band: $("#BRAND").val(), maxport: $("#MAXPORT").val(), RESERVEPORTSPARE: $("#RESERVEPORTSPARE").val(),
+                        PORTSTARTINDEX: $("#PORTSTARTINDEX").val(), DATAONLY_FLAG: DATAONLY_FLAG2222222, CARDMODELID: $("#CARDMODEIDADDHD").val()
+                    },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        // alert(response);
+                        if (response != null) {
+                            $("#GridCardModel").data("kendoGrid").dataSource.read();
+                            Loading(0);
+                            $("#AddPopup").data("kendoWindow").close();
+                            CheadckFlagCardModel(response)
+                            // alert(response);
+
+                        } else if (response == "ADD") {
+                            Loading(0);
+                            CheadckFlagCardModel(response)
+
+                        } else if (response == "UPDATE") {
+                            Loading(0);
+                            CheadckFlagCardModel(response)
+
+                        } else if (response == "DELETE") {
+                            Loading(0);
+                            CheadckFlagCardModel(response)
+                        }
+                    },
+                    error: function (err) {
+
+                        $("#AddPopup").data("kendoWindow").close();
+                        showFeedback("error", err);
+                    }
+
+                });
+
+            }
+        }
+
+        function deleteGrid(e) {
+
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            $("#CARDMODEIDADDHD").val(dataItem.CARDMODELID);
+            $("#MODEL").val(dataItem.MODEL);
+            $("#BRAND").data("kendoComboBox").value(dataItem.BRAND);
+            $("#MAXPORT").data("kendoNumericTextBox").value(dataItem.MAXPORT)
+            $("#RESERVEPORTSPARE").data("kendoNumericTextBox").value(dataItem.RESERVEPORTSPARE);
+            $("#PORTSTARTINDEX").data("kendoNumericTextBox").value(dataItem.PORTSTARTINDEX);
+
+            //var c = confirm("Are you sure you want to delete " + dataItem.Province + " " + dataItem.Amphur + " " + dataItem.OwnerProduct + " ?");
+            var del = confirm("Are you sure you want to delete?");
+            if (del) {
+                onSave('DELETE');
+            }
+        }
+
+        function editGrid(e) {
+
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $("#CARDMODEIDADDHD").val(dataItem.CARDMODELID);
+            $("#MODEL").val(dataItem.MODEL);
+            $("#BRAND").data("kendoComboBox").value(dataItem.BRAND);
+            $("#MAXPORT").data("kendoNumericTextBox").value(dataItem.MAXPORT)
+            $("#RESERVEPORTSPARE").data("kendoNumericTextBox").value(dataItem.RESERVEPORTSPARE);
+            $("#PORTSTARTINDEX").data("kendoNumericTextBox").value(dataItem.PORTSTARTINDEX);
+
+            if (dataItem.DATAONLY_FLAG == "Y") {
+                // $("#DATAONLY_FLAG22N").removeAttr("checked");
+                //$("#DATAONLY_FLAG22Y").attr("checked", "checked");
+                $("#DATAONLY_FLAG22Y").prop('checked', true)
+            }
+            else {
+                //$("#DATAONLY_FLAG22Y").removeAttr("checked");
+                //$("#DATAONLY_FLAG22N").attr("checked", "checked");
+                $("#DATAONLY_FLAG22N").prop('checked', true)
+            }
+
+            ///$("input[name=DATAONLY_FLAG22]").val(dataItem.DATAONLY_FLAG);
+
+            ClearTextValidation("AddPopup");
+
+            var validateModel = [];
+            validateModel.push({ id: "MODEL" });
+            validateModel.push({ id: "BRAND" });
+            validateModel.push({ id: "MAXPORT" });
+            validateModel.push({ id: "RESERVEPORTSPARE" });
+            validateModel.push({ id: "PORTSTARTINDEX" });
+            validateModel.push({ id: "DATAONLY_FLAG22" });
+            SetRequired(validateModel);
+
+            $("#btnSave").hide();
+            $("#btnUpdate").show();
+
+            $("#AddPopup_wnd_title").text("Edit Card Model Configuration");
+
+            $("#AddPopup").data("kendoWindow").open();
+            $("#AddPopup").data("kendoWindow").center();
+        }
+
+        function CheadckFlagCardModel(resultFlag) {
+
+            var returnDesc = "";
+            var Return_Code = "";
+
+            if (resultFlag == "ADD") {
+                $.ajax({
+                    url: '/CARDModel/setdataTransition',
+                    //data: { },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        returnDesc = response[0];
+                        Return_Code = response[1];
+
+                        if (Return_Code == 0) {
+                            Loading(0);
+                            showFeedback('warning', returnDesc);
+                        } else {
+                            Loading(0);
+                            showFeedback('success', returnDesc);
+                        }
+                    }
+                });
+
+            }
+
+            else if (resultFlag == "UPDATE") {
+                $.ajax({
+                    url: '/CARDModel/setdataTransition',
+                    //data: { },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        returnDesc = response[0];
+                        Return_Code = response[1];
+
+                        if (Return_Code == 0) {
+                            Loading(0);
+                            showFeedback('warning', returnDesc);
+                        } else {
+                            Loading(0);
+                            showFeedback('success', returnDesc);
+                        }
+                    }
+                });
+
+            }
+
+            else if (resultFlag == "DELETE") {
+                $.ajax({
+                    url: '/CARDModel/setdataTransition',
+                    //data: { },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        returnDesc = response[0];
+                        Return_Code = response[1];
+
+                        if (Return_Code == 0) {
+                            Loading(0);
+                            showFeedback('warning', returnDesc);
+                        } else {
+                            Loading(0);
+                            showFeedback('success', returnDesc);
+                        }
+                    }
+                });
+
+            }
+
+            $('#GridCardModel').data('kendoGrid').dataSource.read();
+
+        }
+
+        function showPopupHistoryLog() {
+            var title = "Card Model";
+            var application = "FBB_CFG004_1"; //Code "FBB_CFG_004_1" is "CardModel"
+            var refKey = "";
+            var refName = "CARD MODEL";
+            //var refKey = "";
+            //var refName = "";
+            //var refKey = $("#MODEL").val();
+            //var refName = "MODEL";
+
+            onHistoryPopUp_Show(title, application, refKey, refName);
+        }
+    
+    </script>

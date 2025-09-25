@@ -1,0 +1,153 @@
+﻿@using AIRNETEntity.PanelModel
+@model AIRNETEntity.PanelModel.TrackingPanelModel
+@{
+    string L_BACK_TO_MAINPAGE = "";
+    string L_REDIRECT = "";
+    string L_REG_STATE = "";
+    string L_CUST_REG_TITLE = "";
+    string L_TRACKING_HEADER = "";
+    string L_STATE_GREEN = "";
+    string L_STATE_LIGHT_GREEN = "";
+    string L_STATE_ORANGE = "";
+    string L_STATE_GRAY = "";
+
+    if (ViewBag.LabelWBB != null)
+    {
+        var LabelWBB = (List<LovScreenValueModel>)ViewBag.LabelWBB;
+
+        L_BACK_TO_MAINPAGE = LabelWBB.Any(c => c.Name == "L_BACK_TO_MAINPAGE") ? LabelWBB.First(c => c.Name == "L_BACK_TO_MAINPAGE").DisplayValue : "";
+        L_REDIRECT = LabelWBB.Any(c => c.Name == "L_REDIRECT") ? LabelWBB.First(c => c.Name == "L_REDIRECT").DisplayValue : "";
+        L_REG_STATE = LabelWBB.Any(c => c.Name == "L_REG_STATE") ? LabelWBB.First(c => c.Name == "L_REG_STATE").DisplayValue : "";
+        L_CUST_REG_TITLE = LabelWBB.Any(c => c.Name == "L_CUST_REG_TITLE") ? LabelWBB.First(c => c.Name == "L_CUST_REG_TITLE").DisplayValue : "";
+        L_TRACKING_HEADER = LabelWBB.Any(c => c.Name == "L_TRACKING_HEADER") ? LabelWBB.First(c => c.Name == "L_TRACKING_HEADER").DisplayValue : "";
+        L_STATE_GREEN = LabelWBB.Any(c => c.Name == "L_STATE_GREEN") ? LabelWBB.First(c => c.Name == "L_STATE_GREEN").DisplayValue : "";
+        L_STATE_LIGHT_GREEN = LabelWBB.Any(c => c.Name == "L_STATE_LIGHT_GREEN") ? LabelWBB.First(c => c.Name == "L_STATE_LIGHT_GREEN").DisplayValue : "";
+        L_STATE_ORANGE = LabelWBB.Any(c => c.Name == "L_STATE_ORANGE") ? LabelWBB.First(c => c.Name == "L_STATE_ORANGE").DisplayValue : "";
+        L_STATE_GRAY = LabelWBB.Any(c => c.Name == "L_STATE_GRAY") ? LabelWBB.First(c => c.Name == "L_STATE_GRAY").DisplayValue : "";
+    }
+}
+
+<style>
+    .bg_box {
+        width: 17px;
+        height: 17px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .box1 {
+        background-image: url("../Content/images/tracking/icon-status01.png");
+    }
+
+    .box2 {
+        background-image: url("../Content/images/tracking/icon-status02.png");
+    }
+
+    .box3 {
+        background-image: url("../Content/images/tracking/icon-status03.png");
+    }
+
+    .box4 {
+        background-image: url("../Content/images/tracking/icon-status04.png");
+    }
+
+    .bg_circle {
+        width: 200px;
+        height: 63px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .circle_box1 {
+        background-image: url("../Content/images/tracking/icon01.png");
+    }
+
+    .circle_box2 {
+        background-image: url("../Content/images/tracking/icon03.png");
+    }
+
+    .circle_box3 {
+        background-image: url("../Content/images/tracking/icon02.png");
+    }
+
+    .circle_box4 {
+        background-image: url("../Content/images/tracking/icon04.png");
+    }
+
+    .circle_info {
+        vertical-align: top;
+        margin-top: 10px;
+        width: 840px;
+    }
+
+    .cust_title {
+        padding-top: 54px;
+        text-align: center;
+        background-image: url('../Content/images/tracking/title-bg.png');
+        background-repeat: no-repeat;
+        background-position: top;
+        width: 840px;
+        height: 80px;
+    }
+</style>
+
+<div id="DisplayResult" style="display: none;">
+    <div class="header">
+        <div style="float: left; padding-top: 75px;">
+
+            @if ((string)ViewBag.Language == "TH")
+            {             
+                <img src="~/Content/images/tracking/status-1.png" />            
+            }
+            else
+            {            
+                <img src="~/Content/images/tracking/status-2.png" />           
+            }
+
+        </div>
+        <div class="img-logo" style="float: right;">
+            <img src="~/Content/src/img-logo.png" />
+        </div>
+    </div>
+
+    <div class="form" style="min-height: 0px; margin-bottom: 30px;">
+        <div class="cust_title">
+            <label style="font-size: 16px; color: white;">@L_CUST_REG_TITLE</label>
+            <label style="font-size: 16px; color: white;" id="lblFirstName"></label>
+            <label style="font-size: 16px; color: white;" id="lblLastName"></label>
+        </div>
+
+        <div id="divOrderResult" style="margin-left: 10px;">
+        </div>
+
+        <div class="circle_info">
+            <table align="center">
+                <tr style="vertical-align: middle; line-height: 5px;">
+                    <td style="vertical-align: top;">
+                        <img src="~/Content/images/tracking/icon-status01.png" /></td>
+                    <td>
+                        <label>@L_STATE_GREEN</label></td>
+                    <td>
+                        <img src="~/Content/images/tracking/icon-status02.png" /></td>
+                    <td>
+                        <label>@L_STATE_LIGHT_GREEN</label></td>
+                    <td>
+                        <img src="~/Content/images/tracking/icon-status03.png" /></td>
+                    <td>
+                        <label>@L_STATE_ORANGE</label></td>
+                    <td>
+                        <img src="~/Content/images/tracking/icon-status04.png" /></td>
+                    <td>
+                        <label>@L_STATE_GRAY</label></td>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <img src="~/Content/images/tracking/line-title.png" />
+        </div>
+
+        <div id="divNextPageOrderResult" style="text-align: center; padding-right: 80px; padding-bottom: 20px;"></div>
+
+    </div>
+</div>

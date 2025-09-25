@@ -1,0 +1,54 @@
+﻿@using WBBEntity.PanelModels
+@{
+    Layout = "~/Views/Shared/_LayoutPaymentAndReportProblem.cshtml";
+
+    string lLoginConcurrentAlert = "";
+    string lGotoLogin = "";
+    string hdLanguagePage = "1";
+
+    if (ViewBag.LanguagePage != null)
+    {
+        hdLanguagePage = ViewBag.LanguagePage;
+    } 
+    
+    if (ViewBag.LabelFBBOR019 != null)
+    {
+        var labelFbbor019 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR019;
+        var lovlLoginConcurrentAlert = labelFbbor019.FirstOrDefault(c => c.Name == "L_LOGIN_CONCURRENT");
+        if (lovlLoginConcurrentAlert != null)
+        {
+            lLoginConcurrentAlert = labelFbbor019.Any(c => c.Name == "L_LOGIN_CONCURRENT") ? lovlLoginConcurrentAlert.DisplayValue : "";
+        }
+        var lovGotoLogin = labelFbbor019.FirstOrDefault(c => c.Name == "L_GOTO_LOGIN_BUTTON");
+        if (lovGotoLogin != null)
+        {
+            lGotoLogin = labelFbbor019.Any(c => c.Name == "L_GOTO_LOGIN_BUTTON") ? lovGotoLogin.DisplayValue : "";
+        }
+    }
+}
+
+<div id="divMainDetailBoxData" class="user_tool_content mainDetail-boxData">
+    <div class="row_ais">
+        @using (Html.BeginForm("Login", "Payment", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("languagePage",hdLanguagePage)
+            <div class="row">
+                <p id="pMainDetailWarningText" class="col-sm-12 col-md-12 col-lg-12 mainDetail-warningText">@lLoginConcurrentAlert</p>
+            </div>
+            <div class="row">
+                <div id="divMainDetailButton" class="col-sm-12 col-md-12 col-lg-12 mainDetail-Button">
+                    <input id="btnGotoLogin" class="btn2 btn btn-for-xs" type="submit" value="@lGotoLogin" />
+                </div>
+            </div>            
+        }        
+    </div>       
+</div>
+
+<script>
+        $(document).ready(function () {
+            $('li').removeClass('active');
+            $('.bd-3').addClass('active');
+            $('.pay').addClass('active');
+        });
+</script>

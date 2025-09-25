@@ -1,0 +1,502 @@
+﻿@using System.Globalization;
+@{
+    string L_PAY_PERIOD = "PAY PERIOD";
+    string L_FROM = "From:";
+    string L_TO = "To:";
+    string B_CONFIRM = "CONFIRM";
+    string B_CANCEL = "CANCEL";
+    string usertype = ViewBag.UserGroup ?? "SCM";
+
+}
+
+<div id="SendMail">
+    <div class="row">
+        <label>รอบการเบิกเงิน :<span id="PAY_PER_MON" style="color:red;padding-left:5px;"></span> </label>
+    </div>
+    <div class="row">
+        <label>@L_PAY_PERIOD </label>
+    </div>
+    <div class="row">
+        <div class="col-sm-1">
+            <label>@L_FROM </label>
+        </div>
+        <div class="col-sm-3">
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DatePicker().Name("SendMailApproveDateFrom")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                             .Format("dd/MM/yyyy")
+
+                                    .Min(new DateTime(1900, 1, 1))
+                                    .Max(new DateTime(2099, 12, 31))
+                                     .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                    .Events(e => e.Change("onChangedSendMailApproveDateFromTo"))
+
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-SendMailApproveDateFrom"></div>
+            <span class="k-invalid-msg" data-for="PickupDate"></span>
+        </div>
+
+        <div class="col-sm-1">
+            <label>@L_TO </label>
+        </div>
+        <div class="col-sm-3">
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DatePicker().Name("SendMailApproveDateTo")
+                                                         .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .Format("dd/MM/yyyy")
+                                     .Min(new DateTime(1900, 1, 1))
+                                    .Max(new DateTime(2099, 12, 31))
+                                    .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                     .Events(e => e.Change("onChangedSendMailApproveDateTo"))
+
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-SendMailApproveDateTo"></div>
+        </div>
+
+    </div>
+    @*//2*@
+    <div class="row">
+        <label>รอบส่งเอกสาร(ท้ายเมลล์ )</label>
+    </div>
+    <div class="row">
+        <div class="col-sm-1">
+            &nbsp;
+        </div>
+        <div class="col-sm-3">
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DatePicker().Name("LastMileSendDocDateFrom")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .Format("dd/MM/yyyy")
+                                     .Min(new DateTime(1900, 1, 1))
+                                    .Max(new DateTime(2099, 12, 31))
+                                    .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-LastMileSendDocDateFrom"></div>
+            <span class="k-invalid-msg" data-for="PickupDate"></span>
+        </div>
+    </div>
+    @*//3*@
+    <div class="row">
+        <label>รอบการโอนเงิน(ท้ายเมลล์)</label>
+    </div>
+    <div class="row">
+        <div class="col-sm-1">
+            &nbsp;
+        </div>
+        <div class="col-sm-3">
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DatePicker().Name("LastMilePaymentDateFrom")
+                                         .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                         .Format("dd/MM/yyyy")
+                                     .Min(new DateTime(1900, 1, 1))
+                                    .Max(new DateTime(2099, 12, 31))
+
+                           .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-LastMilePaymentDateFrom"></div>
+            <span class="k-invalid-msg" data-for="PickupDate"></span>
+        </div>
+    </div>
+    @*//End 3*@
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-sm-1">
+            <label>Spacial Remark: </label>
+        </div>
+        <div class="col-sm-8">
+
+            @Html.TextArea("SpacialRemark", null, new { @class = "form-control" })
+
+        </div>
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-sm-1">
+            &nbsp;
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <a class="btn btn-success" onclick="_confirmSendMail();"><i class="fa fa-check-square-o"></i>&nbsp;&nbsp;@B_CONFIRM</a>
+                <a class="btn btn-default" onclick="_cancelSendMail();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CANCEL</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script> 
+    function SetDateTo() {
+
+        var startPicker = $("#SendMailApproveDateFrom").data("kendoDatePicker").value();
+        var endPicker = $("#SendMailApproveDateTo").data("kendoDatePicker").value();
+         
+        if ((endPicker <  startPicker)
+            && ($("#SendMailApproveDateTo").data("kendoDatePicker").value() != '')
+             ) {
+           
+            $("#SendMailApproveDateFrom").data("kendoDatePicker").value(endPicker);
+        } else if (startPicker == "") {
+            $("#SendMailApproveDateFrom").data("kendoDatePicker").value(endPicker);
+        } else {
+            $("#SendMailApproveDateFrom").data("kendoDatePicker").value(startPicker);
+        }
+        return;
+    }
+    function SetDateFrom() {
+
+
+        var startPicker = $("#SendMailApproveDateFrom").data("kendoDatePicker").value();
+        var endPicker = $("#SendMailApproveDateTo").data("kendoDatePicker").value();
+ 
+        if (endPicker < startPicker) {
+            $("#SendMailApproveDateTo").data("kendoDatePicker").value(startPicker); 
+        } else if (endPicker == "") {
+            $("#SendMailApproveDateTo").data("kendoDatePicker").value(startPicker);
+        } else { 
+            $("#SendMailApproveDateTo").data("kendoDatePicker").value(endPicker);
+        }
+        return;
+    }
+    function onChangedSendMailApproveDateFromTo() {
+       
+        SetDateFrom();
+        SetTextPayMent();
+    }
+
+    function onChangedSendMailApproveDateTo() {
+        SetDateTo();
+        SetTextPayMent();
+    }
+
+
+    function SetTextPayMent() {
+        $("#PAY_PER_MON").val('');
+        var periodForm = $("#SendMailApproveDateFrom").val();
+        var periodTo = $("#SendMailApproveDateTo").val();
+         
+        if (periodForm != "" && periodTo != "") {
+            var PAY_PER_MON = SplitDate(periodForm, periodTo);
+            $("#PAY_PER_MON").html(PAY_PER_MON)
+        }
+        else {
+            $("#PAY_PER_MON").html("กรุณาระบุวันที่รอบบิล");
+        }
+
+    }
+    function SplitDate(Datas1, Datas2) {
+        var str = null;
+        $.ajax({
+            type: "POST",
+            url: "/LastMileByDistance/ConvertDatePeriod",
+
+            data: { FromDtm: Datas1, ToDtm: Datas2 },
+            dataType: "text",
+            async: false,
+            success: function (response) {
+
+                str = response
+            }
+        });
+        return str;
+    }
+    var ModelParaQuery = function () {
+        REMARK: "";
+        STRING_CS_APPROVE_DATE: "";
+        CS_APPROVE_DATE_TO: "";
+        CS_APPROVE_DATE_FROM: "";
+        CS_DOC_DATE: "";
+        CS_PAYMENT_DATE: "";
+
+
+    }
+    function defaultDataSendMail() {
+        var idsToSend = [];
+        var ModelPara = new ModelParaQuery();
+        ModelPara.STRING_CS_APPROVE_DATE = $("#PAY_PER_MON").text()
+        ModelPara.CS_APPROVE_DATE_FROM = $("#SendMailApproveDateFrom").val();
+        ModelPara.CS_APPROVE_DATE_TO = $("#SendMailApproveDateTo").val();
+        ModelPara.CS_DOC_DATE = $("#LastMileSendDocDateFrom").val();
+        ModelPara.CS_PAYMENT_DATE = $("#LastMilePaymentDateFrom").val();
+        ModelPara.REMARK = $("#SpacialRemark").val();
+        idsToSend.push(ModelPara);
+        
+        return idsToSend;
+
+    }
+    function bindingValueSendMail() {
+        var model = defaultDataSendMail();
+        return JSON.stringify(model);
+
+    }
+
+    function _confirmSendMail() {
+
+         
+        var data = bindingValueSendMail();
+        //var stringify = JSON.parse(data.dataS);
+        //var ACCESS_NUMBER = null;
+        //if (stringify.length > 0) {
+        //    ACCESS_NUMBER = stringify[0]['ACCESS_NUMBER'];
+        //}
+       
+       // console.log(idsToSend);
+        var data = JSON.stringify({ 'AccNOList': idsToSend, 'dataS': data });
+        var chk = ValidationDateSendMail();
+        
+        if (chk) {
+           //  Loading(0);
+            $.ajax({
+                type: "POST",
+                url: "/LastMileByDistance/SendEmail",
+                data: data,
+                dataType: "text",
+                contentType: 'application/json',
+                async: true,
+                success: function (response) {
+                    //console.log(response)
+                  
+                 //   $("#_SendMail").data("kendoWindow").close();
+                  //  if (response == 'Success') {
+                    //    showFeedback("success", "Send email completed");
+                     //   searchOrderList();
+                   // }
+                    //else if (response == 'NODATA') {
+                    //    showFeedback("error", "Work Flow Status cannot send email.");
+                    //}
+                    //else {
+                    //    showFeedback("error", "Send email not completed.");
+                    //}
+                    //Loading(0);
+                },
+                failure: function (msg) {
+                 //   console.log(response)
+                  //  Loading();
+                    // $("#_SendMail").data("kendoWindow").close();
+                }
+            });
+
+            $("#_SendMail").data("kendoWindow").close();
+
+            showFeedback("success", "Send email is on Process...");
+            $(".k-cb").prop("checked", false);
+            checkedIds = {};
+
+            $("#SCMView tr").removeClass("k-state-selected");
+            $(".k-cb").removeAttr("checked");
+            // $("#Grid").data('kendoGrid').dataSource.data([]);
+            var grid = getGridName();
+            grid.dataSource.data([]);
+        }
+
+    }
+    function _cancelSendMail(e) {
+        ClearData();
+        clearValidateforSendMail(); 
+        $("#_SendMail").data("kendoWindow").close();
+    }
+
+    function ClearData() {
+        $("#PAY_PER_MON").text(''); 
+
+        $("#SendMailApproveDateFrom").data('kendoDatePicker').value(null);
+        $("#SendMailApproveDateTo").data('kendoDatePicker').value(null);
+
+        $("#LastMileSendDocDateFrom").data('kendoDatePicker').value(null);
+        $("#LastMilePaymentDateFrom").data('kendoDatePicker').value(null);
+
+        $("#SpacialRemark").val('');
+    }
+
+    function _SendMail(e) { 
+        $("#_SendMail").data("kendoWindow").open();
+        $("#_SendMail").data("kendoWindow").center();
+       
+        ClearData();
+        // ==dtm get val
+
+        var dtpCsApproveDateFrom = $("#dtpCsApproveDateFrom").val();
+        var dtpCsApproveDateTo = $("#dtpCsApproveDateTo").val();
+
+
+        var dtpWithdrawalDateFrom = $("#dtpWithdrawalDateFrom").val();
+        var dtpWithdrawalDateTo = $("#dtpWithdrawalDateTo").val();
+
+        var dtpTransferDateFrom = $("#dtpTransferDateFrom").val();
+        var dtpTransferDateTo = $("#dtpTransferDateTo").val();
+        // ==end dtm get val
+
+        $("#SendMailApproveDateFrom").val(dtpCsApproveDateFrom);
+        $("#SendMailApproveDateTo").val(dtpCsApproveDateTo);
+
+        SetTextPayMent();
+
+
+    }
+    function clearValidateforSendMail() {
+
+        $("#validatefor-" + "SendMailApproveDateFrom").html("");
+        $("#validatefor-" + "SendMailApproveDateTo").html("");
+
+        $("#validatefor-" + "LastMileSendDocDateFrom").html("");
+
+
+        $("#validatefor-" + "LastMilePaymentDateFrom").html("");
+
+    }
+    function ValidationDateSendMail() {
+        var chk = ValidationProcessing("dateselect");
+        if (chk) //check blank value
+        {
+            clearValidateforSendMail();
+            if ($.trim($("#SendMailApproveDateFrom").val()) != '') {
+
+                if ($.trim($("#SendMailApproveDateTo").val()) == '') {
+                    $("#validatefor-" + "SendMailApproveDateTo").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "SendMailApproveDateTo").html("");
+                }
+
+            } else if ($.trim($("#SendMailApproveDateTo").val()) != '') {
+                if ($.trim($("#SendMailApproveDateFrom").val()) == '') {
+                    $("#validatefor-" + "SendMailApproveDateFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "SendMailApproveDateFrom").html("");
+                }
+
+            } else if ($.trim($("#SendMailApproveDateFrom").val()) == '') {
+
+                if ($.trim($("#SendMailApproveDateFrom").val()) == '') {
+                    $("#validatefor-" + "SendMailApproveDateFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                if ($.trim($("#SendMailApproveDateTo").val()) == '') {
+                    $("#validatefor-" + "SendMailApproveDateTo").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+
+            }
+            //====LastMileSendDocDateFrom
+            if ($.trim($("#LastMileSendDocDateFrom").val()) != '') {
+
+                if ($.trim($("#LastMileSendDocDateFrom").val()) == '') {
+                    $("#validatefor-" + "LastMileSendDocDateFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "LastMileSendDocDateFrom").html("");
+                }
+
+            } else if ($.trim($("#LastMileSendDocDateFrom").val()) == '') {
+
+                if ($.trim($("#LastMileSendDocDateFrom").val()) == '') {
+                    $("#validatefor-" + "LastMileSendDocDateFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+            }
+
+            if ($.trim($("#LastMilePaymentDateFrom").val()) == '') {
+                $("#validatefor-" + "LastMilePaymentDateFrom").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "LastMilePaymentDateFrom").html("");
+            }
+
+            if ($.trim($("#LastMilePaymentDateFrom").val()) == '') {
+
+                if ($.trim($("#LastMilePaymentDateFrom").val()) == '') {
+                    $("#validatefor-" + "LastMilePaymentDateFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+
+
+            }
+
+        }
+        //===SendMailApproveDateFrom
+        if (!kendo.parseDate($("#SendMailApproveDateFrom").val(), "dd/MM/yyyy")) {
+            if ($("#SendMailApproveDateFrom").val() != "") {
+                $("#validatefor-" + "SendMailApproveDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                chk = false;
+            }
+        }
+        else {
+            $("#validatefor-" + "SendMailApproveDateFrom").html("");
+        }
+        //SendMailApproveDateTo
+        if (!kendo.parseDate($("#SendMailApproveDateTo").val(), "dd/MM/yyyy")) {
+            if ($("#SendMailApproveDateTo").val() != "") {
+                $("#validatefor-" + "SendMailApproveDateTo").html(ValidationIcon() + "This field is not correct format.");
+                chk = false;
+            }
+        }
+        else {
+            $("#validatefor-" + "SendMailApproveDateTo").html("");
+        }
+        //LastMileSendDocDateFrom
+        if (!kendo.parseDate($("#LastMileSendDocDateFrom").val(), "dd/MM/yyyy")) {
+            if ($("#LastMileSendDocDateFrom").val() != "") {
+                $("#validatefor-" + "LastMileSendDocDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                chk = false;
+            }
+        }
+        else {
+            $("#validatefor-" + "LastMileSendDocDateFrom").html("");
+        }
+        //==========LastMileSendDocDateFromTo
+
+        if (!kendo.parseDate($("#LastMilePaymentDateFrom").val(), "dd/MM/yyyy")) {
+            if ($("#LastMilePaymentDateFrom").val() != "") {
+                $("#validatefor-" + "LastMilePaymentDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                chk = false;
+            }
+        }
+        else {
+            $("#validatefor-" + "LastMilePaymentDateFrom").html("");
+        }
+
+        return chk;
+    }
+
+    //function onChangeApproveDateFrom() {
+    //    var pickDate = this.value();
+    //    var datepicker = $("#SendMailApproveDateTo").data("kendoDatePicker");
+    //    if (pickDate) {
+    //        datepicker.enable(true);
+    //        var minDate = new Date(pickDate);
+    //        //  var maxDate = new Date(pickDate.setMonth(pickDate.getMonth() + 5));
+    //        //  maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, maxDate.getDate() - 1);
+    //        $("#SendMailApproveDateTo").kendoDatePicker({
+    //            min: minDate,
+    //            //  max: maxDate,
+    //            format: "dd/MM/yyyy",
+    //            parseFormats: ["dd/MM/yyyy"]
+    //        });
+
+    //    }
+    //    //else {
+    //    //    datepicker.enable(false);
+    //    //}
+    //    datepicker.value(new Date());
+    //    $("#SendMailApproveDateTo").val("");
+    //}
+    //var datepicker = $("#dtpDateTo").data("kendoDatePicker");
+   //  datepicker.value(new Date());
+
+    //$(document).ready(function () {
+    //    var datepicker = $("#SendMailApproveDateFrom").data("kendoDatePicker");
+    //      datepicker.value(new Date());
+
+    //});
+</script> 

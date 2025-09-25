@@ -1,0 +1,547 @@
+﻿ @model WBBEntity.PanelModels.QuickWinPanelModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutReferences.cshtml";
+
+    Logger.Info("Hello New UI Fibre");
+
+    var VasDatalala22 = "";
+    if (ViewBag.Vas22 != null)
+    {
+        VasDatalala22 = ViewBag.Vas22;
+    }
+
+    var Version = "Ver. R15.9.29.290915";
+    if (ViewBag.Version != null)
+    {
+        Version = Version + "-" + ViewBag.Version;
+    }
+
+
+}
+<style>
+    /*a, a:link, a:active, a:visited, a:hover, a:focus {
+        color: #fff;
+    }*/
+
+    .nav-nopadding {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        width: 20%;
+        background-color: #8DC63F;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .vertical-alignment-helper {
+        display: table;
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .vertical-align-center {
+        display: table-cell;
+        vertical-align: middle;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        pointer-events: all;
+    }
+
+    .fa-6 {
+        font-size: 10em;
+    }
+
+    .preview-img {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+    }
+    .preview-pdf {
+        width:200px; 
+        height:160px; 
+        cursor:pointer;
+        margin: 7px;
+        border:1px solid black;
+    }
+
+    #ais_topbar {
+        display: block;
+    }
+
+    #ais_topbar .topbar_ribbon {
+	    padding-left:10px;
+        float: left;
+        height: 60px;
+    }
+
+    #ribbonking{ width:100%; height:60px;  background: url("/Images/bg1366.jpg") no-repeat center;  background-color:#000;}
+    #ribbonking_wrapper{height:60px; margin: 0 auto; max-width: 1140px;}
+
+
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        if ("@Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString()" == "1") {
+            $("#LanguagePage").val(1);
+            ais_interface_setup('mini-menu', 'postpaid', 'th', '', false);
+        }
+        else {
+            $("#LanguagePage").val(2);
+            ais_interface_setup('mini-menu', 'postpaid', 'en', '', false);
+        }
+    });
+</script>
+<div id="ais_topbar">
+
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_MenuTH")
+        }
+        else
+        {
+            @Html.Partial("_MenuEN")
+        }
+</div>
+
+<div id="container">
+    <div id="box1N_holder">
+        <div class="row_ais" >
+            <div class="column large-11 large-centered">
+                <div class="hidden-xs" style="display: none; margin-top: 50px;" id="status_plugandnplay">
+                    <img src="~/Images/Header_appform.jpg" class="img-responsive">
+                </div>
+                <div class="container" id="mainHeader">
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <p class="clearfix visible-xs-*"></p>
+                    <p class="clearfix visible-xs-*"></p>
+                    <div id="wrapSwitchLanguage" class="col-xs-12 text-right nopading">
+                        <a id="btn_th" class="btn-sm btn-success" href="~/WBB/ChangeCurrentCulture?culture=1" role="button"
+                           style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">ภาษาไทย</a>&nbsp;&nbsp;
+                        <a id="btn_en" class="btn-sm btn-default" href="~/WBB/ChangeCurrentCulture?culture=2" role="button"
+                           style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">English</a>&nbsp;&nbsp;
+                    </div>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+
+                    <div class="col-md-2 hidden-xs hidden-sm" id="logo_div" style=" margin-top: 12px;">
+                        <img src="~/Content/images/postpaid/fibre_logo.png" class="img-responsive left">
+                    </div>
+                    <div class="col-md-10 col-xs-12 hidden-xs" id="status_th_div">
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_th_1_imgo">
+                                    <p><img src="~/Content/images/postpaid/step1_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">ตรวจสอบพื้นที่ให้บริการ</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_th_2_imgo">
+                                    <p><img src="~/Content/images/postpaid/step2_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">เลือกแพ็กเกจหลัก</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_th_3_imgo">
+                                    <p><img src="~/Content/images/postpaid/step4_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">ข้อมูลส่วนตัว</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_th_4_imgo">
+                                    <p><img src="~/Content/images/postpaid/step5_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">สรุปข้อมูล</span></p>
+                                </div>
+
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_th_1_imgf">
+                                    <p><img src="~/Content/images/postpaid/step1_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">ตรวจสอบพื้นที่ให้บริการ</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_th_2_imgf">
+                                    <p><img src="~/Content/images/postpaid/step2_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">เลือกแพ็กเกจหลัก</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_th_3_imgf">
+                                    <p><img src="~/Content/images/postpaid/step4_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">ข้อมูลส่วนตัว</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_th_4_imgf">
+                                    <p><img src="~/Content/images/postpaid/step5_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">สรุปข้อมูล</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-10 col-xs-12 hidden-xs" id="status_en_div" style="display: none;">
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_en_1_imgo">
+                                    <p><img src="~/Content/images/postpaid/step1_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Checking Coverage</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_en_2_imgo">
+                                    <p><img src="~/Content/images/postpaid/step2_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Choose Package</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_en_3_imgo">
+                                    <p><img src="~/Content/images/postpaid/step4_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Your Information</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status_en_4_imgo">
+                                    <p><img src="~/Content/images/postpaid/step5_on.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:white">Summary</span></p>
+                                </div>
+
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_en_1_imgf">
+                                    <p><img src="~/Content/images/postpaid/step1_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Checking Coverage</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_en_2_imgf">
+                                    <p><img src="~/Content/images/postpaid/step2_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Choose Package</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_en_3_imgf">
+                                    <p><img src="~/Content/images/postpaid/step4_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Your Information</span></p>
+                                </div>
+                                <div class="col-md-2 col-xs-12 hidden-xs" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status_en_4_imgf">
+                                    <p><img src="~/Content/images/postpaid/step5_off.png" class="img-responsive" style="display:inline-block"> </p>
+                                    <p><span style="color:#8DC63F">Summary</span></p>
+                                </div>
+                            </div>
+                </div>
+                <input type="hidden" id="LanguagePage" />
+
+
+
+            </div>
+        </div>
+
+        <div class="panel_ais">
+            <div class="row_ais">
+                <div class="column large-11 large-centered">
+                    <div class="content-menu">
+                        <div class="row_ais">
+                            <div class="column large-12 medium-12 small-12">
+                                <div class="detail-for-menu">
+                                    <div class="innercontent">
+                                        <div class="row_ais">
+                                            <div class="column large-10">
+                                                <div id="renderBody" class="card"></div>
+                                                @RenderBody()
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        @functions{
+            public string GetAntiForgeryToken()
+            {
+                string cookieToken, formToken;
+                AntiForgery.GetTokens(null, out cookieToken, out formToken);
+                return cookieToken + "," + formToken;
+            }
+        }
+
+    </script>
+    <input type="hidden" id="forgeryToken" value="@GetAntiForgeryToken()" />
+
+
+    <!--  Put Content Here จบเนื้อหา  -->
+    <div style="clear:both;"></div>
+    <div id="aisfooter">
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_FooterTH")
+        }
+        else
+        {
+            @Html.Partial("_FooterEN")
+        }
+
+    </div>
+    <div class="truehits-bg">&nbsp;</div>
+
+</div>
+
+<div id="ProgressIcon" class="modal fade">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="text-center" style="color:white;">
+                <div>
+                    <i class="fa fa-spinner fa-spin fa-6" style="position:inherit;"></i>
+                </div>
+                <div id="txtLoading" style="text-align:center;">
+                    LOADING
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+    var language = "";
+    var oldIE;
+
+    $(function () {
+
+        ais_interface_process('mini-menu', 'postpaid', 'th', '', false);
+
+        changeLanguage();
+
+        if ($("#LanguagePage").val() == 1)
+            language = "th";
+        else
+            language = "en";
+
+        $('.responsive').slick({
+            dots: false,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 5,
+            slidesToScroll: 1,
+
+            responsive: [
+              {
+                  breakpoint: 1024,
+                  settings: {
+                      slidesToShow: 5,
+                      slidesToScroll: 1
+                  }
+              },
+              {
+                  breakpoint: 720,
+                  settings: {
+                      slidesToShow: 3,
+                      slidesToScroll: 2,
+                      dots: false,
+                      infinite: true
+
+                  }
+              }
+            ]
+        });
+
+        // Detecting IE
+        if ($('html').is('.lt-ie7, .lt-ie8, .lt-ie9')) {
+            oldIE = true;
+        }
+
+        if (oldIE) {
+            if (sessionStorage.getItem('detectedIE') != 'detected') {
+                var oldIENoticeMassage = 'เว็ปไซต์สามารถใช้งานได้ดีกับ Microsoft Internet Explorer 9 ขึ้นไป หรือ Google Chrome / Firefox เวอร์ชั่นล่าสุด',
+                oldIEBtnMessage = 'ตกลง';
+
+                if (language == 'en') {
+                    oldIENoticeMassage = 'This site is best viewed using Internet Explorer 9, Chrome, Safari and browser later.';
+                    oldIEBtnMessage = 'Okay';
+                }
+
+                sessionStorage.setItem('detectedIE', 'detected');
+                bootbox.dialog({
+                    message:
+                            "<p class='clearfix'></p>" +
+                            "<div class='add-border-rounded-green'>" +
+                                "<p class='clearfix'></p>" +
+                                "<h3 class='text-center'>" +
+                                oldIENoticeMassage +
+                                "</h3>" +
+                            "</div>" +
+                            "<p class='clearfix'></p>",
+                    buttons: {
+                        success: {
+                            label: oldIEBtnMessage,
+                            className: "btn-success",
+                        }
+                    }
+                });
+            }
+        }
+    });
+    </text>)
+</script>
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#ProgressIcon #txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+
+    function configScreenPage() {
+        window.scrollTo(0, 0);
+        $("#silder").css("visibility", "hidden");
+        $("body").css("overflow-y", "hidden");
+    }
+
+    function changeLanguage() {
+        if ($("#LanguagePage").val() == "1") {
+            $("#btn_th").addClass('btn-success');
+            $("#btn_en").removeClass('btn-success').addClass('btn-default');
+            $("#footer_th").show();
+            $("#footer_en").hide();
+        }
+        else {
+            $("#btn_th").removeClass('btn-success').addClass('btn-default');
+            $("#btn_en").addClass('btn-success');
+            $("#footer_th").hide();
+            $("#footer_en").show();
+        }
+    }
+
+    function toastrErrorMessage(message) {
+        toastr.options.positionClass = "toast-top-center";
+        toastr.options.closeButton = true;
+        toastr.error(message)
+    }
+
+
+    var get_current_language = $.ajax({
+        type: "GET",
+        url: "/WBB/GetCurrentCulture",
+        async: false,
+        success: function (x) {
+            $("#LanguagePage").val(x);
+            return x;
+        }
+    });
+
+    function ValidationProcessing(validateModel, err) {
+        var chk = true;
+        var error = "#" + err;
+        var temp = "";
+        $(error).html(temp);
+        $(validateModel).each(function (index, e) {
+            if (e.id == undefined) {
+                var vgroup = e.vgroup;
+                if (vgroup != undefined) {
+                    var tempkid = "";
+                    var vchk = false;
+                    $.each(vgroup, function (j, k) {
+                        var kid = "#" + k.id;
+                        var kvalue = $(kid).val();
+                        if (j == 0) tempkid = $(kid);
+
+                        if ($.trim(kvalue) != "")
+                            vchk = true;
+                    });
+                    if (vchk) {
+                        $(tempkid)[0].className = "form-control";
+                    } else {
+                        chk = false;
+                        $(tempkid)[0].className = "form-control errorinput";
+                        if ($("#LanguagePage").val() == "1")
+                            temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                        else
+                            temp = "Please Fill In All Required Fields."
+                    }
+                }
+            } else {
+                var id = "#" + e.id;
+                var value = $(id).val();
+                var lb = $(id)[0].placeholder;
+                var cond = e.condition;
+                var required = e.required;
+                if (required == undefined) required = true;
+                if ($.trim(value) == "" && required) {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                            theme: "classic"
+                        });
+                    } else if ($(id)[0].className == "form-control" || $(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control errorinput";
+                    } else {
+                        $(id)[0].className = "form-control errorinput";
+                    }
+
+                    if ($("#LanguagePage").val() == "1") {
+                        temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                    }
+                    else {
+                        temp = "Please Fill In All Required Fields."
+                    }
+                    chk = false;
+                } else if (cond != undefined) {
+                    var cchk = true;
+                    if ((!required && value != "") || required) {
+                        if (cond == "IDCard")
+                            cchk = validateIdCard(value);
+                        else if (cond == "Email")
+                            cchk = validateEmail(value);
+                        else if (cond == "Birthday")
+                            cchk = validateBirthDay(value);
+                        else if (cond == "Place")
+                            cchk = validatePlace(value);
+                        else if (cond == "HomeNo")
+                            cchk = validateHomeNumber(value);
+                        else if (cond == "LatLong")
+                            cchk = validateLatLong(value);
+                        else if (cond == "Number")
+                            cchk = validateNumber(value);
+                        else if (cond == "Name")
+                            cchk = validateName(value);
+                        else if (cond == "FreePhone")
+                            cchk = validateFreePhone(value);
+                        else if (cond == "MobileNumber") {
+                            cchk = chkInputMobile(value);
+                        }
+
+                    }
+
+                    if (!cchk) {
+                        $(id)[0].className = "form-control errorinput";
+                        chk = false;
+
+                        if ($("#LanguagePage").val() == "1")
+                            temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                        else
+                            temp = "Please Fill In All Required Fields."
+                    } else {
+                        if ($(id)[0].className == "form-control"
+                                || $(id)[0].className.indexOf("errorinput") > -1) {
+                            $(id)[0].className = "form-control";
+                        } else
+                            $(id)[0].className = "form-control";
+                    }
+                } else {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                        });
+                    } else if ($(id)[0].className == "form-control errorinput") {
+                        $(id)[0].className = "form-control";
+                    } else if ($(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control";
+                    }
+                }
+            }
+        });
+
+        if (temp) {
+            toastrErrorMessage(temp);
+        }
+        return chk;
+    }
+
+    </text>)
+</script>

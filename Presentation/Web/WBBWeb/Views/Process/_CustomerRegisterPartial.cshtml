@@ -1,0 +1,425 @@
+﻿@using WBBEntity.PanelModels;
+@{
+    string L_BLACKLIST_ERR = "";
+    string L_CLOSE001 = "";
+    string L_BUTTON_CANCEL_ORD = "";
+    string B_CONFIRM = "";
+    string B_CANCEL = "";
+    string L_CONFIRM_CANCEL_DUP = "";
+    string L_ERROR = "";
+    string L_REQUIRE_ID_CARD = "";
+    string L_DOWNLOAD_DATA = "";
+    string L_PHOTO_DOC = "";
+    string L_FAST_JOB_CONTACT = "";
+    string TERM_AND_CONDITION_EBILL_HEADER = "";
+    var listEbillCondition = new List<LovScreenValueModel>();
+
+    string KYC_CONFIG_LASER = "";
+    string KYC_CONFIG_LASER_IMG = "";
+    string B_CLOSE = "";
+    List<LovScreenValueModel> L_IMG_INSTALL_WORK_DAY = new List<LovScreenValueModel>();
+    
+    if (null != ViewBag.LCLOSE)
+    {
+        L_CLOSE001 = ViewBag.LCLOSE;
+    }
+    
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        L_BLACKLIST_ERR = labelFBBTR003.Any(c => c.Name == "L_BLACKLIST_ERR") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_BLACKLIST_ERR").DisplayValue : "";
+        L_BUTTON_CANCEL_ORD = labelFBBTR003.Any(c => c.Name == "L_BUTTON_CANCEL_ORD") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_BUTTON_CANCEL_ORD").DisplayValue : "";
+        L_CONFIRM_CANCEL_DUP = labelFBBTR003.Any(c => c.Name == "L_CONFIRM_CANCEL_DUP") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_CONFIRM_CANCEL_DUP").DisplayValue : "";
+        L_ERROR = labelFBBTR003.Any(c => c.Name == "L_ERROR") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_ERROR").DisplayValue : "";
+        L_REQUIRE_ID_CARD = labelFBBTR003.Any(c => c.Name == "L_REQUIRE_ID_CARD") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_REQUIRE_ID_CARD").DisplayValue : "";
+        L_DOWNLOAD_DATA = labelFBBTR003.Any(c => c.Name == "L_DOWNLOAD_DATA") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_DOWNLOAD_DATA").DisplayValue : "";
+        L_PHOTO_DOC = labelFBBTR003.Any(c => c.Name == "L_PHOTO_DOC") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_PHOTO_DOC").DisplayValue : "";
+        L_FAST_JOB_CONTACT = labelFBBTR003.Any(c => c.Name == "L_FAST_JOB_CONTACT") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_FAST_JOB_CONTACT").DisplayValue : "";
+        TERM_AND_CONDITION_EBILL_HEADER = labelFBBTR003.Any(c => c.Name == "TERM_AND_CONDITION_EBILL_HEADER") ? labelFBBTR003.FirstOrDefault(c => c.Name == "TERM_AND_CONDITION_EBILL_HEADER").DisplayValue : "";
+        KYC_CONFIG_LASER = labelFBBTR003.Any(c => c.Name == "KYC_CONFIG_LASER") ? labelFBBTR003.FirstOrDefault(c => c.Name == "KYC_CONFIG_LASER").DisplayValue : "";
+        KYC_CONFIG_LASER_IMG = labelFBBTR003.Any(c => c.Name == "KYC_CONFIG_LASER") ? labelFBBTR003.FirstOrDefault(c => c.Name == "KYC_CONFIG_LASER").Blob : "";
+        B_CLOSE = labelFBBTR003.Any(c => c.Name == "B_CLOSE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+
+        L_IMG_INSTALL_WORK_DAY = labelFBBTR003.Any(c => c.Name == "L_IMG_INSTALL_WORK_DAY") ? labelFBBTR003.Where(w => w.Name == "L_IMG_INSTALL_WORK_DAY").OrderBy(o => o.OrderByPDF).ToList() : new List<LovScreenValueModel>();
+        
+        if (KYC_CONFIG_LASER_IMG != "")
+        {
+            string ImgText = "";
+            String img64Url = string.Format("data:image/jpg;base64,{0}", KYC_CONFIG_LASER_IMG);
+            ImgText = "<img src='" + img64Url + "'/>";
+            KYC_CONFIG_LASER = KYC_CONFIG_LASER.Replace("{Image}", ImgText);
+        }
+        else
+        {
+            KYC_CONFIG_LASER = KYC_CONFIG_LASER.Replace("{Image}", "");
+        }
+
+        var rowEbillCondition = labelFBBTR003.Where(w => w.Name == "TERM_AND_CONDITION_EBILL_DETAIL").OrderBy(o => o.OrderByPDF).ToList();
+        if (rowEbillCondition != null && rowEbillCondition.Count > 0)
+        {
+            listEbillCondition = rowEbillCondition;
+        }
+    }
+    
+    if (ViewBag.LabelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>) ViewBag.LabelFBBTR000;
+
+        B_CONFIRM = labelFBBTR000.Any(c => c.Name == "B_CONFIRM") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_CONFIRM").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR004 != null)
+    {
+        var LabelFBBTR004 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR004;
+
+        B_CANCEL = LabelFBBTR004.Any(c => c.Name == "B_CANCEL") ? LabelFBBTR004.FirstOrDefault(c => c.Name == "B_CANCEL").DisplayValue : "";
+    }
+
+    
+}
+
+<div class="modal fade" id="modalBlackList" tabindex="-1" role="dialog" aria-labelledby="modalBlackList_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 class="text-center">
+                        @(Html.Raw(L_BLACKLIST_ERR))
+                    </h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close(); Reload2();">&nbsp; @L_CLOSE001 &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal003" tabindex="-1" role="dialog" aria-labelledby="modal003_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 class="text-center">
+                        @L_BUTTON_CANCEL_ORD
+                    </h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-success" onclick="orderDupConfirm(1); $.modal.close();">
+                            &nbsp; @B_CONFIRM &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                        </button>
+                        &nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; @B_CANCEL &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade cancel-sm-box" tabindex="-1" id="modal003_perorder" data-order-id="" role="dialog" aria-labelledby="modal003_perorder_label">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header" style="padding-bottom: 25px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+            </div>
+            <p class="clearfix"></p>
+            <h4 class="text-center">@L_CONFIRM_CANCEL_DUP</h4>
+            <button type="button" class="btn btn-xs btn-default" onclick="DeleteOrder(); $.modal.close();">&nbsp; Ok &nbsp;</button>
+            <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">&nbsp; Cancel &nbsp; </button>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal003_txtError" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 class="text-center" style="font-weight: bold;">@L_ERROR</h3>
+                    <div id="CPEError"><span style="font-weight: bold;">CPE SERIAL NO.</span> <span id="txtCPESerial"></span>&nbsp;&nbsp;<span style="font-weight: bold;">Error:</span> <span id="txtCPEError"></span>&nbsp;&nbsp;<span id="txtCPEStatusDes"></span></div>
+                    <div id="PBError"><span style="font-weight: bold;">PLAYBOX SERIAL NO.</span> <span id="txtPESerial"></span>&nbsp;&nbsp;<span style="font-weight: bold;">Error:</span> <span id="txtPBError"></span>&nbsp;&nbsp;<span id="txtPBStatusDes"></span></div>
+
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; OK &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_Signature" tabindex="-1" role="dialog" aria-labelledby="modal_Signature_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                @*Update 17.5 เอาปุ่มปิดด้านบนออก*@
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
+            </div>
+            <div class="modal-body">
+                <div id="frmcontent" align="center">
+                    @*<iframe charset="UTF-8" id="iframeCard" src="@Url.Action("CreateSignature", "Process")" scrolling="no" width="300" height="480" frameborder="0" align="center">
+                        </iframe>*@
+                    @*Update 17.5 ปรับขนาดความสูงของ Frame*@
+                    <iframe charset="UTF-8" id="iframeCard" src="@Url.Action("CreateSignature", "Process")" scrolling="no" width="300" height="260" frameborder="0" align="center"></iframe>
+                </div>
+                <div class="col-md-12 text-right">
+                    <p class="clearfix"></p>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        &nbsp;Close&nbsp;
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modal-used-idcard" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+
+                    <h3 class="text-center">
+                        @(Html.Raw(L_REQUIRE_ID_CARD))
+                    </h3>
+
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-success" onclick="Load_cardreader();">
+                            @L_DOWNLOAD_DATA <i class="fa fa-arrow-circle-o-right "></i>
+                        </button>
+                        <button type="button" class="btn btn-default" onclick="takephoto_forModal()">@L_PHOTO_DOC</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modal-used-idcard-Pc" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 class="text-center">
+                        @(Html.Raw(L_REQUIRE_ID_CARD))
+                    </h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-success" onclick="Load_cardreader();">
+                            @L_DOWNLOAD_DATA <i class="fa fa-arrow-circle-o-right "></i>
+                        </button>
+                        @*<button type="button" class="btn btn-default" onclick="takephoto_forModal()">@L_PHOTO_DOC</button>*@
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; @L_CLOSE001&nbsp;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalFastJob" tabindex="-1" role="dialog" aria-labelledby="modalFastJob_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 class="text-center">
+                        @(Html.Raw(L_FAST_JOB_CONTACT))
+                    </h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$('#modalFastJob').modal('toggle'); nextToAddressSetUp();">&nbsp; @L_CLOSE001 &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Update 17.5 Temp Image Set Watermark*@
+<div class="modal fade" id="modal_TakePhoto" tabindex="-1" role="dialog" aria-labelledby="modal_TakePhoto_label">
+    <div class="modal-dialog" style=" overflow-y: initial !important;" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;"></div>
+            <div class="modal-body" style="text-align: center; overflow-y: auto; max-height: calc(100vh - 100px); ">
+                <div class="col-sm-12 col-xs-12" align="center">
+                    <div id="divTempImageTakePhoto">
+                        <video id="video0" style="display: none; float: inherit; width: 320px">Camera not available.</video><br>
+                        <label style="font-size: 36px; display: none;" id="errorText0"></label>
+                        <img id="imgPreview0" src="" alt="" style="display: none; width : 320px; padding-top: 30px;" /><br>
+                        <button id="btnStart0" type="button" class="btn btn-success" style="display: none; border-radius: 50%; border: 1px solid white; width: 100px; height: 100px"><span class='glyphicon glyphicon-camera' style="font-size: 52px;"></span></button>
+                        <canvas id="canvasTemp0" style="display:none"></canvas>
+
+                        
+                        <canvas id="canTempImageTakePhoto" style="display: none;" class=" img-responsive"></canvas>
+                    </div>
+                </div>
+                <p class="clearfix"></p>
+                <div class="col-md-12 text-right" align="center">
+                    
+                    <input id="textImageTakePhoto" type="text" hidden="hidden" value="" />
+                    <button id="btnConvertTakePhoto" type="button" class="btn btn-success" style="display: none;">ConvertTakePhoto</button>
+                    <button id="btnBase64StrTakePhotoInSession" type="button" class="btn btn-success" style="display: none;">TakePhotoInSession</button>
+                    <button id="RotateLeft" type="button" class="btn btn-success" style="display: none;"><i class="fa fa-rotate-left"></i>&nbsp;&nbsp;Rotate left</button>&nbsp;&nbsp;&nbsp;
+                    <button id="RotateRight" type="button" class="btn btn-success" style="display: none;"><i class="fa fa-rotate-right"></i>&nbsp;&nbsp;Rotate right</button>&nbsp;&nbsp;&nbsp;
+                    <button id="" type="button" class="btn btn-success" data-dismiss="modal">&nbsp;Close&nbsp;</button>&nbsp;&nbsp;&nbsp;
+                    <button id="closeModalTakePhoto" type="button" class="btn btn-success" data-dismiss="modal" onclick="closeModalTakePhotoFunc();">&nbsp;OK&nbsp;</button>
+                    <button id="closeModalTakePhotoDisabled" type="button" class="btn btn-success disabled">&nbsp;OK&nbsp;</button>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Update R18.2 L_TERMS_AND_CONDITION_EBILL *@
+<div class="modal fade" id="modalTermsEbill" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <h4 class="tgreen"><span class="hightlight">@TERM_AND_CONDITION_EBILL_HEADER</span></h4>
+                    <p class="clearfix"></p>
+                    <div style="padding: 0 10px 0 10px;">
+                        @foreach (var rowConEbill in listEbillCondition)
+                        {
+                            @Html.Raw(rowConEbill.DisplayValue)
+                        }
+                    </div>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" id="modalEBillTermsConditionBtn" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; @L_CLOSE001 &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalLaser" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <h4 class="text-center" style="margin-left: 0px">
+                        @Html.Raw(KYC_CONFIG_LASER)
+                    </h4>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+@*R19.5 Modal ValidateVATAddress*@
+<div class="modal fade" id="modalValidateVATAddr" tabindex="-1" role="dialog" aria-labelledby="modalValidateVATAddr_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="lblMsgValidateVATAddr" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-success" data-dismiss="modal">@B_CLOSE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*R19.5 Modal PromoInstallWorkDay*@
+<div class="modal fade" id="divPromoInstallWorkDayModal" tabindex="-1" role="dialog" aria-labelledby="divPromoInstallWorkDayModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body" style="text-align: center;">
+                @foreach (var listImgInstallWorkDay in L_IMG_INSTALL_WORK_DAY)
+                {
+                    <div style="margin-top: 10px;">
+                        <img src="data:image/jpg;base64,@listImgInstallWorkDay.Blob" style="width: 100%; height: auto; margin: 0 auto;" />
+                    </div>
+                }
+                <div style="margin: 10px;">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">@B_CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

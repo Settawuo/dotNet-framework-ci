@@ -1,0 +1,347 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.DormitorySearchModel
+@using WBBEntity.PanelModels;
+
+@{
+    ViewBag.Title = "Index";
+
+    string L_DORMITORY_PROVINCE = "";
+    string L_DORMITORY_NAME = "";
+
+    string B_SEARCH = "";
+    string B_CLEAR = "";
+
+    string B_NEW = "";
+    string B_VIEW = "";
+
+    string G_DORMITORY_ID = "";
+    string G_DORMITORY_PROVINCE = "";
+    string G_DORMITORY_NAME = "";
+    string G_DORMITORY_ROOMCOUNT = "";
+    string G_DORMITORY_STATUS = "";
+    string G_DORMITORY_VIEW = "";
+    string G_REGION = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_DORMITORY_PROVINCE = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        L_DORMITORY_NAME = configscreen.Any(f => f.Name == "L_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_DORMITORY_NAME").LovValue2 : "";
+
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue2 : "";
+        B_CLEAR = configscreen.Any(f => f.Name == "B_CLEAR") ? configscreen.FirstOrDefault(f => f.Name == "B_CLEAR").LovValue2 : "";
+
+        B_NEW = configscreen.Any(f => f.Name == "B_ADD_NEW_DORMITORY") ? configscreen.FirstOrDefault(f => f.Name == "B_ADD_NEW_DORMITORY").LovValue2 : "";
+        B_VIEW = configscreen.Any(f => f.Name == "B_VIEW_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "B_VIEW_DETAIL").LovValue2 : "";
+
+        G_DORMITORY_ID = configscreen.Any(f => f.Name == "G_DORMITORY_ID") ? configscreen.First(f => f.Name == "G_DORMITORY_ID").LovValue1 : "ID";
+        G_DORMITORY_PROVINCE = configscreen.Any(f => f.Name == "G_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "G_PROVINCE").LovValue2 : "";
+        G_DORMITORY_NAME = configscreen.Any(f => f.Name == "G_DORMITORY_NAME") ? configscreen.FirstOrDefault(f => f.Name == "G_DORMITORY_NAME").LovValue2 : "";
+        G_DORMITORY_ROOMCOUNT = configscreen.Any(f => f.Name == "G_ROOM_AMOUNT") ? configscreen.FirstOrDefault(f => f.Name == "G_ROOM_AMOUNT").LovValue2 : "";
+        G_DORMITORY_STATUS = configscreen.Any(f => f.Name == "B_VIEW_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "B_VIEW_DETAIL").LovValue2 : "";
+        G_DORMITORY_VIEW = configscreen.Any(f => f.Name == "B_VIEW_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "B_VIEW_DETAIL").LovValue2 : "";
+        G_REGION = configscreen.Any(f => f.Name == "G_REGION") ? configscreen.FirstOrDefault(f => f.Name == "G_REGION").LovValue2 : "";
+    }
+    
+    <div class="page-header i-header-fit" id="HeadPage1">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">Configuration Dormitory</h3>
+              
+            </div>
+        </div>
+    </div>
+    <div class="row" id="SearchPane">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>Configuration Description</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 200px;">
+                        
+                        <div id="SearchRow1" class="row">
+                              <div class="col-sm-4 col-md-4">
+                            <label>Region</label>
+                            @(Html.Kendo().DropDownList()
+                                .Name("RegionCode")
+                                .DataTextField("DISPLAY_VAL")
+                                .DataValueField("LOV_NAME")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("SelectRegion", "DormitoryMaster"); 
+                                    });
+                                })
+                                .Events(e => e.Change("onRegionChange"))
+                                      
+                            )
+                    </div>
+                          <div class="col-sm-4 col-md-4">
+                                <label>@L_DORMITORY_PROVINCE</label>
+                                @(Html.Kendo().DropDownListFor(t => t.DormitoryProvincr)
+                                              .Name("DORMITORY_PROVINCE")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectProvinceForSearch", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                            </div>
+                             <div class="col-sm-4 col-md-4">
+                                <label>@L_DORMITORY_NAME</label>
+                                 @(Html.Kendo().DropDownListFor(t => t.DormitoryName)
+                                              .Name("DORMITORY_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAllDormitory", "DormitoryMaster");
+                                                });
+                                            })
+                                           
+                                        )
+                            </div>
+                        </div>
+                        <div id="SearchRow2" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                            </div>
+                        </div>
+                        @*end row2*@
+                        <div id="SearchRow3" class="row i-gap-top-1">
+                            <div class="col-sm-12 col-md-12 ">
+                                <div id="gridresult" class="row">
+                                    @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationDormitoryData>()
+                                        .Name("gridDormitory")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(p => p.dormitory_id).Title(@G_DORMITORY_ID).HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                            columns.Bound(p => p.region_code).Title(@G_REGION).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                            columns.Bound(p => p.province).Title(@G_DORMITORY_PROVINCE).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                            columns.Bound(p => p.dormitory_name_th).Title(@G_DORMITORY_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                                            columns.Bound(p => p.Room_amount).Title(@G_DORMITORY_ROOMCOUNT).HtmlAttributes(new { style = "text-align:right;" }).Width(100);
+                                            columns.Command(command =>
+                                            {
+                                                command.Custom(@G_DORMITORY_VIEW).Click("editConfigDormitory").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + @B_VIEW);
+                                            }).Width(100);
+
+                                        })
+                                        .ToolBar(toolbar => toolbar.Template("" +
+                                             "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp;" + "Export to Excel" + "</a>&nbsp;</div>" +
+                                            "<div class='pull-right'>" + "<a onclick='addNewDormitory()' id='addnew' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp;" + @B_NEW + "</a>&nbsp;</div>"
+
+                                        ))
+                                            .Pageable(pageable => pageable
+                                             .PageSizes(new int[] {20, 50, 100})
+                                            .Numeric(true)
+                                            )
+                                            .Scrollable(scrollable => scrollable.Height("auto"))
+                                            .AutoBind(false)
+                                            .DataSource(dataSource => dataSource
+                                                .Ajax()
+                                                .PageSize(20)
+                                                //.Sort(sort => sort.Add("dormitory_id").Ascending())
+                                                .Read(read => read.Action("SearchDataSourceRequest", "DormitoryMaster").Data("bindingValue"))
+                                                )
+                                            .Events(e => e.DataBound("onGridDataBound"))
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        @*end row3*@
+
+                    </div>
+                </div>
+                @*end SearchPanel*@
+            </div>
+        </div>
+    </div>
+    <script>
+
+        var SaveStatus = '@ViewBag.SaveStatus';
+
+        var criteriaVal = '';
+        var dateVal = '';
+
+        $(document).ready(function () {
+            $.ajaxSetup({
+                // Disable caching of AJAX responses
+                cache: false
+            });
+            if (SaveStatus != "") {
+                if (SaveStatus.substring(0,18) == "Saved successfully") {
+                    showFeedback("success", SaveStatus, "SaveDormitory Master");
+                }
+                else {
+                    showFeedback("error", SaveStatus);
+                }
+            }
+
+            $('#btnExport').attr("disabled", true); 
+        });
+
+        var AWConfigurationDormitoryModel = function () {
+            Region: "";
+            Province: "";
+            DormitoryName: "";
+        }
+
+        function defaultData() {
+
+            var searchModel = new AWConfigurationDormitoryModel();
+            searchModel.Region = $("#RegionCode").val();
+            searchModel.Province = $("#DORMITORY_PROVINCE").val();
+            searchModel.DormitoryName = $("#DORMITORY_NAME").val();
+
+            return searchModel;
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS: JSON.stringify(model)
+            };
+        }
+
+        function onGridDataBound() {
+            Loading(0);
+            var grid = $("#gridDormitory").data("kendoGrid");
+
+            $('#btnExport').attr("disabled", !(this.dataSource.view().length != 0));
+        }
+
+        function _Search() {
+
+            var model = defaultData();
+            Loading();
+            var grid = $("#gridDormitory").data("kendoGrid");
+            grid.dataSource.page(1);
+
+        }
+        function _Clear() {
+            
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").dataSource.read({ regionCode: "" });
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").select(0);
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: "" });
+            $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+
+            var dropdownlist3 = $("#RegionCode").data("kendoDropDownList");
+            dropdownlist3.select(0);
+            $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+            //var dropdownlist2 = $("#DORMITORY_NAME").data("kendoDropDownList");
+            //dropdownlist2.select(0);
+            $("#gridDormitory").data("kendoGrid").dataSource.data([]);
+        }
+        function onRegionChange() {
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").dataSource.read({ regionCode: $("#RegionCode").data("kendoDropDownList").value() });
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), regionCode: $("#RegionCode").val() });
+
+            $("#DORMITORY_PROVINCE").data("kendoDropDownList").select(0);
+            $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+        }
+
+        function onProvinceChange()
+        {
+            $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val(), regionCode: $("#RegionCode").val() });
+            $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+        }
+
+        function addNewDormitory() {
+            Loading();
+            var url = '@Url.Action("ConfigurationDormitoryDetail", "DormitoryMaster")';
+            url = url + "?DormitoryID=N";
+            window.location.href = url;
+        }
+
+        function editConfigDormitory(e) {
+            Loading();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var url = '@Url.Action("ConfigurationDormitoryDetail", "DormitoryMaster")';
+            url = url + "?DormitoryID=" + dataItem.dormitory_id;
+            window.location.href = url;
+        }
+
+        //Add code for Export data to excel.
+        function criterData()
+        {
+            var searchCriter = new CriterModel();
+            searchCriter.REPORT = 'Configuration Description';
+            searchCriter.CRITERIA = 'Criteria: ' + criteriaVal;
+            searchCriter.REPORT_DATE = 'Run report date/time: ' + dateVal;
+
+            return searchCriter;
+        }
+
+        var CriterModel = function ()
+        {
+            REPORT: "";
+            CRITERIA: "";
+            REPORT_DATE: "";
+        }
+
+        function _ExportToExcel()
+        {
+            var model = new defaultData();
+            ReplaceCariteris(model);
+            var criterModel = new criterData();
+
+            window.open("/DormitoryMaster/ExportReport?dataS=" + JSON.stringify(model) + "&criteria=" + JSON.stringify(criterModel) + "");
+        }
+
+        function ReplaceCariteris(model) {
+            var region = "Region";
+            var province = "Province";
+            var dormitoryName = "DormitoryName";
+
+            var regionVal = (model.Region == '') ? 'ALL' : model.Region;
+            var provinceVal = (model.Province == '') ? 'ALL' : model.Province;
+            var dormitoryNameVal = (model.DormitoryName == '') ? 'ALL' : model.DormitoryName;            
+
+            var text = region + " : " + regionVal + " and " + province + " : " + provinceVal + " and " + dormitoryName + " : " + dormitoryNameVal;
+
+            criteriaVal = text;
+
+            ReplaceDateTimeReport();
+        }
+
+        function ReplaceDateTimeReport() {
+            var currDate = new Date();
+            var month = new Array();
+            month[0] = "Jan";
+            month[1] = "Feb";
+            month[2] = "Mar";
+            month[3] = "Apr";
+            month[4] = "May";
+            month[5] = "Jun";
+            month[6] = "Jul";
+            month[7] = "Aug";
+            month[8] = "Sep";
+            month[9] = "Oct";
+            month[10] = "Nov";
+            month[11] = "Dec";
+
+            var dateTxt = currDate.getDate() + ' ' + month[currDate.getMonth()] + ' ' + currDate.getFullYear() + ' ' + currDate.toLocaleTimeString();
+
+            dateVal = dateTxt;
+        }
+    </script>
+     
+}

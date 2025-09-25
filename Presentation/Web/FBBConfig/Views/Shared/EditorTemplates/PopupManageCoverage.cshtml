@@ -1,0 +1,97 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.CoverageAreaPanel
+<script>
+    function getStatus() {
+        return {
+            showAll: false,
+            removeIndex: 0
+        };
+    }
+
+    function getBuildingCode() {
+        return {
+            contactId:  $("#hdContactId").val()
+        };
+    }
+
+    function checkConfig()
+    {
+        if ($("#chkConfigComplete").is(":checked")) {
+            $.ajax({
+                url: "/CoverageManagement/CheckCompleteFlag",
+                data: { cvrId: $("#coverageCvrIdPopUp").val() },
+                dataType: "json",
+                type: 'post',
+                success: function (e) {                    
+                    if (e) {
+                        $("#chkConfigComplete").attr("disabled", true);
+                    }
+                    else {
+                        $("#chkConfigComplete").prop('checked', false);                        
+                    }
+                }
+                  , error: function (err) {
+                      showFeedback("error", err);
+                  }
+            });
+        }
+        else {
+            $("#chkConfigComplete").prop('checked', false);            
+        }           
+      
+    }
+</script>
+            
+   <div class="k-popup-edit-form k-window-content k-content">      
+           
+       <div class="editor-label" style="text-align:left">
+           <label for="BuildingCode">Building Code</label>
+           <label for="OnTargetDate" style="margin-top:16px;">On Target Date</label>
+           <label for="ConfigComplete" style="margin-top:16px;">Config Complete</label>
+           <label for="Status" style="margin-top:16px;">Status</label>
+       </div>
+       <div class="editor-field">
+           @Html.HiddenFor(Model => Model.CVRId, new { @id = "coverageCvrIdPopUp"})       
+            @Html.HiddenFor(Model => Model.ContactId) 
+                @(Html.Kendo().DropDownList()
+                  .Name("BuildingCode")
+                 
+                 .DataTextField("Text")
+                  .DataValueField("Value")
+                  .HtmlAttributes(new { @id = "ddlPopupBuildingCode",@style="margin-top:4px;"})
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetBuildingCode", "CoverageManagement").Data("getBuildingCode");
+
+
+                      });
+                  })
+                  )
+           
+                @(Html.Kendo().DateTimePicker()
+                            .Name("OnTargetDate")
+                            .HtmlAttributes(new { @id = "dtpPopupOnTargetDate" })
+                            .ParseFormats(new string[] { "dd/MM/yyyy" })
+                            .Value(DateTime.Today)   
+                            .Min(DateTime.Today.AddDays(1))   
+                            //.Format("dd/MM/yyyy hh:mm tt")                    
+                    ) <br />
+           
+                @(Html.CheckBoxFor(Model => Model.ConfigComplete, new { onclick = "checkConfig();" , @id="chkConfigComplete", @style="margin-top:12px; margin-bottom:12px;" })) 
+           <br />
+                @(Html.Kendo().DropDownList()
+                  .Name("Status")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                   .HtmlAttributes(new {@id = "ddlPopupStatus",@style="margin-top:4px;"})
+                    .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetCoverageStatus", "CoverageManagement").Data("getStatus");
+                      });
+                  }))
+       </div>      
+
+</div>

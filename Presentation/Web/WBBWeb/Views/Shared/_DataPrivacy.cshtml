@@ -1,0 +1,525 @@
+﻿<script type="text/javascript">
+
+    //Global Parameter & Set Default
+    //1.Msisdn
+    var priValueMsisdn = "X";
+    var preDigitMsisdn = 3;
+    var endDigitMsisdn = 4;
+    //2.FbbId
+    var priValueFbbId = "X";
+    var preDigitFbbId = 2;
+    var endDigitFbbId = 4;
+    //4.CreditDebitCard
+    var priValueCreditDebitCard = "X";
+    var preDigitCreditDebitCard = 6;
+    var endDigitCreditDebitCard = 4;
+    //6.InfoCard
+    var priValueInfoCard = "X";
+    var preDigitInfoCard = 0;
+    var endDigitInfoCard = 4;
+    //7.BankAccount
+    var priValueBankAccount = "X";
+    var preDigitBankAccount = 4;
+    var endDigitBankAccount = 3;
+    //9.NameSurname
+    var priValueNameSurname = "X";
+    var preDigitNameSurname = 0;
+    var endDigitNameSurname = 0;
+    //10.Email
+    var priValueEmail = "X";
+    var preDigitEmail = 3;
+    var endDigitEmail = 0;
+
+    $(document).ready(function () {
+        //console.log("document-ready : data privacy");
+        setDataPrivacy();
+    });
+
+    function privacyMsisdn(input) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+
+            //ทำ Logic เปลี่ยน format : แสดง 3 ตัวแรก, 4 ตัวท้าย
+            //Spile , และ check lenght 10 (Mobile)
+            if (result != "") {
+                var priValue = priValueMsisdn; //จาก lov
+                var preDigit = preDigitMsisdn; //จาก lov
+                var endDigit = endDigitMsisdn; //จาก lov
+                var priSplit0 = ",";
+                var inputSplit = result.split(priSplit0);
+                if (inputSplit != null && inputSplit.length > 0) {
+                    if (inputSplit.length > 0) {
+                        result = "";
+                        for (var i = 0; i < inputSplit.length; i++) {
+                            var inputRow = setDtPvStr(inputSplit[i]);
+                            if (inputRow.length == 10) {
+                                var inputLast = inputRow;
+                                var inputLengthLast = inputLast.length;
+                                var inputPrivacyLast = inputLengthLast - preDigit - endDigit;
+                                var resultPreLast = inputLast.slice(0, preDigit);
+                                var resultendLast = inputLast.slice(preDigit + inputPrivacyLast, inputLengthLast);
+                                var resultPriLast = "";
+                                while (resultPriLast.length < inputPrivacyLast) {
+                                    resultPriLast += priValue;
+                                }
+                                inputRow = resultPreLast + resultPriLast + resultendLast;
+                            }
+
+                            if (result == "") {
+                                result += inputRow;
+                            }
+                            else {
+                                result += priSplit0 + inputRow;
+                            }
+                        }
+                    }
+                    else {
+                        var inputLength = result.length;
+                        var inputPrivacy = inputLength - preDigit - endDigit;
+                        var resultPre = result.slice(0, preDigit);
+                        var resultend = result.slice(preDigit + inputPrivacy, inputLength);
+                        var resultPri = "";
+                        while (resultPri.length < inputPrivacy) {
+                            resultPri += priValue;
+                        }
+                        result = resultPre + resultPri + resultend;
+                    }
+                }
+            }
+        }
+        catch (err) {
+            console.log('privacyMsisdn error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    function privacyFbbId(input) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+
+            //ทำ Logic เปลี่ยน format : แสดง 2 ตัวแรก, 4 ตัวท้าย
+            if (result != "") {
+                var priValue = priValueFbbId; //จาก lov
+                var preDigit = preDigitFbbId; //จาก lov
+                var endDigit = endDigitFbbId; //จาก lov
+                var inputLength = result.length;
+                var inputPrivacy = inputLength - preDigit - endDigit;
+                var resultPre = result.slice(0, preDigit);
+                var resultend = result.slice(preDigit + inputPrivacy, inputLength);
+                var resultPri = "";
+                while (resultPri.length < inputPrivacy) {
+                    resultPri += priValue;
+                }
+                result = resultPre + resultPri + resultend;
+            }
+        }
+        catch (err) {
+            console.log('privacyFbbId error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    //TODO: ยังไม่ต้องทำ
+    function privacyBiometric(input) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+            //TODO: ยังไม่ต้องทำ
+        }
+        catch (err) {
+            console.log('privacyBiometric error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    function privacyCreditDebitCard(input) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+
+            //ทำ Logic เปลี่ยน format : แสดง 6 ตัวแรก, 4 ตัวท้าย
+            //อาจจะต้อง check ว่ามี format "-" หรือไม่
+            if (result != "") {
+                var priValue = priValueCreditDebitCard; //จาก lov
+                var preDigit = preDigitCreditDebitCard; //จาก lov
+                var endDigit = endDigitCreditDebitCard; //จาก lov
+                var inputLength = result.length;
+                var inputPrivacy = inputLength - preDigit - endDigit;
+                var resultPre = result.slice(0, preDigit);
+                var resultend = result.slice(preDigit + inputPrivacy, inputLength);
+                var resultPri = "";
+                while (resultPri.length < inputPrivacy) {
+                    resultPri += priValue;
+                }
+                result = resultPre + resultPri + resultend;
+            }
+        }
+        catch (err) {
+            console.log('privacyCreditDebitCard error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    //TODO: ยังไม่ต้องทำ
+    function privacyRoyalCate(input) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+            //TODO: ยังไม่ต้องทำ
+        }
+        catch (err) {
+            console.log('privacyRoyalCate error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    function privacyInfoCard(input) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+
+            //ทำ Logic เปลี่ยน format : แสดง 0 ตัวแรก, 4 ตัวท้าย (เฉพาะ 4 ตัวท้าย)
+            //อาจจะต้อง check ว่ามี format "-" หรือไม่
+            if (result != "") {
+                var priValue = priValueInfoCard; //จาก lov
+                var preDigit = preDigitInfoCard; //จาก lov
+                var endDigit = endDigitInfoCard; //จาก lov
+                var inputLength = result.length;
+                var inputPrivacy = inputLength - preDigit - endDigit;
+                var resultPre = result.slice(0, preDigit);
+                var resultend = result.slice(preDigit + inputPrivacy, inputLength);
+                var resultPri = "";
+                while (resultPri.length < inputPrivacy) {
+                    resultPri += priValue;
+                }
+                result = resultPre + resultPri + resultend;
+            }
+        }
+        catch (err) {
+            console.log('privacyInfoCard error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    function privacyBankAccount(input) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+
+            //ทำ Logic เปลี่ยน format : แสดง 4 ตัวแรก, 3 ตัวท้าย
+            //อาจจะต้อง check ว่ามี format "-" หรือไม่
+            if (result != "") {
+                var priValue = priValueBankAccount; //จาก lov
+                var preDigit = preDigitBankAccount; //จาก lov
+                var endDigit = endDigitBankAccount; //จาก lov
+                var inputLength = result.length;
+                var inputPrivacy = inputLength - preDigit - endDigit;
+                var resultPre = result.slice(0, preDigit);
+                var resultend = result.slice(preDigit + inputPrivacy, inputLength);
+                var resultPri = "";
+                while (resultPri.length < inputPrivacy) {
+                    resultPri += priValue;
+                }
+                result = resultPre + resultPri + resultend;
+            }
+        }
+        catch (err) {
+            console.log('privacyBankAccount error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    //TODO: ยังไม่ต้องทำ
+    function privacyBlacklistFlag(input) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+            //TODO: ยังไม่ต้องทำ
+        }
+        catch (err) {
+            console.log('privacyBlacklistFlag error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    function privacyNameSurname(input) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+
+            //ทำ Logic เปลี่ยน format : privacy นามสกุล
+            if (result != "") {
+                var priValue = priValueNameSurname; //จาก lov
+                var preDigit = preDigitNameSurname; //จาก lov
+                var endDigit = endDigitNameSurname; //จาก lov
+                var priSplit0 = " ";
+                var inputSplit = result.split(priSplit0);
+                if (inputSplit != null && inputSplit.length > 0) {
+                    if (inputSplit.length > 1) {
+                        result = "";
+                        for (var i = 0; i < inputSplit.length; i++) {
+                            var inputRow = inputSplit[i];
+                            if (i == inputSplit.length - 1) {
+                                var inputLast = inputRow;
+                                var inputLengthLast = inputLast.length;
+                                var inputPrivacyLast = inputLengthLast - preDigit - endDigit;
+                                var resultPreLast = inputLast.slice(0, preDigit);
+                                var resultendLast = inputLast.slice(preDigit + inputPrivacyLast, inputLengthLast);
+                                var resultPriLast = "";
+                                while (resultPriLast.length < inputPrivacyLast) {
+                                    resultPriLast += priValue;
+                                }
+                                inputRow = resultPreLast + resultPriLast + resultendLast;
+                            }
+
+
+                            if (result == "") {
+                                result += inputRow;
+                            }
+                            else {
+                                result += priSplit0 + inputRow;
+                            }
+                        }
+                    }
+                    else {
+                        var inputLength = result.length;
+                        var inputPrivacy = inputLength - preDigit - endDigit;
+                        var resultPre = result.slice(0, preDigit);
+                        var resultend = result.slice(preDigit + inputPrivacy, inputLength);
+                        var resultPri = "";
+                        while (resultPri.length < inputPrivacy) {
+                            resultPri += priValue;
+                        }
+                        result = resultPre + resultPri + resultend;
+                    }
+                }
+            }
+        }
+        catch (err) {
+            console.log('privacyNameSurname error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    function privacyEmail(input, br) {
+        var result = input;
+        try {
+            if (result == null || typeof result == "undefined") {
+                return "";
+            }
+            result = result.trim();
+
+            //ทำ Logic เปลี่ยน format : แสดง 3 ตัวแรก, 0 ตัวท้าย (ไม่่่ privacy )
+            if (result != "") {
+                var priValue = priValueEmail; //จาก lov
+                var preDigit = preDigitEmail; //จาก lov
+                var endDigit = endDigitEmail; //จาก lov
+                var priSplit0 = "@@";
+                var priSplit1 = ".";
+                var inputSplit = result.split(priSplit0);
+                if (inputSplit != null && inputSplit.length > 0) {
+                    result = "";
+                    for (var i = 0; i < inputSplit.length; i++) {
+                        var inputRow = inputSplit[i];
+                        if (i == 0) {
+                            var input0 = inputRow;
+                            var inputLength = input0.length;
+                            var inputPrivacy = inputLength - preDigit - endDigit;
+                            var resultPre = input0.slice(0, preDigit);
+                            var resultend = input0.slice(preDigit + inputPrivacy, inputLength);
+                            var resultPri = "";
+                            while (resultPri.length < inputPrivacy) {
+                                resultPri += priValue;
+                            }
+                            inputRow = resultPre + resultPri + resultend;
+                        }
+                        else {
+                            var inputSplit1 = inputRow.split(priSplit1);
+                            if (inputSplit1 != null && inputSplit1.length > 0) {
+                                result1 = "";
+                                for (var j = 0; j < inputSplit1.length; j++) {
+                                    var preDigit1 = 0;
+                                    var endDigit1 = 0;
+                                    var inputRow1 = inputSplit1[j];
+                                    var input1 = inputRow1;
+                                    var inputLength1 = input1.length;
+                                    var inputPrivacy1 = inputLength1 - preDigit1 - endDigit1;
+                                    var resultPre1 = input1.slice(0, preDigit1);
+                                    var resultend1 = input1.slice(preDigit1 + inputPrivacy1, inputLength1);
+                                    var resultPri1 = "";
+
+                                    while (resultPri1.length < inputPrivacy1) {
+                                        resultPri1 += priValue;
+                                        inputRow1 = resultPre1 + resultPri1 + resultend1;
+                                    }
+
+                                    if (result1 == "") {
+                                        result1 += inputRow1;
+                                    }
+                                    else {
+                                        result1 += priSplit1 + inputRow1;
+                                    }
+                                }
+                                inputSplit1 = result1;
+                            }
+                            inputRow = inputSplit1;
+                        }
+
+                        if (result == "") {
+                            result += inputRow;
+                        }
+                        else {
+                            result += priSplit0 + inputRow;
+                        }
+                    }
+                }
+            }
+
+            //ใส่ <br> กรณียาวเกิน
+            var lengthBr = setDtPvInt(br);
+            if (lengthBr > 0) {
+                var brStr = "<br>";
+                if (result.length > lengthBr) {
+                    var dataPre = result.slice(0, lengthBr);
+                    var dataEnd = result.slice(lengthBr, result.length);
+                    result = dataPre + brStr + dataEnd;
+                    result = decodeURI(result);
+                }
+            }
+        }
+        catch (err) {
+            console.log('privacyEmail error : ' + err.message)
+            result = input;
+        }
+        return result;
+    }
+
+    //function
+    function setDataPrivacy() {
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetLovListJson",
+            data: {
+                "type": "CONFIG_DATA_PRIVACY",
+                "name": ""
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data != null && data != undefined && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var rName = data[i].Name;
+                        var rText = data[i].Text;
+                        var rVal1 = data[i].LovValue1;
+                        var rVal2 = data[i].LovValue2;
+
+                        if (rName == "MSISDN") {
+                            priValueMsisdn = rText;
+                            preDigitMsisdn = setDtPvInt(rVal1);
+                            endDigitMsisdn = setDtPvInt(rVal2);
+                        }
+                        if (rName == "FBBID") {
+                            priValueFbbId = rText;
+                            preDigitFbbId = setDtPvInt(rVal1);
+                            endDigitFbbId = setDtPvInt(rVal2);
+                        }
+                        if (rName == "CREDITDEBITCARD") {
+                            priValueCreditDebitCard = rText;
+                            preDigitCreditDebitCard = setDtPvInt(rVal1);
+                            endDigitCreditDebitCard = setDtPvInt(rVal2);
+                        }
+                        if (rName == "INFOCARD") {
+                            priValueInfoCard = rText;
+                            preDigitInfoCard = setDtPvInt(rVal1);
+                            endDigitInfoCard = setDtPvInt(rVal2);
+                        }
+                        if (rName == "BANKACCOUNT") {
+                            priValueBankAccount = rText;
+                            preDigitBankAccount = setDtPvInt(rVal1);
+                            endDigitBankAccount = setDtPvInt(rVal2);
+                        }
+                        if (rName == "NAMESURNAME") {
+                            priValueNameSurname = rText;
+                            preDigitNameSurname = setDtPvInt(rVal1);
+                            endDigitNameSurname = setDtPvInt(rVal2);
+                        }
+                        if (rName == "EMAIL") {
+                            priValueEmail = rText;
+                            preDigitEmail = setDtPvInt(rVal1);
+                            endDigitEmail = setDtPvInt(rVal2);
+                        }
+                    }
+                    //console.log("setDataPrivacy : " + data.length);
+                }
+            }
+        });
+    }
+
+    function setDtPvInt(input) {
+        var num = 0;
+        try {
+            if (input == null || typeof input == "undefined" || typeof input != "string") {
+                return 0;
+            }
+            input = input.trim();
+            num = parseInt(input);
+        }
+        catch {
+            num = 0;
+        }
+        return num;
+    }
+
+    function setDtPvStr(input) {
+        var str = "";
+        try {
+            if (input == null || typeof input == "undefined" || typeof input != "string") {
+                return "";
+            }
+            str = input.trim();
+        }
+        catch {
+            str = 0;
+        }
+        return str;
+    }
+
+</script>

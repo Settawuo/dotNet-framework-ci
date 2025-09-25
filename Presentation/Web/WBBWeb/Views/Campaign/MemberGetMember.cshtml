@@ -1,0 +1,165 @@
+﻿@using WBBEntity.PanelModels
+@{
+    Layout = "~/Views/Shared/_NewLayoutReferencesMGM.cshtml";
+
+    string L_TAB_HEADER_CONDITION = "";
+    string L_TAB_HEADER_CHECK_STATUS = "";
+    string L_TAB_HEADER_NEIGHBOR = "";
+
+    if (ViewBag.LabelFBBOR022 != null)
+    {
+        var LabelFBBOR022 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR022;
+        L_TAB_HEADER_CONDITION = LabelFBBOR022.Any(c => c.Name == "L_TAB_HEADER_CONDITION") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_TAB_HEADER_CONDITION").DisplayValue : "";
+        L_TAB_HEADER_CHECK_STATUS = LabelFBBOR022.Any(c => c.Name == "L_TAB_HEADER_CHECK_STATUS") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_TAB_HEADER_CHECK_STATUS").DisplayValue : "";
+        L_TAB_HEADER_NEIGHBOR = LabelFBBOR022.Any(c => c.Name == "L_TAB_HEADER_NEIGHBOR") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_TAB_HEADER_NEIGHBOR").DisplayValue : "";
+
+    }
+
+    string Language = "";
+    if (ViewBag.Language != null)
+    {
+        Language = ViewBag.Language;
+    }
+
+    //R22.06
+    string NonMobileNo = "";
+    if (ViewBag.NonMobileNo != null)
+    {
+        NonMobileNo = ViewBag.NonMobileNo;
+    }
+
+    string IdCard = "";
+    if (ViewBag.IdCard != null)
+    {
+        IdCard = ViewBag.IdCard;
+    }
+
+    string CardType = "";
+    if (ViewBag.CardType != null)
+    {
+        CardType = ViewBag.CardType;
+    }
+
+    string PageShow = "";
+    if (ViewBag.PageShow != null)
+    {
+        PageShow = ViewBag.PageShow;
+    }
+
+}
+
+<style>
+
+    .btn1 {
+        background-color: #8dc63f;
+        color: #fff;
+    }
+
+        .btn1:hover {
+            background-color: #8dc63f;
+            color: #fff;
+            cursor: not-allowed;
+        }
+
+    .btn2 {
+        background-color: #8dc63f;
+        color: #fff;
+    }
+
+        .btn2:hover {
+            background-color: black;
+            color: #fff;
+        }
+
+    .headerTab {
+        font-size: 16px;
+    }
+</style>
+
+@*R22.06*@
+<div class="hidden">
+    @Html.Hidden("hndNonMobileNo", NonMobileNo)
+    @Html.Hidden("hndIdCard", IdCard)
+    @Html.Hidden("hndCardType", CardType)
+    @Html.Hidden("hndPageShow", PageShow)
+</div>
+
+@*R22.05*@
+<div id="divLogin" class="tab-content" style="display:none;">
+    @Html.Partial("_PartialLogin")
+</div>
+
+<div id="divMemberGetMember" style="display:none;">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#neighbor" class="headerTab">@L_TAB_HEADER_NEIGHBOR</a></li>
+        <li><a data-toggle="tab" href="#checkStatus" class="headerTab">@L_TAB_HEADER_CHECK_STATUS</a></li>
+        <li><a data-toggle="tab" id="aCondition" href="#condition" class="headerTab">@L_TAB_HEADER_CONDITION</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="neighbor" class="tab-pane fade in active">
+            @Html.Partial("_PartialNeighbor")
+        </div>
+        <div id="checkStatus" class="tab-pane fade">
+            @Html.Partial("_PartialCheckStatus")
+        </div>
+        <div id="condition" class="tab-pane fade">
+            @Html.Partial("_PartialCondition")
+        </div>
+
+    </div>
+</div>
+
+<div id="ProgressIcon" class="modal fade">
+    <div class="modal-dialog" style="top:38%;">
+        <div class="row" style="margin-left:auto; margin-right:auto; width:150px; height:100px; color:white;">
+            <div>
+                <i class="fa-li fa fa-spinner fa-spin fa-5x" style="position:inherit;"></i>
+            </div>
+            <div id="txtLoading" style="text-align:center;">
+                LOADING
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //R22.05
+        $('#divLogin').show();
+        $('#divWelcomeBox').hide();
+        $('#divMemberGetMember').hide();
+    });
+
+    function CheckKeyUps(id, RexStr, checkMobile) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        if (checkMobile == undefined || checkMobile != "M") {
+            var filter = new RegExp(RexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+        }
+        else {
+            var filterM = new RegExp(RexStr, "g");
+            strBuilder = strKey.match(filterM);
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#ProgressIcon #txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+</script>

@@ -1,0 +1,69 @@
+﻿using System.Collections.Generic;
+
+namespace WBBEntity.PanelModels.FBBWebConfigModels
+{
+    public class PAYGTransAirnetModel
+    {
+    }
+    public class PAYGTransAirnetListResult
+    {
+        public int Return_Code { get; set; }
+        public string Return_Desc { get; set; }
+        public List<PAYGTransAirnetFileList> Data { get; set; }
+    }
+
+    public class PAYGTransAirnetList
+    {
+        public string data1 { get; set; }
+        public string Data { get; set; }
+    }
+    public class PAYGTransAirnetFileList
+    {
+        public string file_name { get; set; }
+        public string file_data { get; set; }
+    }
+
+    public class ConnectionNasPAYGListResult
+    {
+        public int Return_Code { get; set; }
+        public string Return_Desc { get; set; }
+        public ConnectionNasPAYG NasTemp { get; set; }
+        public ConnectionNasPAYG NasSap { get; set; }
+        public ConnectionNasPAYG NasTarget { get; set; }
+        public ConnectionNasPAYG NasSapNew { get; set; }
+    }
+    public class ConnectionNasPAYG
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+
+
+
+    public class ConnectionNasPAYGTransAirnetListResult
+    {
+        public int Return_Code { get; set; }
+        public string Return_Desc { get; set; }
+        public ConnectionNasPAYGTransAirnet NasTemp { get; set; }
+        public ConnectionNasPAYGTransAirnet NasSap { get; set; }
+        public ConnectionNasPAYGTransAirnet NasSap3BB { get; set; }
+        public ConnectionNasPAYGTransAirnet NasTarget { get; set; }
+        public ConnectionNasPAYGTransAirnet NasArchive { get; set; }
+    }
+    public class ConnectionNasPAYGTransAirnet
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Domain { get; set; }
+        public string Path { get; set; }
+    }
+    public class ConnectionNasPAYGMatdocListResult
+    {
+        public int Return_Code { get; set; }
+        public string Return_Desc { get; set; }
+        public ConnectionNasPAYG NasTemp { get; set; }
+        public ConnectionNasPAYG NasSap { get; set; }
+        public ConnectionNasPAYG NasTarget { get; set; }
+        public ConnectionNasPAYG NasArch { get; set; }
+    }
+}

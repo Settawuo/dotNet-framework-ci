@@ -1,0 +1,188 @@
+﻿@using WBBEntity.PanelModels
+@{
+    string L_CUSTOMER_NAME = "";
+    string L_CUSTOMER_CONTACT_NUMBER = "";
+    string L_CAMPAIGN_INFORMATION = "";
+    string B_REFRESH = "";
+    string B_LOGOUT = "";
+    string L_PLEASE_REFRESH_BUTTON = "";
+    string L_REFFERRAL_NAME = "";
+    string L_REFFERRAL_MOBILE_NO = "";
+    string L_REWARD = "";
+    string L_ORDER_DATE = "";
+    string L_CAMPAIGN_PERIOD = "";
+    string L_STATUS = "";
+    string NUMBER_NO = ""; //R22.06
+
+    if (ViewBag.LabelFBBOR022 != null)
+    {
+        var LabelFBBOR022 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR022;
+
+        L_CUSTOMER_NAME = LabelFBBOR022.Any(c => c.Name == "L_CUSTOMER_NAME") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_CUSTOMER_NAME").DisplayValue : "";
+        L_CUSTOMER_CONTACT_NUMBER = LabelFBBOR022.Any(c => c.Name == "L_CUSTOMER_CONTACT_NUMBER") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_CUSTOMER_CONTACT_NUMBER").DisplayValue : "";
+        L_CAMPAIGN_INFORMATION = LabelFBBOR022.Any(c => c.Name == "L_CAMPAIGN_INFORMATION") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_CAMPAIGN_INFORMATION").DisplayValue : "";
+        B_REFRESH = LabelFBBOR022.Any(c => c.Name == "B_REFRESH") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "B_REFRESH").DisplayValue : "";
+        B_LOGOUT = LabelFBBOR022.Any(c => c.Name == "B_LOGOUT") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "B_LOGOUT").DisplayValue : "";
+        L_PLEASE_REFRESH_BUTTON = LabelFBBOR022.Any(c => c.Name == "L_PLEASE_REFRESH_BUTTON") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_PLEASE_REFRESH_BUTTON").DisplayValue : "";
+        L_REFFERRAL_NAME = LabelFBBOR022.Any(c => c.Name == "L_REFFERRAL_NAME") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_REFFERRAL_NAME").DisplayValue : "";
+        L_REFFERRAL_MOBILE_NO = LabelFBBOR022.Any(c => c.Name == "L_REFFERRAL_MOBILE_NO") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_REFFERRAL_MOBILE_NO").DisplayValue : "";
+        L_REWARD = LabelFBBOR022.Any(c => c.Name == "L_REWARD") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_REWARD").DisplayValue : "";
+        L_ORDER_DATE = LabelFBBOR022.Any(c => c.Name == "L_ORDER_DATE") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_ORDER_DATE").DisplayValue : "";
+        L_CAMPAIGN_PERIOD = LabelFBBOR022.Any(c => c.Name == "L_CAMPAIGN_PERIOD") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_CAMPAIGN_PERIOD").DisplayValue : "";
+        L_STATUS = LabelFBBOR022.Any(c => c.Name == "L_STATUS") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_STATUS").DisplayValue : "";
+        NUMBER_NO = LabelFBBOR022.Any(c => c.Name == "NUMBER_NO") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "NUMBER_NO").DisplayValue : "";
+    }
+}
+
+<style>
+    .header-table {
+        color: white;
+        background-color: #7fc71f;
+        text-align: center;
+    }
+
+    .table-center {
+        text-align: center;
+    }
+</style>
+
+@*R22.05*@
+@*<div id="divLogin">
+        @Html.Partial("_PartialLogin")
+    </div>
+
+    <div id="divCheckStaus" style="display: none;">*@
+<div id="divCheckStaus">
+    <p class="clearfix"></p>
+    <div class="row" style="display:none;">
+        @*R22.05*@
+        @Html.Label("", L_CUSTOMER_NAME, new
+        {
+            @class = "control-label col-xs-2 col-sm-2"
+        })
+
+        @Html.Label("L_CUSTOMER_NAME", " ", new
+        {
+            @class = "control-label col-xs-10 col-sm-10",
+            @id="L_CUSTOMER_NAME"
+        })
+        <p class="clearfix"></p>
+    </div>
+    <div class="row" style="display:none;">
+        @*R22.05*@
+        @Html.Label("", L_CUSTOMER_CONTACT_NUMBER, new
+        {
+            @class = "control-label col-xs-2 col-sm-2"
+        })
+
+        @Html.Label("L_CUSTOMER_CONTACT_NUMBER", " ", new
+        {
+            @class = "control-label col-xs-10 col-sm-10",
+            @id="L_CUSTOMER_CONTACT_NUMBER"
+        })
+        <p class="clearfix"></p>
+
+    </div>
+    <div class="row">
+        @Html.Label("L_CAMPAIGN_INFORMATION", L_CAMPAIGN_INFORMATION, new
+        {
+            @class = "control-label col-xs-6 col-sm-6"
+        })
+        <label id="lblSummaryAmount" class="control-label col-xs-6 col-sm-6" style="text-align: right;"></label>
+        <p class="clearfix"></p>
+    </div>
+    <div id="gridresult" class="row" style="overflow-x:auto;">
+        <table id="tblNeighbor" class="table table-striped">
+            <tr>
+                <th class="header-table" style="width: 100px;"><span>@NUMBER_NO</span></th>@*R22.06*@
+                <th class="header-table" style="width: 200px;"><span>@L_REFFERRAL_NAME</span></th>
+                <th class="header-table" style="width: 200px;"><span>@L_REFFERRAL_MOBILE_NO</span></th>
+                <th class="header-table" style="width: 200px;"><span>@L_REWARD</span></th>
+                <th class="header-table" style="width: 180px;"><span>@L_ORDER_DATE</span></th>
+                @*<th class="header-table" style="width: 150px;"><span>@L_CAMPAIGN_PERIOD</span></th>*@
+                <th class="header-table" style="width: 190px;"><span>@L_STATUS</span></th>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-12 text-center">
+        <p class="clearfix"></p>
+        <button id="btnRefresh" onclick="refreshData();" type="button" class="btn btn-primary">
+            &nbsp; @B_REFRESH &nbsp;
+        </button>
+        @*R22.05*@
+        @*<button id="btnLogout" type="button" class="btn btn-default">
+            &nbsp; @B_LOGOUT &nbsp;
+        </button>*@
+        <p class="clearfix"></p>
+    </div>
+    <div class="row">
+        @Html.Label("L_PLEASE_REFRESH_BUTTON", L_PLEASE_REFRESH_BUTTON, new
+        {
+            @class = "control-label col-xs-12 col-sm-12 text-center"
+        })
+        <p class="clearfix"></p>
+    </div>
+
+    <div>
+
+    </div>
+</div>
+
+
+<script>
+    
+    function _Search() {
+        $('#tblNeighbor tr').slice(1).remove();
+        $.ajax({
+            url: '/Campaign/GetNeighbor',
+            data: { language: $("#hndLanguage").val(), internetNo: $("#AisAirNumber").val() },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.status == "1") {
+                    if (response.member.length > 0) {
+                        var strBuilder = "";
+                        for (var i = 0; i < response.member.length; i++) {
+                            strBuilder += "<tr>";
+                            strBuilder += "<td class='table-center'>" + (i+1) + "</td>"; //R22.05
+                            strBuilder += "<td>" + (response.member[i].member_name == null ? "" : response.member[i].member_name) + "</td>";
+                            strBuilder += "<td class='table-center'>" + (response.member[i].member_contact_mobile_no == null ? "" : response.member[i].member_contact_mobile_no) + "</td>";
+                            strBuilder += "<td>" + (response.member[i].voucher_desc == null ? "" : response.member[i].voucher_desc) + "</td>";
+                            strBuilder += "<td class='table-center'>" + (response.member[i].created_date == null ? "" : response.member[i].created_date) + "</td>";
+                            //strBuilder += "<td class='table-center'>" + (response.member[i].expired_date == null ? "" : response.member[i].expired_date) + "</td>";
+                            strBuilder += "<td>" + (response.member[i].status == null ? "" : response.member[i].status) + "</td>";
+                            strBuilder += "</tr>";
+                        }
+                        $('#tblNeighbor').append(strBuilder);
+                    }
+                }
+            }
+        });
+    }
+
+    function refreshData() {
+        //R22.05
+        LockScreen(true, "");
+        _Search();
+        LockScreen(false, "");
+
+        //LockScreen(true, "");
+        //$.ajax({
+        //    url: '/Campaign/Login',
+        //    type: 'post',
+        //    dataType: 'json',
+        //    async: false,
+        //    data: $('#frmLoginData').serialize(),
+        //    success: function (response) {
+        //        if (response.loginStatus == '1') {
+        //            _Search();
+        //        } else {
+        //            clearData();
+        //        }
+        //    }
+        //});
+        //LockScreen(false, "");
+    }
+
+</script>

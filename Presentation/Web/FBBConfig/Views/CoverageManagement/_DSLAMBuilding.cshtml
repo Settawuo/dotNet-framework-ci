@@ -1,0 +1,135 @@
+﻿@using WBBEntity.PanelModels.FBBWebConfigModels
+@model WBBEntity.PanelModels.FBBWebConfigModels.CoverageSitePanelModel
+@{
+    ViewBag.Title = "DSLAM/Building";
+
+    string  DF_Brand           = "";
+    string  DF_BuildingCode     = "";
+    string  DF_BuildingUse      = "";
+    string  DF_Code             = "";
+    int     DF_CurrentPort      = 0;
+    string  DF_DLRuningNumber   = "";
+    string  DF_DSLAMModel       = "";
+    string  DF_IPRANPort        = "";
+    string  DF_Lot              = "";
+    string  DF_MC               = "";
+    string  DF_NodeId           = "";
+    int     DF_Number           = 0;
+    string  DF_RegionDSLAM      = "";
+    
+    if (ViewBag.DefaultPopup != null)
+    {
+        var defaultPopup = (DslamPanel)ViewBag.DefaultPopup;
+
+        DF_Brand = defaultPopup.Brand;         
+        DF_BuildingCode  = defaultPopup.BuildingCode   ;
+        DF_BuildingUse   = defaultPopup.BuildingUse    ;
+        DF_Code          = defaultPopup.Code           ;
+        DF_CurrentPort   = defaultPopup.CurrentPort    ;
+        DF_DLRuningNumber= defaultPopup.DLRuningNumber ;
+        DF_DSLAMModel    = defaultPopup.DSLAMModel     ;
+        DF_IPRANPort     = defaultPopup.IPRANPort      ;
+        DF_Lot           = defaultPopup.Lot            ;
+        DF_MC            = defaultPopup.MC             ;
+        DF_NodeId        = defaultPopup.NodeId         ;
+        //DF_Number        = defaultPopup.Number         ;
+        DF_RegionDSLAM   = defaultPopup.RegionDSLAM    ;
+    }
+}
+
+<ol class="breadcrumb">
+  <li><a onclick="$('#navPage1').click();">Main Page</a></li>
+  <li><a onclick="$('#navPage2').click();">Site/Coverage</a></li>
+  <li class="active" >Building/DSLAM</li>
+</ol>
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-info-circle" style="font-size: large;"><b>&nbsp;DSLAM/Building</b></i>
+                    <a data-toggle="collapse" class="pull-right" href="#DSLAMPanel" onclick="onPanelToggle(this);" id="DSLAMPanelHeader">
+                        <i class="fa fa-chevron-down" id="ArrowIconDSLAM"></i>
+                    </a>
+                </h3>
+            </div>
+            <div id="DSLAMPanel" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <ul class="nav nav-tabs" id="myTabDSLAM">
+                        <li class="active"><a data-toggle="tab" href="#divDSLAM">DSLAM</a></li>
+                        <li class=""><a data-toggle="tab" href="#divDSLAMHistory">DSLAM History</a></li>
+                    </ul>
+                    <div class="tab-content" id="myTabDSLAMContent">
+                        <div id="divDSLAM" class="tab-pane fade active in">
+                         
+                            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.DslamPanel>()
+                            .Name("gridDSLAM")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.NodeId).Title("NodeId").HtmlAttributes(new { style = "text-align:left;" });
+                                columns.Bound(p => p.Number).Title("Number").HtmlAttributes(new { style = "text-align:left;" });
+                                columns.Bound(p => p.BuildingCode).Title("Building Code").HtmlAttributes(new { style = "text-align:left;" });
+                                columns.Bound(p => p.BuildingUse).Title("Building Use").HtmlAttributes(new { style = "text-align:left;" });
+                                columns.Bound(p => p.CurrentPort).Title("Current Port").HtmlAttributes(new { style = "text-align:left;" });
+                                columns.Command(command => command.Custom("Delete").Click("Deleteingrid").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete")).Width(100);
+                                columns.Command(command => command.Custom("Config").Click("EditApconfig").Text("<i class='fa fa-pencil-square-o'></i> Edit").HtmlAttributes(new { style = "align:left;" })).Width(100);                       
+                            })
+                           .Pageable()
+                           .Sortable()
+                           .ToolBar(toolbar =>
+                                    {
+                                        toolbar.Custom().Name("NewApconfig").Text("<i class='fa fa-plus'></i> New AP").HtmlAttributes(new { onclick = "addNewAP();return false;" }); 
+                                                            
+                                    }).HtmlAttributes(new { style = "text-align:right;" })         
+                                //.Events(events => events.Edit("changeTitlePopup"))
+                                //.ToolBar(toolBar => toolBar.Create().HtmlAttributes(new { onclick = "modePopup('add');" }))
+                                //.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("PopupDSLAMBuilding"))
+                                    //.Window(w => w.Title("Edit DSLAM").Width(600))
+                                .AutoBind(true)
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .PageSize(10)
+                                    //.Events(events => events.Error("error_handler"))
+                                    .Model(model => model.Id(p => p.Number))
+                                    //.Model(model =>
+                                    //{
+                                    //    //model.Id(m => m.Number);
+                                    //    //model.Field(m => m.Brand).DefaultValue(DF_Brand);
+                                    //    //model.Field(m => m.BuildingCode).DefaultValue(DF_BuildingCode);
+                                    //    //model.Field(m => m.BuildingUse).DefaultValue(DF_BuildingUse);
+                                    //    //model.Field(m => m.Code).DefaultValue(DF_Code);
+                                    //    //model.Field(m => m.CurrentPort).DefaultValue(DF_CurrentPort);
+                                    //    //model.Field(m => m.DLRuningNumber).DefaultValue(DF_DLRuningNumber);
+                                    //    //model.Field(m => m.DSLAMModel).DefaultValue(DF_DSLAMModel);
+                                    //    //model.Field(m => m.IPRANPort).DefaultValue(DF_IPRANPort);
+                                    //    //model.Field(m => m.Lot).DefaultValue(DF_Lot);           
+                                    //    //model.Field(m => m.MC).DefaultValue(DF_MC);
+                                    //    //model.Field(m => m.NodeId).DefaultValue(DF_NodeId);
+                                    //    //model.Field(m => m.Number).DefaultValue(DF_Number);
+                                    //    //model.Field(m => m.RegionDSLAM).DefaultValue(DF_RegionDSLAM);
+                                    //})                                     
+                                    .Read(read => read.Action("Read_DSLAM", "CoverageManagement"))
+                                    .Create(create => create.Action("Create_DSLAM", "CoverageManagement"))
+                                    .Update(update => update.Action("Update_DSLAM", "CoverageManagement"))
+                                    .Destroy(destroy => destroy.Action("Destroy_DSLAM", "CoverageManagement"))
+
+                                    )
+                                    
+
+                            )
+                        </div>
+                        <div id="divDSLAMHistory" class="tab-pane fade" style="height:300px;">
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
+
+<script>
+    
+   
+    
+</script>

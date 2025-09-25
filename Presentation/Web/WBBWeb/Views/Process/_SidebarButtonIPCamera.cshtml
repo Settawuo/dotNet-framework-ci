@@ -1,0 +1,242 @@
+﻿@using WBBEntity.PanelModels
+@{#region
+    string MyAISBypass = ViewBag.MyAISBypass ?? "";
+    string Channel = ViewBag.Channel ?? "";
+
+    string B_NEXT = "";//
+    string B_BACK = "";//
+    if (ViewBag.labelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>
+    )ViewBag.LabelFBBTR000;
+        B_NEXT = labelFBBTR000.Any(c => c.Name == "B_NEXT") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_NEXT").DisplayValue : "";
+        B_BACK = labelFBBTR000.Any(c => c.Name == "B_BACK") ? labelFBBTR000.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+    }
+
+    string ChnOTP = "";
+    string FlagOTP = "";
+    string DIYFlag = "";
+    string TECHFlag = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        ChnOTP = FbbConstant.Any(f => f.Field == "CHANNEL_OTP_IPCamera") ? FbbConstant.First(f => f.Field == "CHANNEL_OTP_IPCamera").Validation : "";
+        FlagOTP = FbbConstant.Any(f => f.Field == "FLAG_OTP_IPCamera") ? FbbConstant.First(f => f.Field == "FLAG_OTP_IPCamera").Validation : "";
+        DIYFlag = FbbConstant.Any(f => f.Field == "IPCamera_Use_DIY_Flag") ? FbbConstant.First(f => f.Field == "IPCamera_Use_DIY_Flag").Validation : "";
+        TECHFlag = "Y";//FbbConstant.Any(f => f.Field == "IPCamera_Use_DIY_Flag") ? FbbConstant.First(f => f.Field == "IPCamera_Use_DIY_Flag").Validation : "";
+                       //TECHFlag = "N";
+    }
+
+    string DISPLAY_TIMESLOT_PBOX_JOIN = "";
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        DISPLAY_TIMESLOT_PBOX_JOIN = labelFBBTR003.Any(c => c.Name == "DISPLAY_TIMESLOT_PBOX_JOIN") ? labelFBBTR003.FirstOrDefault(c => c.Name == "DISPLAY_TIMESLOT_PBOX_JOIN").DisplayValue : "";
+    }
+    #endregion
+}
+
+@*HTML form's next page*@
+<div class="divButtonIPCameraHidden" style="display:none">
+    <button type="button" class="btn btn-default btn-for-xs" id="btnVasBackPageHidden">
+        &nbsp; @B_BACK &nbsp;
+    </button>
+    <button type="button" class="btn btn-success btn-for-xs" id="btnVasNextPageHidden">
+        &nbsp; @B_NEXT &nbsp;<i class="fa fa-arrow-circle-o-right "></i>
+    </button>
+</div>
+
+<style>
+    .divButtonIPCamera {
+        text-align: center;
+    }
+</style>
+
+<script>
+    setClick("onBtnInstallTypeNext_Click()", "onBtnVasBackPage_Click()");
+
+    function setClick(nextClick, backClick) {
+        $('.divButtonIPCamera').html('');
+        $("#btnVasNextPageHidden").attr("onclick", nextClick);
+        $("#btnVasBackPageHidden").attr("onclick", backClick);
+        BindHidden('.divButtonIPCamera');
+        $(".divButtonIPCamera #btnVasNextPageHidden").attr("id", "btnVasNextPage");
+        $(".divButtonIPCamera #btnVasBackPageHidden").attr("id", "btnVasBackPage");
+    }
+
+    function onBtnVasBackPage_Click() {
+        LockScreen(true);
+        window.location.href = "@Url.Action("TopupIPCamera", "Process")";
+        digitalData.customLinkName = "add-on:cancel-button";
+        console.log("custom-link-click : button btnVasBackPage");
+
+        LockScreen(false);
+    }
+
+    function onBtnInstallTypeNext_Click() {
+        LockScreen(true);
+        $("#divVasCamDynamic").hide();
+        $('#trInstallIPCameraPlus').show();
+
+        if ("@Channel" == "@ChnOTP") {
+            onBtnSumIPCameraBypass_Click()
+            return;
+        }
+
+        $('#spaceInstallIPCameraPlus').show();
+        MergeHidden('.divInstallType');
+
+        if ($('.InstallTypeCondition').html() === undefined) {
+            setInstallTypeCondition();//for edit 29/08/2023
+        } else {
+            $('.InstallTypeTechnician').show();
+            $('label[for="diyRadioTechnician"]').show();
+            if ($('input[name="diy-option"]:checked').val() == 'Y') {
+                $('.InstallTypeTechnician').hide();
+                $('#trInstallIPCameraPlus').hide();
+                $('#spaceInstallIPCameraPlus').hide();
+            } else {
+                $('.InstallTypeTechnician').show();
+                $("#summTotalInstallIPCamera").text($("#InstallIPCameraCost").text());
+                $('#btnVasNextPage').prop('disabled', !checkDateTimeSlot);
+            }
+        }
+
+        $(document).ready(function () {
+            $('input[name="diy-option"]').change(function () {
+                if (this.value === 'N') {
+                    $(".InstallTypeTechnician").show();
+                    $('#trInstallIPCameraPlus').show();
+                    $('#spaceInstallIPCameraPlus').show();
+                    $("#summTotalInstallIPCamera").text($("#InstallIPCameraCost").text());
+                    $('#btnVasNextPage').prop('disabled', true);
+                } else {
+                    $(".InstallTypeTechnician").hide();
+                    $('#trInstallIPCameraPlus').hide();
+                    $('#spaceInstallIPCameraPlus').hide();
+                    $("#summTotalInstallIPCamera").text("0.00 ")
+                    $('#btnVasNextPage').prop('disabled', false);
+                }
+            });
+        });
+
+        setClick("onBtnInstallTypeSelect_Click()", "onBtnInstallTypeBack_Click()");
+        $('#btnVasNextPage').prop('disabled', '@DIYFlag' != 'Y');
+
+        if ("@TECHFlag" != "Y") {
+            $('input[name="diy-option"]:checked').val('Y');
+            onBtnInstallTypeSelect_Click();
+        }
+        LockScreen(false);
+    }
+
+    function onBtnInstallTypeBack_Click() {
+        LockScreen(true);
+        $("#summTotalInstallIPCamera").text("0.00 ");
+        $("#divVasCamDynamic").show();
+        $('.divInstallType').hide();
+        $('.InstallTypeTechnician').hide();
+        $('#trInstallIPCameraPlus').hide();
+        $('#spaceInstallIPCameraPlus').hide();
+        $('#Agreement').prop('checked', false);
+        setClick("onBtnInstallTypeNext_Click()", "onBtnVasBackPage_Click()");
+        LockScreen(false);
+    }
+
+    var isDIY = '';
+    function onBtnInstallTypeSelect_Click() {
+        LockScreen(true);
+        isDIY = $('input[name="diy-option"]:checked').val();
+        $('.InstallTypeCondition').hide();
+        drawSummaryHidden();
+        if (isDIY == 'N') {
+            $('#page2_1').hide()
+            //$('#divInstallTypeTechnician').show();
+            $(".InstallTypeTechnician").show();
+            $(".divButtonTimeSlot").html($(".divButtonIPCamera").html());
+            $('#lbSummary3').html($('#lbSummary4').html());
+            onBtnSumIPCameraNext_Click();
+        } else {
+            $('label[for="diyRadioTechnician"]').hide();
+            $('#divInstallTypeDIY').show();
+            drawAddress();
+            setClick("onBtnSumIPCameraNext_Click()", "onBtnDIYBack_Click()")
+        }
+        LockScreen(false);
+    }
+
+    function onBtnTechnicianBack_Click() {
+        LockScreen(true);
+        $('#page2_1').show()
+        $(".InstallTypeTechnician").show();
+        setClick("onBtnInstallTypeSelect_Click()", "onBtnInstallTypeBack_Click()");
+        LockScreen(false);
+    }
+
+    function onBtnDIYBack_Click() {
+        LockScreen(true);
+        if ("@TECHFlag" != "Y") {
+            $('#divInstallTypeDIY').hide()
+            onBtnInstallTypeBack_Click();
+            return;
+        }
+        $(".InstallTypeTechnician").hide();
+        $(".divDeliveryDetail").hide();
+        $('label[for="diyRadioTechnician"]').show();
+        setClick("onBtnInstallTypeSelect_Click()", "onBtnInstallTypeBack_Click()");
+        LockScreen(false);
+    }
+
+    function onBtnSumIPCameraNext_Click() {
+        LockScreen(true);
+        $('#page2_1').hide();
+        $('.InstallTypeTechnician').hide();
+        $('#Page4').show();
+        drawSummary();
+        changePageHeader_Vas(3);
+        LockScreen(false);
+    }
+
+    function onBtnSumIPCameraBack_Click() {
+        LockScreen(true);
+        $('#Page4').hide();
+        $('#page2_1').show();
+        changePageHeader_Vas(2);
+        if (isDIY == 'N') {
+            $('.InstallTypeTechnician').show();
+        } else {
+            BindHidden('.divButtonIPCamera');
+        }
+        if ("@ChnOTP" == "@Channel") {
+            $("#divVasCamDynamic").show();
+        }
+        LockScreen(false);
+    }
+
+    function onBtnSumIPCameraBypass_Click() {
+        LockScreen(true);
+        $('#page2_1').hide();
+        var txtTimeSlot = "@DISPLAY_TIMESLOT_PBOX_JOIN";
+        txtTimeSlot = txtTimeSlot.replace("{TIMESLOT}","@ViewBag.Time_slot");
+        $('#divTextSelectTimeSlot').html(txtTimeSlot);
+        $('#L_INSTALL_DATE').val("@ViewBag.Install_date");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("@ViewBag.Install_date");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("@ViewBag.Time_slot");
+        drawSummaryHidden();
+        $('#lbSummary3').html($('#lbSummary4').html());
+        $('#Page4').show();
+        drawSummary();
+        if ("@ChnOTP" == "@Channel") {
+            $('#trInstallIPCameraPlus').hide();
+            $("#summTotalInstallIPCamera").text("0.00 ");
+            $('.summarytab2 #trInstallIPCameraPlus').hide();
+            $('.summarytab2 #spaceInstallIPCameraPlus').hide();
+        } else {
+            $('#trInstallIPCameraPlus').show();
+            $('#spaceInstallIPCameraPlus').show();
+            $('.summarytab2 #spaceInstallIPCameraPlus').show();
+        }
+        changePageHeader_Vas(3);
+        LockScreen(false);
+    }
+</script>

@@ -1,0 +1,623 @@
+﻿@using WBBEntity.PanelModels;
+@{
+    Layout = "~/Views/Fbbsaleportal/_Layout.cshtml";
+
+    string H_SALE_PORTAL_MNG_1 = "";
+    string L_REGITER_DATE_FROM = "";
+    string L_REGITER_DATE_TO = "";
+    string L_REF_NO = "";
+    string L_CUSTOMER_NAME = "";
+    string L_CONTACT_MOBILE = "";
+
+    string C_REF_NO = "";
+    string C_CUSTOMER_NAME = "";
+    string C_ADDRESS = "";
+    string C_CONTACT_MOBILE = "";
+    string C_STATUS = "";
+    string C_LAST_UPDATE_DATE = "";
+    string C_IN_COVERAGE = "";
+
+    //NEW_FTTH
+    string C_COVERAGEAREA = "";
+    string C_NETWORK_PROVIDER = "";
+    string C_SUB_STATUS = "";
+    string C_AREA_OWNER_NAME = "";
+    string C_GROUP_OWNER = "";
+    string C_AREA_OWNER_CONTACT_EMAIL = "";
+    string C_AREA_OWNER_CONTACT_TEL = "";
+    string C_FTTHDISPLAYMESSAGE = "";
+    string C_WTTXDISPLAYMESSAGE = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovScreenValueModel>)ViewBag.configscreen;
+
+        H_SALE_PORTAL_MNG_1 = configscreen.Any(f => f.Name == "H_SALE_PORTAL_MNG_1") ? configscreen.FirstOrDefault(f => f.Name == "H_SALE_PORTAL_MNG_1").DisplayValue : "";
+        L_REGITER_DATE_FROM = configscreen.Any(f => f.Name == "L_REGITER_DATE_FROM") ? configscreen.FirstOrDefault(f => f.Name == "L_REGITER_DATE_FROM").DisplayValue : "";
+        L_REGITER_DATE_TO = configscreen.Any(f => f.Name == "L_REGITER_DATE_TO") ? configscreen.FirstOrDefault(f => f.Name == "L_REGITER_DATE_TO").DisplayValue : "";
+        L_REF_NO = configscreen.Any(f => f.Name == "L_REF_NO") ? configscreen.FirstOrDefault(f => f.Name == "L_REF_NO").DisplayValue : "";
+        L_CUSTOMER_NAME = configscreen.Any(f => f.Name == "L_CUSTOMER_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_CUSTOMER_NAME").DisplayValue : "";
+        L_CONTACT_MOBILE = configscreen.Any(f => f.Name == "L_CONTACT_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "L_CONTACT_MOBILE").DisplayValue : "";
+
+        C_REF_NO = configscreen.Any(f => f.Name == "C_REF_NO") ? configscreen.FirstOrDefault(f => f.Name == "C_REF_NO").DisplayValue : "";
+        C_CUSTOMER_NAME = configscreen.Any(f => f.Name == "C_CUSTOMER_NAME") ? configscreen.FirstOrDefault(f => f.Name == "C_CUSTOMER_NAME").DisplayValue : "";
+        C_ADDRESS = configscreen.Any(f => f.Name == "C_ADDRESS") ? configscreen.FirstOrDefault(f => f.Name == "C_ADDRESS").DisplayValue : "";
+        C_CONTACT_MOBILE = configscreen.Any(f => f.Name == "C_CONTACT_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "C_CONTACT_MOBILE").DisplayValue : "";
+        C_STATUS = configscreen.Any(f => f.Name == "C_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "C_STATUS").DisplayValue : "";
+        C_LAST_UPDATE_DATE = configscreen.Any(f => f.Name == "C_LAST_UPDATE_DATE") ? configscreen.FirstOrDefault(f => f.Name == "C_LAST_UPDATE_DATE").DisplayValue : "";
+        C_IN_COVERAGE = configscreen.Any(f => f.Name == "C_IN_COVERAGE") ? configscreen.FirstOrDefault(f => f.Name == "C_IN_COVERAGE").DisplayValue : "";
+
+        //NEW_FTTH
+        C_COVERAGEAREA = configscreen.Any(f => f.Name == "C_COVERAGEAREA") ? configscreen.FirstOrDefault(f => f.Name == "C_COVERAGEAREA").DisplayValue : "";
+        C_NETWORK_PROVIDER = configscreen.Any(f => f.Name == "C_NETWORK_PROVIDER") ? configscreen.FirstOrDefault(f => f.Name == "C_NETWORK_PROVIDER").DisplayValue : "";
+        C_SUB_STATUS = configscreen.Any(f => f.Name == "C_SUB_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "C_SUB_STATUS").DisplayValue : "";
+        C_AREA_OWNER_NAME = configscreen.Any(f => f.Name == "C_AREA_OWNER_NAME") ? configscreen.FirstOrDefault(f => f.Name == "C_AREA_OWNER_NAME").DisplayValue : "";
+        C_GROUP_OWNER = configscreen.Any(f => f.Name == "C_GROUP_OWNER") ? configscreen.FirstOrDefault(f => f.Name == "C_GROUP_OWNER").DisplayValue : "";
+        C_AREA_OWNER_CONTACT_EMAIL = configscreen.Any(f => f.Name == "C_AREA_OWNER_CONTACT_EMAIL") ? configscreen.FirstOrDefault(f => f.Name == "C_AREA_OWNER_CONTACT_EMAIL").DisplayValue : "";
+        C_AREA_OWNER_CONTACT_TEL = configscreen.Any(f => f.Name == "C_AREA_OWNER_CONTACT_TEL") ? configscreen.FirstOrDefault(f => f.Name == "C_AREA_OWNER_CONTACT_TEL").DisplayValue : "";
+        C_FTTHDISPLAYMESSAGE = configscreen.Any(f => f.Name == "C_FTTHDISPLAYMESSAGE") ? configscreen.FirstOrDefault(f => f.Name == "C_FTTHDISPLAYMESSAGE").DisplayValue : "";
+        C_WTTXDISPLAYMESSAGE = configscreen.Any(f => f.Name == "C_WTTXDISPLAYMESSAGE") ? configscreen.FirstOrDefault(f => f.Name == "C_WTTXDISPLAYMESSAGE").DisplayValue : "";
+    }
+
+    string HEADER_CHANNEL = "";
+    string HEADER_CREATE_FROM_TIME = "";
+    string HEADER_CREATE_TIME_TO = "";
+    if (ViewBag.LabelFBBOR039 != null)
+    {
+        var configscreen = (List<LovScreenValueModel>)ViewBag.LabelFBBOR039;
+
+        HEADER_CHANNEL = configscreen.Any(f => f.Name == "HEADER_CHANNEL") ? configscreen.FirstOrDefault(f => f.Name == "HEADER_CHANNEL").DisplayValue : "";
+        HEADER_CREATE_FROM_TIME = configscreen.Any(f => f.Name == "HEADER_CREATE_FROM_TIME") ? configscreen.FirstOrDefault(f => f.Name == "HEADER_CREATE_FROM_TIME").DisplayValue : "";
+        HEADER_CREATE_TIME_TO = configscreen.Any(f => f.Name == "HEADER_CREATE_TIME_TO") ? configscreen.FirstOrDefault(f => f.Name == "HEADER_CREATE_TIME_TO").DisplayValue : "";
+    }
+
+    string FBB_Con_CharNotonName = "";
+    string FBB_Input_MobileNo = "";
+
+    string LIMIT_DATE_FROM = "";
+    string LIMIT_DATE_TO = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_Con_CharNotonName = FbbConstant.Any(f => f.Field == "Char Not on Name") ? FbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        FBB_Input_MobileNo = FbbConstant.Any(f => f.Field == "Input_MobileNo") ? FbbConstant.First(f => f.Field == "Input_MobileNo").Validation : "";
+
+        LIMIT_DATE_FROM = FbbConstant.Any(f => f.Field == "LIMIT_DATE_FROM") ? FbbConstant.FirstOrDefault(f => f.Field == "LIMIT_DATE_FROM").Validation : "";
+        LIMIT_DATE_TO = FbbConstant.Any(f => f.Field == "LIMIT_DATE_TO") ? FbbConstant.FirstOrDefault(f => f.Field == "LIMIT_DATE_TO").Validation : "";
+
+
+    }
+
+    string SaveStatus = "";
+
+    if (ViewBag.SaveStatus != null)
+    {
+        SaveStatus = ViewBag.SaveStatus;
+    }
+
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div class="page-header i-header-fit">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">@H_SALE_PORTAL_MNG_1</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@H_SALE_PORTAL_MNG_1</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 135px;">
+                        <div id="row1" class="row">
+                            <div class="col-sm-3 col-md-3">
+                                <label>@L_REGITER_DATE_FROM</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend", onkeydown = "javascript:return false;" })
+                                                  .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                                  .Format("dd/MM/yyyy")
+                                                  .Min(DateTime.Today.AddDays(-Int32.Parse(LIMIT_DATE_FROM)))
+                                                  .Max(DateTime.Today)
+                                                  .Events(e => e.Change("ChangdtpDateFrom")))
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-dtpDateFrom"></div>
+                                <span class="k-invalid-msg" data-for="PickupDate"></span>
+                            </div>
+                            <div class="col-sm-3 col-md-3">
+                                <label>@HEADER_CREATE_FROM_TIME</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("ddlTimeFrom")
+                                                  .DataTextField("Value")
+                                                  .DataValueField("Text")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataSource(source => source.Read(read => read.Action("GetCreateFrom", "Fbbsaleportal")))
+                                                  .OptionLabel(" ")
+                                    )
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-ddlTimeFrom"></div>
+                            </div>
+                            <div class="col-sm-3 col-md-3">
+                                <label>@L_REGITER_DATE_TO</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend", onkeydown = "javascript:return false;" })
+                                                  .Format("dd/MM/yyyy")
+                                                  .Min(DateTime.Today.AddDays(-Int32.Parse(LIMIT_DATE_TO)))
+                                                  .Max(DateTime.Today)
+                                                  .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                                  .Events(e => e.Change("ChangdtpDateTo")))
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-dtpDateTo"></div>
+                            </div>
+                            <div class="col-sm-3 col-md-3">
+                                <label>@HEADER_CREATE_TIME_TO</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("ddlTimeTo")
+                                                  .DataTextField("Value")
+                                                  .DataValueField("Text")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataSource(source => source.Read(read => read.Action("GetCreateTo", "Fbbsaleportal")))
+                                                  .OptionLabel(" ")
+
+                                    )
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-ddlTimeTo"></div>
+                            </div>
+                        </div>
+                        @*end row1*@
+                        <div id="row2" class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_REF_NO</label>
+                                @Html.TextBox("RefNo", "", new { maxlength = 50, @class = "dis k-textbox form-control" })
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_CUSTOMER_NAME</label>
+                                @Html.TextBox("CustomerName", "", new { maxlength = 50, @class = "dis k-textbox form-control" })
+                            </div>
+                        </div>
+                        @*end row2*@
+                        <div id="row3" class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_CONTACT_MOBILE</label>
+                                @Html.TextBox("ContactMobile", "", new { maxlength = 10, @class = "dis k-textbox form-control" })
+                                <div class="i-fg-data-entry-validation" id="validatefor-ContactMobile"></div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>@HEADER_CHANNEL</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("ddlChannel")
+                                                  .DataTextField("Value")
+                                                  .DataValueField("Text")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataSource(source => source.Read(read => read.Action("GetChannel", "Fbbsaleportal")))
+                                                  .OptionLabel(" ")
+
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        @*end row3*@
+                        <div id="row4" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Search</a>
+                            </div>
+                        </div>@*end row4*@
+                    </div>
+
+                </div>@*end SearchPanel*@
+            </div>
+        </div>
+    </div>
+    <div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12">
+            @(Html.Kendo().Grid<WBBEntity.PanelModels.WebServiceModels.SalePortalLeaveMessageList>()
+                        .Name("GridSalePortalLeaveMessage")
+                        .Columns(columns =>
+                        {
+                            columns.Command(command =>
+                            {
+                                command.Custom("Edit").Click("editLeaveMessage").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + "Edit");
+                                command.Custom("View").Click("viewLeaveMessage").Text("<i class='fa fa-eye fa-lg'></i>&nbsp; " + "View");
+                            }).HtmlAttributes(new { style = "text-align:center;" }).Width(50);
+                            columns.Bound(p => p.REF_NO).Title(@C_REF_NO).HtmlAttributes(new { style = "text-align:center;" }).Width(100);
+                            columns.Bound(p => p.CUST_NAME).Title(@C_CUSTOMER_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(100);
+                            columns.Bound(p => p.HOUSE_NO).Title(@C_ADDRESS).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                            columns.Bound(p => p.CONTACT_MOBILE_NO).Title(@C_CONTACT_MOBILE).HtmlAttributes(new { style = "text-align:left;" }).Width(75);
+                            columns.Bound(p => p.STATUS).Title(@C_STATUS).HtmlAttributes(new { style = "text-align:left;" }).Width(50);
+                            columns.Bound(p => p.IS_IN_COV).Title(@C_IN_COVERAGE).HtmlAttributes(new { style = "text-align:center;" }).Width(50);
+
+                            columns.Bound(p => p.COVERAGE_AREA).Title(@C_COVERAGEAREA).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.COVERAGE_NETWORKPROVIDER).Title(@C_NETWORK_PROVIDER).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.COVERAGE_SUBSTATUS).Title(@C_SUB_STATUS).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.COVERAGE_CONTACTNAME).Title(@C_AREA_OWNER_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.COVERAGE_GROUPOWNER).Title(@C_GROUP_OWNER).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.COVERAGE_CONTACTEMAIL).Title(@C_AREA_OWNER_CONTACT_EMAIL).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.COVERAGE_CONTACTTEL).Title(@C_AREA_OWNER_CONTACT_TEL).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.COVERAGE_FTTHDISPLAYMESSAGE).Title(@C_FTTHDISPLAYMESSAGE).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.COVERAGE_WTTXDISPLAYMESSAGE).Title(@C_WTTXDISPLAYMESSAGE).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                        })
+                            .Scrollable(scrollable => scrollable.Height("auto"))
+                            .Pageable(pageable => pageable
+                            //.PageSizes(true)
+                            .Numeric(true)
+                            .PageSizes(new int[] { 5, 20, 50, 100 })
+                            )
+                            .Sortable()
+                            .AutoBind(false)
+                            //.Filterable()
+                            .Resizable(resize => resize.Columns(true))
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                //.Sort(sort => sort.Add(p => p.Item_no).Ascending())
+                                .Read(read => read.Action("ReadSearchSalePortalLeaveMessageData", "Fbbsaleportal").Data("bindingValue"))
+                                .PageSize(5)
+                                )
+                            .Events(e => e.DataBound("onGridDataBound"))
+            )
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: none;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="_backSearch()"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-border-rounded-green">
+                        <p class="clearfix"></p>
+                        <h5 id="modal001txt" class="text-center">
+                            <span id="LastPopupMessage"></span>
+                        </h5>
+                        <p class="clearfix"></p>
+                        <div class="col-md-12 text-center">
+                            <p class="clearfix"></p>
+                            <button type="button" id="modal001btn" class="btn btn-default" data-dismiss="modal" onclick="_backSearch()">&nbsp; Close &nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            var saveStatusMessage = '@SaveStatus';
+
+            if (saveStatusMessage != '') {
+                PopupMessage('@Html.Raw(SaveStatus)');
+                $('#myModal').modal('show');
+            }
+
+            $('#CustomerName').keyup(function () {
+                CheckKeyUps("CustomerName", "@FBB_Con_CharNotonName");
+            });
+            $("#ContactMobile").keyup(function () {
+                CheckKeyUps("ContactMobile", '@FBB_Input_MobileNo', 'M');
+            });
+
+        });
+
+        function post(path, params, method) {
+
+            method = method || "post"; // Set method to post by default if not specified.
+
+            // The rest of this code assumes you are not using a library.
+            // It can be made less wordy if you use one.
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+
+        ////// Check Date Validation //////
+        function ValidationDateValue(model) {
+
+            var chk = ValidationProcessing("dateselect");
+
+            if (chk) //check blank value
+            {
+                if ($.trim($("#dtpDateFrom").val()) == '') {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+
+                if ($.trim($("#dtpDateTo").val()) == '') {
+                    $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateTo").html("");
+                }
+
+                if ($.trim($('#ddlTimeFrom').data("kendoDropDownList").value()) == '') {
+                    $("#validatefor-" + "ddlTimeFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "ddlTimeFrom").html("");
+                }
+
+                if ($.trim($('#ddlTimeTo').data("kendoDropDownList").value()) == '') {
+                    $("#validatefor-" + "ddlTimeTo").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "ddlTimeTo").html("");
+                }
+
+                if ($.trim($("#ContactMobile").val()) != '') {
+                    if ($("#ContactMobile").val().length != '10') {
+                        $("#validatefor-" + "ContactMobile").html(ValidationIcon() + "This field is not correct format.");
+                        chk = false;
+                    }
+                    else {
+                        $("#validatefor-" + "ContactMobile").html("");
+                    }
+                }
+                else {
+                    $("#validatefor-" + "ContactMobile").html("");
+                }
+            }
+
+            if (chk) //check format
+            {
+                if (!kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy")) {
+                    if ($("#dtpDateFrom").val() != "") {
+                        $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                        chk = false;
+                    }
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+
+                if (!kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy")) {
+                    if ($("#dtpDateTo").val() != "") {
+                        $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is not correct format.");
+                        chk = false;
+                    }
+                }
+                else {
+                    $("#validatefor-" + "dtpDateTo").html("");
+                }
+            }
+
+            if (chk) //check Date From must be earlier than Date To
+            {
+                var startPicker = new Date(kendo.parseDate($("#dtpDateFrom").val(), "mm/dd/yyyy"));
+                var endPicker = new Date(kendo.parseDate($("#dtpDateTo").val(), "mm/dd/yyyy"));
+
+                if (startPicker > endPicker) {
+                    if ($("#dtpDateFrom").val() != "") {
+                        $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                        chk = false;
+                    }
+                    else {
+                        $("#validatefor-" + "dtpDateFrom").html("");
+                    }
+                }
+            }
+
+            return chk;
+        }
+
+        var SalePortalLeaveMessageModel = function () {
+            DateFrom: "";
+            DateTo: "";
+            RefferenceNo: "";
+            CustomerName: "";
+            ContactMobile: "";
+            Channel: "";
+            TimeFrom: "";
+            TimeTo: "";
+        }
+
+        function bindingValue() {
+            var model = defaultData();
+            return {
+                dataS: JSON.stringify(model)
+            };
+        }
+
+        ///// Set Default Data //////
+        function defaultData() {
+            var searchResult = new SalePortalLeaveMessageModel();
+
+            searchResult.DateFrom = kendo.toString($("#dtpDateFrom").val(), "dd/MM/yyyy");
+            searchResult.DateTo = kendo.toString($("#dtpDateTo").val(), "dd/MM/yyyy");
+            searchResult.RefferenceNo = $("#RefNo").val();
+            searchResult.CustomerName = $("#CustomerName").val();
+            searchResult.ContactMobile = $("#ContactMobile").val();
+            searchResult.Channel = $('#ddlChannel').data("kendoDropDownList").value();
+            searchResult.TimeFrom = $('#ddlTimeFrom').data("kendoDropDownList").value();
+            searchResult.TimeTo = $('#ddlTimeTo').data("kendoDropDownList").value();
+
+            return searchResult;
+        }
+
+        function ChangdtpDateFrom() {
+
+            var endPicker = $("#dtpDateTo").data("kendoDatePicker"),
+            startDate = this.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate()); // + - ตรงนี้จ้า
+                endPicker.min(startDate);
+            }
+
+        }
+
+        function ChangdtpDateTo() {
+            var startPicker = $("#dtpDateFrom").data("kendoDatePicker"),
+            endDate = this.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate());
+                startPicker.max(endDate);
+            }
+
+        }
+
+        function Chang_Request_Date() {
+            var requestDatePicker = $("#dtpDateFrom").data("kendoDatePicker")
+        }
+
+        function onGridDataBound(e) {
+            Loading(0);
+            //itemCount = this.dataSource.view().length;
+            //insert empty row
+
+            if (this.dataSource.view().length == 0) {
+
+                var colspan = this.thead.find("th").length;
+                var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+                this.tbody.html(emptyRow);
+
+                $(".k-grid-content").height(3 * kendo.support.scrollbar());
+            }
+            else {
+                $(".k-grid-content").height("auto");
+
+                var grid = $("#GridSalePortalLeaveMessage").data("kendoGrid");
+                var gridData = grid.dataSource.view();
+                for (var i = 0; i < gridData.length; i++) {
+                    var currentUid = gridData[i].uid;
+                    var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                    if (gridData[i].STATUS == "Register") {
+                        var viewButton = $(currenRow).find(".k-grid-View");
+                        viewButton.hide();
+                    }
+                    else {
+                        var editButton = $(currenRow).find(".k-grid-Edit");
+                        editButton.hide();
+                    }
+                }
+            }
+        }
+
+        function _Search() {
+
+            var model = defaultData();
+            var chk = ValidationDateValue();
+            if (chk) {
+                Loading(0);
+                var grid = $("#GridSalePortalLeaveMessage").data("kendoGrid");
+                grid.dataSource.page(1);
+
+            }
+        }
+
+        ///// Clear Button - Reset Button //////
+        function _Clear() {
+            var today = new Date();
+            $("#dtpDateFrom").data("kendoDatePicker").value("");
+            $("#dtpDateTo").data("kendoDatePicker").value("");
+
+            //reset min, max.
+            $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+            $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+
+            $('#ddlChannel').data("kendoDropDownList").value("");
+            $('#ddlTimeFrom').data("kendoDropDownList").value("");
+            $('#ddlTimeTo').data("kendoDropDownList").value("");
+
+            $('#btnExport').attr("disabled", true);
+            $("#GridSalePortalLeaveMessage").data("kendoGrid").dataSource.data([]);
+
+            $("#validatefor-dtpDateTo").html("");
+            $("#validatefor-dtpDateFrom").html("");
+            $("#validatefor-ddlTimeTo").html("")
+            $("#validatefor-ddlTimeFrom").html("")
+        }
+
+        function editLeaveMessage(e) {
+            Loading();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var url = '@Url.Action("LeaveMessageDataEdit", "Fbbsaleportal")';
+            url = url + "?RefNo=" + dataItem.REF_NO;
+            window.location.href = url;
+        }
+
+        function viewLeaveMessage(e) {
+            Loading();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var url = '@Url.Action("LeaveMessageDataEdit", "Fbbsaleportal")';
+            url = url + "?RefNo=" + dataItem.REF_NO;
+            window.location.href = url;
+        }
+
+        function CheckKeyUps(id, RexStr, checkMobile) {
+            var strKey = $("#" + id).val();
+            var strBuilder = "";
+            if (checkMobile == undefined || checkMobile != "M") {
+                var filter = new RegExp(RexStr);
+                for (var i = 0; i < strKey.length; i++) {
+                    if (filter.test(strKey.substr(i, 1))) {
+                        strBuilder += strKey.substr(i, 1);
+                    }
+                }
+            }
+            else {
+                var filterM = new RegExp(RexStr, "g");
+                strBuilder = strKey.match(filterM);
+            }
+            $("#" + id).val(strBuilder);
+        }
+
+        function PopupMessage(msg) {
+            $('#LastPopupMessage').append(msg);
+        }
+
+        function _backSearch() {
+            Loading();
+            var url = '@Url.Action("LeaveMessageData", "Fbbsaleportal")';
+            window.location.href = url;
+        }
+
+    </script>
+</body>
+</html>

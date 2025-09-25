@@ -1,0 +1,480 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.AWCinformation
+@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.PanelModels.Account;
+@Html.Partial("~/Views/Shared/_PartialPopupHistory.cshtml")
+
+@{
+    var o = (List<ComponentModel>)ViewBag.User.ComponentModel;
+    var g = (List<decimal>)ViewBag.User.Groups;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderByDescending(des => des.ReadOnlyFlag).ToList();
+    string FBB_CFG006_1_ADD = "";
+    string FBB_CFG006_1_IMPORT_EXCEL = "";  
+    string FBB_CFG006_1_EXPORT_EXEL = "";
+    
+    if (o != null)
+    {
+        FBB_CFG006_1_ADD = o.Any(c => c.ComponentName == "FBB_CFG006_1_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_1_ADD").ReadOnlyFlag : "";
+        FBB_CFG006_1_IMPORT_EXCEL = o.Any(c => c.ComponentName == "FBB_CFG006_1_IMPORT_EXCEL") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_1_IMPORT_EXCEL").ReadOnlyFlag : "";
+        FBB_CFG006_1_EXPORT_EXEL = o.Any(c => c.ComponentName == "FBB_CFG006_1_EXPORT_EXCEL") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_1_EXPORT_EXCEL").ReadOnlyFlag : "";
+        
+    }
+}
+
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">AirNet Wireless Coverage</h3>
+            <ol class="breadcrumb">
+                <li class="active">Main Page</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        @LeftPane()
+    </div>
+
+    <div class="col-sm-6 col-md-6">
+        @RightPane()
+    </div>
+</div>
+<div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12 " >
+                     @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.AWCSearchlist>()
+                        .Name("gridAirNetWirelessCoverage")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.APname).Title("AP Name").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.province).Title("จังหวัด").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.aumphur).Title("อำเภอ").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.tumbon).Title("ตำบล").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.site_id).Title("infoid").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                            columns.Bound(p => p.app_id).Title("coverageid").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                            columns.Bound(p => p.updatedate).Title("update").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                            //columns.Command(command => command.Custom("<a class=k-button onclick='customCommand()'><i class='fa fa-cog'> Command</a>")).Title("Action");
+                            
+                            columns.Command(command => command.Custom("Config").Click("goedit").Text("<i class='fa fa-cog'></i> Config")).Width(100);
+                            
+                        })
+                        .ToolBar(toolbar => toolbar.Template("" +
+                            //disabled='disabled'
+        "<div class='pull-right'><a onclick=\"showPopupHistoryLog()\" class='btn btn-default pull-left'><i class='fa fa-history'></i>&nbsp; Show History</a>&nbsp;</div>"+  
+        "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp; Export to Excel</a>&nbsp;</div>"+
+         "<div class='pull-right'><a onclick='goimortexcel()' id='Airimportexcel'   class='btn btn-default i-hidden'><i class='fa fa-file-excel-o'></i>&nbsp;Import Excel</a>&nbsp;</div>"+
+        "<div class='pull-right'>"+"<a onclick='goaddnew()' id='addnew2' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New Data</a>&nbsp;</div>"
+        
+        ))
+                        //.ToolBar(toolBar =>
+                        //    {
+                        //        toolBar.Custom().Name("NewCoverExcel").Text("<i class='fa fa-file-excel-o'></i> New Coverage").HtmlAttributes(new { onclick = "goimortexcel();return false;" });
+                        //        toolBar.Custom().Name("NewCoverNormal").Text("<i class='fa fa-plus-circle fa-lg'></i> New Coverage").HtmlAttributes(new { onclick = "goaddnew();return false;" });
+                        //        toolBar.Custom().Text("<i class='fa fa-reply'></i> Export to Excel").HtmlAttributes(new { onclick = "_ExportToExcel();return false;" });                               
+                        //    }
+                        //    )
+                            .Pageable(pageable => pageable                           
+                            .PageSizes(true)
+                            .Numeric(true)                            
+                            )
+                            .Sortable()   
+                            .AutoBind(false) 
+                            .Filterable()                       
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(10)                 
+                                .Sort(sort => sort.Add("updatedate").Descending())              
+                                .Read(read => read.Action("ReadSearch", "AirNetWirelessCoverage").Data("bindingValue"))                               
+                                )
+                            .Events(e => e.DataBound("onGridDataBound"))
+                            )
+      </div>                
+</div>         
+
+@helper LeftPane()
+{
+    <div class="panel panel-success">            
+        <div class="panel-heading">
+           <h3 class="panel-title">
+              <span>Search Panel</span>
+              <a data-toggle="collapse" class="pull-right" href="#SearchPanel2" onclick="onPanelToggle(this);" id="SearchPanelHeader2"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow2"></i></a>
+           </h3>
+        </div>
+        <div id="SearchPanel2" class="panel-collapse collapse in">
+            <div class="panel-body" style="min-height: 235px;"> 
+                <div id="row1" class="row">
+                    <div class="col-sm-6 col-md-6">
+                            <label>Region</label>
+                            @(Html.Kendo().DropDownList()
+                                .Name("Region")
+                                .DataTextField("DISPLAY_VAL")
+                                .DataValueField("LOV_NAME")
+                                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("SelectLov", "MasterData", new { type = "REGION_CODE" }); 
+                                    });
+                                })
+                                .Events(e => e.Change("onRegionChange"))
+                                      
+                            )
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                            <label>Province</label>
+                            @(Html.Kendo().DropDownList()
+                                    .Name("Province")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("LOV_NAME")
+                                    //        .BindTo(new List<SelectListItem>() {
+                                    //    //new SelectListItem() {
+                                    //    //    Text = "จังหวัด",
+                                    //    //    Value = ""
+                                    //    //},
+                                    //    new SelectListItem() {
+                                    //        Text = "กรุณาเลือก",
+                                    //        Value = ""
+                                    //    }
+                                    //})
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("SelectProvince", "MasterData");
+                                    });
+                                })
+                                .Events(e => e.Change("onProvinceChange"))
+                            )
+                  </div>
+               </div> @*end row1*@
+               <div id="row2" class="row i-gap-top-1">
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>District</label>
+                                        @(Html.Kendo().DropDownList()
+                                              .Name("Aumphur")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              //.BindTo(new List<SelectListItem>() {
+                                              //    //new SelectListItem() {
+                                              //    //    Text = "อำเภอ",
+                                              //    //    Value = ""
+                                              //    //},
+                                              //    new SelectListItem() {
+                                              //        Text = "กรุณาเลือก",
+                                              //        Value = ""
+                                              //    }
+                                              //})
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAmphur", "MasterData");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onAumphurChange"))
+                                            )
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                          <label>Sub District</label>
+                                        @(Html.Kendo().DropDownList()
+                                              .Name("Tumbon")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              //.BindTo(new List<SelectListItem>() {
+                                              //    //new SelectListItem() {
+                                              //    //    Text = "ตำบล",
+                                              //    //    Value = ""
+                                              //    //},
+                                              //    new SelectListItem() {
+                                              //        Text = "กรุณาเลือก",
+                                              //        Value = ""
+                                              //    }
+                                              //})
+                                              .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectTumbon", "MasterData");
+                                                    });
+                                                })
+                                                
+                                                )                                        
+                                    </div>
+               </div>@*end row2*@
+               <div id="row3" class="row i-gap-top-1">
+                                <div class="col-sm-6 col-md-6">
+                                     <label>AP Name</label>
+                                    @Html.TextBoxFor(model => model.oldmodelpage1.APname, new {@id="APname" , @class = "k-textbox form-control"})
+                                    @*<input type="text" id="APname" class="k-textbox form-control" placeholder="AP Name" />*@
+                                </div>
+                                <div class="col-sm-6 col-md-6 i-text-align-right">          
+                                          <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;ยกเลิก</a>            
+                                          <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;ค้นหา</a>                                                                                                             
+                                </div>                                
+              </div> @*end row3*@   
+            </div>
+        </div> @*end SearchPanel2*@
+    </div>  
+             
+}
+
+
+@helper RightPane()
+{    
+    <div class="panel panel-success">            
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>Summary</span>
+                <a data-toggle="collapse" class="pull-right" href="#Summary" onclick="onPanelToggle(this);" id="SummaryHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SummaryHeaderArrow"></i></a>
+            </h3>
+        </div>
+        <div id="Summary" class="panel-collapse collapse in">
+            <div class="panel-body" style="min-height: 235px;">
+                <div class="row">                               
+                    <div class="col-sm-6 col-md-6 ">
+                        <div class="btn btn-info i-total-box">
+                            <div class="row">
+                                <div class="col-md-4"><i class="fa fa-globe fa-4x"></i></div>
+                                <div class="col-md-8 i-text-align-right">
+                                    <span class="i-f1" id="TotalCoverage"> 0 </span><br />
+                                    <span class="i-f2">Total Coverage</span>
+                                </div>
+                            </div>
+                        </div>                            
+                    </div>
+                    <div class="col-sm-6 col-md-6 ">
+                        <div class="btn btn-danger i-total-box">
+                            <div class="row">
+                                <div class="col-md-4"><i class="fa fa-share-alt fa-4x"></i></div>
+                                <div class="col-md-8 i-text-align-right">
+                                    <span class="i-f1" id="TotalAP"> 0 </span><br />
+                                    <span class="i-f2">Total AP</span>
+                                </div>
+                            </div>
+                        </div>   
+                    </div>                                                                          
+             </div>     
+          </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        //debugger
+        var grid = $("#gridAirNetWirelessCoverage").data("kendoGrid");
+        grid.dataSource.page(1);
+        if ('@FBB_CFG006_1_ADD' == "") $("#addnew2").hide();
+        if ('@FBB_CFG006_1_IMPORT_EXCEL' == "") $("#Airimportexcel").hide();
+        if ('@FBB_CFG006_1_EXPORT_EXEL' == "") $("#btnExport").hide();
+        $('#btnExport').attr("disabled", true);
+        //var count = grid.dataSource.total()
+        @*if ((@Model.oldmodelpage1.APname) == "" && (@Model.oldmodelpage1.aumphur) == ""|| (@Model.oldmodelpage1.province) == "" && (@Model.oldmodelpage1.tumbon) == "" && (@Model.oldmodelpage1.region) == "") {
+            $('#btnExport').attr("disabled", true);
+        }
+        else {
+            $('#btnExport').attr("disabled", false);
+        }*@
+        var model = defaultData();           
+            $.ajax({
+                url: '/AirNetWirelessCoverage/aa',
+                data: { dataS: JSON.stringify(model) },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {                  
+                    if (response) {
+                        $("#TotalCoverage").text(response.ttp);
+                        $("#TotalAP").text(response.ttc);                      
+                        if (response.ttp == "0") {
+                            $('#btnExport').attr("disabled", true);
+                        }
+                        else {
+                            $('#btnExport').attr("disabled", false);
+                        }
+                    }
+                    else {
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+            
+    });
+
+    function post(path, params, method) {
+        
+        method = method || "post"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+    function goaddnew() {
+       
+        var model = defaultData();
+        post('/AirNet/index', { modelpage1: JSON.stringify(model) ,siteid: "",fag: "new"  });
+    }
+    function goedit(e) {    
+        
+        var model = defaultData();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+       
+        post('/AirNet/index', { modelpage1: JSON.stringify(model), siteid: dataItem.site_id, fag: "edit" });
+        //window.location.href = "/AirNet/index?modelpage1=" + JSON.stringify(model) + "&siteid=" + dataItem.site_id + "&fag=edit";
+    }
+
+    function goimortexcel() {
+        //$("#MainAll1").hide();
+        //$("#ApConfiguration").show();        
+        //aler("import excel");
+        var model = defaultData();
+        post('/TAirnet/index', { modelpage1: JSON.stringify(model)});
+    }
+    function _ExportToExcel() {
+        var model = new defaultData();
+        window.open("/AirnetWirelessCoverage/ExportData?dataS=" + JSON.stringify(model) + "");
+
+
+    }
+    function onRegionChange() {
+        $("#Province").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value() });
+        $("#Aumphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: "" });
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: "", aumphur: "" });
+    }
+
+    function onProvinceChange() {
+        $("#Aumphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value() });
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value(), aumphur: "" });
+    }
+
+    function onAumphurChange() {
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: $("#Region").data("kendoDropDownList").value(), province: $("#Province").data("kendoDropDownList").value(), aumphur: $("#Aumphur").data("kendoDropDownList").value() });
+    }
+
+    function onGridDataBound() {       
+        Loading(0);        
+    }
+
+    function _Search() {       
+        
+        var model = defaultData();
+        if (model.APname == "" && model.aumphur == "" && model.tumbon == "" && model.province == "" && model.region == "") {            
+            showFeedback("warning", "Please choose at least one condition.");
+        }
+        else {
+            Loading();
+            var grid = $("#gridAirNetWirelessCoverage").data("kendoGrid");
+            grid.dataSource.page(1);            
+            $.ajax({
+                url: '/AirNetWirelessCoverage/aa',
+                data: { dataS: JSON.stringify(model) },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+
+                    if (response) {                        
+                        $("#TotalCoverage").text(response.ttp);
+                        $("#TotalAP").text(response.ttc);
+                        if (response.ttc == "0") {
+                            $('#btnExport').attr("disabled", true);
+                        }
+                        else {
+                            $('#btnExport').attr("disabled", false);
+                        }
+                       
+                    }
+                    else {
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+           
+           
+        }
+
+    }
+
+    var AWCModel = function () {
+
+        region: "";
+        province: "";
+        aumphur: "";
+        tumbon: "";
+        APname: "";
+
+    }
+
+    function bindingValue() {
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    function defaultData() {
+
+        var searchModelawc = new AWCModel();
+        searchModelawc.region = $("#Region").val();
+        searchModelawc.province = $("#Province").val();
+        searchModelawc.aumphur = $("#Aumphur").val();
+        searchModelawc.tumbon = $("#Tumbon").val();
+        searchModelawc.APname = $("#APname").val();
+
+        return searchModelawc;
+    }
+    function _Clear() {
+        $("#Province").data("kendoDropDownList").dataSource.read({ regionCode: "" });
+        $("#Aumphur").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "" });
+        $("#Tumbon").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "", province: "" });
+        $("#Region").data("kendoDropDownList").select(0);
+        $("#Province").data("kendoDropDownList").select(0);
+        $("#Aumphur").data("kendoDropDownList").select(0);
+        $("#Tumbon").data("kendoDropDownList").select(0);
+        $("#APname").val("");
+        $("#TotalCoverage").text("0");
+        $("#TotalAP").text("0");
+        $("#gridAirNetWirelessCoverage").data("kendoGrid").dataSource.read();
+        $('#btnExport').attr("disabled", true);
+    }
+
+    function showPopupHistoryLog() {
+        var title = "AirNet Wireless Coverage";
+        var application = "FBB_CFG006_1";
+        var refKey = "";
+        var refName = "";
+
+        //if (panel == "Site Information") {
+        //    application = "FBB_CFG001_2_SiteInformation";
+        //}
+        //else if (panel == "Building") {
+        //    application = "FBB_CFG001_2_Building";
+        //}
+        //else if (panel == "Coverage") {
+        //    application = "FBB_CFG001_2_Coverage";
+        //}
+
+        onHistoryPopUp_Show(title, application, refKey, refName);
+    }
+</script>

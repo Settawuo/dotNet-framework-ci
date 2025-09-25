@@ -1,0 +1,200 @@
+﻿@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+
+    string B_OK = "";
+    string B_CANCEL = "";
+    string L_FILL_OUT = "";
+    //string L_PASSWORD = "";
+    string L_PW = "";
+    string FBB_Con_Length_OTP = "4";
+    string FBB_Con_Input_OTP = "";
+    string L_ENTER_OTP_1 = "";
+    string L_ENTER_OTP_2 = "";
+    string L_ENTER_OTP_3 = "";
+    string L_ENTER_OTP_4 = "";
+    string L_ENTER_OTP_5 = "";
+    string C_CHANGE_CONTACT_MOBILE = "";
+    string L_BUNDLING_CONDITION = "";
+    string L_BUNDLING_CONDITION_DETAIL = "";
+
+    string L_ERR_NOT_FOUND = "not found";
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        B_OK = LabelFBBTR001.Any(c => c.Name == "B_OK") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "B_OK").DisplayValue : "";
+        L_FILL_OUT = LabelFBBTR001.Any(c => c.Name == "L_FILL_OUT") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_FILL_OUT").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR016 != null)
+    {
+        var labelFBBTR016 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR016;
+        L_PW = labelFBBTR016.Any(c => c.Name == "L_PASSWORD") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_PASSWORD").DisplayValue : "";
+        L_ENTER_OTP_1 = labelFBBTR016.Any(c => c.Name == "L_ENTER_OTP_1") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_ENTER_OTP_1").DisplayValue : "";
+        L_ENTER_OTP_2 = labelFBBTR016.Any(c => c.Name == "L_ENTER_OTP_2") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_ENTER_OTP_2").DisplayValue : "";
+        L_ENTER_OTP_3 = labelFBBTR016.Any(c => c.Name == "L_ENTER_OTP_3") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_ENTER_OTP_3").DisplayValue : "";
+        L_ENTER_OTP_4 = labelFBBTR016.Any(c => c.Name == "L_ENTER_OTP_4") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_ENTER_OTP_4").DisplayValue : "";
+        L_ENTER_OTP_5 = labelFBBTR016.Any(c => c.Name == "L_ENTER_OTP_5") ? labelFBBTR016.FirstOrDefault(c => c.Name == "L_ENTER_OTP_5").DisplayValue : "";
+        C_CHANGE_CONTACT_MOBILE = labelFBBTR016.Any(c => c.Name == "C_CHANGE_CONTACT_MOBILE") ? labelFBBTR016.FirstOrDefault(c => c.Name == "C_CHANGE_CONTACT_MOBILE").DisplayValue : "";
+    }
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        //FBB_Con_Length_OTP = FbbConstant.Any(f => f.Field == "OTP Length") ? FbbConstant.First(f => f.Field == "OTP Length").Validation : "";
+        FBB_Con_Input_OTP = FbbConstant.Any(f => f.Field == "Input_OTPPass") ? FbbConstant.First(f => f.Field == "Input_OTPPass").Validation : "";
+    }
+
+    if (ViewBag.LabelLovScreen != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.labelLovScreen;
+
+        B_CANCEL = labelLovScreen.Any(c => c.Name == "B_CANCEL") ? labelLovScreen.First(c => c.Name == "B_CANCEL").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBOR015 != null)
+    {
+        var LabelFBBOR015 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR015;
+
+        L_BUNDLING_CONDITION = LabelFBBOR015.Any(c => c.Name == "L_BUNDLING_CONDITION") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_BUNDLING_CONDITION").DisplayValue : "";
+        L_BUNDLING_CONDITION_DETAIL = LabelFBBOR015.Any(c => c.Name == "L_BUNDLING_CONDITION_DETAIL") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_BUNDLING_CONDITION_DETAIL").DisplayValue : "";
+    }
+}
+
+<div class="col-sm-6 col-md-6 i-hidden" id="col-formInputOTP">
+    <br />
+    <p>@L_ENTER_OTP_1 @L_ENTER_OTP_2 @L_ENTER_OTP_3</p>
+    <p>@L_ENTER_OTP_4 @L_ENTER_OTP_5</p>
+    <br />
+
+    <h3 style="margin-bottom:0px">@L_PW</h3>
+    <input type="password" class="form-control" id="L_OTP_Pass" maxlength="@FBB_Con_Length_OTP" autocomplete="off" title="@L_FILL_OUT" />
+    <input type="checkbox" id="chkShowPass"> Show Password
+    <br />
+    <br />
+
+    <p align="left">
+        <a class="btn1" id="btnConfirmOTP1">@B_OK</a>
+        <a class="btn2 i-hidden" id="btnConfirmOTP2" onclick="nextToPersonalInfo()">@B_OK</a>
+        &nbsp;
+        <a class="btn2" id="btnCancel" onclick="window.location.href = window.location.href;">@B_CANCEL</a>
+    </p>     
+</div>
+<div class="col-sm-6 col-md-6 i-hidden" id="col-ChangeContactMobile">
+    <br />
+    <input type="checkbox" id="chkChangeContactMobile" onclick="IsChangeContactMobile(this);" /> <h4 style="display:inline"> @C_CHANGE_CONTACT_MOBILE</h4>
+    <input type="hidden" id="returnContactMobile" />
+</div>
+<div class="col-sm-6 col-md-6 i-hidden" id="col-Condition">
+    <br />
+    <h4>@L_BUNDLING_CONDITION</h4>
+    <ul>
+        <h4>@Html.Raw(L_BUNDLING_CONDITION_DETAIL)</h4>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#L_OTP_Pass").keyup(function () {
+            //CheckKeyUps("L_OTP_NOs", "@FBB_Con_Input_OTP");
+            checkBeforeGotoPersonalInfo();
+        });
+
+        $("#chkShowPass").change(function () {
+            if(this.checked)
+            {
+                $("#L_OTP_Pass").attr('type', 'text');
+            }
+            else
+            {
+                $("#L_OTP_Pass").attr('type', 'password');
+            }
+        });
+    });
+
+    function IsChangeContactMobile(cb) {
+        if (cb.checked) {            
+            if ($("#L_MOBILE_NOs").val() != $("#returnContactMobile").val()) {
+                $("#mobileNumberContact").val($("#L_MOBILE_NOs").val());
+            }
+            else {
+                $("#mobileNumberContact").val("");
+            }
+        }
+        else {
+            $("#mobileNumberContact").val("");
+        }
+    }
+
+    function checkBeforeGotoPersonalInfo() {
+
+        if ($("#L_OTP_Pass").val().length == "@FBB_Con_Length_OTP") {
+            $("#btnConfirmOTP1").hide();
+            $("#btnConfirmOTP2").show();
+        }
+        else {
+            $("#btnConfirmOTP1").show();
+            $("#btnConfirmOTP2").hide();
+        }
+    }
+
+    function nextToPersonalInfo()
+    {
+        if ($('#CoveragePanelModel_ChargeType').val() == "POSTPAID")
+        {
+            $("#SearchProfilefrm").submit();
+        }
+        else if ($('#CoveragePanelModel_ChargeType').val() == "PREPAID")
+        {
+            $.ajax({
+                url: '/Process/ConfirmOneTimePW',
+                data: { msisdn: $.trim($("#L_MOBILE_NOs").val()), pwd: $('#L_OTP_Pass').val(), transactionID: $('#GSSO_transactionID').val() },
+                dataType: "json",
+                type: 'POST',
+                success: function (data) {
+                    if (data != null) {
+                        if (data.code == "000" && data.transactionID == $('#GSSO_transactionID').val()) {                            
+                            $("#SearchProfilefrm").submit();
+                        }
+                        else
+                        {
+                            //OTP is not Correct
+                            $('#col-form').hide();
+                            $("#col-ChangeContactMobile").hide();
+                            $('#col-formInputMobileNo').hide();
+                            $('#col-formInputOTP').hide();
+                            $('#lb-failed').html('@L_ERR_NOT_FOUND');
+                            $('#col-err').show();
+                            $('#FromPage').val('col-formInputOTP');
+                        }
+                    }
+                    else
+                    {
+                        //OTP is not Correct
+                        $('#col-form').hide();
+                        $("#col-ChangeContactMobile").hide();
+                        $('#col-formInputMobileNo').hide();
+                        $('#col-formInputOTP').hide();
+                        $('#lb-failed').html('@L_ERR_NOT_FOUND');
+                        $('#col-err').show();
+                        $('#FromPage').val('col-formInputOTP');
+                    }
+                }
+            });
+        }
+        else
+        {
+            $("#outMobileNo").val($("#L_MOBILE_NOs").val());
+            $("#SearchProfilefrm").submit();
+        }
+    }
+
+    function backToChangeContactMobile()
+    {
+        $("#col-ChangeContactMobile").show();
+        $("#col-ChangeContactMobile").show();
+        $("#btnSendOTP2").show();
+        $("#col-Condition").show();
+    }
+</script>

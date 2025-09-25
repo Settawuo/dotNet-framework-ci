@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "CARDModel";
+}
+
+<div class="row">
+    <div class="col-md-10 panel panel-default">
+        <div class="i-gap-top-1">
+            <i class="fa fa-info-circle" style="font-size:large;"><b>    Card</b></i>
+        </div>
+
+        <div class="i-gap-top-1">
+            @(Html.Kendo().Grid<WBBEntity.PanelModels.CardPanel>()
+        .Name("gridCard")
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.Number).Title("Number");
+            columns.Bound(p => p.Model).Title("Model");
+            columns.Bound(p => p.CardType).Title("Card Type");
+            columns.Bound(p => p.Reserve).Title("Reserve");
+            columns.Bound(p => p.NodeId).Title("Node Id").Hidden();
+            columns.Command(command => { command.Edit(); command.Destroy(); }).Width(180);
+            columns.Command(command => command.Custom("GenReport").Click("GenReport").Text("Generate Report"));
+        })
+         .Selectable(selectable => selectable
+            .Mode(GridSelectionMode.Single)
+            .Type(GridSelectionType.Row))
+         .Events(events => events.Change("onChangeCard").DataBound("onDataBound"))
+         .ToolBar(toolBar => toolBar.Create())
+         .Editable(editable => editable.Mode(GridEditMode.PopUp))
+            .Pageable()
+            .Sortable()
+            .Scrollable()
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(10)
+                .Events(events => events.Error("error_handler"))
+                .Model(model => model.Id(p => p.Number))
+                .Read(read => read.Action("Read_Card", "CoverageManagement"))
+                .Create(create => create.Action("Create_Card", "CoverageManagement"))
+                .Update(update => update.Action("Update_Card","CoverageManagement"))
+                .Destroy(destroy => destroy.Action("Destroy_Card","CoverageManagement"))
+             )
+            //.Events(e => e.Change("onChangeCard"))
+    )
+        </div>
+
+        <div class="i-gap-top-1">
+            @(Html.Kendo().Grid<WBBEntity.PanelModels.PortPanel>()
+        .Name("gridPort")        
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.PortNumber).Title("PortNumber");
+            columns.Bound(p => p.PortStatus).Title("PortStatus");
+            columns.Bound(p => p.PortType).Title("Port Type");            
+            columns.Command(command => command.Custom("Edit").Click("showDetails"));
+        })
+            .Pageable()
+            .Sortable()
+            .Scrollable()
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(10)
+                .Model(model => model.Id(p => p.PortNumber))
+                .Read(read => read.Action("Read_Port", "CoverageManagement"))
+
+             )            
+    )
+        </div>
+    </div>
+</div>
+
+<script>
+    function onChangeCard()
+    {   
+        var entityGrid = $("#gridCard").data("kendoGrid");
+        var selectedItem = entityGrid.dataItem(entityGrid.select());
+
+        $("#gridPort").data("kendoGrid").dataSource.read({ id: selectedItem.Number });        
+    }
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+    function GenReport() {
+    }
+
+
+    function onDataBound(e) {
+        $(".k-grid-GenReport").find("span").addClass("fa fa-external-link");
+    }
+
+</script>

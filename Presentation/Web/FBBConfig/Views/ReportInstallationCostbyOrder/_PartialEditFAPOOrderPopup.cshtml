@@ -1,0 +1,369 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ReportInstallationCostbyOrderModel
+@{
+    string L_VALIDATE_DIS = "Validate Distanct";
+    string L_REASON = "Reason";
+    string L_REMARK = "Remark";
+    string L_OLD_VALIDATE_DIS = "Request Distance";
+    string B_SAVE = "SAVE";
+    string B_CANCEL = "CANCEL";
+}
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-12 col-md-4">
+            <label>@L_OLD_VALIDATE_DIS</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+            <input type="text" id="oldRequestDistance" maxlength="500" value="" disabled ="disabled" class="k-textbox form-control" />
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <label>@L_VALIDATE_DIS</label>&nbsp;<label style="color:red;font-size:15px">*</label>
+            @Html.TextBoxFor(t => t.VALIDATE_DIS, new { maxlength = 6, @class = "k-textbox form-control" })
+            <div class="i-fg-data-entry-validation" id="validatefor-ValidateDistanct"></div>
+        </div>
+     
+    </div>
+</div>
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_REASON <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label style="color:red;font-size:15px">*</label>
+        <div class="i-fg-data-entry">
+            @(Html.Kendo().DropDownList()
+                                  .Name("ddlReason")
+                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                  .DataTextField("DISPLAY_VAL")
+                                  .DataValueField("LOV_VAL1")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("SelectReason", "ReportInstallationCostbyOrder");
+
+                                      });
+
+                                  })
+                                               .Events(e => e.Change("FAPOChangeDropDown"))
+            )
+        </div>
+        <div class="i-fg-data-entry-validation" id="validatefor-ddlReason"></div>
+    </div>
+    <div id="_OtherReason" class=" col-sm-12 col-md-4" style="display:none">
+        <label>ระบุเหตุผล</label>
+        <input type="text" id="ddlreasonother" maxlength="500" value="" class="k-textbox form-control" />
+    </div>
+</div>
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_REMARK</label>
+        @Html.TextArea("REMARK", new { maxlength = 500, @rows = 3, @style = "resize:none; width:437px", @class = "k-textbox form-control", @id = "REMARK" })
+    </div>
+</div>
+<div class="row">
+     <br />
+</div>
+<div class="row i-text-align-center">
+    
+        <a class="btn btn-info" id="saveFapo" onclick="FAPOConfirmPaid();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+        <a class="btn btn-info" id="saveChkFapo" onclick="CheckBoxFAPOConfirmPaid();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+  
+        <a class="btn btn-info" onclick="CancelEditFAPOConfig();"><i class="fa fa-times"></i>&nbsp;&nbsp;@B_CANCEL</a>
+  
+</div>
+<script>
+    function CancelEditFAPOConfig()
+    {
+        $("#EditConfigPopup").data("kendoWindow").close();
+        $("#ddlReason").data('kendoDropDownList').value("จ่ายตามระยะจริง");
+        $("#ddlreasonother").val("");
+        $("#_OtherReason").attr("style", "display:none");
+    }
+    $("#VALIDATE_DIS").keyup(function () {
+        CheckKeyUps("VALIDATE_DIS", "[0-9.]");
+
+    });
+    $(document).ready(function () {
+        //  $('#ddlreasonother').attr("disabled", true);
+        $("#ddlreasonother").val("");
+        $("#_OtherReason").attr("style", "display:none");
+      //  alert($("#ddlReason").val());
+    });
+    function FAPOChangeDropDown()
+    {
+        var ddlreason = $("#ddlReason").val();
+        //alert(ddlreason);
+        if (ddlreason == "อื่นๆ") {
+         
+            //  $('#ddlreasonother').attr("visibled", true);
+            $("#_OtherReason").attr("style", "display:normal");
+        }
+        else {
+            $("#_OtherReason").val("");
+            $("#_OtherReason").attr("style", "display:none");
+        }
+
+
+    }
+    function ValidationDateValue() {
+        $("#validatefor-ValidateDistanct").html("");
+        $("#validatefor-ddlReason").html("");
+        var chk = ValidationProcessing("dateselect");
+
+        //  alert("SCMValidation");
+        if (chk) //check blank value
+        {
+            /// alert("ValidationBlankValue");
+            if ($("#ddlReason").val() == "ALL" || $("#ddlReason").val() == '') {
+                $("#validatefor-ddlReason").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+                $("#validatefor-ddlReason").html("");
+            }
+            if ($("#VALIDATE_DIS").val() == "ALL" || $("#VALIDATE_DIS").val() == '') {
+                $("#validatefor-ValidateDistanct").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+                $("#validatefor-ValidateDistanct").html("");
+            }
+        }
+        return chk;
+    }
+    var AccessList = function () {
+        ACCESS_NUMBER = "";
+    }
+    function FAPOConfirmPaid(checked) {
+
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateValue();
+
+        if (chk) {
+   
+            var AccNO = $("#accNo").val();
+            var user = "";
+            var IntF = "";
+            //SCM VALUE
+            var status = "";
+            var InvNo = "";
+            var InvDate = "";
+            var IrDoc = "";
+            var remark = $("#REMARK").val();
+            var remarksub = "";
+            //FAPO Value
+            var ValDis = $("#VALIDATE_DIS").val();
+            var checkreason = $("#ddlReason").val();
+            var Reason;
+            if (checkreason == "อื่นๆ") {
+                Reason = $("#ddlreasonother").val();
+            }
+            else {
+                Reason = $("#ddlReason").val();
+            }
+             
+
+            var TranDT = "";
+
+                var AccessListModel = new AccessList();
+                console.log($("#accNo").val());
+                AccessListModel.ACCESS_NUMBER = $("#accNo").val();
+                idsToSend.push(AccessListModel);
+                // console.log(checked);
+                console.log("Not checkbox");
+                index++;
+                data = JSON.stringify({
+                    'AccNOList': idsToSend, 'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+                });
+
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/ReportInstallationCostbyOrder/UpdateByOrder",
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response === "Update success.") {
+
+                            $("#ddlReason").data('kendoDropDownList').value("จ่ายตามระยะจริง");
+
+                            $("#REMARK").val("");
+                            $("#VALIDATE_DIS").val("");
+                            $("#EditConfigPopup").data("kendoWindow").close();
+
+                            //  $('#FAPOView').data('kendoGrid').refresh();
+
+                            showFeedback("success", response, "System Information");
+                        }
+                        else {
+                            $("#EditConfigPopup").data("kendoWindow").close();
+                            showFeedback("error", response, "System Information");
+                        }
+                    },
+                    failure: function (msg) {
+                    }
+                });
+                $("#FAPOView").data("kendoGrid").dataSource.read();
+            }
+       
+
+        hidepanel();
+    }
+    function CheckBoxFAPOConfirmPaid(checked) {
+        $("#chk").val("False");
+    
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateValue();
+
+        if (chk) {
+
+            var AccNO = $("#accNo").val();
+            var user = "";
+            var IntF = "";
+            //SCM VALUE
+            var status = "";
+            var InvNo = "";
+            var InvDate = "";
+            var IrDoc = "";
+            var remark = $("#REMARK").val();
+            var remarksub = "";
+            //FAPO Value
+            var ValDis = $("#VALIDATE_DIS").val();
+            var checkreason = $("#ddlReason").val();
+            var Reason;
+            if (checkreason == "อื่นๆ") {
+                Reason = $("#ddlreasonother").val();
+            }
+            else {
+                Reason = $("#ddlReason").val();
+            }
+
+
+            var TranDT = "";
+
+            if (checked != null) {
+
+                data = JSON.stringify({
+                    'AccNOList': checked, 'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+                });
+                console.log("FAPOConfirmPaidcheckbox");
+
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/ReportInstallationCostbyOrder/UpdateByOrder",
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response === "Update success.") {
+
+                            $("#ddlReason").data('kendoDropDownList').value("จ่ายตามระยะจริง");
+
+                            $("#REMARK").val("");
+                            $("#VALIDATE_DIS").val("");
+                            $("#EditConfigPopup").data("kendoWindow").close();
+
+                            //  $('#FAPOView').data('kendoGrid').refresh();
+                            showFeedback("success", response, "System Information");
+                        }
+                        else {
+                            $("#EditConfigPopup").data("kendoWindow").close();
+                            showFeedback("error", response, "System Information");
+                        }
+                    },
+                    failure: function (msg) {
+                    }
+                });
+                $("#FAPOView").data("kendoGrid").dataSource.read();
+            }
+            else {
+         
+            }
+
+        }
+        hidepanel();
+    }
+
+
+
+    function CheckBoxAllFAPOConfirmPaid() {
+        $("#chk").val("False");
+        $("#chkall").val("False");
+        var index = 0;
+        idsToSend = [];
+        var data;
+        var chk = ValidationDateValue();
+
+        if (chk) {
+
+            var AccNO = $("#accNo").val();
+            var user = "";
+            var IntF = "";
+            //SCM VALUE
+            var status = "";
+            var InvNo = "";
+            var InvDate = "";
+            var IrDoc = "";
+            var remark = $("#REMARK").val();
+            var remarksub = "";
+            //FAPO Value
+            var ValDis = $("#VALIDATE_DIS").val();
+            var checkreason = $("#ddlReason").val();
+            var Reason;
+            if (checkreason == "อื่นๆ") {
+                Reason = $("#ddlreasonother").val();
+            }
+            else {
+                Reason = $("#ddlReason").val();
+            }
+
+
+            var TranDT = "";
+
+    
+                data = JSON.stringify({
+                   'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+                });
+                console.log("FAPOConfirmPaidcheckbox");
+
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/ReportInstallationCostbyOrder/UpdateAllByOrder",
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response === "Update success.") {
+
+                            $("#ddlReason").data('kendoDropDownList').value("จ่ายตามระยะจริง");
+
+                            $("#REMARK").val("");
+                            $("#VALIDATE_DIS").val("");
+                            $("#EditConfigPopup").data("kendoWindow").close();
+                          
+                            //  $('#FAPOView').data('kendoGrid').refresh();
+                            showFeedback("success", response, "System Information");
+                        }
+                        else {
+                            $("#EditConfigPopup").data("kendoWindow").close();
+                            showFeedback("error", response, "System Information");
+                        }
+                    },
+                    failure: function (msg) {
+                    }
+                });
+                $("#FAPOView").data("kendoGrid").dataSource.read();
+        
+
+        }
+        hidepanel();
+    }
+</script>

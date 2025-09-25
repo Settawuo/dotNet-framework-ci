@@ -1,0 +1,281 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.UpDateScreenModel
+@using WBBEntity.PanelModels;
+
+@{
+    string L_PAGE_CANCEL = "ล้างข้อมูล";
+    string L_PAGE_SEARCH = "ค้นหา";
+    string L_PAGE_EXPORT = "Export to Excel";
+    string L_PAGE_SEARCH_PANEL = "Search Panel";
+    string L_PAGE_NAME = "Screen: Paid Status";
+    string L_PAGE_UPDATE = "Update Data";
+
+    string LABEL_PAID_FOR = "";
+    string LABEL_LAST_INDOOR = "";
+    string LABEL_LAST_OUTDOOR = "";
+    string LABEL_CPE = "";
+    string L_GRID_SELECT_ALL = "";
+    string L_GRID_NO = "";
+    string L_GRID_REGISTER_DT = "";
+    string L_GRID_NEW_RESG_STATUS = "";
+    string L_GRID_INTERNET_NO = "";
+    string L_GRID_CUST_NAME = "";
+    string L_GRID_PHASE = "";
+    string L_GRID_OLT_VENDOR = "";
+    string L_GRID_DISTRICT = "";
+    string L_GRID_SUB_DISTRICT = "";
+    string L_GRID_PAID_LAST_IN = "";
+    string L_GRID_PAID_LAST_OUT = "";
+    string L_GRID_SUBCONT_NAME_IN = "";
+    string L_GRID_SUBCONT_NAME_OUT = "";
+    string L_GRID_ONT_VENDOR = "";
+    string L_GRID_PAID_ONT = "";
+    string L_GRID_INVOICE = "";
+    string L_GRID_INVOICE_DT = "";
+    string L_GRID_PO = "";
+    string L_GRID_STATUS = "";
+    string TOPUP_STATUS_WAITING = "";
+    string TOPUP_STATUS_PAID = "";
+    string TOPUP_STATUS_NOTPAID = "";
+    string P_GET_PAID_STATUS = "";
+    string P_UPDATE_PAID_STATUS = "";
+    
+    bool? showIndoor = ViewBag.ActiveIndoor as bool?;
+    bool? showOutdoor = ViewBag.ActiveOutdoor as bool?;
+    bool? showOnt = ViewBag.ActiveONT as bool?;
+    
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_PAGE_NAME = configscreen.Any(f => f.Name == "LABEL_screen_name") ? configscreen.First(f => f.Name == "LABEL_screen_name").LovValue1 : "";
+        LABEL_PAID_FOR = configscreen.Any(f => f.Name == "LABEL_paid_for") ? configscreen.First(f => f.Name == "LABEL_paid_for").LovValue1 : "";
+        LABEL_LAST_INDOOR = configscreen.Any(f => f.Name == "LABEL_last_indoor") ? configscreen.First(f => f.Name == "LABEL_last_indoor").LovValue1 : "";
+        LABEL_LAST_OUTDOOR = configscreen.Any(f => f.Name == "LABEL_last_outdoor") ? configscreen.First(f => f.Name == "LABEL_last_outdoor").LovValue1 : "";
+        LABEL_CPE = configscreen.Any(f => f.Name == "LABEL_cpe") ? configscreen.First(f => f.Name == "LABEL_cpe").LovValue1 : "";
+        L_GRID_SELECT_ALL = configscreen.Any(f => f.Name == "R_HEADER_select_all") ? configscreen.First(f => f.Name == "R_HEADER_select_all").LovValue1.ToUpper() : "";
+        L_GRID_NO = configscreen.Any(f => f.Name == "R_HEADER_no") ? configscreen.First(f => f.Name == "R_HEADER_no").LovValue1 : "";
+        L_GRID_REGISTER_DT = configscreen.Any(f => f.Name == "R_HEADER_register_dt") ? configscreen.First(f => f.Name == "R_HEADER_register_dt").LovValue1 : "";
+        L_GRID_NEW_RESG_STATUS = configscreen.Any(f => f.Name == "R_HEADER_new_resg_status") ? configscreen.First(f => f.Name == "R_HEADER_new_resg_status").LovValue1 : "";
+        L_GRID_INTERNET_NO = configscreen.Any(f => f.Name == "R_HEADER_internet_no") ? configscreen.First(f => f.Name == "R_HEADER_internet_no").LovValue1 : "";
+        L_GRID_CUST_NAME = configscreen.Any(f => f.Name == "R_HEADER_cust_name") ? configscreen.First(f => f.Name == "R_HEADER_cust_name").LovValue1 : "";
+        L_GRID_PHASE = configscreen.Any(f => f.Name == "R_HEADER_phase") ? configscreen.First(f => f.Name == "R_HEADER_phase").LovValue1 : "";
+        L_GRID_OLT_VENDOR = configscreen.Any(f => f.Name == "R_HEADER_olt_vendor") ? configscreen.First(f => f.Name == "R_HEADER_olt_vendor").LovValue1 : "";
+        L_GRID_DISTRICT = configscreen.Any(f => f.Name == "R_HEADER_district") ? configscreen.First(f => f.Name == "R_HEADER_district").LovValue1 : "";
+        L_GRID_SUB_DISTRICT = configscreen.Any(f => f.Name == "R_HEADER_sub_district") ? configscreen.First(f => f.Name == "R_HEADER_sub_district").LovValue1 : "";
+        L_GRID_PAID_LAST_IN = configscreen.Any(f => f.Name == "R_HEADER_paid_last_in") ? configscreen.First(f => f.Name == "R_HEADER_paid_last_in").LovValue1 : "";
+        L_GRID_PAID_LAST_OUT = configscreen.Any(f => f.Name == "R_HEADER_paid_last_out") ? configscreen.First(f => f.Name == "R_HEADER_paid_last_out").LovValue1 : "";
+        L_GRID_SUBCONT_NAME_IN = configscreen.Any(f => f.Name == "R_HEADER_subcont_name_in") ? configscreen.First(f => f.Name == "R_HEADER_subcont_name_in").LovValue1 : "";
+        L_GRID_SUBCONT_NAME_OUT = configscreen.Any(f => f.Name == "R_HEADER_subcont_name_out") ? configscreen.First(f => f.Name == "R_HEADER_subcont_name_out").LovValue1 : "";
+        L_GRID_ONT_VENDOR = configscreen.Any(f => f.Name == "R_HEADER_ont_vendor") ? configscreen.First(f => f.Name == "R_HEADER_ont_vendor").LovValue1 : "";
+        L_GRID_PAID_ONT = configscreen.Any(f => f.Name == "R_HEADER_paid_ont") ? configscreen.First(f => f.Name == "R_HEADER_paid_ont").LovValue1 : "";
+        L_GRID_INVOICE = configscreen.Any(f => f.Name == "R_HEADER_invoice") ? configscreen.First(f => f.Name == "R_HEADER_invoice").LovValue1 : "";
+        L_GRID_INVOICE_DT = configscreen.Any(f => f.Name == "R_HEADER_invoice_dt") ? configscreen.First(f => f.Name == "R_HEADER_invoice_dt").LovValue1 : "";
+        L_GRID_PO = configscreen.Any(f => f.Name == "R_HEADER_po") ? configscreen.First(f => f.Name == "R_HEADER_po").LovValue1 : "";
+        L_GRID_STATUS = configscreen.Any(f => f.Name == "R_HEADER_status") ? configscreen.First(f => f.Name == "R_HEADER_status").LovValue1 : "";
+        TOPUP_STATUS_WAITING = configscreen.Any(f => f.Name == "TOPUP_STATUS_waiting") ? configscreen.First(f => f.Name == "TOPUP_STATUS_waiting").LovValue1 : "";
+        TOPUP_STATUS_PAID = configscreen.Any(f => f.Name == "TOPUP_STATUS_paid") ? configscreen.First(f => f.Name == "TOPUP_STATUS_paid").LovValue1 : "";
+        TOPUP_STATUS_NOTPAID = configscreen.Any(f => f.Name == "TOPUP_STATUS_notpaid") ? configscreen.First(f => f.Name == "TOPUP_STATUS_notpaid").LovValue1 : "";
+        P_GET_PAID_STATUS = configscreen.Any(f => f.Name == "p_get_paid_status") ? configscreen.First(f => f.Name == "p_get_paid_status").LovValue1 : "";
+        P_UPDATE_PAID_STATUS = configscreen.Any(f => f.Name == "p_update_paid_status") ? configscreen.First(f => f.Name == "p_update_paid_status").LovValue1 : "";
+
+    }      
+    
+        
+    
+}
+<div id="gridsearchresult" class="row">
+        <div class="col-sm-12 col-md-12 ">
+
+            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.UpdateScreenList>()
+                        .Name("gridUpdateStatus")
+                        .Columns(columns =>
+                        {
+                            //columns.Bound(p => p.DEVICE_VENDOR).Title(@L_GRID_SELECT_ALL).HtmlAttributes(new { style = "text-align:center;" }).Width(250);
+                            columns.Template(@<text></text>).ClientTemplate("<input type='checkbox' onclick='checkboxClicked(this)' class='cbAdvisor' />")
+                                   .HeaderTemplate("<input type='checkbox' id='masterCheckBox' onclick='checkAll(this)'/>").HtmlAttributes(new { style = "text-align:center;" })
+                                   .HeaderHtmlAttributes(new { style = "text-align:center" }).Width(100);
+                            columns.Bound(p => p.REGISTER_DT).Title(@L_GRID_REGISTER_DT).HtmlAttributes(new { style = "text-align:center;" }).Width(200).Format("{0:dd/MM/yyyy}");
+                            columns.Bound(p => p.ACTIVITY).Title(@L_GRID_NEW_RESG_STATUS).HtmlAttributes(new { style = "text-align:center;" }).Width(250);
+                            columns.Bound(p => p.FIBRENET_ID).Title(@L_GRID_INTERNET_NO).HtmlAttributes(new { style = "text-align:center;" }).Width(300);
+                            columns.Bound(p => p.CUST_NAME).Title(@L_GRID_CUST_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(350);
+                            columns.Bound(p => p.PHASE_PO).Title(@L_GRID_PHASE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.OLT_VENDOR).Title(@L_GRID_OLT_VENDOR).HtmlAttributes(new { style = "text-align:left;" }).Width(300);
+                            columns.Bound(p => p.SUB_DISTRICT).Title(@L_GRID_SUB_DISTRICT).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                            columns.Bound(p => p.DISTRICT).Title(@L_GRID_DISTRICT).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                            columns.Bound(p => p.Subcon_Name_lastmile_indoor).Title(@L_GRID_SUBCONT_NAME_IN).HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" }).HtmlAttributes(new { style = "text-align:center;" }).Width(200);
+                            columns.Bound(p => p.Subcon_Name_lastmile_outdoor).Title(@L_GRID_SUBCONT_NAME_OUT).HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" }).HtmlAttributes(new { style = "text-align:center;" }).Width(200);
+
+                            if (showIndoor.HasValue && showIndoor.Value)
+                            {
+                                columns.Bound(p => p.INVOICE_NO_IN).Title(@L_GRID_INVOICE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                columns.Bound(p => p.INVOICE_DT_IN).Title(@L_GRID_INVOICE_DT).HtmlAttributes(new { style = "text-align:center;" }).Width(200).Format("{0:dd/MM/yyyy}");
+                                columns.Bound(p => p.PO_NO_IN).Title(@L_GRID_PO).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                columns.Bound(p => p.PAID_ST_IN).Title(@L_GRID_STATUS).HtmlAttributes(new { style = "text-align:center;" })
+                                            .Width(150).EditorTemplateName("PopupPAYGBuilding")
+                                            .ClientTemplate("#if(PAID_ST_IN =='N') {#" + @TOPUP_STATUS_NOTPAID + "<br/>#=REMARK_IN## } else if(PAID_ST_IN =='W') {#" + @TOPUP_STATUS_WAITING + "#} else if(PAID_ST_IN =='Y') {#" + @TOPUP_STATUS_PAID + "#} else if(PAID_ST_IN != undefined) {##=PAID_ST_IN##} else {##}#")
+                                            .FooterTemplate("<div class='text-center'><a onclick='_UpdateDataByStatus(1)' id='btnSavePaidIN'  class='btn btn-default'><i class='fa fa-floppy-o fa-lg'></i>&nbsp;" + @L_PAGE_UPDATE + "</a>&nbsp;</div>");
+                            }
+                            else
+                            {
+                                columns.Bound(p => p.INVOICE_NO_IN).Title(@L_GRID_INVOICE).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Hidden(true);
+                                columns.Bound(p => p.INVOICE_DT_IN).Title(@L_GRID_INVOICE_DT).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Format("{0:dd/MM/yyyy}").Hidden(true);
+                                columns.Bound(p => p.PO_NO_IN).Title(@L_GRID_PO).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Hidden(true);
+                                columns.Bound(p => p.PAID_ST_IN).Title(@L_GRID_STATUS).HtmlAttributes(new { style = "text-align:center;" }).Hidden(true)
+                                            .Width(0).EditorTemplateName("PopupPAYGBuilding")
+                                            .ClientTemplate("#if(PAID_ST_IN =='N') {#" + @TOPUP_STATUS_NOTPAID + "<br/>#=REMARK_IN## } else if(PAID_ST_IN =='W') {#" + @TOPUP_STATUS_WAITING + "#} else if(PAID_ST_IN =='Y') {#" + @TOPUP_STATUS_PAID + "#} else if(PAID_ST_IN != undefined) {##=PAID_ST_IN##} else {##}#")
+                                            .FooterTemplate("<div class='text-center'><a onclick='_UpdateDataByStatus(1)' id='btnSavePaidIN'  class='btn btn-default'><i class='fa fa-floppy-o fa-lg'></i>&nbsp;" + @L_PAGE_UPDATE + "</a>&nbsp;</div>");
+                            }
+
+                            if (showOutdoor.HasValue && showOutdoor.Value)
+                            {
+                                columns.Bound(p => p.INVOICE_NO_OUT).Title(@L_GRID_INVOICE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                columns.Bound(p => p.INVOICE_DT_OUT).Title(@L_GRID_INVOICE_DT).HtmlAttributes(new { style = "text-align:center;" }).Width(200).Format("{0:dd/MM/yyyy}");
+                                columns.Bound(p => p.PO_NO_OUT).Title(@L_GRID_PO).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                columns.Bound(p => p.PAID_ST_OUT).Title(@L_GRID_STATUS).HtmlAttributes(new { style = "text-align:center;" }).Width(150)
+                                            .EditorTemplateName("PopupPAYGOutdoorStatusBuilding")
+                                            .ClientTemplate("#if(PAID_ST_OUT =='N') {#" + @TOPUP_STATUS_NOTPAID + "<br/>#=REMARK_OUT##} else if(PAID_ST_OUT =='W') {#" + @TOPUP_STATUS_WAITING + "#} else if(PAID_ST_OUT =='Y') {#" + @TOPUP_STATUS_PAID + "#} else if(PAID_ST_OUT != undefined) {##=PAID_ST_OUT##} else {##}#")
+                                            .FooterTemplate("<div class='text-center'><a onclick='_UpdateDataByStatus(2)' id='btnSavePaidOUT'  class='btn btn-default'><i class='fa fa-floppy-o fa-lg'></i>&nbsp;" + @L_PAGE_UPDATE + "</a>&nbsp;</div>");
+
+                            }
+                            else
+                            {
+                                columns.Bound(p => p.INVOICE_NO_OUT).Title(@L_GRID_INVOICE).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Hidden(true);
+                                columns.Bound(p => p.INVOICE_DT_OUT).Title(@L_GRID_INVOICE_DT).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Format("{0:dd/MM/yyyy}").Hidden(true);
+                                columns.Bound(p => p.PO_NO_OUT).Title(@L_GRID_PO).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Hidden(true);
+                                columns.Bound(p => p.PAID_ST_OUT).Title(@L_GRID_STATUS).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Hidden(true)
+                                            .EditorTemplateName("PopupPAYGOutdoorStatusBuilding")
+                                            .ClientTemplate("#if(PAID_ST_OUT =='N') {#" + @TOPUP_STATUS_NOTPAID + "<br/>#=REMARK_OUT##} else if(PAID_ST_OUT =='W') {#" + @TOPUP_STATUS_WAITING + "#} else if(PAID_ST_OUT =='Y') {#" + @TOPUP_STATUS_PAID + "#} else if(PAID_ST_OUT != undefined) {##=PAID_ST_OUT##} else {##}#")
+                                            .FooterTemplate("<div class='text-center'><a onclick='_UpdateDataByStatus(2)' id='btnSavePaidOUT'  class='btn btn-default'><i class='fa fa-floppy-o fa-lg'></i>&nbsp;" + @L_PAGE_UPDATE + "</a>&nbsp;</div>");
+                            }
+
+                            if (showOnt.HasValue && showOnt.Value)
+                            {
+                                columns.Bound(p => p.ONT_VENDOR).Title(@L_GRID_ONT_VENDOR).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+
+                                columns.Bound(p => p.INVOICE_NO_ONT).Title(@L_GRID_INVOICE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                columns.Bound(p => p.INVOICE_DT_ONT).Title(@L_GRID_INVOICE_DT).HtmlAttributes(new { style = "text-align:center;" }).Width(200).Format("{0:dd/MM/yyyy}");
+                                columns.Bound(p => p.PO_NO_ONT).Title(@L_GRID_PO).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                                columns.Bound(p => p.PAID_ST_ONT).Title(@L_GRID_STATUS).HtmlAttributes(new { style = "text-align:center;" }).Width(150)
+                                            .EditorTemplateName("PopupPAYGONTStatusBuilding")
+                                            .ClientTemplate("#if(PAID_ST_ONT =='N') {#" + @TOPUP_STATUS_NOTPAID + "<br/>#=REMARK_ONT##} else if(PAID_ST_ONT =='W') {#" + @TOPUP_STATUS_WAITING + "#} else if(PAID_ST_ONT =='Y') {#" + @TOPUP_STATUS_PAID + "#} else if(PAID_ST_ONT != undefined) {##=PAID_ST_ONT##} else {##}#")
+                                            .FooterTemplate("<div class='text-center'><a onclick='_UpdateDataByStatus(3)' id='btnSavePaidONT'  class='btn btn-default'><i class='fa fa-floppy-o fa-lg'></i>&nbsp;" + @L_PAGE_UPDATE + "</a>&nbsp;</div>");
+
+                            }
+                            else
+                            {
+                                columns.Bound(p => p.ONT_VENDOR).Title(@L_GRID_ONT_VENDOR).HtmlAttributes(new { style = "text-align:left;" }).Width(0).Hidden(true);
+
+                                columns.Bound(p => p.INVOICE_NO_ONT).Title(@L_GRID_INVOICE).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Hidden(true);
+                                columns.Bound(p => p.INVOICE_DT_ONT).Title(@L_GRID_INVOICE_DT).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Format("{0:dd/MM/yyyy}").Hidden(true);
+                                columns.Bound(p => p.PO_NO_ONT).Title(@L_GRID_PO).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Hidden(true);
+                                columns.Bound(p => p.PAID_ST_ONT).Title(@L_GRID_STATUS).HtmlAttributes(new { style = "text-align:center;" }).Width(0).Hidden(true)
+                                            .EditorTemplateName("PopupPAYGONTStatusBuilding")
+                                            .ClientTemplate("#if(PAID_ST_ONT =='N') {#" + @TOPUP_STATUS_NOTPAID + "<br/>#=REMARK_ONT##} else if(PAID_ST_ONT =='W') {#" + @TOPUP_STATUS_WAITING + "#} else if(PAID_ST_ONT =='Y') {#" + @TOPUP_STATUS_PAID + "#} else if(PAID_ST_ONT != undefined) {##=PAID_ST_ONT##} else {##}#")
+                                            .FooterTemplate("<div class='text-center'><a onclick='_UpdateDataByStatus(3)' id='btnSavePaidONT'  class='btn btn-default'><i class='fa fa-floppy-o fa-lg'></i>&nbsp;" + @L_PAGE_UPDATE + "</a>&nbsp;</div>");
+                            }
+                        })
+                        .ToolBar(toolbar => toolbar.Template("" +
+                                "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp;" + @L_PAGE_EXPORT + "</a>&nbsp;</div>" +
+                                "<div class='pull-right'><a onclick='_UpdateData()' id='btnUpdate'  class='btn btn-default'><i class='fa fa-floppy-o fa-lg'></i>&nbsp;" + @L_PAGE_UPDATE + "</a>&nbsp;</div>"
+                            /*"using (Html.BeginForm('SaveTemp', 'PAYGREPORT', FormMethod.Post, new { enctype = 'multipart/form-data' }))"+
+                            "{"+
+                            "<div class='pull-left'><input type='file' id='browse_file' accept='*.CSV|*.csv' style='display: none;' onchange='_FileSelect(this.files)'> &nbsp;</div>" +
+                            //"<div class='pull-left'><input type='file' id='browse_file' accept='*.CSV|*.csv' style='display: none;' value='' runat='server'> &nbsp;</div>" +
+                            "<div class='pull-left'><a onclick='_BrowseFile()' id='btnBrowse'  class='btn btn-default'><i class='fa fa-folder-open-o'></i>&nbsp;Browse</a>&nbsp;</div>" +
+                            "<div class='pull-left col-sm-12 col-md-3'><input type='text' id='txtBrowse' class='k-textbox form-control' readonly='true'/></div>" +
+                            "<div class='pull-left'><a onclick='_Import()' id='btnImport'  class='btn btn-default'><i class='fa fa-file-excel-o'></i>&nbsp;Import Excel</a>&nbsp;</div>"+
+                            "}"*/
+                                ))
+
+                             // .ToolBar(
+                        .Selectable(s => s.Mode(GridSelectionMode.Single))
+                        .Editable(editable => editable.Mode(GridEditMode.InCell))
+                        .Scrollable(scrollable => scrollable.Height("auto"))
+                        .Pageable(pageable => pageable
+                        //.PageSizes(true)
+                        .Numeric(true)
+                        .PageSizes(new int[] {20, 50, 100})
+                        )
+                        //.Reorderable(reorder => reorder.Columns(false))
+                    //.Sortable()
+                    //.Sortable(sorting => sorting.Enabled(false).SortMode    )
+                    //.Resizable(resize => resize.Columns(true)) 
+                        //.AutoBind(false)
+                        .Events(e => e.Edit("onGridEdit"))
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(20)
+                            .Read(read => read.Action("ReadReport04Search", "PAYGReport").Data("bindingValue"))                            
+                            .Model(model =>
+                            {
+                                model.Id(p => p.FIBRENET_ID);
+                                model.Field(p => p.REGISTER_DT).Editable(false);
+                                model.Field(p => p.ACTIVITY).Editable(false);
+                                model.Field(p => p.FIBRENET_ID).Editable(false);
+                                model.Field(p => p.CUST_NAME).Editable(false);
+                                model.Field(p => p.PHASE_PO).Editable(false);
+                                model.Field(p => p.OLT_VENDOR).Editable(false);
+                                model.Field(p => p.SUB_DISTRICT).Editable(false);
+                                model.Field(p => p.DISTRICT).Editable(false);
+                                model.Field(p => p.Subcon_Name_lastmile_indoor).Editable(false);
+                                model.Field(p => p.Subcon_Name_lastmile_outdoor).Editable(false);
+
+                                model.Field(p => p.INVOICE_NO_IN).Editable(false);
+                                model.Field(p => p.INVOICE_DT_IN).Editable(false);
+                                model.Field(p => p.PO_NO_IN).Editable(false);
+
+                                model.Field(p => p.INVOICE_NO_OUT).Editable(false);
+                                model.Field(p => p.INVOICE_DT_OUT).Editable(false);
+                                model.Field(p => p.PO_NO_OUT).Editable(false);
+                                model.Field(p => p.ONT_VENDOR).Editable(false);
+
+                                model.Field(p => p.INVOICE_NO_ONT).Editable(false);
+                                model.Field(p => p.INVOICE_DT_ONT).Editable(false);
+                                model.Field(p => p.PO_NO_ONT).Editable(false);
+
+                                model.Field(p => p.PAID_ST_IN).Editable(true);
+                                model.Field(p => p.PAID_ST_OUT).Editable(true);
+                                model.Field(p => p.PAID_ST_ONT).Editable(true);
+                            })
+                            )
+                        .Events(e => e.DataBound("onGridDataBound"))
+                    )
+                        
+        </div>
+</div>
+
+<script>
+
+    $('#gridUpdateStatus').on('click', '.cbAdvisor', function () {
+        var checked = this.checked,
+            row = $(this).closest("tr"),
+            grid = $("#gridUpdateStatus").data("kendoGrid"),
+            dataItem = grid.dataItem(row);
+
+        if (!checked) {
+            $('#masterCheckBox').removeAttr('checked'); // Unchecks it
+        }
+    });
+
+       $(document).ready(function () 
+       {
+           $('#btnUpdate').attr("disabled", true);
+           $('#btnUpdate').attr("style", "visibility: hidden")
+
+           $('#masterCheckBox').removeAttr('checked');
+           $('#masterCheckBox').attr('disabled', true);
+
+           $('#btnSavePaidIN').attr("disabled", true);
+           $('#btnSavePaidOUT').attr("disabled", true);
+           $('#btnSavePaidONT').attr("disabled", true);
+
+           $('#gridUpdateStatus').data().kendoGrid.thead.prepend("<tr class=\"k-link\" style = \"text-align:center;\"><td id=\"col1\" class=\"k-header\" align=\"center\" colspan=1 style=\"font-weight:bold\" >@L_GRID_SELECT_ALL</td><td id=\"col2\" colspan=1></td><td id=\"col3\" colspan=1></td><td id=\"col4\" colspan=1></td><td id=\"col5\" colspan=1></td><td id=\"col6\" colspan=1></td>" +
+           "<td id=\"col7\" colspan=1></td><td id=\"col8\" colspan=1></td><td id=\"col9\" colspan=1></td><td id=\"col10\" colspan=1></td><td id=\"col11\" colspan=1></td>" +
+           "<td id=\"col12\" colspan=4 class=\"k-grid-header\" style=\"background-color:#f2f2f2;\">@L_GRID_PAID_LAST_IN</td>" +
+           "<td id=\"col13\" colspan=4 class=\"k-grid-header\" style=\"background-color:#f2f2f2;\">@L_GRID_PAID_LAST_OUT</td>" +
+           "<td id=\"col14\" colspan=1></td><td id=\"col15\" colspan=4 class=\"k-grid-header\" style=\"background-color:#f2f2f2;\">@L_GRID_PAID_ONT</td></tr>");
+          
+        });
+
+        
+</script>

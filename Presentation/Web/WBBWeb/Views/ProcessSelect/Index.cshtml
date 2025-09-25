@@ -1,0 +1,234 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using WBBWeb.Extension
+
+@{
+    var isSaveCommplete = false;
+    var productSubType = "";
+    var languagePage = "";
+    var lclose = "";
+    var lsave = "";
+    var lpopupsave = "";
+    var vas_flag = "";
+
+    string B_REGISTER = "";
+    string B_REGISTER_VAS = "";
+    string L_THK = "";
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        L_THK = LabelFBBTR001.Any(c => c.Name == "L_THK") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_THK").DisplayValue : "";
+    }
+
+    if (ViewBag.Fbb_Service != null)
+    {
+        var Fbb_Service = (List<LovScreenValueModel>)ViewBag.Fbb_Service;
+        B_REGISTER = Fbb_Service.Any(c => c.Name == "B_REGISTER") ? Fbb_Service.FirstOrDefault(c => c.Name == "B_REGISTER").DisplayValue : "";
+        B_REGISTER_VAS = Fbb_Service.Any(c => c.Name == "B_REGISTER_VAS") ? Fbb_Service.FirstOrDefault(c => c.Name == "B_REGISTER_VAS").DisplayValue : "";
+    }
+
+    if (null != ViewBag.SaveSuccess)
+    {
+        isSaveCommplete = ViewBag.SaveSuccess;
+    }
+    if (null != ViewBag.SWifi)
+    {
+        productSubType = ViewBag.SWiFi;
+    }
+    if (null != ViewBag.LanguagePage)
+    {
+        languagePage = ViewBag.LanguagePage;
+    }
+    if (null != ViewBag.LCLOSE)
+    {
+        lclose = ViewBag.LCLOSE;
+    }
+    if (null != ViewBag.LSAVE)
+    {
+        lsave = ViewBag.LSAVE;
+    }
+    if (null != ViewBag.LPOPUPSAVE)
+    {
+        lpopupsave = ViewBag.LPOPUPSAVE;
+    }
+    if (null != ViewBag.Vas)
+    {
+        vas_flag = ViewBag.Vas;
+        if (vas_flag == "") { vas_flag = "0"; }
+    }
+
+    var L_CLOSE001 = "";
+    if (null != ViewBag.LCLOSE)
+    {
+        L_CLOSE001 = ViewBag.LCLOSE;
+    }
+}
+
+<div id="page_Select_Process" class="container addrounded">
+    <h4 class="page-header tgreen"><span class="visible-xs"><i class="fa fa-search"></i> เลือกสมัครบริการ</span></h4>
+    <p class="clearfix"></p>
+    <p class="clearfix visible-xs" style="margin-bottom: 100px;"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+
+    <div class="col-md-12 text-center ">
+        <a href="@Url.Action("ProcessTempVas", "Process")" id="B_REGISTER" class="btn btn-success btn-for-xs" role="button">
+            @B_REGISTER&nbsp;
+            <i class="fa fa-arrow-circle-o-right"></i>
+        </a>&nbsp;&nbsp;
+        <a href="@Url.Action("SearchProfile", "Process")" id="B_REGISTER_VAS" class="btn btn-success btn-for-xs" role="button">
+            @B_REGISTER_VAS&nbsp;
+            <i class="fa fa-arrow-circle-o-right"></i>
+        </a>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix visible-xs" style="margin-bottom: 100px;"></p>
+    <p class="clearfix page-header"></p>
+</div>
+
+<div class="modal fade" id="basic-modal-content" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="CloseModal();"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <div id="LastPopupMessageselect">
+                    </div>
+                  @*  <h3 class="">
+                        @foreach (var rowpopupsave in DataConvertHelpers.ToDecodeList(lpopupsave))
+                        {
+                            @rowpopupsave<br />
+                        }
+                    </h3>*@
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-success" onclick="DownloadPDF();">
+                            &nbsp; @lsave &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                        </button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-dismiss="modal"
+                                onclick="CloseModal();">
+                            &nbsp; @lclose &nbsp;
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal0001" tabindex="-1" role="dialog" aria-labelledby="modal0001_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 class="text-center">
+                        @(Html.Raw(L_THK))
+                    </h3>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; @L_CLOSE001 &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var success = '@isSaveCommplete';
+    var swifi = '@productSubType';
+    var language_ = '@languagePage';
+
+    
+
+    function DownloadPDF() {
+        window.location.href = "/Process/download";
+        setTimeout(function () { Reload() }, 3000);
+    }
+
+    function Reload() {
+        window.location.href = "/ProcessSelect/Index";
+    }
+
+    function CloseModal() {
+        $('#basic-modal-content').modal('hide');
+        Reload();
+    }
+
+    function ClosePopupReload() {
+        if (success == 'True') {
+            Reload();
+        }
+    }
+
+    function showjpopup(width_, height_) {
+        return false;
+    }
+
+    function PopupMessage() {
+        //GetLastPopupMessage
+        var ProSubType = "";
+        if (swifi == "SWiFi") {
+            ProSubType = "L_POP_UP_WIRELESS";
+        }
+        else {
+            ProSubType = "L_POP_UP_WIRE";
+        }
+
+        var strBuilder = '';
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetLastPopupMessage?LovName=" + ProSubType + "&dataType=1",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, e) {
+                    if (language_ == "2") {
+                        strBuilder = e.LovValue2 + '</br>';
+                    }
+                    else {
+                        strBuilder = e.LovValue1 + '</br>';
+                    }
+                });
+
+                setTimeout(function () {
+                    $("#basic-modal-content").find("#LastPopupMessageselect").html("");
+                    $("#basic-modal-content").find("#LastPopupMessageselect").html("<h3>" + strBuilder + "</h3>");
+                }, 100);
+            }
+        });
+    }
+
+    if (success == 'True') {
+        setTimeout(function () {
+            PopupMessage();
+            $('#basic-modal-content').modal();
+            @{ ViewBag.SaveSuccess = "False"; }
+        }, 200);
+    }
+
+    if ("@Session["PopupStatus"]" == "Success") {
+        setTimeout(function () {
+            $('#modal0001').modal();
+        }, 200);
+        
+    }
+</script>

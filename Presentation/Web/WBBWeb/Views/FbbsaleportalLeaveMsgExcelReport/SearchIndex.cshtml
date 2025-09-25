@@ -1,0 +1,605 @@
+﻿@using WBBEntity.PanelModels.WebServiceModels
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@{
+    Layout = "~/Views/Fbbsaleportal/_Layout.cshtml";
+
+    string L_HEADER_REPORT_EXCEL = "";
+    string L_FILE_NAME = "";
+    string L_DATE_FROM = "";
+    string L_DATE_TO = "";
+
+    string B_BACK_SEARCH = "";
+    string B_CLEAR_SEARCH = "";
+    string B_SEARCH_SEARCH = "";
+    string B_VIEW_DETAIL = "";
+    
+    string L_FILE_NAME_EXCEL = "";
+        
+    string L_COLUMN_FILE_NAME = "";
+    string L_COLUMN_USER_IMPORT = "";
+    string L_COLUMN_IMPORT_DATE = "";
+    string L_COLUMN_SUMMARY_RECORD = "";
+    string L_COLUMN_COMPLETED_RECORD = "";
+    string L_COLUMN_FAIL_RECORD = "";
+        
+    string EXPORT_TO_EXCEL = "";
+    
+    string L_DETAIL_EXCEL = "";
+
+    string COLUMN_EXCEL_01 = "";
+    string COLUMN_EXCEL_02 = "";
+    string COLUMN_EXCEL_03 = "";
+    string COLUMN_EXCEL_04 = "";
+    string COLUMN_EXCEL_05 = "";
+    string COLUMN_EXCEL_06 = "";
+    string COLUMN_EXCEL_07 = "";
+    string COLUMN_EXCEL_08 = "";
+    string COLUMN_EXCEL_09 = "";
+    string COLUMN_EXCEL_10 = "";
+    string COLUMN_EXCEL_11 = "";
+    string COLUMN_EXCEL_12 = "";
+    string COLUMN_EXCEL_13 = "";
+    string COLUMN_EXCEL_14 = "";
+    string COLUMN_EXCEL_15 = "";
+    string COLUMN_EXCEL_16 = "";
+    string COLUMN_EXCEL_17 = "";
+    string COLUMN_EXCEL_18 = "";
+    string COLUMN_EXCEL_19 = "";
+    string COLUMN_EXCEL_20 = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_HEADER_REPORT_EXCEL = configscreen.Any(f => f.Name == "L_HEADER_REPORT_EXCEL") ? configscreen.FirstOrDefault(f => f.Name == "L_HEADER_REPORT_EXCEL").LovValue1 : "";
+        
+        L_FILE_NAME = configscreen.Any(f => f.Name == "L_FILE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_FILE_NAME").LovValue1 : "";
+        L_DATE_FROM = configscreen.Any(f => f.Name == "L_DATE_FROM") ? configscreen.FirstOrDefault(f => f.Name == "L_DATE_FROM").LovValue1 : "";
+        L_DATE_TO = configscreen.Any(f => f.Name == "L_DATE_TO") ? configscreen.FirstOrDefault(f => f.Name == "L_DATE_TO").LovValue1 : "";
+
+        B_BACK_SEARCH = configscreen.Any(f => f.Name == "B_BACK_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_BACK_SEARCH").LovValue1 : "";
+        B_CLEAR_SEARCH = configscreen.Any(f => f.Name == "B_CLEAR_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_CLEAR_SEARCH").LovValue1 : "";
+        B_SEARCH_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH_SEARCH").LovValue1 : "";
+        B_VIEW_DETAIL = configscreen.Any(f => f.Name == "B_VIEW_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "B_VIEW_DETAIL").LovValue1 : "";
+            
+        L_FILE_NAME_EXCEL = configscreen.Any(f => f.Name == "L_FILE_NAME_EXCEL") ? configscreen.FirstOrDefault(f => f.Name == "L_FILE_NAME_EXCEL").LovValue1 : "";
+
+        L_COLUMN_FILE_NAME = configscreen.Any(f => f.Name == "L_COLUMN_FILE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_COLUMN_FILE_NAME").LovValue1 : "";
+        L_COLUMN_USER_IMPORT = configscreen.Any(f => f.Name == "L_COLUMN_USER_IMPORT") ? configscreen.FirstOrDefault(f => f.Name == "L_COLUMN_USER_IMPORT").LovValue1 : "";
+        L_COLUMN_IMPORT_DATE = configscreen.Any(f => f.Name == "L_COLUMN_IMPORT_DATE") ? configscreen.FirstOrDefault(f => f.Name == "L_COLUMN_IMPORT_DATE").LovValue1 : "";
+        L_COLUMN_SUMMARY_RECORD = configscreen.Any(f => f.Name == "L_COLUMN_SUMMARY_RECORD") ? configscreen.FirstOrDefault(f => f.Name == "L_COLUMN_SUMMARY_RECORD").LovValue1 : "";
+        L_COLUMN_COMPLETED_RECORD = configscreen.Any(f => f.Name == "L_COLUMN_COMPLETED_RECORD") ? configscreen.FirstOrDefault(f => f.Name == "L_COLUMN_COMPLETED_RECORD").LovValue1 : "";
+        L_COLUMN_FAIL_RECORD = configscreen.Any(f => f.Name == "L_COLUMN_FAIL_RECORD") ? configscreen.FirstOrDefault(f => f.Name == "L_COLUMN_FAIL_RECORD").LovValue1 : "";
+            
+        EXPORT_TO_EXCEL = configscreen.Any(f => f.Name == "EXPORT_TO_EXCEL") ? configscreen.FirstOrDefault(f => f.Name == "EXPORT_TO_EXCEL").LovValue1 : "";
+        
+        L_DETAIL_EXCEL = configscreen.Any(f => f.Name == "L_DETAIL_EXCEL") ? configscreen.FirstOrDefault(f => f.Name == "L_DETAIL_EXCEL").LovValue1 : "";
+
+        COLUMN_EXCEL_01 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_01") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_01").LovValue1 : "";
+        COLUMN_EXCEL_02 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_02") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_02").LovValue1 : "";
+        COLUMN_EXCEL_03 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_03") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_03").LovValue1 : "";
+        COLUMN_EXCEL_04 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_04") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_04").LovValue1 : "";
+        COLUMN_EXCEL_05 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_05") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_05").LovValue1 : "";
+        COLUMN_EXCEL_06 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_06") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_06").LovValue1 : "";
+        COLUMN_EXCEL_07 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_07") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_07").LovValue1 : "";
+        COLUMN_EXCEL_08 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_08") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_08").LovValue1 : "";
+        COLUMN_EXCEL_09 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_09") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_09").LovValue1 : "";
+        COLUMN_EXCEL_10 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_10") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_10").LovValue1 : "";
+        COLUMN_EXCEL_11 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_11") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_11").LovValue1 : "";
+        COLUMN_EXCEL_12 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_12") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_12").LovValue1 : "";
+        COLUMN_EXCEL_13 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_13") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_13").LovValue1 : "";
+        COLUMN_EXCEL_14 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_14") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_14").LovValue1 : "";
+        COLUMN_EXCEL_15 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_15") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_15").LovValue1 : "";
+        COLUMN_EXCEL_16 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_16") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_16").LovValue1 : "";
+        COLUMN_EXCEL_17 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_17") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_17").LovValue1 : "";
+        COLUMN_EXCEL_18 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_18") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_18").LovValue1 : "";
+        COLUMN_EXCEL_19 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_19") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_19").LovValue1 : "";
+        COLUMN_EXCEL_20 = configscreen.Any(f => f.Name == "COLUMN_EXCEL_20") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_EXCEL_20").LovValue1 : "";
+
+    }
+}
+
+<style type="text/css">
+    #gridLeaveMsgFileName , #gridLeaveMsgFileNameDetail {
+        font-size: 12px;
+    }
+</style>
+
+<html>
+    <body>
+        <div class="page-header i-header-fit">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <h3 style="margin-top: 0">@L_HEADER_REPORT_EXCEL</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="panel panel-success">            
+                    <div class="panel-heading">
+                            <h3 class="panel-title">
+                            <span>@L_HEADER_REPORT_EXCEL</span>
+                            <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader">
+                                <i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i>
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="UploadPanel" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div id="rowSearch_error" class="row i-gap-top-1">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="i-fg-data-entry-validation" id="validatefor-Error_Search_Input"></div>
+                                </div>
+                            </div>
+                            <div id="rowSearch_1" class="row i-gap-top-1">
+                                <div class="col-sm-4 col-md-4">
+                                    <label>@L_FILE_NAME</label>
+                                    <div class="i-fg-data-entry">
+                                        <input type="text" id="txtFile_name" class="k-textbox form-control" />
+                                    </div>
+                                    <div class="i-fg-data-entry-validation" id="validatefor-File_name"></div>
+                                </div><div class="col-sm-4 col-md-4">
+                                    <label>@L_DATE_FROM</label>
+                                    <div class="i-fg-data-entry">
+                                        @(Html.Kendo().DatePicker()
+                                            .Name("txtStart_date")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend", onkeydown="javascript:return false;" })
+                                            .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                            .Format("dd/MM/yyyy")
+                                            .Max(DateTime.Today)
+                                            .Events(e => e.Change("ChangdtpDateFrom"))
+                                         )
+                                    </div>
+                                </div><div class="col-sm-4 col-md-4">
+                                    <label>@L_DATE_TO</label>
+                                    <div class="i-fg-data-entry">
+                                        @(Html.Kendo().DatePicker()
+                                            .Name("txtEnd_date")
+                                            .HtmlAttributes(new { @class = "form-control i-form-control-extend", onkeydown="javascript:return false;" })
+                                            .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                            .Format("dd/MM/yyyy")
+                                            .Max(DateTime.Today)
+                                            .Events(e => e.Change("ChangdtpDateTo"))
+                                         )
+                                    </div>
+                                </div>
+                            </div>
+                            @*end rowSearch1*@
+                            <div id="rowSearch_2" class="row i-gap-top-1">
+                                <div class="col-sm-6 col-md-6">
+                                </div>
+                                <div class="col-sm-6 col-md-6 i-text-align-right">
+                                    <a class="btn btn-info" onclick="BackSearchLeaveMsgFileName();" ><i class="fa fa-arrow-circle-o-left fa-lg"></i>&nbsp;&nbsp;@B_BACK_SEARCH</a>
+                                    <a class="btn btn-danger" onclick="ClearSearchLeaveMsgFileName();" ><i class="fa fa-eraser fa-lg"></i>&nbsp;&nbsp;@B_CLEAR_SEARCH</a>
+                                    <a class="btn btn-success" onclick="SearchSearchLeaveMsgFileName();" ><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH_SEARCH</a>
+                                </div>
+                            </div>
+                            @*end rowSearch2*@
+                        </div>
+                    </div>
+                </div>
+                @*end SearchPanel1*@
+            </div>
+        </div>
+        <div id="SearchDivGridLeaveMsgFileName" class="row"  style="display:none;">
+            <div class="col-sm-12 col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>@L_FILE_NAME_EXCEL</span>
+                            <a data-toggle="collapse" class="pull-right" href="#SearchPanel2" onclick="onPanelToggle(this);" id="SearchPanelHeaderDetail"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderDetailArrow"></i></a>
+                        </h3>
+                    </div>
+                    <div id="SearchPanel2" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="col-sm-12 col-md-12 ">
+                                @(Html.Kendo().Grid<WBBEntity.PanelModels.SearchLeaveMsgFileNameList>()
+                                .Name("gridLeaveMsgFileName")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.p_file_name).Title(@L_COLUMN_FILE_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                    columns.Bound(p => p.p_user_name).Title(@L_COLUMN_USER_IMPORT).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                    columns.Bound(p => p.p_create_date).Title(@L_COLUMN_IMPORT_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                    columns.Bound(p => p.p_summary_record).Title(@L_COLUMN_SUMMARY_RECORD).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                    columns.Bound(p => p.p_completed_record).Title(@L_COLUMN_COMPLETED_RECORD).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                    columns.Bound(p => p.p_fail_record).Title(@L_COLUMN_FAIL_RECORD).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                    columns.Command(command =>
+                                    {
+                                        command.Custom(" ").Click("ViewLeaveMsgFileNameDetail").Text("<i class='fa fa-eye fa-lg'></i>&nbsp; " + @B_VIEW_DETAIL);
+                                    }).HtmlAttributes(new { style = "text-align:center;" }).Width(100);
+                                })
+                                .ToolBar(toolbar => toolbar.Template("" +
+                                    "<div class='pull-right'><a id='btnExportLeaveMsgFileName' class='btn btn-success' onclick='ExportToExcelLeaveMsgFileName();' ><i class='fa fa-reply fa-lg'></i>&nbsp; " + @EXPORT_TO_EXCEL + "</a>&nbsp;</div>"
+                                ))
+                                .Scrollable(scrollable => scrollable.Height("auto"))
+                                .Sortable()
+                                .Resizable(resize => resize.Columns(true))
+                                .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                                .AutoBind(false)
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .Read(read => read.Action("ReadSearchLeaveMsgFileNameDataDefault", "FbbsaleportalLeaveMsgExcelReport").Data("bindingValue"))
+                                    .PageSize(20)
+                                    .ServerOperation(false)
+                                    )
+                                .Events(e => e.DataBound("onGridDataBound"))
+                                )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*end SearchPanel2*@
+            </div>
+        </div>
+        <div id="SearchDivGridLeaveMsgFileNameDetail" class="row"  style="display:none;">
+            <div class="col-sm-12 col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>@L_DETAIL_EXCEL</span>
+                            <input id="txtTmpFileName" type="text" hidden="hidden" />
+                            <a data-toggle="collapse" class="pull-right" href="#SearchPanel3" onclick="onPanelToggle(this);" id="SearchPanelHeaderDetailExcel">
+                                <i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderDetailExcelArrow"></i>
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="SearchPanel3" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="col-sm-12 col-md-12 ">
+                                @(Html.Kendo().Grid<WBBEntity.PanelModels.SearchLeaveMsgFileNameDetailList>()
+                                .Name("gridLeaveMsgFileNameDetail")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.service_speed).Title(@COLUMN_EXCEL_01).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.cust_name).Title(@COLUMN_EXCEL_02).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.cust_surname).Title(@COLUMN_EXCEL_03).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.contact_mobile_no).Title(@COLUMN_EXCEL_04).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(180);
+                                    columns.Bound(p => p.is_ais_mobile).Title(@COLUMN_EXCEL_05).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.contact_time).Title(@COLUMN_EXCEL_06).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(180);
+                                    columns.Bound(p => p.contact_email).Title(@COLUMN_EXCEL_07).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(180);
+                                    columns.Bound(p => p.address_type).Title(@COLUMN_EXCEL_08).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(200);
+                                    columns.Bound(p => p.building_name).Title(@COLUMN_EXCEL_09).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(200);
+                                    columns.Bound(p => p.village_name).Title(@COLUMN_EXCEL_10).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.house_no).Title(@COLUMN_EXCEL_11).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.soi).Title(@COLUMN_EXCEL_12).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.road).Title(@COLUMN_EXCEL_13).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.tumbol).Title(@COLUMN_EXCEL_14).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.amphur).Title(@COLUMN_EXCEL_15).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.province).Title(@COLUMN_EXCEL_16).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.postal_code).Title(@COLUMN_EXCEL_17).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.campaign_project_name).Title(@COLUMN_EXCEL_18).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(200);
+                                    columns.Bound(p => p.status).Title(@COLUMN_EXCEL_19).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                    columns.Bound(p => p.reason_code).Title(@COLUMN_EXCEL_20).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(350);
+                                })
+                                .ToolBar(toolbar =>
+                                    {
+                                        toolbar.Template(@<text>
+                                           <div class='pull-right'>
+                                                <label class="category-label" for="category" style="font-size: 14px !important; color: #333;">
+                                                    Show by Status :
+                                                </label>
+                                                @(Html.Kendo().DropDownList()
+                                                .Name("ddlStatus")
+                                                .DataTextField("LOV_NAME")
+                                                .DataValueField("LOV_VAL1")
+                                                .HtmlAttributes(new { style = "width: 150px; font-size: 14px !important;"})
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SetDDLStatus", "FbbsaleportalLeaveMsgExcelReport", new { });
+                                                    });
+                                                })
+                                                .Events(e => e.Change("statusChange"))
+                                                )
+                                               &nbsp;&nbsp;
+                                               <a id='btnExportLeaveMsgFileNameDetail' class='btn btn-success' onclick='ExportToExcelLeaveMsgFileNameDetail();' >
+                                                    <i class='fa fa-reply fa-lg'></i>&nbsp;@EXPORT_TO_EXCEL
+                                               </a>
+                                           </div>
+                                        </text>.ToHtmlString());
+                                    })
+                                    .Scrollable(scrollable => scrollable.Height("auto"))
+                                    .Sortable()
+                                    .Resizable(resize => resize.Columns(true))
+                                    .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                                    .AutoBind(false)
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .Read(read => read.Action("ReadSearchLeaveMsgFileNameDetailDataDefault", "FbbsaleportalLeaveMsgExcelReport").Data("bindingValueDetail"))
+                                        .PageSize(20)
+                                        .ServerOperation(false)
+                                        )
+                                    .Events(e => e.DataBound("onGridDataBoundDetail"))
+                                    )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*end SearchPanel3*@
+            </div>
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        window.scrollTo(0, 0);
+
+        // Button Export
+        $('#btnExportLeaveMsgFileName').attr("disabled", true);
+        $('#btnExportLeaveMsgFileNameDetail').attr("disabled", true);
+
+        // Textbox set value
+        $('#txtFile_name').val("");
+        $('#txtStart_date').val("");
+        $('#txtEnd_date').val("");
+        $('#txtTmpFileName').val("");
+    });
+
+    // Check KeyUp Textbox 
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    // Check IsNullOrEmpty
+    function IsNullOrEmpty(chk) {
+        if (chk == null || chk == "")
+            return true;
+        else
+            return false;
+    }
+
+    // Set input SearchLeaveMsgFileNameModel Dafault
+    var SearchLeaveMsgFileNameModel = function () {
+        FileName: "";
+        StartDate: "";
+        EndDate: "";
+    }
+
+    // Set input SearchLeaveMsgFileNameDetailModel Dafault
+    var SearchLeaveMsgFileNameDetailModel = function () {
+        FileName: "";
+        Status: "";
+    }
+
+    // Set Default Data (File Name)
+    function defaultData() {
+        var searchResult = new SearchLeaveMsgFileNameModel();
+
+        searchResult.FileName = kendo.toString($("#txtFile_name").val());
+        searchResult.StartDate = kendo.toString($("#txtStart_date").val());
+        searchResult.EndDate = kendo.toString($("#txtEnd_date").val());
+
+        return searchResult;
+    }
+
+    // Set Default Data (File Name Detail)
+    function defaultDataDetail(Status) {
+        var paramFileName = IsNullOrEmpty($('#txtTmpFileName').val()) ? "" : $('#txtTmpFileName').val();
+        var paramStatus = IsNullOrEmpty(Status) ? (IsNullOrEmpty($("#ddlStatus").data("kendoDropDownList").value()) ? "ALL" : $("#ddlStatus").data("kendoDropDownList").value()) : Status;
+
+        var searchDetailResult = new SearchLeaveMsgFileNameDetailModel();
+
+        searchDetailResult.FileName = paramFileName;
+        searchDetailResult.Status = paramStatus;
+
+        return searchDetailResult;
+    }
+
+    // Events Bind Grid (File Name)
+    function bindingValue() {
+        Loading();
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    // Events Bind Grid (File Name Detail)
+    function bindingValueDetail() {
+        Loading();
+        var modelDetail = defaultDataDetail();
+        return {
+            dataS: JSON.stringify(modelDetail)
+        };
+    }
+
+    // Events Grid onGridDataBound (File Name)
+    function onGridDataBound() {
+        Loading(0);
+        //itemCount = this.dataSource.view().length;
+        //insert empty row
+        if (this.dataSource.view().length == 0) {
+
+            var colspan = this.thead.find("th").length;
+            var emptyRow = "<tr><td colspan='" + colspan + "'>&nbsp;&nbsp;&nbsp;&nbsp;ไม่พบข้อมูล รบกวนตรวจสอบข้อมูล</td></tr>";
+            this.tbody.html(emptyRow);
+
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+            $('#btnExportLeaveMsgFileName').attr("disabled", true);
+        }
+        else {
+            $(".k-grid-content").height("auto");
+            $('#btnExportLeaveMsgFileName').attr("disabled", false);
+        }
+
+        $('#btnExportLeaveMsgFileName').attr("disabled", !(this.dataSource.view().length != 0));
+    }
+
+    // Events Grid onGridDataBound (File Name Detail)
+    function onGridDataBoundDetail() {
+        Loading(0);
+        //itemCount = this.dataSource.view().length;
+        //insert empty row
+        if (this.dataSource.view().length == 0) {
+
+            var colspan = this.thead.find("th").length;
+            var emptyRow = "<tr><td colspan='" + colspan + "'>&nbsp;&nbsp;&nbsp;&nbsp;ไม่พบข้อมูล รบกวนตรวจสอบข้อมูล</td></tr>";
+            this.tbody.html(emptyRow);
+
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+            $('#btnExportLeaveMsgFileNameDetail').attr("disabled", true);
+        }
+        else {
+            $(".k-grid-content").height("auto");
+            $('#btnExportLeaveMsgFileNameDetail').attr("disabled", false);
+        }
+
+        $('#btnExportLeaveMsgFileNameDetail').attr("disabled", !(this.dataSource.view().length != 0));
+    }
+
+    // Click Button Back
+    function BackSearchLeaveMsgFileName() {
+        ClearSearchLeaveMsgFileName();
+        window.location.href = '@Url.Action("Index", "Fbbsaleportal")';
+    }
+
+    // Click Button Clear
+    function ClearSearchLeaveMsgFileName() {
+        $('#txtFile_name').val("");
+        $('#txtStart_date').val("");
+        $('#txtEnd_date').val("");
+        $('#txtTmpFileName').val("");
+        $("#ddlStatus").data("kendoDropDownList").select(0);
+
+        $('#validatefor-File_name').html("");
+        $('#validatefor-Start_date').html("");
+        $('#validatefor-End_date').html("");
+        $('#validatefor-Error_Search_Input').html("");
+
+        $('#SearchDivGridLeaveMsgFileName').hide();
+        $('#btnExportLeaveMsgFileName').attr("disabled", true);
+        $('#gridLeaveMsgFileName').data("kendoGrid").dataSource.data([]);
+
+        $('#SearchDivGridLeaveMsgFileNameDetail').hide();
+        $('#btnExportLeaveMsgFileNameDetail').attr("disabled", true);
+        $("#gridLeaveMsgFileNameDetail").data("kendoGrid").dataSource.data([]);
+    }
+
+    // Click Button Search
+    function SearchSearchLeaveMsgFileName() {
+        $('#SearchDivGridLeaveMsgFileName').hide();
+        $('#SearchDivGridLeaveMsgFileNameDetail').hide();
+        $("#gridLeaveMsgFileName").data("kendoGrid").dataSource.data([]);
+        $("#gridLeaveMsgFileNameDetail").data("kendoGrid").dataSource.data([]);
+        $('#txtTmpFileName').val("");
+        $('#ddlStatus').data("kendoDropDownList").select(0);
+
+        var startPicker = new Date(kendo.parseDate($("#txtStart_date").val(), "dd/MM/yyyy"));
+        var endPicker = new Date(kendo.parseDate($("#txtEnd_date").val(), "dd/MM/yyyy"));
+
+        if (IsNullOrEmpty($('#txtFile_name').val()) && IsNullOrEmpty($('#txtStart_date').val()) && IsNullOrEmpty($('#txtEnd_date').val()))
+        {
+            $('#validatefor-Error_Search_Input').html(ValidationIcon() + "กรุณากรอกข้อมูลการค้นหา");
+        }
+        else if (!IsNullOrEmpty($('#txtStart_date').val()) && IsNullOrEmpty($('#txtEnd_date').val()))
+        {
+            $('#validatefor-Error_Search_Input').html(ValidationIcon() + "กรุณาเลือก " + "@L_DATE_TO");
+        }
+        else if (IsNullOrEmpty($('#txtStart_date').val()) && !IsNullOrEmpty($('#txtEnd_date').val()))
+        {
+            $('#validatefor-Error_Search_Input').html(ValidationIcon() + "กรุณาเลือก " + "@L_DATE_FROM");
+        }
+        else if (startPicker > endPicker)
+        {
+            $('#validatefor-Error_Search_Input').html(ValidationIcon() + "@L_DATE_FROM" + " มากกว่า " + "@L_DATE_TO" + " กรุณาเลือกใหม่");
+        }
+        else {
+            $('#validatefor-Error_Search_Input').html("");
+            $('#SearchDivGridLeaveMsgFileName').show();
+
+            var model = defaultData();
+            Loading();
+            var grid = $("#gridLeaveMsgFileName").data("kendoGrid");
+            grid.dataSource.page(1);
+
+            $('#btnExportLeaveMsgFileName').attr("disabled", !($('#gridLeaveMsgFileName').data("kendoGrid").dataSource.view().length != 0));
+            $('#btnExportLeaveMsgFileName').attr("disabled", !($('#gridLeaveMsgFileName').data("kendoGrid").dataSource.data().length != 0));
+        }
+    }
+
+    // Click Button Export (File Name)
+    function ExportToExcelLeaveMsgFileName() {
+        var model = new defaultData();
+        window.open("/FbbsaleportalLeaveMsgExcelReport/ExportReadSearchLeaveMsgFileNameData?dataS=" + JSON.stringify(model) + "");
+    }
+
+    // Click Button Export (File Name Detail)
+    function ExportToExcelLeaveMsgFileNameDetail() {
+        var paramStatus = $("#ddlStatus").data("kendoDropDownList").value();
+
+        var modelDetail = new defaultDataDetail(paramStatus);
+        window.open("/FbbsaleportalLeaveMsgExcelReport/ExportReadSearchLeaveMsgFileNameDetailData?dataS=" + JSON.stringify(modelDetail) + "");
+    }
+
+    // Click Button View Detail
+    function ViewLeaveMsgFileNameDetail(e) {
+        $('#SearchDivGridLeaveMsgFileNameDetail').show();
+        $("#gridLeaveMsgFileNameDetail").data("kendoGrid").dataSource.data([]);
+        $('#txtTmpFileName').val("");
+        $('#ddlStatus').data("kendoDropDownList").select(0);
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $('#txtTmpFileName').val(dataItem.p_file_name);
+
+        Loading();
+        var modelDetail = defaultDataDetail("ALL");
+        var gridDetail = $("#gridLeaveMsgFileNameDetail").data("kendoGrid");
+        gridDetail.dataSource.page(1);
+
+        $('#btnExportLeaveMsgFileNameDetail').attr("disabled", !($('#gridLeaveMsgFileNameDetail').data("kendoGrid").dataSource.view().length != 0));
+        $('#btnExportLeaveMsgFileNameDetail').attr("disabled", !($('#gridLeaveMsgFileNameDetail').data("kendoGrid").dataSource.data().length != 0));
+    }
+
+    // Click Dropdownlist Change
+    function statusChange() {
+        var paramFileName = $('#txtTmpFileName').val();
+        $("#gridLeaveMsgFileNameDetail").data("kendoGrid").dataSource.data([]);
+        var paramStatus = this.value(), gridDetail = $("#gridLeaveMsgFileNameDetail").data("kendoGrid");
+
+        Loading();
+        var modelDetail = defaultDataDetail(paramStatus);
+        gridDetail.dataSource.page(1);
+
+        $('#btnExportLeaveMsgFileNameDetail').attr("disabled", !($('#gridLeaveMsgFileNameDetail').data("kendoGrid").dataSource.view().length != 0));
+        $('#btnExportLeaveMsgFileNameDetail').attr("disabled", !($('#gridLeaveMsgFileNameDetail').data("kendoGrid").dataSource.data().length != 0));
+    }
+
+    function ChangdtpDateFrom() {
+
+        var endPicker = $("#txtEnd_date").data("kendoDatePicker"),
+        startDate = this.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate()); // + - ตรงนี้จ้า
+            endPicker.min(startDate);
+        }
+
+    }
+
+    function ChangdtpDateTo() {
+        var startPicker = $("#txtStart_date").data("kendoDatePicker"),
+        endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            startPicker.max(endDate);
+        }
+
+    }
+
+</script>

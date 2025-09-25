@@ -1,0 +1,604 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.SearchBulkCorpModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using FBBConfig.Extensions
+@{
+    Layout = "~/Views/Shared/_LayoutBulkCorp.cshtml";
+    
+    var Version = "";
+    if (ViewBag.Version != null)
+    {
+        Version = Version + "-" + ViewBag.Version;
+    }
+    
+    string SEARCH_HEADER = "";
+    string SEARCH_HEADER_DETAIL = "";
+    string SEARCH_HEADER_ORDER_DETAIL = "";
+    
+    string SEARCH_TAX_ID = "";
+    string SEARCH_BULK_NUMBER = "";
+    string SEARCH_CA_NUMBER = "";
+    string SCREEN_SEARCH_STATUS = "";
+
+    string SEARCH_TAX_ID_INPUT = "";
+    string SEARCH_BULK_NUMBER_INPUT = "";
+    string SEARCH_CA_NUMBER_INPUT = "";
+
+    string SEARCH_TAX_ID_LENGTH_MAX = "";
+    string SEARCH_BULK_NUMBER_LENGTH_MAX = "";
+    string SEARCH_CA_NUMBER_LENGTH_MAX = "";
+
+    string SEARCH_SUMMARY = "";
+    string SEARCH_COMPLETED = "";
+    string SEARCH_FAIL = "";
+    string SEARCH_USER = "";
+    string SEARCH_CEATED_DATE = "";
+    string SEARCH_ORDER_NUMBER = "";
+    string SEARCH_MESSAGE = "";
+    string SEARCH_STATUS = "";
+    string SEARCH_FIBRE_NET = "";
+
+    string SEARCH_ERROR_SEARCH_INPUT = "";
+    
+    string SEARCH_BACK_BUTTON = "";
+    string SEARCH_SEARCH_BUTTON = "";
+    string SEARCH_CLEAR_BUTTON = "";
+    string B_SEARCH_VIEW_DETAIL = "";
+
+    string FIELD_SEARCH_BULK_NO = "";
+    string FIELD_SEARCH_TAX_ID = "";
+    string FIELD_SEARCH_CA_NUMBER = "";
+    string FIELD_SEARCH_TOTAL = "";
+    string FIELD_SEARCH_USER_CREATE = "";
+    string FIELD_SEARCH_CREATE_DATE = "";
+
+    string COLUMN_SEARCH_BULK_NO = "";
+    string COLUMN_SEARCH_ORDER_NO = "";
+    string COLUMN_SEARCH_INSTALL_ADDRESS1 = "";
+    string COLUMN_SEARCH_INSTALL_ADDRESS2 = "";
+    string COLUMN_SEARCH_INSTALL_ADDRESS3 = "";
+    string COLUMN_SEARCH_INSTALL_ADDRESS4 = "";
+    string COLUMN_SEARCH_INSTALL_ADDRESS5 = "";
+    string COLUMN_SEARCH_LATITUDE = "";
+    string COLUMN_SEARCH_LONGITUDE = "";
+    string COLUMN_SEARCH_INSTALL_DATE = "";
+    string COLUMN_SEARCH_PROMOTION_MAIN_CODE = "";
+    string COLUMN_SEARCH_PROMOTION_MAIN_NAME = "";
+    string COLUMN_SEARCH_PROMOTION_DISCOUNT_CODE = "";
+    string COLUMN_SEARCH_PROMOTION_DISCOUNT_NAME = "";
+    string COLUMN_SEARCH_STATUS = "";
+    string COLUMN_SEARCH_SFF_MESSAGE_ERROR = "";
+    string COLUMN_SEARCH_WORKFLOW_MESSAGE_ERROR = "";
+    string COLUMN_SEARCH_AISFIBRE = "";
+    string COLUMN_SEARCH_CA_NO = "";
+    string COLUMN_SEARCH_BA_NO = "";
+    string COLUMN_SEARCH_SA_NO = "";
+    string COLUMN_SEARCH_UPDATE_NO = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        SEARCH_HEADER = configscreen.Any(f => f.Name == "SEARCH_HEADER") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_HEADER").LovValue1 : "";
+        SEARCH_HEADER_DETAIL = configscreen.Any(f => f.Name == "SEARCH_HEADER_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_HEADER_DETAIL").LovValue1 : "";
+        SEARCH_HEADER_ORDER_DETAIL = configscreen.Any(f => f.Name == "SEARCH_HEADER_ORDER_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_HEADER_ORDER_DETAIL").LovValue1 : "";
+
+        SEARCH_TAX_ID = configscreen.Any(f => f.Name == "SEARCH_TAX_ID") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_TAX_ID").LovValue1 : "";
+        SEARCH_BULK_NUMBER = configscreen.Any(f => f.Name == "SEARCH_BULK_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_BULK_NUMBER").LovValue1 : "";
+        SEARCH_CA_NUMBER = configscreen.Any(f => f.Name == "SEARCH_CA_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_CA_NUMBER").LovValue1 : "";
+        SCREEN_SEARCH_STATUS = configscreen.Any(f => f.Name == "SCREEN_SEARCH_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "SCREEN_SEARCH_STATUS").LovValue1 : "";
+
+        SEARCH_TAX_ID_INPUT = configscreen.Any(f => f.Name == "SEARCH_TAX_ID_INPUT") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_TAX_ID_INPUT").LovValue1 : "";
+        SEARCH_BULK_NUMBER_INPUT = configscreen.Any(f => f.Name == "SEARCH_BULK_NUMBER_INPUT") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_BULK_NUMBER_INPUT").LovValue1 : "";
+        SEARCH_CA_NUMBER_INPUT = configscreen.Any(f => f.Name == "SEARCH_CA_NUMBER_INPUT") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_CA_NUMBER_INPUT").LovValue1 : "";
+
+        SEARCH_TAX_ID_LENGTH_MAX = configscreen.Any(f => f.Name == "SEARCH_TAX_ID_LENGTH_MAX") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_TAX_ID_LENGTH_MAX").LovValue1 : "";
+        SEARCH_BULK_NUMBER_LENGTH_MAX = configscreen.Any(f => f.Name == "SEARCH_BULK_NUMBER_LENGTH_MAX") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_BULK_NUMBER_LENGTH_MAX").LovValue1 : "";
+        SEARCH_CA_NUMBER_LENGTH_MAX = configscreen.Any(f => f.Name == "SEARCH_CA_NUMBER_LENGTH_MAX") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_CA_NUMBER_LENGTH_MAX").LovValue1 : "";
+        
+        SEARCH_SUMMARY = configscreen.Any(f => f.Name == "SEARCH_SUMMARY") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_SUMMARY").LovValue1 : "";
+        SEARCH_COMPLETED = configscreen.Any(f => f.Name == "SEARCH_COMPLETED") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_COMPLETED").LovValue1 : "";
+        SEARCH_FAIL = configscreen.Any(f => f.Name == "SEARCH_FAIL") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_FAIL").LovValue1 : "";
+        SEARCH_USER = configscreen.Any(f => f.Name == "SEARCH_USER") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_USER").LovValue1 : "";
+        SEARCH_CEATED_DATE = configscreen.Any(f => f.Name == "SEARCH_CEATED_DATE") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_CEATED_DATE").LovValue1 : "";
+        SEARCH_ORDER_NUMBER = configscreen.Any(f => f.Name == "SEARCH_ORDER_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_ORDER_NUMBER").LovValue1 : "";
+        SEARCH_MESSAGE = configscreen.Any(f => f.Name == "SEARCH_MESSAGE") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_MESSAGE").LovValue1 : "";
+        SEARCH_STATUS = configscreen.Any(f => f.Name == "SEARCH_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_STATUS").LovValue1 : "";
+        SEARCH_FIBRE_NET = configscreen.Any(f => f.Name == "SEARCH_FIBRE_NET") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_FIBRE_NET").LovValue1 : "";
+        
+        SEARCH_ERROR_SEARCH_INPUT = configscreen.Any(f => f.Name == "ERROR_SEARCH_INPUT") ? configscreen.FirstOrDefault(f => f.Name == "ERROR_SEARCH_INPUT").LovValue1 : "";
+            
+        SEARCH_BACK_BUTTON = configscreen.Any(f => f.Name == "SEARCH_BACK_BUTTON") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_BACK_BUTTON").LovValue1 : "";
+        SEARCH_SEARCH_BUTTON = configscreen.Any(f => f.Name == "SEARCH_SEARCH_BUTTON") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_SEARCH_BUTTON").LovValue1 : "";
+        SEARCH_CLEAR_BUTTON = configscreen.Any(f => f.Name == "SEARCH_CLEAR_BUTTON") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_CLEAR_BUTTON").LovValue1 : "";
+        B_SEARCH_VIEW_DETAIL = configscreen.Any(f => f.Name == "B_SEARCH_VIEW_DETAIL") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH_VIEW_DETAIL").LovValue1 : "";
+
+        FIELD_SEARCH_BULK_NO = configscreen.Any(f => f.Name == "FIELD_SEARCH_1") ? configscreen.FirstOrDefault(f => f.Name == "FIELD_SEARCH_1").LovValue1 : "";
+        FIELD_SEARCH_TAX_ID = configscreen.Any(f => f.Name == "FIELD_SEARCH_2") ? configscreen.FirstOrDefault(f => f.Name == "FIELD_SEARCH_2").LovValue1 : "";
+        FIELD_SEARCH_CA_NUMBER = configscreen.Any(f => f.Name == "FIELD_SEARCH_3") ? configscreen.FirstOrDefault(f => f.Name == "FIELD_SEARCH_3").LovValue1 : "";
+        FIELD_SEARCH_TOTAL = configscreen.Any(f => f.Name == "FIELD_SEARCH_4") ? configscreen.FirstOrDefault(f => f.Name == "FIELD_SEARCH_4").LovValue1 : "";
+        FIELD_SEARCH_USER_CREATE = configscreen.Any(f => f.Name == "FIELD_SEARCH_5") ? configscreen.FirstOrDefault(f => f.Name == "FIELD_SEARCH_5").LovValue1 : "";
+        FIELD_SEARCH_CREATE_DATE = configscreen.Any(f => f.Name == "FIELD_SEARCH_6") ? configscreen.FirstOrDefault(f => f.Name == "FIELD_SEARCH_6").LovValue1 : "";
+        
+        COLUMN_SEARCH_BULK_NO = configscreen.Any(f => f.Name == "COLUMN_SEARCH_1") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_1").LovValue1 : "";
+        COLUMN_SEARCH_ORDER_NO = configscreen.Any(f => f.Name == "COLUMN_SEARCH_2") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_2").LovValue1 : "";
+        COLUMN_SEARCH_INSTALL_ADDRESS1 = configscreen.Any(f => f.Name == "COLUMN_SEARCH_3") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_3").LovValue1 : "";
+        COLUMN_SEARCH_INSTALL_ADDRESS2 = configscreen.Any(f => f.Name == "COLUMN_SEARCH_4") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_4").LovValue1 : "";
+        COLUMN_SEARCH_INSTALL_ADDRESS3 = configscreen.Any(f => f.Name == "COLUMN_SEARCH_5") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_5").LovValue1 : "";
+        COLUMN_SEARCH_INSTALL_ADDRESS4 = configscreen.Any(f => f.Name == "COLUMN_SEARCH_6") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_6").LovValue1 : "";
+        COLUMN_SEARCH_INSTALL_ADDRESS5 = configscreen.Any(f => f.Name == "COLUMN_SEARCH_7") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_7").LovValue1 : "";
+        COLUMN_SEARCH_LATITUDE = configscreen.Any(f => f.Name == "COLUMN_SEARCH_8") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_8").LovValue1 : "";
+        COLUMN_SEARCH_LONGITUDE = configscreen.Any(f => f.Name == "COLUMN_SEARCH_9") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_9").LovValue1 : "";
+        COLUMN_SEARCH_INSTALL_DATE = configscreen.Any(f => f.Name == "COLUMN_SEARCH_10") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_10").LovValue1 : "";
+        COLUMN_SEARCH_PROMOTION_MAIN_CODE = configscreen.Any(f => f.Name == "COLUMN_SEARCH_11") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_11").LovValue1 : "";
+        COLUMN_SEARCH_PROMOTION_MAIN_NAME = configscreen.Any(f => f.Name == "COLUMN_SEARCH_12") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_12").LovValue1 : "";
+        COLUMN_SEARCH_PROMOTION_DISCOUNT_CODE = configscreen.Any(f => f.Name == "COLUMN_SEARCH_13") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_13").LovValue1 : "";
+        COLUMN_SEARCH_PROMOTION_DISCOUNT_NAME = configscreen.Any(f => f.Name == "COLUMN_SEARCH_14") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_14").LovValue1 : "";
+        COLUMN_SEARCH_STATUS = configscreen.Any(f => f.Name == "COLUMN_SEARCH_15") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_15").LovValue1 : "";
+        COLUMN_SEARCH_SFF_MESSAGE_ERROR = configscreen.Any(f => f.Name == "COLUMN_SEARCH_16") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_16").LovValue1 : "";
+        COLUMN_SEARCH_WORKFLOW_MESSAGE_ERROR = configscreen.Any(f => f.Name == "COLUMN_SEARCH_17") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_17").LovValue1 : "";
+        COLUMN_SEARCH_AISFIBRE = configscreen.Any(f => f.Name == "COLUMN_SEARCH_18") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_18").LovValue1 : "";
+        COLUMN_SEARCH_CA_NO = configscreen.Any(f => f.Name == "COLUMN_SEARCH_19") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_19").LovValue1 : "";
+        COLUMN_SEARCH_BA_NO = configscreen.Any(f => f.Name == "COLUMN_SEARCH_20") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_20").LovValue1 : "";
+        COLUMN_SEARCH_SA_NO = configscreen.Any(f => f.Name == "COLUMN_SEARCH_21") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_21").LovValue1 : "";
+        COLUMN_SEARCH_UPDATE_NO = configscreen.Any(f => f.Name == "COLUMN_SEARCH_22") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_22").LovValue1 : "";
+    }
+}
+<style>
+    #gridBulkCorpNumber , #gridBulkCorpOrderNumber {
+        font-size: 12px;
+    }
+</style>
+<div id="searchbulkcorp2" style="border-color: #dadada;border-style: solid;border-width: 1px;">
+    <br />
+    <div class="container-fluid">
+        <div class="container-fluid i-gap i-header">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@SEARCH_HEADER</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanelOrd1" onclick="onPanelToggle(this);" id="SearchPanelOrdHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelOrdHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanelOrd1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div id="rowSearch_error" class="row i-gap-top-1">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="i-fg-data-entry-validation" id="validatefor-Error_Search_Input"></div>
+                            </div>
+                        </div>
+                        <div id="rowSearch_1" class="row i-gap-top-1">
+                            <div class="col-sm-4 col-md-4">
+                                <label>@SEARCH_TAX_ID</label>
+                                <div class="i-fg-data-entry">
+                                    <input type="text" id="txtTax_ID" class="k-textbox form-control" maxlength="@SEARCH_TAX_ID_LENGTH_MAX" />
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-Tax_ID"></div>
+                            </div><div class="col-sm-4 col-md-4">
+                                <label>@SEARCH_BULK_NUMBER</label>
+                                <div class="i-fg-data-entry">
+                                    <input type="text" id="txtBulk_Number" class="k-textbox form-control" maxlength="@SEARCH_BULK_NUMBER_LENGTH_MAX" />
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-Bulk_Number"></div>
+                            </div><div class="col-sm-4 col-md-4">
+                                <label>@SEARCH_CA_NUMBER</label>
+                                <div class="i-fg-data-entry">
+                                    <input type="text" id="txtCA_Number" class="k-textbox form-control" maxlength="@SEARCH_CA_NUMBER_LENGTH_MAX" />
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-CA_Number"></div>
+                            </div>
+                        </div>
+                        @*end rowSearch1*@
+                        <div id="rowSearch_2" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-info" onclick="BackSearchBulkCorp();" ><i class="fa fa-arrow-circle-o-left fa-lg"></i>&nbsp;&nbsp;@SEARCH_BACK_BUTTON</a>
+                                <a class="btn btn-danger" onclick="ClearSearchBulkCorp();" ><i class="fa fa-eraser fa-lg"></i>&nbsp;&nbsp;@SEARCH_CLEAR_BUTTON</a>
+                                <a class="btn btn-success" onclick="SearchSearchBulkCorp();" ><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@SEARCH_SEARCH_BUTTON</a>
+                            </div>
+                        </div>
+                        @*end rowSearch2*@
+                    </div>
+                </div>
+            </div>
+            @*end SearchPanelOrd1*@
+        </div>
+    </div>
+    <div id="SearchDivGridBulkCorp" class="container-fluid" style="display:none;">
+        <div class="container-fluid i-gap i-header">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@SEARCH_HEADER_DETAIL</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanelOrd2" onclick="onPanelToggle(this);" id="SearchPanelOrdHeaderDetail"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelOrdHeaderDetailArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanelOrd2" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="col-sm-12 col-md-12 ">
+                            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.SearchBulkCorpList>()
+                            .Name("gridBulkCorpNumber")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.p_bulk_number).Title(@FIELD_SEARCH_BULK_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                columns.Bound(p => p.p_tax_id).Title(@FIELD_SEARCH_TAX_ID).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                columns.Bound(p => p.p_ca_no).Title(@FIELD_SEARCH_CA_NUMBER).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                columns.Bound(p => p.p_summary).Title(@FIELD_SEARCH_TOTAL).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                columns.Bound(p => p.p_user).Title(@FIELD_SEARCH_USER_CREATE).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                columns.Bound(p => p.p_date).Title(@FIELD_SEARCH_CREATE_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                                columns.Command(command =>
+                                {
+                                    command.Custom(" ").Click("ViewBulkOrderNumber").Text("<i class='fa fa-eye fa-lg'></i>&nbsp; " + @B_SEARCH_VIEW_DETAIL);
+                                }).HtmlAttributes(new { style = "text-align:center;" }).Width(100);
+                            })
+                            .ToolBar(toolbar => toolbar.Template("" +
+                                "<div class='pull-right'><a id='btnExportBulkCorp' class='btn btn-success' onclick='ExportToExcelBulkCorp();' ><i class='fa fa-reply fa-lg'></i>&nbsp; " + "Export to Excel" + "</a>&nbsp;</div>"
+                            ))
+                            .Scrollable(scrollable => scrollable.Height("auto"))
+                            .Sortable()
+                            .Resizable(resize => resize.Columns(true))
+                            .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                            .AutoBind(false)
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .Read(read => read.Action("ReadSearchBulkCorpDataDefault", "SearchBulkCorp").Data("bindingValue"))
+                                .PageSize(20)
+                                .ServerOperation(false)
+                                )
+                            .Events(e => e.DataBound("onGridDataBound"))
+                            )
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*end SearchPanelOrd2*@
+        </div>
+    </div>
+    <div id="SearchDivGridBulkCorpOrderNumber" class="container-fluid" style="display:none;">
+        <div class="container-fluid i-gap i-header">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@SEARCH_HEADER_ORDER_DETAIL</span>
+                        <input id="txtTmpBulknumber" type="text" hidden="hidden" />
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanelOrd3" onclick="onPanelToggle(this);" id="SearchPanelOrdHeaderDetailOrder"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelOrdHeaderDetailOrderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanelOrd3" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="col-sm-12 col-md-12 ">
+                            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.SearchBulkCorpOrderNumberList>()
+                            .Name("gridBulkCorpOrderNumber")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.bulk_no).Title(@COLUMN_SEARCH_BULK_NO).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.order_no).Title(@COLUMN_SEARCH_ORDER_NO).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(200);
+                                columns.Bound(p => p.install_address1).Title(@COLUMN_SEARCH_INSTALL_ADDRESS1).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(300);
+                                columns.Bound(p => p.install_address2).Title(@COLUMN_SEARCH_INSTALL_ADDRESS2).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.install_address3).Title(@COLUMN_SEARCH_INSTALL_ADDRESS3).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.install_address4).Title(@COLUMN_SEARCH_INSTALL_ADDRESS4).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.install_address5).Title(@COLUMN_SEARCH_INSTALL_ADDRESS5).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.latitude).Title(@COLUMN_SEARCH_LATITUDE).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.longitude).Title(@COLUMN_SEARCH_LONGITUDE).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.request_install_date).Title(@COLUMN_SEARCH_INSTALL_DATE).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.package_code).Title(@COLUMN_SEARCH_PROMOTION_MAIN_CODE).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.package_bill_tha).Title(@COLUMN_SEARCH_PROMOTION_MAIN_NAME).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(300);
+                                columns.Bound(p => p.package_code_dis).Title(@COLUMN_SEARCH_PROMOTION_DISCOUNT_CODE).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(200);
+                                columns.Bound(p => p.package_bill_tha_dis).Title(@COLUMN_SEARCH_PROMOTION_DISCOUNT_NAME).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(300);
+                                columns.Bound(p => p.status).Title(@COLUMN_SEARCH_STATUS).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.sff_error_message).Title(@COLUMN_SEARCH_SFF_MESSAGE_ERROR).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(300);
+                                columns.Bound(p => p.workflow_error_message).Title(@COLUMN_SEARCH_WORKFLOW_MESSAGE_ERROR).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(300);
+                                columns.Bound(p => p.fibre_net_id).Title(@COLUMN_SEARCH_AISFIBRE).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.ca_no).Title(@COLUMN_SEARCH_CA_NO).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.ba_no).Title(@COLUMN_SEARCH_BA_NO).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.sa_no).Title(@COLUMN_SEARCH_SA_NO).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                                columns.Bound(p => p.installcapacity).Title(@COLUMN_SEARCH_UPDATE_NO).HtmlAttributes(new { style = "text-align:left; vertical-align: top;" }).Width(150);
+                            })
+                            .ToolBar(toolbar =>
+                                {
+                                    toolbar.Template(@<text>
+                                       <div class='pull-right'>
+                                            <label class="category-label" for="category" style="font-size: 14px !important; color: #333;">
+                                                Show by @SEARCH_STATUS : 
+                                            </label>
+                                            @(Html.Kendo().DropDownList()
+                                            .Name("ddlStatus")
+                                            .DataTextField("LOV_NAME")
+                                            .DataValueField("LOV_VAL1")
+                                            .HtmlAttributes(new { style = "width: 150px; font-size: 14px !important;"})
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SetDDLStatus", "SearchBulkCorp", new { });
+                                                });
+                                            })
+                                            .Events(e => e.Change("statusChange"))
+                                            )
+                                           &nbsp;&nbsp;
+                                           <a id='btnExportBulkCorpOrderNumber' class='btn btn-success' onclick='ExportToExcelBulkCorpOrderNumber();' >
+                                                <i class='fa fa-reply fa-lg'></i>&nbsp;Export to Excel
+                                           </a>
+                                       </div>
+                                    </text>.ToHtmlString());
+                                })
+                                .Scrollable(scrollable => scrollable.Height("auto"))
+                                .Sortable()
+                                .Resizable(resize => resize.Columns(true))
+                                .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                                .AutoBind(false)
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .Read(read => read.Action("ReadSearchBulkCorpOrderNumberDataDefault", "SearchBulkCorp").Data("bindingValueOrderNumber"))
+                                    .PageSize(20)
+                                    .ServerOperation(false)
+                                    )
+                                .Events(e => e.DataBound("onGridDataBoundOrderNumber"))
+                                )
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*end SearchPanelOrd3*@
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Force Logout if does not Login
+        var ses_LcCode = sessionStorage.getItem('login_LcCode');
+        if (typeof ses_LcCode == "undefined" || null == ses_LcCode || "" == ses_LcCode)
+            window.location.href = '@Url.Action("Login", "RegisterBulkCorp")';
+        window.scrollTo(0, 0);
+
+        // CSS Menutab
+        $('#li_3').find('.menutab').css({ "color": "white", "background-color": "#9bba25" });
+        // Button Export
+        $('#btnExportBulkCorp').attr("disabled", true);
+        $('#btnExportBulkCorpOrderNumber').attr("disabled", true);
+
+        // Textbox set value
+        $('#txtBulk_Number').val("");
+        $('#txtCA_Number').val("");
+        $('#txtTax_ID').val("");
+        $('#txtTmpBulknumber').val("");
+        // Textbox Key Up
+        $('#txtBulk_Number').keyup(function () { CheckKeyUps("txtBulk_Number", "@SEARCH_BULK_NUMBER_INPUT"); });
+        $('#txtCA_Number').keyup(function () { CheckKeyUps("txtCA_Number", "@SEARCH_CA_NUMBER_INPUT"); });
+        $('#txtTax_ID').keyup(function () { CheckKeyUps("txtTax_ID", "@SEARCH_TAX_ID_INPUT"); });
+
+    });
+
+    // Check KeyUp Textbox 
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    // Check IsNullOrEmpty
+    function IsNullOrEmpty(chk) {
+        if (chk == null || chk == "")
+            return true;
+        else
+            return false;
+    }
+
+    // Set input SearchBulkCorpModel Dafault (Bulk Number)
+    var SearchBulkCorpModel = function () {
+        BulkNumber: "";
+        CaNumber: "";
+        TaxID: "";
+    }
+
+    // Set input SearchBulkCorpOrderNumberModel Dafault (Order Number)
+    var SearchBulkCorpOrderNumberModel = function () {
+        BulkNumber: "";
+        Status: "";
+    }
+
+    // Set Default Data (Bulk Number)
+    function defaultData() {
+        var searchResult = new SearchBulkCorpModel();
+
+        searchResult.BulkNumber = kendo.toString($("#txtBulk_Number").val());
+        searchResult.CaNumber = kendo.toString($("#txtCA_Number").val());
+        searchResult.TaxID = kendo.toString($("#txtTax_ID").val());
+
+        return searchResult;
+    }
+
+    // Set Default Data (Order Number)
+    function defaultDataOrderNumber(Status)
+    {
+        var paramBulknumber = IsNullOrEmpty($('#txtTmpBulknumber').val()) ? "" : $('#txtTmpBulknumber').val();
+        var paramStatus = IsNullOrEmpty(Status) ? (IsNullOrEmpty($("#ddlStatus").data("kendoDropDownList").value()) ? "All" : $("#ddlStatus").data("kendoDropDownList").value()) : Status;
+
+        var searchOrderNumberResult = new SearchBulkCorpOrderNumberModel();
+
+        searchOrderNumberResult.BulkNumber = paramBulknumber;
+        searchOrderNumberResult.Status = paramStatus;
+
+        return searchOrderNumberResult;
+    }
+
+    // Events Bind Grid (Bulk Number)
+    function bindingValue() {
+        Loading();
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    // Events Bind Grid (Order Number)
+    function bindingValueOrderNumber() {
+        Loading();
+        var modelOrder = defaultDataOrderNumber();
+        return {
+            dataS: JSON.stringify(modelOrder)
+        };
+    }
+
+    // Events Grid onGridDataBound (Bulk Number)
+    function onGridDataBound() {
+        Loading(0);
+        //itemCount = this.dataSource.view().length;
+        //insert empty row
+        if (this.dataSource.view().length == 0) {
+
+            var colspan = this.thead.find("th").length;
+            var emptyRow = "<tr><td colspan='" + colspan + "'>&nbsp;&nbsp;&nbsp;&nbsp;ไม่พบข้อมูล รบกวนตรวจสอบข้อมูล</td></tr>";
+            this.tbody.html(emptyRow);
+
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+            $('#btnExportBulkCorp').attr("disabled", true);
+        }
+        else {
+            $(".k-grid-content").height("auto");
+            $('#btnExportBulkCorp').attr("disabled", false);
+        }
+
+        $('#btnExportBulkCorp').attr("disabled", !(this.dataSource.view().length != 0));
+    }
+
+    // Events Grid onGridDataBound (Order Number)
+    function onGridDataBoundOrderNumber() {
+        Loading(0);
+        //itemCount = this.dataSource.view().length;
+        //insert empty row
+        if (this.dataSource.view().length == 0) {
+
+            var colspan = this.thead.find("th").length;
+            var emptyRow = "<tr><td colspan='" + colspan + "'>&nbsp;&nbsp;&nbsp;&nbsp;ไม่พบข้อมูล รบกวนตรวจสอบข้อมูล</td></tr>";
+            this.tbody.html(emptyRow);
+
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+            $('#btnExportBulkCorpOrderNumber').attr("disabled", true);
+        }
+        else {
+            $(".k-grid-content").height("auto");
+            $('#btnExportBulkCorpOrderNumber').attr("disabled", false);
+        }
+
+        $('#btnExportBulkCorpOrderNumber').attr("disabled", !(this.dataSource.view().length != 0));
+    }
+
+    // Click Button Back
+    function BackSearchBulkCorp()
+    {
+        ClearSearchBulkCorp();
+        window.location.href = '@Url.Action("Index", "RegisterBulkCorp")';
+    }
+
+    // Click Button Clear
+    function ClearSearchBulkCorp()
+    {
+        $('#txtBulk_Number').val("");
+        $('#txtCA_Number').val("");
+        $('#txtTax_ID').val("");
+        $('#txtTmpBulknumber').val("");
+        $("#ddlStatus").data("kendoDropDownList").select(0);
+
+        $('#validatefor-Bulk_Number').html("");
+        $('#validatefor-CA_Number').html("");
+        $('#validatefor-Tax_ID').html("");
+        $('#validatefor-Error_Search_Input').html("");
+
+        $('#SearchDivGridBulkCorp').hide();
+        $('#btnExportBulkCorp').attr("disabled", true);
+        $('#gridBulkCorpNumber').data("kendoGrid").dataSource.data([]);
+
+        $('#SearchDivGridBulkCorpOrderNumber').hide();
+        $('#btnExportBulkCorpOrderNumber').attr("disabled", true);
+        $("#gridBulkCorpOrderNumber").data("kendoGrid").dataSource.data([]);
+    }
+
+    // Click Button Search
+    function SearchSearchBulkCorp()
+    {
+        $('#SearchDivGridBulkCorp').hide();
+        $('#SearchDivGridBulkCorpOrderNumber').hide();
+        $("#gridBulkCorpNumber").data("kendoGrid").dataSource.data([]);
+        $("#gridBulkCorpOrderNumber").data("kendoGrid").dataSource.data([]);
+        $('#txtTmpBulknumber').val("");
+        $('#ddlStatus').data("kendoDropDownList").select(0);
+
+        if (IsNullOrEmpty($('#txtBulk_Number').val()) && IsNullOrEmpty($('#txtCA_Number').val()) && IsNullOrEmpty($('#txtTax_ID').val())) {
+            $('#validatefor-Error_Search_Input').html(ValidationIcon() + "@SEARCH_ERROR_SEARCH_INPUT");
+        }
+        else {
+            $('#validatefor-Error_Search_Input').html("");
+            $('#SearchDivGridBulkCorp').show();
+
+            var model = defaultData();
+            Loading();
+            var grid = $("#gridBulkCorpNumber").data("kendoGrid");
+            grid.dataSource.page(1);
+            
+            $('#btnExportBulkCorp').attr("disabled", !($('#gridBulkCorpNumber').data("kendoGrid").dataSource.view().length != 0));
+            $('#btnExportBulkCorp').attr("disabled", !($('#gridBulkCorpNumber').data("kendoGrid").dataSource.data().length != 0));
+        }
+    }
+
+    // Click Button Export (Bulk Number)
+    function ExportToExcelBulkCorp()
+    {
+        var model = new defaultData();
+        window.open("/SearchBulkCorp/ExportReadSearchBulkCorpData?dataS=" + JSON.stringify(model) + "");
+    }
+
+    // Click Button Export (Order Number)
+    function ExportToExcelBulkCorpOrderNumber()
+    {
+        var paramStatus = $("#ddlStatus").data("kendoDropDownList").value();
+
+        var modelOrder = new defaultDataOrderNumber(paramStatus);
+        window.open("/SearchBulkCorp/ExportReadSearchBulkCorpOrderNumberData?dataS=" + JSON.stringify(modelOrder) + "");
+    }
+
+    // Click Button View Detail
+    function ViewBulkOrderNumber(e)
+    {
+        $('#SearchDivGridBulkCorpOrderNumber').show();
+        $("#gridBulkCorpOrderNumber").data("kendoGrid").dataSource.data([]);
+        $('#txtTmpBulknumber').val("");
+        $('#ddlStatus').data("kendoDropDownList").select(0);
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $('#txtTmpBulknumber').val(dataItem.p_bulk_number);
+
+        Loading();
+        var modelOrder = defaultDataOrderNumber("All");
+        var gridOrder = $("#gridBulkCorpOrderNumber").data("kendoGrid");
+        gridOrder.dataSource.page(1);
+
+        $('#btnExportBulkCorpOrderNumber').attr("disabled", !($('#gridBulkCorpOrderNumber').data("kendoGrid").dataSource.view().length != 0));
+        $('#btnExportBulkCorpOrderNumber').attr("disabled", !($('#gridBulkCorpOrderNumber').data("kendoGrid").dataSource.data().length != 0));
+    }
+
+    // Click Dropdownlist Change
+    function statusChange() {
+        var paramBulknumber = $('#txtTmpBulknumber').val();
+        $("#gridBulkCorpOrderNumber").data("kendoGrid").dataSource.data([]);
+        var paramStatus = this.value(),gridOrder = $("#gridBulkCorpOrderNumber").data("kendoGrid");
+
+        Loading();
+        var modelOrder = defaultDataOrderNumber(paramStatus);
+        gridOrder.dataSource.page(1);
+
+        $('#btnExportBulkCorpOrderNumber').attr("disabled", !($('#gridBulkCorpOrderNumber').data("kendoGrid").dataSource.view().length != 0));
+        $('#btnExportBulkCorpOrderNumber').attr("disabled", !($('#gridBulkCorpOrderNumber').data("kendoGrid").dataSource.data().length != 0));
+    }
+
+</script>
+

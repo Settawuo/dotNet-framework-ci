@@ -1,0 +1,664 @@
+﻿@using WBBEntity.PanelModels.Account;
+
+@{   
+    Layout = "~/Views/Fbbsaleportal/_LayoutReference.cshtml";
+
+    UserModel userModel = new UserModel();
+    if (ViewBag.User != null)
+    {
+        userModel = ViewBag.User;
+    }
+}
+
+<style>
+    .breadcrumb > li + li:before {
+        content: ">> ";
+    }
+
+    .errorinput {
+        border: 2px solid #ff988a !important;
+    }
+
+    .add-border-rounded-green {
+        border-radius: 8px;
+        border: 2px solid #8DC63F; /*before color #74A333*/
+        background: #fff;
+    }
+
+        .add-border-rounded-green > h4 {
+            margin-left: 20px;
+            margin-top: -14px;
+        }
+
+        .add-border-rounded-green .hightlight {
+            background: #fff;
+            padding: 5px;
+        }
+</style>
+
+<script type="text/kendo-template" id="errorMessage">
+  <div class='k-block k-error-colored' style='margin: 0.5em; display: block; width: 100%;'>
+		<span class='k-icon k-warning'> </span> #=message#
+	</div>
+</script>
+
+<script type="text/kendo-template" id="successMessage">
+	<div class='k-block k-success-colored' style='margin: 0.5em; display: block; width: 100%;'>
+		<span class='k-icon k-warning'> </span> #=message#
+	</div>
+</script>
+
+<script>
+    $(function () {
+        $("#submitAction").show();
+        $("[id*=lbAc]").hide();
+        $("#closeSubMenu").click();
+        $("#closeSubReportMenu").click();
+
+    });
+
+    // popup kendo ui  
+    function modePopup(mode) {
+        $('#modepopup').val(mode);
+    }
+
+    function changeTitlePopup(e) {
+        if ($('#modepopup').val() == 'add') {
+            $(".k-window-title").text("Add");//title
+            $("a.k-grid-update")[0].innerHTML = "<span class='k-icon k-update'></span>Add";//button
+        } else {
+            $(".k-window-title").text("Edit");//title
+            $("a.k-grid-update")[0].innerHTML = "<span class='k-icon k-update'></span>Update";//button
+        }
+    }
+    // popup kendo ui
+</script>
+<!-- popup kendo ui -->
+<input type="hidden" id="modepopup" value="add" />
+<!-- popup kendo ui -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid i-gap i-header">
+        <div class="row">
+            <div class="col-sm-6 col-md-4" style="padding: 0">
+                @* <img src="~/Content/images/logo.png" /> *@
+                <table>
+                    <tr>
+                        <td>
+                            <img src="~/Content/saleportal/images/logo-ais.png" width="104" height="39" /></td>
+                        <td>
+                            <h4 style="margin: 7px 0 0 12px; text-transform: uppercase;">FBB Sale Portal</h4>
+                            <h5 style="margin: 1px 0 0 12px; color: #bbb; font-size: 80%">© 2014 Advanced Info Service PLC. All Rights Reserved.</h5>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm-6 col-md-8" style="text-align: right; padding-top: 5px;">
+            </div>
+            @* //Common *@
+        </div>
+    </div>
+</div>
+
+<div class="i-enter-8"></div>
+
+<div class="container-fluid i-gap-body-left">
+    <div class="alert alert-danger alert-dismissable i-hidden" id="error-box-bar">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <span id="error-msg-bar"></span>
+    </div>
+
+    <div class="alert alert-success alert-dismissable i-hidden" id="success-box-bar">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <span id="success-msg-bar"></span>
+    </div>
+    @RenderBody()
+</div>
+
+<div class="i-enter-6"></div>
+
+<div class="container-fluid i-gap-body-left i-footer">
+    <p>
+        © 2014 Advanced Info Service PLC. All Rights Reserved.
+		<span class="pull-right">FBB Sale Portal @Session["ProgramVersion"]
+
+        </span>
+    </p>
+</div>
+
+<div class="modal fade" id="MessageFeedbackPopUp" tabindex="-1" role="dialog" aria-labelledby="MessageFeedbackPopUpLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="headerMessageFeedback">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="MessageFeedbackPopUpLabel">Notification</h4>
+            </div>
+            <div class="modal-body">
+                <label id="lbMessageFeedback"></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mainMenu" class="span2">
+    <div id="submenu">
+        <div class="panel-setting">
+            <div class="label-username"></div>
+            <div class="icon-settion">
+                <a href="#" onclick="CloseSubMenu();" id="closeSubMenu"><i class="fa fa-arrow-circle-o-left fa-lg"></i></a>
+            </div>
+        </div>
+
+        <ul id="detailProfile" class="i-hidden">
+            <li>
+                <ul>
+                    <li><a class="override-submenu-gap"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;@userModel.UserFullNameInThai</a></li>
+                    <li><a class="override-submenu-gap"><i class="fa fa-envelope fa-lg"></i>&nbsp;&nbsp;Email: @userModel.Email</a></li>
+                    <li><a class="override-submenu-gap"><i class="fa fa-phone fa-lg"></i>&nbsp;&nbsp;&nbsp;Tel.  @userModel.MobileNumber</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul id="navigationSubmenu">
+            <li>
+                @foreach (var a in userModel.ProgramModel)
+                {
+                    if (a.ProgramModels.Any())
+                    {
+                    <ul id='SUB_@a.ProgramCode'>
+                        @foreach (var s in a.ProgramModels)
+                        {
+                            if (s.ProgramCode == "SALE_PORTAL_RPT_1")
+                            {                          
+                            <li>@Html.ActionLink((string)s.ProgramName, "LeaveMessageReport", "Fbbsaleportal", new { }, new { @class = "override-submenu-gap" })</li>               
+                            }
+                            else if (s.ProgramCode == "SALE_PORTAL_MNG_1")
+                            {                          
+                            <li>@Html.ActionLink((string)s.ProgramName, "LeaveMessageData", "Fbbsaleportal", new { }, new { @class = "override-submenu-gap" })</li>               
+                            }
+                            else if (s.ProgramCode == "SALE_PORTAL_LOG_1")
+                            {                          
+                            <li>@Html.ActionLink((string)s.ProgramName, "Index", "LogRegister", new { }, new { @class = "override-submenu-gap" })</li>               
+                            }
+                            else if (s.ProgramCode == "SALE_PORTAL_LOG_2")
+                            {                          
+                            <li>@Html.ActionLink((string)s.ProgramName, "Index", "LogWorkflow", new { }, new { @class = "override-submenu-gap" })</li>               
+                            }
+                            else if (s.ProgramCode == "FBBCONFIGURATION_AUTO_MAIL_REPORT_1")
+                            {
+                            <li>@Html.ActionLink((string)s.ProgramName, "ConfigurationAutoMailReport", "Fbbsaleportal", new { }, new { @class = "override-submenu-gap" })</li>
+                            }
+                            else if (s.ProgramCode == "SALE_PORTAL_IMP_1")
+                            {
+                            <li>@Html.ActionLink((string)s.ProgramName, "UploadFileExcelIndex", "FbbsaleportalUploadFileExcel", new { }, new { @class = "override-submenu-gap" })</li>
+                            }
+                            else if (s.ProgramCode == "SALE_PORTAL_IMP_2")
+                            {
+                            <li>@Html.ActionLink((string)s.ProgramName, "SearchIndex", "FbbsaleportalLeaveMsgExcelReport", new { }, new { @class = "override-submenu-gap" })</li>
+                            }
+                        }
+                    </ul>
+                    }
+                }
+            </li>
+        </ul>
+    </div>
+    <div id="menu">
+        <ul id="navigation">
+            @foreach (var a in userModel.ProgramModel)
+            {
+                if (a.ProgramCode == "SALE_PORTAL_RPT")
+                {
+                <li id="@a.ProgramCode">
+                    <a href="#" onclick="OpenSubMenu('@a.ProgramName','@a.ProgramCode','SUB_@a.ProgramCode');" title="@a.ProgramName" class="override-icon-menu">
+                        <i class="fa fa-file-text-o fa-2x"></i></a>
+                    <div class="text"><span>@a.ProgramName</span></div>
+                </li>
+                }
+                else if (a.ProgramCode == "SALE_PORTAL_MNG")
+                {
+                <li id="@a.ProgramCode">
+                    <a href="#" onclick="OpenSubMenu('@a.ProgramName','@a.ProgramCode','SUB_@a.ProgramCode');" title="@a.ProgramName" class="override-icon-menu">
+                        <i class="fa fa-database fa-2x"></i></a>
+                    <div class="text"><span>@a.ProgramName</span></div>
+                </li>
+                }
+                else if (a.ProgramCode == "SALE_PORTAL_LOG")
+                {
+                <li id="@a.ProgramCode">
+                    <a href="#" onclick="OpenSubMenu('@a.ProgramName','@a.ProgramCode','SUB_@a.ProgramCode');" title="@a.ProgramName" class="override-icon-menu">
+                        <i class="fa fa-smile-o fa-2x"></i></a>
+                    <div class="text"><span>@a.ProgramName</span></div>
+                </li>
+                }
+
+                else if (a.ProgramCode == "FBBCONFIGURATION_AUTO_MAIL_REPORT")
+                {
+                <li id="@a.ProgramCode">
+                    <a href="#" onclick="OpenSubMenu('@a.ProgramName','@a.ProgramCode','SUB_@a.ProgramCode');" title="@a.ProgramName" class="override-icon-menu">
+                        <i class="fa fa-envelope-o fa-2x"></i></a>
+                    <div class="text"><span>@a.ProgramName</span></div>
+                </li>
+                }
+
+                else if (a.ProgramCode == "SALE_PORTAL_IMP")
+                {
+                <li id="@a.ProgramCode">
+                    <a href="#" onclick="OpenSubMenu('@a.ProgramName','@a.ProgramCode','SUB_@a.ProgramCode');" title="@a.ProgramName" class="override-icon-menu">
+                        <i class="fa fa-bug fa-2x"></i></a>
+                    <div class="text"><span>@a.ProgramName</span></div>
+                </li>
+                }
+
+            }
+
+            @*<li id="hello">
+                        <a href="#" onclick="OpenSubMenu('hello','hello','hello');" title="hello" class="override-icon-menu">
+                            <i class="fa fa-file-text-o fa-2x"></i></a>
+                        <div class="text"><span>hello</span></div>
+                    </li>
+            <li id="hello2">
+                        <a href="#" onclick="OpenSubMenu('hello2','hello2','hello2');" title="hello2" class="override-icon-menu">
+                            <i class="fa fa-database fa-2x"></i></a>
+                        <div class="text"><span>hello2</span></div>
+                    </li>*@
+
+            @*<li class="logout"><a href="/Fbbsaleportal/Logout" title="Logout" class="override-icon-menu"><i class="fa fa-power-off fa-2x"></i></a>
+                <div class="text"><span>Logout&nbsp;</span></div>
+            </li>*@
+        </ul>
+    </div>
+</div>
+<div class="profile-img">
+    <div class="circle" style="background-image: url('../Content/saleportal/images/nopic.png')" onclick="OpenProfiles();"></div>
+</div>
+
+@(Html.Kendo().Window()
+    .Name("PopupLoading")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title(false)
+    .Modal(true)
+    .Visible(false)
+    .Content(@<text>
+        <div style="margin: 0 80px;"><font size="4">Loading &nbsp;<i class="fa fa-refresh fa-spin"></i></font></div>
+    </text>)
+)
+
+<script type="text/javascript">
+    $(function () {
+        CloseSubMenu();
+    });
+
+    function OpenProfiles() {
+        OpenSubMenu();
+        $("#navigationSubmenu").hide();
+        $(".label-username").html("<span>@userModel.UserName</span>");
+        $("#detailProfile").show();
+    }
+
+    function CloseSubMenu() {
+        CloseSubRptMenu();
+        $("#submenu").animate({ "left": "-350px" }, 200);
+    }
+
+    function OpenSubMenu(value, id, sub_id) {
+        CloseSubMenu();
+        if (id != null || id != undefined) {
+            $("#detailProfile").hide();
+            $("#navigationSubmenu").show();
+            $("#navigationSubmenu ul").hide();
+            $("#" + sub_id).show();
+        }
+        $(".label-username").html("<span>" + value + "</span>");
+        $("#navigation li").removeClass("selected");
+        $("#" + id).addClass("selected");
+        $("#submenu").animate({ "left": "0px" }, 200);
+    }
+
+    function UpdateBuild() {
+        $.ajax({
+            url: '/MasterData/UpdateChangeBuilding',
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                if (response) {
+                    showFeedback("success", "Update completed");
+                }
+                else {
+                    showFeedback("warning", "Has no Update");
+                }
+            }
+            , error: function (err) {
+                showFeedback("error", err);
+            }
+        });
+    }
+
+    function CloseSubRptMenu() {
+        $("#subrptmenu").animate({ "left": "-250px" }, 200);
+    }
+
+    function OpenSubReportMenu(value, id, sub_id, menuName) {
+        if (id != null || id != undefined) {
+            switch (menuName) {
+                case "DORM":
+                    $("#SUB_Report_FBBREPORT_DORM").show();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    //$("#SUB_Report_FBBFULLCONN").hide();
+                    break;
+                case "PAYG":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").show();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    //$("#SUB_Report_FBBFULLCONN").hide();
+                    break;
+                case "CONFIGDORM1":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").show();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    //$("#SUB_Report_FBBFULLCONN").hide();
+                    break;
+                case "CONFIGDORM2":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").show();
+                    //$("#SUB_Report_FBBFULLCONN").hide();
+                    break;
+                case "NKT":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").show();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    //$("#SUB_Report_FBBFULLCONN").hide();
+                    break;
+                case "SALE":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").show();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    //$("#SUB_Report_FBBFULLCONN").hide();
+                    break;
+                case "STD":
+                    $("#SUB_Report_FBBREPORT_DORM").hide();
+                    $("#SUB_Report_FBBREPORT_PAYG").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN001").hide();
+                    $("#SUB_Report_FBBREPORT_MRK").hide();
+                    $("#SUB_Report_FBBREPORT_SALE").hide();
+                    $("#SUB_Report_FBBDORM_ADMIN002").hide();
+                    //$("#SUB_Report_FBBFULLCONN").show();                    
+                    break;
+            }
+
+            $(".labelrpt-username").html("<span>" + value + "</span>");
+            $("#navigationSubmenu li").removeClass("selected");
+            $("#" + id).addClass("selected");
+            $("#subrptmenu").animate({ "left": "350px" }, 200);
+        }
+
+    }
+
+    function testSalePortalLeaveMessage() {
+        $.ajax({
+            url: '/Fbbsaleportal/GetSalePortalLeaveMessageList',
+            dataType: "json",
+            type: 'GET',
+            success: function (response) {
+                if (response) {
+                    showFeedback("success", "Update completed");
+                }
+                else {
+                    showFeedback("warning", "Has no Update");
+                }
+            }
+            , error: function (err) {
+                showFeedback("error", err);
+            }
+        });
+    }
+
+    function ValidationProcessing(validateModel, err) {
+        var chk = true;
+        var error = "#" + err;
+        var temp = "";
+        $(error).html(temp);
+        $(validateModel).each(function (index, e) {
+            if (e.id == undefined) {
+                var vgroup = e.vgroup;
+                if (vgroup != undefined) {
+                    var tempkid = "";
+                    var vchk = false;
+                    $.each(vgroup, function (j, k) {
+                        var kid = "#" + k.id;
+                        var kvalue = $(kid).val();
+                        if (j == 0) tempkid = $(kid);
+
+                        if ($.trim(kvalue) != "")
+                            vchk = true;
+                    });
+                    if (vchk) {
+                        $(tempkid)[0].className = "form-control";
+                    } else {
+                        chk = false;
+                        $(tempkid)[0].className = "form-control errorinput";
+                        temp = "Please Fill In All Required Fields."
+                    }
+                }
+            } else {
+                var id = "#" + e.id;
+                var value = $(id).val();
+                var lb = $(id)[0].placeholder;
+                var cond = e.condition;
+                var required = e.required;
+                if (required == undefined) required = true;
+                if ($.trim(value) == "" && required) {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                            theme: "classic"
+                        });
+                    } else if ($(id)[0].className == "form-control" || $(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control errorinput";
+                        $("#VALIDATE_" + e.id).show();
+                    } else {
+                        $(id)[0].className = "form-control errorinput";
+                        $("#VALIDATE_" + e.id).show();
+                    }
+
+                    temp = "Please Fill In All Required Fields."
+
+                    chk = false;
+                } else if (cond != undefined) {
+                    var cchk = true;
+                    if ((!required && value != "") || required) {
+                        if (cond == "IDCard")
+                            cchk = validateIdCard(value);
+                        else if (cond == "Email")
+                            cchk = validateEmail(value);
+                        else if (cond == "Birthday")
+                            cchk = validateBirthDay(value);
+                        else if (cond == "Place")
+                            cchk = validatePlace(value);
+                        else if (cond == "HomeNo")
+                            cchk = validateHomeNumber(value);
+                        else if (cond == "LatLong")
+                            cchk = validateLatLong(value);
+                        else if (cond == "Number")
+                            cchk = validateNumber(value);
+                        else if (cond == "Name")
+                            cchk = validateName(value);
+                        else if (cond == "FreePhone")
+                            cchk = validateFreePhone(value);
+                        else if (cond == "MobileNumber")
+                            cchk = validateMobileNumber(value);
+                    }
+
+                    if (!cchk) {
+                        $(id)[0].className = "form-control errorinput";
+                        chk = false;
+                        temp = "Please Fill In All Required Fields."
+                    } else {
+                        if ($(id)[0].className == "form-control"
+                                || $(id)[0].className.indexOf("errorinput") > -1) {
+                            $(id)[0].className = "form-control";
+                        } else
+                            $(id)[0].className = "form-control";
+                    }
+                } else {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                        });
+                    } else if ($(id)[0].className == "form-control errorinput") {
+                        $(id)[0].className = "form-control";
+                    } else if ($(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control";
+                    }
+                }
+            }
+        });
+        //$(error).html(temp);
+        if (temp) {
+            toastrErrorMessage(temp);
+        }
+        return chk;
+    }
+
+    function validateEmail(email) {
+        var filter = /^(((([a-zA-Z0-9\_\-]{1,50})+(([\.]{1,50}[a-zA-Z0-9\_\-]{1,50}){0,50})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        if (email.substr(0, 2) == "-@@" || email.substr(0, 2) == "_@@") {
+            return false;
+        }
+        if (filter.test(email)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateHomeNumber(value) {
+        var rex = /^[0-9/\-]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumber(value) {
+        if (value.length < 10) {
+            return false
+        }
+        else {
+            return true;
+        }
+    }
+
+    function validatePlace(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\/\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateLatLong(value) {
+        var rex = /^(-)?[0-9]*[.]{1}[0-9]{6}$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateNumber(value) {
+        var rex = /^[0-9]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateName(value) {
+        var rex = /^[ก-๙a-zA-Z\.\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateFreePhone(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumberOR(id, error) {
+
+        var temp = "";
+        var iid = "#" + id;
+        if ($(iid).val() != "") {
+            if ($(iid).val().length < 10) {
+
+                $(iid)[0].className = "form-control errorinput";
+
+                temp = "<li>Please fill in all required fields.</li>"
+
+                $("#" + error).html(temp);
+                return false;
+            }
+            else {
+                $(iid)[0].className = "form-control";
+                $("#" + error).html(temp);
+                return true;
+            }
+        }
+        else {
+            $(iid)[0].className = "form-control";
+            $("#" + error).html(temp);
+            return true;
+        }
+    }
+
+    function toastrErrorMessage(message) {
+        toastr.options.positionClass = "toast-top-center";
+        toastr.options.closeButton = true;
+        toastr.error(message)
+    }
+
+    function Loading(x) {
+        if (x == 0) {
+            $("#PopupLoading").data("kendoWindow").close();
+        }
+        else {
+            $("#PopupLoading").data("kendoWindow").center();
+            $("#PopupLoading").data("kendoWindow").open();
+        }
+    }
+</script>

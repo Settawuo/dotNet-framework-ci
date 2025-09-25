@@ -1,0 +1,388 @@
+﻿@using WBBEntity.PanelModels.WebServiceModels
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@{
+    Layout = "~/Views/Fbbsaleportal/_Layout.cshtml";
+    
+    string L_HEADER_IMPORT_EXCEL = "";
+    string L_SUB_HEADER_IMPORT_EXCEL = "";
+    string B_IMPORT_CANCEL = "";
+    string B_IMPORT_BROWS_FILE = "";
+    string B_SAVE_FILE = "";
+    string L_FILE_FORMAT = "";
+    
+    string EXCEL_SIZE = "";
+    string EXCEL_RECORD = "";
+
+    string MESSAGE_ERROR_IMPORT_FILE = "";
+
+    string EM_HEADER = "";
+    string EM_DETAIL_1 = "";
+    string EM_DETAIL_2 = "";
+    string EM_DETAIL_3 = "";
+    string EM_DETAIL_4 = "";
+    string EM_DETAIL_5 = "";
+    string EM_DETAIL_6 = "";
+    string EM_DETAIL_7 = "";
+    string EM_DETAIL_8 = "";
+    
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_HEADER_IMPORT_EXCEL = configscreen.Any(f => f.Name == "L_HEADER_IMPORT_EXCEL") ? configscreen.FirstOrDefault(f => f.Name == "L_HEADER_IMPORT_EXCEL").LovValue1 : "";
+        L_SUB_HEADER_IMPORT_EXCEL = configscreen.Any(f => f.Name == "L_SUB_HEADER_IMPORT_EXCEL") ? configscreen.FirstOrDefault(f => f.Name == "L_SUB_HEADER_IMPORT_EXCEL").LovValue1 : "";
+        B_IMPORT_CANCEL = configscreen.Any(f => f.Name == "B_IMPORT_CANCEL") ? configscreen.FirstOrDefault(f => f.Name == "B_IMPORT_CANCEL").LovValue1 : "";
+        B_IMPORT_BROWS_FILE = configscreen.Any(f => f.Name == "B_IMPORT_BROWS_FILE") ? configscreen.FirstOrDefault(f => f.Name == "B_IMPORT_BROWS_FILE").LovValue1 : "";
+        B_SAVE_FILE = configscreen.Any(f => f.Name == "B_SAVE_FILE") ? configscreen.FirstOrDefault(f => f.Name == "B_SAVE_FILE").LovValue1 : "";
+        L_FILE_FORMAT = configscreen.Any(f => f.Name == "L_FILE_FORMAT") ? configscreen.FirstOrDefault(f => f.Name == "L_FILE_FORMAT").LovValue1 : "";
+
+        EXCEL_SIZE = configscreen.Any(f => f.Name == "EXCEL_SIZE") ? configscreen.FirstOrDefault(f => f.Name == "EXCEL_SIZE").LovValue1 : "";
+        EXCEL_RECORD = configscreen.Any(f => f.Name == "EXCEL_RECORD") ? configscreen.FirstOrDefault(f => f.Name == "EXCEL_RECORD").LovValue1 : "";
+        MESSAGE_ERROR_IMPORT_FILE = configscreen.Any(f => f.Name == "MESSAGE_ERROR_IMPORT_FILE") ? configscreen.FirstOrDefault(f => f.Name == "MESSAGE_ERROR_IMPORT_FILE").LovValue1 : "";
+
+        EM_HEADER = configscreen.Any(f => f.Name == "EM_HEADER") ? configscreen.FirstOrDefault(f => f.Name == "EM_HEADER").LovValue1 : "";
+        EM_DETAIL_1 = configscreen.Any(f => f.Name == "EM_DETAIL_1") ? configscreen.FirstOrDefault(f => f.Name == "EM_DETAIL_1").LovValue1 : "";
+        EM_DETAIL_2 = configscreen.Any(f => f.Name == "EM_DETAIL_2") ? configscreen.FirstOrDefault(f => f.Name == "EM_DETAIL_2").LovValue1 : "";
+        EM_DETAIL_3 = configscreen.Any(f => f.Name == "EM_DETAIL_3") ? configscreen.FirstOrDefault(f => f.Name == "EM_DETAIL_3").LovValue1 : "";
+        EM_DETAIL_4 = configscreen.Any(f => f.Name == "EM_DETAIL_4") ? configscreen.FirstOrDefault(f => f.Name == "EM_DETAIL_4").LovValue1 : "";
+        EM_DETAIL_5 = configscreen.Any(f => f.Name == "EM_DETAIL_5") ? configscreen.FirstOrDefault(f => f.Name == "EM_DETAIL_5").LovValue1 : "";
+        EM_DETAIL_6 = configscreen.Any(f => f.Name == "EM_DETAIL_6") ? configscreen.FirstOrDefault(f => f.Name == "EM_DETAIL_6").LovValue1 : "";
+        EM_DETAIL_7 = configscreen.Any(f => f.Name == "EM_DETAIL_7") ? configscreen.FirstOrDefault(f => f.Name == "EM_DETAIL_7").LovValue1 : "";
+        EM_DETAIL_8 = configscreen.Any(f => f.Name == "EM_DETAIL_8") ? configscreen.FirstOrDefault(f => f.Name == "EM_DETAIL_8").LovValue1 : "";
+    }
+}
+
+<style type="text/css">
+    .upload_file {
+        position: absolute;
+        width: 0px;
+        height: 0px;
+        padding: 0;
+        margin: 0px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        border: 0;
+    }
+
+</style>
+
+<html>
+    <body>
+        <div class="page-header i-header-fit">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <h3 style="margin-top: 0">@L_HEADER_IMPORT_EXCEL</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="panel panel-success">            
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                        <span>@L_HEADER_IMPORT_EXCEL</span>
+                        <a data-toggle="collapse" class="pull-right" href="#UploadPanel" onclick="onPanelToggle(this);" id="UploadPanelHeader">
+                            <i class="fa fa-chevron-circle-down fa-lg" id="UploadPanelHeaderArrow"></i>
+                        </a>
+                    </h3>
+                    </div>
+                    <div id="UploadPanel" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div id="rowSearch_error" class="row i-gap-top-1">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="i-fg-data-entry-validation" id="validatefor-Error_Search_Input"></div>
+                                </div>
+                            </div>
+                            <div id="rowUpload_1" class="row i-gap-top-1">
+                                @using (Html.BeginForm(null , null , FormMethod.Post, new { id = "formUploadFileExcel", enctype = "multipart/form-data" }))
+                                {
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>@L_SUB_HEADER_IMPORT_EXCEL</label>
+                                        <div class="i-fg-data-entry">
+                                            <input id="fileB1" type="file" name="file" class="upload_file"
+                                                accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                                            <input id="txtFileB1" class="form-control" type="text" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <label></label>
+                                        <div class="i-fg-data-entry" style="margin: 5px;">
+                                            <button class="btn btn-danger" type="button" onclick="clearUploadFileExcel();" ><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_IMPORT_CANCEL</button>
+                                            <label class="btn btn-info" role="button" for="fileB1"><i class="fa fa-folder-open fa-lg"></i>&nbsp;&nbsp;@B_IMPORT_BROWS_FILE</label>
+                                           <button class="btn btn-success" type="button" onclick="showModalUpload();" ><i class="fa fa-upload fa-lg"></i>&nbsp;&nbsp;@B_SAVE_FILE</button>
+                                        </div>
+                                    </div>
+                               }
+                            </div>
+                            @*end rowUpload_1*@
+                            <div id="rowUpload_2" class="row i-gap-top-1">
+                                <div class="col-sm-6 col-md-6">
+                                    <span class="label" style="padding: 0 0 0 0 !important; white-space: normal !important;">
+                                        <a href="~/Template/LEAVE_MESSAGE_YYYYMMDD_XXXX.xlsx" style="color:red;font-size: 0.7em;">@L_FILE_FORMAT</a>
+                                    </span>
+                                </div>
+                                <div class="col-sm-6 col-md-6"></div>
+                            </div>
+                            @*end rowUpload_2*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*end UploadPanel*@
+        </div>
+        
+        <div class="modal fade bd-example-modal-sm" id="confirm-upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="col-sm-12 col-md-12" style="text-align:center;">
+                            <font size="3">@EM_DETAIL_5</font>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="text-align:center;padding: 5px 20px 5px;">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success btn-ok" type="button" onclick="SaveFileExcel();">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade bd-example-modal-sm" id="success-upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header" style="font-size:12pt;text-align:center;padding: 10px;">
+                        @EM_HEADER
+                    </div>
+                    <div class="modal-body" style="text-align:left;">
+                        <div style="font-weight:bold;"><label id="lblSuccess" style="font-weight:bold;font-size: 12pt;"></label></div>
+                        <div id="divRemark" style="display:none;"><label style="font-weight:normal;font-size: 10pt;">@EM_DETAIL_4</label></div>
+                    </div>
+                    <div class="modal-footer" style="text-align:center;padding: 5px 20px 5px;margin-top: 0px;">
+                        <button class="btn btn-success btn-ok" type="button" onclick="closeModalSuccess();">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        clearUploadFileExcel();
+    });
+
+    $("#fileB1").bind('change', function () {
+        validateUploadFile(parseInt("@EXCEL_SIZE"), "XLSX", "txtFileB1", this);
+    });
+
+    function validateUploadFile(maxSize, fileType, idTextPath, fileClient) {
+
+        var browser = get_browser_info();
+        if (browser.name != "MSIE") /// not IE
+        {
+            /// check file Size
+            var fileSize = fileClient.files[0].size; //size in bytes
+
+            if ((fileSize / 1024) > (maxSize * 1024)) {
+                $("#" + idTextPath).removeClass('form-control').addClass('form-control errorinput');
+                $("#" + idTextPath).val("");
+
+                $("#lblSuccess").html("@EM_DETAIL_7");
+                $("#divRemark").hide();
+                $("#success-upload").modal('show');
+                return;
+            }
+            /// check file Size
+
+            var chk = false;
+            var txt = "";
+            fileType = fileType.split('|');
+            for (var i = 0; i < fileType.length; i++) {
+                if (fileType[i].toUpperCase() == fileClient.files[0].name.substr((fileClient.files[0].name.lastIndexOf('.') + 1)).toUpperCase()) {
+                    chk = true;
+                    break;
+                }
+            }
+
+            if (!chk) {
+                $("#" + idTextPath).removeClass('form-control').addClass('form-control errorinput');
+                $("#" + idTextPath).val("");
+
+                $("#lblSuccess").html("@EM_DETAIL_6");
+                $("#divRemark").hide();
+                $("#success-upload").modal('show');
+                return;
+            }
+            else {
+                $("#" + idTextPath).removeClass('form-control errorinput').addClass('form-control');
+                $("#" + idTextPath).val(fileClient.files[0].name);
+            }
+        }
+        else {
+
+            var objFSO = new ActiveXObject("Scripting.FileSystemObject");
+            var file = $(fileClient)[0].value;
+            var objFile = objFSO.getFile(file);
+            var objFileName = objFSO.GetFileName(file)
+
+            /// check file Size
+            var fileSize = objFile.size; //size in kb
+
+            if ((fileSize / 1024) > maxSize) {
+                $("#" + idTextPath).removeClass('form-control').addClass('form-control errorinput');
+                $("#" + idTextPath).val("");
+
+                $("#lblSuccess").html("@EM_DETAIL_7");
+                $("#divRemark").hide();
+                $("#success-upload").modal('show');
+                return;
+            }
+            /// check file Size
+
+            var chk = false;
+            var txt = "";
+            fileType = fileType.split('|');
+            for (var i = 0; i < fileType.length; i++) {
+                if (file.substr(file.lastIndexOf('.') + 1).toUpperCase() == fileType[i].toUpperCase()) {
+                    chk = true;
+                    break;
+                }
+            }
+            if (!chk) {
+                $("#" + idTextPath).removeClass('form-control').addClass('form-control errorinput');
+                $("#" + idTextPath).val("");
+
+                $("#lblSuccess").html("@MESSAGE_ERROR_IMPORT_FILE");
+                $("#divRemark").hide();
+                $("#success-upload").modal('show');
+                return;
+            }
+            else {
+                $("#" + idTextPath).removeClass('form-control errorinput').removeClass('textFieldFalse').addClass('form-control');
+                $("#" + idTextPath).val(objFileName);
+            }
+        }
+
+        $("#" + idTextPath).removeClass('form-control errorinput').removeClass('textFieldFalse').addClass('form-control');
+    }
+
+    function get_browser_info() {
+        var ua = navigator.userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+        if (/trident/i.test(M[1])) {
+            tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+            return { name: 'IE', version: (tem[1] || '') };
+        }
+        if (M[1] === 'Chrome') {
+            tem = ua.match(/\bOPR\/(\d+)/)
+            if (tem != null) { return { name: 'Opera', version: tem[1] }; }
+        }
+        M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+        if ((tem = ua.match(/version\/(\d+)/i)) != null) { M.splice(1, 1, tem[1]); }
+        return {
+            name: M[0],
+            version: M[1]
+        };
+    }
+
+    function clearUploadFileExcel()
+    {
+        $("#fileB1").val("");
+        $("#txtFileB1").val("");
+    }
+
+    function closeModalSuccess()
+    {
+        $('#success-upload').modal('hide');
+    }
+
+    function showModalUpload()
+    {
+        var txtFileB1 = $("#txtFileB1").val();
+        if (txtFileB1 == "" || txtFileB1 == undefined) {
+            $("#txtFileB1").removeClass('form-control').addClass('form-control errorinput');
+            $("#txtFileB1").val("");
+
+            $("#lblSuccess").html("@EM_DETAIL_8");
+            $("#divRemark").hide();
+            $("#success-upload").modal('show');
+            return;
+        }
+        else {
+            $('#confirm-upload').modal('show');
+        }
+    }
+
+    function CheckValidateFileName()
+    {
+        // Ajax Call Check Validate File Name
+        var FileName = $("#fileB1").val().split(/(\\|\/)/g).pop();
+        var result;
+
+        $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                async: false,
+                url: '/FbbsaleportalUploadFileExcel/CheckValidateFileName',
+                data: { file_name: FileName},
+                success: function (response) {
+                    result = response;
+                }
+        });
+        return result;
+    }
+
+    function SaveFileExcel()
+    {
+        $('#confirm-upload').modal('hide');
+
+        Loading();
+
+        var strResult = CheckValidateFileName();
+
+        if ( !!strResult && strResult.code == 0) {
+
+            var formData = new FormData($("#formUploadFileExcel")[0]);
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/FbbsaleportalUploadFileExcel/UploadFile',
+                data: formData,
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function (response) {
+                    Loading(0);
+                    clearUploadFileExcel();
+                    if (response != null && response.code != -1) {
+                        $("#lblSuccess").html(response.message);
+                        $("#divRemark").show();
+                        $('#success-upload').modal('show');
+
+                    } else {
+                        $("#lblSuccess").html(response.message);
+                        $("#divRemark").hide();
+                        $("#success-upload").modal('show');
+                    }
+                },
+                error: function (response) {
+                    Loading(0);
+                    clearUploadFileExcel();
+                    $("#lblSuccess").html("@MESSAGE_ERROR_IMPORT_FILE");
+                    $("#divRemark").hide();
+                    $("#success-upload").modal('show');
+                }
+            });
+        }
+        else {
+            Loading(0);
+            clearUploadFileExcel();
+            $("#lblSuccess").html(strResult.message);
+            $("#divRemark").hide();
+            $("#success-upload").modal('show');
+        }
+    }
+
+</script>

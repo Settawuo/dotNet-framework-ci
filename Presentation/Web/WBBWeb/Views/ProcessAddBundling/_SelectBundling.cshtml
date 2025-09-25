@@ -1,0 +1,193 @@
+﻿@model WBBEntity.PanelModels.AddBundlingModels
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using WBBEntity.Extensions;
+
+@{
+    Layout = null;
+
+    string B_DISCOUNT_NEXT = "";
+
+    string B_DISCOUNT_CONFIRM = "";
+    string B_DISCOUNT_CANCEL = "";
+    string L_DISCOUNT_PAGE_1 = "";
+    string L_DISCOUNT_PAGE_2 = "";
+    string L_DISCOUNT_PAGE_4 = "";
+
+    string L_DISCOUNT_ERRFIRSTPAGE_7 = "";
+
+    if (ViewBag.LabelFBBOR018 != null)
+    {
+        var labelFBBOR018 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR018;
+
+        B_DISCOUNT_NEXT = labelFBBOR018.Any(c => c.Name == "B_DISCOUNT_NEXT") ? labelFBBOR018.FirstOrDefault(c => c.Name == "B_DISCOUNT_NEXT").DisplayValue : "";
+        B_DISCOUNT_CONFIRM = labelFBBOR018.Any(c => c.Name == "B_DISCOUNT_CONFIRM") ? labelFBBOR018.FirstOrDefault(c => c.Name == "B_DISCOUNT_CONFIRM").DisplayValue : "";
+        B_DISCOUNT_CANCEL = labelFBBOR018.Any(c => c.Name == "B_DISCOUNT_CANCEL") ? labelFBBOR018.FirstOrDefault(c => c.Name == "B_DISCOUNT_CANCEL").DisplayValue : "";
+
+        L_DISCOUNT_PAGE_1 = labelFBBOR018.Any(c => c.Name == "L_DISCOUNT_PAGE_1") ? labelFBBOR018.FirstOrDefault(c => c.Name == "L_DISCOUNT_PAGE_1").DisplayValue : "";
+        L_DISCOUNT_PAGE_2 = labelFBBOR018.Any(c => c.Name == "L_DISCOUNT_PAGE_2") ? labelFBBOR018.FirstOrDefault(c => c.Name == "L_DISCOUNT_PAGE_2").DisplayValue : "";
+        L_DISCOUNT_PAGE_4 = labelFBBOR018.Any(c => c.Name == "L_DISCOUNT_PAGE_4") ? labelFBBOR018.FirstOrDefault(c => c.Name == "L_DISCOUNT_PAGE_4").DisplayValue : "";
+
+        L_DISCOUNT_ERRFIRSTPAGE_7 = labelFBBOR018.Any(c => c.Name == "L_DISCOUNT_ERRFIRSTPAGE_7") ? labelFBBOR018.FirstOrDefault(c => c.Name == "L_DISCOUNT_ERRFIRSTPAGE_7").DisplayValue : "";
+
+    }
+
+    var L_OVERRULE_STARTDATE = "";
+    var overruleDropdown = new List<DropdownModel>();
+    var L_OVERRULE_CONDITION = "";
+    
+    if (ViewBag.LabelFBBTR016 != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.LabelFBBTR016;
+        L_OVERRULE_STARTDATE = labelLovScreen.Where(c => c.Name == "L_OVERRULE_STARTDATE").Select(t => t.DisplayValue).FirstOrDefault().ToSafeString();
+        L_OVERRULE_CONDITION = labelLovScreen.Where(c => c.Name == "L_OVERRULE_CONDITION").Select(t => t.DisplayValue).FirstOrDefault().ToSafeString();
+
+    }
+
+    var L_ERR_CNDN = "";
+    if (ViewBag.LabelFBBOR016 != null)
+    {
+        var LabelFBBOR016 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR016;
+        L_ERR_CNDN = LabelFBBOR016.Where(c => c.Name == "L_ERR_CNDN").Select(t => t.DisplayValue).FirstOrDefault().ToSafeString();
+        
+    }
+
+    if (ViewBag.OverruleDropdown != null)
+    {
+        overruleDropdown = (List<DropdownModel>)ViewBag.OverruleDropDown;
+    }
+}
+
+<style>
+    .panel-heading a:after {
+        font-family: 'Glyphicons Halflings';
+        content: "\e114";
+        float: right;
+        color: grey;
+    }
+
+    .panel-heading a.collapsed:after {
+        content: "\e080";
+    }
+</style>
+
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<div id="divChoosePackage">
+    <div id="dynamicBody"></div>
+    <div id="div_overrule_condition">
+        <h4>
+            <strong>@L_DISCOUNT_PAGE_4</strong>
+        </h4>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <div class="col-md-12 text-center wrapButton-total">
+        <button id="btnConfirmAddBundling" class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="CheckAddBundling();">@B_DISCOUNT_CONFIRM</button>
+        &nbsp;
+        <button class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="cancel()">@B_DISCOUNT_CANCEL</button>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+
+</div>
+
+
+
+
+<div class="modal fade" id="modal_error_cndn" tabindex="-1" role="dialog" aria-labelledby="modal_cardreader_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p class="clearfix"></p>
+                <h3 class="text-center">
+                    @L_ERR_CNDN
+                </h3>
+                <p class="clearfix"></p>
+                <div class="col-md-12 text-center">
+                    <p class="clearfix"></p>
+                    <button type="button" class="btn btn-success" onclick=" CloseModal();">
+                        &nbsp; OK &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                    </button>
+                    &nbsp;&nbsp;
+                  
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function GetTableBundlingPackageList() {
+        var owner_product = $("#OwnerProduct").val();
+        var sff_promocode = $("#ProductCD").val();
+        var non_mobile_no = $("#NonMobileNo").val();
+        var address_id = $("#AddressId").val();
+        LockScreen(true,"");
+        $.ajax({
+            type: "POST",
+            url: "/ProcessAddBundling/GetTablePackageOntopListByChange",
+            dataType: "text",
+            data: {
+                owner_product: owner_product,
+                sff_promocode: sff_promocode,
+                non_mobile: non_mobile_no,
+                address_id: address_id
+            },
+            success: function (data) {
+                LockScreen(false);
+                if (data != "Nodata") {
+                    $("#dynamicBody").text("");
+                    $("#dynamicBody").append(data);
+                    $('#dynamicBody').find('table.table-hover').find('tbody').find('tr').attr("style", "cursor: pointer;");
+                    $('#dynamicBody').find('table.table-hover').find('tbody').find('tr').click(function () {
+                        $(this).find('th').find('input[type=radio]').prop('checked', true);
+                        onBindingSelectOptionInstallation();
+                    });
+
+                    var i = $("input[name=SelectPackage]:checked").val();
+                    $("#ProductOntopCD").val("");
+                    $("#ProductOntopCD").val($("#SFF_PROMOTION_CODE" + i).val());
+                    $("#SelectDetail").replaceWith("<span id='SelectDetail'>" + $("#PACKAGE_NAME" + i).val() + "</span>");
+                }
+                else {
+                    $("#dynamicBody").text("");
+                    $("#dynamicBody").append("<h2 class='text-center'>@L_DISCOUNT_ERRFIRSTPAGE_7</h2>");
+                    $("#basic-modal-content").find("#LastPopupMessage").html("");
+                    $("#basic-modal-content").find("#LastPopupMessage").html("<h3 class='text-center'>@L_DISCOUNT_ERRFIRSTPAGE_7</h3>");
+                    $('#basic-modal-content').modal();
+                }
+            },
+            error: function () {
+                $("#dynamicBody").text("");
+                $("#dynamicBody").append("<h2 class='text-center'>@L_DISCOUNT_ERRFIRSTPAGE_7</h2>");
+                $("#basic-modal-content").find("#LastPopupMessage").html("");
+                $("#basic-modal-content").find("#LastPopupMessage").html("<h3 class='text-center'>@L_DISCOUNT_ERRFIRSTPAGE_7</h3>");
+                $('#basic-modal-content').modal();
+            }
+        });
+    }
+
+    function CloseModal(){
+        $('#modal_error_cndn').modal('toggle');
+    }
+
+    function CheckAddBundling() {  
+            changePageHeader(3);
+            $("#divChoosePackage").hide();
+            $("#divConfirm").show();        
+    }
+
+    function onBindingSelectOptionInstallation() {
+        var i = $("input[name=SelectPackage]:checked").val();
+        $("#ProductOntopCD").val("");
+        $("#ProductOntopCD").val($("#SFF_PROMOTION_CODE" + i).val());
+        $("#SelectDetail").replaceWith("<span id='SelectDetail'>" + $("#PACKAGE_NAME" + i).val() + "</span>");
+    }
+</script>

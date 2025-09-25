@@ -1,0 +1,1790 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ResendOrderBulkCorpModel
+@using WBBEntity.PanelModels;
+@using System.Collections.Generic;
+@using FBBConfig.Extensions
+@{
+
+    Layout = "~/Views/Shared/_LayoutBulkCorp.cshtml";
+
+    var Version = "";
+    if (ViewBag.Version != null)
+    {
+        Version = Version + "-" + ViewBag.Version;
+    }
+    
+    string B_BACK = "";
+    string B_BROWSE = "";
+    string B_NEXT = "";
+    string B_REMOVE = "";
+    string B_UPLOAD = "";
+    string B_LOGIN_CANCEL = "";
+    string B_SAVE = "";
+    string B_EDIT = "";
+    string B_SEARCH = "";
+    string B_ADD_PROMTION = "";
+    string B_POP_UP_ADD = "";
+    string B_POP_UP_CANCEL = "";
+    string B_CLEAR = "";
+
+    string E_MESSAGE_03 = "";
+
+    string H_TITLE_06 = "";
+    string H_TITLE_07 = "";
+    string H_TITLE_09 = "";
+
+    string L_ACCEPT_CONDITION = "";
+    string L_ADDRESS_ID = "";
+    string L_BULK_NO = "";
+    string L_CA_MAIN_MOBILE = "";
+    string L_CA_PHONE = "";
+    string L_CONTACT_MOBILE = "";
+    string L_CONTACT_OFFICE_PHONE = "";
+    string L_CONTACT_PERSON = "";
+    string L_DOCUMENT_01 = "";
+    string L_DOCUMENT_02 = "";
+    string L_DOCUMENT_03 = "";
+    string L_DOCUMENT_04 = "";
+    string L_EMAIL = "";
+    string L_EVENT_CODE = "";
+    string L_EX_DOCUMENT = "";
+    string L_INSTALL_ADDRESS = "";
+    string L_INSTALL_DATE = "";
+    string L_INSTALL_TYPE = "";
+    string L_NAME = "";
+    string L_PACKAGE_CODE = "";
+    string L_PACKAGE_DESCRIPTION = "";
+    string L_PACKAGE_MAIN = "";
+    string L_PACKAGE_NAME = "";
+    string L_PACKAGE_SELECT = "";
+    string L_POSTCODE = "";
+    string L_PROVINCE = "";
+    string L_REMARK_01 = "";
+    string L_REMARK_02 = "";
+    string L_SELECT_MAIN_PACKAGE = "";
+    string L_SELECT_ONTOP_DISCOUNT = "";
+    string L_TERM_AND_CONDITION = "";
+    string L_VAT_NAME = "";
+    string L_WORDING_01 = "";
+    string L_WORDING_02 = "";
+    string L_FILE_NAME = "";
+    string L_ERR_FILE_SIZE = "";
+    string L_ERR_FILE_TYPE = "";
+
+    string P_ALERT_DETAIL_01 = "";
+    string P_ALERT_DETAIL_02 = "";
+    string P_ALERT_HEAD = "";
+
+    string LENGTH_MAX_ACCOUNT_NAME = "";
+    string LENGTH_MAX_ADDRESS_ID = "";
+    string LENGTH_MAX_BUILDING_NAME = "";
+    string LENGTH_MAX_CA_MAIN_MOBILE = "";
+    string LENGTH_MAX_CA_PHONE = "";
+    string LENGTH_MAX_EMAIL = "";
+    string LENGTH_MIN_CA_MAIN_MOBILE = "";
+    string LENGTH_MIN_ID_CARD_NUMBER = "";
+    string FILE_SIZE = "";
+    string FILE_TYPE = "";
+
+    string V_ACCOUNT_NAME = "";
+    string V_ADDRESS_ID = "";
+    string V_CA_MAIN_MOBILE = "";
+    string V_CA_PHONE = "";
+    string V_LOGIN_ASC_CODE = "";
+    string V_LOGIN_EMPLOYEE_CODE = "";
+    string V_LOGIN_LOCATION_CODE = "";
+    string V_PACKAGE_CODE = "";
+    string V_PACKAGE_NAME = "";
+
+
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        B_BACK = configscreen.Any(f => f.Name == "EXISTING_BUTTON_BACK") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_BUTTON_BACK").LovValue1 : "";
+        B_LOGIN_CANCEL = configscreen.Any(f => f.Name == "B_LOGIN_CANCEL") ? configscreen.FirstOrDefault(f => f.Name == "B_LOGIN_CANCEL").LovValue1 : "";
+        B_BROWSE = configscreen.Any(f => f.Name == "B_BROWSE") ? configscreen.FirstOrDefault(f => f.Name == "B_BROWSE").LovValue1 : "";
+        B_UPLOAD = configscreen.Any(f => f.Name == "B_UPLOAD") ? configscreen.FirstOrDefault(f => f.Name == "B_UPLOAD").LovValue1 : "";
+        B_REMOVE = configscreen.Any(f => f.Name == "B_REMOVE") ? configscreen.FirstOrDefault(f => f.Name == "B_REMOVE").LovValue1 : "";
+        B_NEXT = configscreen.Any(f => f.Name == "B_NEXT") ? configscreen.FirstOrDefault(f => f.Name == "B_NEXT").LovValue1 : "";
+        B_SAVE = configscreen.Any(f => f.Name == "B_SAVE") ? configscreen.FirstOrDefault(f => f.Name == "B_SAVE").LovValue1 : "";
+        B_EDIT = configscreen.Any(f => f.Name == "B_EDIT") ? configscreen.FirstOrDefault(f => f.Name == "B_EDIT").LovValue1 : "";
+        B_SEARCH = configscreen.Any(f => f.Name == "SEARCH_SEARCH_BUTTON") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_SEARCH_BUTTON").LovValue1 : "";
+        B_ADD_PROMTION = configscreen.Any(f => f.Name == "B_ADD_PROMTION") ? configscreen.FirstOrDefault(f => f.Name == "B_ADD_PROMTION").LovValue1 : "";
+        B_POP_UP_ADD = configscreen.Any(f => f.Name == "B_POP_UP_ADD") ? configscreen.FirstOrDefault(f => f.Name == "B_POP_UP_ADD").LovValue1 : "";
+        B_POP_UP_CANCEL = configscreen.Any(f => f.Name == "B_POP_UP_CANCEL") ? configscreen.FirstOrDefault(f => f.Name == "B_POP_UP_CANCEL").LovValue1 : "";
+        B_CLEAR = configscreen.Any(f => f.Name == "SEARCH_CLEAR_BUTTON") ? configscreen.FirstOrDefault(f => f.Name == "SEARCH_CLEAR_BUTTON").LovValue1 : "";
+
+        E_MESSAGE_03 = configscreen.Any(f => f.Name == "E_MESSAGE_03") ? configscreen.FirstOrDefault(f => f.Name == "E_MESSAGE_03").LovValue1 : "";
+        
+        L_ACCEPT_CONDITION = configscreen.Any(f => f.Name == "L_ACCEPT_CONDITION") ? configscreen.FirstOrDefault(f => f.Name == "L_ACCEPT_CONDITION").LovValue1 : "";
+        
+        L_ADDRESS_ID = configscreen.Any(f => f.Name == "L_ADDRESS_ID") ? configscreen.FirstOrDefault(f => f.Name == "L_ADDRESS_ID").LovValue1 : "";
+        L_BULK_NO = configscreen.Any(f => f.Name == "COLUMN_SEARCH_1") ? configscreen.FirstOrDefault(f => f.Name == "COLUMN_SEARCH_1").LovValue1 : "";
+        L_CA_MAIN_MOBILE = configscreen.Any(f => f.Name == "L_CA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "L_CA_MAIN_MOBILE").LovValue1 : "";
+        L_CA_PHONE = configscreen.Any(f => f.Name == "L_CA_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "L_CA_PHONE").LovValue1 : "";
+        L_CONTACT_MOBILE = configscreen.Any(f => f.Name == "L_CONTACT_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "L_CONTACT_MOBILE").LovValue1 : "";
+        L_CONTACT_OFFICE_PHONE = configscreen.Any(f => f.Name == "L_CONTACT_OFFICE_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "L_CONTACT_OFFICE_PHONE").LovValue1 : "";
+        L_CONTACT_PERSON = configscreen.Any(f => f.Name == "L_CONTACT_PERSON") ? configscreen.FirstOrDefault(f => f.Name == "L_CONTACT_PERSON").LovValue1 : "";
+        L_DOCUMENT_01 = configscreen.Any(f => f.Name == "L_DOCUMENT_01") ? configscreen.FirstOrDefault(f => f.Name == "L_DOCUMENT_01").LovValue1 : "";
+        L_DOCUMENT_02 = configscreen.Any(f => f.Name == "L_DOCUMENT_02") ? configscreen.FirstOrDefault(f => f.Name == "L_DOCUMENT_02").LovValue1 : "";
+        L_DOCUMENT_03 = configscreen.Any(f => f.Name == "L_DOCUMENT_03") ? configscreen.FirstOrDefault(f => f.Name == "L_DOCUMENT_03").LovValue1 : "";
+        L_DOCUMENT_04 = configscreen.Any(f => f.Name == "L_DOCUMENT_04") ? configscreen.FirstOrDefault(f => f.Name == "L_DOCUMENT_04").LovValue1 : "";
+        L_EMAIL = configscreen.Any(f => f.Name == "L_EMAIL") ? configscreen.FirstOrDefault(f => f.Name == "L_EMAIL").LovValue1 : "";
+        L_EVENT_CODE = configscreen.Any(f => f.Name == "L_EVENT_CODE") ? configscreen.FirstOrDefault(f => f.Name == "L_EVENT_CODE").LovValue1 : "";
+        L_EX_DOCUMENT = configscreen.Any(f => f.Name == "L_EX_DOCUMENT") ? configscreen.FirstOrDefault(f => f.Name == "L_EX_DOCUMENT").LovValue1 : "";
+        L_INSTALL_ADDRESS = configscreen.Any(f => f.Name == "L_INSTALL_ADDRESS") ? configscreen.FirstOrDefault(f => f.Name == "L_INSTALL_ADDRESS").LovValue1 : "";
+        L_INSTALL_DATE = configscreen.Any(f => f.Name == "L_INSTALL_DATE") ? configscreen.FirstOrDefault(f => f.Name == "L_INSTALL_DATE").LovValue1 : "";
+        L_INSTALL_TYPE = configscreen.Any(f => f.Name == "L_INSTALL_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "L_INSTALL_TYPE").LovValue1 : "";
+        L_NAME = configscreen.Any(f => f.Name == "L_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_NAME").LovValue1 : "";
+        L_PACKAGE_CODE = configscreen.Any(f => f.Name == "L_PACKAGE_CODE") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_CODE").LovValue1 : "";
+        L_PACKAGE_DESCRIPTION = configscreen.Any(f => f.Name == "L_PACKAGE_DESCRIPTION") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_DESCRIPTION").LovValue1 : "";
+        L_PACKAGE_MAIN = configscreen.Any(f => f.Name == "L_PACKAGE_MAIN") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_MAIN").LovValue1 : "";
+        L_PACKAGE_NAME = configscreen.Any(f => f.Name == "L_PACKAGE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_NAME").LovValue1 : "";
+        L_PACKAGE_SELECT = configscreen.Any(f => f.Name == "L_PACKAGE_SELECT") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_SELECT").LovValue1 : "";
+        L_POSTCODE = configscreen.Any(f => f.Name == "L_POSTCODE") ? configscreen.FirstOrDefault(f => f.Name == "L_POSTCODE").LovValue1 : "";
+        L_PROVINCE = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue1 : "";
+        L_REMARK_01 = configscreen.Any(f => f.Name == "L_REMARK_01") ? configscreen.FirstOrDefault(f => f.Name == "L_REMARK_01").LovValue1 : "";
+        L_REMARK_02 = configscreen.Any(f => f.Name == "L_REMARK_02") ? configscreen.FirstOrDefault(f => f.Name == "L_REMARK_02").LovValue1 : "";
+        L_SELECT_MAIN_PACKAGE = configscreen.Any(f => f.Name == "L_SELECT_MAIN_PACKAGE") ? configscreen.FirstOrDefault(f => f.Name == "L_SELECT_MAIN_PACKAGE").LovValue1 : "";
+        L_SELECT_ONTOP_DISCOUNT = configscreen.Any(f => f.Name == "L_SELECT_ONTOP_DISCOUNT") ? configscreen.FirstOrDefault(f => f.Name == "L_SELECT_ONTOP_DISCOUNT").LovValue1 : "";
+        L_TERM_AND_CONDITION = configscreen.Any(f => f.Name == "L_TERM_AND_CONDITION") ? configscreen.FirstOrDefault(f => f.Name == "L_TERM_AND_CONDITION").LovValue1 : "";
+        L_VAT_NAME = configscreen.Any(f => f.Name == "L_VAT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_VAT_NAME").LovValue1 : "";
+        L_WORDING_01 = configscreen.Any(f => f.Name == "L_WORDING_01") ? configscreen.FirstOrDefault(f => f.Name == "L_WORDING_01").LovValue1 : "";
+        L_WORDING_02 = configscreen.Any(f => f.Name == "L_WORDING_02") ? configscreen.FirstOrDefault(f => f.Name == "L_WORDING_02").LovValue1 : "";
+        L_FILE_NAME = configscreen.Any(f => f.Name == "L_FILE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_FILE_NAME").LovValue1 : "";
+        L_ERR_FILE_SIZE = configscreen.Any(f => f.Name == "L_ERR_FILE_SIZE") ? configscreen.FirstOrDefault(f => f.Name == "L_ERR_FILE_SIZE").LovValue1 : "";
+        L_ERR_FILE_TYPE = configscreen.Any(f => f.Name == "L_ERR_FILE_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "L_ERR_FILE_TYPE").LovValue1 : "";
+
+        H_TITLE_06 = configscreen.Any(f => f.Name == "H_TITLE_06") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_06").LovValue1 : "";
+        H_TITLE_07 = configscreen.Any(f => f.Name == "H_TITLE_07") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_07").LovValue1 : "";
+        H_TITLE_09 = configscreen.Any(f => f.Name == "H_TITLE_09") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_09").LovValue1 : "";
+
+        P_ALERT_DETAIL_01 = configscreen.Any(f => f.Name == "P_ALERT_DETAIL_01") ? configscreen.FirstOrDefault(f => f.Name == "P_ALERT_DETAIL_01").LovValue1 : "";
+        P_ALERT_DETAIL_02 = configscreen.Any(f => f.Name == "P_ALERT_DETAIL_02") ? configscreen.FirstOrDefault(f => f.Name == "P_ALERT_DETAIL_02").LovValue1 : "";
+        P_ALERT_HEAD = configscreen.Any(f => f.Name == "P_ALERT_HEAD") ? configscreen.FirstOrDefault(f => f.Name == "P_ALERT_HEAD").LovValue1 : "";
+
+        LENGTH_MAX_ACCOUNT_NAME = configscreen.Any(f => f.Name == "LENGTH_MAX_ACCOUNT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_ACCOUNT_NAME").LovValue1 : "";
+        LENGTH_MAX_ADDRESS_ID = configscreen.Any(f => f.Name == "LENGTH_MAX_ADDRESS_ID") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_ADDRESS_ID").LovValue1 : "";
+        LENGTH_MAX_BUILDING_NAME = configscreen.Any(f => f.Name == "LENGTH_MAX_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_BUILDING_NAME").LovValue1 : "";
+        LENGTH_MAX_CA_MAIN_MOBILE = configscreen.Any(f => f.Name == "LENGTH_MAX_CA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_CA_MAIN_MOBILE").LovValue1 : "";
+        LENGTH_MAX_CA_PHONE = configscreen.Any(f => f.Name == "LENGTH_MAX_CA_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_CA_PHONE").LovValue1 : "";
+        LENGTH_MAX_EMAIL = configscreen.Any(f => f.Name == "LENGTH_MAX_EMAIL") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_EMAIL").LovValue1 : "";
+        LENGTH_MIN_CA_MAIN_MOBILE = configscreen.Any(f => f.Name == "LENGTH_MIN_CA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MIN_CA_MAIN_MOBILE").LovValue1 : "";
+        LENGTH_MIN_ID_CARD_NUMBER = configscreen.Any(f => f.Name == "LENGTH_MIN_ID_CARD_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MIN_ID_CARD_NUMBER").LovValue1 : "";
+        FILE_SIZE = configscreen.Any(f => f.Name == "FILE_SIZE") ? configscreen.FirstOrDefault(f => f.Name == "FILE_SIZE").LovValue1 : "";
+        FILE_TYPE = configscreen.Any(f => f.Name == "FILE_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "FILE_TYPE").LovValue1 : "";
+
+        V_ACCOUNT_NAME = configscreen.Any(f => f.Name == "V_ACCOUNT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "V_ACCOUNT_NAME").LovValue1 : "";
+        V_ADDRESS_ID = configscreen.Any(f => f.Name == "V_ADDRESS_ID") ? configscreen.FirstOrDefault(f => f.Name == "V_ADDRESS_ID").LovValue1 : "";
+        V_CA_MAIN_MOBILE = configscreen.Any(f => f.Name == "V_CA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "V_CA_MAIN_MOBILE").LovValue1 : "";
+        V_CA_PHONE = configscreen.Any(f => f.Name == "V_CA_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "V_CA_PHONE").LovValue1 : "";
+        V_LOGIN_ASC_CODE = configscreen.Any(f => f.Name == "V_LOGIN_ASC_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_LOGIN_ASC_CODE").LovValue1 : "";
+        V_LOGIN_EMPLOYEE_CODE = configscreen.Any(f => f.Name == "V_LOGIN_EMPLOYEE_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_LOGIN_EMPLOYEE_CODE").LovValue1 : "";
+        V_LOGIN_LOCATION_CODE = configscreen.Any(f => f.Name == "V_LOGIN_LOCATION_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_LOGIN_LOCATION_CODE").LovValue1 : "";
+        V_PACKAGE_CODE = configscreen.Any(f => f.Name == "V_PACKAGE_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_PACKAGE_CODE").LovValue1 : "";
+        V_PACKAGE_NAME = configscreen.Any(f => f.Name == "V_PACKAGE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "V_PACKAGE_NAME").LovValue1 : "";
+
+    }
+}
+
+<style>
+    .vertical-alignment-helper {
+        display: table;
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .vertical-align-center {
+        display: table-cell;
+        vertical-align: middle;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        pointer-events: all;
+    }
+
+    .fa-6 {
+        font-size: 10em;
+    }
+
+    .topbar_ribbon {
+        padding-left: 10px;
+        float: left;
+        height: 60px;
+    }
+
+    .nav-nopadding {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        width: 20%;
+        background-color: #8DC63F;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .vertical-alignment-helper {
+        display: table;
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .vertical-align-center {
+        display: table-cell;
+        vertical-align: middle;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        pointer-events: all;
+    }
+
+    .fa-6 {
+        font-size: 10em;
+    }
+
+    .preview-img {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+    }
+
+    .preview-pdf {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+        border: 1px solid black;
+    }
+
+    #ais_topbar {
+        display: block;
+    }
+
+        #ais_topbar .topbar_ribbon {
+            padding-left: 10px;
+            float: left;
+            height: 60px;
+        }
+
+    .circlemenu {
+        width: 25%;
+        height: 25%;
+        background: #9bba25;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+    }
+
+    .col1 {
+        width: 5%;
+    }
+
+        .alertpopup {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+
+.add-border-rounded-green {
+    border-radius: 8px;
+    border: 7px solid #8DC63F; /*before color #74A333*/
+    background: #fff;
+}
+
+</style>
+ <div id="tabResendOrd">
+ 
+     <div id="resendord">
+    <div class="container-fluid">
+
+        <div class="modal fade" id="Modal-Bulk-Success" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content add-border-rounded-green">
+           <div class="modal-header" style="border-bottom-color:none;background-color:#8dc63f;color:white;">
+                @P_ALERT_HEAD
+            </div>
+            <div class="modal-body">
+                <div>
+                    <p class="clearfix"></p>
+
+                    <h5 class="text-center" style="font-weight: bold;color:grey">
+                        @Html.Raw(@P_ALERT_DETAIL_01) &nbsp; <span id="BulkNoSuccess"></span>
+                    </h5>
+
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" onclick="_closeModalresendSuccess();">OK</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="modal fade" id="Modal-Bulk-Error" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content add-border-rounded-green">
+                        <div class="modal-header" style="border-bottom-color:none;background-color:#8dc63f;color:white;">
+                            @P_ALERT_HEAD
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <p class="clearfix"></p>
+                                <h5 class="text-center" style="font-weight: bold;color:grey">&nbsp;<span id="ErrortxtResndBulk"></span></h5>
+                                
+
+                                <p class="clearfix"></p>
+                                <div class="col-md-12 text-center">
+                                    <p class="clearfix"></p>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="_closeModalresndError();">&nbsp; OK &nbsp; </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="border-top: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="modal fade" id="modalResndError" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content add-border-rounded-green">
+                        <div class="modal-header" style="border-bottom-color:none; background-color:#8dc63f;color:white;">
+                           @P_ALERT_HEAD
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <p class="clearfix"></p>
+                                
+                                <h5 class="text-center" style="font-weight: bold;color:grey">@E_MESSAGE_03</h5>
+
+                                <p class="clearfix"></p>
+                                <div class="col-md-12 text-center">
+                                    <p class="clearfix"></p>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick=""> OK </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="border-top: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="modal fade" id="modalResndError2" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content add-border-rounded-green">
+                        <div class="modal-header" style="border-bottom-color:none; background-color:#8dc63f;color:white;">
+                           @P_ALERT_HEAD
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <p class="clearfix"></p>
+                                <h5 class="text-center" style="font-weight: bold;color:grey;">&nbsp;<span id="ErrortxtResndBulk2"></span></h5>
+
+                                <p class="clearfix"></p>
+                                <div class="col-md-12 text-center">
+                                    <p class="clearfix"></p>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick=""> CLOSE </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="border-top: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div id="bulkcorp_ResendAccount">
+
+            <div class="container-fluid i-gap i-header">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>@H_TITLE_09</span>
+                            <a data-toggle="collapse" class="pull-right" href="#Panel0" onclick="onPanelToggle(this);" id="PanelHeader0"><i class="fa fa-chevron-circle-down fa-lg" id="PanelHeaderArrow0"></i></a>
+                        </h3>
+                    </div>
+
+                    <div class="container-fluid center-block">  
+                        <div id="Panel0" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="rowresnd4_0" class="row i-gap-top-1">
+
+                                    <div class="col-sm-2 col-md-2">
+
+                                    </div>
+
+                                    <div class="col-sm-2 col-md-2">
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_0"></i>&nbsp;&nbsp; @L_BULK_NO</label>
+                                        
+                                    </div>
+                                    
+
+                                    <div class="col-sm-4 col-md-4">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndbulkno", null, new
+                                       {
+                                           @class = "k-textbox form-control required",
+                                           @id = "txtresndbulkno",
+                                           @name = "txtresndbulkno",
+                                           
+                                       })
+                                        </div>
+                                        <span id="requiredfor-txtresndbulkno"></span>
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtresndbulkno"></div>
+                                    </div>
+
+                                    <div class="col-sm-3 col-md-3">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            <label role="button" class="btn btn-info" onclick="SearchResndOrder();"><i class="fa fa-search fa-lg"></i> &nbsp;&nbsp;@B_SEARCH</label>
+                                            <label role="button" class="btn btn-danger" onclick="ClearResndOrder();"><i class="fa fa-eraser fa-lg"></i>&nbsp;&nbsp;@B_CLEAR</label>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-1 col-md-1">
+
+                                    </div>
+
+                                </div>
+                                </div>
+
+                            </div>
+                       </div>
+
+                    <div class="container-fluid i-gap i-header">
+
+                            <div class="panel-body">
+
+                                <div id="rowresnd4_1" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2">
+                                    </div>
+
+                                    <div class="col-sm-2 col-md-2">
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_1"></i>&nbsp;&nbsp; @L_INSTALL_TYPE</label>
+                                        
+                                    </div>
+                                    
+
+                                    <div class="col-sm-4 col-md-4">
+                                        <div class="i-fg-data-entry">
+                                            @(Html.Kendo().DropDownList()
+                                                        .Name("ddlresndTechInstall")
+                                                .DataTextField("LOV_VAL1")
+                                                .DataValueField("LOV_VAL1")
+                                                .HtmlAttributes(new { @class = "form-control i-form-control-extend",@disabled="disabled" })
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectInstallType", "RegisterBulkCorp", new { type = "FBBBULK_INSTALL_TYPE" });
+                                                    });
+                                                })
+
+                                            )
+                                        </div>
+                                        <span id="requiredfor-ddlresndTechInstall"></span>
+                                        <div class="i-fg-data-entry-validation" id="validatefor-ddlresndTechInstall"></div>
+                                    </div>
+
+                                    <div class="col-sm-3 col-md-3">
+                                        <label></label>
+                                        <div class="i-fg-data-entry">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_2" class="row i-gap-top-1">
+
+                                    <div class="col-sm-2 col-md-2"></div>
+
+                                    <div class="col-sm-2 col-md-2">
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_2"></i>&nbsp;&nbsp; @L_ADDRESS_ID</label>
+                                        
+                                    </div>
+                                    
+
+                                    <div class="col-sm-4 col-md-4">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndAddrID", null, new
+                                       {
+                                           @class = "k-textbox form-control required",
+                                           @id = "txtresndAddrID",
+                                           @name = "txtresndAddrID",
+                                           @disabled = "disabled"
+                                       })
+                                        </div>
+                                        <span id="requiredfor-txtresndAddrID"></span>
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtresndAddrID"></div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+                                        <label></label>
+                                        <div class="i-fg-data-entry">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_3" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+
+                                    <div class="col-sm-2 col-md-2">
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_3"></i>&nbsp;&nbsp; @L_EVENT_CODE</label>
+                                        
+
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndEvntCD", null, new
+                                       {
+                                           @class = "k-textbox form-control required",
+                                           @id = "txtresndEvntCD",
+                                           @name = "txtresndEvntCD",
+                                           @disabled = "disabled"
+                                       })
+                                        </div>
+                                        <span id="requiredfor-txtresndEvntCD"></span>
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtresndEvntCD"></div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+                                        <label></label>
+                                        <div class="i-fg-data-entry">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_4" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2">
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_4"></i>&nbsp;&nbsp; @L_CONTACT_PERSON</label>
+                                        
+
+                                    </div>
+                                   
+                                    <div class="col-sm-2 col-md-2">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndContactFirstN", null, new
+                                       {
+                                           @class = "k-textbox form-control required",
+                                           @id = "txtresndContactFirstN",
+                                           @name = "txtresndContactFirstN",
+                                           @placeholder = "First Name",
+                                           @disabled = "disabled"
+                                       })
+                                        </div>
+                                        <span id="requiredfor-txtresndContactFirstN"></span>
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtresndContactFirstN"></div>
+                                    </div>
+
+                                    <div class="col-sm-2 col-md-2">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndContactLastN", null, new
+                                       {
+                                           @class = "k-textbox form-control required",
+                                           @id = "txtresndContactLastN",
+                                           @name = "txtresndContactLastN",
+                                           @placeholder = "Last Name",
+                                           @disabled = "disabled"
+                                       })
+                                        </div>
+                                        <span id="requiredfor-txtresndContactLastN"></span>
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtresndContactLastN"></div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_5" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2">
+                                        <label></label>
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_5"></i>&nbsp;&nbsp; @L_CONTACT_MOBILE</label>
+                                        
+
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndContactMobile", null, new
+                                       {
+                                           @class = "k-textbox form-control required",
+                                           @id = "txtresndContactMobile",
+                                           @name = "txtresndContactMobile",
+                                           @maxlength = @LENGTH_MAX_CA_MAIN_MOBILE,
+                                           @disabled = "disabled"
+                                       })
+                                        </div>
+                                        <span id="requiredfor-txtresndContactMobile"></span>
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtresndContactMobile"></div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+                                        <label></label>
+                                        <div class="i-fg-data-entry">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_6" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2">
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_6"></i>&nbsp;&nbsp; @L_CONTACT_OFFICE_PHONE</label>
+
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndOfficePhone", null, new
+                                       {
+                                           @class = "k-textbox form-control required",
+                                           @id = "txtresndOfficePhone",
+                                           @name = "txtresndOfficePhone",
+                                           @maxlength = @LENGTH_MAX_CA_PHONE,
+                                           @disabled = "disabled"
+                                       })
+                                        </div>
+                                        <span>&nbsp;</span>
+                                        <div class="i-fg-data-entry-validation"></div>
+                                    </div>
+
+                                    <div class="col-sm-2 col-md-2">
+
+                                        <div class="i-fg-data-entry">
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-2 col-md-2">
+
+                                        <div class="i-fg-data-entry">
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div id="rowresnd4_7" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2">
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_7"></i>&nbsp;&nbsp; @L_EMAIL</label>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndEmail", null, new
+                                       {
+                                           @class = "k-textbox form-control required",
+                                           @id = "txtresndEmail",
+                                           @name = "txtresndEmail",
+                                           @TextMode = "email",
+                                           @disabled = "disabled"
+                                       })
+                                        </div>
+                                        <div class="i-fg-data-entry-validation"></div>
+                                    </div>
+
+                                    <div class="col-sm-2 col-md-2">
+
+                                        <div class="i-fg-data-entry">
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-2 col-md-2">
+                                        <div class="i-fg-data-entry">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_7space" class="row i-gap-top-1"></div>
+
+                                <div id="rowresnd4_8" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2">
+                                        <label></label>
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_8"></i>&nbsp;&nbsp; @L_SELECT_MAIN_PACKAGE</label>
+                                        
+
+                                    </div>
+
+                                    <div class="col-sm-1 col-md-1">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndsffpromoCD", null, new
+                                       {
+                                           @class = "dis k-textbox form-control",
+                                           @id = "txtresndsffpromoCD",
+                                           @name = "txtresndsffpromoCD",
+                                           @disabled = "disabled"
+                                       })
+                                        </div>
+                                        
+
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-5">
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndPackName", null, new
+                                       {
+                                           @class = "dis k-textbox form-control",
+                                           @id = "txtresndPackName",
+                                           @name = "txtresndPackName",
+                                           @disabled = "disabled"
+                                       }
+                                            )
+                                            
+                                        </div>
+                                        <span id="requiredfor-txtresndPackName"></span>
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtresndPackName"></div>
+
+
+                                    </div>
+                                    
+
+                                </div>
+
+                                <div id="rowresnd4_9" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-1 col-md-1">
+                                    </div>
+                                    <div class="i-fg-data-entry">
+                                        <label>&nbsp;&nbsp; @Html.Raw(@L_PACKAGE_DESCRIPTION)&nbsp;:&nbsp;</label>
+                                        
+
+                                    </div>
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-9 col-md-9">
+
+                                        <div class="i-fg-data-entry">
+                                            <div class=" col-sm-1 col-md-1 col1">
+                                            </div>
+                                            <div class=" col-sm-9 col-md-9">
+                                                
+                                                <div class="i-fg-data-entry">
+                                                    @Html.TextArea("txtresndsffbillth", null,
+                                                    new
+                                                    {
+                                                        cols = "20",
+                                                        rows = "2",
+                                                        @class = "dis k-textbox form-control statictextarea",
+                                                        @id = "txtresndsffbillth",
+                                                        @name = "txtresndsffbillth",
+                                                        @disabled = "disabled"
+                                                    })
+                                                </div>
+                                                <span id="requiredfor-txtresndsffbillth"></span>
+                                                <div class="i-fg-data-entry-validation" id="validatefor-txtresndsffbillth"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_9space" class="row i-gap-top-1"></div>
+
+                                <div id="rowresnd4_10" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2">
+                                        <label></label>
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_10"></i>&nbsp;&nbsp; @L_SELECT_ONTOP_DISCOUNT</label>
+                                       
+
+                                    </div>
+
+                                    <div class="col-sm-1 col-md-1">
+                                        
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndOntopDispkgsffpromoCD", null, new
+                                       {
+                                           @class = "dis k-textbox form-control",
+                                           @id = "txtresndOntopDispkgsffpromoCD",
+                                           @name = "txtresndOntopDispkgsffpromoCD",
+                                           @disabled = "disabled"
+                                       })
+                                        </div>
+                                        @*<span id="requiredfor-txtresndOntopDispkgsffpromoCD"></span>*@
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtresndOntopDispkgsffpromoCD"></div>
+
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-5">
+                                        <div class="i-fg-data-entry">
+                                            @Html.TextBox("txtresndOntopDispkgPackName", null, new
+                                       {
+                                           @class = "dis k-textbox form-control",
+                                           @id = "txtresndOntopDispkgPackName",
+                                           @name = "txtresndOntopDispkgPackName",
+                                           @disabled = "disabled"
+                                       }
+                                            )
+                                            
+                                        </div>
+                                        
+                                        <div class="i-fg-data-entry-validation" id="validatefor-txtresndOntopDispkgPackName"></div>
+
+
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_11" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class=" col-sm-1 col-md-1 col1">
+                                    </div>
+                                    <div class="i-fg-data-entry">
+                                        <label>&nbsp;&nbsp; @Html.Raw(@L_PACKAGE_DESCRIPTION)&nbsp;:&nbsp;</label>
+                                        
+
+                                    </div>
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-9 col-md-9">
+
+                                        <div class="i-fg-data-entry">
+                                            <div class=" col-sm-1 col-md-1 col1">
+                                            </div>
+                                            <div class=" col-sm-9 col-md-9">
+                                                
+                                                <div class="i-fg-data-entry">
+                                                    @Html.TextArea("txtresndOntopDispkgsffbillth", null,
+                                                    new
+                                                    {
+                                                        cols = "20",
+                                                        rows = "2",
+                                                        @class = "dis k-textbox form-control statictextarea",
+                                                        @id = "txtresndOntopDispkgsffbillth",
+                                                        @name = "txtresndOntopDispkgsffbillth",
+                                                        @disabled = "disabled"
+                                                    })
+                                                </div>
+                                                
+                                                <div class="i-fg-data-entry-validation" id="validatefor-txtresndOntopDispkgsffbillth"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_12space" class="row i-gap-top-1"></div>
+
+                                <div id="rowresnd4_12" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2"></div>
+                                    <div class="col-sm-2 col-md-2">
+                                        <label><i class="fa fa-angle-right fa-lg" aria-hidden="true" style="color:#9bba25;" id="Arrow4_12"></i>&nbsp;&nbsp; @L_INSTALL_ADDRESS</label>
+                                        
+
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+
+                                        <span></span>
+                                        <div class="i-fg-data-entry">
+                                          
+                                            @(Html.Kendo().Upload()
+                                                .Name("files")
+                                        .Async(a => a
+                                               .Save("SaveExcel", "ResendOrderBulkCorp")
+                                            .AutoUpload(true)
+
+                                            )
+                                            .HtmlAttributes(new { accept = "application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
+                                            .Events(events => events
+                                                .Upload("onExcelUpload")
+                                                .Select("onSelectUpload")
+                                                .Success("onSuccess")
+                                                .Error("onError"))
+                                                .Multiple(false)
+
+                                            )
+
+                                            </div>
+                                        <div class="i-fg-data-entry-validation" id="validatefor-files"></div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4 ">
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12" style="display:none">
+                                        @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.BulkExcelDataResend>()
+                                    .Name("ResndImportExcellist")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.No).Title("No").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.OrderNumber).Title("OrderNumber").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.installAddress1).Title("installAddress1").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.installAddress2).Title("installAddress2").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.installAddress3).Title("installAddress3").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.installAddress4).Title("installAddress4").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.installAddress5).Title("installAddress5").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.latitude).Title("latitude").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.longitude).Title("longitude").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.install_date).Title("install_date").HtmlAttributes(new { style = "text-align:left;" });
+                                    })
+                                    .HtmlAttributes(new { style = "height: 20px;" })@*"height: 380px;"*@
+                                    .Pageable(pageable => pageable
+                                        //  .PageSizes(true)
+                                                        .PageSizes(new int[] { 20, 50, 100 })
+                                                        .Numeric(true)
+                                                        )
+                                                        .Scrollable()
+                                                        .DataSource(dataSource => dataSource
+                                                            .Ajax()
+                                                            .PageSize(20)
+                                                            .Read(read => read.Action("Gettogrid", "ResendOrderBulkCorp"))
+
+                                                            )
+                                        )
+                                    </div>
+                                </div>
+
+                                <div id="rowresnd4_14" class="row i-gap-top-1">
+                                    <div class="col-sm-2 col-md-2">
+
+
+                                    </div>
+                                    <div class="col-sm-1 col-md-1">
+
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+                                        <label></label>
+                                        <div class="i-fg-data-entry">
+
+                                            <span class="label" style="color: black; padding: 0 0 0 0 !important; white-space: normal !important;"><a href="~/Template/RESEND_BULK_UPLOAD_TEMPLATE.xlsx">@L_EX_DOCUMENT</a> &nbsp;&nbsp;&nbsp; - @Html.Raw(@L_REMARK_01)</span>
+                                        </div>
+                                        <div class="i-fg-data-entry">
+                                            <span class="label" style="color: black; padding: 0 0 0 0 !important; white-space: normal !important;"> &nbsp;&nbsp;&nbsp; - @Html.Raw(@L_REMARK_02)</span>
+                                        </div>
+                                        <div class="i-fg-data-entry-validation"></div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4">
+                                        <label></label>
+                                        <div class="i-fg-data-entry">
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-1 col-md-1">
+
+                                    </div>
+
+                                </div>
+
+                                <div id="rowresnd4_15" class="row i-gap-top-1">
+
+                                    <div class="row i-gap-top-1">
+                                    </div>
+
+                                    <div class="col-sm-11 col-md-11 i-text-align-center">
+                                        <a class="btn btn-info" id="BackResend" onclick="_BackResend();"><i class="fa fa-arrow-circle-o-left fa-lg"></i>&nbsp;&nbsp;@B_BACK</a>
+                                        &nbsp;
+                                        <a class="btn btn-success" id="SaveResend" onclick="_SaveResend();"><i class="fa fa-arrow-circle-o-right fa-lg"></i>&nbsp;&nbsp;@B_NEXT</a>
+                                    </div>
+
+                                </div>
+
+
+                    </div>
+
+                <br />
+            </div>
+
+
+                </div>
+            </div>
+
+
+
+
+      </div>
+    </div>
+
+     </div>
+<br />
+
+<div id="container">
+    <div class="row_ais">
+        <div class="column large-12 medium-12 small-12">
+            <div class="detail-for-menu">
+                <div class="innercontent">
+                    <div class="row_ais">
+                        <div id="renderBody" class="card"></div>
+                        <div class="form-summary col-md-12 col-xs-12 addrounded">
+                            
+                        </div>
+
+                        <input id="BulkEventPage" name="BulkEventPage" type="hidden" value=""/>
+                        <input type="hidden" id="Register_device" name="Register_device" value="" />
+                        <input type="hidden" id="Browser_type" name="Browser_type" value="" />
+                        
+                        <input type="hidden" id="ERROR_MSG" value="" />
+                        <div id="HiddenForLogin" style="display: none">
+                            <input id="LanguagePage" name="LanguagePage" type="hidden" value="1"/>
+                            <input id="getLcCode" name="getLcCode" type="hidden" value=""/>
+                            <input id="getASCCode" name="getASCCode" type="hidden" value=""/>
+                            <input id="getEmpID" name="getEmpID" type="hidden" value=""/>
+                            <input id="getPageCode" name="getPageCode" type="hidden" value=""/>
+                            <input id="getAccountCat" name="getAccountCat" value="" type="hidden" />
+                            <input id="getBulkNumber" name="getBulkNumber" value="" type="hidden" />
+
+                            @*Deposit Return MainPkg List*@
+                            <input id="getMainPkg_sffpromocd" name="getMainPkg_sffpromocd" value="" type="hidden" />
+                            <input id="getMainPkg_pkg_class" name="getMainPkg_pkg_class" value="" type="hidden" />
+                            <input id="getMainPkg_sffpromobillth" name="getMainPkg_sffpromobillth" value="" type="hidden" />
+                            <input id="getMainPkg_sffpromobilleng" name="getMainPkg_sffpromobilleng" value="" type="hidden" />
+                            <input id="getMainPkg_pkgnameth" name="getMainPkg_pkgnameth" value="" type="hidden" />
+                            <input id="getMainPkg_pkgnameeng" name="getMainPkg_pkgnameeng" value="" type="hidden" />
+                            <input id="getMainPkg_recur_charge" name="getMainPkg_recur_charge" value="" type="hidden" />
+                            <input id="getMainPkg_pre_init_charge" name="getMainPkg_pre_init_charge" value="" type="hidden" />
+                            <input id="getMainPkg_init_charge" name="getMainPkg_init_charge" value="" type="hidden" />
+                            <input id="getMainPkg_down_speed" name="getMainPkg_down_speed" value="" type="hidden" />
+                            <input id="getMainPkg_up_speed" name="getMainPkg_up_speed" value="" type="hidden" />
+                            <input id="getMainPkg_product_type" name="getMainPkg_product_type" value="" type="hidden" />
+                            <input id="getMainPkg_owner_product" name="getMainPkg_owner_product" value="" type="hidden" />
+                            <input id="getMainPkg_product_subtype" name="getMainPkg_product_subtype" value="" type="hidden" />
+                            <input id="getMainPkg_product_subtype2" name="getMainPkg_product_subtype2" value="" type="hidden" />
+                            <input id="getMainPkg_tech" name="getMainPkg_tech" value="" type="hidden" />
+                            <input id="getMainPkg_pkg_grp" name="getMainPkg_pkg_grp" value="" type="hidden" />
+                            <input id="getMainPkg_pkg_cd" name="getMainPkg_pkg_cd" value="" type="hidden" />
+                            <input id="getMainPkg_network_type" name="getMainPkg_network_type" value="" type="hidden" />
+                            <input id="getMainPkg_cust_type" name="getMainPkg_cust_type" value="" type="hidden" />
+
+                            @*Deposit Return OntopPkg1 List*@
+                            <input id="getOntopPkg1_sffpromocd" name="getOntopPkg1_sffpromocd" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkg_class" name="getOntopPkg1_pkg_class" value="" type="hidden" />
+                            <input id="getOntopPkg1_sffpromobillth" name="getOntopPkg1_sffpromobillth" value="" type="hidden" />
+                            <input id="getOntopPkg1_sffpromobilleng" name="getOntopPkg1_sffpromobilleng" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkgnameth" name="getOntopPkg1_pkgnameth" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkgnameeng" name="getOntopPkg1_pkgnameeng" value="" type="hidden" />
+                            <input id="getOntopPkg1_recur_charge" name="getOntopPkg1_recur_charge" value="" type="hidden" />
+                            <input id="getOntopPkg1_pre_init_charge" name="getOntopPkg1_pre_init_charge" value="" type="hidden" />
+                            <input id="getOntopPkg1_init_charge" name="getOntopPkg1_init_charge" value="" type="hidden" />
+                            <input id="getOntopPkg1_down_speed" name="getOntopPkg1_down_speed" value="" type="hidden" />
+                            <input id="getOntopPkg1_up_speed" name="getOntopPkg1_up_speed" value="" type="hidden" />
+                            <input id="getOntopPkg1_product_type" name="getOntopPkg1_product_type" value="" type="hidden" />
+                            <input id="getOntopPkg1_owner_product" name="getOntopPkg1_owner_product" value="" type="hidden" />
+                            <input id="getOntopPkg1_product_subtype" name="getOntopPkg1_product_subtype" value="" type="hidden" />
+                            <input id="getOntopPkg1_product_subtype2" name="getOntopPkg1_product_subtype2" value="" type="hidden" />
+                            <input id="getOntopPkg1_tech" name="getOntopPkg1_tech" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkg_grp" name="getOntopPkg1_pkg_grp" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkg_cd" name="getOntopPkg1_pkg_cd" value="" type="hidden" />
+                            <input id="getOntopPkg1_cust_type" name="getOntopPkg1_cust_type" value="" type="hidden" />
+
+                            @*Deposit Return OntopPkg2 List*@
+                            <input id="getOntopPkg2_sffpromocd" name="getOntopPkg2_sffpromocd" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkg_class" name="getOntopPkg2_pkg_class" value="" type="hidden" />
+                            <input id="getOntopPkg2_sffpromobillth" name="getOntopPkg2_sffpromobillth" value="" type="hidden" />
+                            <input id="getOntopPkg2_sffpromobilleng" name="getOntopPkg2_sffpromobilleng" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkgnameth" name="getOntopPkg2_pkgnameth" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkgnameeng" name="getOntopPkg2_pkgnameeng" value="" type="hidden" />
+                            <input id="getOntopPkg2_recur_charge" name="getOntopPkg2_recur_charge" value="" type="hidden" />
+                            <input id="getOntopPkg2_pre_init_charge" name="getOntopPkg2_pre_init_charge" value="" type="hidden" />
+                            <input id="getOntopPkg2_init_charge" name="getOntopPkg2_init_charge" value="" type="hidden" />
+                            <input id="getOntopPkg2_down_speed" name="getOntopPkg2_down_speed" value="" type="hidden" />
+                            <input id="getOntopPkg2_up_speed" name="getOntopPkg2_up_speed" value="" type="hidden" />
+                            <input id="getOntopPkg2_product_type" name="getOntopPkg2_product_type" value="" type="hidden" />
+                            <input id="getOntopPkg2_owner_product" name="getOntopPkg2_owner_product" value="" type="hidden" />
+                            <input id="getOntopPkg2_product_subtype" name="getOntopPkg2_product_subtype" value="" type="hidden" />
+                            <input id="getOntopPkg2_product_subtype2" name="getOntopPkg2_product_subtype2" value="" type="hidden" />
+                            <input id="getOntopPkg2_tech" name="getOntopPkg2_tech" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkg_grp" name="getOntopPkg2_pkg_grp" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkg_cd" name="getOntopPkg2_pkg_cd" value="" type="hidden" />
+                            <input id="getOntopPkg2_cust_type" name="getOntopPkg2_cust_type" value="" type="hidden" />
+
+                            @*Deposit Return ServicePkg1 List*@
+                            <input id="getServicePkg1_servicecd" name="getOntopPkg1_servicecd" value="" type="hidden" />
+                            <input id="getServicePkg1_productname" name="getOntopPkg1_productname" value="" type="hidden" />
+
+                            @*Deposit Return ServicePkg2 List*@
+                            <input id="getServicePkg2_servicecd" name="getServicePkg2_servicecd" value="" type="hidden" />
+                            <input id="getServicePkg2_productname" name="getServicePkg2_productname" value="" type="hidden" />
+
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script type="text/javascript">
+
+    $('#li_4').find('.menutab').css({ "color": "white", "background-color": "#9bba25" });
+
+    $(function () {
+
+    SetRequired(validateModelresnd);
+
+    //Keyup
+    $('#txtresndAddrID').keyup(function () {
+        CheckKeyUps('txtresndAddrID', '@V_ADDRESS_ID');
+        });
+
+        $('#txtresndEvntCD').keyup(function () {
+            CheckKeyUps('txtresndEvntCD', '@V_PACKAGE_CODE');
+        });
+
+        $('#txtresndContactFirstN').keyup(function () {
+            CheckKeyUps('txtresndContactFirstN', '@V_ACCOUNT_NAME');
+        });
+
+        $('#txtresndContactLastN').keyup(function () {
+            CheckKeyUps('txtresndContactLastN', '@V_ACCOUNT_NAME');
+        });
+
+        $('#txtresndContactMobile').keyup(function () {
+            CheckKeyUps('txtresndContactMobile', '@V_CA_MAIN_MOBILE');
+            CheckKeyUpMobileNo('txtresndContactMobile');
+        });
+
+        $('#txtresndOfficePhone').keyup(function () {
+            CheckKeyUps('txtresndOfficePhone', '@V_CA_PHONE');
+            CheckKeyUpMobileNo('txtresndOfficePhone');
+        });
+
+        //keydown
+        $('#txtresndAddrID').keydown(function () {
+            CheckKeyUps('txtresndAddrID', '@V_ADDRESS_ID');
+        });
+
+        $('#txtresndEvntCD').keydown(function () {
+            CheckKeyUps('txtresndEvntCD', '@V_PACKAGE_CODE');
+        });
+
+        $('#txtresndContactFirstN').keydown(function () {
+            CheckKeyUps('txtresndContactFirstN', '@V_ACCOUNT_NAME');
+        });
+
+        $('#txtresndContactLastN').keydown(function () {
+            CheckKeyUps('txtresndContactLastN', '@V_ACCOUNT_NAME');
+        });
+
+        $('#txtresndContactMobile').keydown(function () {
+            CheckKeyUps('txtresndContactMobile', '@V_CA_MAIN_MOBILE');
+            CheckKeyUpMobileNo('txtresndContactMobile');
+        });
+
+        $('#txtresndOfficePhone').keydown(function () {
+            CheckKeyUps('txtresndOfficePhone', '@V_CA_PHONE');
+            CheckKeyUpMobileNo('txtresndOfficePhone');
+        });
+
+        $('#txtresndAddrID').keydown(function () {
+            CheckKeyUps('txtresndAddrID', '@V_ADDRESS_ID');
+        });
+
+        $('#txtresndEvntCD').keydown(function () {
+            CheckKeyUps('txtresndEvntCD', '@V_PACKAGE_CODE');
+        });
+
+        $('#txtresndContactFirstN').keydown(function () {
+            CheckKeyUps('txtresndContactFirstN', '@V_ACCOUNT_NAME');
+        });
+
+        $('#txtresndContactLastN').keydown(function () {
+            CheckKeyUps('txtresndContactLastN', '@V_ACCOUNT_NAME');
+        });
+
+        $('#txtresndContactMobile').keydown(function () {
+            CheckKeyUps('txtresndContactMobile', '@V_CA_MAIN_MOBILE');
+            CheckKeyUpMobileNo('txtresndContactMobile');
+        });
+
+        $('#txtresndOfficePhone').keydown(function () {
+            CheckKeyUps('txtresndOfficePhone', '@V_CA_PHONE');
+            CheckKeyUpMobileNo('txtresndOfficePhone');
+        });
+
+        //onchange
+        $('#txtresndAddrID').change(function () {
+            CheckKeyUps('txtresndAddrID', '@V_ADDRESS_ID');
+        });
+
+        $('#txtresndEvntCD').change(function () {
+            CheckKeyUps('txtresndEvntCD', '@V_PACKAGE_CODE');
+        });
+
+        $('#txtresndContactFirstN').change(function () {
+            CheckKeyUps('txtresndContactFirstN', '@V_ACCOUNT_NAME');
+        });
+
+        $('#txtresndContactLastN').change(function () {
+            CheckKeyUps('txtresndContactLastN', '@V_ACCOUNT_NAME');
+        });
+
+        $('#txtresndContactMobile').change(function () {
+            CheckKeyUps('txtresndContactMobile', '@V_CA_MAIN_MOBILE');
+            CheckKeyUpMobileNo('txtresndContactMobile');
+        });
+
+        $('#txtresndOfficePhone').change(function () {
+            CheckKeyUps('txtresndOfficePhone', '@V_CA_PHONE');
+            CheckKeyUpMobileNo('txtresndOfficePhone');
+        });
+
+
+    });
+
+    $(document).ready(function () {
+
+        var ses_LcCode = sessionStorage.getItem('login_LcCode');
+        if (typeof ses_LcCode == "undefined" || null == ses_LcCode || "" == ses_LcCode)
+            window.location.href = '@Url.Action("Login", "RegisterBulkCorp")';
+
+        window.scrollTo(0, 0);
+        $("#BulkEventPage").val("ResendOrder");
+
+        $("#ddlresndTechInstall").data("kendoDropDownList").enable(false);
+    });
+
+    function _closeErrorModal() {
+        $("#modalResndError").modal('hide');
+    }
+
+    function ClearResndOrder() {
+        
+        //Clear Validation
+        ClearTextValidation("bulkcorp_ResendAccount");
+        $("#validatefor-files").html("");
+
+        // Clear Existing Value
+        $("#txtresndbulkno").val("");
+        $("#ddlresndTechInstall").data("kendoDropDownList").value("");
+        $("#txtresndAddrID").val("");
+        $("#txtresndEvntCD").val("");
+        $("#txtresndContactFirstN").val("");
+        $("#txtresndContactLastN").val("");
+        $("#txtresndContactMobile").val("");
+        $("#txtresndOfficePhone").val("");
+        $("#txtresndEmail").val("");
+        $("#txtresndsffpromoCD").val("");
+        $("#txtresndPackName").val("");
+        $("#txtresndsffbillth").val("");
+        $("#txtresndOntopDispkgsffpromoCD").val("");
+        $("#txtresndOntopDispkgPackName").val("");
+        $("#txtresndOntopDispkgsffbillth").val("");
+
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $(".k-upload.k-header").addClass("k-upload-empty");
+        $(".k-upload-button").removeClass("k-state-focused");
+    }
+
+    function SearchResndOrder()
+    {
+        Loading(0);
+        Loading();
+
+        ClearTextValidation("bulkcorp_ResendAccount");
+        $("#validatefor-files").html("");
+        $("#validatefor-txtresndbulkno").html("");
+        
+        $("#ddlresndTechInstall").data("kendoDropDownList").value("");
+
+        $("#txtresndAddrID").val("");
+        $("#txtresndEvntCD").val("");
+        $("#txtresndContactFirstN").val("");
+        $("#txtresndContactLastN").val("");
+        $("#txtresndContactMobile").val("");
+        $("#txtresndOfficePhone").val("");
+        $("#txtresndEmail").val("");
+
+        $("#txtresndsffpromoCD").val("");
+        $("#txtresndPackName").val("");
+        $("#txtresndsffbillth").val("");
+
+        $("#txtresndOntopDispkgsffpromoCD").val("");
+        $("#txtresndOntopDispkgPackName").val("");
+        $("#txtresndOntopDispkgsffbillth").val("");
+
+        var Bulk_No = $('#txtresndbulkno').val();
+
+        if (Bulk_No != null || Bulk_No != "") {
+
+            $.ajax({
+                url: '/ResendOrderBulkCorp/GetDataResendOrder',
+                data: { Bulk_No: Bulk_No },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (data) {
+
+                    if (typeof data !== 'undefined' || null != data) {
+                        Loading(0);
+                        if (data.output_return_code == "0") {
+
+                            $("#ddlresndTechInstall").data("kendoDropDownList").value(data.p_resend_tech[0].TYPE_TECHNOLOGY);
+                            
+                            $("#txtresndAddrID").val(data.p_resend_tech[0].ADDRESS_ID);
+                            $("#txtresndEvntCD").val(data.p_resend_tech[0].EVENT_CODE);
+                            $("#txtresndContactFirstN").val(data.p_resend_tech[0].FIRST_NAME);
+                            $("#txtresndContactLastN").val(data.p_resend_tech[0].LAST_NAME);
+                            $("#txtresndContactMobile").val(data.p_resend_tech[0].MAIN_MOBILE);
+                            $("#txtresndOfficePhone").val(data.p_resend_tech[0].MAIN_PHONE);
+                            $("#txtresndEmail").val(data.p_resend_tech[0].EMAIL);
+
+                            $("#txtresndsffpromoCD").val(data.p_package_main[0].PACKAGE_MAIN_CODE);
+                            $("#txtresndPackName").val(data.p_package_main[0].PACKAGE_MAIN_NAME);
+                            $("#txtresndsffbillth").val(data.p_package_main[0].PACKAGE_MAIN_DESCRIP);
+
+                            $("#txtresndOntopDispkgsffpromoCD").val(data.p_package_discount[0].PACKAGE_DISCOUNT_CODE);
+                            $("#txtresndOntopDispkgPackName").val(data.p_package_discount[0].PACKAGE_DISCOUNT_NAME);
+                            $("#txtresndOntopDispkgsffbillth").val(data.p_package_discount[0].PACKAGE_DISCOUNT_DESCRIP);
+
+                            $("#getBulkNumber").val($('#txtresndbulkno').val());
+                            //ValidationProcessingRequired("bulkcorp_ResendAccount");
+                        }
+                        else if (data.output_return_code == "-1") {
+                            Loading(0);
+                            
+                            $('#ErrortxtResndBulk2', $('#modalResndError2')).html(data.p_message[0].p_message.toString());
+                            $("#validatefor-txtresndbulkno").html("Please fill the available Bulk Number.");
+                            $('#modalResndError2').modal();
+                        }
+                        
+                    }
+                    else {
+                        $("#validatefor-txtresndbulkno").html("Please fill the available Bulk Number.");
+                        $("#modalResndError").modal();
+                        window.scrollTo(0, 0);
+                        Loading(0);
+                    }
+                },
+
+                error: function (msg) {
+                    $("#validatefor-txtresndbulkno").html("Please fill the available Bulk Number.");
+                    $("#modalResndError").modal();
+                    window.scrollTo(0, 0);
+                    Loading(0);
+                }
+            });
+        } else {
+            $("#modalResndError").modal();
+            window.scrollTo(0, 0);
+            Loading(0);
+        }
+    }
+
+    function _SaveResend() {
+
+        var chk = false;
+        var Bulk_No = $("#getBulkNumber").val();
+
+        
+        chk = ValidationProcessingRequired("bulkcorp_ResendAccount");
+        chk2 = ValidateUploadfile();
+
+
+        if (chk && chk2) {
+
+            $.ajax({
+                url: '/ResendOrderBulkCorp/UpdateResendOrder',
+                data: {BulkNo:Bulk_No},
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (data) {
+
+                    if ((typeof data !== 'undefined' || null != data) && data[0].output_return_code == "0") {
+                        Loading(0);
+                        if (data[0].p_bulk_number_return == null || data[0].p_bulk_number_return == "null") {
+                            $('#BulkNoSuccess', $('#Modal-Bulk-Success')).html("");
+                            $("#getBulkNumber").val("");
+                        }
+                        else {
+                            $('#BulkNoSuccess', $('#Modal-Bulk-Success')).html("Bulk Number: " + data[0].p_bulk_number_return);
+                        }
+
+                        $("#BulkNoSuccess").focus();
+                        $('#Modal-Bulk-Success').modal();
+                        $("#getBulkNumber").val(data[0].p_bulk_number_return);
+                        $(".k-upload-files").remove();
+                        $(".k-upload-status").remove();
+                        $(".k-upload.k-header").addClass("k-upload-empty");
+                        $(".k-upload-button").removeClass("k-state-focused");
+                    } else {
+                        Loading(0);
+                        $('#ErrortxtResndBulk', $('#Modal-Bulk-Error')).html("Resend Order Failed!");
+                        $('#Modal-Bulk-Error').modal();
+                        $('#ErrortxtResndBulk').focus();
+                    }
+                },
+                error: function (data) {
+                    $("#modalResndError").modal();
+                    window.scrollTo(0, 0);
+                    Loading(0);
+                }
+
+            });
+
+        } else {
+
+            $("#modalResndError").modal();
+            window.scrollTo(0, 0);
+            Loading(0);
+        }
+
+    }
+
+    function ValidationProcessingRequired(panel) {
+        var cchk = true;
+        $("#" + panel + " .i-required").each(function (index, e) {
+            var field = e.id.split('requiredfor-')[1];
+            var value = $("#" + field).val();
+            if ($.trim(value) == "") {
+                $("#validatefor-" + field).html(ValidationIcon() + "This field is required.");
+                cchk = false;
+            }
+            else {
+                $("#validatefor-" + field).html("");
+            }
+        });
+
+        if (cchk) {
+            $("#" + panel + " .i-validate-length").each(function (index, e) {
+                var field = e.id.split('validatefor-')[1];
+                var value = $("#" + field).val();
+                var length = parseInt(e.className.split('i-length-')[1]);
+                var val_length = 0;
+                if (value != "") {
+                    val_length = value.length;
+                }
+
+                if (val_length > length) {
+                    $("#" + e.id).html(ValidationIcon() + "This maxlength field is " + length + ".");
+                    cchk = false;
+                }
+                else {
+                    $("#" + e.id).html("");
+                }
+            });
+        } 
+
+        return cchk;
+    }
+
+    function ValidateUploadfile() {
+        var cchk = false;
+        if ($("#files").closest(".k-upload").find(".k-file").length > 0) {
+            $("#validatefor-" + "files").html("");
+            return cchk = true;
+        }
+        else {
+            $("#validatefor-" + "files").html(ValidationIcon() + "Please upload excel file.");
+            return cchk = false;
+        }
+    }
+
+    function CheckValidateInputMobile(id) {
+        var txtid = "#" + id;
+        var cchk = false;
+        $.ajax({
+            url: '/CustomerRegister/CheckInputMobileList',
+            data: {
+                lMobile: $(txtid).val()
+            },
+            dataType: 'json',
+            async: false,
+            type: 'POST',
+            success: function (data) {
+                if (data) {
+                    $("#validatefor-" + id).html("This Mobile Number is invalid.");
+                    $(txtid).val("");
+                    cchk = false;
+                }
+                else {
+                    cchk = true;
+                }
+            }
+        });
+        return cchk;
+    }//End Function
+
+    function RemoveRequired(panel) {
+        $("#" + panel + " span[id*=requiredfor-]").removeClass("label label-danger i-gap-left-md i-required");
+        $("#" + panel + " span[id*=requiredfor-]").text("");
+        ClearTextValidation(panel);
+    }
+
+    function ClearTextValidation(panel) {
+        $("#" + panel + " .i-required").each(function (index, e) {
+            var field = e.id.split('requiredfor-')[1];
+            $("#validatefor-" + field).text("");
+        });
+    }
+
+    function _BackResend() {
+        var Confirmclick = confirm("Go back to Index?");
+
+        if (Confirmclick) {
+            window.location.href = '@Url.Action("Index", "RegisterBulkCorp")';
+        }
+
+    }
+
+    function _closeModaltxtErr() {
+        $('#modalResndError').modal('hide');
+        //$('.modal-backdrop').remove();
+    }
+
+    function _closeModalresndError() {
+
+        $('#Modal-Bulk-Error').modal('hide');
+
+        //var urlret = 'RegisterBulkCorp/Index/?SaveStatus=Failed';
+        var urlret = '@Url.Action("Index", "RegisterBulkCorp", new { SaveStatus = "Failed" })'
+        window.location.href = urlret.replace("ResendOrderBulkCorp", "");
+    }
+
+    function _closeModalresendSuccess() {
+        var bulk_no = "";
+        var urllink = "";
+        bulk_no = $("#getBulkNumber").val();
+
+        $('#Modal-Bulk-Success').modal('hide');
+
+        if (bulk_no == "" || bulk_no == null || bulk_no == "null") {
+            urllink = '@Url.Action("Index", "RegisterBulkCorp", new { SaveSuccess = "Success"})';
+        }
+        else {
+            urllink = '@Url.Action("Index", "RegisterBulkCorp", new { SaveSuccess = "Success",BulkNoSuccess = "bulk_no" })';
+            urllink.replace("bulk_no", bulk_no);
+        }
+
+        window.location.href = urllink.replace("ResendOrderBulkCorp", "");
+    }
+
+        function chk_BrowserType() {
+            if ((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1) {
+                $("#Browser_type").val('Opera');
+            }
+            else if (navigator.userAgent.indexOf("Chrome") != -1) {
+                $("#Browser_type").val('Chrome');
+            }
+            else if (navigator.userAgent.indexOf("Safari") != -1) {
+                $("#Browser_type").val('Safari');
+            }
+            else if (navigator.userAgent.indexOf("Firefox") != -1) {
+                $("#Browser_type").val('Firefox');
+            }
+            else if ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true)) //IF IE > 10
+            {
+                $("#Browser_type").val('IE');
+            }
+            else {
+                $("#Browser_type").val('unknown');
+            }
+        }
+
+        function chk_RegisterDevice() {
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $("#Register_device").val("MOBILE WEB");
+            }
+            else {
+                $("#Register_device").val("WEB BROWSER");
+            }
+
+            if (typeof aisNative != "undefined" && typeof aisNative != "" && typeof aisNative != null) {
+                $("#Register_device").val("MOBILE APP");
+                $("#Browser_type").val('');
+            }
+        }
+
+        function get_browser_info() {
+            var ua = navigator.userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if (/trident/i.test(M[1])) {
+                tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return { name: 'IE', version: (tem[1] || '') };
+            }
+            if (M[1] === 'Chrome') {
+                tem = ua.match(/\bOPR\/(\d+)/)
+                if (tem != null) { return { name: 'Opera', version: tem[1] }; }
+            }
+            M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+            if ((tem = ua.match(/version\/(\d+)/i)) != null) { M.splice(1, 1, tem[1]); }
+            return {
+                name: M[0],
+                version: M[1]
+            };
+        }
+
+        function onSelectUpload(e) {
+
+            $(".k-upload-files.k-reset").find("li").remove();
+
+            var grid = $("#ResndImportExcellist").data("kendoGrid");
+            grid.dataSource.read();
+        }
+
+        function onSuccess(e) {
+
+            if (e.response.status == undefined) {
+
+                var grid = $("#ResndImportExcellist").data("kendoGrid");
+                grid.dataSource.read();
+                $("#SaveRegisterResnd").show();
+                $("#importcancel").hide();
+            }
+            else {
+                if (!e.response.status) {
+
+                    $(".k-upload-files.k-reset").find("li").remove();
+                    showFeedback("warning", e.response.message);
+                    $("#SaveRegisterResnd").hide();
+                    $("#importcancel").hide();
+                }
+
+            }
+
+        }
+
+        function onError(e) {
+
+        }
+
+        function onExcelUpload(e) {
+
+            var Bulk_No = "";
+            var cateType = "";
+            var cardNo = "";
+            var cardType = "";
+            var MobileNo = "";
+
+            var EventPage = $("#BulkEventPage").val();
+
+            if (EventPage == "ResendOrder") {
+                Bulk_No = $("#getBulkNumber").val();
+                cateType = $("#ddlresndAccCat").val();
+                cardNo = $("#txtresndL_CARD_NOs").val();
+                cardType = $("#ddlresndIDtype").val();
+                register_dv = $("#Register_device").val();
+                MobileNo = $("#txtresndCAmmobile").val();
+            }
+        
+            e.data = {
+                cateType: cateType, cardNo: cardNo,
+                cardType: cardType, register_dv: register_dv,
+                MobileNumber: MobileNo, Bulk_No: Bulk_No
+            };
+
+        }
+
+        var validateModel003GB = new Array();
+
+        var validateModelresnd = [];
+
+        validateModelresnd.push({ id: "ddlresndTechInstall" });
+        validateModelresnd.push({ id: "txtresndAddrID" });
+        validateModelresnd.push({ id: "lstresndInsAddr" });
+        validateModelresnd.push({ id: "txtresndsffpromoCD" });
+        validateModelresnd.push({ id: "txtresndPackName" });
+        validateModelresnd.push({ id: "txtresndsffbillth" });
+        validateModelresnd.push({ id: "txtresndEvntCD" });
+        validateModelresnd.push({ id: "txtresndContactFirstN" });
+        validateModelresnd.push({ id: "txtresndContactLastN" });
+        validateModelresnd.push({ id: "txtresndContactMobile" });
+
+        function ValidationIcon() {
+            return "<i class='fa fa-warning i-red'></i> ";
+        }
+
+        function RemoveValidation(validateModel) {
+            var i = 0;
+            for (i = 0; i < validateModel.length; i++) {
+                var id = validateModel[i].id;
+                $("#validatefor-" + id).html("");
+            }
+        }
+
+        function SetRequired(validateModel) {
+            var i = 0;
+            for (i = 0; i < validateModel.length; i++) {
+                var id = validateModel[i].id;
+                $("#requiredfor-" + id).addClass("label i-gap-left-md i-required");
+                $("#requiredfor-" + id).text("*");
+            }
+        }
+
+        function CheckKeyUpMobileNo(id) {
+            var strKey = $("#" + id).val();
+            var strBuilder = "";
+            var filter = new RegExp("[0]");
+            for (var i = 0; i < strKey.length; i++) {
+                if (i < 1) {
+                    if (filter.test(strKey.substr(i, 1))) {
+                        strBuilder += strKey.substr(i, 1);
+                    }
+                } else {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+            $("#" + id).val(strBuilder);
+        }
+
+
+</script>

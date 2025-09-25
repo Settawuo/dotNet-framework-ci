@@ -1,0 +1,699 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.RegisterBulkCorpModel
+@using WBBEntity.PanelModels;
+@using System.Collections.Generic;
+@using FBBConfig.Extensions
+@{
+
+    Layout = "~/Views/Shared/_LayoutBulkCorp.cshtml";
+
+    var Version = "";
+    if (ViewBag.Version != null)
+    {
+        Version = Version + "-" + ViewBag.Version;
+    }
+
+    string H_SUB_STEP_1 = "";
+    string H_SUB_STEP_2 = "";
+    string H_SUB_STEP_3 = "";
+    string M_MEMU_REGISTER = "";
+    string M_MEMU_EXITING = "";
+    string M_MEMU_SEARCH = "";
+    string M_MEMU_RESEND = "";
+
+    string B_BROWSE = "";
+    string B_NEXT = "";
+    string B_REMOVE = "";
+    string B_UPLOAD = "";
+    string B_LOGIN_CANCEL = "";
+
+    string H_TITLE_01 = "";
+    string H_TITLE_02 = "";
+    string H_TITLE_03 = "";
+    string H_TITLE_04 = "";
+    string H_TITLE_05 = "";
+    string H_TITLE_06 = "";
+    string H_TITLE_07 = "";
+    string H_TITLE_08 = "";
+
+    string L_ACCEPT_CONDITION = "";
+    string L_ACCOUNT_CATEGORY = "";
+    string L_ACCOUNT_NAME = "";
+    string L_ACCOUNT_SUB_CATEGORY = "";
+    string L_ACCOUNT_TITLE = "";
+    string L_ADDRESS_ID = "";
+    string L_AMPHUR = "";
+    string L_BA_MAIN_MOBILE = "";
+    string L_BA_MAIN_PHONE = "";
+    string L_BILL_ADDRESS = "";
+    string L_BILL_LANGUAGE = "";
+    string L_BILL_MAIN_MOBILE = "";
+    string L_BILL_MAIN_PHONE = "";
+    string L_BILLING_CYCLE = "";
+    string L_BILLING_NAME = "";
+    string L_BUILDING_NAME = "";
+    string L_CA_MAIN_MOBILE = "";
+    string L_CA_PHONE = "";
+    string L_CONTACT_MOBILE = "";
+    string L_CONTACT_OFFICE_PHONE = "";
+    string L_CONTACT_PERSON = "";
+    string L_DOCUMENT_01 = "";
+    string L_DOCUMENT_02 = "";
+    string L_DOCUMENT_03 = "";
+    string L_DOCUMENT_04 = "";
+    string L_EMAIL = "";
+    string L_EVENT_CODE = "";
+    string L_EX_DOCUMENT = "";
+    string L_FLOOR = "";
+    string L_HOME_VAT_ADDRESS = "";
+    string L_HOUSE_NUMBER = "";
+    string L_ID_CARD_NUMBER = "";
+    string L_ID_CARD_TYPE = "";
+    string L_INSTALL_ADDRESS = "";
+    string L_INSTALL_DATE = "";
+    string L_INSTALL_TYPE = "";
+    string L_LANGUAGE = "";
+    string L_MOO = "";
+    string L_MOOBAN = "";
+    string L_NAME = "";
+    string L_PACKAGE_CODE = "";
+    string L_PACKAGE_DESCRIPTION = "";
+    string L_PACKAGE_MAIN = "";
+    string L_PACKAGE_NAME = "";
+    string L_PACKAGE_SELECT = "";
+    string L_POSTCODE = "";
+    string L_PROVINCE = "";
+    string L_REMARK_01 = "";
+    string L_REMARK_02 = "";
+    string L_ROOM = "";
+    string L_SAME_ADDRESS = "";
+    string L_SELECT_MAIN_PACKAGE = "";
+    string L_SOI = "";
+    string L_STREET = "";
+    string L_TERM_AND_CONDITION = "";
+    string L_TUMBOL = "";
+    string L_VAT_NAME = "";
+    string L_WORDING_01 = "";
+    string L_WORDING_02 = "";
+    string L_FILE_NAME = "";
+    string L_ERR_FILE_SIZE = "";
+    string L_ERR_FILE_TYPE = "";
+
+    string P_ALERT_DETAIL_01 = "";
+    string P_ALERT_DETAIL_02 = "";
+    string P_ALERT_HEAD = "";
+
+    string R_LANGUAGE_TYPE = "";
+
+    string LENGTH_MAX_ACCOUNT_NAME = "";
+    string LENGTH_MAX_ADDRESS_ID = "";
+    string LENGTH_MAX_BA_MAIN_MOBILE = "";
+    string LENGTH_MAX_BA_MAIN_PHONE = "";
+    string LENGTH_MAX_BILLING_NAME = "";
+    string LENGTH_MAX_BUILDING_NAME = "";
+    string LENGTH_MAX_CA_MAIN_MOBILE = "";
+    string LENGTH_MAX_CA_PHONE = "";
+    string LENGTH_MAX_EMAIL = "";
+    string LENGTH_MAX_FLOOR = "";
+    string LENGTH_MAX_HOUSE_NUMBER = "";
+    string LENGTH_MAX_ID_CARD_NUMBER = "";
+    string LENGTH_MAX_MOO = "";
+    string LENGTH_MAX_ROOM = "";
+    string LENGTH_MAX_SOI = "";
+    string LENGTH_MAX_STREET = "";
+    string LENGTH_MIN_BA_MAIN_MOBILE = "";
+    string LENGTH_MIN_CA_MAIN_MOBILE = "";
+    string LENGTH_MIN_ID_CARD_NUMBER = "";
+    string FILE_SIZE = "";
+    string FILE_TYPE = "";
+
+    string V_ACCOUNT_NAME = "";
+    string V_ADDRESS_ID = "";
+    string V_BA_MAIN_MOBILE = "";
+    string V_BA_MAIN_PHONE = "";
+    string V_BILLING_NAME = "";
+    string V_BUILDING_NAME = "";
+    string V_CA_MAIN_MOBILE = "";
+    string V_CA_PHONE = "";
+    string V_FLOOR = "";
+    string V_HOUSE_NUMBER = "";
+    string V_ID_CARD_NUMBER = "";
+    string V_LOGIN_ASC_CODE = "";
+    string V_LOGIN_EMPLOYEE_CODE = "";
+    string V_LOGIN_LOCATION_CODE = "";
+    string V_MOO = "";
+    string V_MOOBAN = "";
+    string V_PACKAGE_CODE = "";
+    string V_PACKAGE_NAME = "";
+    string V_ROOM = "";
+    string V_SOI = "";
+    string V_STREET = "";
+
+
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        H_SUB_STEP_1 = configscreen.Any(f => f.Name == "H_SUB_STEP_1") ? configscreen.FirstOrDefault(f => f.Name == "H_SUB_STEP_1").LovValue1 : "";
+        H_SUB_STEP_2 = configscreen.Any(f => f.Name == "H_SUB_STEP_2") ? configscreen.FirstOrDefault(f => f.Name == "H_SUB_STEP_2").LovValue1 : "";
+        H_SUB_STEP_3 = configscreen.Any(f => f.Name == "H_SUB_STEP_3") ? configscreen.FirstOrDefault(f => f.Name == "H_SUB_STEP_3").LovValue1 : "";
+        M_MEMU_REGISTER = configscreen.Any(f => f.Name == "M_MEMU_REGISTER") ? configscreen.FirstOrDefault(f => f.Name == "M_MEMU_REGISTER").LovValue1 : "";
+        M_MEMU_EXITING = configscreen.Any(f => f.Name == "M_MEMU_EXITING") ? configscreen.FirstOrDefault(f => f.Name == "M_MEMU_EXITING").LovValue1 : "";
+        M_MEMU_SEARCH = configscreen.Any(f => f.Name == "M_MEMU_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "M_MEMU_SEARCH").LovValue1 : "";
+        M_MEMU_RESEND = configscreen.Any(f => f.Name == "M_MEMU_RESEND") ? configscreen.FirstOrDefault(f => f.Name == "M_MEMU_RESEND").LovValue1 : "";
+
+        L_ACCEPT_CONDITION = configscreen.Any(f => f.Name == "L_ACCEPT_CONDITION") ? configscreen.FirstOrDefault(f => f.Name == "L_ACCEPT_CONDITION").LovValue1 : "";
+        L_ACCOUNT_CATEGORY = configscreen.Any(f => f.Name == "L_ACCOUNT_CATEGORY") ? configscreen.FirstOrDefault(f => f.Name == "L_ACCOUNT_CATEGORY").LovValue1 : "";
+        L_ACCOUNT_NAME = configscreen.Any(f => f.Name == "L_ACCOUNT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_ACCOUNT_NAME").LovValue1 : "";
+        L_ACCOUNT_SUB_CATEGORY = configscreen.Any(f => f.Name == "L_ACCOUNT_SUB_CATEGORY") ? configscreen.FirstOrDefault(f => f.Name == "L_ACCOUNT_SUB_CATEGORY").LovValue1 : "";
+        L_ACCOUNT_TITLE = configscreen.Any(f => f.Name == "L_ACCOUNT_TITLE") ? configscreen.FirstOrDefault(f => f.Name == "L_ACCOUNT_TITLE").LovValue1 : "";
+        L_ADDRESS_ID = configscreen.Any(f => f.Name == "L_ADDRESS_ID") ? configscreen.FirstOrDefault(f => f.Name == "L_ADDRESS_ID").LovValue1 : "";
+        L_AMPHUR = configscreen.Any(f => f.Name == "L_AMPHUR") ? configscreen.FirstOrDefault(f => f.Name == "L_AMPHUR").LovValue1 : "";
+        L_BA_MAIN_MOBILE = configscreen.Any(f => f.Name == "L_BA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "L_BA_MAIN_MOBILE").LovValue1 : "";
+        L_BA_MAIN_PHONE = configscreen.Any(f => f.Name == "L_BA_MAIN_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "L_BA_MAIN_PHONE").LovValue1 : "";
+        L_BILL_ADDRESS = configscreen.Any(f => f.Name == "L_BILL_ADDRESS") ? configscreen.FirstOrDefault(f => f.Name == "L_BILL_ADDRESS").LovValue1 : "";
+        L_BILL_LANGUAGE = configscreen.Any(f => f.Name == "L_BILL_LANGUAGE") ? configscreen.FirstOrDefault(f => f.Name == "L_BILL_LANGUAGE").LovValue1 : "";
+        L_BILL_MAIN_MOBILE = configscreen.Any(f => f.Name == "L_BILL_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "L_BILL_MAIN_MOBILE").LovValue1 : "";
+        L_BILL_MAIN_PHONE = configscreen.Any(f => f.Name == "L_BILL_MAIN_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "L_BILL_MAIN_PHONE").LovValue1 : "";
+        L_BILLING_CYCLE = configscreen.Any(f => f.Name == "L_BILLING_CYCLE") ? configscreen.FirstOrDefault(f => f.Name == "L_BILLING_CYCLE").LovValue1 : "";
+        L_BILLING_NAME = configscreen.Any(f => f.Name == "L_BILLING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_BILLING_NAME").LovValue1 : "";
+        L_BUILDING_NAME = configscreen.Any(f => f.Name == "L_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_BUILDING_NAME").LovValue1 : "";
+        L_CA_MAIN_MOBILE = configscreen.Any(f => f.Name == "L_CA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "L_CA_MAIN_MOBILE").LovValue1 : "";
+        L_CA_PHONE = configscreen.Any(f => f.Name == "L_CA_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "L_CA_PHONE").LovValue1 : "";
+        L_CONTACT_MOBILE = configscreen.Any(f => f.Name == "L_CONTACT_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "L_CONTACT_MOBILE").LovValue1 : "";
+        L_CONTACT_OFFICE_PHONE = configscreen.Any(f => f.Name == "L_CONTACT_OFFICE_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "L_CONTACT_OFFICE_PHONE").LovValue1 : "";
+        L_CONTACT_PERSON = configscreen.Any(f => f.Name == "L_CONTACT_PERSON") ? configscreen.FirstOrDefault(f => f.Name == "L_CONTACT_PERSON").LovValue1 : "";
+        L_DOCUMENT_01 = configscreen.Any(f => f.Name == "L_DOCUMENT_01") ? configscreen.FirstOrDefault(f => f.Name == "L_DOCUMENT_01").LovValue1 : "";
+        L_DOCUMENT_02 = configscreen.Any(f => f.Name == "L_DOCUMENT_02") ? configscreen.FirstOrDefault(f => f.Name == "L_DOCUMENT_02").LovValue1 : "";
+        L_DOCUMENT_03 = configscreen.Any(f => f.Name == "L_DOCUMENT_03") ? configscreen.FirstOrDefault(f => f.Name == "L_DOCUMENT_03").LovValue1 : "";
+        L_DOCUMENT_04 = configscreen.Any(f => f.Name == "L_DOCUMENT_04") ? configscreen.FirstOrDefault(f => f.Name == "L_DOCUMENT_04").LovValue1 : "";
+        L_EMAIL = configscreen.Any(f => f.Name == "L_EMAIL") ? configscreen.FirstOrDefault(f => f.Name == "L_EMAIL").LovValue1 : "";
+        L_EVENT_CODE = configscreen.Any(f => f.Name == "L_EVENT_CODE") ? configscreen.FirstOrDefault(f => f.Name == "L_EVENT_CODE").LovValue1 : "";
+        L_EX_DOCUMENT = configscreen.Any(f => f.Name == "L_EX_DOCUMENT") ? configscreen.FirstOrDefault(f => f.Name == "L_EX_DOCUMENT").LovValue1 : "";
+        L_FLOOR = configscreen.Any(f => f.Name == "L_FLOOR") ? configscreen.FirstOrDefault(f => f.Name == "L_FLOOR").LovValue1 : "";
+        L_HOME_VAT_ADDRESS = configscreen.Any(f => f.Name == "L_HOME_VAT_ADDRESS") ? configscreen.FirstOrDefault(f => f.Name == "L_HOME_VAT_ADDRESS").LovValue1 : "";
+        L_HOUSE_NUMBER = configscreen.Any(f => f.Name == "L_HOUSE_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "L_HOUSE_NUMBER").LovValue1 : "";
+        L_ID_CARD_NUMBER = configscreen.Any(f => f.Name == "L_ID_CARD_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "L_ID_CARD_NUMBER").LovValue1 : "";
+        L_ID_CARD_TYPE = configscreen.Any(f => f.Name == "L_ID_CARD_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "L_ID_CARD_TYPE").LovValue1 : "";
+        L_INSTALL_ADDRESS = configscreen.Any(f => f.Name == "L_INSTALL_ADDRESS") ? configscreen.FirstOrDefault(f => f.Name == "L_INSTALL_ADDRESS").LovValue1 : "";
+        L_INSTALL_DATE = configscreen.Any(f => f.Name == "L_INSTALL_DATE") ? configscreen.FirstOrDefault(f => f.Name == "L_INSTALL_DATE").LovValue1 : "";
+        L_INSTALL_TYPE = configscreen.Any(f => f.Name == "L_INSTALL_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "L_INSTALL_TYPE").LovValue1 : "";
+        L_LANGUAGE = configscreen.Any(f => f.Name == "L_LANGUAGE") ? configscreen.FirstOrDefault(f => f.Name == "L_LANGUAGE").LovValue1 : "";
+        L_MOO = configscreen.Any(f => f.Name == "L_MOO") ? configscreen.FirstOrDefault(f => f.Name == "L_MOO").LovValue1 : "";
+        L_MOOBAN = configscreen.Any(f => f.Name == "L_MOOBAN") ? configscreen.FirstOrDefault(f => f.Name == "L_MOOBAN").LovValue1 : "";
+        L_NAME = configscreen.Any(f => f.Name == "L_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_NAME").LovValue1 : "";
+        L_PACKAGE_CODE = configscreen.Any(f => f.Name == "L_PACKAGE_CODE") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_CODE").LovValue1 : "";
+        L_PACKAGE_DESCRIPTION = configscreen.Any(f => f.Name == "L_PACKAGE_DESCRIPTION") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_DESCRIPTION").LovValue1 : "";
+        L_PACKAGE_MAIN = configscreen.Any(f => f.Name == "L_PACKAGE_MAIN") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_MAIN").LovValue1 : "";
+        L_PACKAGE_NAME = configscreen.Any(f => f.Name == "L_PACKAGE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_NAME").LovValue1 : "";
+        L_PACKAGE_SELECT = configscreen.Any(f => f.Name == "L_PACKAGE_SELECT") ? configscreen.FirstOrDefault(f => f.Name == "L_PACKAGE_SELECT").LovValue1 : "";
+        L_POSTCODE = configscreen.Any(f => f.Name == "L_POSTCODE") ? configscreen.FirstOrDefault(f => f.Name == "L_POSTCODE").LovValue1 : "";
+        L_PROVINCE = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue1 : "";
+        L_REMARK_01 = configscreen.Any(f => f.Name == "L_REMARK_01") ? configscreen.FirstOrDefault(f => f.Name == "L_REMARK_01").LovValue1 : "";
+        L_REMARK_02 = configscreen.Any(f => f.Name == "L_REMARK_02") ? configscreen.FirstOrDefault(f => f.Name == "L_REMARK_02").LovValue1 : "";
+        L_ROOM = configscreen.Any(f => f.Name == "L_ROOM") ? configscreen.FirstOrDefault(f => f.Name == "L_ROOM").LovValue1 : "";
+        L_SAME_ADDRESS = configscreen.Any(f => f.Name == "L_SAME_ADDRESS") ? configscreen.FirstOrDefault(f => f.Name == "L_SAME_ADDRESS").LovValue1 : "";
+        L_SELECT_MAIN_PACKAGE = configscreen.Any(f => f.Name == "L_SELECT_MAIN_PACKAGE") ? configscreen.FirstOrDefault(f => f.Name == "L_SELECT_MAIN_PACKAGE").LovValue1 : "";
+        L_SOI = configscreen.Any(f => f.Name == "L_SOI") ? configscreen.FirstOrDefault(f => f.Name == "L_SOI").LovValue1 : "";
+        L_STREET = configscreen.Any(f => f.Name == "L_STREET") ? configscreen.FirstOrDefault(f => f.Name == "L_STREET").LovValue1 : "";
+        L_TERM_AND_CONDITION = configscreen.Any(f => f.Name == "L_TERM_AND_CONDITION") ? configscreen.FirstOrDefault(f => f.Name == "L_TERM_AND_CONDITION").LovValue1 : "";
+        L_TUMBOL = configscreen.Any(f => f.Name == "L_TUMBOL") ? configscreen.FirstOrDefault(f => f.Name == "L_TUMBOL").LovValue1 : "";
+        L_VAT_NAME = configscreen.Any(f => f.Name == "L_VAT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_VAT_NAME").LovValue1 : "";
+        L_WORDING_01 = configscreen.Any(f => f.Name == "L_WORDING_01") ? configscreen.FirstOrDefault(f => f.Name == "L_WORDING_01").LovValue1 : "";
+        L_WORDING_02 = configscreen.Any(f => f.Name == "L_WORDING_02") ? configscreen.FirstOrDefault(f => f.Name == "L_WORDING_02").LovValue1 : "";
+        L_FILE_NAME = configscreen.Any(f => f.Name == "L_FILE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_FILE_NAME").LovValue1 : "";
+        L_ERR_FILE_SIZE = configscreen.Any(f => f.Name == "L_ERR_FILE_SIZE") ? configscreen.FirstOrDefault(f => f.Name == "L_ERR_FILE_SIZE").LovValue1 : "";
+        L_ERR_FILE_TYPE = configscreen.Any(f => f.Name == "L_ERR_FILE_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "L_ERR_FILE_TYPE").LovValue1 : "";
+
+        H_TITLE_01 = configscreen.Any(f => f.Name == "H_TITLE_01") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_01").LovValue1 : "";
+        H_TITLE_02 = configscreen.Any(f => f.Name == "H_TITLE_02") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_02").LovValue1 : "";
+        H_TITLE_03 = configscreen.Any(f => f.Name == "H_TITLE_03") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_03").LovValue1 : "";
+        H_TITLE_04 = configscreen.Any(f => f.Name == "H_TITLE_04") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_04").LovValue1 : "";
+        H_TITLE_05 = configscreen.Any(f => f.Name == "H_TITLE_05") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_05").LovValue1 : "";
+        H_TITLE_06 = configscreen.Any(f => f.Name == "H_TITLE_06") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_06").LovValue1 : "";
+        H_TITLE_07 = configscreen.Any(f => f.Name == "H_TITLE_07") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_07").LovValue1 : "";
+        H_TITLE_08 = configscreen.Any(f => f.Name == "H_TITLE_08") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_08").LovValue1 : "";
+
+        P_ALERT_DETAIL_01 = configscreen.Any(f => f.Name == "P_ALERT_DETAIL_01") ? configscreen.FirstOrDefault(f => f.Name == "P_ALERT_DETAIL_01").LovValue1 : "";
+        P_ALERT_DETAIL_02 = configscreen.Any(f => f.Name == "P_ALERT_DETAIL_02") ? configscreen.FirstOrDefault(f => f.Name == "P_ALERT_DETAIL_02").LovValue1 : "";
+        P_ALERT_HEAD = configscreen.Any(f => f.Name == "P_ALERT_HEAD") ? configscreen.FirstOrDefault(f => f.Name == "P_ALERT_HEAD").LovValue1 : "";
+
+        R_LANGUAGE_TYPE = configscreen.Any(f => f.Name == "R_LANGUAGE_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "R_LANGUAGE_TYPE").LovValue1 : "";
+
+        B_LOGIN_CANCEL = configscreen.Any(f => f.Name == "B_LOGIN_CANCEL") ? configscreen.FirstOrDefault(f => f.Name == "B_LOGIN_CANCEL").LovValue1 : "";
+        B_BROWSE = configscreen.Any(f => f.Name == "B_BROWSE") ? configscreen.FirstOrDefault(f => f.Name == "B_BROWSE").LovValue1 : "";
+        B_UPLOAD = configscreen.Any(f => f.Name == "B_UPLOAD") ? configscreen.FirstOrDefault(f => f.Name == "B_UPLOAD").LovValue1 : "";
+        B_REMOVE = configscreen.Any(f => f.Name == "B_REMOVE") ? configscreen.FirstOrDefault(f => f.Name == "B_REMOVE").LovValue1 : "";
+        B_NEXT = configscreen.Any(f => f.Name == "B_NEXT") ? configscreen.FirstOrDefault(f => f.Name == "B_NEXT").LovValue1 : "";
+
+        LENGTH_MAX_ACCOUNT_NAME = configscreen.Any(f => f.Name == "LENGTH_MAX_ACCOUNT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_ACCOUNT_NAME").LovValue1 : "";
+        LENGTH_MAX_ADDRESS_ID = configscreen.Any(f => f.Name == "LENGTH_MAX_ADDRESS_ID") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_ADDRESS_ID").LovValue1 : "";
+        LENGTH_MAX_BA_MAIN_MOBILE = configscreen.Any(f => f.Name == "LENGTH_MAX_BA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_BA_MAIN_MOBILE").LovValue1 : "";
+        LENGTH_MAX_BA_MAIN_PHONE = configscreen.Any(f => f.Name == "LENGTH_MAX_BA_MAIN_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_BA_MAIN_PHONE").LovValue1 : "";
+        LENGTH_MAX_BILLING_NAME = configscreen.Any(f => f.Name == "LENGTH_MAX_BILLING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_BILLING_NAME").LovValue1 : "";
+        LENGTH_MAX_BUILDING_NAME = configscreen.Any(f => f.Name == "LENGTH_MAX_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_BUILDING_NAME").LovValue1 : "";
+        LENGTH_MAX_CA_MAIN_MOBILE = configscreen.Any(f => f.Name == "LENGTH_MAX_CA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_CA_MAIN_MOBILE").LovValue1 : "";
+        LENGTH_MAX_CA_PHONE = configscreen.Any(f => f.Name == "LENGTH_MAX_CA_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_CA_PHONE").LovValue1 : "";
+        LENGTH_MAX_EMAIL = configscreen.Any(f => f.Name == "LENGTH_MAX_EMAIL") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_EMAIL").LovValue1 : "";
+        LENGTH_MAX_FLOOR = configscreen.Any(f => f.Name == "LENGTH_MAX_FLOOR") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_FLOOR").LovValue1 : "";
+        LENGTH_MAX_HOUSE_NUMBER = configscreen.Any(f => f.Name == "LENGTH_MAX_HOUSE_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_HOUSE_NUMBER").LovValue1 : "";
+        LENGTH_MAX_ID_CARD_NUMBER = configscreen.Any(f => f.Name == "LENGTH_MAX_ID_CARD_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_ID_CARD_NUMBER").LovValue1 : "";
+        LENGTH_MAX_MOO = configscreen.Any(f => f.Name == "LENGTH_MAX_MOO") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_MOO").LovValue1 : "";
+        LENGTH_MAX_ROOM = configscreen.Any(f => f.Name == "LENGTH_MAX_ROOM") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_ROOM").LovValue1 : "";
+        LENGTH_MAX_SOI = configscreen.Any(f => f.Name == "LENGTH_MAX_SOI") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_SOI").LovValue1 : "";
+        LENGTH_MAX_STREET = configscreen.Any(f => f.Name == "LENGTH_MAX_STREET") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MAX_STREET").LovValue1 : "";
+        LENGTH_MIN_BA_MAIN_MOBILE = configscreen.Any(f => f.Name == "LENGTH_MIN_BA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MIN_BA_MAIN_MOBILE").LovValue1 : "";
+        LENGTH_MIN_CA_MAIN_MOBILE = configscreen.Any(f => f.Name == "LENGTH_MIN_CA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MIN_CA_MAIN_MOBILE").LovValue1 : "";
+        LENGTH_MIN_ID_CARD_NUMBER = configscreen.Any(f => f.Name == "LENGTH_MIN_ID_CARD_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "LENGTH_MIN_ID_CARD_NUMBER").LovValue1 : "";
+        FILE_SIZE = configscreen.Any(f => f.Name == "FILE_SIZE") ? configscreen.FirstOrDefault(f => f.Name == "FILE_SIZE").LovValue1 : "";
+        FILE_TYPE = configscreen.Any(f => f.Name == "FILE_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "FILE_TYPE").LovValue1 : "";
+
+        V_ACCOUNT_NAME = configscreen.Any(f => f.Name == "V_ACCOUNT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "V_ACCOUNT_NAME").LovValue1 : "";
+        V_ADDRESS_ID = configscreen.Any(f => f.Name == "V_ADDRESS_ID") ? configscreen.FirstOrDefault(f => f.Name == "V_ADDRESS_ID").LovValue1 : "";
+        V_BA_MAIN_MOBILE = configscreen.Any(f => f.Name == "V_BA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "V_BA_MAIN_MOBILE").LovValue1 : "";
+        V_BA_MAIN_PHONE = configscreen.Any(f => f.Name == "V_BA_MAIN_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "V_BA_MAIN_PHONE").LovValue1 : "";
+        V_BILLING_NAME = configscreen.Any(f => f.Name == "V_BILLING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "V_BILLING_NAME").LovValue1 : "";
+        V_BUILDING_NAME = configscreen.Any(f => f.Name == "V_BUILDING_NAME") ? configscreen.FirstOrDefault(f => f.Name == "V_BUILDING_NAME").LovValue1 : "";
+        V_CA_MAIN_MOBILE = configscreen.Any(f => f.Name == "V_CA_MAIN_MOBILE") ? configscreen.FirstOrDefault(f => f.Name == "V_CA_MAIN_MOBILE").LovValue1 : "";
+        V_CA_PHONE = configscreen.Any(f => f.Name == "V_CA_PHONE") ? configscreen.FirstOrDefault(f => f.Name == "V_CA_PHONE").LovValue1 : "";
+        V_FLOOR = configscreen.Any(f => f.Name == "V_FLOOR") ? configscreen.FirstOrDefault(f => f.Name == "V_FLOOR").LovValue1 : "";
+        V_HOUSE_NUMBER = configscreen.Any(f => f.Name == "V_HOUSE_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "V_HOUSE_NUMBER").LovValue1 : "";
+        V_ID_CARD_NUMBER = configscreen.Any(f => f.Name == "V_ID_CARD_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "V_ID_CARD_NUMBER").LovValue1 : "";
+        V_LOGIN_ASC_CODE = configscreen.Any(f => f.Name == "V_LOGIN_ASC_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_LOGIN_ASC_CODE").LovValue1 : "";
+        V_LOGIN_EMPLOYEE_CODE = configscreen.Any(f => f.Name == "V_LOGIN_EMPLOYEE_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_LOGIN_EMPLOYEE_CODE").LovValue1 : "";
+        V_LOGIN_LOCATION_CODE = configscreen.Any(f => f.Name == "V_LOGIN_LOCATION_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_LOGIN_LOCATION_CODE").LovValue1 : "";
+        V_MOO = configscreen.Any(f => f.Name == "V_MOO") ? configscreen.FirstOrDefault(f => f.Name == "V_MOO").LovValue1 : "";
+        V_MOOBAN = configscreen.Any(f => f.Name == "V_MOOBAN") ? configscreen.FirstOrDefault(f => f.Name == "V_MOOBAN").LovValue1 : "";
+        V_PACKAGE_CODE = configscreen.Any(f => f.Name == "V_PACKAGE_CODE") ? configscreen.FirstOrDefault(f => f.Name == "V_PACKAGE_CODE").LovValue1 : "";
+        V_PACKAGE_NAME = configscreen.Any(f => f.Name == "V_PACKAGE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "V_PACKAGE_NAME").LovValue1 : "";
+        V_ROOM = configscreen.Any(f => f.Name == "V_ROOM") ? configscreen.FirstOrDefault(f => f.Name == "V_ROOM").LovValue1 : "";
+        V_SOI = configscreen.Any(f => f.Name == "V_SOI") ? configscreen.FirstOrDefault(f => f.Name == "V_SOI").LovValue1 : "";
+        V_STREET = configscreen.Any(f => f.Name == "V_STREET") ? configscreen.FirstOrDefault(f => f.Name == "V_STREET").LovValue1 : "";
+
+    }
+
+}
+
+<style>
+    .vertical-alignment-helper {
+        display: table;
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .vertical-align-center {
+        display: table-cell;
+        vertical-align: middle;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        pointer-events: all;
+    }
+
+    .fa-6 {
+        font-size: 10em;
+    }
+
+    .topbar_ribbon {
+        padding-left: 10px;
+        float: left;
+        height: 60px;
+    }
+
+    .nav-nopadding {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        width: 20%;
+        background-color: #8DC63F;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .vertical-alignment-helper {
+        display: table;
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .vertical-align-center {
+        display: table-cell;
+        vertical-align: middle;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        pointer-events: all;
+    }
+
+    .fa-6 {
+        font-size: 10em;
+    }
+
+    .preview-img {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+    }
+
+    .preview-pdf {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+        border: 1px solid black;
+    }
+
+    #ais_topbar {
+        display: block;
+    }
+
+        #ais_topbar .topbar_ribbon {
+            padding-left: 10px;
+            float: left;
+            height: 60px;
+        }
+
+    .circlemenu {
+        width: 25%;
+        height: 25%;
+        background: #9bba25;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+    }
+
+    .col1 {
+        width: 5%;
+    }
+
+        .alertpopup {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+
+.add-border-rounded-green {
+    border-radius: 8px;
+    border: 7px solid #8DC63F; /*before color #74A333*/
+    background: #fff;
+}
+
+</style>
+
+
+    <div id="tabnew">
+        @(Html.Kendo().TabStrip()
+                              .Name("tabstripnew")
+                              .Items(tabstripnew =>
+                              {
+                                  tabstripnew.Add().Text(H_SUB_STEP_1)
+                                    .Selected(true) // select the first tab
+
+                                      // Set the tab content to a partial view using a strongly typed model
+                                    .Content(m => @Html.Partial("_RegistrationInfo", m))
+                                    .HtmlAttributes(new { id = "tabnew1", Name = "tabnew1" });
+
+                                  tabstripnew.Add().Text(H_SUB_STEP_2)
+                                      .Enabled(false) // Disable the tab to prevent skipping ahead.
+                                      .Content(m => Html.Partial("_RegisterPackage", m))
+                                      .HtmlAttributes(new { id = "tabnew2", Name = "tabnew2" });
+
+                                  tabstripnew.Add().Text(H_SUB_STEP_3)
+                                      .Enabled(false)
+                                      .Content(m => Html.Partial("_RegisterConfirm", m))
+                                      .HtmlAttributes(new { id = "tabnew3", Name = "tabnew3" });
+
+                              })
+        )
+    </div>
+
+   
+<div id="container">
+    <div class="row_ais">
+        <div class="column large-12 medium-12 small-12">
+            <div class="detail-for-menu">
+                <div class="innercontent">
+                    <div class="row_ais">
+                        <div id="renderBody" class="card"></div>
+                        <div class="form-summary col-md-12 col-xs-12 addrounded">
+                            
+                        </div>
+
+                        <input id="BulkEventPage" name="BulkEventPage" type="hidden" value=""/>
+                        <input type="hidden" id="Register_device" name="Register_device" value="" />
+                        <input type="hidden" id="Browser_type" name="Browser_type" value="" />
+                        
+                        <input type="hidden" id="ERROR_MSG" value="" />
+                        <div id="HiddenForLogin" style="display: none">
+                            <input id="getLcCode" name="getLcCode" type="hidden" />
+                            <input id="getASCCode" name="getASCCode" type="hidden" />
+                            <input id="getEmpID" name="getEmpID" type="hidden" />
+                            <input id="getPageCode" name="getPageCode" type="hidden" />
+                            <input id="getAccountCat" name="getAccountCat" value="" type="hidden" />
+                            <input id="getBulkNumber" name="getBulkNumber" value="" type="hidden" />
+
+                            @*Deposit Return MainPkg List*@
+                            <input id="getMainPkg_sffpromocd" name="getMainPkg_sffpromocd" value="" type="hidden" />
+                            <input id="getMainPkg_pkg_class" name="getMainPkg_pkg_class" value="" type="hidden" />
+                            <input id="getMainPkg_sffpromobillth" name="getMainPkg_sffpromobillth" value="" type="hidden" />
+                            <input id="getMainPkg_sffpromobilleng" name="getMainPkg_sffpromobilleng" value="" type="hidden" />
+                            <input id="getMainPkg_pkgnameth" name="getMainPkg_pkgnameth" value="" type="hidden" />
+                            <input id="getMainPkg_pkgnameeng" name="getMainPkg_pkgnameeng" value="" type="hidden" />
+                            <input id="getMainPkg_recur_charge" name="getMainPkg_recur_charge" value="" type="hidden" />
+                            <input id="getMainPkg_pre_init_charge" name="getMainPkg_pre_init_charge" value="" type="hidden" />
+                            <input id="getMainPkg_init_charge" name="getMainPkg_init_charge" value="" type="hidden" />
+                            <input id="getMainPkg_down_speed" name="getMainPkg_down_speed" value="" type="hidden" />
+                            <input id="getMainPkg_up_speed" name="getMainPkg_up_speed" value="" type="hidden" />
+                            <input id="getMainPkg_product_type" name="getMainPkg_product_type" value="" type="hidden" />
+                            <input id="getMainPkg_owner_product" name="getMainPkg_owner_product" value="" type="hidden" />
+                            <input id="getMainPkg_product_subtype" name="getMainPkg_product_subtype" value="" type="hidden" />
+                            <input id="getMainPkg_product_subtype2" name="getMainPkg_product_subtype2" value="" type="hidden" />
+                            <input id="getMainPkg_tech" name="getMainPkg_tech" value="" type="hidden" />
+                            <input id="getMainPkg_pkg_grp" name="getMainPkg_pkg_grp" value="" type="hidden" />
+                            <input id="getMainPkg_pkg_cd" name="getMainPkg_pkg_cd" value="" type="hidden" />
+                            <input id="getMainPkg_network_type" name="getMainPkg_network_type" value="" type="hidden" />
+                            <input id="getMainPkg_cust_type" name="getMainPkg_cust_type" value="" type="hidden" />
+
+                            @*Deposit Return OntopDiscountPkg List*@
+                            <input id="getOntopDisPkg_sffpromocd" name="getOntopDisPkg_sffpromocd" value="" type="hidden" />
+                            <input id="getOntopDisPkg_pkg_class" name="getOntopDisPkg_pkg_class" value="" type="hidden" />
+                            <input id="getOntopDisPkg_sffpromobillth" name="getOntopDisPkg_sffpromobillth" value="" type="hidden" />
+                            <input id="getOntopDisPkg_sffpromobilleng" name="getOntopDisPkg_sffpromobilleng" value="" type="hidden" />
+                            <input id="getOntopDisPkg_pkgnameth" name="getOntopDisPkg_pkgnameth" value="" type="hidden" />
+                            <input id="getOntopDisPkg_pkgnameeng" name="getOntopDisPkg_pkgnameeng" value="" type="hidden" />
+                            <input id="getOntopDisPkg_recur_charge" name="getOntopDisPkg_recur_charge" value="" type="hidden" />
+                            <input id="getOntopDisPkg_pre_init_charge" name="getOntopDisPkg_pre_init_charge" value="" type="hidden" />
+                            <input id="getOntopDisPkg_init_charge" name="getOntopDisPkg_init_charge" value="" type="hidden" />
+                            <input id="getOntopDisPkg_down_speed" name="getOntopDisPkg_down_speed" value="" type="hidden" />
+                            <input id="getOntopDisPkg_up_speed" name="getOntopDisPkg_up_speed" value="" type="hidden" />
+                            <input id="getOntopDisPkg_product_type" name="getOntopDisPkg_product_type" value="" type="hidden" />
+                            <input id="getOntopDisPkg_owner_product" name="getOntopDisPkg_owner_product" value="" type="hidden" />
+                            <input id="getOntopDisPkg_product_subtype" name="getOntopDisPkg_product_subtype" value="" type="hidden" />
+                            <input id="getOntopDisPkg_product_subtype2" name="getOntopDisPkg_product_subtype2" value="" type="hidden" />
+                            <input id="getOntopDisPkg_tech" name="getOntopDisPkg_tech" value="" type="hidden" />
+                            <input id="getOntopDisPkg_pkg_grp" name="getOntopDisPkg_pkg_grp" value="" type="hidden" />
+                            <input id="getOntopDisPkg_pkg_cd" name="getOntopDisPkg_pkg_cd" value="" type="hidden" />
+                            <input id="getOntopDisPkg_network_type" name="getOntopDisPkg_network_type" value="" type="hidden" />
+                            <input id="getOntopDisPkg_cust_type" name="getOntopDisPkg_cust_type" value="" type="hidden" />
+
+                            @*Deposit Return OntopPkg1 List*@
+                            <input id="getOntopPkg1_sffpromocd" name="getOntopPkg1_sffpromocd" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkg_class" name="getOntopPkg1_pkg_class" value="" type="hidden" />
+                            <input id="getOntopPkg1_sffpromobillth" name="getOntopPkg1_sffpromobillth" value="" type="hidden" />
+                            <input id="getOntopPkg1_sffpromobilleng" name="getOntopPkg1_sffpromobilleng" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkgnameth" name="getOntopPkg1_pkgnameth" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkgnameeng" name="getOntopPkg1_pkgnameeng" value="" type="hidden" />
+                            <input id="getOntopPkg1_recur_charge" name="getOntopPkg1_recur_charge" value="" type="hidden" />
+                            <input id="getOntopPkg1_pre_init_charge" name="getOntopPkg1_pre_init_charge" value="" type="hidden" />
+                            <input id="getOntopPkg1_init_charge" name="getOntopPkg1_init_charge" value="" type="hidden" />
+                            <input id="getOntopPkg1_down_speed" name="getOntopPkg1_down_speed" value="" type="hidden" />
+                            <input id="getOntopPkg1_up_speed" name="getOntopPkg1_up_speed" value="" type="hidden" />
+                            <input id="getOntopPkg1_product_type" name="getOntopPkg1_product_type" value="" type="hidden" />
+                            <input id="getOntopPkg1_owner_product" name="getOntopPkg1_owner_product" value="" type="hidden" />
+                            <input id="getOntopPkg1_product_subtype" name="getOntopPkg1_product_subtype" value="" type="hidden" />
+                            <input id="getOntopPkg1_product_subtype2" name="getOntopPkg1_product_subtype2" value="" type="hidden" />
+                            <input id="getOntopPkg1_tech" name="getOntopPkg1_tech" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkg_grp" name="getOntopPkg1_pkg_grp" value="" type="hidden" />
+                            <input id="getOntopPkg1_pkg_cd" name="getOntopPkg1_pkg_cd" value="" type="hidden" />
+                            <input id="getOntopPkg1_cust_type" name="getOntopPkg1_cust_type" value="" type="hidden" />
+
+                            @*Deposit Return OntopPkg2 List*@
+                            <input id="getOntopPkg2_sffpromocd" name="getOntopPkg2_sffpromocd" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkg_class" name="getOntopPkg2_pkg_class" value="" type="hidden" />
+                            <input id="getOntopPkg2_sffpromobillth" name="getOntopPkg2_sffpromobillth" value="" type="hidden" />
+                            <input id="getOntopPkg2_sffpromobilleng" name="getOntopPkg2_sffpromobilleng" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkgnameth" name="getOntopPkg2_pkgnameth" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkgnameeng" name="getOntopPkg2_pkgnameeng" value="" type="hidden" />
+                            <input id="getOntopPkg2_recur_charge" name="getOntopPkg2_recur_charge" value="" type="hidden" />
+                            <input id="getOntopPkg2_pre_init_charge" name="getOntopPkg2_pre_init_charge" value="" type="hidden" />
+                            <input id="getOntopPkg2_init_charge" name="getOntopPkg2_init_charge" value="" type="hidden" />
+                            <input id="getOntopPkg2_down_speed" name="getOntopPkg2_down_speed" value="" type="hidden" />
+                            <input id="getOntopPkg2_up_speed" name="getOntopPkg2_up_speed" value="" type="hidden" />
+                            <input id="getOntopPkg2_product_type" name="getOntopPkg2_product_type" value="" type="hidden" />
+                            <input id="getOntopPkg2_owner_product" name="getOntopPkg2_owner_product" value="" type="hidden" />
+                            <input id="getOntopPkg2_product_subtype" name="getOntopPkg2_product_subtype" value="" type="hidden" />
+                            <input id="getOntopPkg2_product_subtype2" name="getOntopPkg2_product_subtype2" value="" type="hidden" />
+                            <input id="getOntopPkg2_tech" name="getOntopPkg2_tech" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkg_grp" name="getOntopPkg2_pkg_grp" value="" type="hidden" />
+                            <input id="getOntopPkg2_pkg_cd" name="getOntopPkg2_pkg_cd" value="" type="hidden" />
+                            <input id="getOntopPkg2_cust_type" name="getOntopPkg2_cust_type" value="" type="hidden" />
+
+                            @*Deposit Return ServicePkg1 List*@
+                            <input id="getServicePkg1_servicecd" name="getOntopPkg1_servicecd" value="" type="hidden" />
+                            <input id="getServicePkg1_productname" name="getOntopPkg1_productname" value="" type="hidden" />
+
+                            @*Deposit Return ServicePkg2 List*@
+                            <input id="getServicePkg2_servicecd" name="getServicePkg2_servicecd" value="" type="hidden" />
+                            <input id="getServicePkg2_productname" name="getServicePkg2_productname" value="" type="hidden" />
+
+                            @*Deposit Return ServicePkg3 List*@
+                            <input id="getServicePkg3_servicecd" name="getServicePkg3_servicecd" value="" type="hidden" />
+                            <input id="getServicePkg3_productname" name="getServicePkg3_productname" value="" type="hidden" />
+
+                        </div>
+                        
+                        <div class="modal fade" id="modalBlackList" tabindex="-1" role="dialog" aria-labelledby="modalBlackList_label">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="border-bottom: none;">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="add-border-rounded-green">
+                                            <p class="clearfix"></p>
+                                            <h3 class="text-center">
+                                                ERROR
+                                                @(Html.Raw("Error"))
+                                            </h3>
+                                            <p class="clearfix"></p>
+                                            <div class="col-md-12 text-center">
+                                                <p class="clearfix"></p>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close(); //Reload2()">&nbsp; CLOSE &nbsp; </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="border-top: none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modal003" tabindex="-1" role="dialog" aria-labelledby="modal003_label">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="border-bottom: none;">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="add-border-rounded-green">
+                                            <p class="clearfix"></p>
+                                            <h3 class="text-center">
+                                                @B_LOGIN_CANCEL
+                                            </h3>
+                                            <p class="clearfix"></p>
+                                            <div class="col-md-12 text-center">
+                                                <p class="clearfix"></p>
+                                                <button type="button" class="btn btn-success" onclick="$.modal.close();//orderDupConfirm(1)">
+                                                    &nbsp; CONFIRM &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                                                </button>
+                                                &nbsp;&nbsp;
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; @B_LOGIN_CANCEL &nbsp; </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="border-top: none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--  Put Content Here จบเนื้อหา  -->
+
+    <div style="clear: both;"></div>
+    <div id="aisfooter">
+    </div>
+    <div class="truehits-bg">&nbsp;</div>
+
+</div>
+
+<script type="text/javascript">
+    window.scrollTo(0, 0);
+
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "/Process/GetMode",
+            data: { 'mode': 'WEB' },
+            dataType: "json",
+            success: function (data) {
+
+            }
+        });
+
+        $("#BulkEventPage").val("NewCustomer");
+
+    });
+
+    function post(path, params, method) {
+
+        method = method || "post"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+
+</script>
+

@@ -1,0 +1,1068 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.SearchFoaWriteOffModel
+@using WBBEntity.PanelModels;
+@{
+
+    // Btn
+    string B_CONFIRM = "";
+    string B_CANCEL = "";
+    string B_SEARCH = "";
+    string B_CLEAR = "";
+    string B_SEND_DATA = "";
+    string B_ADD = "";
+    // Lable
+    string L_ACCESS_NO = "";
+    string L_MOVEMENT_TYPE = "";
+    string L_MATERIAL_CODE = "";
+    string L_SERIAL_NO = "";
+    string L_PLANT = "";
+    string L_STORAGE_LOCATION = "";
+    //
+    string L_SNPATTERN = "";
+    string L_SN_STATUS = "";
+    string L_COMPANY_CODE = "";
+    //
+    string L_BROWSE_FILE = "";
+
+
+    //page name
+    string L_PAGE_NAME = "";
+
+    if (ViewBag.ListScreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.ListScreen;
+        B_CONFIRM = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_CONFIRM").LovValue1 : "";
+        B_SEARCH = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue1 : "";
+        B_CLEAR = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_CLEAR").LovValue1 : "";
+        B_CANCEL = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_CANCEL").LovValue1 : "";
+        B_SEND_DATA = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_SEND_DATA").LovValue1 : "";
+        B_ADD = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "B_ADD").LovValue1 : "";
+
+        //----lable
+        L_ACCESS_NO = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_ACCESS_NO").LovValue1 : "";
+        L_MOVEMENT_TYPE = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_MOVEMENT_TYPE").LovValue1 : "";
+        L_MATERIAL_CODE = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_MATERIAL_CODE").LovValue1 : "";
+        L_SERIAL_NO = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_SERIAL_NO").LovValue1 : "";
+        L_PLANT = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_PLANT").LovValue1 : "";
+        L_STORAGE_LOCATION = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_STORAGE_LOCATION").LovValue1 : "";
+        //
+
+        L_SNPATTERN = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_SNPATTERN").LovValue1 : "";
+        L_SN_STATUS = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_SN_STATUS").LovValue1 : "";
+        L_COMPANY_CODE = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_COMPANY_CODE").LovValue1 : "";
+
+        L_BROWSE_FILE = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_BROWSE_FILE").LovValue1 : "";
+
+        //page name
+
+        L_PAGE_NAME = configscreen.Any(f => f.Type == "FBBPAYG_SCREEN") ? configscreen.FirstOrDefault(f => f.Name == "L_PAGE_NAME").LovValue1 : "";
+
+    }
+}
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">@L_PAGE_NAME</h3>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal_confirmByCheckBox">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+                <h4 class="modal-title" id="myModalLabel">&nbsp;</h4>
+            </div>
+            <p class="clearfix"></p>
+            <h4 class="modal-title" id="myModalLabel">@B_CONFIRM  @L_PAGE_NAME</h4>
+            @*<p class="text-center" id="text-content-message">Confirm ReverseAsset</p>*@
+            <div class="modal-footer  " style="text-align:center;">
+                @*<p class="clearfix">&nbsp;</p>*@
+                <a class="btn btn-success   WriteOff-confirm fa fa-check-circle-o "  href="#" onclick="ConfirmWriteOffByCheckBox();">&nbsp; @B_CONFIRM &nbsp;</a>
+                <a class="btn btn-default   WriteOff-cancel  fa fa-ban " href="#" data-dismiss="modal">&nbsp; Cancel &nbsp; </a>
+
+                @*   <p class="clearfix">&nbsp;</p>*@
+
+            </div>
+        </div>
+    </div>
+</div>
+@*------------------------------Add*@
+@(Html.Kendo().Window()
+      .Name("AddPopupFOAWrigeOff")
+      .HtmlAttributes(new { @class = "i-gap-popup" })
+      .Title(@L_PAGE_NAME)
+      .Width(520)
+      .Draggable()
+      .Visible(false)
+      .Modal(true)
+      .Content(@<text>
+
+        <div class="row">
+            <div class="col-md-5 col-sm-12">
+                <label>@L_ACCESS_NO</label>
+                <input type="text" name="ADD_ACCESS_NUMBER" id="ADD_ACCESS_NUMBER" class="k-textbox form-control" />
+                <div class="i-fg-data-entry-validation" id="validatefor-txt_add_access_number"></div>
+            </div>
+            <div class="col-md-5 col-sm-12">
+                <label>@L_SERIAL_NO</label>
+                <input type="text" name="ADD_SN" id="ADD_SN" class="k-textbox form-control" />
+                <div class="i-fg-data-entry-validation" id="validatefor-txt_add_sn"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-sm-12">
+                <label>@L_COMPANY_CODE</label>
+                @*<input type="text" name="ADD_COMPANY_CODE" id="ADD_COMPANY_CODE" class="k-textbox form-control" />*@
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                         .Name("ADD_COMPANY_CODE")
+                                        .DataTextField("LOV_NAME")
+                                        .DataValueField("LOV_VAL1")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("SetDDLCompanyCode", "FoaWriteOff");
+                                            });
+                                        })
+                                    .Events(e => e.Change("OnCompanyCodeChange"))
+                                        .SelectedIndex(0)
+                    )
+                    <div class="i-fg-data-entry-validation" id="validatefor-txt_add_company_code"></div>
+                </div>
+
+
+            </div>
+            <div class="col-md-5 col-sm-12">
+                <label>@L_MATERIAL_CODE</label>
+                <input type="text" name="ADD_MATERIAL_CODE" id="ADD_MATERIAL_CODE" class="k-textbox form-control" />
+                <div class="i-fg-data-entry-validation" id="validatefor-txt_add_Material_code"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-sm-12">
+                <label>@L_PLANT</label>
+                @*<input type="text" name="ADD_PLANT" id="ADD_PLANT" class="k-textbox form-control" />*@
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DropDownList()
+                                      .Name("ADD_PLANT")
+                                        .DataTextField("LOV_NAME")
+                                        .DataValueField("LOV_VAL1")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("SetDDLPlant", "FoaWriteOff");
+                                            });
+                                        }).SelectedIndex(0)
+                    )
+                    <div class="i-fg-data-entry-validation" id="validatefor-txt_add_plant"></div>
+                </div>
+
+            </div>
+            <div class="col-md-5 col-sm-12">
+                <label>@L_STORAGE_LOCATION</label>
+                <div class="i-fg-data-entry">
+                    <input type="text" name="ADD_STORAGE_LOCATION" id="ADD_STORAGE_LOCATION" class="k-textbox form-control" />
+                    <div class="i-fg-data-entry-validation" id="validatefor-txt_add_storage_location"></div>
+                </div>
+            </div>
+        </div>
+        @*  <div class="row">
+                    <div class="col-md-5 col-sm-12">
+                        <label>@L_SNPATTERN</label>
+                        <input type="text" name="ADD_SNPATTERN" id="ADD_SNPATTERN" class="k-textbox form-control" />
+                        <div class="i-fg-data-entry-validation" id="validatefor-txt_add_snpattern"></div>
+                    </div>
+                   <div class="col-md-5 col-sm-12">
+                    &nbsp;
+                    <label>@L_SN_STATUS</label>
+                    <input type="text" name="ADD_SN_STATUS" id="ADD_SN_STATUS" class="k-textbox form-control" />
+                    <div class="i-fg-data-entry-validation" id="validatefor-txt_add_sn_status"></div>
+                </div>
+            </div>*@
+        <div class="row">
+            <div class="col-md-2 col-sm-12">
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <p class="clearfix"></p>
+                <a id="btnAddFoaWriteOffConfirm" class="btn btn-success" onclick="CreateDataForWriteOff()"><i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;@B_CONFIRM</a>
+                <a id="btnCancelFoaWriteOff" class="btn btn-default"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Cancel</a>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-md-2 col-sm-12">
+                <p class="clearfix"></p>
+            </div>
+        </div>
+
+    </text>)
+)
+
+@*------------------------------ByFilePopupFOAWrigeOff *@
+
+<div class="modal fade" id="modal_ByFilePopupFOAWrigeOff" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabelByFile" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">CONFIRM @L_PAGE_NAME BY FILE</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center" style="font-weight:bold;" id="text-content-messageByfile"></p>
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <a id="btnByFileFoaWriteOffConfirm" class="btn btn-success" onclick="ConfirmWriteOffByFile()"><i class="fa fa-check-circle-o"></i>&nbsp;&nbsp;@B_CONFIRM</a>
+                <a id="btnCancelByfileFoaWriteOff" class="btn btn-default"><i class="fa fa-ban"></i>&nbsp;&nbsp;Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*---------------------end By file*@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Search Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="SearchPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4">
+                            <label>@L_ACCESS_NO</label>
+                            @Html.TextBoxFor(t => t.ACCESS_NO, new { maxlength = 10, @class = "k-textbox form-control" })
+                            <div class="i-fg-data-entry-validation" id="validatefor-txt_Search_access_number"></div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <label>@L_SERIAL_NO</label>
+                            @Html.TextBoxFor(t => t.SERIAL_NO, new { maxlength = 50, @class = "k-textbox form-control" })
+                            <div class="i-fg-data-entry-validation" id="validatefor-txt_Search_serial_no"></div>
+                        </div>
+                    </div>
+                    <div>&nbsp;</div>
+                    <div class="row ">
+                        <div class="col-sm-2 col-md-2">
+                            <label>@L_BROWSE_FILE  </label>
+                        </div>
+                    </div>
+                    <div class="row ">
+                    
+                        <div class="col-sm-10 col-md-4">
+
+                            @(Html.Kendo().Upload()
+                                    .Name("WriteOffByfile")
+
+                                          .HtmlAttributes(new
+                                          {
+                                              accept = ".xlsx,.xls"
+                                          })
+                                           .Messages(m => m.Select(@L_BROWSE_FILE))
+
+                                          .Async(a => a
+                                                  .Save("ImportFileInternet_Save", "FoaWriteOff")
+                                                  .Remove("ImportFileInternet_Remove", "FoaWriteOff")
+                                                          .AutoUpload(false))
+                                          .Multiple(false)
+                                                   .Events(e => e.Select("resetFoaWriteOff_ByFile"))
+                                                  .Events(e => e.Success("onFoaWriteOff_fileSuccess"))
+                                                  .Events(e => e.Error("onFoaWriteOff_fileError"))
+
+                            )
+                            <div class="i-fg-data-entry-validation" id="validatefor-FoaWriteOff_file"></div>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <a id="btnExportTemplateWriteOff" onclick="ExportTemplateWriteOffFoa()" class="btn btn-default"><i class="fa fa-file-excel-o small"></i>&nbsp;&nbsp;Export Template WriteOff</a>
+                        </div>
+                    </div> 
+                   <div class="row ">
+                            <div class="col-sm-12 col-md-12 i-text-align-right i-text-align-right">
+                                <a class="btn btn-info" onclick="searchOrderList();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                                <a class="btn btn-default" onclick="ClearSearch();"><i class="fa fa-ban"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        @*------------Result*@
+
+        <div class="panel panel-success" id="Result_Panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Result Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#ResultSearchWriteOffPanel" onclick="onPanelToggle(this);" id="ResultSearchWriteOffPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="ResultSearchWriteOffPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="ResultSearchWriteOffPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+
+                    <div class="row i-gap-top-1  ">
+
+                        <div class="col-sm-12 col-md-12 i-gap-top-1">
+                            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.FBSSFixedAssetSnAct>()
+                                       .Name("gridFoaWriteOff")
+                                        .Selectable(selectable => selectable.Enabled(true).Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
+                                      .Columns(columns =>
+                                      {
+
+
+                                          columns.Bound(p => p.ACCESS_NUMBER).Title(@L_ACCESS_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(100)
+                                              //  .ClientTemplate("<input type='checkbox'  class='k-cb SendFoaWriteoff-checkbox' onclick='childcheckbox_change(this)' />")
+                                             .ClientTemplate("# if (SN_STATUS!='WRITEOFF'){ #<input type='checkbox'  class='k-cb SendFoaWriteoff-checkbox' onclick='childcheckbox_change(this)' /># }else{# <input type='checkbox' class='k-cb SendFoaWriteoff-checkbox hidden' disabled= 'disabled' />#}#")
+                                           .HeaderTemplate("<input type='checkbox' id='Head_SendFoaWriteoff' onclick='allcheckbox_change(this)'/>").HtmlAttributes(new { style = "text-align:center;" })
+                                         .HeaderHtmlAttributes(new { style = "text-align:center" }).Width(100);
+                                          columns.Bound(p => p.ACCESS_NUMBER).Title(@L_ACCESS_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(100);
+                                          columns.Bound(p => p.SN).Title(@L_SERIAL_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(300);
+                                          columns.Bound(p => p.COMPANY_CODE).Title(@L_COMPANY_CODE).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                          columns.Bound(p => p.MATERIAL_CODE).Title(@L_MATERIAL_CODE).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+
+                                          columns.Bound(p => p.PLANT).Title(@L_PLANT).HtmlAttributes(new { style = "text-align:left;" }).Width(100);
+                                          columns.Bound(p => p.STORAGE_LOCATION).Title(@L_STORAGE_LOCATION).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+
+                                          //columns.Bound(p => p.SNPATTERN).Title(@L_SNPATTERN).HtmlAttributes(new { style = "text-align:left;" }).Width(100);
+                                          columns.Bound(p => p.SN_STATUS).Title(@L_SN_STATUS).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+
+                                      })
+
+                                                                                                                                    .ToolBar(toolbar => toolbar.Template("<div class='pull-right'><a     id='btnAddFoaWriteOff'  class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; &nbsp;" + @B_ADD + " &nbsp;&nbsp;</a> &nbsp;&nbsp;<a     id='btnConfirmFoaWriteOffByCheckBox'  class='btn btn-info'><i class='fa fa-reply fa-lg'></i>&nbsp; " + @B_SEND_DATA + " </a></div>"))
+                                           .Scrollable(scrollable => scrollable.Height("auto"))
+                                            .Resizable(resize => resize.Columns(true))
+                                            .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                                            .AutoBind(false)
+                                            .DataSource(dataSource => dataSource
+                                            .Ajax()
+                                            .PageSize(20)
+                                            .Read(read => read.Action("getFoaWriteOff", "FoaWriteOff").Data("bindingValue"))
+                                              ).Events(e => e.DataBound("onWriteOffViewDataBound"))
+                            )
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var temp_Ischecked = [];
+    var checkeds = [];
+
+    $(document).ready(function () {
+
+        $("#ACCESS_NO").keyup(function () {
+            CheckKeyUps("ACCESS_NO", "[0-9]");
+        });
+
+        $("#SERIAL_NO").keyup(function () {
+            CheckKeyUps("SERIAL_NO", "[a-zA-Z0-9]");
+        });
+
+
+        $("#btnConfirmFoaWriteOffByCheckBox").attr('disabled', true);
+        $("#btnConfirmFoaWriteOffByCheckBox").on('click', function () {
+            ConfirmWriteOffByCheckBoxShowModal();
+        });
+        $("#btnAddFoaWriteOff").on('click', function () {
+            AddWriteOffByPopup();
+        });
+        $("#btnCancelFoaWriteOff").on('click', function () {
+            CancelWriteOffByPopup();
+        });
+        //------------add--------------
+        $("#ADD_ACCESS_NUMBER").keyup(function () {
+            CheckKeyUps("ADD_ACCESS_NUMBER", "[0-9]");
+        });
+        $("#ADD_STORAGE_LOCATION").keyup(function () {
+            CheckKeyUps("ADD_STORAGE_LOCATION", "[0-9]");
+        });
+
+        $("#ADD_MATERIAL_CODE").keyup(function () {
+            CheckKeyUps("ADD_MATERIAL_CODE", "[a-zA-Z0-9]");
+        });
+
+        $("#ADD_SN").keyup(function () {
+            CheckKeyUps("ADD_SN", "[a-zA-Z0-9]");
+        });
+
+        //-----
+        _PopClear();
+        ClearTxtCreateWriteOff();
+        // by file
+        $("#btnCancelByfileFoaWriteOff").on('click', function () {
+            $("#modal_ByFilePopupFOAWrigeOff").modal('hide')
+        });
+        // Constructor();
+
+    });
+    var temp_Ischecked = [];
+    var checkeds = [];
+    var FileNameXls = "";
+    function defaultData() { 
+        var searchResult = new FoaWriteOffModel();
+        searchResult.ACCESS_NO = $("#ACCESS_NO").val(); //ACCESS_NUMBER
+        searchResult.SERIAL_NO = $("#SERIAL_NO").val(); //ASSET_CODE
+        searchResult.FILE_NAME = FileNameXls;
+        return searchResult;
+        // searchResult.REASON = $("#REASON").val(); //REASON
+    }
+    var FoaWriteOffModel = function () {
+        ACCESS_NO: "";
+        SERIAL_NO: "";
+        FILE_NAME: "";
+
+        PAGE_INDEX: 1;
+        PAGE_SIZE: 20;
+    }
+    function ClearSearch() {
+        $("#btnConfirmFoaWriteOffByCheckBox").attr('disabled', true);
+        $("#ACCESS_NO").val("");
+        $("#SERIAL_NO").val("");
+        $("#gridFoaWriteOff").data("kendoGrid").dataSource.data([]);
+        $(".k-grid-content").height(50);
+
+    }
+    function searchOrderList() {
+        
+        //ACCESS_NO
+        //SERIAL_NO
+        ClearFileUpload();
+        Loading();
+        $("#btnConfirmFoaWriteOffByCheckBox").attr('disabled', true);
+       
+
+
+        var ACCESS_NO = $("#ACCESS_NO").val(); //ACCESS_NUMBER
+        var SERIAL_NO = $("#SERIAL_NO").val(); //ASSET_CODE
+        // Clar grid
+        $("#btnConfirmFoaWriteOffByCheckBox").attr('disabled', true);
+        $("#gridFoaWriteOff").data("kendoGrid").dataSource.data([]);
+        $(".k-grid-content").height(50);
+        _PopClear();
+        // Clar grid
+
+        var model = defaultData();
+        temp_model = model;
+        var grid = $("#gridFoaWriteOff").data("kendoGrid");
+
+        if (ACCESS_NO != "") {
+            $("#validatefor-txt_Search_serial_no").html("");
+            $("#validatefor-txt_Search_access_number").html("");
+
+            if (validReExpNumber(ACCESS_NO)) {
+
+                if (SERIAL_NO != "") {
+                    if (validReExp(SERIAL_NO)) {
+
+                        grid.dataSource.page(1);
+                      //  grid.refresh();
+
+                    } else {
+
+                        $("#validatefor-txt_Search_serial_no").html(ValidationIcon() + "This field is not formatchs string or number.");
+
+                    }
+                } else {
+                    grid.dataSource.page(1);
+                    //grid.refresh();
+                }
+            } else {
+
+                $("#validatefor-txt_Search_access_number").html(ValidationIcon() + "This field is not formatchs number.");
+
+                if (SERIAL_NO != "") {
+                    if (!validReExp(SERIAL_NO)) {
+                        $("#validatefor-txt_Search_serial_no").html(ValidationIcon() + "This field is not formatchs string or number.");
+                    }
+                }
+            } 
+        } else {
+            $("#validatefor-txt_Search_serial_no").html("");
+            $("#validatefor-txt_Search_access_number").html("");
+
+            if (SERIAL_NO != "") {
+                if (validReExp(SERIAL_NO)) {
+
+                    grid.dataSource.page(1);
+                   // grid.refresh();
+
+                } else {
+                    $("#validatefor-txt_Search_serial_no").html(ValidationIcon() + "This field is not formatchs string or number.");
+
+                }
+            } else {
+                grid.dataSource.page(1);
+               // grid.refresh();
+            }
+        }
+
+      
+
+
+    }
+    function onWriteOffViewDataBound() {
+        //  console.log("bound")
+        _PopClear();
+        var grid = this;
+        //fix kendo grid width
+        if (this.dataSource.view().length == 0) {
+            //console.log("length=" + this.dataSource.view().length)
+            var colspan = this.thead.find("th").length;
+            var emptyRow = "<tr style='height:auto; text-align:Left' ><td colspan='" + colspan + "'>&nbsp;&nbsp;&nbsp;&nbsp;No Data Found  </td></tr>";
+            $("#btnConfirmFoaWriteOffByCheckBox").attr('disabled', true); 
+            this.tbody.html(emptyRow);
+            this.table.width(800);
+            $(".k-grid-content").height(50);
+        } else {
+            $('.k-grid-content').height("auto");
+            $('.k-grid-content').css("max-height", "300px");
+            // console.log("length else =" + this.dataSource.view().length)
+            
+        }
+
+        Loading(0);
+       
+    }
+    function bindingValue() {
+        Loading();
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+    //--------------child-checkbox-----------------
+    function childcheckbox_change(Input) {
+        var result = true;
+        $('#gridFoaWriteOff').find("td").find("input:checkbox").each(function (i, e) {
+
+            if ($(e).prop("checked") == false) {
+                if (result == true) result = false;
+            }
+        });
+        $("#Head_SendFoaWriteoff").prop("checked", result);
+        stemp_temp(Input);
+    }
+    //-----------all-hearderCheckbox------------
+    function allcheckbox_change(Input) {
+        // console.log("allcheckbox_change" + Input);
+        $('#gridFoaWriteOff input:checkbox').each(function (i, e) {
+            $(e).prop("checked", $(Input).prop("checked"));
+        });
+        stemp_temp(Input);
+    }
+    var WriteOffList = function () {
+        ACCESS_NUMBER = "";
+        SN = "";
+        COMPANY_CODE = "";
+        MATERIAL_CODE = "";
+        PLANT = "";
+        STORAGE_LOCATION = "";
+        //SNPATTERN = "";
+        //   SN_STATUS = "";
+
+    }
+    function _PopClear() {
+        //clear temp
+        $("#btnConfirmFoaWriteOffByCheckBox").attr('disabled', true);
+        temp_Ischecked = [];
+        _PopGridChange();
+    }
+    //--------------
+    function Constructor() {
+        //  console.log("Constructor");
+        var grid = $("#gridFoaWriteOff").data("kendoGrid");
+        grid.dataSource.bind("change", function (e) {
+            _PopGridChange();
+        });
+    }
+    //--------------
+    function _PopGridChange() {
+        $('#gridFoaWriteOff').find("td").find("input:checkbox").each(function (i, e) {
+            $(e).prop("checked", false);
+        });
+        $("#Head_SendFoaWriteoff").prop("checked", false);
+        //  get_temp();
+    }
+
+    function stemp_temp(Input) {
+        var chDis = 0;
+        checkeds = [];
+
+        //ACCESS_NUMBER = "";
+        //SN = "";
+        //COMPANY_CODE = "";
+        //MATERIAL_CODE = "";
+        //PLANT = "";
+        //STORAGE_LOCATION = "";
+        //SNPATTERN = "";
+        //SN_STATUS = "";
+
+        $('#gridFoaWriteOff').find("td").find("input:checkbox").each(function (i, e) {
+            var WriteOffListModel = new WriteOffList();
+            var item = $(e).parent().parent().children(1).get(1).innerText;
+            var item2 = $(e).parent().parent().children(2).get(2).innerText;
+            var item3 = $(e).parent().parent().children(3).get(3).innerText;
+            var item4 = $(e).parent().parent().children(4).get(4).innerText;
+            var item5 = $(e).parent().parent().children(5).get(5).innerText;
+            var item6 = $(e).parent().parent().children(6).get(6).innerText;
+            //var item7 = $(e).parent().parent().children(7).get(7).innerText;
+            //var item8 = $(e).parent().parent().children(8).get(8).innerText;
+
+            var temModel = [item, item2, item3, item4, item5, item6, $(e).prop("checked")];
+            temp_Ischecked[item + item2 + item3 + item4 + item5 + item6] = temModel;
+
+            if ($(e).prop("checked")) {
+                WriteOffListModel.ACCESS_NUMBER = item;
+                WriteOffListModel.SN = item2;
+                WriteOffListModel.COMPANY_CODE = item3;
+                WriteOffListModel.MATERIAL_CODE = item4;
+                WriteOffListModel.PLANT = item5;
+                WriteOffListModel.STORAGE_LOCATION = item6;
+                //WriteOffListModel.SNPATTERN = item7;
+                //WriteOffListModel.SN_STATUS = item8;
+                checkeds.push(WriteOffListModel);
+                //   console.log(item + item2 +"="+ $(e).prop("checked"))
+                chDis += 1;
+            }
+
+
+        });
+        // console.log("checkeds=" + checkeds[0]["ACCESS_NUMBER"])
+        //  debugger;
+        // console.log("chDis=" + chDis)
+        if (chDis > 0) {
+
+            $("#btnConfirmFoaWriteOffByCheckBox").attr('disabled', false);
+        } else {
+            $("#btnConfirmFoaWriteOffByCheckBox").attr('disabled', true);
+        }
+    }
+    function AddWriteOffByPopup() {
+        var dialog = $("#AddPopupFOAWrigeOff").data("kendoWindow").open();
+        dialog = $("#AddPopupFOAWrigeOff").data("kendoWindow");
+        dialog.center();
+        ClearTxtCreateWriteOff();
+    }
+    function CancelWriteOffByPopup() {
+        $("#AddPopupFOAWrigeOff").data("kendoWindow").close();
+        ClearTxtCreateWriteOff();
+    }
+
+    function ConfirmWriteOffByCheckBoxShowModal() {
+        $("#modal_confirmByCheckBox").modal('show');
+
+    }
+    function onFoaWriteOff_fileError(e) {
+        if (!e.response.status) {
+            $("#validatefor-FoaWriteOff_file").html(ValidationIcon() + e.response.message);
+        } else {
+            $("#validatefor-FoaWriteOff_file").html("");
+        }
+
+    }
+    function resetFoaWriteOff_ByFile() {
+
+    }
+    function onFoaWriteOff_fileSuccess(e) {
+        ClearSearch();
+        Loading();
+        if (e.operation == 'upload') {
+
+            if (e.response.data != '') {
+                $('.k-upload-files.k-reset').each(function () {
+                    //  console.log("e.response.fileName" + e.response.fileName)
+                    FileNameXls = e.response.fileName;
+
+                    //  $(".k-filename").text(e.response.fileName);
+                    if (!e.response.status) {
+                        $("#validatefor-FoaWriteOff_file").html(ValidationIcon() + e.response.message);
+                    } else {
+                        $("#validatefor-FoaWriteOff_file").html("");
+                        $("#modal_ByFilePopupFOAWrigeOff").modal('show');
+                        $("#text-content-messageByfile").html("File Name :" + FileNameXls)
+
+                    }
+
+                });
+
+            }
+        }
+
+        Loading(0);
+    }
+  
+
+    function ConfirmWriteOffByCheckBox() {
+        $("#modal_confirmByCheckBox").modal('hide');
+        Loading();
+        //console.log("ConfirmWriteOffByCheckBox");
+        $.ajax({
+
+            contentType: 'application/json',
+            url: "/FoaWriteOff/FoaWriteOffConfirmByCheck",
+            data: JSON.stringify({ dataSModel: checkeds }),
+            async: false,
+            dataType: "json",
+            type: "POST",
+            success: function (response) {
+                Loading(0);
+                if (response) {
+                    if (response["Code"] == "0") {
+                        var responsetext = "<span style='font-weight: normal;'><b>Data Total :</b> " + response["DataTotal"].toLocaleString('en') + " Serial. <br/> <b>Write Off Success : </b>" + response["SuccessCount"].toLocaleString('en') + " Serial.<br/> <b>Write Off Error : </b>" + response["ErrorCount"].toLocaleString('en') + " Serial.  </span>"
+
+                        showFeedback("success", responsetext, "Notify Information");
+
+                        $("#gridFoaWriteOff").data("kendoGrid").dataSource.read();
+                        // ClearFileUpload();
+                        _PopClear();
+                        // _Search();
+                    } else {
+                        Loading(0);
+                        _PopClear();
+                        showFeedback("error", response["message"], "Notify Information");
+                    }
+                }
+            },
+            failure: function (msg) {
+                Loading(0);
+            }
+
+        });
+
+
+        Loading(0);
+    }
+    //Create Add Write from text box
+
+    function ClearTxtCreateWriteOff() {
+        $("#validatefor-txt_add_access_number").html("");
+        $("#validatefor-txt_add_sn").html("");
+        $("#validatefor-txt_add_company_code").html("");
+        $("#validatefor-txt_add_Material_code").html("");
+        $("#validatefor-txt_add_plant").html("");
+        $("#validatefor-txt_add_storage_location").html("");
+        // $("#validatefor-txt_add_snpattern").html("");
+        //$("#validatefor-txt_add_sn_status").html("");
+
+        $("#ADD_ACCESS_NUMBER").val('');
+        $("#ADD_SN").val('');
+        // $("#ADD_COMPANY_CODE").val('');
+        $("#ADD_COMPANY_CODE").data('kendoDropDownList').text("-- Select --");
+        $("#ADD_MATERIAL_CODE").val('');
+        ///  $("#ADD_PLANT").val('');
+        $("#ADD_PLANT").data('kendoDropDownList').text("-- Select --");
+        $("#ADD_STORAGE_LOCATION").val('');
+        // $("#ADD_SNPATTERN").val('');
+        //$("#ADD_SN_STATUS").val('');
+    }
+    function CreateDataForWriteOff() {
+        // console.log("chk=")
+        var chk = ValidationDataValue();
+        var TempDataValue = [];
+        //   console.log("chk=" + chk)
+        Loading();
+        if (chk) {
+            var ADD_ACCESS_NUMBER = $("#ADD_ACCESS_NUMBER").val();
+            var ADD_SN = $("#ADD_SN").val();
+            var ADD_COMPANY_CODE = $("#ADD_COMPANY_CODE").val();
+            var ADD_MATERIAL_CODE = $("#ADD_MATERIAL_CODE").val();
+            var ADD_PLANT = $("#ADD_PLANT").val();
+            var ADD_STORAGE_LOCATION = $("#ADD_STORAGE_LOCATION").val();
+            //  var ADD_SNPATTERN = $("#ADD_SNPATTERN").val();
+            // var ADD_SN_STATUS = $("#ADD_SN_STATUS").val();
+
+            var models = new WriteOffList();
+
+            models.ACCESS_NUMBER = ADD_ACCESS_NUMBER;
+            models.SN = ADD_SN;
+            models.COMPANY_CODE = ADD_COMPANY_CODE;
+            models.MATERIAL_CODE = ADD_MATERIAL_CODE;
+            models.PLANT = ADD_PLANT;
+            models.STORAGE_LOCATION = ADD_STORAGE_LOCATION;
+            //  models.SNPATTERN = ADD_SNPATTERN;
+            // models.SN_STATUS = ADD_SN_STATUS;
+            TempDataValue.push(models);
+
+            //  console.log("TempDataValue=" + TempDataValue)
+            $.ajax({
+
+                contentType: 'application/json',
+                url: "/FoaWriteOff/FoaWriteOffConfirmByCheck",
+                data: JSON.stringify({ dataSModel: TempDataValue }),
+                async: false,
+                dataType: "json",
+                type: "POST",
+                success: function (response) {
+                    CancelWriteOffByPopup();
+                    Loading(0);
+                    if (response) {
+                        if (response["Code"] == "0") {
+                            var responsetext = "<span style='font-weight: normal;'><b>Data Total :</b> " + response["DataTotal"].toLocaleString('en') + " Serial. <br/> <b>Write Off Success : </b>" + response["SuccessCount"].toLocaleString('en') + " Serial.<br/> <b>Write Off Error : </b>" + response["ErrorCount"].toLocaleString('en') + " Serial.  </span>"
+
+                            showFeedback("success", responsetext, "Notify Information");
+                            $("#gridFoaWriteOff").data("kendoGrid").dataSource.read();
+                            // ClearFileUpload();
+                            _PopClear();
+                            ClearTxtCreateWriteOff();
+                            // _Search();
+                        } else {
+
+                            _PopClear();
+                            ClearTxtCreateWriteOff();
+                            showFeedback("error", response["message"], "Notify Information");
+                        }
+                    }
+                },
+                failure: function (msg) {
+
+                }
+
+            });
+
+        }
+
+        Loading(0);
+    }
+
+    function ValidationDataValue() {
+
+        var chk = ValidationProcessing("dateselect");
+
+        if (chk) //check blank value
+        {
+
+
+            //-------------------1-ADD_ACCESS_NUMBER----
+            if ($("#ADD_ACCESS_NUMBER").val() == '') {
+                $("#validatefor-txt_add_access_number").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+
+                if (!validReExpNumber($("#ADD_ACCESS_NUMBER").val())) {
+                    $("#validatefor-txt_add_access_number").html(ValidationIcon() + "This field is not formatchs number.");
+                    chk = false;
+                } else {
+
+                    if (!validCheckLengFix($("#ADD_ACCESS_NUMBER").val(), 10)) {
+                        $("#validatefor-txt_add_access_number").html(ValidationIcon() + "This field is not formatchs length 10 digit. ");
+                        chk = false;
+                    } else {
+                        $("#validatefor-txt_add_access_number").html("");
+                    }
+
+
+                }
+
+            }
+            //--------------------2ADD_SN----
+            if ($("#ADD_SN").val() == '') {
+                $("#validatefor-txt_add_sn").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+
+                if (!validReExp($("#ADD_SN").val())) {
+                    $("#validatefor-txt_add_sn").html(ValidationIcon() + "This field is not formatchs string or number.");
+                    chk = false;
+                } else {
+
+                    if (!validCheckLengMax($("#ADD_SN").val(), 50)) {
+                        $("#validatefor-txt_add_sn").html(ValidationIcon() + "This field is not formatchs length 50 digit. ");
+                        chk = false;
+                    } else {
+                        $("#validatefor-txt_add_sn").html("");
+                    }
+
+
+                }
+
+            }
+            //------------------3--ADD_COMPANY_CODE----
+            // console.log($("#ADD_COMPANY_CODE").val());
+            if ($("#ADD_COMPANY_CODE").val() == '' || $("#ADD_COMPANY_CODE").val() == "ALL") {
+                $("#validatefor-txt_add_company_code").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+                $("#validatefor-txt_add_company_code").html("");
+            }
+            //------------------4--ADD_MATERIAL_CODE----
+            if ($("#ADD_MATERIAL_CODE").val() == '') {
+                $("#validatefor-txt_add_Material_code").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+
+                if (!validReExp($("#ADD_MATERIAL_CODE").val())) {
+                    $("#validatefor-txt_add_Material_code").html(ValidationIcon() + "This field is not formatchs string or number.");
+                    chk = false;
+                } else {
+
+                    if (!validCheckLengMax($("#ADD_MATERIAL_CODE").val(), 50)) {
+
+                        $("#validatefor-txt_add_Material_code").html(ValidationIcon() + "This field is not formatchs length 50 digit. ");
+                        chk = false;
+                    } else {
+                        $("#validatefor-txt_add_Material_code").html("");
+                    }
+
+
+                }
+
+            }
+            //------------------5--ADD_PLANT----
+            if ($("#ADD_PLANT").val() == '' || $("#ADD_PLANT").val() == "ALL") {
+                $("#validatefor-txt_add_plant").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-txt_add_plant").html("");
+            }
+            //------------------6--ADD_STORAGE_LOCATION----
+            if ($("#ADD_STORAGE_LOCATION").val() == '') {
+                $("#validatefor-txt_add_storage_location").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            }
+            else {
+
+                if (!validReExp($("#ADD_STORAGE_LOCATION").val())) {
+                    $("#validatefor-txt_add_storage_location").html(ValidationIcon() + "This field is not formatchs string or number.");
+                    chk = false;
+                } else {
+
+                    $("#validatefor-txt_add_storage_location").html("");
+                }
+
+
+            }
+            //------------------7--ADD_SNPATTERN----
+            //if ($("#ADD_SNPATTERN").val() == '') {
+            //    $("#validatefor-txt_add_snpattern").html(ValidationIcon() + "This field is required.");
+            //    chk = false;
+
+            //}
+            //else {
+            //    $("#validatefor-txt_add_snpattern").html("");
+            //}
+            //------------------8--txt_add_sn_status----
+            //if ($("#ADD_SN_STATUS").val() == '') {
+            //    $("#validatefor-txt_add_sn_status").html(ValidationIcon() + "This field is required.");
+            //    chk = false;
+
+            //}
+            //else {
+            //    $("#validatefor-txt_add_sn_status").html("");
+            //}
+        }
+        return chk;
+    }
+
+
+    function ConfirmWriteOffByFile() {
+        $("#modal_ByFilePopupFOAWrigeOff").modal('hide')
+        Loading();
+
+        $.ajax({
+
+            contentType: 'application/json',
+            url: "/FoaWriteOff/ConfirmFoaWriteOffByFile",
+            //data: JSON.stringify({ dataSModel: checkeds }),
+            async: false,
+            dataType: "json",
+            type: "POST",
+            success: function (response) {
+                Loading(0);
+                if (response) {
+                    if (response["Code"] == "0") {
+                        var responsetext = "<span style='font-weight: normal;'><b>Data Total :</b> " + response["DataTotal"].toLocaleString('en') + " Serial. <br/> <b>Write Off Success : </b>" + response["SuccessCount"].toLocaleString('en') + " Serial no.<br/> <b>Write Off Error : </b>" + response["ErrorCount"].toLocaleString('en') + " Serial no.  </span>"
+                        showFeedback("success", responsetext, "Notify Information");
+                        ClearFileUpload();
+                        //  _PopClear();
+                        // _Search();
+                    } else {
+
+                        // _PopClear();
+                        showFeedback("error", response["message"], "Notify Information");
+                    }
+                }
+            },
+            failure: function (msg) {
+            }
+
+        });
+
+
+        Loading(0);
+    }
+
+    function validReExpNumber(v) {
+        var r = new RegExp("^[0-9]*$");
+        return (v.match(r) == null) ? false : true;
+    }
+    function validReExp(v) {
+        var r = new RegExp("^[A-Za-z0-9]*$");
+        return (v.match(r) == null) ? false : true;
+    }
+
+    function validCheckLengMax(v, len_num) {
+        if (v.length > len_num) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    function validCheckLengFix(v, len_num) {
+        if (v.length > len_num || v.length < len_num) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    function ClearFileUpload() {
+        FileNameXls = "";
+        $(".k-upload-selected").remove();
+        $(".k-upload-files .k-reset").find("li").remove();
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $(".k-upload.k-header").addClass("k-upload-empty");
+        $(".k-upload-button").removeClass("k-state-focused");
+        $("#validatefor-FoaWriteOff_file").html("");
+    }
+    function OnCompanyCodeChange() {
+        var chkCompanyCode = $("#ADD_COMPANY_CODE").val();
+        // console.log(chkCompanyCode);
+        $("#ADD_PLANT").data('kendoDropDownList').dataSource.data([]);
+        $("#ADD_PLANT").data('kendoDropDownList').dataSource.read({ CompanyCode: chkCompanyCode });
+        if (chkCompanyCode == '') $("#ADD_PLANT").data('kendoDropDownList').text("-- Select All --");
+        else $("#ADD_PLANT").data('kendoDropDownList').select(1);
+    }
+    //R19.05
+    function ExportTemplateWriteOffFoa() {
+        var url = '@Url.Action("ExportTemplateWriteOffFoa", "FoaWriteOff")';
+        window.open(url, '_blank');
+    }
+</script>

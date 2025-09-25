@@ -1,0 +1,1907 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.AWCinformation
+@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.PanelModels.Account;
+@{
+    ViewBag.Title = "Index";
+    
+    var o = (List<ComponentModel>)ViewBag.User.ComponentModel;
+    var g = (List<decimal>)ViewBag.User.Groups;
+    o = o.Where(c => g.Contains(c.GroupID)).OrderByDescending(des => des.ReadOnlyFlag).ToList();
+    string FBB_CFG006_2_ADD = "";
+    string FBB_CFG006_2_DELETE = "";
+    string FBB_CFG006_2_SAVE = "";
+   
+    
+
+    if (o != null)
+    {
+        FBB_CFG006_2_ADD = o.Any(c => c.ComponentName == "FBB_CFG006_2_ADD") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_2_ADD").ReadOnlyFlag : "";
+        FBB_CFG006_2_DELETE = o.Any(c => c.ComponentName == "FBB_CFG006_2_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_2_DELETE").ReadOnlyFlag : "";
+        FBB_CFG006_2_SAVE = o.Any(c => c.ComponentName == "FBB_CFG006_2_SAVE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_2_SAVE").ReadOnlyFlag : "";
+        //FBB_CFG006_2_AP_EDIT = o.Any(c => c.ComponentName == "FBB_CFG006_2_AP_EDIT") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_2_AP_EDIT").ReadOnlyFlag : "";
+        //FBB_CFG006_2_AP_DELETE = o.Any(c => c.ComponentName == "FBB_CFG006_2_AP_DELETE") ? o.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_2_AP_DELETE").ReadOnlyFlag : "";        
+
+    }
+}
+
+<style>
+    .k-grid-header .k-header {
+        overflow: visible;
+        white-space: normal;
+    }
+</style>
+
+<form id="formCoverageArea">
+    <div class="page-header i-header-fit">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">Airnet Wireless Coverage</h3>
+                <ol class="breadcrumb">
+                    <li>
+                     <a href="javascript:linkback();" >
+                        Main Page</a></li>
+                    <li class="active">AP Configuration</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="col-sm-12 col-md-12">
+                <div class="btn-group pull-right">
+                    <a class="btn btn-danger" id="deletepage2" onclick='DeleteAllconfig()'><i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete</a>
+                </div>
+                <div class="row">&nbsp;</div>
+                <div class="row">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @CoverageInfo()
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            @AppConfig()
+        </div>
+    </div>
+    <div class="btn-group pull-right">
+
+            <a class="btn btn-success" id="addnewCoverageInfo" onclick="AddnewCoverageinfotobase()">
+            <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Add</a>    
+            <a class="btn btn-success" id="SaveeditCoverageInfo" onclick="Updateall()">
+            <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Save</a>    
+            <a class="btn btn-default" id="Resetall" onclick="resetall()">
+            <i class="fa fa-ban fa-lg""></i>&nbsp;&nbsp;Cancel</a> 
+            <a class="btn btn-default" id="Resetalledit" onclick="resetalledit()">
+            <i class="fa fa-ban fa-lg""></i>&nbsp;&nbsp;Cancel</a>             
+    </div>   
+</form>
+
+@helper CoverageInfo()
+{ 
+    
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i style="font-size: large;">&nbsp;Coverage Information</i>
+                <a data-toggle="collapse" class="pull-right" href="#CoverageInformation" onclick="onPanelToggle(this);" id="APconfigPanelHolder">
+                    <i class="fa fa-chevron-down" id="ArrowIconApconfigCoverage"></i>
+                </a>
+            </h3>
+        </div>@*endpanel heading*@
+        <div id="CoverageInformation" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class=" panel panel-default">
+                        <div id="panelbodyCoverageIformation" class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">                                    
+                                        <label>Base L2  <span id="requiredfor-Base"></span></label>
+                                        @*<input type="text" id="Base" class="dis k-textbox form-control" maxlength="50" />*@
+                                        @Html.TextBoxFor(model => model.Base_L2, new { @id = "Base", @class = "k-textbox form-control", @maxlength = "50" })  
+
+                                      <div class="i-fg-data-entry-validation" id="validatefor-Base"></div>                                                                        
+                                </div>                                
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Site Name  <span id="requiredfor-Sitename"></span></label>
+                                    @*<input type="text" id="Sitename" class="dis k-textbox form-control" maxlength="50" />*@
+                                     @Html.TextBoxFor(model => model.Site_Name, new { @id = "Sitename", @class = "k-textbox form-control", @maxlength = "50" })
+
+                                    <div class="i-fg-data-entry-validation" id="validatefor-Sitename"></div> 
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Lattitude  <span id="requiredfor-lat"></span></label>
+                                    @*<input type="text" id="lat" onkeypress="return checkNumlat(event)" onchange="numlat(this)" class="dis k-textbox form-control" maxlength="50" />*@
+                                     @Html.TextBoxFor(model => model.Lat, new { @id = "lat", @class = "k-textbox form-control", @onkeypress = "return checkNumlat(event)", @onchange = "numlat(this)", @maxlength = "10" })
+
+                                    <div class="i-fg-data-entry-validation" id="validatefor-lat"></div> 
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Lontitude  <span id="requiredfor-lon"></span></label>
+                                    @*<input type="text" id="lon" onkeypress="return checkNumlon(event)" onchange="numlon(this)" class="dis k-textbox form-control" maxlength="50" />*@
+                                     @Html.TextBoxFor(model => model.Lon, new { @id = "lon", @class = "k-textbox form-control", @onkeypress = "return checkNumlon(event)", @onchange = "numlon(this)", @maxlength = "10" })
+
+                                    <div class="i-fg-data-entry-validation" id="validatefor-lon"></div> 
+                                </div>
+                            </div>
+                            @*<div class="row">
+                                            <div class="col-sm-6 col-md-3">
+                                               
+                                            </div>
+                                            <div class="col-sm-6 col-md-3"> 
+                                               
+                                            </div>                                                          
+                                            <div class="col-sm-6 col-md-3"></div> 
+                                            <div class="col-sm-6 col-md-3"></div> 
+                                        </div>*@
+                            <div class="row i-gap-top-2">
+                                <div class="col-sm-12 col-md-12">
+                                    <label>Area TH</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Rgion<span id="requiredfor-RegionAP"></span></label>
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("RegionAP")
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectLov", "MasterData", new { type = "REGION_CODE" });
+                                                      });
+                                                  })
+                                            //.Events(e => e.Change("SubCategoryChange"))
+                                                  .Value(Model.Zone)
+                                               )
+                                    <div class="i-fg-data-entry-validation" id="validatefor-RegionAP"></div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Province<span id="requiredfor-ProvinceAP"></span></label>
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("ProvinceAP")
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                            //.BindTo(new List<SelectListItem>() {
+                                            //    //new SelectListItem() {
+                                            //    //    Text = "ตำบล",
+                                            //    //    Value = ""
+                                            //    //},
+                                            //    new SelectListItem() {
+                                            //        Text = "กรุณาเลือก",
+                                            //        Value = "0"
+                                            //    }
+                                            //})
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectProvince", "MasterData").Data("onRegionAPChange");
+                                                      }).ServerFiltering(true);
+                                                  })
+                                                 .Enable(false)
+                                                 .AutoBind(false)
+                                                 .CascadeFrom("RegionAP")
+                                                 .Value(Model.Province)
+                                            //.Events(e => e.Change("onRegionAPChange"))
+
+                                            )
+
+                                    <div class="i-fg-data-entry-validation" id="validatefor-ProvinceAP"></div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>District<span id="requiredfor-AumphurAP"></span></label>
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("AumphurAP")
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                            //.BindTo(new List<SelectListItem>() {
+                                            //    //new SelectListItem() {
+                                            //    //    Text = "ตำบล",
+                                            //    //    Value = ""
+                                            //    //},
+                                            //    new SelectListItem() {
+                                            //        Text = "กรุณาเลือก",
+                                            //        Value = "0"
+                                            //    }
+                                            //})
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectAmphur", "MasterData").Data("onProvinceAPChange");
+                                                      }).ServerFiltering(true);
+
+                                                  })
+                                                  .Enable(false)
+                                                  .AutoBind(false)
+                                                  .CascadeFrom("ProvinceAP")
+                                                  .Value(Model.Aumphur)
+                                            //.Events(e => e.Change("onProvinceAPChange"))
+                                              )
+                                    <div class="i-fg-data-entry-validation" id="validatefor-AumphurAP"></div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Sub District<span id="requiredfor-TumbonAP"></span></label>
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("TumbonAP")
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                            //.BindTo(new List<SelectListItem>() {
+                                            //    //new SelectListItem() {
+                                            //    //    Text = "ตำบล",
+                                            //    //    Value = ""
+                                            //    //},
+                                            //    new SelectListItem() {
+                                            //        Text = "กรุณาเลือก",
+                                            //        Value = "0"
+                                            //    }
+                                            //})
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectTumbon", "MasterData").Data("onAumphurAPChange");
+                                                      }).ServerFiltering(true);
+                                                  })
+                                                  .Enable(false)
+                                                  .AutoBind(false)
+                                                  .CascadeFrom("AumphurAP")
+                                                  .Value(Model.Tumbon)
+                                            //.Events(e => e.Change("onAumphurAPChange"))
+                                            )
+                                    <div class="i-fg-data-entry-validation" id="validatefor-TumbonAP"></div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">                                    
+                                        <label>VLAN  <span id="requiredfor-vlan"></span></label>
+                                        @*<input type="text" id="Base" class="dis k-textbox form-control" maxlength="50" />*@
+                                        @Html.TextBoxFor(model => model.VLAN, new { @id = "vlan", @class = "k-textbox form-control", @maxlength = "50" })  
+
+                                      <div class="i-fg-data-entry-validation" id="validatefor-vlan"></div>                                                                        
+                                </div>                                
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Subnet Mark 26  <span id="requiredfor-subnet"></span></label>
+                                    @*<input type="text" id="Sitename" class="dis k-textbox form-control" maxlength="50" />*@
+                                    @Html.TextBoxFor(model => model.subnet_mask_26, new { @id = "subnet", @class = "k-textbox form-control", @onkeypress = "return checknet(event,'subnet')", @maxlength = "50" })
+                                    
+
+                                    <div class="i-fg-data-entry-validation" id="validatefor-subnet"></div> 
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Gateway  <span id="requiredfor-gate"></span></label>
+                                    @*<input type="text" id="lat" onkeypress="return checkNumlat(event)" onchange="numlat(this)" class="dis k-textbox form-control" maxlength="50" />*@
+                                     @Html.TextBoxFor(model => model.gateway, new { @id = "gate", @class = "k-textbox form-control", @onkeypress = "return checknet(event,'gate')", @maxlength = "50" })
+
+                                    <div class="i-fg-data-entry-validation" id="validatefor-gate"></div> 
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Comment  <span id="requiredfor-ment"></span></label>
+                                    @*<input type="text" id="lon" onkeypress="return checkNumlon(event)" onchange="numlon(this)" class="dis k-textbox form-control" maxlength="50" />*@
+                                     @Html.TextBoxFor(model => model.ap_comment, new { @id = "ment", @class = "k-textbox form-control", @maxlength = "100" })
+
+                                    <div class="i-fg-data-entry-validation" id="validatefor-ment"></div> 
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">                                    
+                                        <label>Tower Type  <span id="requiredfor-ttype"></span></label>
+                                        @*<input type="text" id="Base" class="dis k-textbox form-control" maxlength="50" />*@
+                                        @Html.TextBoxFor(model => model.tower_type, new { @id = "ttype", @class = "k-textbox form-control", @maxlength = "50" })  
+
+                                      <div class="i-fg-data-entry-validation" id="validatefor-ttype"></div>                                                                        
+                                </div>                                
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Tower Height  <span id="requiredfor-theight"></span></label>
+                                    @*<input type="text" id="Sitename" class="dis k-textbox form-control" maxlength="50" />*@
+                                    @* @Html.TextBoxFor(model => model.tower_height, new { @id = "theight", @class = "k-textbox form-control", @onkeypress = "return numonly(event)", @maxlength = "50" })*@
+                                    @(Html.Kendo().NumericTextBox()
+                                .Name("tower_height")
+                                .HtmlAttributes(new { @id = "theight", @class = "form-control i-form-control-extend", @maxlength = "10" })
+                                .Format("0.#")
+                                .Spinners(false)
+                                .Min(0)                                
+                                .Decimals(2)
+                                )
+                                    <div class="i-fg-data-entry-validation" id="validatefor-theight"></div> 
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                   
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>@*end row1*@
+        </div>@*end apconfig*@
+    </div>@*end panel*@
+}
+
+@helper AppConfig()
+{ 
+    string FBB_CFG006_2_AP_EDIT = "";
+    string FBB_CFG006_2_AP_DELETE = "";
+    var o2 = (List<ComponentModel>)ViewBag.User.ComponentModel;
+    var g2 = (List<decimal>)ViewBag.User.Groups;
+    o2 = o2.Where(c => g2.Contains(c.GroupID)).OrderByDescending(des => des.ReadOnlyFlag).ToList();
+
+    if (o2 != null)
+    {
+        FBB_CFG006_2_AP_EDIT = o2.Any(c => c.ComponentName == "FBB_CFG006_2_AP_EDIT") ? o2.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_2_AP_EDIT").ReadOnlyFlag : "";
+        FBB_CFG006_2_AP_DELETE = o2.Any(c => c.ComponentName == "FBB_CFG006_2_AP_DELETE") ? o2.FirstOrDefault(c => c.ComponentName == "FBB_CFG006_2_AP_DELETE").ReadOnlyFlag : "";
+    }
+    
+  <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i style="font-size: large;">&nbsp;AP Config</i>
+                <a data-toggle="collapse" class="pull-right" href="#APConfig" onclick="onPanelToggle(this);" id="APconfigPanelHolder2">
+                    <i class="fa fa-chevron-down" id="ArrowIconApconfigCoverage2"></i>
+                </a>
+            </h3>
+        </div>@*endpanel heading*@
+        <div id="APConfig" class="row">
+            <div class="col-sm-12 col-md-12 ">
+
+
+               @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.AWCconfig>()
+                            .Name("gridAPconfig")
+                            .ToolBar(toolbar => toolbar.Template("" +
+        "<div class='pull-right'><a onclick='addNewAP()' id='addnew3' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New AP</a>&nbsp;" +
+        "</div>"))
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.AP_Name).Title("AP Name").HtmlAttributes(new { style = "text-align:left;" }).Width("10%"); 
+                                        columns.Bound(p => p.Sector).Title("Sector").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.ip_address).Title("IP Address").HtmlAttributes(new { style = "text-align:left;" });//.ClientTemplate("#= (ip_address) ? ip_address : '' #");
+                                        columns.Bound(p => p.status).Title("Status").HtmlAttributes(new { style = "text-align:left;" });//.ClientTemplate("#= (status) ? status : '' #");
+                                        columns.Bound(p => p.implement_phase).Title("Implement Phase").HtmlAttributes(new { style = "text-align:left;" });//.ClientTemplate("#= (implement_phase) ? implement_phase : '' #");
+                                        columns.Bound(p => p.implement_date).Title("Implement Date").HtmlAttributes(new { style = "text-align:left;" }).ClientTemplate("#= (implement_date) ? kendo.toString(kendo.parseDate(implement_date), 'dd/MM/yyyy') : '' #");
+                                        columns.Bound(p => p.onservice_date).Title("OnService Date").HtmlAttributes(new { style = "text-align:left;" }).ClientTemplate("#= (onservice_date) ? kendo.toString(kendo.parseDate(onservice_date), 'dd/MM/yyyy') : '' #" );
+                                        columns.Bound(p => p.po_number).Title("Po Number").HtmlAttributes(new { style = "text-align:left;" });//.ClientTemplate("#= (po_number) ? po_number, 'dd/MM/yyyy') : '' #");
+                                        columns.Bound(p => p.ap_company).Title("Company").HtmlAttributes(new { style = "text-align:left;" });//.ClientTemplate("#= (ap_company) ? ap_company : '' #");
+                                        columns.Bound(p => p.ap_lot).Title("Lot").HtmlAttributes(new { style = "text-align:left;" });//.ClientTemplate("#= (ap_lot) ? ap_lot : '' #");
+
+                                        columns.Bound(p => p.AP_ID).Title("Sector").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                        columns.Bound(p => p.updatedate).Title("update").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                        //columns.Command(command => command.Custom("Config").Click("EditApconfig").Text("<i class='fa fa-pencil-square-o'></i> Edit").HtmlAttributes(new { style = "align:left;" })).Width(100);
+                                        //columns.Command(command => command.Custom("Delete").Click("Deleteingrid").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete")).Width(100);
+                                        columns.Command(command =>
+                                        {
+                                            //if (FBB_CFG006_2_AP_EDIT != "")
+                                            //{
+                                                command.Custom("Edit").Click("EditApconfig").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; Edit");
+                                            //}
+                                            //if (FBB_CFG006_2_AP_DELETE != "")
+                                            //{
+                                                command.Custom("Delete").Click("Deleteingrid").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete");
+                                            //}
+                                        }).Width(190);
+
+
+                                    })
+                                    .Resizable(resize => resize.Columns(true))
+                                    .Pageable(pageable => pageable
+                                    .PageSizes(true)
+                                    .Numeric(true)
+                                    )
+                                    .Scrollable()
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .PageSize(10)
+                                        //.Events(events => events.Error("error_handler"))
+                                        .Sort(s => s.Add("updatedate").Descending())
+                                        .Read(read => read.Action("DataConfig", "AirNetWirelessCoverage", new { dataS = Model.APP_ID }))
+                                        .ServerOperation(true)
+
+                                        )
+                        )
+            </div>
+        </div>@*end apconfig*@
+    </div>@*end panel*@
+
+}
+
+@(Html.Kendo().Window()
+    .Name("AddAirPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Add AP")
+    .Width(520)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+   .Content(@<text>
+   <div class="row i-no-over" id="AddPopupPanel">
+       
+   <div class="col-md-12">
+       <div class="col-md-5">                    
+                <div class="form-group">               
+                    <label>AP Name <span id="requiredfor-APnameinfo"></span></label>
+                    <div class="i-fg-data-entry">
+                        <input type="text" id="APnameinfo" class="dis k-textbox form-control" maxlength="50" /> 
+                    </div>   
+                    <div class="i-fg-data-entry-validation" id="validatefor-APnameinfo"></div>                                     
+                </div>     
+        </div>
+
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Sector <span id="requiredfor-SectorInfo"></span></label>
+                <div class="i-fg-data-entry">
+                     @(Html.Kendo().DropDownList()
+                            .Name("SectorInfo")
+                            .HtmlAttributes(new { style = "width:100%" })
+                            .DataTextField("DISPLAY_VAL")
+                            .DataValueField("LOV_NAME")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("SelectLov", "MasterData", new { type = "SECTOR" });
+                                });
+                            })
+
+                    )     
+               
+                </div>  
+                <div class="i-fg-data-entry-validation" id="validatefor-SectorInfo"></div>             
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>IP Address<span id="requiredfor-ippop"></span></label>
+                <div class="i-fg-data-entry">
+                    <input type="text" id="ippop" class="k-textbox form-control" maxlength="50" onkeypress = "return checknet(event,'ippop')"  />
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-ippop"></div>
+            </div>
+        </div>
+
+       <div class="col-md-5">
+            <div class="form-group">
+                <label>Status <span id="requiredfor-statuspop"></span></label>
+                <div class="i-fg-data-entry">
+                     @(Html.Kendo().DropDownList()
+                            .Name("statuspop")
+                            .HtmlAttributes(new { style = "width:100%" })
+                            .DataTextField("DISPLAY_VAL")
+                            .DataValueField("LOV_NAME")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("SelectLov", "MasterData", new { type = "AP_STATUS" });
+                                });
+                            })
+
+                    )     
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-statuspop"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Implement Phase<span id="requiredfor-implepop"></span></label>
+                <div class="i-fg-data-entry">
+                    <input type="text" id="implepop" class="k-textbox form-control"  />
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-implepop"></div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Implement Date <span id="requiredfor-impledatepop"></span></label>
+                <div class="i-fg-data-entry">
+                      @(Html.Kendo().DatePicker().Name("Implement_Date").HtmlAttributes(new { @class = "form-control i-form-control-extend" }).Format("dd/MM/yyyy"))
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-impledatepop"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>On Service Date<span id="requiredfor-servicepop"></span></label>
+                <div class="i-fg-data-entry">
+                    @(Html.Kendo().DatePicker().Name("On_Service_Date").HtmlAttributes(new { @class = "form-control i-form-control-extend" }).Format("dd/MM/yyyy").Min(DateTime.Today))
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-servicepop"></div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>PO Number <span id="requiredfor-popop"></span></label>
+                <div class="i-fg-data-entry">
+                    <input type="text" id="popop" class="k-textbox form-control"  />
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-popop"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Company<span id="requiredfor-companypop"></span></label>
+                <div class="i-fg-data-entry">
+                    <input type="text" id="companypop" class="k-textbox form-control"  />
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-companypop"></div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Lot <span id="requiredfor-lotpop"></span></label>
+                <div class="i-fg-data-entry">
+                    <input type="text" id="lotpop" class="k-textbox form-control"  />
+                </div>
+                <div class="i-fg-data-entry-validation" id="validatefor-lotpop"></div>
+            </div>
+        </div>
+    </div> 
+    <div class="col-md-12">
+        <div class="col-md-11">
+             <button class="btn btn-default i-gap-top-1 pull-right" onclick="CancelPopup()" id="btncancepop"><i class="fa fa-ban fa-lg"></i>&nbsp; Cancel</button>
+            <button class="btn btn-default i-gap-top-1 pull-right" onclick="AddnewAPtobase()" id="btnSave"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Save</button>
+            <button class="btn btn-default i-gap-top-1 i-hidden pull-right" onclick="updateEditAP()" id="btnUpdate"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Update</button>
+        </div>
+    </div>
+
+</div>
+</text>)
+)
+<label id="oldAPname" class="i-hidden"></label>
+<label id="oldAPsector" class="i-hidden"></label>
+<label id="oldBasename" class="i-hidden"></label>
+<label id="oldSitename" class="i-hidden"></label>
+<label id="Apidforedit" class="i-hidden"></label>
+
+<label id="oldipaddress" class="i-hidden"></label>
+<label id="oldstatus" class="i-hidden"></label>
+<label id="oldimphase" class="i-hidden"></label>
+<label id="oldonservice" class="i-hidden"></label>
+<label id="oldponumber"class="i-hidden"></label>
+<label id="oldapcom" class="i-hidden"></label>
+<label id="oldaplot" class="i-hidden"></label>
+<label id="oldimpdate" class="i-hidden"></label>
+
+
+<script>
+
+    $(function () {
+
+        if (!'@Model.apmodel') {
+            $("#deletepage2").hide();
+            $("#Resetalledit").hide();
+            $("#SaveeditCoverageInfo").hide();
+        }
+        else {
+            $("#Resetall").hide();
+            $("#addnewCoverageInfo").hide();
+        }
+        if ('@FBB_CFG006_2_ADD' == "") { $("#addnew3").hide(); }
+        if ('@FBB_CFG006_2_SAVE' == "") { $("#SaveeditCoverageInfo").hide(); $("#Resetalledit").hide(); }
+        if ('@FBB_CFG006_2_DELETE' == "") { $("#deletepage2").hide(); }
+
+        var validateModel = [];
+        validateModel.push({ id: "Base" });
+        validateModel.push({ id: "Sitename" });
+        validateModel.push({ id: "RegionAP" });
+        validateModel.push({ id: "lat" });
+        validateModel.push({ id: "lon" });
+        validateModel.push({ id: "ProvinceAP" });
+        validateModel.push({ id: "AumphurAP" });
+        validateModel.push({ id: "TumbonAP" });
+        ////////////new /////////////////       
+        //validateModel.push({ id: "vlan" });
+        //validateModel.push({ id: "subnet" });
+        //validateModel.push({ id: "gate" });
+        //validateModel.push({ id: "ment" });
+        //validateModel.push({ id: "ttype" });
+        //validateModel.push({ id: "theight" });
+        SetRequired(validateModel);
+    });
+
+    function addNewAP() {
+
+
+        $("#SectorInfo").data("kendoDropDownList").value("");
+        $("#APnameinfo").val("");
+        $("#ippop").val("");
+        $("#statuspop").data("kendoDropDownList").value("");
+        $("#implepop").val("");
+
+        $("#On_Service_Date").val("");
+        $("#popop").val("");
+        $("#companypop").val("");
+        $("#lotpop").val("");
+        $("#Implement_Date").val("");
+
+        ClearTextValidation("AddAirPopup");
+        $("#validatefor-" + "ippop").text("");
+        $("#validatefor-" + "impledatepop").text("");
+        $("#validatefor-" + "servicepop").text("");
+
+        var validateModel = [];
+        validateModel.push({ id: "SectorInfo" });
+        validateModel.push({ id: "APnameinfo" });
+        SetRequired(validateModel);
+
+        $("#btnSave").show();
+        $("#btnUpdate").hide();
+
+        $("#AddPopup_wnd_title").text("Add Coverage");
+
+        $("#AddAirPopup").data("kendoWindow").open();
+        $("#AddAirPopup").data("kendoWindow").center();
+
+    }
+    function CancelPopup() {
+
+        $("#SectorInfo").data("kendoDropDownList").value("");
+        $("#APnameinfo").val("");
+        $("#ippop").val("");
+        $("#statuspop").data("kendoDropDownList").value("");
+        $("#implepop").val("");
+
+        $("#On_Service_Date").val("");
+        $("#popop").val("");
+        $("#companypop").val("");
+        $("#lotpop").val("");
+        $("#Implement_Date").val("");
+
+        ClearTextValidation("AddAirPopup");
+        $("#validatefor-" + "ippop").text("");
+        $("#validatefor-" + "impledatepop").text("");
+        $("#validatefor-" + "servicepop").text("");
+        var validateModel = [];
+        validateModel.push({ id: "SectorInfo" });
+        validateModel.push({ id: "APnameinfo" });
+        SetRequired(validateModel);
+
+    }
+
+    function onRegionAPChange() {
+        return {
+            regionCode: $("#RegionAP").val()
+        };
+    }
+
+    function onProvinceAPChange() {
+        return {
+            regionCode: $("#RegionAP").val(),
+            province: $("#ProvinceAP").val()
+        };
+    }
+
+    function onAumphurAPChange() {
+        return {
+            regionCode: $("#RegionAP").val(),
+            province: $("#ProvinceAP").val(),
+            aumphur: $("#AumphurAP").val()
+        };
+
+    }
+
+    //function onserviceDateChange() {
+    //    debugger
+    //    var today = new Date();
+    //    var dd = today.getDate();
+    //    var mm = today.getMonth()+1; //January is 0!
+    //    var yyyy = today.getFullYear();
+
+    //    if(dd<10) {
+    //        dd='0'+dd
+    //    } 
+
+    //    if(mm<10) {
+    //        mm='0'+mm
+    //    } 
+    //    today = dd+'/'+mm+'/'+yyyy;
+
+    //    var startPicker = $("#On_Service_Date").data("kendoDatePicker"),
+    //        startDate = today;
+
+    //    if (startDate) {
+    //        startDate = new Date(startDate);
+    //        startDate.setDate(startDate.getDate());
+    //        startPicker.min(startDate);
+    //    }
+    //}
+
+    function numlat(e) {
+        //debugger
+        var decimal = /^[-+]?[0-9]+\.[0-9]+$/;
+        var check = document.getElementById("lat").value.toString();
+        if (e.value.match(decimal)) {
+            var len = document.getElementById("lat").value.length;
+            var index = document.getElementById("lat").value.indexOf('.');     
+         
+
+                if (index > 0) {
+                    var CharAfterdot = (len - (index + 1));
+                    if (CharAfterdot == 6) {
+                        //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                        return true;
+                    }
+                    else if (CharAfterdot < 6) {
+                        //showFeedback("warning", "Please fill decimal 6 digits.");
+                        for (var i = CharAfterdot; i < 6; i++) {
+                            check = check + "0";
+                        }
+                        e.value = check;
+                        //e.focus();
+
+                        return false;
+                    }
+                }
+                else {
+                    e.value = check + "000000";
+                    return true;
+                }
+            
+        }
+        else {
+            var len2 = document.getElementById("lat").value.length;
+            var check2 = document.getElementById("lat").value.toString();
+            var hasDuplicates = (/([.]).*?\1/).test(check2)            
+            if (hasDuplicates) {
+                e.value = '';
+                e.focus();
+                return false;
+            }
+            else {
+                var index = document.getElementById("lat").value.indexOf('.');
+                if (index > 0) {
+                    e.value = check + "000000";
+                }
+                else {
+                    if (len2>0) {
+                        e.value = check + ".000000";
+                    }                  
+                    
+                }
+            }
+
+
+
+            return true;
+            //showFeedback("warning", "Please fill decimal 6 digits.");
+            //e.value = '';
+            //e.focus();
+            //return false;
+        }
+    }
+    function numlon(e) {
+        var decimal = /^[-+]?[0-9]+\.[0-9]+$/;
+        var check = document.getElementById("lon").value.toString();
+        if (e.value.match(decimal)) {
+            var len = document.getElementById("lon").value.length;
+            var index = document.getElementById("lon").value.indexOf('.');
+            if (index > 0) {
+                var CharAfterdot = (len - (index + 1));
+                if (CharAfterdot == 6) {
+                    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                    return true;
+                }
+                else if (CharAfterdot < 6) {
+                    //showFeedback("warning", "Please fill decimal 6 digits.");
+                    for (var i = CharAfterdot; i < 6; i++) {
+                        check = check + "0";
+                    }
+                    e.value = check;
+                    //e.focus();
+
+                    return false;
+                }
+            }
+            else {
+                e.value = check + "000000";
+                return true;
+            }
+        }
+        else {
+
+            var len2 = document.getElementById("lon").value.length;
+            var check2 = document.getElementById("lon").value.toString();
+            var hasDuplicates = (/([.]).*?\1/).test(check2)
+            if (hasDuplicates) {
+                e.value = '';
+                e.focus();
+                return false;
+            }
+            else {
+                var index = document.getElementById("lon").value.indexOf('.');
+                if (index > 0) {
+                    e.value = check + "000000";
+                }
+                else {
+                    if (len2 > 0) {
+                        e.value = check + ".000000";
+                    }
+
+                }
+            }
+
+
+
+            return true;
+            //showFeedback("warning", "Please fill decimal 6 digits.");
+            //e.value = '';
+            //e.focus();
+            //return false;
+        }
+    }
+
+    //function ValidateIPaddress(e)   
+    //{  
+    //    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(e.value))
+    //    {  
+    //        return (true)  
+    //    }  
+    //    showFeedback("warning", "Please fill IP format.");
+    //    e.value = "";
+    //    return (false)  
+    //}  
+    function numonly(e) {
+        var unicode = (typeof e.which == "number") ? e.which : e.keyCode
+        //alert(unicode);
+        if ((unicode < 49 || unicode > 57) && unicode != 46 && unicode != 8 && unicode != 48 && unicode != 0) { //if the key isn't the backspace key (which we should allow)
+            return false;
+        }
+        else {
+            if (unicode == 8 || unicode == 46 || unicode == 0) {//if not a number                
+                return true //disable key press
+            }
+        }
+    }
+
+    function checknet(e, name) {
+
+        var unicode = (typeof e.which == "number") ? e.which : e.keyCode
+        //alert(unicode);
+        if ((unicode < 49 || unicode > 57) && unicode != 46 && unicode != 8 && unicode != 48 && unicode != 0) { //if the key isn't the backspace key (which we should allow)
+            return false;
+        }
+        else {
+            if (unicode == 8 || unicode == 46 || unicode == 0) {//if not a number                
+                return true //disable key press
+            }
+            //var decimal = /^[-+]?[0-9]+\.[0-9]+$/;         
+            //if(x.value.match(decimal))   
+            //{           
+            var len = document.getElementById(name).value.length;
+            var check = document.getElementById(name).value.toString();
+
+            if (len >= 3 && check.indexOf(".") == -1) {
+                return false;
+            }
+            else {
+                if (check.indexOf(".") == 3) {
+                    if (check.indexOf(".", 4) == 7) {
+                        if (check.indexOf(".", 8) == 11) {
+                            var index = document.getElementById(name).value.indexOf(".", 11);
+                            if (index > 0) {
+                                var CharAfterdot = (len - (index + 1));
+                                if (CharAfterdot < 3) {
+                                    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                                    return true;
+                                }
+                                    //else if (CharAfterdot == 3) {
+                                    //    return true;
+                                    //}
+                                else {
+                                    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                                    //x.value = '';
+                                    //x.focus();
+                                    return false;
+                                }
+                            }
+                        }
+                        else {
+                            var index = document.getElementById(name).value.indexOf(".", 4);
+                            if (index > 0) {
+                                var CharAfterdot = (len - (index + 1));
+                                if (CharAfterdot < 3) {
+                                    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                                    return true;
+                                }
+                                else {
+                                    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                                    //x.value = '';
+                                    //x.focus();
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        var index = document.getElementById(name).value.indexOf('.');
+                        if (index > 0) {
+                            var CharAfterdot = (len - (index + 1));
+                            if (CharAfterdot < 3) {
+                                //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                                return true;
+                            }
+                                //else if (CharAfterdot == 3) {
+                                //    return true;
+                                //}
+                            else {
+                                //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                                //x.value = '';
+                                //x.focus();
+                                return false;
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+        //else  
+        //{   
+        //    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+        //    //e.value = '';
+        //    //e.focus();
+        //    return false;  
+        //}  
+
+
+
+    }
+
+    function checkNumlat(e) {
+
+        var unicode = (typeof e.which == "number") ? e.which : e.keyCode
+        if ((unicode < 49 || unicode > 57) && unicode != 46 && unicode != 8 && unicode != 0 && unicode != 48) { //if the key isn't the backspace key (which we should allow)
+            //alert(unicode);
+            return false;
+        }
+        else {
+            if (unicode == 8 || unicode == 46 || unicode == 0 || unicode == 48) {//if not a number
+                
+                return true //disable key press
+            }
+            //var decimal = /^[-+]?[0-9]+\.[0-9]+$/;         
+            //if(x.value.match(decimal))   
+            //{           
+            var len = document.getElementById("lat").value.length;
+            var check = document.getElementById("lat").value.toString();
+
+            if (len >= 3 && check.indexOf(".") == -1) {
+                return false;
+            }
+            else {
+                if (check.indexOf(".") > -1) {
+                    var index = document.getElementById("lat").value.indexOf('.');
+                    if (index > 0) {
+                        var CharAfterdot = (len - (index + 1));
+                        if (CharAfterdot < 6) {
+                            //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                            return true;
+                        }
+                            //else if (CharAfterdot == 6) {
+                            //    return true;
+                            //}
+                        else {
+                            //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                            //x.value = '';
+                            //x.focus();
+                            return false;
+                        }
+                    }
+
+                }
+            }
+
+        }
+        //else  
+        //{   
+        //    //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+        //    //e.value = '';
+        //    //e.focus();
+        //    return false;  
+        //}  
+
+
+
+    }
+
+    function checkNumlon(e) {
+
+
+        var unicode = (typeof e.which == "number") ? e.which : e.keyCode
+        if ((unicode < 49 || unicode > 57) && unicode != 46 && unicode != 8 && unicode != 0 && unicode != 48) { //if the key isn't the backspace key (which we should allow)
+            return false;
+        }
+        else {
+            if (unicode == 8 || unicode == 46 || unicode == 0 || unicode == 48) {//if not a number
+                return true //disable key press
+            }
+            //var decimal = /^[-+]?[0-9]+\.[0-9]+$/;         
+            //if(x.value.match(decimal))   
+            //{           
+            var len = document.getElementById("lon").value.length;
+            var check = document.getElementById("lon").value.toString();
+
+            if (len >= 3 && check.indexOf(".") == -1) {
+                return false;
+            }
+            else {
+                if (check.indexOf(".") > -1) {
+                    var index = document.getElementById("lon").value.indexOf('.');
+                    if (index > 0) {
+                        var CharAfterdot = (len - (index + 1));
+                        if (CharAfterdot < 6) {
+                            //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                            return true;
+                        }
+                            //else if (CharAfterdot == 6) {
+                            //    return true;
+                            //}
+                        else {
+                            //showFeedback("warning", "ได้เฉพาะตัวเลขทศนิยมแบบ 6 ตำแหน่งเท่านั้น เช่น 0.xxxxxx");
+                            //x.value = '';
+                            //x.focus();
+                            return false;
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+    }
+    function ValidationIcon() {
+        return "<i class='fa fa-warning i-red'></i> ";
+    }
+    function ValidationProcessing2(panel) {
+        //debugger
+        var chk = true;
+        $("#" + panel + " .i-required").each(function (index, e) {
+            var field = e.id.split('requiredfor-')[1];
+            var value = $("#" + field).val();
+
+            if ($.trim(value) == "") {
+                $("#validatefor-" + field).html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + field).html("");
+            }
+
+        });
+        if (panel == "AddPopupPanel") {
+            if (!kendo.parseDate($("#On_Service_Date").val(), "dd/MM/yyyy")) {
+                if ($("#On_Service_Date").val() != "") {
+                    $("#validatefor-" + "servicepop").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "servicepop").html("");
+            }
+            if (!kendo.parseDate($("#Implement_Date").val(), "dd/MM/yyyy")) {
+                if ($("#Implement_Date").val() != "") {
+                    $("#validatefor-" + "impledatepop").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "impledatepop").html("");
+            }
+
+            if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test($("#ippop").val())) {
+                $("#validatefor-" + "ippop").html("");
+            }
+            else {
+                if ($("#ippop").val() != "") {
+                    chk = false;
+                    $("#validatefor-" + "ippop").html(ValidationIcon() + "This field is not correct format.");
+                }
+            }
+        }
+        else {
+            if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test($("#subnet").val())) {
+                $("#validatefor-" + "subnet").html("");
+            }
+            else {
+                if ($("#subnet").val() != "") {
+                    chk = false;
+                    $("#validatefor-" + "subnet").html(ValidationIcon() + "This field is not correct format.");
+                }
+            }
+
+            if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test($("#gate").val())) {
+                $("#validatefor-" + "gate").html("");
+            }
+            else {
+                if ($("#gate").val() != "") {
+                    chk = false;
+                    $("#validatefor-" + "gate").html(ValidationIcon() + "This field is not correct format.");
+                }
+            }
+            //if (/^[0-9.]+$/.test($("#theight").val())) {
+            //    $("#validatefor-" + "theight").html("");
+            //}
+            //else {
+            //    if ($("#theight").val() != "") {
+            //        chk = false;
+            //        $("#validatefor-" + "theight").html(ValidationIcon() + "This field is number only.");
+            //    }
+            //}
+        }
+
+
+
+
+        return chk;
+    }
+    function defaultaddconfigData() {
+        //debugger
+        var searchModelawc = new AWCaddconfigModel();
+
+        searchModelawc.AP_Name = $('#APnameinfo').val();
+        searchModelawc.Sector = $("#SectorInfo").val();
+        searchModelawc.ip_address = $("#ippop").val();
+        searchModelawc.status = $("#statuspop").val();
+        searchModelawc.implement_phase = $("#implepop").val();
+
+        searchModelawc.onservice_date = kendo.parseDate($("#On_Service_Date").val(), "dd/MM/yyyy");
+        searchModelawc.po_number = $("#popop").val();
+        searchModelawc.ap_company = $("#companypop").val();
+        searchModelawc.ap_lot = $("#lotpop").val();
+        searchModelawc.implement_date = kendo.parseDate($("#Implement_Date").val(), "dd/MM/yyyy");
+
+
+
+        if ('@Model.APP_ID' != 0) {
+
+            searchModelawc.Site_id = '@Model.APP_ID';
+        }
+        else {
+            searchModelawc.Site_id = "-1";
+        }
+
+
+        return searchModelawc;
+    }
+
+    var AWCaddconfigModel = function () {
+        AP_Name = "";
+        Sector = "";
+        Site_id = "";
+        ip_address = "";
+        status = "";
+        implement_phase = "";
+        onservice_date = "";
+        po_number = "";
+        ap_company = "";
+        ap_lot = "";
+        implement_date = "";
+    }
+
+    function AddnewAPtobase() {
+        
+        var model = defaultaddconfigData();
+        var chk = ValidationProcessing2("AddPopupPanel");
+        //if (!kendo.parseDate(model.implement_date, "dd/MM/yyyy")) {
+        //    $("#AddAirPopup").data("kendoWindow").close();
+        //    showFeedback("warning", "Please Correct the errors and try again.");
+        //}        
+        if (!chk) {
+            //$("#AddAirPopup").data("kendoWindow").close();
+            //showFeedback("warning", "Please Correct the errors and try again.");
+        }
+        else {
+            if ('@Model.APP_ID' != 0) {
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/AddAPconfig2',
+                    data: { data: JSON.stringify(model), fag: 'edit', id: '@Model.APP_ID' },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.length != 0 && response != "dup") {
+                            $("#AddAirPopup").data("kendoWindow").close();
+                            for (var n = 0; n < response.length ; n++) {
+                                if (response[n].implement_date != '' && response[n].implement_date != undefined) {
+                                    var impledate = new Date(response[n].implement_date.match(/\d+/)[0] * 1);
+                                    response[n].implement_date = impledate;
+                                }
+
+                                if (response[n].onservice_date != '' && response[n].onservice_date != undefined) {
+                                    var onservicedate = new Date(response[n].onservice_date.match(/\d+/)[0] * 1);
+                                    response[n].onservice_date = onservicedate;
+                                }
+
+                            }
+                            showFeedback("success", "Created Complete");
+                            $("#gridAPconfig").data("kendoGrid").dataSource.data(response);
+
+
+                        }
+                        else if (response == "dup") {
+                            $("#AddAirPopup").data("kendoWindow").close();
+                            showFeedback("warning", $('#APnameinfo').val() + " is duplicate, please try again.");
+                        }
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/AddAPconfig2',
+                    data: { data: JSON.stringify(model), fag: 'new' },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        if (response.length != 0 && response != "dup") {
+                           
+                            $("#AddAirPopup").data("kendoWindow").close();                           
+                            for (var n = 0; n < response.length ; n++) {
+                                if (response[n].implement_date != '' && response[n].implement_date != undefined) {
+                                    var impledate = new Date(response[n].implement_date.match(/\d+/)[0] * 1);
+                                    response[n].implement_date = impledate;
+                                }
+
+                                if (response[n].onservice_date != '' && response[n].onservice_date != undefined)
+                                {
+                                    var onservicedate = new Date(response[n].onservice_date.match(/\d+/)[0] * 1);
+                                    response[n].onservice_date = onservicedate;
+                                }
+                               
+                            }
+                            showFeedback("success", "Created Complete");
+                            
+                            //alert(impledate + " " + onservicedate);
+                            $("#gridAPconfig").data("kendoGrid").dataSource.data(response);
+
+
+                        }
+                        else if (response == "dup") {
+
+                            $("#AddAirPopup").data("kendoWindow").close();
+                            showFeedback("warning", $('#APnameinfo').val() + " is duplicate, please try again.");
+                        }
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            }
+
+
+        }
+
+    }
+
+    function Deleteingrid(e) {
+        //debugger
+        var model = defaultaddconfigData();
+        model.Site_id = "-1";
+        model.AP_Name = "asd";
+        model.Sector = "1-2";
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var ssss = dataItem.implement_date;
+        var eweqwe = dataItem.onservice_date;
+        var c = confirm("Are you sure you want to delete " + dataItem.AP_Name + "?");
+
+        if (c) {
+            if ('@Model.APP_ID' != 0) {
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/DeleteAPConfig2',
+                    data: {data: JSON.stringify(model),ID: dataItem.AP_ID, fag: "edit", siteid: '@Model.APP_ID', apname: dataItem.AP_Name },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                       
+                        $("#gridAPconfig").data("kendoGrid").dataSource.data(response);
+                        showFeedback("success", "Deleted Complete");
+
+                    }
+                , error: function (err) {
+
+                    showFeedback("error", err);
+                }
+                });
+            }
+            else {
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/DeleteAPConfig2',
+                    data: { apname: dataItem.AP_Name, fag: "new" },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        if (response) {
+                            
+                            $("#gridAPconfig").data("kendoGrid").dataSource.data(response);
+                            showFeedback("success", "Deleted Complete");
+                        }
+
+                    }
+                , error: function (err) {
+
+                    showFeedback("error", err);
+                }
+                });
+            }
+
+
+        }
+    }
+
+    function EditApconfig(e) {
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $("#oldAPname").text(dataItem.AP_Name);
+        $("#oldAPsector").text(dataItem.Sector);
+        $("#Apidforedit").text(dataItem.AP_ID);
+
+
+        $("#oldipaddress").text(dataItem.ip_address);
+        $("#oldstatus").text(dataItem.status);
+        $("#oldponumber").text(dataItem.po_number);
+        $("#oldonservice").text(kendo.toString(kendo.parseDate(dataItem.onservice_date), 'dd/MM/yyyy'));
+        $("#oldapcom").text(dataItem.ap_company);
+        $("#oldaplot").text(dataItem.ap_lot);
+        $("#oldimpdate").text(kendo.toString(kendo.parseDate(dataItem.implement_date), 'dd/MM/yyyy'));
+        $("#oldimphase").text(dataItem.implement_phase);
+
+
+
+        $('#APnameinfo').val(dataItem.AP_Name)
+        $("#SectorInfo").data("kendoDropDownList").value(dataItem.Sector);
+        $("#ippop").val(dataItem.ip_address);
+        $("#statuspop").data("kendoDropDownList").value(dataItem.status);
+        $("#implepop").val(dataItem.implement_phase);
+
+        $("#On_Service_Date").val(kendo.toString(kendo.parseDate(dataItem.onservice_date), 'dd/MM/yyyy'));
+        $("#popop").val(dataItem.po_number);
+        $("#companypop").val(dataItem.ap_company);
+        $("#lotpop").val(dataItem.ap_lot);
+        $("#Implement_Date").val(kendo.toString(kendo.parseDate(dataItem.implement_date), 'dd/MM/yyyy'));
+
+        ClearTextValidation("AddAirPopup");
+        var validateModel = [];
+        validateModel.push({ id: "SectorInfo" });
+        validateModel.push({ id: "APnameinfo" });
+        SetRequired(validateModel);
+
+        $("#btnSave").hide();
+        $("#btnUpdate").show();
+
+        $("#AddAirPopup").data("kendoWindow").title("Edit AP");
+
+        $("#AddAirPopup").data("kendoWindow").open();
+        $("#AddAirPopup").data("kendoWindow").center();
+    }
+
+    function updateEditAP() {
+
+        //debugger
+        var apname = $("#APnameinfo").val();
+        var sector = $("#SectorInfo").data("kendoDropDownList").value();
+        var apid = $("#Apidforedit").text();
+        var oldapname = $("#oldAPname").text();
+        var oldsector = $("#oldAPsector").text();
+        var oldipaddress = $("#oldipaddress").text();
+        var oldstatus = $("#oldstatus").text();
+        var oldponumber = $("#oldponumber").text();
+        var oldonservice = $("#oldonservice").text();
+        var oldapcom = $("#oldapcom").text();
+        var oldaplot = $("#oldaplot").text();
+        var oldimpdate = $("#oldimpdate").text();
+        var oldimphase = $("#oldimphase").text();
+
+        var model = defaultaddconfigData();
+
+        //var ipaddress = $("#ippop").val();
+        //var status = $("#statuspop").val();
+        //var imphase = $("#implepop").val();
+
+        //var onservice = kendo.parseDate($("#On_Service_Date").val().toString(), "dd/MM/yyyy");
+        //var ponumber = $("#popop").val();
+        //var apcom = $("#companypop").val();
+        //var aplot = $("#lotpop").val();
+        //var impdate = kendo.parseDate($("#Implement_Date").val().toString(), "dd/MM/yyyy");
+
+        var chk = ValidationProcessing("AddPopupPanel");
+        if (!chk) {
+
+        }
+        else {
+            if ('@Model.APP_ID' != 0) {
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/SaveAPConfig2',
+                    data: {
+                        ID: apid, apname: apname, sector: sector, fag: 'edit', siteid: '@Model.APP_ID', oldname: oldapname, oldsector: oldsector, MODEL: JSON.stringify(model),
+                        //ipaddress: ipaddress, status: status, imphase: imphase, onservice: onservice, ponumber: ponumber, apcom: apcom, aplot: aplot, impdate: impdate,
+                        oldipaddress: oldipaddress, oldstatus: oldstatus, oldimphase: oldimphase, oldonservice: oldonservice, oldponumber: oldponumber, oldapcom: oldapcom, oldaplot: oldaplot, oldimpdate: oldimpdate
+                    },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.length != 0 && response != "dup") {
+
+                            for (var n = 0; n < response.length ; n++) {
+                                if (response[n].implement_date != '' && response[n].implement_date != undefined) {
+                                    var impledate = new Date(response[n].implement_date.match(/\d+/)[0] * 1);
+                                    response[n].implement_date = impledate;
+                                }
+
+                                if (response[n].onservice_date != '' && response[n].onservice_date != undefined) {
+                                    var onservicedate = new Date(response[n].onservice_date.match(/\d+/)[0] * 1);
+                                    response[n].onservice_date = onservicedate;
+                                }
+
+                            }
+                            showFeedback("success", "Updated Complete");
+                            $("#gridAPconfig").data("kendoGrid").dataSource.data(response);
+                            $("#AddAirPopup").data("kendoWindow").close();
+                          
+
+                        }
+                        else if (response == "dup") {
+                            $("#AddAirPopup").data("kendoWindow").close();
+                            showFeedback("warning", $('#APnameinfo').val() + " is duplicate, please try again.");
+                        }
+                    }
+
+                   , error: function (err) {
+
+                       showFeedback("error", err);
+                   }
+                });
+            }
+            else {
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/SaveAPConfig2',
+                    data: {
+                        ID: apid, apname: apname, sector: sector, fag: 'new', oldname: oldapname, oldsector: oldsector, MODEL: JSON.stringify(model),
+                        //ipaddress: ipaddress, status: status, imphase: imphase, onservice: onservice, ponumber: ponumber, apcom: apcom, aplot: aplot, impdate: impdate,
+                        oldipaddress: oldipaddress, oldstatus: oldstatus, oldimphase: oldimphase, oldonservice: oldonservice, oldponumber: oldponumber, oldapcom: oldapcom, oldaplot: oldaplot, oldimpdate: oldimpdate
+                    },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.length != 0 && response != "dup") {
+
+                            for (var n = 0; n < response.length ; n++) {
+                                if (response[n].implement_date != '' && response[n].implement_date != undefined) {
+                                    var impledate = new Date(response[n].implement_date.match(/\d+/)[0] * 1);
+                                    response[n].implement_date = impledate;
+                                }
+
+                                if (response[n].onservice_date != '' && response[n].onservice_date != undefined) {
+                                    var onservicedate = new Date(response[n].onservice_date.match(/\d+/)[0] * 1);
+                                    response[n].onservice_date = onservicedate;
+                                }
+
+                            }
+                            showFeedback("success", "Updated Complete");
+                            $("#gridAPconfig").data("kendoGrid").dataSource.data(response);
+                            $("#AddAirPopup").data("kendoWindow").close();
+                           
+
+
+                        }
+                        else if (response == "dup") {
+                            $("#AddAirPopup").data("kendoWindow").close();
+                            showFeedback("warning", $('#APnameinfo').val() + " is duplicate, please try again.");
+                        }
+                    }
+
+                   , error: function (err) {
+
+                       showFeedback("error", err);
+                   }
+                });
+            }
+
+        }
+    }
+
+    var AWCaddInfomationModel = function () {
+        Base_L2 = "";
+        Site_Name = "";
+        Aumphur = "";
+        Tumbon = "";
+        Province = "";
+        Zone = "";
+        Lat = "";
+        Lon = "";
+        APP_ID = "";
+        VLAN = "";
+        subnet_mask_26 = "";
+        gateway = "";
+        ap_comment = "";
+        tower_type = "";
+        tower_height = "";
+
+    }
+
+    function defaultaddCoverageInfoData() {
+
+        var searchModelawc = new AWCaddInfomationModel();
+
+        searchModelawc.Base_L2 = $("#Base").val();
+        searchModelawc.Site_Name = $("#Sitename").val();
+        searchModelawc.Aumphur = $("#AumphurAP").val();
+        searchModelawc.Tumbon = $("#TumbonAP").val();
+        searchModelawc.Province = $("#ProvinceAP").val();
+        searchModelawc.Zone = $("#RegionAP").val();
+        searchModelawc.Lat = $("#lat").val();
+        searchModelawc.Lon = $("#lon").val();
+        ////////new //////////
+        searchModelawc.VLAN = $("#vlan").val();
+        searchModelawc.subnet_mask_26 = $("#subnet").val();
+        searchModelawc.gateway = $("#gate").val();
+        searchModelawc.ap_comment = $("#ment").val();
+        searchModelawc.tower_type = $("#ttype").val();
+        searchModelawc.tower_height = $("#theight").val();
+
+
+        if ('@Model.APP_ID' != 0) {
+            searchModelawc.APP_ID = '@Model.APP_ID';
+        }
+        else {
+            searchModelawc.APP_ID = "0";
+        }
+
+        return searchModelawc;
+    }
+
+    function AddnewCoverageinfotobase() {
+
+        //debugger
+        var model = defaultaddCoverageInfoData();
+        var ck = ValidationProcessing2("CoverageInformation");
+        var grid = $("#gridAPconfig").data("kendoGrid");
+        if (ck) {
+            var count = grid.dataSource.total();
+            if (count <= 0) {
+                showFeedback("warning", "Please add AP at least one");
+            }
+            else {
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/AddCoverageInfo2',
+                    data: { data: JSON.stringify(model) },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        if (response == true) {
+                            showFeedback("success", "Created Complete");
+                            $.ajax({
+                                url: '/AirNetWirelessCoverage/DeletetempAP2',
+                                data: {},
+                                dataType: "json",
+                                type: 'POST',
+                                success: function (response) {
+
+                                    grid.dataSource.read();
+                                }
+
+                                , error: function (err) {
+
+                                    showFeedback("error", err);
+                                }
+                            });
+
+                            //$("#RegionAP").data("kendoDropDownList").dataSource.read({ type: "REGION_CODE" });
+                            //$("#ProvinceAP").data("kendoDropDownList").dataSource.read({ regionCode: "" });
+                            //$("#AumphurAP").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "" });
+                            //$("#TumbonAP").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "", aumphur: "" });
+                            $("#Base").val("");
+                            $("#Sitename").val("");
+                            $("#lat").val("");
+                            $("#lon").val("");
+
+                            $("#vlan").val("");
+                            $("#subnet").val("");
+                            $("#gate").val("");
+                            $("#ment").val("");
+                            $("#ttype").val("");
+                            $("#theight").data("kendoNumericTextBox").value("");
+
+                            $("#RegionAP").data("kendoDropDownList").select(0);
+                            $("#AumphurAP").val("").data("kendoDropDownList").text("")
+                            $("#TumbonAP").val("").data("kendoDropDownList").text("")
+                            $("#ProvinceAP").val("").data("kendoDropDownList").text("")
+
+
+
+
+
+                        }
+                        else if (response.dup == "dup") {
+                            showFeedback("warning", response.dupname + " duplicate, please try again.");
+                        }
+
+
+                    }
+
+                        , error: function (err) {
+
+                            showFeedback("error", err);
+                        }
+                });
+
+            }
+        }
+
+        else {
+            //showFeedback("error", "กรุณากรอกข้อมูลให้ครบทุกช่อง");
+        }
+    }
+
+    function Updateall() {
+        //debugger
+        var model = defaultaddCoverageInfoData();
+        var grid = $("#gridAPconfig").data("kendoGrid");
+        var count = grid.dataSource.total();
+        var ck = ValidationProcessing2("CoverageInformation");
+        //alert(count);
+        if (!ck) {
+        }
+        else {
+            if (count <= 0) {
+                showFeedback("warning", "Please add AP at least one");
+            }
+
+            else {
+                var oldbasename = '@Model.Base_L2';
+                var oldsitename = '@Model.Site_Name';
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/SaveInfo2',
+                    data: { data: JSON.stringify(model), siteid: '@Model.APP_ID', oldbasename: oldbasename, oldsitename: oldsitename },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+                        if (response == true) {
+                            showFeedback("success", "Updated Complete");
+                            setTimeout("topage1();", 1500);
+                            //$.ajax({
+                            //    url: '/AirNetSearch/index',
+                            //    data: {apname : Model.oldmodelpage1.APname, province : Model.oldmodelpage1.province, tumbon : Model.oldmodelpage1.tumbon, aumphur : Model.oldmodelpage1.aumphur, region : Model.oldmodelpage1.region },
+                            //    dataType: "json",
+                            //    type: 'POST',
+                            //    success: function (response) {
+                            //        //var grid = $("#gridAPconfig").data("kendoGrid");
+                            //        //grid.dataSource.read({ dataS: $("#temp").text() });
+                            //    }
+
+                            //        , error: function (err) {
+
+                            //            showFeedback("error", err);
+                            //        }
+                            //});
+
+                            //$("#RegionAP").data("kendoDropDownList").dataSource.read({ type: "REGION_CODE" });
+                            //$("#ProvinceAP").data("kendoDropDownList").dataSource.read({ regionCode: "" });
+                            //$("#AumphurAP").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "" });
+                            //$("#TumbonAP").data("kendoDropDownList").dataSource.read({ regionCode: "", province: "", aumphur: "" });
+                            //$("#ProvinceAP").data("kendoDropDownList").select(0);
+                            //$("#AumphurAP").data("kendoDropDownList").select(0);
+                            //$("#TumbonAP").data("kendoDropDownList").select(0);
+                            //$("#RegionAP").data("kendoDropDownList").select(0);
+                            //$("#ApConfiguration").hide();
+                            //$("#MainAll1").show();
+                            //$("#gridAirNetWirelessCoverage").data("kendoGrid").dataSource.page(1);
+                            //$("#Airpage1").show();
+                            //$("#Airpage2").hide();
+                        }
+                        else if (response.dup == "dup") {
+                            showFeedback("warning", response.dupname + " duplicate, please try again");
+                        }
+
+                    }
+
+                        , error: function (err) {
+
+                            showFeedback("error", err);
+                        }
+                });
+            }
+        }
+
+    }
+
+    function DeleteAllconfig() {
+
+        //debugger
+        //alert("1");
+        var grid = $("#gridAPconfig").data("kendoGrid");
+        //grid.dataSource.read({ dataS: $("#temp").text() });
+        var count = grid.dataSource.total();
+        var c = confirm("Are you sure you want to delete?");
+        if (c) {
+            count = grid.dataSource.total();
+            //alert("2");
+            //test(count);           
+            if (count <= 0) {
+                //alert("3");
+                $.ajax({
+                    url: '/AirNetWirelessCoverage/DeleteInfo',
+                    data: { ID: '@Model.APP_ID' },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        showFeedback("success", "Deleted Complete");
+                        setTimeout("topage1();", 1500);
+
+
+                    }
+                });
+            }
+            else if (count > 0) {
+
+                showFeedback("warning", "This site have AP available, please delete AP before.");
+            }
+
+        }
+
+    }
+    function topage1() {
+
+        window.location.href = "/AirNetSearch/index?apname=" + '@Model.oldmodelpage1.APname' + "&province=" + '@Model.oldmodelpage1.province' +
+                          "&tumbon=" + '@Model.oldmodelpage1.tumbon' + "&aumphur=" + '@Model.oldmodelpage1.aumphur' + "&region=" + '@Model.oldmodelpage1.region';
+    }
+
+    function resetalledit() {        
+
+        var grid = $("#gridAPconfig").data("kendoGrid");
+        grid.dataSource.read({ dataS: '@Model.APP_ID' })
+
+        $.ajax({
+            url: '/AirNetWirelessCoverage/DataInformation',
+            data: { dataS: '@Model.APP_ID' },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+
+                if (response) {
+                    $.ajax({
+                        url: '/AirNetWirelessCoverage/DeletetempAP2',
+                        data: {},
+                        dataType: "json",
+                        type: 'POST',
+                        success: function (response) {
+                            //var grid = $("#gridAPconfig").data("kendoGrid");
+                            //grid.dataSource.read({ dataS: $("#temp").text() });
+                        }
+
+                               , error: function (err) {
+
+                                   showFeedback("error", err);
+                               }
+                    });
+                    $("#Base").val('@Model.Base_L2');
+                    $("#Sitename").val('@Model.Site_Name');
+                    $("#lat").val('@Model.Lat');
+                    $("#lon").val('@Model.Lon');
+                    $("#RegionAP").data("kendoDropDownList").value('@Model.Zone');
+                    $("#ProvinceAP").data("kendoDropDownList").value('@Model.Province');
+                    $("#AumphurAP").data("kendoDropDownList").value('@Model.Aumphur');
+                    $("#TumbonAP").data("kendoDropDownList").value('@Model.Tumbon');
+
+                    $("#vlan").val('@Model.VLAN');
+                    $("#subnet").val('@Model.subnet_mask_26');
+                    $("#gate").val('@Model.gateway');
+                    $("#ment").val('@Model.ap_comment');
+                    $("#ttype").val('@Model.tower_type');
+                    $("#theight").data("kendoNumericTextBox").value('@Model.tower_height');
+
+
+                }
+
+            },
+            failure: function (msg) {
+                alert(msg);
+            }
+        });
+
+    }
+
+    function resetall() {
+
+        $("#Base").val("");
+        $("#Sitename").val("");
+        $("#lat").val("");
+        $("#lon").val("");
+        $("#RegionAP").data("kendoDropDownList").select(0);
+        //$("#ProvinceAP").data("kendoDropDownList").select(0);
+        //$("#AumphurAP").data("kendoDropDownList").select(0);
+        //$("#TumbonAP").data("kendoDropDownList").select(0);     
+
+        $("#AumphurAP").val("").data("kendoDropDownList").text("")
+        $("#TumbonAP").val("").data("kendoDropDownList").text("")
+        $("#ProvinceAP").val("").data("kendoDropDownList").text("")
+
+        $("#vlan").val("");
+        $("#subnet").val("");
+        $("#gate").val("");
+        $("#ment").val("");
+        $("#ttype").val("");
+        $("#theight").data("kendoNumericTextBox").value("");
+
+
+        $.ajax({
+            url: '/AirNetWirelessCoverage/DeletetempAP2',
+            data: {},
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                var grid = $("#gridAPconfig").data("kendoGrid");
+                grid.dataSource.read();
+
+            }
+
+                , error: function (err) {
+
+                    showFeedback("error", err);
+                }
+        });
+
+    }
+    function post(path, params, method) {
+
+        method = method || "post"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+    function linkback() {
+        post('/AirNetSearch/Index', { apname: '@Model.oldmodelpage1.APname', province: '@Model.oldmodelpage1.province', tumbon: '@Model.oldmodelpage1.tumbon', aumphur: '@Model.oldmodelpage1.aumphur', region: '@Model.oldmodelpage1.region' });
+    }
+
+</script>
+@*Url.Action("Index", "AirNetSearch", new { apname = Model.oldmodelpage1.APname, province = Model.oldmodelpage1.province, tumbon = Model.oldmodelpage1.tumbon, aumphur = Model.oldmodelpage1.aumphur, region = Model.oldmodelpage1.region })*@

@@ -1,0 +1,495 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.DormitorySearchPara
+@using WBBEntity.PanelModels;
+
+@{
+    ViewBag.Title = "Index";
+
+    string L_DORMITORY_PROVINCE = "";
+    string L_DORMITORY_NAME = "";
+    string B_SEARCH = "";
+    string B_CLEAR = "";
+
+    string B_NEW = "";
+    string B_VIEW = "";
+    string B_SAVE = "";
+    string G_REGION = "";
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_DORMITORY_PROVINCE = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.First(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        L_DORMITORY_NAME = configscreen.Any(f => f.Name == "L_DORMITORY_NAME") ? configscreen.First(f => f.Name == "L_DORMITORY_NAME").LovValue2 : "";
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue2 : "";
+        B_CLEAR = configscreen.Any(f => f.Name == "B_CLEAR") ? configscreen.FirstOrDefault(f => f.Name == "B_CLEAR").LovValue2 : "";
+
+        B_NEW = configscreen.Any(f => f.Name == "L_PROVINCE") ? configscreen.FirstOrDefault(f => f.Name == "L_PROVINCE").LovValue2 : "";
+        B_VIEW = configscreen.Any(f => f.Name == "B_EDIT") ? configscreen.FirstOrDefault(f => f.Name == "B_EDIT").LovValue2 : "";
+        B_SAVE = configscreen.Any(f => f.Name == "B_SAVE") ? configscreen.FirstOrDefault(f => f.Name == "B_SAVE").LovValue2 : "";
+        G_REGION = configscreen.Any(f => f.Name == "G_REGION") ? configscreen.FirstOrDefault(f => f.Name == "G_REGION").LovValue2 : "";
+      }
+      }
+<!DOCTYPE html>
+
+<html>
+<body>
+     <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i style="font-size: large;">&nbsp;Import Excel</i>
+                <a data-toggle="collapse" class="pull-right" href="#ImportExcel" onclick="onPanelToggle(this);" id="APconfigPanelHolder3">
+                    <i class="fa fa-chevron-down" id="ArrowIconApconfigCoverage3"></i>
+                </a>
+            </h3>
+        </div>@*endpanel heading*@
+                  
+         <div id="ImportExcel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class=" panel panel-default">
+                        <div id="panelbodyCoverageIformation" class="panel-body">
+                        <div id="SearchRow1" class="row">
+                            <div class="col-sm-4 col-md-4">
+                                <label>@G_REGION </label>
+                                  <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownListFor(t => t.Region)
+                                              .Name("DORMITORY_REGION")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectRegion", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onRegionChange"))
+                                        )
+                                      </div>
+                                 @*<div class="i-fg-data-entry-validation" id="validatefor-DORMITORY_PROVINCE"></div>*@
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <label>@L_DORMITORY_PROVINCE </label>
+                                  <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownListFor(t => t.Province)
+                                              .Name("DORMITORY_PROVINCE")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectProvinceForSearch", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onProvinceChange"))
+                                        )
+                                      </div>
+                                 <div class="i-fg-data-entry-validation" id="validatefor-DORMITORY_PROVINCE"></div>
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <label>@L_DORMITORY_NAME<span id="requiredfor-DORMITORY_NAME"></span></label>
+                                  <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DropDownListFor(t => t.DormitoryName)
+                                              .Name("DORMITORY_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAllDormitory", "DormitoryMaster");
+                                                });
+                                            })
+                                           // .Events(e => e.Change("onProvinceChange"))
+                                        )
+                                      </div>
+                                 <div class="i-fg-data-entry-validation" id="validatefor-DORMITORY_NAME"></div>
+                            </div>
+                        </div>
+                            <p>
+
+                            </p>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">                                     
+                                    <label>Dowload Template => <a href="~/Template/FBBDORM_DORMITORY_DTL.xlsx" target="_blank">Excel Template</a></label>                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">  
+                                    @(Html.Kendo().Upload()
+                                    .Name("files")                                   
+                                    .Async(a => a
+                                            .Save("Save", "ImportDormDTL")
+                                            .Remove("Remove", "ImportDormDTL")
+                                            .AutoUpload(false)  
+                                                                                                                    
+                                          )
+                                    .Events(events => events
+                                                //.Upload("selectfile") 
+                                                .Select("onSelectUpload")    
+                                                .Success("onSuccess")                                                
+                                                .Error("onError")   
+                                                                                       
+                                                                            
+                                            )
+                                   
+                                    
+                                    .Multiple(false)
+                                    )
+                                </div>
+                                    </div>  
+
+                            </div> 
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">  
+                                     @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.ImportDormDataModels>()
+                                    .Name("DormImportExcellistModel")
+                                 //   .ToolBar(toolbar => toolbar.Template("" +"<div><span class='i-f2'>Total Record: </span><span class='i-f1' id='Totalrecord'> 0 </span></div>"))
+                                    
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.No).Title("No").HtmlAttributes(new { style = "text-align:left;" });
+                                       // columns.Bound(p => p.region_code).Title("Condo_Name").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Dormitory_Name).Title("Condo_Name").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Building_Name).Title("Building").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Floor).Title("Floor_no").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Room).Title("Room_no").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Fibrenet_id).Title("Fibre_ID").HtmlAttributes(new { style = "text-align:left;" });
+                                        columns.Bound(p => p.Pin).Title("PIN_ID").HtmlAttributes(new { style = "text-align:left;" });
+                                  
+                                       
+
+                                    })               
+                                    .HtmlAttributes(new { style = "height: 380px;" })                   
+                                    .Pageable(pageable => pageable
+                                  //  .PageSizes(true)
+                                    .PageSizes(new int[] {20, 50, 100})
+                                    .Numeric(true)
+                                    )
+                                    .Scrollable()                                
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()      
+                                        .PageSize(20)                   
+                                        .Read(read => read.Action("Gettogrid", "ImportDormDTL"))
+
+                                        )
+                                     )
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+    
+        <div class="btn-group pull-right">
+
+            <a class="btn btn-success"  id="importsave" onclick="_addnew()">
+            <i class="fa fa-check fa-lg"></i>@B_SAVE</a>               
+            <a class="btn btn-default" id="importcancel" onclick="_Cancel()">
+            <i class="fa fa-ban fa-lg""></i>@B_CLEAR</a>    
+                @*<a class="btn btn-default" id="importback" onclick="_Back()">
+            <i class="fa fa-ban fa-lg""></i>&nbsp;&nbsp;Back</a>      *@          
+    </div>   
+   
+    <label id="tempsize" class="i-hidden"></label>
+</body>
+</html>
+
+<script>
+
+    var validateModel003R = new Array();
+    var validateModel = [];
+    validateModel.push({ id: "DORMITORY_NAME" });
+    validateModel.push({ id: "DORMITORY_PROVINCE" });
+    $(function () {
+        SetRequired(validateModel);
+
+    });
+    function ValidationIcon() {
+        return "<i class='fa fa-warning i-red'></i> ";
+    }
+
+    function ValidationProcessingRequired(panel) {
+        var chk = true;
+        $("#" + panel + " .i-required").each(function (index, e) {
+            var field = e.id.split('requiredfor-')[1];
+            var value = $("#" + field).val();
+            if ($.trim(value) == "") {
+                $("#validatefor-" + field).html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + field).html("");
+            }
+        });
+
+        if (chk) {
+            $("#" + panel + " .i-validate-length").each(function (index, e) {
+                var field = e.id.split('validatefor-')[1];
+                var value = $("#" + field).val();
+                var length = parseInt(e.className.split('i-length-')[1]);
+                var val_length = 0;
+                if (value != "") {
+                    val_length = value.length;
+                }
+
+                if (val_length > length) {
+                    $("#" + e.id).html(ValidationIcon() + "This maxlength field is " + length + ".");
+                    chk = false;
+                }
+                else {
+                    $("#" + e.id).html("");
+                }
+            });
+        }
+
+        return chk;
+    }
+
+    function SetRequired(validateModel) {
+        var i = 0;
+        for (i = 0; i < validateModel.length; i++) {
+            var id = validateModel[i].id;
+            $("#requiredfor-" + id).addClass("label label-danger i-gap-left-md i-required");
+            $("#requiredfor-" + id).text("Required");
+        }
+    }
+
+    function SetValidateLength(validateLengthModel) {
+        var i = 0;
+        for (i = 0; i < validateLengthModel.length; i++) {
+            var id = validateLengthModel[i].id;
+            var length = validateLengthModel[i].length;
+            if (length !== undefined) {
+                $("#validatefor-" + id).addClass("i-validate-length i-length-" + length);
+            }
+        }
+    }
+
+    function RemoveRequired(panel) {
+        $("#" + panel + " span[id*=requiredfor-]").removeClass("label label-danger i-gap-left-md i-required");
+        $("#" + panel + " span[id*=requiredfor-]").text("");
+        ClearTextValidation(panel);
+    }
+
+    function ClearTextValidation(panel) {
+        $("#" + panel + " .i-required").each(function (index, e) {
+            var field = e.id.split('requiredfor-')[1];
+            $("#validatefor-" + field).text("");
+        });
+    }
+
+    function RemoveValidation(validateModel) {
+        var i = 0;
+        for (i = 0; i < validateModel.length; i++) {
+            var id = validateModel[i].id;
+            $("#validatefor-" + id).html("");
+        }
+    }
+
+
+
+    $(document).ready(function () {
+        //$("#Airimportexcel").hide();  
+        $("#Totalrecord").text(0);
+        var grid = $("#DormImportExcellistModel").data("kendoGrid");
+        grid.dataSource.read();
+        var count = grid.dataSource.total();
+        if (count < 1) {
+            $("#importsave").hide();
+            $("#importcancel").hide();
+        }
+
+    });
+
+    function onProvinceChange() {
+        $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ province: $("#DORMITORY_PROVINCE").val() });
+        $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+    }
+    function onSelectUpload(e) {
+        $(".k-upload-files.k-reset").find("li").remove();
+        $.ajax({
+            url: '/ImportDormDTL/clearSession',
+            data: {},
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+
+                if (response = true) {
+
+
+                }
+                else {
+
+                }
+            },
+            failure: function (msg) {
+            }
+        });
+        var grid = $("#DormImportExcellistModel").data("kendoGrid");
+        grid.dataSource.read();
+    }
+    function onSuccess(e) {
+        if (e.response.status == undefined) {
+            $.ajax({
+                url: '/ImportDormDTL/clearSession',
+                data: {},
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+
+                    if (response = true) {
+
+
+                    }
+                    else {
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+            $("#Totalrecord").text(0);
+            var grid = $("#DormImportExcellistModel").data("kendoGrid");
+            grid.dataSource.read();
+            $("#importsave").hide();
+            $("#importcancel").hide();
+        }
+        else {
+            if (!e.response.status) {
+
+                $(".k-upload-files.k-reset").find("li").remove();
+                showFeedback("warning", e.response.message);
+                $("#importsave").hide();
+                $("#importcancel").hide();
+            }
+            else {
+
+                $.ajax({
+                    url: '/ImportDormDTL/total',
+                    data: {},
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        if (response) {
+                            $("#Totalrecord").text(response.ttr);
+
+                        }
+                        else {
+                        }
+                    },
+                    failure: function (msg) {
+                    }
+                });
+                var grid = $("#DormImportExcellistModel").data("kendoGrid");
+                grid.dataSource.read();
+                $("#importsave").show();
+                $("#importcancel").show();
+                showFeedback("success", "Upload Completed");
+
+            }
+        }
+
+    }
+    function onError(e) {
+
+    }
+    function _Back() {
+        Loading();
+        var url = '@Url.Action("ViewPrepaidNonMobile", "ImportDormDTL")';
+        window.location.href = url;
+        _Cancel()
+    }
+    function _Cancel() {
+
+        $.ajax({
+            url: '/ImportDormDTL/clearSession',
+            data: {},
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+
+                if (response = true) {
+
+                    //alert("in");
+                }
+                else {
+                }
+            },
+            failure: function (msg) {
+            }
+        });
+        $(".k-upload-files.k-reset").find("li").remove();
+        $("#Totalrecord").text(0);
+        $("#importsave").hide();
+        $("#importcancel").hide();
+        var grid = $("#DormImportExcellistModel").data("kendoGrid");
+        grid.dataSource.read();
+    }
+    function _addnew() {
+        
+        var chk = ValidationProcessingRequired("SearchRow1");
+        if (chk) {
+            $.ajax({
+                url: '/ImportDormDTL/Sendpackage',
+                data: { Province: $('#DORMITORY_PROVINCE').val(), DormitoryName: $('#DORMITORY_NAME').val() },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+
+                    if (response) {
+                        if (response == true) {
+                            $.ajax({
+                                url: '/ImportDormDTL/clearSession',
+                                data: {},
+                                dataType: "json",
+                                type: 'POST',
+                                success: function (response) {
+
+                                    if (response = true) {
+
+                                        //alert("in");
+                                    }
+                                    else {
+                                    }
+                                },
+                                failure: function (msg) {
+                                }
+                            });
+                            $(".k-upload-files.k-reset").find("li").remove();
+                            $("#Totalrecord").text(0);
+                            $("#importsave").hide();
+                            $("#importcancel").hide();
+                            var grid = $("#DormImportExcellistModel").data("kendoGrid");
+                            grid.dataSource.read();
+                            showFeedback("success", "Save Success");
+                        }
+                        else {
+                            showFeedback("error", response);
+                        }
+
+                    }
+                    else {
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+        }
+    }
+
+    function onRegionChange()
+    {
+        $("#DORMITORY_PROVINCE").data("kendoDropDownList").dataSource.read({ regionCode: $("#DORMITORY_REGION").val() });
+        $("#DORMITORY_PROVINCE").data("kendoDropDownList").select(0);
+        $("#DORMITORY_NAME").data("kendoDropDownList").dataSource.read({ regionCode: $("#DORMITORY_REGION").val(), province: $("#DORMITORY_PROVINCE").val() });
+        $("#DORMITORY_NAME").data("kendoDropDownList").select(0);
+    }
+</script>

@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "~/Views/Fbbsaleportal/_LayoutReference.cshtml";
+}
+
+<body id="logoutsso" style="background-color: white;">
+    <script>
+        $(function () {
+            try {
+                    @{
+                        var html = "";
+
+                        if (ViewBag.NormalLogOut == true && ViewBag.IsSSO == false)
+                        {
+
+                            html = string.Format(@"window.location.href = '{0}';", Url.Action("Login", "Fbbsaleportal"));
+                            //                            html = @"
+                            //                                    bootbox.alert('Session TimeOut !', function() {" +
+                            //                                    string.Format(@"window.location.href = '{0}';", Url.Action("Login", "Fbbsaleportal")) +
+                            //                                    @"});";
+                        }
+                        else if (ViewBag.NormalLogOut == true && ViewBag.IsSSO == true)
+                        {
+                            html = @"window.open('', '_self'); window.close();";
+                        }
+                        else
+                        {
+                            html = @"bootbox.alert('Session TimeOut !', function() {
+                                        window.open('', '_self');
+                                        window.close();
+                                    });";
+                        }
+
+                            //if (ViewBag.NormalLogOut == false)
+                            //{
+                            //    //@Html.Raw(@"alert('Session TimeOut'); window.open('', '_self'); window.close();");
+                            //    //@Html.Raw(@"alert('Session TimeOut'); window.close();");
+                            //}
+                            //else
+                            //{
+                            //    if (ViewBag.IsSSO == true)
+                            //    {
+                            //        //@Html.Raw(@"alert('Session TimeOut'); window.close();");
+                            //    }
+                            //    else
+                            //    {
+                            //        //@Html.Raw(string.Format(@"window.location.href = '{0}';", Url.Action("Login", "Account")));
+                            //    }
+                            //}
+                        @Html.Raw(html);
+                    }
+            } catch (err) {
+                alert('Logout Error:  \n' + 'msg: ' + err.message + '\n' + 'desc: ' + err.description);
+            }
+        });
+    </script>
+</body>
+

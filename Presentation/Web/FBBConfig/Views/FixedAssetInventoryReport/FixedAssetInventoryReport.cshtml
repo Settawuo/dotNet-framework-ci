@@ -1,0 +1,507 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.FixedAssetInventoryModel
+@using WBBEntity.PanelModels;
+
+
+@{
+    ViewBag.Title = "FixedAssetInventoryReport";
+    string L_PAGE_NAME = "Report Name : Fixed Asset Inventory Report";
+    string B_SEARCH = "Search";
+    string B_CLEAR = "Clear";
+    string _OrdT = "Order Type";
+     string _SvrN = "ServiceName";
+     string _PrdN = "Product Name";
+     string _dF = "Date From";
+     string _dT = "Date To";
+     
+string     h_ACC_NBR = "";
+string h_ORD_NO = "";
+string h_SBC_CPY = "";
+string h_PRODUCT_NAME = "";
+string h_ON_TOP1 = "";
+string h_ON_TOP2 = "";
+string h_ORDER_TYPE = "";
+string h_ORDER_DATE = "";
+string h_MATERIAL_CODE_CPESN = "";
+string h_CPE_SN = "";
+string h_MATERIAL_CODE_STBSN1 = "";
+string h_STB_SN1 = "";
+string h_MATERIAL_CODE_STBSN2 = "";
+string h_STB_SN2 = "";
+string h_MATERIAL_CODE_STBSN3 = "";
+string h_STB_SN3 = "";
+string h_MATERIAL_CODE_ATASN = "";
+string h_ATA_SN = "";
+string h_MATERIAL_CODE_WIFIROUTESN = "";
+string h_WIFI_ROUTER_SN = "";
+string h_ASSET_GI = "";
+string h_GI_ASSET_DATE = "";
+string h_ASSET_PB1 = "";
+string h_PB1_ASSET_DATE = "";
+string h_ASSET_PB2 = "";
+string h_PB2_ASSET_DATE = "";
+string h_ASSET_PB3 = "";
+string h_PB3_ASSET_DATE = "";
+string h_INSTALL_EXPENSE = "";
+string h_ASSET_INS = "";
+string h_INS_ASSET_DATE = "INS ASSET DATE";
+string h_FLAG_TYPE = "";
+
+         if (ViewBag.configscreen != null)
+         {
+             var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+             h_ACC_NBR =                    configscreen.Any(f => f.Name == "ACC_NBR") ?                    configscreen.FirstOrDefault(f => f.Name == "ACC_NBR").Name : "";
+             h_ORD_NO =                     configscreen.Any(f => f.Name == "ORD_NO") ?                     configscreen.FirstOrDefault(f => f.Name == "ORD_NO").Name : "";
+             h_SBC_CPY =                    configscreen.Any(f => f.Name == "SBC_CPY") ?                    configscreen.FirstOrDefault(f => f.Name == "SBC_CPY").Name : "";
+             h_PRODUCT_NAME =               configscreen.Any(f => f.Name == "PRODUCT_NAME") ?               configscreen.FirstOrDefault(f => f.Name == "PRODUCT_NAME").Name : "";
+             h_ON_TOP1 =                    configscreen.Any(f => f.Name == "ON_TOP1") ?                    configscreen.FirstOrDefault(f => f.Name == "ON_TOP1").Name : "";
+             h_ON_TOP2 =                    configscreen.Any(f => f.Name == "ON_TOP2") ?                    configscreen.FirstOrDefault(f => f.Name == "ON_TOP2").Name : "";
+             h_ORDER_TYPE =                 configscreen.Any(f => f.Name == "ORDER_TYPE") ?                 configscreen.FirstOrDefault(f => f.Name == "ORDER_TYPE").Name : "";
+             h_ORDER_DATE =                 configscreen.Any(f => f.Name == "ORDER_DATE") ?                 configscreen.FirstOrDefault(f => f.Name == "ORDER_DATE").Name : "";
+             h_MATERIAL_CODE_CPESN =        configscreen.Any(f => f.Name == "MATERIAL_CODE_CPESN") ?        configscreen.FirstOrDefault(f => f.Name == "MATERIAL_CODE_CPESN").Name : "";
+             h_CPE_SN =                     configscreen.Any(f => f.Name == "CPE_SN") ?                     configscreen.FirstOrDefault(f => f.Name == "CPE_SN").Name : "";
+             h_MATERIAL_CODE_STBSN1 =       configscreen.Any(f => f.Name == "MATERIAL_CODE_STBSN1") ?       configscreen.FirstOrDefault(f => f.Name == "MATERIAL_CODE_STBSN1").Name : "";
+             h_STB_SN1 =                    configscreen.Any(f => f.Name == "STB_SN1") ?                    configscreen.FirstOrDefault(f => f.Name == "STB_SN1").Name : "";
+             h_MATERIAL_CODE_STBSN2 =       configscreen.Any(f => f.Name == "MATERIAL_CODE_STBSN2") ?       configscreen.FirstOrDefault(f => f.Name == "MATERIAL_CODE_STBSN2").Name : "";
+             h_STB_SN2 =                    configscreen.Any(f => f.Name == "STB_SN2") ?                    configscreen.FirstOrDefault(f => f.Name == "STB_SN2").Name : "";
+             h_MATERIAL_CODE_STBSN3 =       configscreen.Any(f => f.Name == "MATERIAL_CODE_STBSN3") ?       configscreen.FirstOrDefault(f => f.Name == "MATERIAL_CODE_STBSN3").Name : "";
+             h_STB_SN3 =                    configscreen.Any(f => f.Name == "STB_SN3") ?                    configscreen.FirstOrDefault(f => f.Name == "STB_SN3").Name : "";
+             h_MATERIAL_CODE_ATASN =        configscreen.Any(f => f.Name == "MATERIAL_CODE_ATASN") ?        configscreen.FirstOrDefault(f => f.Name == "MATERIAL_CODE_ATASN").Name : "";
+             h_ATA_SN =                     configscreen.Any(f => f.Name == "ATA_SN") ?                     configscreen.FirstOrDefault(f => f.Name == "ATA_SN").Name : "";
+             h_MATERIAL_CODE_WIFIROUTESN =  configscreen.Any(f => f.Name == "MATERIAL_CODE_WIFIROUTESN") ?  configscreen.FirstOrDefault(f => f.Name == "MATERIAL_CODE_WIFIROUTESN").Name : "";
+             h_WIFI_ROUTER_SN =             configscreen.Any(f => f.Name == "WIFI_ROUTER_SN") ?             configscreen.FirstOrDefault(f => f.Name == "WIFI_ROUTER_SN").Name : "";
+             h_ASSET_GI =                   configscreen.Any(f => f.Name == "ASSET_GI") ?                   configscreen.FirstOrDefault(f => f.Name == "ASSET_GI").Name : "";
+             h_GI_ASSET_DATE =              configscreen.Any(f => f.Name == "GI_ASSET_DATE") ?              configscreen.FirstOrDefault(f => f.Name == "GI_ASSET_DATE").Name : "";
+             h_ASSET_PB1 =                  configscreen.Any(f => f.Name == "ASSET_PB1") ?                  configscreen.FirstOrDefault(f => f.Name == "ASSET_PB1").Name : "";
+             h_PB1_ASSET_DATE =             configscreen.Any(f => f.Name == "PB1_ASSET_DATE") ?             configscreen.FirstOrDefault(f => f.Name == "PB1_ASSET_DATE").Name : "";
+             h_ASSET_PB2 =                  configscreen.Any(f => f.Name == "ASSET_PB2") ?                  configscreen.FirstOrDefault(f => f.Name == "ASSET_PB2").Name : "";
+             h_PB2_ASSET_DATE =             configscreen.Any(f => f.Name == "PB2_ASSET_DATE") ?             configscreen.FirstOrDefault(f => f.Name == "PB2_ASSET_DATE").Name : "";
+             h_ASSET_PB3 =                  configscreen.Any(f => f.Name == "ASSET_PB3") ?                  configscreen.FirstOrDefault(f => f.Name == "ASSET_PB3").Name : "";
+             h_PB3_ASSET_DATE =             configscreen.Any(f => f.Name == "PB3_ASSET_DATE") ?             configscreen.FirstOrDefault(f => f.Name == "PB3_ASSET_DATE").Name : "";
+             h_INSTALL_EXPENSE =            configscreen.Any(f => f.Name == "INSTALL_EXPENSE") ?            configscreen.FirstOrDefault(f => f.Name == "INSTALL_EXPENSE").Name : "";
+             h_INS_ASSET_DATE =             configscreen.Any(f => f.Name == "INS_ASSET_DATE") ?             configscreen.FirstOrDefault(f => f.Name == "INS_ASSET_DATE").Name : "";
+             h_ASSET_INS =                  configscreen.Any(f => f.Name == "ASSET_INS") ?                  configscreen.FirstOrDefault(f => f.Name == "ASSET_INS").Name : "";
+             h_FLAG_TYPE = configscreen.Any(f => f.Name == "FLAG_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "FLAG_TYPE").Name : "";
+       
+         
+         } 
+}
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">@L_PAGE_NAME</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="SearchPane">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Search Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                </h3>
+            </div>
+            <div id="SearchPanel" class="panel-collapse collapse in">
+                <div class="panel-body" style="min-height: 200px;">
+                    <div id="SearchRow1" class="row">
+                        <div class="col-sm-12 col-md-4">
+                            <label>@_OrdT </label>
+                            @(Html.Kendo().DropDownList()
+                              .Name("ddlOrderType")
+                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                              .DataTextField("DISPLAY_VAL")
+                              .DataValueField("LOV_NAME")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("SelectAllOrderType", "FixedAssetInventoryReport");
+                                });
+                            })
+                                .Events(e => e.Change("onChangeDropDown"))
+)
+                        </div>
+                        @*<div class="col-sm-12 col-md-4">
+                            <label>@_SvrN</label>
+                            @(Html.Kendo().DropDownList()
+                            .Name("ddlServiceName")
+                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                            .DataTextField("DISPLAY_VAL")
+                            .DataValueField("LOV_NAME")
+                            .DataSource(source =>
+                            {
+                                    source.Read(read =>
+                                    {
+                                         read.Action("SelectAllServiceName", "FixedAssetInventoryReport");
+                                    });
+                            })
+                            )
+                        </div>*@
+                        <div class="col-sm-12 col-md-4">
+                            <label>@_PrdN</label>
+                            @(Html.Kendo().DropDownList()
+                            .Name("ddlProductName")
+                            .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                            .DataTextField("DISPLAY_VAL")
+                            .DataValueField("LOV_NAME")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                      read.Action("SelectAllProductName", "FixedAssetInventoryReport");
+                                });
+                            })
+                          .Events(e => e.Change("onChangeDropDown"))
+                            )
+                        </div>
+                    </div>
+                    <div id="SearchRow2" class="row i-gap-top-1">
+                        <div class="col-sm-12 col-md-4">
+                            <label>@_dF</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900, 1, 1))
+                                 .Max(new DateTime(2099, 12, 31))
+                                 .Events(e => e.Change("ChangdtpDateFrom")))
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-dtpDateFrom"></div>
+                            <span class="k-invalid-msg" data-for="PickupDate"></span>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <label>@_dT</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .Format("dd/MM/yyyy")
+                                  .Min(new DateTime(1900, 1, 1))
+                                 .Max(new DateTime(2099, 12, 31))
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Events(e => e.Change("ChangdtpDateTo")))
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-dtpDateTo"></div>
+                        </div>
+                    </div>
+                    <div id="SearchRow3" class="row i-gap-top-1">
+                        <div class="col-sm-6 col-md-6">
+                        </div>
+                        <div class="col-sm-6 col-md-6 i-text-align-right">
+                            <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                            <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                        </div>
+                    </div>
+                    @*end row2*@
+                    <div id="SearchRow3" class="row i-gap-top-1">
+                        <div class="col-sm-12 col-md-12 ">
+                            <div id="gridresult" class="row">
+                                @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.FixedAssetInventoryModel>()
+                                        .Name("gridFixAsset")
+                                        .Columns(columns =>
+                                        {
+
+               
+                                            columns.Bound(p => p.ACC_NBR).Title(@h_ACC_NBR).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            columns.Bound(p => p.ORD_NO).Title(@h_ORD_NO).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            columns.Bound(p => p.ON_TOP1).Title(@h_ON_TOP1).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            columns.Bound(p => p.ON_TOP2).Title(@h_ON_TOP2).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            columns.Bound(p => p.ORDER_TYPE).Title(@h_ORDER_TYPE).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            columns.Bound(p => p.ORDER_DATE).Format("{0:dd/MM/yyyy}").Title(@h_ORDER_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(140);
+                                            columns.Bound(p => p.PRODUCT_NAME).Title(@h_PRODUCT_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(170);
+
+                                            columns.Bound(p => p.SBC_CPY).Title(@h_SBC_CPY).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+
+
+                                            columns.Bound(p => p.MATERIAL_CODE_CPESN).Title(@h_MATERIAL_CODE_CPESN).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.CPE_SN).Title(@h_CPE_SN).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+
+                                            columns.Bound(p => p.MATERIAL_CODE_STBSN1).Title(@h_MATERIAL_CODE_STBSN1).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.STB_SN1).Title(@h_STB_SN1).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+
+                                            columns.Bound(p => p.MATERIAL_CODE_STBSN2).Title(@h_MATERIAL_CODE_STBSN2).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.STB_SN2).Title(@h_STB_SN2).HtmlAttributes(new { style = "text-align:left;" }).Width(120); 
+                                            
+                                            columns.Bound(p => p.MATERIAL_CODE_STBSN3).Title(@h_MATERIAL_CODE_STBSN3).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.STB_SN3).Title(@h_STB_SN3).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            
+                                            columns.Bound(p => p.MATERIAL_CODE_ATASN).Title(@h_MATERIAL_CODE_ATASN).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                            columns.Bound(p => p.ATA_SN).Title(@h_ATA_SN).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            columns.Bound(p => p.MATERIAL_CODE_WIFIROUTESN).Title(@h_MATERIAL_CODE_WIFIROUTESN).HtmlAttributes(new { style = "text-align:left;" }).Width(240);
+                                            columns.Bound(p => p.WIFI_ROUTER_SN).Title(@h_WIFI_ROUTER_SN).HtmlAttributes(new { style = "text-align:left;" }).Width(170);
+
+
+                                            columns.Bound(p => p.ASSET_GI).Title(@h_ASSET_GI).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            columns.Bound(p => p.GI_ASSET_DATE).Title(@h_GI_ASSET_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(170).Format("{0:dd/MM/yyyy}");
+                                            columns.Bound(p => p.ASSET_PB1).Title(@h_ASSET_PB1).HtmlAttributes(new { style = "text-align:right;" }).Width(120);
+
+                                            columns.Bound(p => p.PB1_ASSET_DATE).Title(@h_PB1_ASSET_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(170).Format("{0:dd/MM/yyyy}");
+                                            columns.Bound(p => p.ASSET_PB2).Title(@h_ASSET_PB2).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            columns.Bound(p => p.PB2_ASSET_DATE).Title(@h_PB2_ASSET_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(170).Format("{0:dd/MM/yyyy}");
+                                            columns.Bound(p => p.ASSET_PB3).Title(@h_ASSET_PB3).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+
+                                            columns.Bound(p => p.PB3_ASSET_DATE).Title(@h_PB3_ASSET_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(170).Format("{0:dd/MM/yyyy}");
+                                            columns.Bound(p => p.INSTALL_EXPENSE).Title(@h_INSTALL_EXPENSE).HtmlAttributes(new { style = "text-align:right;" }).Width(170);
+                                            columns.Bound(p => p.ASSET_INS).Title(@h_ASSET_INS).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                            columns.Bound(p => p.INS_ASSET_DATE).Title(@h_INS_ASSET_DATE).HtmlAttributes(new { style = "text-align:left;" }).Width(170).Format("{0:dd/MM/yyyy}");
+                                            columns.Bound(p => p.FLAG_TYPE).Title(@h_FLAG_TYPE).HtmlAttributes(new { style = "text-align:left;" }).Width(120);
+                                         
+
+                                        })
+                                                  .ToolBar(toolbar => toolbar.Template("<div class='pull-right'><a onclick='ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp; Export To Excel </a></div>"))
+                                         .Scrollable(scrollable => scrollable.Height("auto"))
+                                        //.Sortable()
+                                            .Resizable(resize => resize.Columns(true))
+                                            .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                                            .AutoBind(false)
+                                            .DataSource(dataSource => dataSource
+                                                .Ajax()
+                                                .PageSize(20)
+                                              .Read(read => read.Action("SearchFixAssetInventory", "FixedAssetInventoryReport").Data("bindingValue"))
+                                                )
+                                            .Events(e => e.DataBound("onGridDataBound"))
+                                )
+                            </div>
+                        </div>
+                    </div>
+                    @*end row3*@
+
+                </div>
+            </div>
+            @*end SearchPanel*@
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#btnExport').attr("disabled", true);
+
+    });
+    function bindingValue() {
+        Loading();
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+    function onGridDataBound() {
+      
+        Loading(0);
+        if (this.dataSource.view().length == 0) {
+
+         
+            $('#btnExport').attr("disabled", true);
+        }
+        else {
+            //$(".k-grid-content").height("auto");
+            $('#btnExport').attr("disabled", false);
+        }
+
+        $('#btnExport').attr("disabled", !(this.dataSource.view().length != 0));
+    }
+
+    var NotRegisModel = function () {
+        dateFrom: "";
+        dateTo: "";
+    }
+ 
+    function ChangdtpDateFrom() {
+
+        var endPicker = $("#dtpDateTo").data("kendoDatePicker"),
+        startDate = this.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            endPicker.min(startDate);
+        }
+
+    }
+    function ChangdtpDateTo() {
+        var startPicker = $("#dtpDateFrom").data("kendoDatePicker"),
+        endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            startPicker.max(endDate);
+        }
+
+    }
+    function ValidationDateValue() {
+        debugger;
+        var chk = ValidationProcessing("dateselect");
+
+        if (chk) //check blank value
+        {
+            if ($.trim($("#dtpDateFrom").val()) == '') {
+                $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if ($.trim($("#dtpDateTo").val()) == '') {
+                $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check format
+        {
+            if (!kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if (!kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateTo").val() != "") {
+                    $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check Date From must be earlier than Date To
+        {
+            var startPicker = new Date(kendo.parseDate($("#dtpDateFrom").val(), "mm/dd/yyyy"));
+            var endPicker = new Date(kendo.parseDate($("#dtpDateTo").val(), "mm/dd/yyyy"));
+
+            if (startPicker > endPicker) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+            }
+        }
+
+        return chk;
+    }
+    function ExportToExcel() {
+        var model = new defaultData();
+        window.open("/FixedAssetInventoryReport/ExportFixAssetInventory?dataS=" + JSON.stringify(model) + "");
+    }
+    function defaultData() {
+
+        var searchResult = new FixAssetModel();
+        searchResult.DateFrom = kendo.toString($("#dtpDateFrom").val(), "dd/MM/yyyy");
+        searchResult.DateTo = kendo.toString($("#dtpDateTo").val(), "dd/MM/yyyy");
+        searchResult.OrderType = $("#ddlOrderType").val();
+        searchResult.ProductName = $("#ddlProductName").val();
+
+        return searchResult;
+
+    }
+
+    var  FixAssetModel = function () {
+        DateFrom: "";
+        DateTo: "";
+        OrderType: "";
+        ProductName: "";
+
+    }
+
+
+
+
+    function _Search() {
+
+        var chk = ValidationDateValue();
+    
+        if (chk) {
+            Loading();
+            var grid = $("#gridFixAsset").data("kendoGrid");
+            grid.dataSource.page(1);
+            $.ajax({
+                type: "POST",
+                url: "/FixedAssetInventoryReport/SearchFixAsset",
+                data: {
+                    "Ordtype": $("#ddlOrderType").val()
+                    , "ServName": $("#ddlServiceName").val()
+                    , "PrdName": $("#ddlProductName").val()
+                    , "dFrom": $("#dtpDateFrom").val()
+                    , "dTo": $("#dtpDateTo").val()
+                  
+                },
+                dataType: "text",
+                async: false,
+                success: function (response) {
+     
+   
+          
+
+                    if (response) {
+
+                        if (response.item == "0") {
+                            $('#btnExport').attr("disabled", true);
+                        }
+                        else {
+                            $('#btnExport').attr("disabled", false);
+                        }
+
+                    }
+                },
+                failure: function (msg) {
+                }
+            });
+        }
+    }
+    function onChangeDropDown()
+    {
+
+        $('#btnExport').attr("disabled", true);
+        $("#gridFixAsset").data("kendoGrid").dataSource.data([]);
+
+
+    }
+    function _Clear() {
+
+        $("#ddlOrderType").data("kendoDropDownList").dataSource.read({ Program: "ORDER_TYPE" });
+        $("#ddlOrderType").data("kendoDropDownList").select(0);
+        //$("#ddlServiceName").data("kendoDropDownList").dataSource.read({ Program: "SEVICE_NAME" });
+        //$("#ddlServiceName").data("kendoDropDownList").select(0);
+        $("#ddlProductName").data("kendoDropDownList").dataSource.read({ Program: "EVA5" });
+        $("#ddlProductName").data("kendoDropDownList").select(0);
+
+        //var dropdownlist2 = $("#DORMITORY_NAME").data("kendoDropDownList");
+        //dropdownlist2.select(0);
+        //  $("#gridDormitory").data("kendoGrid").dataSource.data([]);
+
+        $('#btnExport').attr("disabled", true);
+        $("#gridFixAsset").data("kendoGrid").dataSource.data([]);
+
+        var today = new Date();
+        $("#dtpDateFrom").data("kendoDatePicker").value("");
+        $("#dtpDateTo").data("kendoDatePicker").value("");
+
+      
+     
+        $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+        $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+
+
+
+        $("#validatefor-dtpDateTo").html("")
+        $("#validatefor-dtpDateFrom").html("")
+    }
+
+</script>
+

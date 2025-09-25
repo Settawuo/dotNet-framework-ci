@@ -1,0 +1,61 @@
+﻿@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+    string L_LOGIN_FAILED = "";
+    string B_OK = "";
+    
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        L_LOGIN_FAILED = LabelFBBTR001.Any(c => c.Name == "L_LOGIN_FAILED") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_LOGIN_FAILED").DisplayValue : "";
+        B_OK = LabelFBBTR001.Any(c => c.Name == "B_OK") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "B_OK").DisplayValue : "";
+    }
+}
+
+<div class="col-sm-6 col-md-6 i-hidden" id="col-err">
+
+    <h1 style="color: #91908e">@L_LOGIN_FAILED</h1>
+    <h3 id="lb-failed"></h3>
+
+    <br />
+    <br />
+
+    <p align="right">
+        <a class="btn2" id="btnErrorOK" onclick="backForm()">@B_OK</a>
+    </p>
+</div>
+
+<input type='hidden' name='FromPage' id='FromPage' />
+
+<script type="text/javascript">
+    function backForm() {
+        $("#col-err").hide();
+        if ($("#FromPage").val() == "col-form") {
+            $("#col-form").show();            
+        }
+        else if ($("#FromPage").val() == "col-formInputMobileNo")
+        {
+            //กรณีให้ส่งใหม่
+            //$('#col-formInputMobileNo').show();
+            //$("#btnSendOTP2").show();
+            //$("#col-Condition").show();
+
+            //กลับไปหน้าแรก
+            window.location.href = window.location.href;
+        }
+        else if($("#FromPage").val() == "col-formInputOTP")
+        {
+            //กรณีให้กรอกใหม่
+            //$('#col-formInputMobileNo').show();
+            //$('#col-formInputOTP').show();
+
+            //กลับไปหน้าแรก
+            window.location.href = window.location.href;
+        }
+        else
+        {
+            //location.reload();
+            window.location.href = window.location.href;
+        }
+    }
+</script>

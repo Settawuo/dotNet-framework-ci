@@ -1,0 +1,70 @@
+﻿@using WBBWeb.Extension
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBEntity.PanelModels
+
+@{
+    Layout = "~/Views/Shared/_LayoutScpe.cshtml";
+    string B_CLOSE = "";
+
+    if (ViewBag.LabelFBBOR041 != null)
+    {
+        var LabelFBBOR041 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR041;
+        B_CLOSE = LabelFBBOR041.Any(c => c.Name == "B_CLOSE") ? LabelFBBOR041.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+    }
+    
+    string PayMentOrderID = "";
+    if (ViewBag.PayMentOrderID != null && ViewBag.PayMentOrderID != "")
+    {
+        PayMentOrderID = ViewBag.PayMentOrderID;
+    }
+    string PayMentRecurringChargeVAT = "";
+    if (ViewBag.PayMentRecurringChargeVAT != null && ViewBag.PayMentRecurringChargeVAT != "")
+    {
+        PayMentRecurringChargeVAT = ViewBag.PayMentRecurringChargeVAT;
+    }
+
+}
+
+@using (Html.BeginForm("Index", "Scpe", FormMethod.Post, new { id = "iForm", enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    @Html.Hidden("PayMentOrderID");
+    @Html.Hidden("PayMentRecurringChargeVAT");
+    @Html.Partial("~/Views/GenQRCode/_MPayQrCode.cshtml");
+}
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupMessage" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">&nbsp; @B_CLOSE &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#wrapSwitchLanguage').hide();
+        $('#PayMentOrderID').val('@PayMentOrderID');
+        $('#PayMentRecurringChargeVAT').val('@PayMentRecurringChargeVAT');
+        getPaymentToMerchantQrCode();
+    });
+
+    function PopupMessage(msg) {
+        $('#LastPopupMessage').html(msg);
+    }
+</script>

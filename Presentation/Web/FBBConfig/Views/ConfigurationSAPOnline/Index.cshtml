@@ -1,0 +1,2273 @@
+﻿@model FBBConfig.Models.SAPOnline.CostInstallationView
+@using WBBEntity.PanelModels;
+@{
+    //var ViewTable = Model.CostInstallation;
+    string L_PAGE_NAME = "";
+    string L_POPUP_INSTALL_COST_ADD = "";
+    string L_POPUP_INSTALL_COST_EDIT = "";
+    string L_CRITERIA_PANEL = "";
+    string L_SERVICE = "";
+    string L_CUSTOMER = "";
+    string L_CUSTOMER_NAME = "";
+    string L_CUSTOMER_NAME_EDIT = "";
+    string L_ORDER_TYPE = "";
+    string L_EFFECTIVE_DATE = "";
+    string L_EXPIRE_DATE = "";
+    string L_INTERNET_RATE = "";
+    string L_PLAY_BOX_RATE = "";
+    string L_VOIP_RATE = "";
+    string L_PLAY_BOX = "";
+    string L_PHASE = "";
+    string L_REMARK = "";
+    string L_LINE_FR = "";
+    string L_LINE_TO = "";
+    string L_TARGET_FROM = "";
+    string L_TARGET_TO = "";
+    string L_LINE_FROM_TO = "";
+    string L_OUT_DOOR_PRICE = "";
+    string L_IN_DOOR_PRICE = "";
+
+    // Button
+    string B_SEARCH = "Search";
+    string B_CLEAR = "Clear";
+    string B_NEW = "New Rate";
+    string B_DELETE = "Delete";
+    string B_EDIT = "Edit";
+    string B_SAVE = "Save";
+    string B_CANCEL = "Cancel";
+    string B_EXPORT = "Export to Excel";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+        L_PAGE_NAME = configscreen.Any(f => f.Name == "L_PAGE_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_PAGE_NAME").LovValue1 : "";
+        L_POPUP_INSTALL_COST_ADD = configscreen.Any(f => f.Name == "L_POPUP_INSTALL_COST_ADD") ? configscreen.FirstOrDefault(f => f.Name == "L_POPUP_INSTALL_COST_ADD").LovValue1 : "";
+        L_POPUP_INSTALL_COST_EDIT = configscreen.Any(f => f.Name == "L_POPUP_INSTALL_COST_EDIT") ? configscreen.FirstOrDefault(f => f.Name == "L_POPUP_INSTALL_COST_EDIT").LovValue1 : "";
+        L_CRITERIA_PANEL = configscreen.Any(f => f.Name == "L_CRITERIA_PANEL") ? configscreen.FirstOrDefault(f => f.Name == "L_CRITERIA_PANEL").LovValue1 : "";
+        L_SERVICE = configscreen.Any(f => f.Name == "L_SERVICE") ? configscreen.FirstOrDefault(f => f.Name == "L_SERVICE").LovValue1 : "";
+        L_CUSTOMER = configscreen.Any(f => f.Name == "L_CUSTOMER") ? configscreen.FirstOrDefault(f => f.Name == "L_CUSTOMER").LovValue1 : "";
+        L_CUSTOMER_NAME = configscreen.Any(f => f.Name == "L_CUSTOMER_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_CUSTOMER_NAME").LovValue1 : "";
+        L_CUSTOMER_NAME_EDIT = configscreen.Any(f => f.Name == "L_CUSTOMER_NAME_EDIT") ? configscreen.FirstOrDefault(f => f.Name == "L_CUSTOMER_NAME_EDIT").LovValue1 : "";
+        L_ORDER_TYPE = configscreen.Any(f => f.Name == "L_ORDER_TYPE") ? configscreen.FirstOrDefault(f => f.Name == "L_ORDER_TYPE").LovValue1 : "";
+        L_EFFECTIVE_DATE = configscreen.Any(f => f.Name == "L_EFFECTIVE_DATE") ? configscreen.FirstOrDefault(f => f.Name == "L_EFFECTIVE_DATE").LovValue1 : "";
+        L_EXPIRE_DATE = configscreen.Any(f => f.Name == "L_EXPIRE_DATE") ? configscreen.FirstOrDefault(f => f.Name == "L_EXPIRE_DATE").LovValue1 : "";
+        L_INTERNET_RATE = configscreen.Any(f => f.Name == "L_INTERNET_RATE") ? configscreen.FirstOrDefault(f => f.Name == "L_INTERNET_RATE").LovValue1 : "";
+        L_PLAY_BOX_RATE = configscreen.Any(f => f.Name == "L_PLAY_BOX_RATE") ? configscreen.FirstOrDefault(f => f.Name == "L_PLAY_BOX_RATE").LovValue1 : "";
+        L_VOIP_RATE = configscreen.Any(f => f.Name == "L_VOIP_RATE") ? configscreen.FirstOrDefault(f => f.Name == "L_VOIP_RATE").LovValue1 : "";
+        L_PLAY_BOX = configscreen.Any(f => f.Name == "L_PLAY_BOX") ? configscreen.FirstOrDefault(f => f.Name == "L_PLAY_BOX").LovValue1 : "";
+        L_PHASE = configscreen.Any(f => f.Name == "L_PHASE") ? configscreen.FirstOrDefault(f => f.Name == "L_PHASE").LovValue1 : "";
+        L_REMARK = configscreen.Any(f => f.Name == "L_REMARK") ? configscreen.FirstOrDefault(f => f.Name == "L_REMARK").LovValue1 : "";
+        L_LINE_FR = configscreen.Any(f => f.Name == "L_LINE_FR") ? configscreen.FirstOrDefault(f => f.Name == "L_LINE_FR").LovValue1 : "";
+        L_LINE_TO = configscreen.Any(f => f.Name == "L_LINE_TO") ? configscreen.FirstOrDefault(f => f.Name == "L_LINE_TO").LovValue1 : "";
+        L_TARGET_FROM = configscreen.Any(f => f.Name == "L_TARGET_FROM") ? configscreen.FirstOrDefault(f => f.Name == "L_TARGET_FROM").LovValue1 : "";
+        L_TARGET_TO = configscreen.Any(f => f.Name == "L_TARGET_TO") ? configscreen.FirstOrDefault(f => f.Name == "L_TARGET_TO").LovValue1 : "";
+        L_LINE_FROM_TO = configscreen.Any(f => f.Name == "L_LINE_FROM_TO") ? configscreen.FirstOrDefault(f => f.Name == "L_LINE_FROM_TO").LovValue1 : "";
+        L_OUT_DOOR_PRICE = configscreen.Any(f => f.Name == "L_OUT_DOOR_PRICE") ? configscreen.FirstOrDefault(f => f.Name == "L_OUT_DOOR_PRICE").LovValue1 : "";
+        L_IN_DOOR_PRICE = configscreen.Any(f => f.Name == "L_IN_DOOR_PRICE") ? configscreen.FirstOrDefault(f => f.Name == "L_IN_DOOR_PRICE").LovValue1 : "";
+    }
+}
+
+<style>
+    label.required:after {
+        color: red;
+        content: " *";
+    }
+
+    .k-grid .k-grid-header .k-header .k-link {
+        height: auto;
+    }
+
+    .k-grid .k-grid-header .k-header {
+        white-space: normal;
+        vertical-align: top;
+    }
+
+    .TextUpper {
+        text-transform: uppercase !important;
+    }
+
+</style>
+
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">@L_PAGE_NAME</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>@L_CRITERIA_PANEL</span>
+                    <a data-toggle="collapse" class="pull-right" href="#SearchPanel1" onclick="onPanelToggle(this);" id="SearchPanelHeader1"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow1"></i></a>
+                </h3>
+            </div>
+            <div id="SearchPanel1" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3">
+                            <label>@L_ORDER_TYPE</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                    .Name("ddlOrderTypeSearch")
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("VAL1")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("SetDDLOrderType", "ConfigurationSAPOnline", new { typeMode = "Search" });
+                                        });
+                                    })
+                                            .Events(e => e.Change("OnOrderTypeSearchChange"))
+                                    .SelectedIndex(0)
+                                )
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <label>@L_SERVICE</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                    .Name("ddlServiceSearch")
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("VAL1")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("SetDDLService", "ConfigurationSAPOnline", new { typeMode = "Search" });
+                                        });
+                                    })
+                                    .Events(e => e.Change("OnServiceSearchChange"))
+                                    .SelectedIndex(0)
+                                )
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <label>@L_PHASE</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                    .Name("ddlCustomerSearch")
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("VAL1")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("SetDDLCustomer", "ConfigurationSAPOnline", new { typeMode = "Search" });
+                                        });
+                                    })
+                                    .Events(e => e.Change("OnCustomerSearchChange"))
+                                    .SelectedIndex(0)
+                                )
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3" onclick="DropDownList_reset_datasource_search()" id="div_ddlCustomerNameSearch">
+                            <label>@L_CUSTOMER_NAME</label>
+                            <div class="i-fg-data-entry">
+                                @(Html.Kendo().DropDownList()
+                                    .Name("ddlCustomerNameSearch")
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("VAL1")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .Filter("contains")
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("SetDDLName", "ConfigurationSAPOnline", new { typeMode = "Search" });
+                                        });
+                                    })
+                                    .Events(e => e.Change("OnCustomerNameSearchChange"))
+                                    .SelectedIndex(0)
+                                )
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row i-gap-top-1">
+                        <div class="col-sm-6 col-md-6"></div>
+                        <div class="col-sm-6 col-md-6 i-text-align-right">
+                            <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLEAR</a>
+                            <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="SearchRow3" class="row i-gap-top-1">
+            <div class="col-sm-12 col-md-12 ">
+                <div id="gridresult">
+                    @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.CostInstallation>()
+                        .Name("gridEvents")
+                        .Columns(columns =>
+                        {
+                            columns.Command(command =>
+                            {
+                                command.Custom(@B_EDIT).Click("EditInstallCost").Text("<i class='fa fa-pencil-square-o fa-lg'></i>");
+                                command.Custom(@B_DELETE).Click("modalConfirmDeleteShow").Text("<i class='fa fa-times-circle fa-lg'></i>");
+                            }).Title("ACTION").HtmlAttributes(new { style = "text-align:center;" }).Width(160);
+                            
+                            columns.Bound(p => p.ID).Title("ID").HtmlAttributes(new { style = "text-align:left;" }).Width(10).Hidden();
+                            columns.Bound(p => p.ORDER_TYPE).Title(@L_ORDER_TYPE).HtmlAttributes(new { style = "text-align:left;" }).Width(100);
+                            columns.Bound(p => p.SERVICE).Title(@L_SERVICE).HtmlAttributes(new { style = "text-align:left;" }).Width(100);
+                            columns.Bound(p => p.CUSTOMER).Title("INS_OPTION").HtmlAttributes(new { style = "text-align:left;" }).Width(150).Hidden();
+                            columns.Bound(p => p.CUSTOMER).Title(@L_PHASE).HtmlAttributes(new { style = "text-align:left;" }).Width(80);
+                            columns.Bound(p => p.TMP_CODE_CUSTOMER_NAME).Title(@L_CUSTOMER_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(140);
+                            columns.Bound(p => p.TMP_LENGTH_FR_TO).Title(@L_LINE_FROM_TO).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+
+                            columns.Bound(p => p.INTERNET_RATE).Format("{0:n}").Title(@L_INTERNET_RATE).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+                            columns.Bound(p => p.PLAYBOX_RATE).Format("{0:n}").Title(@L_PLAY_BOX_RATE).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+                            columns.Bound(p => p.VOIP_RATE).Format("{0:n}").Title(@L_VOIP_RATE).HtmlAttributes(new { style = "text-align:right;" }).Width(150);
+                            columns.Bound(p => p.EFFECTIVE_DATE).Format("{0:dd/MM/yyyy}").ClientTemplate("#=formatDate(EFFECTIVE_DATE)#").Title(@L_EFFECTIVE_DATE).HtmlAttributes(new { style = "text-align:center;" }).Width(100);
+                            columns.Bound(p => p.EXPIRE_DATE).Format("{0: dd/MM/yyyy}").ClientTemplate("#=formatDate(EXPIRE_DATE)#").Title(@L_EXPIRE_DATE).HtmlAttributes(new { style = "text-align:center;" }).Width(100);
+                            columns.Bound(p => p.REMARK).Title(@L_REMARK).HtmlAttributes(new { style = "text-align:left;" }).Width(100);
+                            
+                        })
+                        .ToolBar(toolbar => toolbar.Template("" +
+                            "<div class='pull-right'>" +
+                            "<a onclick='InstallCostPopup()' id='addnew' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp;" + @B_NEW +
+                            "</a>&nbsp;</div>" +
+                            "<div class='pull-right'>" +
+                            "<a onclick='_ExportToExcel()' id='btnExport'class='btn btn-default' disabled='disabled'><i class='fa fa-reply fa-lg'></i>&nbsp; " + @B_EXPORT +
+                            "</a>&nbsp;</div>"
+                            ))
+                        .Scrollable(scrollable => scrollable.Height("auto"))
+                        .Sortable()
+                        .Pageable(pageable => pageable.Numeric(true).PageSizes(new int[] { 20, 50, 100 }))
+                        .AutoBind(false)
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(20)
+                                    .Sort(sort => sort.Add("UPDATED_DATE").Descending())
+                            .Read(read => read.Action("CostInstallationAsync", "ConfigurationSAPOnline").Data("bindingValue"))
+                            )
+                        .Events(e => e.DataBound("onGridDataBound"))
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@(Html.Kendo().Window()
+    .Name("InstallCostPopup")
+    .Title(L_POPUP_INSTALL_COST_ADD)
+    .Width(800)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Events(e => e.Close("_clearPopupData"))
+    .Content(
+    @<text>
+        <div class="i-no-over" id="AddPopupPanel">
+            <div class="panel-body">
+                <div class="row i-gap-top-1">
+                    <div class="col-sm-6 col-md-3">
+                        <label class="required">@L_ORDER_TYPE</label>
+                        <div class="i-fg-data-entry">
+                            @(Html.Kendo().DropDownListFor(x => x.Service)
+                                    .Name("ddlOrderType")
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("VAL1")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("SetDDLOrderType", "ConfigurationSAPOnline").Data("addParamDDLService");
+                                            });
+                                        })
+                                    .Events(e => e.Change("OnOrderTypeChange"))
+                            )
+                        </div>
+                        <div id="validate-ddlOrderType" class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="required">@L_SERVICE</label>
+                        <div class="i-fg-data-entry">
+                            @(Html.Kendo().DropDownListFor(x => x.Service)
+                                    .Name("ddlService")
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("VAL1")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .Enable(false)
+                                    .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("SetDDLService", "ConfigurationSAPOnline").Data("addParamDDLService");
+                                            });
+                                        })
+                                    .Events(e => e.Open("OnServiceOpen").Change("OnServiceChange"))
+                            )
+                        </div>
+                        <div id="validate-ddlService" class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="required">@L_PHASE</label>
+                        <div class="i-fg-data-entry">
+                            @(Html.Kendo().DropDownListFor(x => x.Customer)
+                                    .Name("ddlCustomer")
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("VAL1")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .Enable(false)
+                                    .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("SetDDLCustomer", "ConfigurationSAPOnline").Data("addParamDDLCustomer");
+                                            });
+                                        })
+                                    .Events(e => e.Change("OnCustomerChange_preload"))
+                            )
+                        </div>
+                        <div id="validate-ddlCustomer" class="i-fg-data-entry-validation"></div>
+                    </div>
+                </div>
+                <div class="row i-gap-top-1" id="div_row_ddlCustomerName">
+                    <div class="col-sm-6 col-md-7" onclick="DropDownList_reset_datasource_pop()">
+                        <label class="required">@L_CUSTOMER_NAME</label>
+                        <div class="i-fg-data-entry">
+                            @(Html.Kendo().DropDownList()
+                                    .Name("ddlCustomerName")
+                                    .DataTextField("DISPLAY_VAL")
+                                    .DataValueField("VAL1")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .Enable(false)
+                                    .Filter("contains")
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("SetDDLName", "ConfigurationSAPOnline").Data("addParamDDLName");
+                                        });
+                                    })
+                                   .Events(e => e.Change("CustomerNameOnchange"))
+                            )
+                        </div>
+                        <div id="validate-ddlCustomerName" class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-2" id="divPlugAndPlay" style="display:none;">
+                        <label></label>
+                        <div class="i-fg-data-entry">
+                            <label>@L_PLAY_BOX</label>
+                            &nbsp;
+                            @(Html.CheckBox("chkPlaybox", false))
+                        </div>
+                        <input type="hidden" id="txtID" value="">
+                    </div>
+                </div>
+                <div id="div_row_Edit_CONFIG_TBL" style="display:none">
+                    <div class="row i-gap-top-1 k-block k-info-colored" style="padding-top:5px;padding-bottom:5px">
+                        <div class="col-sm-6 col-md-7">
+                            <label class="required">@L_CUSTOMER_NAME_EDIT</label>
+                        </div>
+                        <div class="col-sm-6 col-md-7">
+                            <input type="text" id="txt_CONFIG_TBL" class="k-textbox form-control TextUpper" maxlength="30" />
+                            <div id="validate-txt_CONFIG_TBL" class="i-fg-data-entry-validation"></div>
+                        </div>
+                        <div class="col-sm-1 col-md-4" style="padding-top:3px">
+                            <a style='padding:1px 6px' onclick="confirm_config_tbl_save()" id="btn_config_tbl_save" class="btn btn-success"><i class="fa fa-check-circle fa-lg"></i>&nbsp;@B_SAVE</a>
+                            @*<a style='padding:1px 6px' onclick="confirm_config_tbl_delete()" id="btn_config_tbl_delete" class="btn btn-danger"><i class="fa fa-times-circle fa-lg"></i>&nbsp;Delete</a>*@
+                            <a style='padding:1px 6px' onclick="config_tbl_cancel()" id="btn_config_tbl_cancel" class="btn btn-default"><i class="fa fa-power-off fa-lg"></i>&nbsp;@B_CANCEL</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row i-gap-top-1">
+                    <div class="col-sm-6 col-md-3">
+                        <label>@L_EFFECTIVE_DATE</label>
+                        <div class="i-fg-data-entry">
+                            @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend validate" })
+                                    .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                    .Format("dd/MM/yyyy")
+                                    .Min(DateTime.Today)
+                                    .Events(e => e.Change("ChangdtpDateFrom"))
+                            )
+                        </div>
+                        <div class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="">@L_EXPIRE_DATE</label>
+                        <div class="i-fg-data-entry">
+                            @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                    .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                    .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                    .Format("dd/MM/yyyy")
+                                    .Min(DateTime.Today)
+                                    .Events(e => e.Change("ChangdtpDateTo"))
+                            )
+                        </div>
+                        <div id="validate-dtpDateTo" class="i-fg-data-entry-validation"></div>
+                    </div>
+                </div>
+                <div class="row i-gap-top-1">
+                    <div class="col-sm-6 col-md-3" id="div_INTERNET_RATE">
+                        <label class="required">@L_INTERNET_RATE</label>
+                        <div class="i-fg-data-entry">
+                            <input type="text" id="txtInternetRate" value="0" class="k-textbox form-control validate_rate" />
+                        </div>
+                        <div class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-3" id="div_PLAY_BOX_RATE">
+                        <label>@L_PLAY_BOX_RATE</label>
+                        <div class="i-fg-data-entry">
+                            <input type="text" id="txtPlayboxRate" value="0" class="k-textbox form-control" />
+                        </div>
+                        <div class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-3" id="div_VOIP_RATE">
+                        <label>@L_VOIP_RATE</label>
+                        <div class="i-fg-data-entry">
+                            <input type="text" id="txtVoipRate" value="0" class="k-textbox form-control" />
+                        </div>
+                        <div class="i-fg-data-entry-validation"></div>
+                    </div>
+                </div>
+                <div class="row i-gap-top-1" >
+                    <div class="col-sm-6 col-md-2" id="div_LengthFrom">
+                        <label class="required" id="label_line_from">@L_LINE_FR</label>
+                        <div class="i-fg-data-entry">
+                            <input type="text" id="txtLengthFrom" value="0" class="k-textbox form-control validate_rate" />
+                        </div>
+                        <div id="validate-txtLengthFrom" class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-2" id="div_TargetFrom" style="display:none">
+                        <label class="required" id="label_line_from">@L_TARGET_FROM</label>
+                        <div class="i-fg-data-entry">
+                            <input type="text" id="txtTargetFrom" value="0" class="k-textbox form-control validate_rate" />
+                        </div>
+                        <div id="validate-txtTargetFrom" class="i-fg-data-entry-validation"></div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-2" id="div_LengthTo">
+                        <label class="required" id="label_line_to">@L_LINE_TO</label>
+                        <div class="i-fg-data-entry">
+                            <input type="text" id="txtLengthTo" value="0" class="k-textbox form-control validate_rate" />
+                        </div>
+                        <div id="validate-txtLengthTo" class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-2" id="div_TargetTo" style="display:none">
+                        <label class="required" id="label_line_from">@L_TARGET_TO</label>
+                        <div class="i-fg-data-entry">
+                            <input type="text" id="txtTargetTo" value="0" class="k-textbox form-control validate_rate" />
+                        </div>
+                        <div id="validate-txtTargetTo" class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-3" id="div_OutDoorPrice" style="display:none">
+                        <label class="required">@L_OUT_DOOR_PRICE</label>
+                        <div class="i-fg-data-entry">
+                            <input type="text" id="txtOutDoorPrice" value="0" class="k-textbox form-control validate_rate" />
+                        </div>
+                        <div class="i-fg-data-entry-validation"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-3" id="div_InDoorPrice" style="display:none">
+                        <label class="required">@L_IN_DOOR_PRICE</label>
+                        <div class="i-fg-data-entry">
+                            <input type="text" id="txtInDoorPrice" value="0" class="k-textbox form-control validate_rate" />
+                        </div>
+                        <div class="i-fg-data-entry-validation"></div>
+                    </div>
+                </div>
+                <div class="row i-gap-top-1">
+                    <div class="col-sm-6 col-md-6"></div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="pull-right" >
+                            <a onclick="cancelPopup()" id="btnpop_cancel" class="btn btn-default"><i class="fa fa-power-off fa-lg"></i>&nbsp;@B_CANCEL</a>
+                            <a onclick="clearPopup()" id="btnpop_clear" class="btn btn-default"><i class="fa fa-ban fa-lg"></i>&nbsp;@B_CLEAR</a>
+                            <a onclick="modalConfirmUpdateShow()" id="btnpop_save" class="btn btn-success"><i class="fa fa-check-circle fa-lg"></i>&nbsp;@B_SAVE</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </text>)
+                    )
+
+                    @(Html.Kendo().Window()
+    .Name("MyPopupLoading")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title(false)
+    .Modal(true)
+    .Visible(false)
+    .Content(
+                        @<text>
+                            <div style="margin: 0 80px;"><font size="4">Loading &nbsp;<i class="fa fa-refresh fa-spin"></i></font></div>
+                        </text>)
+                    )
+                    <div class="modal fade cancel-sm-box" tabindex="-1" id="modal003_perorder" data-id="" role="dialog" aria-labelledby="modal003_perorder_label" style="z-index:14000">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content text-center">
+                                <div class="modal-header" style="padding-bottom: 25px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+                                </div>
+                                <p class="clearfix"></p>
+                                <h4 class="text-center">Confirm Delete Cost Install</h4>
+                                <button type="button" class="btn btn-xs btn-default" onclick="DeleteInstallCost(); try { $.modal.close(); } catch (ex) { }">&nbsp; Ok &nbsp;</button>
+                                <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">&nbsp; Cancel &nbsp; </button>
+                                <p class="clearfix"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade cancel-sm-box row" tabindex="-1" id="modal001_perorder" dataup-id="" role="dialog" aria-labelledby="modal001_perorder_label" style="z-index: 14000;">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content text-center">
+                                <div class="modal-header" style="padding-bottom: 25px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+                                </div>
+                                <p class="clearfix"></p>
+                                <h4 class="text-center">Confirm Update Cost Install</h4>
+                                <button type="button" class="btn btn-xs btn-default" onclick="CreateNewInstallCost(); try { $.modal.close(); } catch (ex) { }">&nbsp; Ok &nbsp;</button>
+                                <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">&nbsp; Cancel &nbsp; </button>
+                                <p class="clearfix"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade cancel-sm-box row" tabindex="-1" id="modal_config_tbl_save" dataup-id="" role="dialog" aria-labelledby="modal001_perorder_label" style="z-index: 14000;">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content text-center">
+                                <div class="modal-header" style="padding-bottom: 25px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+                                </div>
+                                <p class="clearfix"></p>
+                                <h4 class="text-center" id="label_config_tbl_save">Confirm Save </h4>
+                                <button type="button" class="btn btn-xs btn-default" onclick="config_tbl_save(); try { $.modal.close(); } catch (ex) { }">&nbsp; Ok &nbsp;</button>
+                                <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">&nbsp; Cancel &nbsp; </button>
+                                <p class="clearfix"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade cancel-sm-box row" tabindex="-1" id="modal_config_tbl_delete" dataup-id="" role="dialog" aria-labelledby="modal001_perorder_label" style="z-index: 14000;">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content text-center">
+                                <div class="modal-header" style="padding-bottom: 25px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+                                </div>
+                                <p class="clearfix"></p>
+                                <h4 class="text-center" id="label_config_tbl_delete">Confirm Delete </h4>
+                                <button type="button" class="btn btn-xs btn-default" onclick="config_tbl_delete(); try { $.modal.close(); } catch (ex) { }">&nbsp; Ok &nbsp;</button>
+                                <button type="button" class="btn btn-xs btn-default" data-dismiss="modal">&nbsp; Cancel &nbsp; </button>
+                                <p class="clearfix"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="txtCREATE_DATE" />
+                    <input type="hidden" id="txtCREATE_BY" />
+                    <input type="hidden" id="txtUPDATED_DATE" />
+                    <input type="hidden" id="txtUPDATED_BY" />
+<script>
+    // test2
+    var idsToSend = [];
+    var ActionType = '';
+    var ActionType_tbl = '';
+
+    $(document).ready(function () {
+        clear_search();
+    });
+
+    function _Clear() {
+        clear_search();
+    }
+
+    function clear_search() {
+        $("#ddlOrderTypeSearch").data('kendoDropDownList').select(0);
+        $("#ddlServiceSearch").data('kendoDropDownList').select(0);
+        $("#ddlCustomerSearch").data('kendoDropDownList').select(0);
+        //$("#ddlCustomerNameSearch").data('kendoDropDownList').select(0);
+        var data_clear = [{ DISPLAY_VAL: "ALL", VAL1: "" }];
+        $("#ddlCustomerNameSearch").kendoDropDownList({
+            dataTextField: "DISPLAY_VAL",
+            dataValueField: "VAL1",
+            dataSource: data_clear,
+            change: OnCustomerNameSearchChange,
+            filter: "contains"
+        });
+    }
+
+    // Clear Pop up Data
+    function _clearPopupData() {
+        $("#ddlOrderType").data('kendoDropDownList').value("PLEASE_SELECT");
+        $("#ddlOrderType").data('kendoDropDownList').text("-- Please Select --");
+        $("#ddlOrderType").data('kendoDropDownList').enable(true);
+
+        $("#ddlService").data('kendoDropDownList').value("PLEASE_SELECT");
+        $("#ddlService").data('kendoDropDownList').text("-- Please Select --");
+        $("#ddlService").data('kendoDropDownList').enable(false);
+
+        $("#ddlCustomer").data('kendoDropDownList').value("PLEASE_SELECT");
+        $("#ddlCustomer").data('kendoDropDownList').text("-- Please Select --");
+        $("#ddlCustomer").data('kendoDropDownList').enable(false);
+
+        //$("#ddlCustomerName").data('kendoDropDownList').value("PLEASE_SELECT");
+        //$("#ddlCustomerName").data('kendoDropDownList').text("-- Please Select --");
+        $("#ddlCustomerName").data('kendoDropDownList').select(0);
+        $("#ddlCustomerName").data('kendoDropDownList').enable(false);
+
+        $("#txtID").val('');
+        $("#txtInternetRate").val('0');
+        $("#txtPlayboxRate").val('0');
+        $("#txtVoipRate").val('0');
+        $("#txtLengthFrom").val('0');
+        $("#txtLengthTo").val('0');
+        $("#txtTargetFrom").val('0');
+        $("#txtTargetTo").val('0');
+
+        $("#txtOutDoorPrice").val('0');
+        $("#txtInDoorPrice").val('0');
+
+        // decimal
+        $("#txtInternetRate").data("kendoNumericTextBox").value(0);
+        $("#txtPlayboxRate").data("kendoNumericTextBox").value(0);
+        $("#txtVoipRate").data("kendoNumericTextBox").value(0);
+        $("#txtLengthFrom").data("kendoNumericTextBox").value(0);
+        $("#txtTargetFrom").data("kendoNumericTextBox").value(0);
+        $("#txtTargetTo").data("kendoNumericTextBox").value(0);
+
+        $("#txtLengthTo").data("kendoNumericTextBox").value(0);
+        $("#txtOutDoorPrice").data("kendoNumericTextBox").value(0);
+        $("#txtInDoorPrice").data("kendoNumericTextBox").value(0);
+
+        $("#divPlugAndPlay").hide();
+        //$("input[name='chkPlaybox']").attr("disabled", "disabled");
+        $('#chkPlaybox').prop('checked', false);
+
+        $("#dtpDateFrom").data("kendoDatePicker").enable(true);
+        $("#dtpDateFrom").data("kendoDatePicker").value("");
+        $("#dtpDateTo").data("kendoDatePicker").value("");
+        $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+        $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+        $("#validatefor-dtpDateTo").html("");
+        $("#validatefor-dtpDateFrom").html("");
+
+        $('.i-fg-data-entry-validation').html('');
+    }
+
+    // Clear Search Data
+    function _clearSearchData() {
+        $("#ddlServiceSearch").data('kendoDropDownList').select(0);
+        $("#ddlCustomerSearch").data('kendoDropDownList').select(0);
+        $("#ddlCustomerNameSearch").data('kendoDropDownList').select(0);
+        $("#ddlOrderTypeSearch").data('kendoDropDownList').select(0);
+        $("#ddlServiceSearch").data('kendoDropDownList').enable(true);
+        $("#ddlCustomerSearch").data('kendoDropDownList').enable(true);
+        $("#ddlCustomerNameSearch").data('kendoDropDownList').enable(true);
+        $("#ddlOrderTypeSearch").data('kendoDropDownList').enable(true);
+    }
+
+    // InstallCostModel
+    var InstallCostModel = function () {
+        ID: "";
+        SERVICE: "";
+        CUSTOMER: "";
+        CUSTOMER_NAME: "";
+        ORDER_TYPE: "";
+        INTERNET_RATE: "";
+        PLAYBOX_RATE: "";
+        VOIP_RATE: "";
+        EFFECTIVE_DATE: "";
+        EXPIRE_DATE: "";
+        CHK_PLAYBOX: "";
+        IS_DELETE_FIXASSCONFIG: "";
+    }
+
+    // defaultData
+    function defaultData() {
+        var searchModel = new InstallCostModel();
+        searchModel.SERVICE = $("#ddlServiceSearch").val();
+        searchModel.CUSTOMER = $("#ddlCustomerSearch").val();
+        searchModel.CUSTOMER_NAME = $("#ddlCustomerNameSearch").val();
+        searchModel.ORDER_TYPE = $("#ddlOrderTypeSearch").val();
+
+        return searchModel;
+    }
+
+    // Pop up Data
+    function popupData($action) {
+
+        var _SaleTarget_display = false;
+        var _CUSTOMER = $("#ddlCustomer").val().replace(/\ /g, "");
+        if (_CUSTOMER != null && _CUSTOMER != undefined) if (_CUSTOMER.trim() != "") {
+            _CUSTOMER = _CUSTOMER.toUpperCase();
+        }
+        if (_CUSTOMER.trim() == "SALETARGET") {
+            _SaleTarget_display = true;
+        }
+        var popupModel = new InstallCostModel();
+        popupModel.ID = $("#txtID").val();
+        popupModel.SERVICE = $("#ddlService").val();
+        popupModel.CUSTOMER = $("#ddlCustomer").val();
+        popupModel.CUSTOMER_NAME = $("#ddlCustomerName").val();
+        popupModel.ORDER_TYPE = $("#ddlOrderType").val();
+        popupModel.EFFECTIVE_DATE = kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy");
+        popupModel.EXPIRE_DATE = kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy");
+        popupModel.INTERNET_RATE = $("#txtInternetRate").val();
+        popupModel.PLAYBOX_RATE = $("#txtPlayboxRate").val();
+        popupModel.VOIP_RATE = $("#txtVoipRate").val();
+        if (_SaleTarget_display == true) {
+            popupModel.LENGTH_FR = $("#txtTargetFrom").val();
+            popupModel.LENGTH_TO = $("#txtTargetTo").val();
+        }
+        else {
+            popupModel.LENGTH_FR = $("#txtLengthFrom").val();
+            popupModel.LENGTH_TO = $("#txtLengthTo").val();
+        }
+
+        popupModel.OUT_DOOR_PRICE = $("#txtOutDoorPrice").val();
+        popupModel.IN_DOOR_PRICE = $("#txtInDoorPrice").val();
+        popupModel.CHK_PLAYBOX = $('#chkPlaybox').is(":checked");
+        popupModel.CREATE_DATE = $("#txtCREATE_DATE").val();
+        popupModel.CREATE_BY = $("#txtCREATE_BY").val();
+        popupModel.UPDATED_DATE = $("#txtUPDATED_DATE").val();
+        popupModel.UPDATED_BY = $("#txtUPDATED_BY").val();
+        popupModel.REMARK = ($('#chkPlaybox').prop('checked') == true) ? "Plug & Play" : "";
+
+        var _ORDER_TYPE = popupModel.ORDER_TYPE.toString().toUpperCase();
+        var _SERVICE = popupModel.SERVICE.toString().toUpperCase();
+        var _CUSTOMER = popupModel.CUSTOMER.toString().toUpperCase();
+        var _CUSTOMER_NAME = popupModel.CUSTOMER_NAME.toString().toUpperCase();
+
+        // no delete if no change
+        if (_ORDER_TYPE == "NEW" && _SERVICE == "FTTH" && _CUSTOMER == "DEFAULT" && _CUSTOMER_NAME == "DEFAULT") {
+            _IS_DELETE_FIXASSCONFIG = "N";
+        }
+        popupModel.IS_DELETE_FIXASSCONFIG = _IS_DELETE_FIXASSCONFIG;
+        return popupModel;
+    }
+
+    //// Validate Rate
+    //$('.validate_rate').keypress(function (e) {
+    //    var key = e.charCode || e.keyCode || 0;
+    //    // only numbers
+    //    var len = $(this).val().length;
+    //    if (len == 0) {
+    //        if ((key < 48 || key > 58) && key !== 8) {
+    //            return false;
+    //        }
+    //    }
+    //    else {
+    //        var lengthzero = $(this).val();
+    //        if (lengthzero == 0 && key !== 8) {
+    //            return false;
+    //        }
+    //        else {
+    //            if ((key < 48 || key > 58) && key !== 8) {
+    //                return false;
+    //            }
+    //        }
+    //    }
+    //});
+
+    // Bind Data
+    function bindingValue() {
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    // Bind Grid Data
+    function onGridDataBound() {
+        Loading(0);
+
+        if (this.dataSource.view().length == 0) {
+
+            //var colspan = this.thead.find("th").length;
+            //var emptyRow = "<tr><td colspan='" + colspan + "'>&nbsp;&nbsp;&nbsp;&nbsp;ไม่พบข้อมูล รบกวนตรวจสอบข้อมูล</td></tr>";
+            //this.tbody.html(emptyRow);
+
+            //$(".k-grid-content").height(3 * kendo.support.scrollbar());
+            $('#btnExport').attr("disabled", true);
+        }
+        else {
+            //$(".k-grid-content").height("auto");
+            $('#btnExport').attr("disabled", false);
+        }
+
+        $('#btnExport').attr("disabled", !(this.dataSource.view().length != 0));
+        //Style_Grid();
+    }
+
+    function Style_Grid() {
+        $("#gridEvents").find("td").find("a").find(".k-button").each(function (index, e) {
+            $(e).removeAttr("href");
+        });
+    }
+
+    // Insert = 1, Update = 2, Delete = 3
+    function CreateNewInstallCost() {
+        model = idsToSend[0];
+
+        //alert("save");
+        SendRequest(model);
+        _clearPopupData();
+        //_clearSearchData();
+        $("#InstallCostPopup").data("kendoWindow").close();
+        OnOrderTypeSearchChange();
+        Loading();
+        var grid = $("#gridEvents").data("kendoGrid");
+        grid.dataSource.page(1);
+        $("#modal001_perorder").modal('hide');
+    }
+
+    // CreateNewInstallCost
+    function SendRequest(model) {
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: "/ConfigurationSAPOnline/CreateNewInstallCost",
+            data: {
+                type: ActionType,
+                dataS: JSON.stringify(model)
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.RETURN_MSG == "duplicate") {
+                    //showFeedback("error", "Create data failed.", "Create Cost Installion");
+                    showFeedback("error", ActionType.toString() + " " + "failed! Data duplicate.", ActionType.toString() + " " + "Cost Installation");
+                }
+                else if (data.RETURN_MSG == "success") {
+                    //showFeedback("success", data.RETURN_MSG, "Create Cost Installion");
+                    showFeedback("success", ActionType.toString() + " " + data.RETURN_MSG, ActionType.toString() + " " + "Cost Installion");
+                }
+                else {
+                    //showFeedback("error", data.RETURN_MSG, "create voucher project");
+                    showFeedback("error", data.RETURN_MSG, "Create Voucher Project");
+                }
+
+            },
+            error: function (data) {
+
+                showFeedback("warning", "Please try again.", "Create Voucher Project");
+            }
+        });
+    }
+
+    // Show Message Result
+    function showFeedback(type, msg, title) {
+        _clearPopupData();
+        //if (msg !== "") {
+        $("#headerMessageFeedback").removeClass();
+        $("#headerMessageFeedback").addClass("modal-header");
+        if (type === "primary") { $("#headerMessageFeedback").addClass("btn-primary"); }
+        else if (type === "success") { $("#headerMessageFeedback").addClass("btn-success"); }
+        else if (type === "info") { $("#headerMessageFeedback").addClass("btn-info"); }
+        else if (type === "warning") { $("#headerMessageFeedback").addClass("btn-warning"); }
+        else if (type === "error") { $("#headerMessageFeedback").addClass("btn-danger"); }
+        else { $("#headerMessageFeedback").addClass("btn-default"); }
+
+        if (title !== undefined) $("#MessageFeedbackPopUpLabel").text(title); else $("#MessageFeedbackPopUpLabel").text("Notification");
+        $("#MessageFeedbackPopUp").css("z-index", 13000);
+        $("#lbMessageFeedback").html(msg);
+
+        $("#MessageFeedbackPopUp").modal('show');
+        //}
+    }
+
+    function showFeedback_only(type, msg, title) {
+        $("#headerMessageFeedback").removeClass();
+        $("#headerMessageFeedback").addClass("modal-header");
+        if (type === "primary") { $("#headerMessageFeedback").addClass("btn-primary"); }
+        else if (type === "success") { $("#headerMessageFeedback").addClass("btn-success"); }
+        else if (type === "info") { $("#headerMessageFeedback").addClass("btn-info"); }
+        else if (type === "warning") { $("#headerMessageFeedback").addClass("btn-warning"); }
+        else if (type === "error") { $("#headerMessageFeedback").addClass("btn-danger"); }
+        else { $("#headerMessageFeedback").addClass("btn-default"); }
+
+        if (title !== undefined) $("#MessageFeedbackPopUpLabel").text(title); else $("#MessageFeedbackPopUpLabel").text("Notification");
+        $("#MessageFeedbackPopUp").css("z-index", 13000);
+        $("#lbMessageFeedback").html(msg);
+
+        $("#MessageFeedbackPopUp").modal('show');
+    }
+
+    // Validate
+    function ValidationIcon() {
+        return "<i class='fa fa-warning i-red'></i> ";
+    }
+
+    // Validate
+    function ValidationProcessingRequired(panel) {
+
+        $('.i-fg-data-entry-validation').html('');
+
+        var chk = true;
+        $("#" + panel + " .validate").each(function (index, e) {
+
+            var $this = $(this),
+                $parent = $this.parent().parent(),
+                $valid = $parent.find('.i-fg-data-entry-validation');
+            if (typeof $this.prop('type') !== 'undefined') {
+                if ($.trim($this.val()) == "") {
+                    $valid.html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                    if ($this.hasClass('k-input')) {
+                        $parent.parent().parent().find('.i-fg-data-entry-validation').html(ValidationIcon() + "This field is required.");
+                    }
+                }
+            }
+        });
+
+        $("#" + panel + " .validate_rate").each(function (index, e) {
+
+            var $this = $(this),
+                $parent = $this.parent().parent(),
+                $valid = $parent.find('.i-fg-data-entry-validation');
+            if (typeof $this.prop('type') !== 'undefined') {
+                if ($.trim($this.val()) == "") {
+                    $valid.html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                    if ($this.hasClass('k-input')) {
+                        $parent.parent().parent().find('.i-fg-data-entry-validation').html(ValidationIcon() + "This field is required.");
+                    }
+                }
+            }
+        });
+
+        $("#" + panel + " .validate-all").each(function (index, e) {
+            var $this = $(this),
+                $parent = $this.parent(),
+                $valid = $parent.find('.i-fg-data-entry-validation'),
+                $chk = false;
+
+            $(this).find('.validate-all-item').each(function (index, e) {
+                var $item = $(this);
+                if ($item.hasClass('validate-all-item')) {
+                    if ($item.val() != '') {
+                        $chk = true;
+                    }
+                }
+            });
+
+            if (!$chk) {
+                $valid.html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+        });
+
+        var _ddlOrderType = $("#ddlOrderType").val().toUpperCase();
+        var _ddlService = $("#ddlService").val().toUpperCase();
+        var _ddlCustomer = $("#ddlCustomer").val().toUpperCase().replace(/\ /g, "");;
+        var _ddlCustomerName = $("#ddlCustomerName").val().toUpperCase();
+
+        if ($("#ddlOrderType").val() == "PLEASE_SELECT" || $("#ddlOrderType").val() == "") {
+            $("#validate-ddlOrderType").html(ValidationIcon() + "This field is required.");
+            chk = false;
+        }
+        if ($("#ddlService").val() == "PLEASE_SELECT" || $("#ddlService").val() == "") {
+            $("#validate-ddlService").html(ValidationIcon() + "This field is required.");
+            chk = false;
+        }
+        if (_ddlCustomer == "PLEASE_SELECT" || _ddlCustomer == "") {
+            $("#validate-ddlCustomer").html(ValidationIcon() + "This field is required.");
+            chk = false;
+        }
+        if (($("#ddlCustomerName").val() == "PLEASE_SELECT" || $("#ddlCustomerName").val() == "")) {
+            $("#validate-ddlCustomerName").html(ValidationIcon() + "This field is required.");
+            chk = false;
+        }
+
+        if ((_ddlCustomerName != "DEALER-LASTMILE" && _ddlCustomerName != "LASTMILE DISTANCE" && _ddlCustomerName != "LASTMILE")
+            && ($("#txtInternetRate").val() == 0)) {
+            var $this = $("#txtInternetRate"),
+                $parent = $this.parent().parent(),
+                $valid = $parent.find('.i-fg-data-entry-validation');
+
+            $valid.html(ValidationIcon() + "This field must be greater than 0.");
+            chk = false;
+            if ($this.hasClass('k-input')) {
+                $parent.parent().parent().find('.i-fg-data-entry-validation').html(ValidationIcon() + "This field must be greater than 0.");
+            }
+        }
+
+        if ($('#chkPlaybox').prop('checked') == true) {
+            if ($("#txtPlayboxRate").val() == 0) {
+                var $this = $("#txtPlayboxRate"),
+                    $parent = $this.parent().parent(),
+                    $valid = $parent.find('.i-fg-data-entry-validation');
+
+                $valid.html(ValidationIcon() + "This field must be greater than 0.");
+                chk = false;
+                if ($this.hasClass('k-input')) {
+                    $parent.parent().parent().find('.i-fg-data-entry-validation').html(ValidationIcon() + "This field must be greater than 0.");
+                }
+            }
+        }
+
+        var _dtpDateFrom = kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy");
+        var _dtpDateTo = kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy");
+
+        if ((_dtpDateFrom > _dtpDateTo) && _dtpDateTo != null) {
+            //validate-dtpDateTo
+            $("#validate-dtpDateTo").html(ValidationIcon() + "This field is required.");
+            chk = false;
+        }
+
+        var _txtLengthFrom = $("#txtLengthFrom").val().trim();
+        var _txtLengthTo = $("#txtLengthTo").val().trim();
+        var _txtLengthFrom_dec = 0.00;
+        var _txtLengthTo_dec = 0.00;
+
+        var _txtTargetFrom = $("#txtTargetFrom").val().trim();
+        var _txtTargetTo = $("#txtTargetTo").val().trim();
+        var _txtTargetFrom_num = 0.00;
+        var _txtTargetTo_num = 0.00;
+
+        try { _txtLengthFrom_dec = ((_txtLengthFrom - 1) + 1); }
+        catch (ex) { _txtLengthFrom_dec = 0.00; }
+        try { _txtLengthTo_dec = ((_txtLengthTo - 1) + 1); }
+        catch (ex) { _txtLengthTo_dec = 0.00; }
+
+        if (_txtLengthFrom_dec > _txtLengthTo_dec) {
+            chk = false;
+            $("#validate-txtLengthFrom").html(ValidationIcon() + "This field is wrong.");
+            $("#validate-txtLengthTo").html(ValidationIcon() + "This field is wrong.");
+        }
+
+        try { _txtTargetFrom_num = ((_txtTargetFrom - 1) + 1); }
+        catch (ex) { _txtTargetFrom_num = 0.00; }
+        try { _txtTargetTo_num = ((_txtTargetTo - 1) + 1); }
+        catch (ex) { _txtTargetTo_num = 0.00; }
+
+        if (_txtTargetFrom_num > _txtTargetTo_num) {
+            chk = false;
+            $("#validate-txtTargetFrom").html(ValidationIcon() + "This field is wrong.");
+            $("#validate-txtTargetTo").html(ValidationIcon() + "This field is wrong.");
+        }
+        return chk;
+    }
+
+    // Button Search
+    var temp_model;
+    function _Search() {
+        var model = defaultData();
+        temp_model = model;
+        Loading();
+        var grid = $("#gridEvents").data("kendoGrid");
+        grid.dataSource.page(1);
+    }
+
+    // Button New Rate
+    function InstallCostPopup() {
+        _clearPopupData();
+        Is_DealerLastmile();
+        $("#txt_CONFIG_TBL").val("");
+        $("#div_row_Edit_CONFIG_TBL").hide();
+        ActionType = "Insert";
+        $("#InstallCostPopup").data("kendoWindow").center().open();
+        $("#InstallCostPopup").prev().find(".k-window-title").text("@L_POPUP_INSTALL_COST_ADD");
+    }
+
+    // Button Edit Rate
+    function EditInstallCost(e) {
+        $("#InstallCostPopup").data("kendoWindow").center().open();
+        $("#InstallCostPopup").prev().find(".k-window-title").text("@L_POPUP_INSTALL_COST_EDIT");
+        Loading();
+        $("#txt_CONFIG_TBL").val("");
+        $("#div_row_Edit_CONFIG_TBL").hide();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        setTimeout(function () {
+            Edit_Step2(dataItem);
+        }, 0);
+    }
+
+    function Edit_Step2(dataItem) {
+        ActionType = "Update";
+        // Get Data Row Select
+        // Bind Data
+        $("#txtID").val(dataItem.ID);
+
+        $("#ddlOrderType").data('kendoDropDownList').value(dataItem.ORDER_TYPE.toString().toUpperCase());
+        OnOrderTypeChange();
+        $("#ddlService").data('kendoDropDownList').value(dataItem.SERVICE.toString().toUpperCase());
+        OnServiceChange();
+
+        $("#ddlCustomer").data('kendoDropDownList').enable(true);
+        $("#ddlCustomer").data('kendoDropDownList').value(dataItem.CUSTOMER.toString().toUpperCase());
+        OnCustomerChange(dataItem);
+        if (dataItem.CUSTOMER.replace(/\ /g, "").toUpperCase() != 'PROJECT') {
+            $("#ddlCustomerName").data('kendoDropDownList').value("PLEASE_SELECT");
+            $("#ddlCustomerName").data('kendoDropDownList').enable(true);
+            $("#ddlCustomerName").data('kendoDropDownList').value(dataItem.CUSTOMER_NAME.toString().toUpperCase());
+        }
+        set_ddlCustomerName(dataItem);
+
+        //$("#ddlCustomerName").data('kendoDropDownList').open();
+        //$("#ddlCustomerName").data('kendoDropDownList').filterInput.focus();
+        $("#txtInternetRate").val(dataItem.INTERNET_RATE);
+        $("#txtPlayboxRate").val(dataItem.PLAYBOX_RATE);
+        $("#txtVoipRate").val(dataItem.VOIP_RATE);
+        $("#txtLengthFrom").val(dataItem.LENGTH_FR);
+        $("#txtLengthTo").val(dataItem.LENGTH_TO);
+        $("#txtTargetFrom").val(dataItem.LENGTH_FR);
+        $("#txtTargetTo").val(dataItem.LENGTH_TO);
+
+        $("#txtOutDoorPrice").val(dataItem.OUT_DOOR_PRICE);
+        $("#txtInDoorPrice").val(dataItem.IN_DOOR_PRICE);
+
+        // decimal
+        $("#txtInternetRate").data("kendoNumericTextBox").value(dataItem.INTERNET_RATE);
+        $("#txtPlayboxRate").data("kendoNumericTextBox").value(dataItem.PLAYBOX_RATE);
+        $("#txtVoipRate").data("kendoNumericTextBox").value(dataItem.VOIP_RATE);
+        $("#txtLengthFrom").data("kendoNumericTextBox").value(dataItem.LENGTH_FR);
+        $("#txtLengthTo").data("kendoNumericTextBox").value(dataItem.LENGTH_TO);
+        $("#txtTargetFrom").data("kendoNumericTextBox").value(Math.round(dataItem.LENGTH_FR));
+        $("#txtTargetTo").data("kendoNumericTextBox").value(Math.round(dataItem.LENGTH_TO));
+
+        $("#txtOutDoorPrice").data("kendoNumericTextBox").value(dataItem.OUT_DOOR_PRICE);
+        $("#txtInDoorPrice").data("kendoNumericTextBox").value(dataItem.IN_DOOR_PRICE);
+
+        // hidden
+        $("#txtCREATE_DATE").val(ConvertDate_ToSave(dataItem.CREATE_DATE));
+        $("#txtCREATE_BY").val(dataItem.CREATE_BY);
+        $("#txtUPDATED_DATE").val(ConvertDate_ToSave(dataItem.UPDATED_DATE));
+        $("#txtUPDATED_BY").val(dataItem.UPDATED_BY);
+
+        if (dataItem.ORDER_TYPE.toUpperCase() == "NEW"
+            && dataItem.SERVICE.toUpperCase() == "FTTB" && dataItem.CUSTOMER.toUpperCase() == "PHASE2") {
+            $("#divPlugAndPlay").show();
+        }
+        else {
+            $("#divPlugAndPlay").hide();
+        }
+
+        var _REMARK = dataItem.REMARK;
+        if (_REMARK == undefined) { _REMARK = ""; }
+        if (_REMARK == null) { _REMARK = ""; }
+        if (_REMARK.length > 0) $('#chkPlaybox').prop('checked', true);
+        else $('#chkPlaybox').prop('checked', false);
+
+        var _ddlService = dataItem.SERVICE;
+        var _ddlCustomer = dataItem.CUSTOMER;
+        _ddlService = (_ddlService != null) ? _ddlService.trim().toUpperCase() : "";
+        _ddlCustomer = (_ddlCustomer != null) ? _ddlCustomer.trim().toUpperCase() : "";
+
+        //if (dataItem.CUSTOMER == "VENDOR_S") $('#chkPlaybox').prop('checked', true);
+
+        if (dataItem.EFFECTIVE_DATE) {
+            $("#dtpDateFrom").prop("disabled", true).val(formatDate(dataItem.EFFECTIVE_DATE, ""));
+            $("#dtpDateFrom").data("kendoDatePicker").enable(false);
+        }
+
+        if (dataItem.EXPIRE_DATE) {
+            $("#dtpDateTo").val(formatDate(dataItem.EXPIRE_DATE));
+        }
+        ChangdtpDateFrom();
+        Edit_Is_DealerLastmile(dataItem);
+        Is_delete_fbss_fixed_asset_config(dataItem); // if change data effect table "fbss_fixed_asset_config"
+        Loading(0);
+    }
+
+    var _IS_DELETE_FIXASSCONFIG = "Y"; // Y = delete Only.
+    function Is_delete_fbss_fixed_asset_config(dataItem) {
+        var _ORDER_TYPE = dataItem.ORDER_TYPE.toString().toUpperCase();
+        var _SERVICE = dataItem.SERVICE.toString().toUpperCase();
+        var _CUSTOMER = dataItem.CUSTOMER.toString().toUpperCase();
+        var _CUSTOMER_NAME = dataItem.CUSTOMER_NAME.toString().toUpperCase();
+
+        if (_ORDER_TYPE == "NEW" && _SERVICE == "FTTH" && _CUSTOMER == "DEFAULT" && _CUSTOMER_NAME == "DEFAULT") {
+            _IS_DELETE_FIXASSCONFIG = "Y";
+        }
+        else {
+            _IS_DELETE_FIXASSCONFIG = "N";
+        }
+    }
+
+    function ConvertDate_ToSave(Input) {
+        //2011-04-02 17:15:45
+        if (!Input) Input = new Date();
+        var _CREATE_DATE = new Date(Input.toString());
+        var result_date = "";
+        try {
+            result_date += "" + _CREATE_DATE.getFullYear();
+            result_date += "-" + (_CREATE_DATE.getMonth() + 1);
+            result_date += "-" + (_CREATE_DATE.getDate());
+            var _hh = (_CREATE_DATE.getHours() - (_CREATE_DATE.getTimezoneOffset() / 60));
+            result_date += (_hh == 24) ? " 00" : " " + _hh;
+            result_date += ":" + (_CREATE_DATE.getMinutes());
+            result_date += ":" + (_CREATE_DATE.getSeconds());
+            //result_date += _CREATE_DATE.getUTCHours() >= 12 ? " PM" : " AM";
+        }
+        catch (ex) {
+            result_date = "";
+        }
+        return result_date.toString();
+    }
+
+    function set_ddlCustomer(dataItem) {
+        var _ddlCustomer = $('#ddlCustomer').data('kendoDropDownList').select();
+        if (_ddlCustomer < 0) $("#ddlCustomer").data('kendoDropDownList').value(dataItem.CUSTOMER)
+    }
+
+    function set_ddlCustomerName(dataItem) {
+        //----- Old Data
+        var _CUSTOMER = dataItem.CUSTOMER.replace(/\ /g, "").toString().toUpperCase();
+        if (_CUSTOMER == "PROJECT" || _CUSTOMER == "SALETARGET") {
+            setTimeout(function () {
+                $('#ddlCustomerName').data("kendoDropDownList").text(dataItem.TMP_CODE_CUSTOMER_NAME.toString().toUpperCase());
+                var _ddlCustomerName = $('#ddlCustomerName').data('kendoDropDownList').select();
+                if (_ddlCustomerName < 0) $('#ddlCustomerName').data('kendoDropDownList').select(0);
+            }, 0); // time out 0 for run seq
+        }
+        else {
+            setTimeout(function () {
+                $('#ddlCustomerName').data("kendoDropDownList").value(dataItem.CUSTOMER_NAME.toString().toUpperCase());
+                var _ddlCustomerName = $('#ddlCustomerName').data('kendoDropDownList').select();
+                if (_ddlCustomerName < 0) $('#ddlCustomerName').data('kendoDropDownList').select(0);
+            }, 0); // time out 0 for run seq
+        }
+
+        var _ddlOrderType = $('#ddlOrderType').data('kendoDropDownList').select();
+        var _ddlService = $('#ddlService').data('kendoDropDownList').select();
+        var _ddlCustomer = $('#ddlCustomer').data('kendoDropDownList').select();
+        var _ddlCustomerName = $('#ddlCustomerName').data('kendoDropDownList').select();
+
+        //if (_ddlCustomerName < 0) $("#ddlCustomerName").data('kendoDropDownList').value(dataItem.CUSTOMER_NAME);
+        if (_ddlOrderType < 0) $('#ddlOrderType').data('kendoDropDownList').select(0);
+        if (_ddlService < 0) $('#ddlService').data('kendoDropDownList').select(0);
+        if (_ddlCustomer < 0) $('#ddlCustomer').data('kendoDropDownList').select(0);
+        if (_ddlCustomerName < 0) $('#ddlCustomerName').data('kendoDropDownList').select(0);
+        Edit_Is_DealerLastmile(dataItem);
+    }
+
+
+    function Edit_Is_DealerLastmile(dataItem) {
+        var _DealerLastmile_display = false;
+        var _SaleTarget_display = false;
+        var _DefaultAverage_display = false;
+        var _ORDER_TYPE = dataItem.ORDER_TYPE;
+        var _SERVICE = dataItem.SERVICE;
+        var _CUSTOMER = dataItem.CUSTOMER.replace(/\ /g, "");
+        var _CUSTOMER_NAME = dataItem.CUSTOMER_NAME;
+
+        if (_ORDER_TYPE != null && _ORDER_TYPE != undefined) if (_ORDER_TYPE.trim() != "") _ORDER_TYPE = _ORDER_TYPE.toUpperCase();
+        if (_SERVICE != null && _SERVICE != undefined) if (_SERVICE.trim() != "") _SERVICE = _SERVICE.toUpperCase();
+        if (_CUSTOMER != null && _CUSTOMER != undefined) if (_CUSTOMER.trim() != "") _CUSTOMER = _CUSTOMER.toUpperCase();
+        if (_CUSTOMER_NAME != null && _CUSTOMER_NAME != undefined) if (_CUSTOMER_NAME.trim() != "") _CUSTOMER_NAME = _CUSTOMER_NAME.toUpperCase();
+
+        if (_ORDER_TYPE == "NEW") {
+            if (_SERVICE == "FTTH") {
+                if (_CUSTOMER == "PHASE3" || _CUSTOMER == "PHASE3/4") {
+                    if (_CUSTOMER_NAME == "DEALER-LASTMILE" || _CUSTOMER_NAME == "LASTMILE DISTANCE" || _CUSTOMER_NAME == "LASTMILE") {
+                        _DealerLastmile_display = true;
+                    }
+                }
+                else if (_CUSTOMER == "PHASE4" || _CUSTOMER == "PHASE3/4") {
+                    if (_CUSTOMER_NAME == "DEALER-LASTMILE" || _CUSTOMER_NAME == "LASTMILE DISTANCE" || _CUSTOMER_NAME == "LASTMILE") {
+                        _DealerLastmile_display = true;
+                    }
+                }
+            }
+        }
+
+        //----------
+        if (_CUSTOMER.trim().toUpperCase() == "SALETARGET") {
+            _SaleTarget_display = true;
+        }
+        if (_CUSTOMER == "DEFAULT") {
+            _DefaultAverage_display = true;
+        }
+
+        popup_display(_DealerLastmile_display, _SaleTarget_display, _DefaultAverage_display);
+    }
+    // Button Delete (Confirm Delete)
+    function modalConfirmDeleteShow(e) {
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        //id = dataItem.ID;
+        //$("#modal003_perorder").attr("data-id", id);
+
+        idsToSend = [];
+        idsToSend.push(dataItem);
+        $("#modal003_perorder").modal();
+    }
+
+    // Button Seve (Confirm Update) - Pop up
+    function modalConfirmUpdateShow(e) {
+        Is_DealerLastmile();
+        var chk = ValidationProcessingRequired("AddPopupPanel"),
+        model = popupData();
+        if (chk) {
+            idsToSend = [];
+            idsToSend.push(model);
+            $("#modal001_perorder").modal();
+        }
+    }
+
+    // Button Cancel - Pop up
+    function cancelPopup() {
+        _clearPopupData();
+        $("#InstallCostPopup").data("kendoWindow").close();
+    }
+
+    function clearPopup() {
+        _clearPopupData();
+        Is_DealerLastmile();
+    }
+
+    // Button Delete - Pop up
+    function DeleteInstallCost(e) {
+        ActionType = "Delete";
+
+        var listData = idsToSend;
+        var popupModel = new InstallCostModel();
+        popupModel.ID = listData[0].ID;
+        popupModel.SERVICE = listData[0].SERVICE;
+        popupModel.CUSTOMER = listData[0].CUSTOMER
+        popupModel.CUSTOMER_NAME = listData[0].CUSTOMER_NAME;
+        popupModel.ORDER_TYPE = listData[0].ORDER_TYPE;
+        popupModel.INTERNET_RATE = listData[0].INTERNET_RATE;
+        popupModel.PLAYBOX_RATE = listData[0].PLAYBOX_RATE;
+        popupModel.VOIP_RATE = listData[0].VOIP_RATE;
+        popupModel.EFFECTIVE_DATE = ConvertDateFromTable(listData[0].EFFECTIVE_DATE);
+        //popupModel.EXPIRE_DATE = ConvertDate(listData.EXPIRE_DATE);
+
+        Loading();
+        SendRequest(popupModel);
+        var grid = $("#gridEvents").data("kendoGrid");
+        grid.dataSource.page(1);
+        $("#modal003_perorder").modal('hide');
+    }
+
+    // Button Export to Excel
+    function _ExportToExcel() {
+        var model = temp_model;
+        if (temp_model == undefined)
+        {
+            model = defaultData()
+        }
+        window.open("/ConfigurationSAPOnline/ExportCostInstallationData?dataS=" + JSON.stringify(model) + "");
+    }
+
+    function OnOrderTypeSearchChange(e) {
+        var _ddlOrderTypeSearch = $("#ddlOrderTypeSearch").val();
+        var _ddlServiceSearch = $("#ddlServiceSearch").val();
+        var _ddlCustomerSearch = $("#ddlCustomerSearch").val();
+        OnServiceSearchChange();
+    }
+
+    // Dropdownlist Service - Search
+    function OnServiceSearchChange(e) {
+        var _ddlOrderTypeSearch = $("#ddlOrderTypeSearch").val();
+        var _ddlServiceSearch = $("#ddlServiceSearch").val();
+        var _ddlCustomerSearch = $("#ddlCustomerSearch").val();
+    }
+
+    // Dropdownlist Customer - Search
+    var temp_data_dropdown = null;
+    function OnCustomerSearchChange(e) {
+        Loading();
+        setTimeout(function () {
+            OnCustomerSearchChange_Step2();
+        }, 0)
+
+    }
+    function OnCustomerSearchChange_Step2() {
+        var _ddlOrderTypeSearch = $("#ddlOrderTypeSearch").val();
+        var _ddlServiceSearch = $("#ddlServiceSearch").val();
+        var _ddlCustomerSearch = $("#ddlCustomerSearch").val().replace(/\ /g, "");
+
+        //if (_ddlCustomerSearch.trim().toUpperCase() == "DEFAULT")
+        //{
+        //    $("#ddlCustomerNameSearch").data('kendoDropDownList').enable(false);
+        //    $("#ddlCustomerNameSearch").data('kendoDropDownList').select(-1);
+        //    Loading(0);
+        //}
+        //else
+        if (_ddlCustomerSearch.trim().toUpperCase() == "PROJECT" || _ddlCustomerSearch.trim().toUpperCase() == "SALETARGET") {
+            $("#ddlCustomerNameSearch").data('kendoDropDownList').enable(true);
+            $("#ddlCustomerNameSearch").data('kendoDropDownList').select(-1);
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { typeMode: "Search", orderType: _ddlOrderTypeSearch, service: _ddlServiceSearch, customer: _ddlCustomerSearch },
+                url: "/ConfigurationSAPOnline/SetDDLName",
+                dataType: "json",
+                success: function (data) {
+                    try {
+                        temp_data_dropdown = data;
+                        $("#ddlCustomerNameSearch").kendoDropDownList({
+                            dataTextField: "DISPLAY_VAL",
+                            dataValueField: "VAL1",
+                            dataSource: data,
+                            change: OnCustomerNameSearchChange,
+                            filter: "contains",
+                            virtual: {
+                                itemHeight: 26,
+                                valueMapper: function (options) {
+                                    options.success([options.value || 0]); //return the value <-> item index mapping;
+                                }
+                            }
+                        });
+                        Loading(0);
+                    } catch (ex) {
+                        Loading(0);
+                    }
+                }
+            });
+        }
+        else {
+            Loading();
+            $("#ddlCustomerNameSearch").data('kendoDropDownList').enable(true);
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: true,
+                data: { typeMode: "Search", orderType: _ddlOrderTypeSearch, service: _ddlServiceSearch, customer: _ddlCustomerSearch },
+                url: "/ConfigurationSAPOnline/SetDDLName",
+                dataType: "json",
+                success: function (data) {
+                    $("#ddlCustomerNameSearch").data("kendoDropDownList").dataSource.read();
+                    $("#ddlCustomerNameSearch").kendoDropDownList({
+                        dataTextField: "DISPLAY_VAL",
+                        dataValueField: "VAL1",
+                        dataSource: data,
+                        change: OnCustomerNameSearchChange,
+                        filter: "contains"
+                    });
+                    Loading(0);
+                }
+            });
+        }
+        OnCustomerNameSearchChange();
+    }
+
+    function DropDownList_reset_datasource_search(Input) {
+        var _ddlCustomerSearch = $("#ddlCustomerSearch").val().replace(/\ /g, "");
+        if (_ddlCustomerSearch.trim().toUpperCase() == "PROJECT" || _ddlCustomerSearch.trim().toUpperCase() == "SALETARGET") {
+
+            if (temp_data_dropdown) {
+                try {
+                    $("#ddlCustomerNameSearch").data('kendoDropDownList').select(-1);
+                    $("#ddlCustomerNameSearch").kendoDropDownList({
+                        dataTextField: "DISPLAY_VAL",
+                        dataValueField: "VAL1",
+                        dataSource: temp_data_dropdown,
+                        change: OnCustomerNameSearchChange,
+                        filter: "contains",
+                        virtual: {
+                            valueMapper: function (options) {
+                                options.success([options.value || 0]); //return the value <-> item index mapping;
+                            }
+                        }
+                    });
+                } catch (ex) {
+                    Loading(0);
+                }
+            }
+        }
+    }
+
+    function DropDownList_reset_datasource_pop() {
+        var _ddlCustomerName = $("#ddlCustomerName").val().replace(/\ /g, "");
+        if (_ddlCustomerName.trim().toUpperCase() == "PROJECT" || _ddlCustomerName.trim().toUpperCase() == "SALETARGET") {
+            if (temp_data_dropdown) {
+                try {
+                    $("#ddlCustomerName").data('kendoDropDownList').select(-1);
+                    $("#ddlCustomerName").kendoDropDownList({
+                        dataTextField: "DISPLAY_VAL",
+                        dataValueField: "VAL1",
+                        dataSource: temp_data_dropdown,
+                        change: OnCustomerNameSearchChange,
+                        filter: "contains",
+                        virtual: {
+                            itemHeight: 26,
+                            valueMapper: function (options) {
+                                options.success([options.value || 0]); //return the value <-> item index mapping;
+                            }
+                        }
+                    });
+                } catch (ex) {
+                }
+            }
+        }
+    }
+
+    function OnCustomerNameSearchChange(e) {
+        setTimeout(function () {
+            if ($("#ddlCustomerNameSearch").data('kendoDropDownList').select() < 0) {
+                $("#ddlCustomerNameSearch").data('kendoDropDownList').select(0);
+            }
+
+            if ($("#ddlCustomerNameSearch").parent().find(".k-loading").length > 0) {
+                $("#ddlCustomerNameSearch").parent().find(".k-loading").removeClass("k-loading");
+            }
+        }, 100);
+    }
+
+    function OnOrderTypeChange(e) {
+        var _ddlOrderType = $("#ddlOrderType").val();
+        var _ddlService = $("#ddlService").val();
+        var _ddlCustomer = $("#ddlCustomer").val();
+        $.ajax({
+            cache: false,
+            type: "GET",
+            async: false,
+            data: { typeMode: ActionType, orderType: _ddlOrderType },
+            url: "/ConfigurationSAPOnline/SetDDLService",
+            dataType: "json",
+            success: function (data) {
+                $("#ddlService").kendoDropDownList({
+                    dataTextField: "DISPLAY_VAL",
+                    dataValueField: "VAL1",
+                    dataSource: data,
+                    change: OnServiceChange
+                });
+                $("#ddlService").data('kendoDropDownList').value("PLEASE_SELECT");
+            }
+        });
+        var chkOrderType = $("#ddlOrderType").val();
+        if (chkOrderType == 'JOIN') {
+            $("#txtInternetRate").val('0');
+            $("#txtInternetRate").data("kendoNumericTextBox").value(0);
+        }
+        if ($("#ddlOrderType").val() != "PLEASE_SELECT") $("#ddlService").data('kendoDropDownList').enable(true);
+        else $("#ddlService").data('kendoDropDownList').enable(false);
+
+        OnServiceChange();
+        Is_DealerLastmile();
+    }
+
+    // Param Dropdownlist Service - Pop up
+    function addParamDDLService() {
+        var _ddlOrderType = $("#ddlOrderType").val();
+        var _ddlService = $("#ddlService").val();
+        var _ddlCustomer = $("#ddlCustomer").val();
+        return { typeMode: ActionType, orderType: _ddlOrderType, service: _ddlService };
+        //return { typeMode: ActionType }
+    }
+
+    // Param Dropdownlist Customer - Pop up
+    function addParamDDLCustomer() {
+        var _ddlOrderType = $("#ddlOrderType").val();
+        var _ddlService = $("#ddlService").val();
+        var _ddlCustomer = $("#ddlCustomer").val();
+        return { typeMode: ActionType, orderType: _ddlOrderType, service: _ddlService, customer: _ddlCustomer };
+        //return { typeMode: ActionType, service: $("#ddlService").val() }
+    }
+
+    // Param Dropdownlist Name - Pop up
+    function addParamDDLName() {
+        //typeMode: ActionType, orderType: _ddlOrderType, service: _ddlService, customer: _ddlCustomer
+        var _ddlOrderType = $("#ddlOrderType").val();
+        var _ddlService = $("#ddlService").val();
+        var _ddlCustomer = $("#ddlCustomer").val();
+        return { typeMode: ActionType, orderType: _ddlOrderType, service: _ddlService, customer: _ddlCustomer };
+    }
+
+    // Dropdownlist Service - Pop up
+    function OnServiceOpen() {
+        if (ActionType == "Insert") {
+            $("#ddlService").data("kendoDropDownList").value("PLEASE_SELECT");
+        }
+    }
+
+    // Dropdownlist Service - Pop up
+    function OnServiceChange() {
+        var _ddlOrderType = $("#ddlOrderType").val();
+        var _ddlService = $("#ddlService").val();
+        var _ddlCustomer = $("#ddlCustomer").val();
+        _ddlOrderType = (_ddlOrderType != null) ? _ddlOrderType.trim().toUpperCase() : "";
+        _ddlService = (_ddlService != null) ? _ddlService.trim().toUpperCase() : "";
+        _ddlCustomer = (_ddlCustomer != null) ? _ddlCustomer.trim().toUpperCase() : "";
+
+        // Plug And Play
+        if (_ddlOrderType.toUpperCase() == "NEW"
+            && _ddlService.toUpperCase() == 'FTTB' && _ddlCustomer.toUpperCase() == "PHASE2") {
+            $("#divPlugAndPlay").show();
+            $("#chkPlaybox").prop("checked", false);
+        }
+        else {
+            $("#chkPlaybox").prop("checked", false);
+            $("#divPlugAndPlay").hide();
+        }
+
+        var _ddlOrderType = $("#ddlOrderType").val();
+        var _ddlService = $("#ddlService").val();
+        var _ddlCustomer = $("#ddlCustomer").val();
+        $.ajax({
+            cache: false,
+            type: "GET",
+            async: false,
+            data: { typeMode: ActionType, orderType: _ddlOrderType, service: _ddlService },
+            url: "/ConfigurationSAPOnline/SetDDLCustomer",
+            dataType: "json",
+            success: function (data) {
+                $("#ddlCustomer").kendoDropDownList({
+                    dataTextField: "DISPLAY_VAL",
+                    dataValueField: "VAL1",
+                    dataSource: data,
+                    change: OnCustomerChange_preload
+                });
+                $("#ddlCustomer").data('kendoDropDownList').value("PLEASE_SELECT");
+            }
+        });
+
+        if ($("#ddlService").val() != "PLEASE_SELECT") $("#ddlCustomer").data('kendoDropDownList').enable(true);
+        else $("#ddlCustomer").data('kendoDropDownList').enable(false);
+        if ($("#ddlCustomer").val() != "PLEASE_SELECT") $("#ddlCustomerName").data('kendoDropDownList').enable(true);
+        else $("#ddlCustomerName").data('kendoDropDownList').enable(false);
+        OnCustomerChange();
+        Is_DealerLastmile();
+    }
+
+    // Dropdownlist Customer - Pop up
+    function OnCustomerChange_preload() {
+        Loading();
+        setTimeout(function () {
+            OnCustomerChange();
+            Loading(0);
+        }, 0);
+
+    }
+
+    function OnCustomerChange(dataItem) {
+        var _ddlOrderType = $("#ddlOrderType").val();
+        var _ddlService = $("#ddlService").val();
+        var _ddlCustomer = $("#ddlCustomer").val();
+        _ddlOrderType = (_ddlOrderType != null) ? _ddlOrderType.trim().toUpperCase() : "";
+        _ddlService = (_ddlService != null) ? _ddlService.trim().toUpperCase() : "";
+        _ddlCustomer = (_ddlCustomer != null) ? _ddlCustomer.trim().toUpperCase() : "";
+
+        if (_ddlOrderType.toUpperCase() == "NEW" && _ddlService.toUpperCase() == 'FTTB' && _ddlCustomer == "PHASE2") {
+            $("#divPlugAndPlay").show();
+            $("#chkPlaybox").prop("checked", false);
+        }
+        else {
+            $("#chkPlaybox").prop("checked", false);
+            $("#divPlugAndPlay").hide();
+        }
+
+        var _ddlOrderType = $("#ddlOrderType").val();
+        var _ddlService = $("#ddlService").val();
+        var _ddlCustomer = $("#ddlCustomer").val().replace(/\ /g, "");
+
+        if (_ddlCustomer.trim().toUpperCase() == "DEFAULT") {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { typeMode: ActionType, orderType: _ddlOrderType, service: _ddlService, customer: _ddlCustomer },
+                url: "/ConfigurationSAPOnline/SetDDLName",
+                dataType: "json",
+                success: function (data) {
+                    $("#ddlCustomerName").kendoDropDownList({
+                        dataTextField: "DISPLAY_VAL",
+                        dataValueField: "VAL1",
+                        dataSource: data,
+                        change: CustomerNameOnchange,
+                        filter: "startswith",
+                        template: "<table style='width:100%'><tr>"
+                            + "<td style='width:90%'>#:data.DISPLAY_VAL#</td>"
+                            + " # if(data.CON_ID == 0) { # "
+                            + "  <td style='width:25px'><a style='padding:1px 6px' onclick=Edit_CONFIG_TBL('NEW',this)  class='btn btn-primary'><i class='fa fa-plus-circle'></i>&nbsp;New</a></td><td></td>  "
+                            + " # } "
+                            + " else if (data.VAL2 == 'Y') { # "
+                            + " <td><a style='padding:1px 6px' onclick=Edit_CONFIG_TBL('EDIT',this) class='btn btn-default'><i class='fa fa-pencil-square-o'></i>&nbsp;Edit</a></td>  "
+                            + " <td style='padding-left:5px'><a style='padding:1px 6px' onclick=call_confirm_config_tbl_delete('DELETE',this) class='btn btn-danger'><i class='fa fa-times-circle fa-lg'></i></a></td>  "
+                            + " # } "
+                            + " else { # "
+                            //+ " <td><a disabled='disabled' style='padding:1px 6px' onclick=Edit_CONFIG_TBL('EDIT',this) class='btn btn-default'><i class='fa fa-pencil-square-o'></i>&nbsp;Edit</a></td>  "
+                            + " # } #"
+                            + "<td style='display:none'>#:JSON.stringify(data)#</td>"
+                            + "</tr></table>"
+                    });
+                    $("#ddlCustomerName").data('kendoDropDownList').value("PLEASE_SELECT");
+                }
+            });
+        }
+        else if (_ddlCustomer.trim().toUpperCase() == "PROJECT" || _ddlCustomer.trim().toUpperCase() == "SALETARGET") {
+            $("#ddlCustomerName").data('kendoDropDownList').select(-1);
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { typeMode: ActionType, orderType: _ddlOrderType, service: _ddlService, customer: _ddlCustomer },
+                url: "/ConfigurationSAPOnline/SetDDLName",
+                dataType: "json",
+                success: function (data) {
+                    temp_data_dropdown = data;
+                    if (dataItem != null) { // step Edit only
+                        data = reindex_AddressID(data, dataItem.CUSTOMER_NAME.toString().toUpperCase());
+                    }
+                    
+                    $("#ddlCustomerName").kendoDropDownList({
+                        dataTextField: "DISPLAY_VAL",
+                        dataValueField: "VAL1",
+                        dataSource: data,
+                        change: CustomerNameOnchange, // kepp event
+                        filter: "contains",
+                        virtual: {
+                            itemHeight: 26,
+                            valueMapper: function (options) {
+                                options.success([options.value || 0]); //return the value <-> item index mapping;
+                            }
+                        }
+                    });
+                    $("#ddlCustomerName").data('kendoDropDownList').value("PLEASE_SELECT");
+                }
+            });
+        } else {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                async: false,
+                data: { typeMode: ActionType, orderType: _ddlOrderType, service: _ddlService, customer: _ddlCustomer },
+                url: "/ConfigurationSAPOnline/SetDDLName",
+                dataType: "json",
+                success: function (data) {
+                    $("#ddlCustomerName").kendoDropDownList({
+                        dataTextField: "DISPLAY_VAL",
+                        dataValueField: "VAL1",
+                        dataSource: data,
+                        change: CustomerNameOnchange,
+                        filter: "startswith",
+                    });
+                    $("#ddlCustomerName").data('kendoDropDownList').value("PLEASE_SELECT");
+                }
+            });
+        }
+
+        if ($("#ddlService").val() != "PLEASE_SELECT") $("#ddlCustomer").data('kendoDropDownList').enable(true);
+        else $("#ddlCustomer").data('kendoDropDownList').enable(false);
+        if ($("#ddlCustomer").val() != "PLEASE_SELECT") $("#ddlCustomerName").data('kendoDropDownList').enable(true);
+        else $("#ddlCustomerName").data('kendoDropDownList').enable(false);
+        Is_DealerLastmile();
+    }
+
+    // this function for large data virtual maping yahhhh need ?
+    function reindex_AddressID(data, Input_AdressID) {
+        try
+        {
+            var index;
+            var AddressIDIndex = data.find(function (item, i) {
+                if (item.VAL1 === Input_AdressID) {
+                    index = i;
+                    return i;
+                }
+            });
+            data.splice(index, index) // delete between
+            data.splice(1, 0, AddressIDIndex); // insert top seq 1
+            return data;
+        }
+        catch(ex)
+        {
+            return data;
+        }
+        
+    }
+
+    var temp_pop_CON_ID = 0;
+    function Edit_CONFIG_TBL(Input_1, Input_2) {
+        $("#div_row_Edit_CONFIG_TBL").show();
+        var _data = JSON.parse($(Input_2).parent().parent().children().eq(3).html());
+        temp_pop_CON_ID = _data.CON_ID;
+        if (_data.CON_ID == 0) { // new
+            $("#txt_CONFIG_TBL").val("");
+            //$("#btn_config_tbl_delete").hide();
+        }
+        else { // edit
+            $("#txt_CONFIG_TBL").val(_data.DISPLAY_VAL);
+            //$("#btn_config_tbl_delete").show();
+        }
+        $("#txt_CONFIG_TBL").focus();
+        Edit_CONFIG_TBL_disabled();
+    }
+
+    function Edit_CONFIG_TBL_disabled() {
+        $("#ddlOrderType").data('kendoDropDownList').enable(false);
+        $("#ddlService").data('kendoDropDownList').enable(false);
+        $("#ddlCustomer").data('kendoDropDownList').enable(false);
+        $("#ddlCustomerName").data('kendoDropDownList').enable(false);
+        $("#dtpDateFrom").data('kendoDatePicker').enable(false);
+        $("#dtpDateTo").data('kendoDatePicker').enable(false);
+        $("#txtInternetRate").prop("disabled", true);
+
+        // btn
+        $("#btnpop_cancel").attr("disabled", true);
+        $("#btnpop_clear").attr("disabled", true);
+        $("#btnpop_save").attr("disabled", true);
+
+
+        $("#div_row_ddlCustomerName").find('.k-state-focused').removeClass('k-state-focused');
+    }
+
+    function Edit_CONFIG_TBL_enable() {
+        $("#ddlOrderType").data('kendoDropDownList').enable(true);
+        $("#ddlService").data('kendoDropDownList').enable(true);
+        $("#ddlCustomer").data('kendoDropDownList').enable(true);
+        $("#ddlCustomerName").data('kendoDropDownList').enable(true);
+        $("#dtpDateFrom").data('kendoDatePicker').enable(true);
+        $("#dtpDateTo").data('kendoDatePicker').enable(true);
+        $("#txtInternetRate").prop("disabled", false);
+
+        // btn
+        $("#btnpop_cancel").attr("disabled", false);
+        $("#btnpop_clear").attr("disabled", false);
+        $("#btnpop_save").attr("disabled", false);
+    }
+
+    function config_tbl_save_validate() {
+        var chk = true;
+        $("#validate-txt_CONFIG_TBL").html("");
+
+        if ($("#txt_CONFIG_TBL").val().trim() == "") {
+            $("#validate-txt_CONFIG_TBL").html(ValidationIcon() + "This field is required.");
+            chk = false;
+        }
+        return chk;
+    }
+
+    var FbssConfigTBLModel = function () {
+        CON_ID: "";
+        CON_TYPE: "";
+        CON_NAME: "";
+        DISPLAY_VAL: "";
+        VAL1: "";
+    }
+
+    function confirm_config_tbl_save() {
+        if (config_tbl_save_validate() == true) {
+            $("#label_config_tbl_save").html('Confirm Save "' + $("#txt_CONFIG_TBL").val().trim() + '" ?');
+            $("#modal_config_tbl_save").modal();
+        }
+    }
+
+    function config_tbl_save() {
+        var _FbssConfigTBLModel = new FbssConfigTBLModel();
+        _FbssConfigTBLModel.CON_ID = temp_pop_CON_ID;
+        _FbssConfigTBLModel.DISPLAY_VAL = $("#txt_CONFIG_TBL").val().trim();
+        if (temp_pop_CON_ID > 0) {
+            ActionType_tbl = "Update";
+        } else {
+            ActionType_tbl = "Insert";
+        }
+
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: "/ConfigurationSAPOnline/Update_config_tbl",
+            data: {
+                type: ActionType_tbl,
+                dataS: JSON.stringify(_FbssConfigTBLModel)
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.RETURN_MSG == "duplicate") {
+                    showFeedback_only("error", ActionType_tbl.toString() + " " + "failed! Data duplicate.", ActionType_tbl.toString() + " " + "@L_CUSTOMER_NAME_EDIT");
+                }
+                else if (data.RETURN_MSG == "success") {
+                    showFeedback_only("success", ActionType_tbl.toString() + " " + data.RETURN_MSG, ActionType_tbl.toString() + " " + "@L_CUSTOMER_NAME_EDIT");
+                    OnCustomerChange_preload();
+                    config_tbl_cancel();
+                }
+                else {
+                    showFeedback_only("error", data.RETURN_MSG, "@L_CUSTOMER_NAME_EDIT");
+                }
+            },
+            error: function (data) {
+                showFeedback_only("warning", "Please try again.", "@L_CUSTOMER_NAME_EDIT");
+            }
+        });
+        $("#modal_config_tbl_save").modal('hide');
+    }
+
+    function call_confirm_config_tbl_delete(Input_1, Input_2) {
+        var _data = JSON.parse($(Input_2).parent().parent().children().eq(3).html());
+        temp_pop_CON_ID = _data.CON_ID;
+        $("#label_config_tbl_delete").html('Confirm Delete "' + _data.DISPLAY_VAL + '" ?');
+        confirm_config_tbl_delete();
+    }
+
+    function confirm_config_tbl_delete() {
+        //label_config_tbl_delete
+        $("#modal_config_tbl_delete").modal();
+    }
+
+    function config_tbl_delete() {
+        var _FbssConfigTBLModel = new FbssConfigTBLModel();
+        _FbssConfigTBLModel.CON_ID = temp_pop_CON_ID;
+        _FbssConfigTBLModel.DISPLAY_VAL = $("#txt_CONFIG_TBL").val().trim();
+        ActionType_tbl = "Delete";
+
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: "/ConfigurationSAPOnline/Update_config_tbl",
+            data: {
+                type: ActionType_tbl,
+                dataS: JSON.stringify(_FbssConfigTBLModel)
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.RETURN_MSG == "duplicate") {
+                    showFeedback_only("error", ActionType_tbl.toString() + " " + "failed! Data duplicate.", ActionType_tbl.toString() + " " + "@L_CUSTOMER_NAME_EDIT");
+                }
+                else if (data.RETURN_MSG == "success") {
+                    showFeedback_only("success", ActionType_tbl.toString() + " " + data.RETURN_MSG, ActionType_tbl.toString() + " " + "@L_CUSTOMER_NAME_EDIT");
+                    OnCustomerChange_preload();
+                    config_tbl_cancel();
+                }
+                else {
+                    showFeedback_only("error", data.RETURN_MSG, "@L_CUSTOMER_NAME_EDIT");
+                }
+            },
+            error: function (data) {
+                showFeedback_only("warning", "Please try again.", "@L_CUSTOMER_NAME_EDIT");
+            }
+        });
+        $("#modal_config_tbl_delete").modal('hide');
+    }
+    
+
+    function config_tbl_cancel() {
+        $("#txt_CONFIG_TBL").val("");
+        Edit_CONFIG_TBL_enable();
+        $("#div_row_Edit_CONFIG_TBL").hide();
+    }
+
+    function CustomerNameOnchange(e) {
+        Is_DealerLastmile();
+    }
+
+    function Is_DealerLastmile() {
+        var _DealerLastmile_display = false;
+        var _SaleTarget_display = false;
+        var _DefaultAverage_display = false;
+        var _ddlOrderType = $("#ddlOrderType").data('kendoDropDownList').value().toString().toUpperCase();
+        var _ddlService = $("#ddlService").data('kendoDropDownList').value().toString().toUpperCase();
+        var _ddlCustomer = $("#ddlCustomer").data('kendoDropDownList').value().toString().toUpperCase().replace(/\ /g, "");;
+        var _ddlCustomerName = $("#ddlCustomerName").data('kendoDropDownList').text().toString().toUpperCase();
+
+        if (_ddlOrderType == "JOIN") {
+
+        }
+        else if (_ddlOrderType == "NEW") {
+            if (_ddlService == "FTTH") {
+                // old condition || current condition
+                if (_ddlCustomer == "PHASE3" || _ddlCustomer == "PHASE3/4") {
+                    // old condition || current condition
+                    if (_ddlCustomerName == "DEALER-LASTMILE" || _ddlCustomerName == "LASTMILE DISTANCE" || _ddlCustomerName == "LASTMILE") {
+                        _DealerLastmile_display = true;
+                    }
+                }
+                else if (_ddlCustomer == "PHASE4") {
+                    if (_ddlCustomerName == "DEALER-LASTMILE") {
+                        _DealerLastmile_display = true;
+                    }
+                }
+            }
+        }
+        else if (_ddlOrderType == "RENEW") {
+
+        }
+
+        //----------
+        if (_ddlOrderType == "NEW") {
+            if (_ddlService == "DORM") {
+                if (_ddlCustomer.trim().toUpperCase() == "SALETARGET") {
+                    _SaleTarget_display = true;
+                }
+            }
+        }
+        //----------
+        if (_ddlCustomer == "DEFAULT") {
+            _DefaultAverage_display = true;
+        }
+
+        popup_validate(_DealerLastmile_display, _SaleTarget_display, _DefaultAverage_display);
+        popup_display(_DealerLastmile_display, _SaleTarget_display, _DefaultAverage_display);
+    }
+
+    function popup_validate(Input_1, Input_2, Input_3) {
+        if (Input_1 == true) { // LASTMILE
+            remove_validate_rate("txtInternetRate");
+            remove_validate_rate("txtPlayboxRate");
+            remove_validate_rate("txtVoipRate");
+            remove_validate_rate("txtTargetFrom");
+            remove_validate_rate("txtTargetTo");
+
+            add_validate_rate("txtLengthFrom");
+            add_validate_rate("txtLengthTo");
+            add_validate_rate("txtOutDoorPrice");
+            add_validate_rate("txtInDoorPrice");
+        }
+        else if (Input_2 == true) { // SALE TARGET
+            add_validate_rate("txtInternetRate");
+            remove_validate_rate("txtPlayboxRate");
+            remove_validate_rate("txtVoipRate");
+            remove_validate_rate("txtLengthFrom");
+            remove_validate_rate("txtLengthTo");
+
+            add_validate_rate("txtTargetFrom");
+            add_validate_rate("txtTargetTo");
+            remove_validate_rate("txtOutDoorPrice");
+            remove_validate_rate("txtInDoorPrice");
+        }
+        else if (Input_3 == true) { // DEFAULT AVERAGE
+            //ddlCustomerName
+            remove_validate_rate("txtVoipRate");
+            remove_validate_rate("txtPlayboxRate");
+            remove_validate_rate("txtLengthFrom");
+            remove_validate_rate("txtLengthTo");
+            remove_validate_rate("txtTargetFrom");
+            remove_validate_rate("txtTargetTo");
+            remove_validate_rate("txtOutDoorPrice");
+            remove_validate_rate("txtInDoorPrice");
+        }
+        else {
+            remove_validate_rate("txtLengthFrom");
+            remove_validate_rate("txtLengthTo");
+            remove_validate_rate("txtOutDoorPrice");
+            remove_validate_rate("txtInDoorPrice");
+            remove_validate_rate("txtTargetFrom");
+            remove_validate_rate("txtTargetTo");
+            add_validate_rate("txtInternetRate");
+
+            if ($('#chkPlaybox').prop('checked') == true) add_validate_rate("txtPlayboxRate");
+            else remove_validate_rate("txtPlayboxRate");
+
+            //add_validate_rate("txtVoipRate");
+        }
+    }
+
+    function remove_validate_rate(input) {
+        $("#" + input).parent().find('.k-formatted-value').removeClass("validate_rate");
+        $("#" + input).removeClass("validate_rate");
+    }
+
+    function add_validate_rate(input) {
+        $("#" + input).parent().find('.k-formatted-value').removeClass("validate_rate").addClass("validate_rate");
+        $("#" + input).removeClass("validate_rate").addClass("validate_rate");
+    }
+
+    function popup_display(Input_1, Input_2, Input_3) {
+        if (Input_1 == true) { // LASTMILE
+            $("#div_row_ddlCustomerName").show();
+            $("#div_INTERNET_RATE").hide();
+            $("#div_VOIP_RATE").hide();
+            $("#div_PLAY_BOX_RATE").hide();
+
+            $("#div_LengthFrom").show();
+            $("#div_LengthTo").show();
+            $("#div_TargetFrom").hide(); $("#div_TargetFrom").removeClass("col-md-3").addClass("col-md-2");
+            $("#div_TargetTo").hide(); $("#div_TargetFrom").removeClass("col-md-3").addClass("col-md-2");
+            $("#div_OutDoorPrice").show();
+            $("#div_InDoorPrice").show();
+
+            $("#label_line_from").text("@L_LINE_FR");
+            $("#label_line_to").text("@L_LINE_TO");
+        }
+        else if (Input_2 == true) { // SALE TARGET
+            $("#div_row_ddlCustomerName").show();
+            $("#div_INTERNET_RATE").show();
+            $("#div_VOIP_RATE").show();
+            $("#div_PLAY_BOX_RATE").show();
+
+            $("#div_LengthFrom").hide();
+            $("#div_LengthTo").hide();
+            $("#div_TargetFrom").show(); $("#div_TargetFrom").removeClass("col-md-2").addClass("col-md-3");
+            $("#div_TargetTo").show(); $("#div_TargetTo").removeClass("col-md-2").addClass("col-md-3");
+            $("#div_OutDoorPrice").hide();
+            $("#div_InDoorPrice").hide();
+
+            $("#label_line_from").text("@L_TARGET_FROM");
+            $("#label_line_to").text("@L_TARGET_TO");
+        }
+        else if (Input_3 == true) { // DEFAULT AVERAGE
+            $("#div_row_ddlCustomerName").show();
+            $("#div_INTERNET_RATE").show();
+            $("#div_VOIP_RATE").hide();
+            $("#div_PLAY_BOX_RATE").hide();
+
+            $("#div_LengthFrom").hide();
+            $("#div_LengthTo").hide();
+            $("#div_TargetFrom").hide();
+            $("#div_TargetTo").hide();
+            $("#div_OutDoorPrice").hide();
+            $("#div_InDoorPrice").hide();
+        }
+        else {
+            $("#div_row_ddlCustomerName").show();
+            $("#div_INTERNET_RATE").show();
+            $("#div_VOIP_RATE").show();
+            $("#div_PLAY_BOX_RATE").show();
+
+            $("#div_LengthFrom").hide();
+            $("#div_LengthTo").hide();
+            $("#div_TargetFrom").hide(); $("#div_TargetFrom").removeClass("col-md-3").addClass("col-md-2");
+            $("#div_TargetTo").hide(); $("#div_TargetFrom").removeClass("col-md-3").addClass("col-md-2");
+            $("#div_OutDoorPrice").hide();
+            $("#div_InDoorPrice").hide();
+        }
+    }
+
+    // OnChang dtpDateFrom
+    function ChangdtpDateFrom() {
+        var endPicker = $("#dtpDateTo").data("kendoDatePicker"), startDate = kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy");
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            endPicker.min(startDate);
+        }
+        else {
+            var clearMaxDate = new Date();
+            endPicker.min(clearMaxDate);
+        }
+    }
+
+    // OnChang dtpDateTo
+    function ChangdtpDateTo() {
+        var startPicker = $("#dtpDateFrom").data("kendoDatePicker"), endDate = kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy");
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            startPicker.max(endDate);
+        } else {
+            var clearMaxDate = new Date();
+            clearMaxDate.setFullYear(clearMaxDate.getFullYear() + 10);
+            startPicker.max(clearMaxDate);
+        }
+
+    }
+
+    // Date - formatDate
+    function formatDate(OrderDate) {
+        if (OrderDate != null) {
+            var d = new Date(OrderDate);
+            d.setUTCHours(17);
+            //var b = new Date(OrderDate + '+07:00');
+            var formatedOrderDate = kendo.format("{0:dd/MM/yyyy}", d);
+            return formatedOrderDate;
+        }
+        return "";
+    }
+
+    // Date - ConvertDate
+    function ConvertDate(d) {
+        var date = new Date(d);
+        return curDateFrom = [date.getDate() + 1, date.getMonth() + 1, date.getFullYear()].join("/");
+    }
+
+    // Date - ConvertDateFromTable
+    function ConvertDateFromTable(d) {
+        var date = new Date(d.valueOf() + 1000 * 3600 * 24);
+        return curDateFrom = [parseInt(date.getMonth()) + 1, parseInt(date.getDate()), date.getFullYear()].join("/");
+    }
+
+    $("select.input-datalist").change(function () {
+        var $this = $(this);
+        if ($this.val() == "customOption") {
+            $this.hide();
+            $this.next().show();
+            $this.prop('selectedIndex', 0);
+        }
+
+    });
+
+    $("input.input-datalist").blur(function () {
+        var $this = $(this);
+        if ($this.val() == "") {
+            $this.hide();
+            $this.prev().show();
+        }
+    });
+
+    //function formatDateString($date) {
+    //    var hours = $date.getHours();
+    //    var minutes = $date.getMinutes();
+    //    return $date.getDate() + "/" + ($date.getMonth() + 1) + "/" + $date.getFullYear() + " - " + hours + ":00";
+    //}
+
+    function addNewConfigEvent() {
+        Loading();
+        var url = '@Url.Action("ConfigurationEventsEdit", "ConfigurationEvents")';
+        url = url + "?EventCode=N";
+        window.location.href = url;
+    }
+
+    function editConfigEvent(e) {
+        Loading();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var url = '@Url.Action("ConfigurationEventsEdit", "ConfigurationEvents")';
+        url = url + "?EventCode=" + dataItem.event_code;
+        window.location.href = url;
+    }
+    //// =====================End==Edit Value 0
+    $("[id='txtTargetFrom'],[id='txtTargetTo'],[id='txtInternetRate'],[id='txtPlayboxRate'],[id='txtVoipRate'],[id='txtLengthFrom'],[id='txtLengthTo'],[id='txtOutDoorPrice'],[id='txtInDoorPrice']").focus(function () {
+        var ValTxtVoipRate = $(this).val();
+        if (ValTxtVoipRate == 0) {
+            $(this).val("");
+        }
+
+    });
+
+    Convert_To_decimal_textbox("txtInternetRate", 4);
+    Convert_To_decimal_textbox("txtPlayboxRate", 4);
+    Convert_To_decimal_textbox("txtVoipRate", 4);
+    Convert_To_decimal_textbox("txtLengthFrom", 3);
+    Convert_To_decimal_textbox("txtLengthTo", 3);
+    Convert_To_decimal_textbox("txtOutDoorPrice", 4);
+    Convert_To_decimal_textbox("txtInDoorPrice", 4);
+
+    Convert_To_number_textbox("txtTargetFrom", 4);
+    Convert_To_number_textbox("txtTargetTo", 4);
+
+    function Convert_To_number_textbox(Input_1, Input_2) {
+        var numeric = $("#" + Input_1).kendoNumericTextBox({
+            decimals: 0
+            , format: ",###"
+        }).data("kendoNumericTextBox");
+        numeric.wrapper
+            .find(".k-numeric-wrap")
+            .addClass("expand-padding")
+            .find(".k-select").hide();
+        $("#" + Input_1).parent().removeClass("k-numeric-wrap");
+        $("#" + Input_1).parent().parent().parent().children().removeClass("k-widget k-numerictextbox k-textbox form-control")
+        $("#" + Input_1).data("kendoNumericTextBox").trigger("change");
+
+        $("#" + Input_1).on('input', function () {
+            var _this = $(this).val();
+            var _indexOf_this = _this.indexOf(".");
+            var _this_length = _this.length;
+            if (_this.length > Input_2) $(this).val(_this.substring(0, Input_2));
+        });
+    }
+
+    function Convert_To_decimal_textbox(Input_1, Input_2) {
+        var numeric = $("#" + Input_1).kendoNumericTextBox({
+            //max: 99999.99
+        }).data("kendoNumericTextBox");
+        numeric.wrapper
+            .find(".k-numeric-wrap")
+            .addClass("expand-padding")
+            .find(".k-select").hide();
+        $("#" + Input_1).parent().removeClass("k-numeric-wrap");
+        $("#" + Input_1).parent().parent().parent().children().removeClass("k-widget k-numerictextbox k-textbox form-control")
+        $("#" + Input_1).data("kendoNumericTextBox").trigger("change");
+
+        $("#" + Input_1).on('input', function () {
+            var _this = $(this).val();
+            var _indexOf_this = _this.indexOf(".");
+            var _this_length = _this.length;
+            var _rsult = (_indexOf_this >= 0) ? _this.substring(0, _indexOf_this) : _this;
+            if (_rsult.length > Input_2) _rsult = $(this).val(_rsult.substring(0, Input_2));
+        });
+    }
+
+</script>

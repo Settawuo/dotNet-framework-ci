@@ -1,0 +1,470 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.RegisterBulkCorpModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using FBBConfig.Extensions
+@{
+
+    var Version = "";
+    if (ViewBag.Version != null)
+    {
+        Version = Version + "-" + ViewBag.Version;
+    }
+
+    string B_LOGIN_CANCEL = "";
+
+    string E_MESSAGE_03 = "";
+    string EXISTING_TAB = "";
+    string EXISTING_BUTTON_NEXT = "";
+    string EXISTING_BUTTON_BACK = "";
+
+    string EXISTING_CA_NO_FIELD = "";
+    string EXISTING_SA_NO_FIELD = "";
+    string EXISTING_BA_NO_FIELD = "";
+    
+    string EXISTING_CA_NO_INPUT = "";
+    string EXISTING_SA_NO_INPUT = "";
+    string EXISTING_BA_NO_INPUT = "";
+    
+    string EXISTING_CA_NO_LENGTH_MAX = "";
+    string EXISTING_SA_NO_LENGTH_MAX = "";
+    string EXISTING_BA_NO_LENGTH_MAX = "";
+    
+    string H_TITLE_05 = "";
+
+    string L_CA_NUMBER = "";
+    string L_CA_NAME = "";
+    string L_SA_NUMBER = "";
+    string L_SA_NAME = "";
+    string L_BA_NUMBER = "";
+    string L_BA_NAME = "";
+
+    string P_ALERT_HEAD = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        B_LOGIN_CANCEL = configscreen.Any(f => f.Name == "B_LOGIN_CANCEL") ? configscreen.FirstOrDefault(f => f.Name == "B_LOGIN_CANCEL").LovValue1 : "";
+        E_MESSAGE_03 = configscreen.Any(f => f.Name == "E_MESSAGE_03") ? configscreen.FirstOrDefault(f => f.Name == "E_MESSAGE_03").LovValue1 : "";
+        EXISTING_TAB = configscreen.Any(f => f.Name == "EXISTING_TAB") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_TAB").LovValue1 : "";
+        EXISTING_BUTTON_NEXT = configscreen.Any(f => f.Name == "EXISTING_BUTTON_NEXT") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_BUTTON_NEXT").LovValue1 : "";
+        EXISTING_BUTTON_BACK = configscreen.Any(f => f.Name == "EXISTING_BUTTON_BACK") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_BUTTON_BACK").LovValue1 : "";
+
+        EXISTING_CA_NO_FIELD = configscreen.Any(f => f.Name == "EXISTING_CA_NO_FIELD") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_CA_NO_FIELD").LovValue1 : "";
+        EXISTING_BA_NO_FIELD = configscreen.Any(f => f.Name == "EXISTING_BA_NO_FIELD") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_BA_NO_FIELD").LovValue1 : "";
+        EXISTING_SA_NO_FIELD = configscreen.Any(f => f.Name == "EXISTING_SA_NO_FIELD") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_SA_NO_FIELD").LovValue1 : "";
+        EXISTING_CA_NO_INPUT = configscreen.Any(f => f.Name == "EXISTING_CA_NO_INPUT") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_CA_NO_INPUT").LovValue1 : "";
+        EXISTING_SA_NO_INPUT = configscreen.Any(f => f.Name == "EXISTING_SA_NO_INPUT") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_SA_NO_INPUT").LovValue1 : "";
+        EXISTING_BA_NO_INPUT = configscreen.Any(f => f.Name == "EXISTING_BA_NO_INPUT") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_BA_NO_INPUT").LovValue1 : "";
+        EXISTING_CA_NO_LENGTH_MAX= configscreen.Any(f => f.Name == "EXISTING_CA_NO_LENGTH_MAX") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_CA_NO_LENGTH_MAX").LovValue1 : "";
+        EXISTING_SA_NO_LENGTH_MAX= configscreen.Any(f => f.Name == "EXISTING_SA_NO_LENGTH_MAX") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_SA_NO_LENGTH_MAX").LovValue1 : "";
+        EXISTING_BA_NO_LENGTH_MAX= configscreen.Any(f => f.Name == "EXISTING_BA_NO_LENGTH_MAX") ? configscreen.FirstOrDefault(f => f.Name == "EXISTING_BA_NO_LENGTH_MAX").LovValue1 : "";
+                
+        H_TITLE_05 = configscreen.Any(f => f.Name == "H_TITLE_05") ? configscreen.FirstOrDefault(f => f.Name == "H_TITLE_05").LovValue1 : "";
+
+        L_CA_NUMBER = configscreen.Any(f => f.Name == "L_CA_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "L_CA_NUMBER").LovValue1 : "";
+        L_CA_NAME = configscreen.Any(f => f.Name == "L_CA_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_CA_NAME").LovValue1 : "";
+        L_SA_NUMBER = configscreen.Any(f => f.Name == "L_SA_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "L_SA_NUMBER").LovValue1 : "";
+        L_SA_NAME = configscreen.Any(f => f.Name == "L_SA_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_SA_NAME").LovValue1 : "";
+        L_BA_NUMBER = configscreen.Any(f => f.Name == "L_BA_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "L_BA_NUMBER").LovValue1 : "";
+        L_BA_NAME = configscreen.Any(f => f.Name == "L_BA_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_BA_NAME").LovValue1 : "";
+
+        P_ALERT_HEAD = configscreen.Any(f => f.Name == "P_ALERT_HEAD") ? configscreen.FirstOrDefault(f => f.Name == "P_ALERT_HEAD").LovValue1 : "";
+    }
+}
+<style>
+
+</style>
+<div id="searchbulkcorp" >
+    <br />
+
+   <div class="modal fade" id="modalretError" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content add-border-rounded-green">
+                        <div class="modal-header" style="border-bottom-color:none;background-color:#8dc63f;color:white;">
+                            @P_ALERT_HEAD
+                        </div>
+                        <div class="modal-body">
+                            <div class="">
+                                <p class="clearfix"></p>
+                                <h5 class="text-center" style="font-weight: bold;">@E_MESSAGE_03</h5>
+
+
+                                <p class="clearfix"></p>
+                                <div class="col-md-12 text-center">
+                                    <p class="clearfix"></p>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="_closeErrorModal()"> OK </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="border-top: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <div class="container-fluid">
+        <div class="container-fluid i-gap i-header">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@EXISTING_TAB</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel1" onclick="onPanelToggle(this);" id="SearchPanelHeader1"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow1"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <br />
+                        <div id="rowSearch_1" class="row i-gap-top-1">
+                            <div class="col-sm-1 col-md-1">
+
+                            </div>
+                            <div class="col-sm-2 col-md-2">
+
+                                <div class="i-fg-data-entry">
+                                    @Html.TextBox("SearchCANumber", "", new { @class = "dis k-textbox form-control", @id = "SearchCANumber", @placeholder = L_CA_NUMBER })
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-SearchCANumber"></div><span>&nbsp;</span>
+                            </div>
+                            <div class="col-sm-7 col-md-7">
+
+                                <div class="i-fg-data-entry">
+                                    @Html.TextBox("SearchCAName", "", new { @class = "dis k-textbox form-control", @id = "SearchCAName", @placeholder = L_CA_NAME })
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-SearchCAName"></div><span>&nbsp;</span>
+                            </div>
+
+
+                        </div> @*end rowSearch1*@
+
+                        <div id="rowSearch_2" class="row i-gap-top-1">
+                            <div class="col-sm-1 col-md-1">
+
+                            </div>
+                            <div class="col-sm-2 col-md-2">
+
+                                <div class="i-fg-data-entry">
+                                    @Html.TextBox("SearchSANumber", "", new { @class = "dis k-textbox form-control", @id = "SearchSANumber", @placeholder = L_SA_NUMBER })
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-SearchSANumber"></div><span>&nbsp;</span>
+                            </div>
+
+                            <div class="col-sm-7 col-md-7">
+
+                                <div class="i-fg-data-entry">
+                                    @Html.TextBox("SearchSAName", "", new { @class = "dis k-textbox form-control", @id = "SearchSAName", @placeholder = L_SA_NAME })
+                                </div>
+                                 <div class="i-fg-data-entry-validation" id="validatefor-SearchSAName"></div><span>&nbsp;</span>
+                            </div>
+
+                        </div> @*end rowSearch2*@
+
+                        <div id="rowSearch_3" class="row i-gap-top-1">
+                            <div class="col-sm-1 col-md-1">
+
+                            </div>
+                            <div class="col-sm-2 col-md-2">
+                                <div class="i-fg-data-entry">
+                                    @Html.TextBox("SearchBANumber", "", new { @class = "dis k-textbox form-control", @id = "SearchBANumber", @placeholder = L_BA_NUMBER })
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-SearchBANumber"></div><span>&nbsp;</span>
+                            </div>
+
+                            <div class="col-sm-7 col-md-7">
+                                <div class="i-fg-data-entry">
+                                @Html.TextBox("SearchBAName", "", new { @class = "dis k-textbox form-control", @id = "SearchBAName", @placeholder = L_BA_NAME })
+                            </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-SearchBAName"></div><span>&nbsp;</span>
+                            </div>
+
+                        </div> @*end rowSearch3*@
+                        <br />
+                        <div id="rowSearch4" class="row i-gap-top-1">
+                            <div class="col-sm-4 col-md-4">
+
+                            </div>
+                            <div class="col-sm-1 col-md-1">
+
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-danger" onclick="_Cancel();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_LOGIN_CANCEL</a>
+                                <a class="btn btn-success" onclick="onSearchSFF();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@EXISTING_BUTTON_NEXT</a>
+                            </div>
+                        </div> @*end rowSearch4*@
+                    </div>
+                </div>
+            </div>@*end PanelSearch1*@
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var ses_LcCode = sessionStorage.getItem('login_LcCode');
+        if (typeof ses_LcCode == "undefined" || null == ses_LcCode || "" == ses_LcCode)
+            window.location.href = '@Url.Action("Login", "RegisterBulkCorp")';
+        window.scrollTo(0, 0);
+
+        $('#li_2').find('.menutab').css({ "color": "white", "background-color": "#9bba25" });
+        $("#BulkEventPage").val("Existing");
+    });
+
+    //Key Up
+    $("#SearchCANumber").keyup(function () {
+        CheckKeyUps('SearchCANumber', '@EXISTING_CA_NO_INPUT');
+    });
+
+    $("#SearchSANumber").keyup(function () {
+        CheckKeyUps('SearchSANumber', '@EXISTING_SA_NO_INPUT');
+    });
+
+    $("#SearchBANumber").keyup(function () {
+        CheckKeyUps('SearchBANumber', '@EXISTING_BA_NO_INPUT');
+    });
+
+    /////////////////////////////////////
+
+    //Key Down
+    $("#SearchCANumber").keydown(function () {
+        CheckKeyUps('SearchCANumber', '@EXISTING_CA_NO_INPUT');
+    });
+
+    $("#SearchSANumber").keydown(function () {
+        CheckKeyUps('SearchSANumber', '@EXISTING_SA_NO_INPUT');
+    });
+
+    $("#SearchBANumber").keydown(function () {
+        CheckKeyUps('SearchBANumber', '@EXISTING_BA_NO_INPUT');
+    });
+
+    function SetRequired(validateModel) {
+        var i = 0;
+        for (i = 0; i < validateModel.length; i++) {
+            var id = validateModel[i].id;
+            $("#requiredfor-" + id).addClass("label i-gap-left-md i-required");
+            $("#requiredfor-" + id).text("*");
+        }
+    }
+
+    var validateModel003GB = new Array();
+
+    var validateModelexist = [];
+    //validateModelexist.push({ id: "SearchCAN" });
+    
+
+    function isEmpty(str) {
+        return (!str || 0 === str.length);
+    }
+
+
+    function _closeErrorModal() {
+        $('#modalretError').modal('hide');
+        $('.modal-backdrop').remove();
+    }
+
+    function RemoveValidation(validateModel) {
+        var i = 0;
+        for (i = 0; i < validateModel.length; i++) {
+            var id = validateModel[i].id;
+            $("#validatefor-" + id).html("");
+        }
+    }
+
+    function ValidationIcon() {
+        return "<i class='fa fa-warning i-red'></i> ";
+    }
+
+    function _Cancel() {
+        var confirmclick = confirm("Cancel?");
+        if (confirmclick) {
+
+            $("#SearchCANumber").val("");
+            $("#SearchCAName").val("");
+            $("#SearchSANumber").val("");
+            $("#SearchSAName").val("");
+            $("#SearchBANumber").val("");
+            $("#SearchBAName").val("");
+
+            window.location.href = '@Url.Action("Index", "RegisterBulkCorp")';
+        }
+
+    }
+
+    function onSearchSFF()
+    {
+        Loading(0);
+        Loading();
+
+        var cchk = false;
+        var CANo = $("#SearchCANumber").val();
+        var CAName = $("#SearchCAName").val();
+        var SANo = $("#SearchSANumber").val();
+        var SAName = $("#SearchSAName").val();
+        var BANo = $("#SearchBANumber").val();
+        var BAName = $("#SearchBAName").val();
+
+        //Validate Value Not Null Only one text input
+        if ("" != CANo || "" != CAName || "" != SANo || "" != SAName || "" != BANo || "" != BAName) {
+            cchk = true;
+            $("#validatefor-" + "SearchCANumber").html("");
+        }
+        else {
+            cchk = false;
+            //Concern CANumber
+            $("#validatefor-" + "SearchCANumber").html(ValidationIcon() + "Please input at least for CA No.");
+        }
+
+        if (cchk) {
+
+            $.ajax({
+                url: '/RegisterBulkCorp/GetBulkNumberForExisting',
+
+                dataType: 'json',
+                async: false,
+                type: 'POST',
+                success: function (dataBulk) {
+
+                    if ([] != dataBulk) {
+
+                        var asc_code = sessionStorage.getItem('login_ASCCode');
+                        var employee_id = sessionStorage.getItem('login_EmpID');
+                        var location_code = sessionStorage.getItem('login_LcCode');
+
+                        if (typeof asc_code == "undefined" || null == asc_code || "null" == asc_code) {
+                            $("#getASCCodeExist").val("");
+                        }
+                        else if (typeof asc_code !== null && asc_code !== 'undefined') {
+                            $("#getASCCodeExist").val(asc_code);
+                        }
+                        else {
+                            $("#getASCCodeExist").val("");
+                        }
+
+                        if (typeof employee_id == "undefined" || null == employee_id || "null" == employee_id) {
+                            $("#getEmpIDExist").val("");
+                        }
+                        else if (typeof employee_id !== null && employee_id !== 'undefined') {
+                            $("#getEmpIDExist").val(employee_id);
+                        }
+                        else {
+                            $("#getEmpIDExist").val("");
+                        }
+
+                        if (typeof location_code == "undefined" || null == location_code || "null" == location_code) {
+                            $("#getLcCodeExist").val("");
+                        }
+                        else if (typeof location_code !== null && location_code !== 'undefined') {
+                            $("#getLcCodeExist").val(location_code);
+                        }
+                        else {
+                            $("#getLcCodeExist").val("");
+                        }
+
+                        $("#getBulkNumberExist").val(dataBulk.output_bulk_no);
+
+                        var BulkNumb = $("#getBulkNumberExist").val();
+                        if (null != BulkNumb) {
+
+                            $.ajax({
+                                type: 'POST',
+                                url: 'GetDatabySearchSFF',
+                                data: {
+                                    CANo: $("#SearchCANumber").val(), CAName: $("#SearchCAName").val(), SANo: $("#SearchSANumber").val(), SAName: $("#SearchSAName").val(),
+                                    BANo: $("#SearchBANumber").val(), BAName: $("#SearchBAName").val(), AscCd: $("#getASCCodeExist").val(), EmpId: $("#getEmpIDExist").val(),
+                                    LocatCd: $("#getLcCodeExist").val(), BulkNo: $("#getBulkNumberExist").val()
+                                },
+                                dataType: 'json',
+                                async: false,
+                                success: function (dataIns) {
+
+                                    if ((null != dataIns.output_bulk_no || "" != dataIns.output_bulk_no) && "-1" != dataIns.output_return_code) {
+                                        $('#getAccountCatExist').val(dataIns.output_account_category);
+                                        $('#getAccountSubCatExist').val(dataIns.output_account_sub_category);
+                                        $("#getIDCardNo").val(dataIns.o_id_card_no);
+                                        $("#getIDCardType").val(dataIns.o_id_card_type);
+                                        $("#getMobileNo").val(dataIns.o_Mobile_No);
+                                        if (null != $('#getAccountCatExist').val()) {
+                                            var EventName = $("#BulkEventPage").val();
+                                            var Accnt_Cat = $('#getAccountCatExist').val();
+
+                                            GoToRegisPkg(EventName);
+                                            /*
+                                            $("#ddlpkgPackName").data("kendoDropDownList").select(0);
+                                            $("#ddlpkgPackName").data("kendoDropDownList").dataSource.read({ AccountCat: Accnt_Cat });
+                                            */
+                                            GetPackageData(EventName);
+                                            Loading(0);
+                                        }
+                                        else {
+                                            Loading(0);
+                                            $("#modalretError").modal();
+
+                                        }
+
+                                    }
+                                    else if ("-1" == dataIns.output_return_code) {
+                                        Loading(0);
+                                        $("#modalretError").modal();
+                                        window.scrollTo(0, 0);
+                                    }
+                                    else {
+                                        Loading(0);
+                                        $("#modalretError").modal();
+                                        window.scrollTo(0, 0);
+                                    }
+
+                                },
+                                error: function (dataIns) {
+                                    Loading(0);
+                                    $("#modalretError").modal();
+                                }
+
+                            });
+
+
+                        } else {
+                            Loading(0);
+                            $("#modalretError").modal();
+                            window.scrollTo(0, 0);
+                        }
+
+
+                    } else {
+                        Loading(0);
+                        $("#modalretError").modal();
+                        window.scrollTo(0, 0);
+                    }
+
+                },
+                failure: function (msg) {
+                    Loading(0);
+                    $("#modalretError").modal();
+                    window.scrollTo(0, 0);
+                }
+
+            });
+
+        } else {
+            Loading(0);
+            $("#modalretError").modal();
+            window.scrollTo(0, 0);
+        }
+
+    }
+
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+</script>

@@ -1,0 +1,501 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+
+    string L_REDEEM_REGISTER = "";
+    string L_INPUT_INTERNET_NO = "";
+    string L_INPUT_ID_CARD_NO = "";
+    string L_SEND_DATA = "";
+
+    string L_REDEEM_HEADER = "";
+    string L_REDEEM_DETAIL = "";
+    string B_CLICK = "";
+    string L_INTERNET_NO = "";
+    string L_ITEM_CODE = "";
+    string B_REDEEM_CODE = "";
+    string L_ERR_CONTACT_CALL_CENTER = "";
+    string L_ERR_ALREADY_USE_ITEM = "";
+
+    string FBB_Con_LengthIDCardNumberID_CARD = "";
+    string FBB_Con_Input_ID_CARD = "";
+    
+    if (ViewBag.LabelFBBOR042 != null)
+    {
+        var LabelFBBOR042 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR042;
+
+        L_REDEEM_REGISTER = LabelFBBOR042.Any(c => c.Name == "L_REDEEM_REGISTER") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_REDEEM_REGISTER").DisplayValue : "";
+        L_INPUT_INTERNET_NO = LabelFBBOR042.Any(c => c.Name == "L_INPUT_INTERNET_NO") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_INPUT_INTERNET_NO").DisplayValue : "";
+        L_INPUT_ID_CARD_NO = LabelFBBOR042.Any(c => c.Name == "L_INPUT_ID_CARD_NO") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_INPUT_ID_CARD_NO").DisplayValue : "";
+        L_SEND_DATA = LabelFBBOR042.Any(c => c.Name == "L_SEND_DATA") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_SEND_DATA").DisplayValue : "";
+
+        L_REDEEM_HEADER = LabelFBBOR042.Any(c => c.Name == "L_REDEEM_HEADER") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_REDEEM_HEADER").DisplayValue : "";
+        L_REDEEM_DETAIL = LabelFBBOR042.Any(c => c.Name == "L_REDEEM_DETAIL") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_REDEEM_DETAIL").DisplayValue : "";
+        B_CLICK = LabelFBBOR042.Any(c => c.Name == "B_CLICK") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "B_CLICK").DisplayValue : "";
+        L_INTERNET_NO = LabelFBBOR042.Any(c => c.Name == "L_INTERNET_NO") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_INTERNET_NO").DisplayValue : "";
+        L_ITEM_CODE = LabelFBBOR042.Any(c => c.Name == "L_ITEM_CODE") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_ITEM_CODE").DisplayValue : "";
+        B_REDEEM_CODE = LabelFBBOR042.Any(c => c.Name == "B_REDEEM_CODE") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "B_REDEEM_CODE").DisplayValue : "";
+        L_ERR_CONTACT_CALL_CENTER = LabelFBBOR042.Any(c => c.Name == "L_ERR_CONTACT_CALL_CENTER") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_ERR_CONTACT_CALL_CENTER").DisplayValue : "";
+        L_ERR_ALREADY_USE_ITEM = LabelFBBOR042.Any(c => c.Name == "L_ERR_ALREADY_USE_ITEM") ? LabelFBBOR042.FirstOrDefault(c => c.Name == "L_ERR_ALREADY_USE_ITEM").DisplayValue : "";
+    }
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_Con_LengthIDCardNumberID_CARD = FbbConstant.Any(f => f.Field == "Length ID Card Number ID_CARD") ? FbbConstant.First(f => f.Field == "Length ID Card Number ID_CARD").Validation : "";
+        
+        FBB_Con_Input_ID_CARD = FbbConstant.Any(f => f.Field == "Input ID_CARD") ? FbbConstant.First(f => f.Field == "Input ID_CARD").Validation : "";
+    }
+    
+    
+    string languagePage = Session["CurrentUICulture"].ToString() == "1" ? "th" : "en";
+}
+
+<style type="text/css">
+    .section1 {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 1366px;
+        background: url('../Content/EsportsRedeem/images/esport_bg1.jpg');
+        background-size: cover;
+    }
+
+    .section1 .row {
+        max-width: 1200px;
+    }
+
+    .font_green {
+        color: #b2d234;
+    }
+
+    .font_red {
+        color: #d9242e;
+    }
+
+    .form_start {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 331px;
+    }
+
+    .form_row1 {
+        margin-bottom: 10px;
+    }
+
+    .form_row1-col1 {
+        float: left;
+    }
+
+    .form_row1-col2 {
+        color: #fff;
+        font-family: 'db_heaventmed_cond';
+        font-size: 22px;
+        font-style: italic;
+        line-height: 24px;
+    }
+
+    .form_row2 {
+        width: 331px;
+        height: 60px;
+        background: url('../Content/EsportsRedeem/images/form_04.png');
+        margin-bottom: 7px;
+        padding-left: 44px;
+        padding-top: 15px;
+    }
+
+    .form_row3 {
+        width: 331px;
+        height: 60px;
+        background: url('../Content/EsportsRedeem/images/form_06.png');
+        padding-left: 26px;
+        padding-top: 15px;
+    }
+
+    .form_row2-input {
+        background-color: #252525;
+        color: #fff;
+        border: none;
+        line-height: 30px;
+        font-size: 21px;
+        width: 260px;
+    }
+
+    .form_row2-input::placeholder {
+        color: #fff;
+    }
+
+    .form_row3-input {
+        background-color: #252525;
+        color: #fff;
+        border: none;
+        line-height: 30px;
+        font-size: 21px;
+        width: 260px;
+    }
+
+    .form_row3-input::placeholder {
+        color: #fff;
+    }
+
+    .form_row_validate{
+        width: 331px;
+        padding-left: 100px;
+        color: #f66;
+        font-family: 'db_heaventmed_cond';
+        font-size: 14px;
+    }
+
+    .wrap-btn {
+        margin-left: 105px;
+        background: url('../Content/EsportsRedeem/images/form_08.png');
+        width: 226px;
+        height: 96px;
+        padding-left: 32px;
+        padding-top: 15px;
+    }
+
+    #container a.send-btn , #container a.send-btn-none {
+        width: 163px;
+        height: 45px;
+        color: #000;
+        display: block;
+        font-family: 'db_heaventmed_cond';
+        font-size: 18px;
+        line-height: 45px;
+        text-align: center;
+    }
+
+    #container a.send-btn:hover {
+        color: #fff;
+        cursor: pointer;
+    }
+
+    #container a.send-btn-none:hover {
+        cursor: not-allowed;
+    }
+
+    input:focus::-webkit-input-placeholder {
+        color: transparent;
+    }
+
+    input:focus:-moz-placeholder {
+        color: transparent;
+    }
+    /* FF 4-18 */
+    input:focus::-moz-placeholder {
+        color: transparent;
+    }
+    /* FF 19+ */
+    input:focus:-ms-input-placeholder {
+        color: transparent;
+    }
+    /* IE 10+ */
+    @@media (max-width:1365px) {
+    }
+
+    @@media (max-width:767px) {
+        .section1 {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto;
+            max-width: 1366px;
+            background: url('../Content/EsportsRedeem/images/esport_bg1_720.jpg') #000;
+            background-size: cover;
+        }
+
+        .section1-space {
+            display: none;
+        }
+        #page_loginRedeem {
+            margin-top: 0px !important;
+            margin-bottom: 0px !important;
+        }
+    }
+</style>
+
+<div id="page_loginRedeem" style="margin-top: -68px; margin-bottom: -30px;">
+<section class="section1">
+    <div id="section1" class="row">
+        <div class="col-lr-12 col-fg-12 col-sm-12 col-ip-6 col-md-7 col-lg-7 col-de-7">
+            <picture>
+                <source media="(min-width: 768px)" srcset="~/Content/EsportsRedeem/images/space1.gif"/>
+                <img src="~/Content/EsportsRedeem/images/space720.gif" alt="ais responsive images">
+            </picture>
+        </div>
+        <div class="col-lr-12 col-fg-12 col-sm-12 col-ip-6 col-md-5 col-lg-5 col-de-5">
+            <div class="section1-space">
+                <img src="~/Content/EsportsRedeem/images/space2.gif" width="520" height="135" alt="" />
+            </div>
+            <div class="form_start">
+                <div class="form_row1">
+                    <span>
+                        <img src="~/Content/EsportsRedeem/images/form_01.png" width="71" height="20" alt="" /></span><span class="form_row1-col2">@L_REDEEM_REGISTER</span>
+                </div>
+                <div class="form_row2">
+                    <input maxlength="10" class="form_row2-input" id="MobileNo" type="text" placeholder="@L_INPUT_INTERNET_NO">
+                </div>
+                <div class="form_row_validate" id="validatefor-MobileNo"></div>
+                <div class="form_row3">
+                    <input maxlength="@FBB_Con_LengthIDCardNumberID_CARD" class="form_row3-input" id="IDCardNo" type="text" placeholder="@L_INPUT_ID_CARD_NO">
+                </div>
+                <div class="form_row_validate" id="validatefor-IDCardNo"></div>
+                <div class="form_row4">
+                    <div class="wrap-btn">
+                        <a href="javascript:void(0)" class="btn1 send-btn-none">@L_SEND_DATA&nbsp;&nbsp;<img src="~/Content/EsportsRedeem/images/arr-right.png" width="7" height="14" alt="" /></a>
+                        <a onclick="CheckRedeem();" class="btn2 send-btn" style="display:none;">@L_SEND_DATA&nbsp;&nbsp;<img src="~/Content/EsportsRedeem/images/arr-right.png" width="7" height="14" alt="" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#MobileNo").val("");
+        $("#IDCardNo").val("");
+
+        $("#MobileNo").keyup(function () {
+            CheckKeyUps("MobileNo", "[0-9]");
+            checkBeforeProcess();
+        });
+
+        $("#IDCardNo").keyup(function () {
+            CheckKeyUps("IDCardNo", "@FBB_Con_Input_ID_CARD");
+            checkBeforeProcess();
+        });
+    });
+
+    function CheckRedeem() {
+        var chk = ValidateInputLogin();
+        if (chk) {
+            LockScreen(true);
+            $.ajax({
+                url: '/RedeemCode/CheckRedeem',
+                data: { inMobileNo: $('#MobileNo').val(), inIDCardNo: $('#IDCardNo').val() },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+
+                    var data = response.data;
+                    if (data.outMessage == "SUCCESS") {
+                        SetPersonalInfoRedeemCode(data);
+                        CreateBoxPackRedeem("@languagePage");
+                    }
+                    else {
+                        LockScreen(false);
+                        $("#msgAlert").html("@L_ERR_CONTACT_CALL_CENTER");
+                        popupShow2("popup_pack_alert");
+                    }
+                }
+                ,
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log("ERROR Call url: '/RedeemCode/CheckRedeem': ", xhr.responseText);
+                    LockScreen(false);
+                }
+            });
+        }
+    }
+
+    function ValidateInputLogin() {
+        var chk = true;
+
+        if ($.trim($("#MobileNo").val()) == '') {
+            $("#validatefor-" + "MobileNo").html("<i class='fa fa-warning i-red'></i> " + "This field is required.");
+            chk = false;
+        }
+        else if ($("#MobileNo").val().length.toString() != "10") {
+            $("#validatefor-" + "MobileNo").html("<i class='fa fa-warning i-red'></i> " + "This field is required 10 character.");
+            chk = false;
+        }
+        else {
+            $("#validatefor-" + "MobileNo").html("");
+        }
+
+        if ($.trim($("#IDCardNo").val()) == '') {
+            $("#validatefor-" + "IDCardNo").html("<i class='fa fa-warning i-red'></i> " + "This field is required.");
+            chk = false;
+        }
+        else if ($("#IDCardNo").val().length.toString() != "@FBB_Con_LengthIDCardNumberID_CARD") {
+            $("#validatefor-" + "IDCardNo").html("<i class='fa fa-warning i-red'></i> " + "This field is required " + "@FBB_Con_LengthIDCardNumberID_CARD" + " character.");
+            chk = false;
+        }
+        else {
+            $("#validatefor-" + "IDCardNo").html("");
+        }
+
+        return chk;
+    }
+
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function checkBeforeProcess() {
+        if ($("#IDCardNo").val() != "" && $("#MobileNo").val() != "")
+        {
+            $(".btn1").hide();
+            $(".btn2").show();
+        }
+        else {
+            $(".btn2").hide();
+            $(".btn1").show();
+        }
+    }
+
+    function SetPersonalInfoRedeemCode(data)
+    {
+        $("#hdMobileNo").val($("#MobileNo").val());
+        $("#hdIDCardNo").val($("#IDCardNo").val());
+        $("#hdContactMobileNo").val(data.outContactMobileNo);
+        $("#hdproductCd").val(data.outProductMainData.productCd);
+        $("#hdproductClass").val(data.outProductMainData.productClass);
+    }
+
+    function CreateBoxPackRedeem(language)
+    {
+        $.ajax({
+            url: '/RedeemCode/GetConfigRedeemCode',
+            data: { inLanguage: language, inMobileNo: $('#MobileNo').val(), inIDCardNo: $('#IDCardNo').val() },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                if (response != null) {
+                    var data = response;
+                    SetBoxPackRedeem(data);
+                    CreatePopupPackRedeem(data);
+
+                    LockScreen(false);
+                    $("#page_loginRedeem").hide();
+                    $("#page_packRedeem").show();
+                    $("#page_packRedeem").css('display', 'block');
+
+                    // CSS set height redeem
+                    $.when($("#page_packRedeem").show()).then(function (data, textStatus, jqXHR) {
+                        var css_height_max_div_redeem = $('.box-pack-es-redeem').map(function () { return $(this).height(); }).get();
+                        var css_height_div_redeem = Math.max.apply(Math, css_height_max_div_redeem.map(function (o) { return o; }));
+                        $('.box-pack-es-redeem').css('height', css_height_div_redeem);
+                    });
+                }
+                else {
+                    LockScreen(false);
+                    $("#msgAlert").html("@L_ERR_CONTACT_CALL_CENTER");
+                    popupShow2("popup_pack_alert");
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                LockScreen(false);
+                console.log("ERROR Call url: '/RedeemCode/CheckRedeem': ", xhr.responseText);
+                $("#msgAlert").html("@L_ERR_CONTACT_CALL_CENTER");
+                popupShow2("popup_pack_alert");
+            }
+        });
+    }
+
+    function SetBoxPackRedeem(data)
+    {
+        var countData = data.length;
+        var strbuilder = "";
+
+        for (var i = 0; i < countData; i++)
+        {
+            var modIndex = (i + 1) % 3;
+            var boxDivcss_pack_es_redeem_desc = modIndex == 0 ? "3" : modIndex.toString();
+
+            strbuilder += "<div class='col-lr-12 col-fg-12 col-sm-12 col-ip-4 col-md-4 col-lg-4 col-de-4'>";
+            strbuilder += "<div class='box-pack-es-redeem'>";
+            strbuilder += "<div class='text_center'>";
+            strbuilder += "<img src='" + data[i].game_item_img_base64 + "' style='width: 100%; height: auto; margin: 0 auto;' alt='' />";
+
+            if(data[i].game_name == "BLADE_AND_SOUL")
+                strbuilder += "<div class='pack-es-redeem-title pack-es-redeem-title-th'>" + data[i].item_name + "</div>";
+            else
+                strbuilder += "<div class='pack-es-redeem-title'>" + data[i].item_name +"</div>";
+
+            strbuilder += "<div class='pack-es-redeem-prize'>" + data[i].item_price +"</div>";
+            strbuilder += "</div>";
+            strbuilder += "<div class='pack-es-redeem-desc pack-es-redeem-desc" + boxDivcss_pack_es_redeem_desc + "'>";
+            strbuilder += data[i].item_detail;
+            strbuilder += "</div>";
+            strbuilder += "</div>";
+            strbuilder += "<div class='box-pack-es-redeem2'>";
+            strbuilder += "<div class='wrap-btn2'>";
+            strbuilder += "<a onclick='onClickPopupRedeem(" + (i + 1).toString() + ");' class='send-btn2'>@B_CLICK&nbsp;&nbsp;";
+            strbuilder += "<img src='/Content/EsportsRedeem/images/arr-right.png' width='7' height='14' alt='' />";
+            strbuilder += "</a>";
+            strbuilder += "</div>";
+            strbuilder += "</div>";
+            strbuilder += "</div>";
+        }
+
+        document.getElementById('divBoxPackESRedeem').innerHTML = strbuilder;
+    }
+
+    function CreatePopupPackRedeem(data)
+    {
+        var countData = data.length;
+        var strbuilder = "";
+
+        for (var i = 0; i < countData; i++)
+        {
+            strbuilder += "<div class='Absolute-Center is-Fixed' id='popup_pack" + (i + 1).toString() + "'>";
+            strbuilder += "<div class='popup_pack_close' onclick='popupHide(\"popup_pack" + (i + 1).toString() + "\"); onClickChangeRedeemItem(" + (i + 1).toString() + " , true);'></div>";
+
+            //div img popup
+            if (data[i].game_name == "BLADE_AND_SOUL")
+                strbuilder += "<div class='blade_soul_mo-img'>";
+            else
+                strbuilder += "<div class='fifa_mo-img'>";
+
+            //img popup game
+            if (data[i].game_name == "FIFA_ONLINE")
+                strbuilder += "<img src='" + data[i].game_popup_img_base64 + "' width='415' height='76' alt='' />";
+            else if (data[i].game_name == "BLADE_AND_SOUL")
+                strbuilder += "<img src='" + data[i].game_popup_img_base64 + "' width='361' height='171' alt='' />";
+            else if (data[i].game_name == "POINT_BLANK")
+                strbuilder += "<img src='" + data[i].game_popup_img_base64 + "' width='420' height='48' alt='' />";
+            else
+                strbuilder += "<img src='" + data[i].game_popup_img_base64 + "' width='415' height='76' alt='' />";
+
+            strbuilder += "</div>";
+            strbuilder += "<div class='popup_title'>" + "@L_INTERNET_NO" + "</div>";
+            strbuilder += "<div id='' class='popup_desc'>" + $("#hdMobileNo").val() + "</div>";
+            strbuilder += "<div class='popup_title'>" + "@L_ITEM_CODE" + "</div>";
+            strbuilder += "<div id='divItemCode" + (i + 1).toString() + "' class='popup_desc'>";
+            
+            strbuilder += "</div>";
+            strbuilder += "<div class='wrap-btn2-popup'>";
+            strbuilder += "<a onclick='onClickChangeRedeemItem(" + (i + 1).toString() + ",false)' class='send-btn2-popup'>" + "@B_REDEEM_CODE" + "&nbsp;&nbsp;";
+            strbuilder += "<img src='/Content/EsportsRedeem/images/arr-right.png' width='7' height='14' alt='' />";
+            strbuilder += "</a>";
+            strbuilder += "</div>";
+            strbuilder += "<input id='hdGameName" + (i + 1).toString() + "' type='text' hidden='hidden' value='" + data[i].game_name + "' />";
+            strbuilder += "<input id='hdUrlRedeem" + (i + 1).toString() + "' type='text' hidden='hidden' value='" + data[i].url_redeem + "' />";
+            strbuilder += "<input id='hdSMSmessage" + (i + 1).toString() + "' type='text' hidden='hidden' value='" + data[i].sms_message + "' />";
+            strbuilder += "<input id='hdUrlReqBarcode" + (i + 1).toString() + "' type='text' hidden='hidden' value='" + data[i].url_req_privilege_barcode + "' />";
+            strbuilder += "<input id='hdUsername" + (i + 1).toString() + "' type='text' hidden='hidden' value='" + data[i].user_name + "' />";
+            strbuilder += "<input id='hdPassword" + (i + 1).toString() + "' type='text' hidden='hidden' value='" + data[i].password + "' />";
+            strbuilder += "<input id='hdIPaddress" + (i + 1).toString() + "' type='text' hidden='hidden' value='" + data[i].ip_address + "' />";
+            strbuilder += "<input id='hdShortCode" + (i + 1).toString() + "' type='text' hidden='hidden' value='" + data[i].short_code + "' />";
+            strbuilder += "<input id='hdReqBarcode" + (i + 1).toString() + "' type='text' hidden='hidden' value='" + data[i].req_privilege_barcode + "' />";
+            strbuilder += "</div>";
+        }
+
+        $(strbuilder).insertAfter($("#popup_bg"));
+    }
+
+</script>
+

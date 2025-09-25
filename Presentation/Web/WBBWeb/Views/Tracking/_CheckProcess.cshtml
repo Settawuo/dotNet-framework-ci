@@ -1,0 +1,728 @@
+﻿@using AIRNETEntity.PanelModel
+@model AIRNETEntity.PanelModel.TrackingPanelModel
+@{   
+    string L_CARD_NO = "";
+    string B_CONFIRM = "";
+    string L_FILL_IDCARD = "";
+    string L_REG_STATE = "";
+    string L_CUST_REG_TITLE = "";
+    string L_CUST_SELECTED_NAME = "";
+    string L_TRACKING_STATE_1 = "";
+    string L_TRACKING_STATE_2 = "";
+    string L_TRACKING_STATE_3 = "";
+    string L_TRACKING_STATE_4 = "";
+    string L_TRACKING_QUESTION = "";
+    string L_BACK_TO_MAINPAGE = "";
+    string L_TRACKING_REG_DATE = "";
+    string L_TRACKING_PACKAGE = "";
+    string L_TRACKING_HOUSE_NO = "";
+    string L_TRACKING_INCOVERAGE_1 = "";
+    string L_TRACKING_INCOVERAGE_2 = "";
+    string L_TRACKING_CANNOT_INSTALL = "";
+    string L_TRACKING_COMPLATE_INSTALL = "";
+    string L_TRACKING_NOT_FOUND = "";
+    string L_TRACKING_OUTCOVERAGE_1 = "";
+    string L_TRACKING_OUTCOVERAGE_2 = "";
+    string L_TRACKING_APPOINTMENT_DATE_1 = "";
+    string L_TRACKING_APPOINTMENT_DATE_2 = "";
+    string L_TRACKING_APPOINTMENT_DATE_3 = "";
+    string L_TRACKING_CANNOT_INSTALL_2 = "";
+
+    string lCARD_NO = "";
+    string L_FIRST_NAME = "";
+    string L_LAST_NAME = "";
+    string L_TRACKING_OR = "";
+    string L_REDIRECT = "";
+
+    string FBB_CON_CHAR_NOT_ON_NAME = "";
+    string FBB_CON_ID_CARD_NUMBER_NON_RES = "";
+    string FBB_Con_CharNotOnNameLastName = "";
+    
+    string FBB_Con_Input_GOV_LET = "";
+    string FBB_Con_Input_Company_Name = "";
+    string FBB_Con_Length_ID_Card_Number_GOV_LET = "";
+    string FBB_Con_Length_Name_Lastname = "";
+
+    string L_TRACKING_HEADER = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var fbbConstant = (List<WBBEntity.PanelModels.FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_CON_CHAR_NOT_ON_NAME = fbbConstant.Any(f => f.Field == "Char Not on Name") ? fbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        FBB_CON_ID_CARD_NUMBER_NON_RES = fbbConstant.Any(f => f.Field == "ID Card Number Non-Res") ? fbbConstant.First(f => f.Field == "ID Card Number Non-Res").Validation : "";        
+        FBB_Con_CharNotOnNameLastName = fbbConstant.Any(f => f.Field == "Char Not on Name LastName") ? fbbConstant.First(f => f.Field == "Char Not on Name LastName").Validation : "";
+
+        FBB_Con_Input_GOV_LET = fbbConstant.Any(f => f.Field == "Input GOV_LET") ? fbbConstant.First(f => f.Field == "Input GOV_LET").Validation : "";
+        FBB_Con_Input_Company_Name = fbbConstant.Any(f => f.Field == "Input_Company_Name") ? fbbConstant.First(f => f.Field == "Input_Company_Name").Validation : "";
+        FBB_Con_Length_ID_Card_Number_GOV_LET = fbbConstant.Any(f => f.Field == "Length ID Card Number GOV LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number GOV LET").Validation : "";
+        FBB_Con_Length_Name_Lastname = fbbConstant.Any(f => f.Field == "Length_Name_Lastname") ? fbbConstant.First(f => f.Field == "Length_Name_Lastname").Validation : "";
+    }
+
+    if (ViewBag.LabelWBB != null)
+    {
+        var LabelWBB = (List<LovScreenValueModel>)ViewBag.LabelWBB;
+
+        L_CARD_NO = LabelWBB.Any(c => c.Name == "L_CARD_NO") ? LabelWBB.First(c => c.Name == "L_CARD_NO").DisplayValue : "";
+        B_CONFIRM = LabelWBB.Any(c => c.Name == "B_CONFIRM") ? LabelWBB.First(c => c.Name == "B_CONFIRM").DisplayValue : "";
+        L_FILL_IDCARD = LabelWBB.Any(c => c.Name == "L_FILL_IDCARD") ? LabelWBB.First(c => c.Name == "L_FILL_IDCARD").DisplayValue : "";
+        L_REG_STATE = LabelWBB.Any(c => c.Name == "L_REG_STATE") ? LabelWBB.First(c => c.Name == "L_REG_STATE").DisplayValue : "";
+        L_CUST_REG_TITLE = LabelWBB.Any(c => c.Name == "L_CUST_REG_TITLE") ? LabelWBB.First(c => c.Name == "L_CUST_REG_TITLE").DisplayValue : "";
+        L_CUST_SELECTED_NAME = LabelWBB.Any(c => c.Name == "L_CUST_SELECTED_NAME") ? LabelWBB.First(c => c.Name == "L_CUST_SELECTED_NAME").DisplayValue : "";
+        L_TRACKING_STATE_1 = LabelWBB.Any(c => c.Name == "L_TRACKING_STATE_1") ? LabelWBB.First(c => c.Name == "L_TRACKING_STATE_1").DisplayValue : "";
+        L_TRACKING_STATE_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_STATE_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_STATE_2").DisplayValue : "";
+        L_TRACKING_STATE_3 = LabelWBB.Any(c => c.Name == "L_TRACKING_STATE_3") ? LabelWBB.First(c => c.Name == "L_TRACKING_STATE_3").DisplayValue : "";
+        L_TRACKING_STATE_4 = LabelWBB.Any(c => c.Name == "L_TRACKING_STATE_4") ? LabelWBB.First(c => c.Name == "L_TRACKING_STATE_4").DisplayValue : "";
+        L_TRACKING_QUESTION = LabelWBB.Any(c => c.Name == "L_TRACKING_QUESTION") ? LabelWBB.First(c => c.Name == "L_TRACKING_QUESTION").DisplayValue : "";
+        L_BACK_TO_MAINPAGE = LabelWBB.Any(c => c.Name == "L_BACK_TO_MAINPAGE") ? LabelWBB.First(c => c.Name == "L_BACK_TO_MAINPAGE").DisplayValue : "";
+        L_TRACKING_REG_DATE = LabelWBB.Any(c => c.Name == "L_TRACKING_REG_DATE") ? LabelWBB.First(c => c.Name == "L_TRACKING_REG_DATE").DisplayValue : "";
+        L_TRACKING_PACKAGE = LabelWBB.Any(c => c.Name == "L_TRACKING_PACKAGE") ? LabelWBB.First(c => c.Name == "L_TRACKING_PACKAGE").DisplayValue : "";
+        L_TRACKING_HOUSE_NO = LabelWBB.Any(c => c.Name == "L_TRACKING_HOUSE_NO") ? LabelWBB.First(c => c.Name == "L_TRACKING_HOUSE_NO").DisplayValue : "";
+        L_TRACKING_INCOVERAGE_1 = LabelWBB.Any(c => c.Name == "L_TRACKING_INCOVERAGE_1") ? LabelWBB.First(c => c.Name == "L_TRACKING_INCOVERAGE_1").DisplayValue : "";
+        L_TRACKING_INCOVERAGE_1 = L_TRACKING_INCOVERAGE_1.Replace("\n", "");
+        L_TRACKING_INCOVERAGE_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_INCOVERAGE_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_INCOVERAGE_2").DisplayValue : "";
+        L_TRACKING_INCOVERAGE_2 = L_TRACKING_INCOVERAGE_2.Replace("\n", "");
+        L_TRACKING_CANNOT_INSTALL = LabelWBB.Any(c => c.Name == "L_TRACKING_CANNOT_INSTALL") ? LabelWBB.First(c => c.Name == "L_TRACKING_CANNOT_INSTALL").DisplayValue : "";
+        L_FILL_IDCARD = LabelWBB.Any(c => c.Name == "L_FILL_IDCARD") ? LabelWBB.First(c => c.Name == "L_FILL_IDCARD").DisplayValue : "";
+        L_REG_STATE = LabelWBB.Any(c => c.Name == "L_REG_STATE") ? LabelWBB.First(c => c.Name == "L_REG_STATE").DisplayValue : "";
+        L_CUST_REG_TITLE = LabelWBB.Any(c => c.Name == "L_CUST_REG_TITLE") ? LabelWBB.First(c => c.Name == "L_CUST_REG_TITLE").DisplayValue : "";
+        L_CUST_SELECTED_NAME = LabelWBB.Any(c => c.Name == "L_CUST_SELECTED_NAME") ? LabelWBB.First(c => c.Name == "L_CUST_SELECTED_NAME").DisplayValue : "";
+
+        L_TRACKING_COMPLATE_INSTALL = LabelWBB.Any(c => c.Name == "L_TRACKING_COMPLATE_INSTALL") ? LabelWBB.First(c => c.Name == "L_TRACKING_COMPLATE_INSTALL").DisplayValue : "";
+        L_TRACKING_NOT_FOUND = LabelWBB.Any(c => c.Name == "L_TRACKING_NOT_FOUND") ? LabelWBB.First(c => c.Name == "L_TRACKING_NOT_FOUND").DisplayValue : "";
+        L_TRACKING_OUTCOVERAGE_1 = LabelWBB.Any(c => c.Name == "L_TRACKING_OUTCOVERAGE_1") ? LabelWBB.First(c => c.Name == "L_TRACKING_OUTCOVERAGE_1").DisplayValue : "";
+        L_TRACKING_OUTCOVERAGE_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_OUTCOVERAGE_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_OUTCOVERAGE_2").DisplayValue : "";
+
+        L_TRACKING_APPOINTMENT_DATE_1 = LabelWBB.Any(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_1") ? LabelWBB.First(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_1").DisplayValue : "";
+        L_TRACKING_APPOINTMENT_DATE_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_2").DisplayValue : "";
+        L_TRACKING_APPOINTMENT_DATE_3 = LabelWBB.Any(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_3") ? LabelWBB.First(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_3").DisplayValue : "";
+
+        lCARD_NO = LabelWBB.Any(c => c.Name == "L_CARD_NO") ? LabelWBB.First(c => c.Name == "L_CARD_NO").DisplayValue : "";
+        L_FIRST_NAME = LabelWBB.Any(c => c.Name == "L_FIRST_NAME") ? LabelWBB.First(c => c.Name == "L_FIRST_NAME").DisplayValue : "";
+        L_LAST_NAME = LabelWBB.Any(c => c.Name == "L_LAST_NAME") ? LabelWBB.First(c => c.Name == "L_LAST_NAME").DisplayValue : "";
+        L_TRACKING_OR = LabelWBB.Any(c => c.Name == "L_TRACKING_OR") ? LabelWBB.First(c => c.Name == "L_TRACKING_OR").DisplayValue : "";
+
+        L_REDIRECT = LabelWBB.Any(c => c.Name == "L_REDIRECT") ? LabelWBB.First(c => c.Name == "L_REDIRECT").DisplayValue : "";
+        L_TRACKING_CANNOT_INSTALL_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_CANNOT_INSTALL_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_CANNOT_INSTALL_2").DisplayValue : "";
+        L_TRACKING_HEADER = LabelWBB.Any(c => c.Name == "L_TRACKING_HEADER") ? LabelWBB.First(c => c.Name == "L_TRACKING_HEADER").DisplayValue : "";
+
+
+    }
+
+}
+<link href="~/Content/css/Dialog-theme/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" />
+<script src="~/Scripts/js/jquery-1.8.3.js"></script>
+<script src="~/Scripts/js/jquery-ui-1.9.2.custom.min.js"></script>
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + "," + formToken;
+    }
+}
+
+<style type="text/css" media="screen">
+    
+    /*Dialog*/
+
+    .ui-dialog-title {
+        font-size:14px;
+    }
+
+    .ui-widget .ui-widget {
+        font-size:14px;
+    }
+
+    .ui-dialog .ui-dialog-buttonpane { 
+        text-align: center;
+    }
+
+    .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { 
+        float: none;
+    }
+
+    .ui-widget-overlay {
+        background-image:none;
+    }
+
+    /*Datatable in Dialog*/
+
+    table.dataTable thead th, table.dataTable thead td {
+        border-bottom: 1px solid #d6d6d6 !important; 
+    }
+
+    .dataTables_wrapper.no-footer .dataTables_scrollBody {
+        border-bottom: 1px solid #d6d6d6 !important;        
+    }   
+      
+    .dataTables_filter {
+        margin: 6px 105px 15px 0px;    
+    }
+
+    .sorting_1 {
+        line-height:16px;  
+    }
+  
+    /* Paging in Display Page */
+    .track_paging {
+        text-align: center;
+        text-decoration: none;
+        padding: 2px 6px;
+        color: black;
+    }
+
+    .track_paging_select {
+        background-color: #82ad47;
+        text-align: center;
+        text-decoration: none;
+        padding: 2px 6px;
+        color: white;
+    }
+    
+    /*For this page*/
+    .t-font {
+        font-size:14px;
+    }
+
+    .pp{
+        line-height:10px;
+    }
+
+
+</style>
+
+<link href="~/Content/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
+<link href="~/Content/css/jquery.dataTables.css" rel="stylesheet" />
+<link href="~/Content/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/js/jquery.dataTables.js"></script>
+
+
+<div id="CheckProcessPage">
+    <div class="header">
+        <div style="float: left; padding-top: 75px;">
+
+            @if ((string)ViewBag.Language == "TH")
+            {             
+                <img src="~/Content/images/tracking/status-1.png" />            
+            }
+            else
+            {            
+                <img src="~/Content/images/tracking/status-2.png" />           
+            }
+
+        </div>
+        <div class="img-logo" style="float: right;">
+            <img src="~/Content/src/img-logo.png" />
+        </div>
+    </div>
+
+    <div class="form" style="min-height: 0px; margin-bottom: 30px;">
+
+        <div style="padding-top: 54px; text-align: center; background-image: url('../Content/images/tracking/title-bg.png'); background-repeat: no-repeat; background-position: top; width: 840px; height: 80px;">
+            <label style="font-size: 14px; color: white;">@L_FILL_IDCARD</label>
+        </div>
+        <div style="margin-left: 316px;">
+            <p class="pp" id="ptxtIDCardType"></p>
+            <input type="text" class="textField" placeholder="@lCARD_NO" title="@lCARD_NO" maxlength="@FBB_Con_Length_ID_Card_Number_GOV_LET" id="txtIDCardType" />
+            <i id="txtIDCardType-require"></i>
+        </div>
+
+        <div style="padding-top: 2px; padding-right: 1px; margin-left: 2px; text-align: center; background-image: url('../Content/images/tracking/or_1.png'); background-repeat: no-repeat; background-position: top; width: 840px; height: 45px;">
+            <label style="font-size: 14px; color: white;">@L_TRACKING_OR</label>
+        </div>
+
+        <div style="margin-left: 316px;">
+            <p class="pp" id="ptxtFirstName"></p>
+            <input type="text" class="textField" placeholder="@L_FIRST_NAME" title="@L_FIRST_NAME" maxlength="@FBB_Con_Length_Name_Lastname" id="txtFirstName"/>
+            <i id="txtFirstName-require"></i>
+        </div>
+        <div style="margin-left: 316px;">
+            <p class="pp" id="ptxtLastName"></p>
+            <input type="text" class="textField" placeholder="@L_LAST_NAME" title="@L_LAST_NAME" maxlength="@FBB_Con_Length_Name_Lastname" id="txtLastName"/>
+            <i id="txtLastName-require"></i>
+        </div>
+
+        <div style="text-align: center; margin-left: -30px;">
+            <ul id="errMsg" class="i-red"></ul>
+        </div>
+
+        <div style="padding-bottom: 50px;">
+            <img src="~/Content/src/line-title.png" />
+            <div style="float: right;">
+                <a id="btnNextToDisplay" class="greenButton" onclick="nextToDisplayResult()">@B_CONFIRM</a>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+
+    <div id="dialog-form" title="" style="width:100%; overflow-x:visible; overflow-y:visible;">
+                      
+            <table id="myDataTable" class="display t-font" style="width:400px">                
+                <thead style="background-color:#d6d6d6; line-height:5px;" >                
+                </thead>
+                <tbody style=" line-height:7px;">                        
+                </tbody>
+            </table>
+        
+    </div>
+</div>
+
+<script>
+
+    var opt = {
+        autoOpen: false,
+        height: 310,
+        minHeight: 310,
+        maxHeight: 310,
+        width: 450,
+        minWidth: 450,
+        maxWidth: 450,
+        modal: true,
+        buttons: {
+            "ยกเลิก": function () {
+                $(this).dialog("close");
+            }
+        }
+        //close: function () {
+
+        //}
+    };
+
+    $(function () {
+        var ie = (function () {
+
+            var undef,
+                v = 3,
+                div = document.createElement('div'),
+                all = div.getElementsByTagName('i');
+
+            while (
+                div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',
+                all[0]
+            );
+
+            return v > 4 ? v : undef;
+
+        }());
+
+        if (ie != undefined && ie <= 8) {
+            $("#ptxtIDCardType").text("@lCARD_NO");
+            $("#ptxtFirstName").text("@L_FIRST_NAME");
+            $("#ptxtLastName").text("@L_LAST_NAME");
+        }
+
+        var l_firstname = '@L_FIRST_NAME'; l_firstname = l_firstname.replace('*', '');
+        var l_lastname = '@L_LAST_NAME'; l_lastname = l_lastname.replace('*', '');
+
+        $('#myDataTable').dataTable({
+            "oLanguage": {
+                "sSearch": "<i class='fa fa-search' style='color:#bababa;'></i>"
+            },
+            "columns": [
+               { "title": l_firstname, "width": "25%" },
+               { "title": l_lastname, "width": "25%" },
+            ],
+            //"bLengthChange": false,
+            //"sPaginationType": "full_numbers",
+            "bInfo": false,
+            //"iDisplayLength": 2,
+            "scrollY": "100px",
+            //"scrollX": true,
+            //"scrollCollapse": true,
+            "paging": false
+        });
+
+        $('#dialog-form').dialog(opt);
+
+        ////////////////////////////////////////////////////////////
+
+        function CheckKeyUp(id, RexStr) {
+            var strKey = $("#" + id).val();
+            var strBuilder = "";
+            var filter = new RegExp(RexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+            $("#" + id).val(strBuilder);
+        }
+
+        $('#txtIDCardType').keyup(function () {
+            CheckKeyUp("txtIDCardType", "@FBB_Con_Input_GOV_LET");
+        });
+
+        $('#txtFirstName').keyup(function () {
+            CheckKeyUp("txtFirstName", "@FBB_Con_Input_Company_Name");
+        });
+
+        $('#txtLastName').keyup(function () {
+            CheckKeyUp("txtLastName", "@FBB_Con_Input_Company_Name");
+        });
+    });
+
+    function onNameSelect(idcard, p_firstname, p_lastname) {
+
+        getOrderResult(idcard, p_firstname, p_lastname);
+        $("#CheckProcessPage").hide();
+        $("#DisplayResult").show();
+        $(".wrapSwitchLanguage").hide();
+
+        $("#dialog-form").dialog(opt).dialog("close");
+    }
+
+    function nextToDisplayResult() {
+
+        var validateChk = false;
+        var temp = "";
+
+        $('#txtIDCardType').removeClass("textFieldFalse").addClass("textField");
+        $('#txtFirstName').removeClass("textFieldFalse").addClass("textField");
+        $('#txtLastName').removeClass("textFieldFalse").addClass("textField");
+
+        $('#txtIDCardType-require').removeClass("fa fa-check").removeClass("fa fa-times");
+        $('#txtFirstName-require').removeClass("fa fa-check").removeClass("fa fa-times");
+        $('#txtLastName-require').removeClass("fa fa-check").removeClass("fa fa-times");
+
+        if ($('#txtIDCardType').val() == "") {
+            if ($('#txtFirstName').val() == "" && $('#txtLastName').val() == "") {
+                $('#txtIDCardType').removeClass("textField").addClass("textFieldFalse");
+                $('#txtIDCardType-require').addClass("fa fa-times").css('font-size', '20px').css('color', 'red');
+            }
+            else if ($('#txtFirstName').val() == "" && $('#txtLastName').val() != "") {
+                $('#txtFirstName').removeClass("textField").addClass("textFieldFalse");
+                $('#txtFirstName-require').addClass("fa fa-times").css('font-size', '20px').css('color', 'red');
+                $('#txtLastName-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+            }
+            else if ($('#txtFirstName').val() != "" && $('#txtLastName').val() == "") {
+                $('#txtLastName').removeClass("textField").addClass("textFieldFalse");
+                $('#txtLastName-require').addClass("fa fa-times").css('font-size', '20px').css('color', 'red');
+                $('#txtFirstName-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+            }
+            else {
+                //pass
+                $('#txtFirstName-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+                $('#txtLastName-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+                validateChk = true;
+            }
+        }
+        else {
+            //pass
+            $('#txtIDCardType-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+            validateChk = true;
+        }
+
+        if (validateChk) {
+            var idcard = $("#txtIDCardType").val();
+            var p_firstname = $("#txtFirstName").val();
+            var p_lastname = $("#txtLastName").val();
+            getCustomer(idcard, p_firstname, p_lastname);
+        }
+        else {
+            if ($("#LanguagePage").val() == "1")
+                temp = '<i class="fa fa-times-circle" style="font-size:20px; color:red"></i> &nbsp กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน';
+            else
+                temp = '<i class="fa fa-times-circle" style="font-size:20px; color:red"></i> &nbsp Please fill in all required fields.';
+        }
+
+        $("#errMsg").html(temp);
+    }
+
+    function saveLogTracking(idcard, p_firstname, p_lastname, p_retCode, p_returnOrder) {
+        idcard = $('#txtIDCardType').val();
+        $.ajax({
+            type: 'GET',
+            url: "/Tracking/SaveTrackingLog?IDCard=" + idcard + "&FirstName=" + p_firstname + "&LastName=" + p_lastname + "&resultCode=" + p_retCode + "&returnOrder=" + p_returnOrder,
+        });
+        return false;
+    }
+
+    function checkValue(val) {
+        if (val == undefined || val == null || val == "" || val == "-")
+            return "";
+        else
+            return val;
+    }
+
+    function getCustomer(idcard, p_firstname, p_lastname) {
+
+        $.ajax({
+            type: "GET",
+            url: "/Tracking/GetCustormes",
+            dataType: "json",
+            headers: {
+                'VerificationToken': $("#forgeryToken").val()
+            },
+            data: {
+                'idcard': idcard,
+                'firstname': p_firstname,
+                'lastname': p_lastname
+            },
+            success: function (data) {
+
+                $("#forgeryToken").val("@GetAntiForgeryToken()")
+
+                var strBuilder = '';
+                var itemsCount = 0;
+
+                var dataSet = [];
+
+                $.each(data, function (i, e) {
+                    itemsCount += 1;
+
+                    var first = checkValue(e.first_name);
+                    var last = checkValue(e.last_name);
+
+                    dataSet.push(['<a href="#" onclick="onNameSelect(\'\',\'' + first + '\',\'' + last + '\');" >' + first + '</a>', last,[]]);
+                });
+
+                if (itemsCount > 1) {
+                    var table = $('#myDataTable').dataTable();
+
+                    table.fnClearTable(0);
+                    table.fnAddData(dataSet);
+                    table.fnDraw();
+                    table.fnFilter('');
+
+                    $(".dataTables_scrollHeadInner table").css("width", "415px");
+                    $("#dialog-form").dialog(opt).dialog('close');
+                    $("#dialog-form").dialog(opt).dialog('open');
+                }
+                else if (itemsCount == 1) {
+                    getOrderResult(idcard, p_firstname, p_lastname);
+
+                    $("#CheckProcessPage").hide();
+                    $("#DisplayResult").show();
+                    $(".wrapSwitchLanguage").hide();
+                }
+                else {
+                    $("#errMsg").html('<i class="fa fa-times-circle" style="font-size:20px; color:red"></i> &nbsp @L_TRACKING_NOT_FOUND');
+                }
+            }, error: function (ex) {
+                alert(ex);
+            }
+        });
+    }
+
+    function getOrderResult(idcard, p_firstname, p_lastname) {
+
+        var returnOrder = '';
+        var retCode = "";
+        var p_location_code = '';
+        var p_asc_code = '';
+        var p_date_from = '';
+        var p_date_to = '';
+        var p_cust_name = '';
+        var p_user = 'CUSTOMER';
+
+        $.ajax({
+            type: "GET",
+            url: "/Tracking/GetOrders",
+            dataType: "json",
+            data: {
+                'idcard': idcard,
+                'firstname': p_firstname,
+                'lastname': p_lastname,
+                'location_code': p_location_code,
+                'asc_code': p_asc_code,
+                'date_from': p_date_from,
+                'date_to': p_date_to,
+                'cust_name': p_cust_name,
+                'user': p_user
+            },
+            success: function (data) {
+
+                var strBuilder = '<table style="font-size:12px;">';
+                var currentPage = 1;
+                var currentOrder = 1;
+                var idtable = "";
+                var nextpage_ = "";
+
+                $.each(data, function (i, e) {
+
+                    //circle_box1 => เขียว,circle_box2 => ฟ้า,circle_box3 => ส้ม,circle_box4 => เทา,
+
+                    returnOrder += e.order_no + '|';
+                    retCode = e.ret_code;
+
+                    var box1 = "circle_box2";
+                    var box2 = "circle_box2";
+                    var box3 = "circle_box2";
+                    var box4 = "circle_box2";
+
+                    var detailbox1 = '@L_TRACKING_REG_DATE ' + e.register_date_str + '<br />@L_TRACKING_PACKAGE ' + e.package_name_tha + '<br />@L_TRACKING_HOUSE_NO ' + e.house_no;
+                    var detailbox2 = '@L_TRACKING_INCOVERAGE_1';
+                    var detailbox3 = '';
+                    if (e.appointment_date_1_str != '-') { detailbox3 = '@L_TRACKING_APPOINTMENT_DATE_1  ' + e.appointment_date_1_str + '<br />'; }
+                    if (e.appointment_date_2_str != '-') { detailbox3 += '@L_TRACKING_APPOINTMENT_DATE_2  ' + e.appointment_date_2_str + '<br />'; }
+                    if (e.appointment_date_3_str != '-') { detailbox3 += '@L_TRACKING_APPOINTMENT_DATE_3  ' + e.appointment_date_3_str; }
+                    var detailbox4 = '@L_TRACKING_COMPLATE_INSTALL' + checkValue(e.complete_install_date_str);
+
+                    if (e.current_state == "Cancel Installation") {
+                        box1 = "circle_box1"; box2 = "circle_box1"; box3 = "circle_box1"; box4 = "circle_box3";
+                        if (e.cancel_install_reason_th != "" && e.cancel_install_reason_en != "") {
+                            if ($('#LanguagePage').val() == "1") {
+                                detailbox4 = e.cancel_install_reason_th;
+                            }
+                            else {
+                                detailbox4 = e.cancel_install_reason_en;
+                            }
+                        }
+                        else {
+                            detailbox4 = "@L_TRACKING_CANNOT_INSTALL_2";
+                        }
+                    }
+                    else if (e.current_state == "Cancel Appointment") {
+                        box1 = "circle_box1"; box2 = "circle_box1"; box3 = "circle_box3"; box4 = "circle_box4";
+
+                        if ($('#LanguagePage').val() == "1") {
+                            detailbox3 = e.cancel_install_reason_th;
+                        }
+                        else {
+                            detailbox3 = e.cancel_install_reason_en;
+                        }
+                        detailbox4 = '';
+                    }
+                    else if (e.current_state == "Checking coverage") {
+                        box1 = "circle_box1"; box2 = "circle_box2"; box3 = "circle_box2"; box4 = "circle_box2";
+                        detailbox2 = '';
+                        detailbox3 = '';
+                        detailbox4 = '';
+                    }
+                    else if (e.current_state == "Confirmed location") {
+                        if (e.coverage_flag != "N") {
+                            box1 = "circle_box1"; box2 = "circle_box1"; box3 = "circle_box2"; box4 = "circle_box2";
+                            detailbox2 = '@L_TRACKING_INCOVERAGE_1' + '<br />' + '@L_TRACKING_INCOVERAGE_2';
+                            detailbox3 = '';
+                            detailbox4 = '';
+                        }
+                        else {
+                            box1 = "circle_box1"; box2 = "circle_box3"; box3 = "circle_box4"; box4 = "circle_box4";
+                            detailbox2 = "@L_TRACKING_OUTCOVERAGE_1" + "<br/>" + "@L_TRACKING_OUTCOVERAGE_2";
+                            detailbox3 = '';
+                            detailbox4 = '';
+                        }
+                    }
+                    else if (e.current_state == "Auto Cancel Order") {
+                        if (e.coverage_flag != "N") {
+                            box1 = "circle_box1"; box2 = "circle_box1"; box3 = "circle_box2"; box4 = "circle_box2";
+                            detailbox2 = '';
+                            detailbox3 = '';
+                            detailbox4 = '';
+                        }
+                        else {
+                            box1 = "circle_box1"; box2 = "circle_box3"; box3 = "circle_box4"; box4 = "circle_box4";
+                            detailbox2 = '';
+                            detailbox3 = '';
+                            detailbox4 = '';
+                        }
+                    }
+                    else if (e.current_state == "Appointment") {
+                        box1 = "circle_box1"; box2 = "circle_box1"; box4 = "circle_box2";
+                        if ((e.appointment_date_1_str != undefined) || (e.appointment_date_2_str != undefined) || (e.appointment_date_3_str != undefined))
+                        { box3 = "circle_box1"; }
+                        else { box3 = "circle_box2"; detailbox3 = ''; }
+                        detailbox4 = '';
+                    }
+                    else if (e.current_state == "Installation") {
+                        box1 = "circle_box1"; box2 = "circle_box1"; box3 = "circle_box1"; box4 = "circle_box1";
+                    }
+
+                    if (currentOrder == 1) {
+                        idtable = "viewpage" + currentPage;
+                    }
+                    else if (currentOrder == 4) {
+                        currentOrder = 0;
+                        currentPage += 1;
+                    }
+
+                    currentOrder += 1;
+
+                    strBuilder += '<tr class="' + idtable + '">';
+                    strBuilder += '<td width="190" style="text-align:center" ><div class="bg_circle ' + box1 + '"><i class="fa fa-file-text-o" style="color:white; font-size:27px; margin-top:17px;" ></i></div></td>';
+                    strBuilder += '<td width="190" style="text-align:center" ><div class="bg_circle ' + box2 + '"><i class="fa fa-envelope-o" style="color:white; font-size:27px; margin-top:17px;" ></i></div></td>';
+                    strBuilder += '<td width="190" style="text-align:center" ><div class="bg_circle ' + box3 + '"><i class="fa fa-user" style="color:white; font-size:27px; margin-top:17px;" ></i></div></td>';
+                    strBuilder += '<td width="190" style="text-align:center" ><div class="bg_circle ' + box4 + '"><i class="fa fa-wrench" style="color:white; font-size:27px; margin-top:18px;" ></i></div></td>';
+                    strBuilder += '</tr>';
+
+                    strBuilder += '<tr class="' + idtable + '" style="line-height:18px;">';
+                    strBuilder += '<td width="190" style="text-align:center" ><label style="color:' + checkColorBox(box1) + '; font-size:16px;">@L_TRACKING_STATE_1</label></td>';
+                    strBuilder += '<td width="190" style="text-align:center" ><label style="color:' + checkColorBox(box2) + '; font-size:16px;">@L_TRACKING_STATE_2</label></td>';
+                    strBuilder += '<td width="190" style="text-align:center" ><label style="color:' + checkColorBox(box3) + '; font-size:16px;">@L_TRACKING_STATE_3</label></td>';
+                    strBuilder += '<td width="190" style="text-align:center" ><label style="color:' + checkColorBox(box4) + '; font-size:16px;">@L_TRACKING_STATE_4</label></td>';
+                    strBuilder += '</tr>';
+
+                    strBuilder += '<tr class="' + idtable + '" style="line-height:14px;">';
+                    strBuilder += '<td width="190" style="text-align:center" ><i class="fa fa-chevron-down" style="color:gray; font-size:11px;" ></i></td>';
+                    strBuilder += '<td width="190" style="text-align:center" ><i class="fa fa-chevron-down" style="color:gray; font-size:11px;" ></i></td>';
+                    strBuilder += '<td width="190" style="text-align:center" ><i class="fa fa-chevron-down" style="color:gray; font-size:11px;" ></i></td>';
+                    strBuilder += '<td width="190" style="text-align:center" ><i class="fa fa-chevron-down" style="color:gray; font-size:11px;" ></i></td>';
+                    strBuilder += '</tr>';
+
+                    strBuilder += '<tr class="' + idtable + '" style="line-height:15px;vertical-align:top;">';
+                    strBuilder += '<td width="190">' + detailbox1 + '</td>';
+                    strBuilder += '<td width="190">' + detailbox2 + '</td>';
+                    strBuilder += '<td width="190">' + detailbox3 + '</td>';
+                    strBuilder += '<td width="190">' + detailbox4 + '</td>';
+                    strBuilder += '</tr>';
+
+                    $("#lblFirstName").text(e.first_name);
+                    $("#lblLastName").text(e.last_name);
+                });
+
+                strBuilder += '</table>';
+
+                var strNextPage = '';
+                //create next page
+                for (var i = 1; i <= currentPage; i++) {
+                    nextpage_ = "nextpage" + i;
+                    strNextPage += '<a href="#" id="' + nextpage_ + '" class="track_paging" onclick="nextViewPage(' + i + ',' + currentPage + ')" >' + i + '</a>';
+                }
+
+                $('#divOrderResult').empty();
+                $('#divNextPageOrderResult').empty();
+
+                $('#divOrderResult').append(strBuilder);
+                $('#divNextPageOrderResult').append(strNextPage);
+
+                for (var r2 = 1; r2 <= currentPage; r2++) {
+                    $(".viewpage" + r2).hide();
+                }
+
+                saveLogTracking(idcard, p_firstname, p_lastname, retCode, returnOrder);
+                $("#nextpage1").addClass("track_paging_select");
+                $(".viewpage1").show();
+            }
+        });
+    }
+
+    function checkColorBox(box) {
+        var result = "";
+        switch (box) {
+            case "circle_box1": result = "#82ad47";
+                break;
+            case "circle_box2": result = "#cee4af";
+                break;
+            case "circle_box3": result = "#ff9313";
+                break;
+            case "circle_box4": result = "#a2a2a2";
+                break;
+        }
+        return result;
+    }
+
+    function nextViewPage(currentpage_, maxpage_) {
+        for (var r2 = 1; r2 <= maxpage_; r2++) {
+            $(".viewpage" + r2).hide();
+            $("#nextpage" + r2).removeClass("track_paging_select");
+            $("#nextpage" + r2).addClass("track_paging");
+        }
+
+        $("#nextpage" + r2).removeClass("track_paging");
+        $("#nextpage" + currentpage_).addClass("track_paging_select");
+        $(".viewpage" + currentpage_).show();
+    }
+
+</script>

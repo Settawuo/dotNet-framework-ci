@@ -1,0 +1,564 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.QuickBulkCorpPanelModel
+@using WBBEntity.PanelModels;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var Version = "";
+    if (ViewBag.Version != null)
+    {
+        Version = Version + "-" + ViewBag.Version;
+    }
+    
+    string H_SUB_STEP_1 = "";
+    string H_SUB_STEP_2 = "";
+    string H_SUB_STEP_3 = "";
+    string M_MEMU_REGISTER = "";
+    string M_MEMU_EXITING = "";
+    string M_MEMU_SEARCH = "";
+    string M_MEMU_RESEND = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+        H_SUB_STEP_1 = configscreen.Any(f => f.Name == "H_SUB_STEP_1") ? configscreen.FirstOrDefault(f => f.Name == "H_SUB_STEP_1").LovValue1 : "";
+        H_SUB_STEP_2 = configscreen.Any(f => f.Name == "H_SUB_STEP_2") ? configscreen.FirstOrDefault(f => f.Name == "H_SUB_STEP_2").LovValue1 : "";
+        H_SUB_STEP_3 = configscreen.Any(f => f.Name == "H_SUB_STEP_3") ? configscreen.FirstOrDefault(f => f.Name == "H_SUB_STEP_3").LovValue1 : "";
+        M_MEMU_REGISTER = configscreen.Any(f => f.Name == "M_MEMU_REGISTER") ? configscreen.FirstOrDefault(f => f.Name == "M_MEMU_REGISTER").LovValue1 : "";
+        M_MEMU_EXITING = configscreen.Any(f => f.Name == "M_MEMU_EXITING") ? configscreen.FirstOrDefault(f => f.Name == "M_MEMU_EXITING").LovValue1 : "";
+        M_MEMU_SEARCH = configscreen.Any(f => f.Name == "M_MEMU_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "M_MEMU_SEARCH").LovValue1 : "";
+        M_MEMU_RESEND = configscreen.Any(f => f.Name == "M_MEMU_RESEND") ? configscreen.FirstOrDefault(f => f.Name == "M_MEMU_RESEND").LovValue1 : "";
+    }
+
+}
+<style>
+    /* Style the tab */
+    div.tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #98CB52;
+    }
+
+    /* Style tab pane*/
+    div.tabpane {
+        color: white;
+    }
+
+    .nav-pills > li.active > a {
+        background-color: #9bba25;
+    }
+
+        .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+            background-color: #9bba25;
+        }
+
+    /* Style the links inside the tab */
+    div.tab a {
+        float: left;
+        display: block;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        transition: 0.3s;
+        font-size: 17px;
+        color: white;
+    }
+
+        /* Change background color of links on hover */
+        div.tab a:hover {
+            background-color: white;
+        }
+
+    .nav-justified > li > a:hover {
+        color: #6c9d31;
+    }
+
+    .menutab {
+        color: #6c9d31;
+    }
+
+    /* Create an active/current tablink class */
+    div.tab a:focus, .active {
+        background-color: white;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+
+    .bulkpageheader {
+        padding-top: 6px;
+        padding-left: 10px;
+        color: white;
+        font-size: 26px;
+        background-color: #6c9d31;
+        border: 2px solid white;
+    }
+
+    .divheader {
+        background-color: #5cb85c;
+        color: white;
+        height: 35px;
+        text-align: center;
+        font-size: 26px;
+        font-family: Cordia New;
+        border: solid;
+        border-color: #468c46;
+    }
+
+    .nav-nopadding {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        width: 20%;
+        background-color: #8DC63F;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .vertical-alignment-helper {
+        display: table;
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .vertical-align-center {
+        display: table-cell;
+        vertical-align: middle;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        pointer-events: all;
+    }
+
+    .fa-6 {
+        font-size: 10em;
+    }
+
+    .preview-img {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+    }
+
+    .preview-pdf {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+        border: 1px solid black;
+    }
+
+    #ais_topbar {
+        display: block;
+    }
+
+        #ais_topbar .topbar_ribbon {
+            padding-left: 10px;
+            float: left;
+            height: 60px;
+        }
+
+    .divheadRegisBulk {
+        background-color: #8DC63F;
+        border: solid;
+        border-color: #6b9631;
+        color: white;
+    }
+
+    .steptab {
+        border-color: #167ac6;
+        border: solid;
+        color: white;
+    }
+
+    .bulkmenu > li.active > a, .bulkmenu > li.active > a:hover, .bulkmenu > li.active > a:focus {
+        /*background-color: #9bba25;*/
+        background-color: #c4d730;
+    }
+
+    .bulkmenu > a:hover {
+        background-color: #9bba25;
+    }
+
+    .nav-justified >li> a {
+        background-color: white;
+        color: #9bba25;
+    }
+
+        .nav-justified > li > a:hover {
+            background-color: #c9da2f;
+            color: white;
+        }
+        .nav-justified > li > a.mouseover {
+            background-color: #c9da2f;
+            color: white;
+        }
+
+        .nav-justified > li > a.mouseout {
+            background-color: white;
+            color: #9bba25;
+        }
+
+        .nav-justified > li > a.clicked {
+            background-color: #c9da2f;
+            color: white;
+        }
+        .nav-justified   > li > a:focus {
+            background-color: #9bba25;
+            color: white;
+        }
+    .menutabactive {
+        background-color: #c9da2f;
+        color: white;
+    }
+
+    .panel-success > .panel-heading {
+        /*color: #3c763d;
+        background-color: #d0dd25;
+        border-color: #d6e9c6;*/
+        color: white;
+        /*background-color: #96776d;*/
+        /*background-color:#9bba25;*/
+        /*background-color:#614e48;*/
+        /*background-color:#535564;*/
+        /*background-color:#577e27;*/
+        background-color:#77ac35;
+        border-color: #d6e9c6;
+    }
+
+
+    .tdpkg {
+
+    padding: 15px;
+    text-align: left;
+    border-bottom: 2px solid #8dc63f;
+    border-color:#8dc63f;
+    }
+
+</style>
+
+<div id="ais_topbar">
+    <!-- popup kendo ui -->
+    <input type="hidden" id="modepopup" value="add" />
+    <!-- popup kendo ui -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid i-gap i-header">
+
+            <div class="row">
+
+                <div class="col-sm-6 col-md-4" style="padding: 0">
+                    <table>
+                        <tr>
+                            <td>
+                                <img src="~/Content/images/logo-ais.png" width="104" height="39" />
+                            </td>
+                            <td>
+                                <h4 style="margin: 7px 0 0 12px; text-transform: uppercase;">Admin Fixed Broadband</h4>
+                                <h5 style="margin: 1px 0 0 12px; color: #bbb; font-size: 80%">© 2014 Advanced Info Service PLC. All Rights Reserved.</h5>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-sm-6 col-md-8" style="text-align: right; padding-top: 5px;">
+                </div>
+
+                @* //Common *@
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="container">
+    <div class="row">
+        <div class="col-md-5 hidden-xs hidden-sm" id="logo_space1" style="margin-top: 12px;">
+        </div>
+        <div class="col-md-2 hidden-xs hidden-sm" id="logo_div" style="margin-top: 12px;">
+            <img src="~/Content/images/bulkcorp/fibre_logo.png" class="img-responsive center-block">
+        </div>
+        <div class="col-md-5 hidden-xs hidden-sm" id="logo_space2" style="margin-top: 12px;">
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <div class="panel panel-success">
+        <div class="page-header i-header-fit bulkpageheader" id="HeadPage1">
+            <h4>Register Bulk Corporate</h4>
+        </div>
+        <div class="container-fluid i-gap i-header">
+            <div class="panel-body">
+                <div id="mainHeader">
+                    <ul id="ulMenutab" class="nav nav-pills nav-justified bulkmenu" style="border: 1px solid #9bba25" role="tablist">                       
+                        <li id="li_1">@Html.ActionLink(@M_MEMU_REGISTER, "NewCustomer", "RegisterBulkCorp", new { }, new { @class = "menutab" })</li>
+                        <li id="li_2">@Html.ActionLink(@M_MEMU_EXITING, "Existing", "RegisterBulkCorp", new { }, new { @class = "menutab" })</li>
+                        <li id="li_3">@Html.ActionLink(@M_MEMU_SEARCH, "SearchIndex", "SearchBulkCorp", new { }, new { @class = "menutab" })</li>
+                        <li id="li_4">@Html.ActionLink(@M_MEMU_RESEND, "ResendOrder", "ResendOrderBulkCorp", new { }, new { @class = "menutab" })</li>
+                    </ul>
+                    <br />
+                    <br />                    
+                </div>
+                <div id="divBody">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        
+        <br />
+        <br />
+
+    </div>
+</div>
+
+<!--  Put Content Here จบเนื้อหา  -->
+
+<div style="clear: both;"></div>
+
+<div class="col-md-12 i-text-align-center i-gap-top-4">
+    <img src="/Content/images/bg-login-top.png" height="188" width="456">
+</div>
+
+<script type="text/javascript">
+
+    var lii = 0;
+
+    var progress,
+        tabstripnew,
+        currentIndex = 0;
+
+    $(document).ready(function () {
+        $("ul.bulkmenu li a")
+         .mouseover(function () {
+             $(this).addClass('mouseover');
+         })
+         .mouseout(function () {
+             $(this).removeClass('mouseover');
+         });
+        
+    });
+
+    function onShow(e) {
+        progress.value(currentIndex + 1);
+    }
+
+    function onSelect(e) {
+
+        var selectedIndex = tabIndexOfElement(e.item),
+
+        isMovingBack = selectedIndex < currentIndex;
+
+        if (isMovingBack || isTabValidAt(currentIndex)) {
+            console.log("tab passed validation")
+            currentIndex = selectedIndex;
+            tabs.enable(getTabAtIndex(currentIndex), true);
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
+    function onPreviousClick(e) {
+        e.preventDefault();
+
+        tabs.select(tabs.select().prev());
+    }
+
+    function onNextClick(e) {
+        e.preventDefault();
+
+        tabs.select(getTabAtIndex(currentIndex + 1));
+    }
+
+    function tabIndexOfElement(element) {
+        return tabs.element.find(element).index();
+    }
+
+    function isTabValidAt(tabIndex) {
+        var el = tabs.contentElement(tabIndex),
+        val = $(el).kendoValidator().data("kendoValidator");
+        return val.validate();
+    }
+
+    function getTabAtIndex(index) {
+        return tabs.tabGroup.children().eq(index);
+    }
+
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#ProgressIcon #txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+
+    function validateEmail(email) {
+        var filter = /^(((([a-zA-Z0-9\_\-]{1,50})+(([\.]{1,50}[a-zA-Z0-9\_\-]{1,50}){0,50})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        if (email.substr(0, 2) == "-@@" || email.substr(0, 2) == "_@@") {
+            return false;
+        }
+        if (filter.test(email)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateHomeNumber(value) {
+        var rex = /^[0-9/\-]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumber(value) {
+        if (value.length < 10) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function validatePlace(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\/\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateLatLong(value) {
+        var rex = /^(-)?[0-9]*[.]{1}[0-9]{6}$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateNumber(value) {
+        var rex = /^[0-9]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateName(value) {
+        var rex = /^[ก-๙a-zA-Z\.\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateFreePhone(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumberOR(id, error) {
+
+        var temp = "";
+        var iid = "#" + id;
+        if ($(iid).val() != "") {
+            if ($(iid).val().length < 10) {
+
+                $(iid)[0].className = "form-control errorinput";
+
+                if ($("#LanguagePage").val() == "1")
+                    temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                else
+                    temp = "Please fill in all required fields."
+
+                toastrErrorMessage(temp);
+                return false;
+            }
+            else if ($(iid).val().length == 10) {
+                var value = $(iid).val();
+                var chkMobile2 = false;
+                ////// Begin add new function to check mobile2 by using LOV /////
+                chkMobile2 = validateMobileNumber(value);
+                if (chkMobile2 == false) {
+                    $(iid)[0].className = "form-control errorinput";
+
+                    if ($("#LanguagePage").val() == "1")
+                        temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                    else
+                        temp = "Please fill in all required fields."
+
+                    toastrErrorMessage(temp);
+                    return false;
+
+                } else {
+                    $(iid)[0].className = "form-control";
+                    return true;
+                }
+                ////// End add new function to check mobile2 by using LOV /////
+            }
+            else {
+                $(iid)[0].className = "form-control";
+                $("#" + error).html(temp);
+                return true;
+            }
+        }
+        else {
+            $(iid)[0].className = "form-control";
+            $("#" + error).html(temp);
+            return true;
+        }
+    }
+
+    function toastrErrorMessage(message) {
+        toastr.options.positionClass = "toast-top-center";
+        toastr.options.closeButton = true;
+        toastr.error(message)
+    }
+
+</script>

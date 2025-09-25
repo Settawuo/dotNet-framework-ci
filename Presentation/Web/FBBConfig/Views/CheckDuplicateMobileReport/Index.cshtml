@@ -1,0 +1,378 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.DuplicateMobileModel
+@using WBBEntity.PanelModels;
+@{
+    string G_FIBRE_NO = "";
+    string G_CUSTOMER_NAME = "";
+    string G_ORDER_STATUS = "";
+    string G_CONTACT_NUMBER = "";
+    string G_BUNDLING_NUMBER = "";
+    string G_EMAIL = "";
+    string G_LOCATION_CODE = "";
+    string G_ASC_CODE = "";
+
+    string L_REPORT_NAME = "";
+    string L_SEARCH_PANEL = "";
+    string L_DATE_FROM = "";
+    string L_DATE_TO = "";
+    string B_CANCEL = "";
+    string B_SEARCH = "";
+    string B_EXPORT = "";
+   
+
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        G_FIBRE_NO = configscreen.Any(f => f.Name == "G_FIBRE_NO") ? configscreen.FirstOrDefault(f => f.Name == "G_FIBRE_NO").LovValue1 : "";
+        G_CUSTOMER_NAME = configscreen.Any(f => f.Name == "G_CUSTOMER_NAME") ? configscreen.FirstOrDefault(f => f.Name == "G_CUSTOMER_NAME").LovValue1 : "";
+        G_ORDER_STATUS = configscreen.Any(f => f.Name == "G_ORDER_STATUS") ? configscreen.FirstOrDefault(f => f.Name == "G_ORDER_STATUS").LovValue1 : "";
+        G_CONTACT_NUMBER = configscreen.Any(f => f.Name == "G_CONTACT_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "G_CONTACT_NUMBER").LovValue1 : "";
+        G_BUNDLING_NUMBER = configscreen.Any(f => f.Name == "G_BUNDLING_NUMBER") ? configscreen.FirstOrDefault(f => f.Name == "G_BUNDLING_NUMBER").LovValue1 : "";
+        G_EMAIL = configscreen.Any(f => f.Name == "G_EMAIL") ? configscreen.FirstOrDefault(f => f.Name == "G_EMAIL").LovValue1 : "";
+        G_LOCATION_CODE = configscreen.Any(f => f.Name == "G_LOCATION_CODE") ? configscreen.FirstOrDefault(f => f.Name == "G_LOCATION_CODE").LovValue1 : "";
+        G_ASC_CODE = configscreen.Any(f => f.Name == "G_ASC_CODE") ? configscreen.FirstOrDefault(f => f.Name == "G_ASC_CODE").LovValue1 : "";
+        L_REPORT_NAME = configscreen.Any(f => f.Name == "L_REPORT_NAME") ? configscreen.FirstOrDefault(f => f.Name == "L_REPORT_NAME").LovValue1 : "";
+        L_SEARCH_PANEL = configscreen.Any(f => f.Name == "L_SEARCH_PANEL") ? configscreen.FirstOrDefault(f => f.Name == "L_SEARCH_PANEL").LovValue1 : "";
+        L_DATE_FROM = configscreen.Any(f => f.Name == "L_DATE_FROM") ? configscreen.FirstOrDefault(f => f.Name == "L_DATE_FROM").LovValue1 : "";
+        L_DATE_TO = configscreen.Any(f => f.Name == "L_DATE_TO") ? configscreen.FirstOrDefault(f => f.Name == "L_DATE_TO").LovValue1 : "";
+        B_CANCEL = configscreen.Any(f => f.Name == "B_CANCEL") ? configscreen.FirstOrDefault(f => f.Name == "B_CANCEL").LovValue1 : "";
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.FirstOrDefault(f => f.Name == "B_SEARCH").LovValue1 : "";
+        B_EXPORT = configscreen.Any(f => f.Name == "B_EXPORT") ? configscreen.FirstOrDefault(f => f.Name == "B_EXPORT").LovValue1 : "";
+    }   
+    
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+       <div class="page-header i-header-fit">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">@L_REPORT_NAME</h3>
+            </div>
+        </div>
+    </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>@L_SEARCH_PANEL</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SearchPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 135px;">
+                        <div id="row1" class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_DATE_FROM</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .Events(e => e.Change("ChangdtpDateFrom")))
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-dtpDateFrom"></div>
+                                <span class="k-invalid-msg" data-for="PickupDate"></span>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_DATE_TO</label>
+                                <div class="i-fg-data-entry">
+                                    @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .Format("dd/MM/yyyy")
+                                  .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Events(e => e.Change("ChangdtpDateTo")))
+                                </div>
+                                <div class="i-fg-data-entry-validation" id="validatefor-dtpDateTo"></div>
+                            </div>
+                        </div>
+                        @*end row1*@
+                        <div id="row2" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CANCEL</a>
+                                <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                            </div>
+                        </div>@*end row2*@
+
+                    </div>
+                    @*end SearchPanel*@
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12 ">
+            @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.DuplicateMobileList>()
+                        .Name("gridDuplicateMobile")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.NON_MOBILE_NO).Title(@G_FIBRE_NO).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.Customer_Name).Title(@G_CUSTOMER_NAME).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.Order_Status).Title(@G_ORDER_STATUS).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.MOBILE_NO).Title(@G_CONTACT_NUMBER).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.RELATE_MOBILE).Title(@G_BUNDLING_NUMBER).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.Email_Address).Title(@G_EMAIL).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.Location_Code).Title(@G_LOCATION_CODE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.ASC_Code).Title(@G_ASC_CODE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                        })
+                        .Scrollable(scrollable => scrollable.Height("auto"))
+                        .ToolBar(toolbar => toolbar.Template("" +
+                            //disabled='disabled'
+        "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp; " + @B_EXPORT + "</a>&nbsp;</div>"
+                        ))
+                    //.ToolBar(toolBar =>
+                    //    {
+                    //        toolBar.Custom().Name("NewCoverExcel").Text("<i class='fa fa-file-excel-o'></i> New Coverage").HtmlAttributes(new { onclick = "goimortexcel();return false;" });
+                    //        toolBar.Custom().Name("NewCoverNormal").Text("<i class='fa fa-plus-circle fa-lg'></i> New Coverage").HtmlAttributes(new { onclick = "goaddnew();return false;" });
+                    //        toolBar.Custom().Text("<i class='fa fa-reply'></i> Export to Excel").HtmlAttributes(new { onclick = "_ExportToExcel();return false;" });                               
+                    //    }
+                    //    )
+                            .Pageable(pageable => pageable
+                            //.PageSizes(true)
+                            .Numeric(true)
+                            .PageSizes(new int[] {20, 50, 100})
+                            )
+                            .Sortable()
+                            .AutoBind(false)
+                    //.Filterable()                 
+                            .Resizable(resize => resize.Columns(true))
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                //.Sort(sort => sort.Add(p => p.Item_no).Ascending())              
+                                .Read(read => read.Action("ReadSearchRpt01", "CheckDuplicateMobileReport").Data("bindingValue"))
+                                .PageSize(20)
+                                )
+                            .Events(e => e.DataBound("onGridDataBound"))
+                            )
+        </div>
+    </div>
+</body>
+
+    <script>
+       
+   
+        function ValidationDateValue() {
+            debugger;
+            var chk = ValidationProcessing("dateselect");
+
+            if (chk) //check blank value
+            {
+                if ($.trim($("#dtpDateFrom").val()) == '') {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+
+                if ($.trim($("#dtpDateTo").val()) == '') {
+                    $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateTo").html("");
+                }
+            }
+
+            if (chk) //check format
+            {
+                if (!kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy")) {
+                    if ($("#dtpDateFrom").val() != "") {
+                        $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                        chk = false;
+                    }
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+
+                if (!kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy")) {
+                    if ($("#dtpDateTo").val() != "") {
+                        $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is not correct format.");
+                        chk = false;
+                    }
+                }
+                else {
+                    $("#validatefor-" + "dtpDateTo").html("");
+                }
+            }
+
+            if (chk) //check Date From must be earlier than Date To
+            {
+                var startPicker = new Date(kendo.parseDate($("#dtpDateFrom").val(), "mm/dd/yyyy"));
+                var endPicker = new Date(kendo.parseDate($("#dtpDateTo").val(), "mm/dd/yyyy"));
+
+                if (startPicker > endPicker) {
+                    if ($("#dtpDateFrom").val() != "") {
+                        $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                        chk = false;
+                    }
+                    else {
+                        $("#validatefor-" + "dtpDateFrom").html("");
+                    }
+                }
+            }
+
+            return chk;
+        }
+        var CusNotRegisModel = function () {
+            dateFrom: "";
+            dateTo: "";
+        }
+        function bindingValue() {
+            var model = defaultData();
+            debugger;
+            return {
+
+                dataS: JSON.stringify(model)
+            };
+        }
+        function defaultData() {
+            var searchResult = new CusNotRegisModel();
+            searchResult.dateFrom = $("#dtpDateFrom").val();
+            searchResult.dateTo = $("#dtpDateTo").val();
+
+            return searchResult;
+        }
+        function ChangdtpDateFrom() {
+
+            var endPicker = $("#dtpDateTo").data("kendoDatePicker"),
+            startDate = this.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate());
+                endPicker.min(startDate);
+            }
+
+        }
+        function ChangdtpDateTo() {
+            var startPicker = $("#dtpDateFrom").data("kendoDatePicker"),
+            endDate = this.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate());
+                startPicker.max(endDate);
+            }
+
+        }
+        function Chang_Requrest_Date() {
+            var requrestDatePicker = $("#dtpDateFrom").data("kendoDatePicker")
+        }
+        function _Search() {
+            debugger;
+            var model = defaultData();
+            var chk = ValidationDateValue();
+            if (chk) {
+                Loading();
+                var grid = $("#gridDuplicateMobile").data("kendoGrid");
+                grid.dataSource.page(1);
+                $.ajax({
+                    url: '/CheckDuplicateMobileReport/ReadSearchDuplicateMobile',
+                    data: { dataS: JSON.stringify(model) },
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (response) {
+
+                        if (response) {
+
+                            if (response.item == "0") {
+                                $('#btnExport').attr("disabled", true);
+                            }
+                            else {
+                                $('#btnExport').attr("disabled", false);
+                            }
+
+                        }
+                    },
+                    failure: function (msg) {
+                    }
+                });
+            }
+        }
+        function _Clear() {
+            var today = new Date();
+            $("#dtpDateFrom").data("kendoDatePicker").value("");
+            $("#dtpDateTo").data("kendoDatePicker").value("");
+            $('#btnExport').attr("disabled", true);
+            $("#gridDuplicateMobile").data("kendoGrid").dataSource.data([]);
+            //reset min, max.
+            $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+            $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+        
+          
+            
+            $("#validatefor-dtpDateTo").html("")
+            $("#validatefor-dtpDateFrom").html("")
+        }
+        function onGridDataBound() {
+            Loading(0);
+            if (this.dataSource.view().length == 0) {
+                //insert empty row
+
+                var colspan = this.thead.find("th").length;
+                //alert(colspan)
+                var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+                this.tbody.html(emptyRow);
+
+                //workarounds for IE lt 9
+                //this.table.width(800);
+                //$(".k-grid-content").width(2 * kendo.support.scrollbar());
+                $(".k-grid-content").height(3 * kendo.support.scrollbar());
+            }
+            else {
+                $(".k-grid-content").height("auto");
+            }
+        }
+        function post(path, params, method) {
+
+            method = method || "post"; // Set method to post by default if not specified.
+
+            // The rest of this code assumes you are not using a library.
+            // It can be made less wordy if you use one.
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+        function _ExportToExcel() {
+            var model = new defaultData();
+            window.open("/CheckDuplicateMobileReport/ExportCusInstallTrack?dataS=" + JSON.stringify(model) + "");
+
+
+        }
+
+    </script>
+
+
+</html>

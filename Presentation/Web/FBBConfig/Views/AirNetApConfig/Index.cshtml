@@ -1,0 +1,414 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.AWCinformation
+@using WBBEntity.PanelModels.FBBWebConfigModels;
+
+
+
+<form id="formCoverageArea">
+    <div class="page-header i-header-fit">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 style="margin-top: 0">Airnet Wireless Coverage</h3>
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "AirNetSearch", new { apname = Model.oldmodelpage1.APname, province = Model.oldmodelpage1.province, tumbon = Model.oldmodelpage1.tumbon, aumphur = Model.oldmodelpage1.aumphur, region = Model.oldmodelpage1.region })" >
+                        Main Page</a></li>
+                    <li class="active">AP Configuration</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="col-sm-12 col-md-12">
+                <div class="btn-group pull-right">
+                    <a class="btn btn-danger" id="deletepage2" onclick='DeleteAllconfig()'><i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete</a>
+                </div>
+                <div class="row">&nbsp;</div>
+                <div class="row">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @CoverageInfo()
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            @AppConfig()
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-12 i-text-align-right">
+            <a class="btn btn-default" id="Resetall" onclick="resetall()">
+            <i class="fa fa-ban fa-lg""></i>&nbsp;&nbsp;Cancel</a> 
+            <a class="btn btn-default" id="Resetalledit" onclick="resetalledit()">
+            <i class="fa fa-ban fa-lg""></i>&nbsp;&nbsp;Cancel</a> 
+            <a class="btn btn-success" id="addnewCoverageInfo" onclick="AddnewCoverageinfotobase()">
+            <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Add</a>    
+            <a class="btn btn-success" id="SaveeditCoverageInfo" onclick="Updateall()">
+            <i class="fa fa-check fa-lg"></i>&nbsp;&nbsp;Save</a>                                       
+    </div>
+</form>
+
+@helper CoverageInfo()
+{ 
+    
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="fa fa-info-circle" style="font-size: large;">&nbsp;Coverage Information</i>
+                <a data-toggle="collapse" class="pull-right" href="#CoverageInformation" onclick="onPanelToggle(this);" id="APconfigPanelHolder">
+                    <i class="fa fa-chevron-down" id="ArrowIconApconfigCoverage"></i>
+                </a>
+            </h3>
+        </div>@*endpanel heading*@
+        <div id="CoverageInformation" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class=" panel panel-default">
+                        <div id="panelbodyCoverageIformation" class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Base L2  <span id="requiredfor-Base"></span></label>
+                                    @*<input type="text" id="Base" class="dis k-textbox form-control" maxlength="50" />*@
+                                     @Html.TextBoxFor(model => model.Base_L2, new { @id = "Base", @class = "k-textbox form-control" })
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Site Name  <span id="requiredfor-Sitename"></span></label>
+                                    @*<input type="text" id="Sitename" class="dis k-textbox form-control" maxlength="50" />*@
+                                     @Html.TextBoxFor(model => model.Site_Name, new { @id = "Sitename", @class = "k-textbox form-control" })
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Lat  <span id="requiredfor-lat"></span></label>
+                                    @*<input type="text" id="lat" onkeypress="return checkNumlat(event)" onchange="numlat(this)" class="dis k-textbox form-control" maxlength="50" />*@
+                                     @Html.TextBoxFor(model => model.Lat, new { @id = "lat", @class = "k-textbox form-control" })
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>Lon  <span id="requiredfor-lon"></span></label>
+                                    @*<input type="text" id="lon" onkeypress="return checkNumlon(event)" onchange="numlon(this)" class="dis k-textbox form-control" maxlength="50" />*@
+                                     @Html.TextBoxFor(model => model.Lon, new { @id = "lon", @class = "k-textbox form-control" })
+                                </div>
+                            </div>
+                            @*<div class="row">
+                                            <div class="col-sm-6 col-md-3">
+                                               
+                                            </div>
+                                            <div class="col-sm-6 col-md-3"> 
+                                               
+                                            </div>                                                          
+                                            <div class="col-sm-6 col-md-3"></div> 
+                                            <div class="col-sm-6 col-md-3"></div> 
+                                        </div>*@
+                            <div class="row i-gap-top-2">
+                                <div class="col-sm-12 col-md-12">
+                                    <label>Area TH</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <label>ภาค<span id="requiredfor-Region"></span></label>
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("RegionAP")
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                                  .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectLov", "MasterData", new { type = "REGION_CODE" });
+                                                      });
+                                                  })
+                                            //.Events(e => e.Change("SubCategoryChange"))
+                                                  .Value(Model.Zone)
+                                               )
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>จังหวัด<span id="requiredfor-province"></span></label>
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("ProvinceAP")
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                            //.BindTo(new List<SelectListItem>() {
+                                            //    //new SelectListItem() {
+                                            //    //    Text = "ตำบล",
+                                            //    //    Value = ""
+                                            //    //},
+                                            //    new SelectListItem() {
+                                            //        Text = "กรุณาเลือก",
+                                            //        Value = "0"
+                                            //    }
+                                            //})
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectProvince", "MasterData").Data("onRegionAPChange");
+                                                      }).ServerFiltering(true);
+                                                  })
+                                                 .Enable(false)
+                                                 .AutoBind(false)
+                                                 .CascadeFrom("RegionAP")
+                                                 .Value(Model.Province)
+                                            //.Events(e => e.Change("onRegionAPChange"))
+
+                                            )
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>อำเภอ<span id="requiredfor-aumphur"></span></label>
+                                    @(Html.Kendo().DropDownList()
+                                                  .Name("AumphurAP")
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                            //.BindTo(new List<SelectListItem>() {
+                                            //    //new SelectListItem() {
+                                            //    //    Text = "ตำบล",
+                                            //    //    Value = ""
+                                            //    //},
+                                            //    new SelectListItem() {
+                                            //        Text = "กรุณาเลือก",
+                                            //        Value = "0"
+                                            //    }
+                                            //})
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectAmphur", "MasterData").Data("onProvinceAPChange");
+                                                      }).ServerFiltering(true);
+
+                                                  })
+                                                  .Enable(false)
+                                                  .AutoBind(false)
+                                                  .CascadeFrom("ProvinceAP")
+                                                  .Value(Model.Aumphur)
+                                            //.Events(e => e.Change("onProvinceAPChange"))
+                                              )
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label>ตำบล<span id="requiredfor-tumbon"></span></label>
+                                    @(Html.Kendo().DropDownListFor(model => model.Tumbon)
+                                                  .Name("TumbonAP")
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .DataTextField("DISPLAY_VAL")
+                                                  .DataValueField("LOV_NAME")
+                                            //.BindTo(new List<SelectListItem>() {
+                                            //    //new SelectListItem() {
+                                            //    //    Text = "ตำบล",
+                                            //    //    Value = ""
+                                            //    //},
+                                            //    new SelectListItem() {
+                                            //        Text = "กรุณาเลือก",
+                                            //        Value = "0"
+                                            //    }
+                                            //})
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("SelectTumbon", "MasterData").Data("onAumphurAPChange");
+                                                      }).ServerFiltering(true);
+                                                  })
+                                                  .Enable(false)
+                                                  .AutoBind(false)
+                                                  .CascadeFrom("AumphurAP")
+                                                  .Value(Model.Tumbon)
+                                            //.Events(e => e.Change("onAumphurAPChange"))
+                                            )
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>@*end row1*@
+        </div>@*end apconfig*@
+    </div>@*end panel*@
+}
+
+@helper AppConfig()
+{ 
+      
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="fa fa-info-circle" style="font-size: large;">&nbsp;AP Config</i>
+                <a data-toggle="collapse" class="pull-right" href="#APConfig" onclick="onPanelToggle(this);" id="APconfigPanelHolder2">
+                    <i class="fa fa-chevron-down" id="ArrowIconApconfigCoverage2"></i>
+                </a>
+            </h3>
+        </div>@*endpanel heading*@
+        <div id="APConfig" class="row">
+            <div class="col-sm-12 col-md-12 ">
+
+
+                @(Html.Kendo().Grid(Model.apmodel)
+                            .Name("gridAPconfig")
+                            .ToolBar(toolbar => toolbar.Template("" +
+        "<div class='pull-right'><a onclick='addNewAP()' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp; Add New AP</a>&nbsp;" +
+        "</div>"))
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.AP_Name).Title("AP Name").HtmlAttributes(new { style = "text-align:left;" });
+                                columns.Bound(p => p.Sector).Title("Sector").HtmlAttributes(new { style = "text-align:left;" });
+                                columns.Bound(p => p.AP_ID).Title("Sector").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                columns.Bound(p => p.updatedate).Title("update").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                columns.Command(command => command.Custom("Config").Click("EditApconfig").Text("<i class='fa fa-pencil-square-o'></i> Edit").HtmlAttributes(new { style = "align:left;" })).Width(100);
+                                columns.Command(command => command.Custom("Delete").Click("Deleteingrid").Text("<i class='fa fa-times-circle fa-lg'></i>&nbsp; Delete")).Width(100);
+
+
+
+                            })
+                        //.ToolBar(toolbar =>
+                        //        {
+                        //            toolbar.Custom().Name("NewApconfig").Text("<i class='fa fa-plus'></i> New AP").HtmlAttributes(new { onclick = "addNewAP();return false;" }); 
+
+                            //        })                      
+                            .Pageable(pageable => pageable
+                            .PageSizes(true)
+                            .Numeric(true)
+                            )
+                            .Scrollable()
+                        //.AutoBind(false)
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(10)
+                                //.Events(events => events.Error("error_handler")) 
+                                .Sort(s => s.Add("updatedate").Descending())
+                        //.Read(read => read.Action("DataConfig", "AirNetWirelessCoverage"))
+
+                                )
+                        )
+            </div>
+        </div>@*end apconfig*@
+    </div>@*end panel*@
+
+}
+
+@(Html.Kendo().Window()
+    .Name("AddAirPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Add AP")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Content(@<text>
+<div class="row i-no-over" id="AddPopupPanel">
+       
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>AP Name <span id="requiredfor-addAPname"></span></label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="APnameinfo" class="dis k-textbox form-control" maxlength="255" /> 
+            </div>            
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Sector <span id="requiredfor-addSector"></span></label>
+            <div class="i-fg-data-entry">
+                 @(Html.Kendo().DropDownList()
+                        .Name("SectorInfo")
+                        .HtmlAttributes(new { style = "width:100%" })
+                        .DataTextField("DISPLAY_VAL")
+                        .DataValueField("LOV_NAME")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("SelectLov", "MasterData", new { type = "SECTOR" });
+                            });
+                        })
+
+                )     
+               
+            </div>            
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <button class="btn btn-default i-gap-top-1 pull-right" onclick="onSave('Create')" id="btnSave"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Save</button>
+        <button class="btn btn-default i-gap-top-1 i-hidden pull-right" onclick="onSave('Update')" id="btnUpdate"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Update</button>
+    </div>
+
+</div>
+</text>)
+)
+
+
+<script>
+
+    $(function () {
+
+        if (!'@Model.apmodel') {
+            $("#deletepage2").hide();
+            $("#Resetalledit").hide();
+            $("#SaveeditCoverageInfo").hide();
+        }
+        else {
+            $("#Resetall").hide();
+            $("#addnewCoverageInfo").hide();
+        }
+        var validateModel = [];
+        validateModel.push({ id: "Base" });
+        validateModel.push({ id: "Sitename" });
+        validateModel.push({ id: "Region" });
+        validateModel.push({ id: "lat" });
+        validateModel.push({ id: "lon" });
+        validateModel.push({ id: "province" });
+        validateModel.push({ id: "aumphur" });
+        validateModel.push({ id: "tumbon" });
+        validateModel.push({ id: "addSector" });
+        validateModel.push({ id: "addAPname" });
+        SetRequired(validateModel);
+    });
+
+    function addNewAP() {
+              
+        
+        //ClearTextValidation("AddAirPopup");
+
+        $("#SectorInfo").data("kendoDropDownList").value("");
+        $("#APnameinfo").val("");
+        var validateModel = [];
+
+        validateModel.push({ id: "addAPname" });
+        validateModel.push({ id: "addSector" });
+        SetRequired(validateModel);
+
+        $("#btnSave").show();
+        $("#btnUpdate").hide();
+
+        $("#AddAirPopup").data("kendoWindow").open();
+        $("#AddAirPopup").data("kendoWindow").center();
+       
+    }
+
+    function onRegionAPChange() {
+        return {
+            regionCode: $("#RegionAP").val()
+        };
+    }
+
+    function onProvinceAPChange() {
+        return {
+            regionCode: $("#RegionAP").val(),
+            province: $("#ProvinceAP").val()
+        };
+    }
+
+    function onAumphurAPChange() {
+        return {
+            regionCode: $("#RegionAP").val(),
+            province: $("#ProvinceAP").val(),
+            aumphur: $("#AumphurAP").val()
+        };
+
+    }
+
+</script>

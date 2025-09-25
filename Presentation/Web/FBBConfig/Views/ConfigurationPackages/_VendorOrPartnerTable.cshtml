@@ -1,0 +1,56 @@
+﻿@model  List<WBBEntity.PanelModels.FBBWebConfigModels.VendorOrPartner>
+@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        //G_PRODUCT_TYPE = configscreen.Any(f => f.Name == "G_PRODUCT_TYPE") ? configscreen.First(f => f.Name == "G_PRODUCT_TYPE").LovValue1 : "";
+    }
+
+    List<LovValueModel> configDDLProductType = new List<LovValueModel>();
+
+    if (ViewBag.configDDLProductType != null)
+    {
+        configDDLProductType = (List<LovValueModel>)ViewBag.configDDLProductType;
+    }
+}
+@if(Model != null)
+{
+    <table class="table table-bordered" id="span-vendorpartner">
+        <thead>
+            <tr>
+                <th class="col-sm-1 col-md-1 text-center">@Html.CheckBox("CheckBoxAll", false, new { @class = "ALL" })</th>
+                <th class="col-sm-5 col-md-5">Select All</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td class="text-center">
+                        @Html.CheckBox("ListVendorOrPartner[" + i + "].VendorOrPartnerSelect", @Model[i].VendorOrPartnerSelect, new { @class = "SubCheck" })
+                        @Html.Hidden("ListVendorOrPartner[" + i + "].VendorOrPartnerSelectOld", @Model[i].VendorOrPartnerSelectOld)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => x[i].VendorOrPartnerName, new { @class = "k-textbox form-control" })
+                        @Html.Hidden("ListVendorOrPartner[" + i + "].VendorOrPartnerName", @Model[i].VendorOrPartnerName)
+                        @Html.Hidden("ListVendorOrPartner[" + i + "].VendorOrPartnerValue", @Model[i].VendorOrPartnerValue)
+                    </td>
+                </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table table-bordered" id="span-vendorpartner">
+        <thead>
+            <tr>
+                <th class="col-sm-5 col-md-5">No Data</th>
+            </tr>
+        </thead>
+    </table>
+}

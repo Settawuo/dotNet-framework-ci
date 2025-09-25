@@ -1,0 +1,577 @@
+﻿@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.MemberGetMemberModel
+@{
+
+    string L_HEADER_NEIGHBOR_GET_NEIGHBOR = "";
+    string NEIGHBOR_TOTAL = "";
+    string L_TOTAL = "";
+    string L_CONTACT_NUMBER = "";
+    string L_INTERNET_NO = "";
+    string L_SURNAME = "";
+    string L_NAME = "";
+    string L_PLEASE_ENTER_INFORMATION = "";
+    string L_PLEASE_SELECT = "";
+    string B_REGISTER = "";
+    string B_RESET = "";
+    string L_LANGUAGE = "";
+    string L_SAVE_SUCCESS = "";
+    string L_SAVE_NOT_SUCCESS = "";
+    string B_CLOSE = "";
+    string L_PLACE_HOLDER_MOBILE_INTERNET_NUMBER = "";
+    string L_PLACE_HOLDER_MOBILE_NUMBER = "";
+    string L_EXPIRED_DATE = "";
+    string L_INTERNET_NUMBER_INCORRECT = "";
+    string L_HELP_CONTACT = "";
+
+    int TotalDdlNeighbor = 0;
+
+    if (!string.IsNullOrEmpty(ViewBag.TotalMember))
+    {
+        TotalDdlNeighbor = !string.IsNullOrEmpty(ViewBag.TotalMember) ? Convert.ToInt32(ViewBag.TotalMember) : 0;
+    }
+
+    if (ViewBag.LabelFBBOR022 != null)
+    {
+        var LabelFBBOR022 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR022;
+        L_HEADER_NEIGHBOR_GET_NEIGHBOR = LabelFBBOR022.Any(c => c.Name == "L_HEADER_NEIGHBOR_GET_NEIGHBOR") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_HEADER_NEIGHBOR_GET_NEIGHBOR").DisplayValue : "";
+        L_TOTAL = LabelFBBOR022.Any(c => c.Name == "L_TOTAL") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_TOTAL").DisplayValue : "";
+        L_CONTACT_NUMBER = LabelFBBOR022.Any(c => c.Name == "L_CONTACT_NUMBER") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_CONTACT_NUMBER").DisplayValue : "";
+        L_INTERNET_NO = LabelFBBOR022.Any(c => c.Name == "L_INTERNET_NO") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_INTERNET_NO").DisplayValue : "";
+        L_SURNAME = LabelFBBOR022.Any(c => c.Name == "L_SURNAME") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_SURNAME").DisplayValue : "";
+        L_NAME = LabelFBBOR022.Any(c => c.Name == "L_NAME") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_NAME").DisplayValue : "";
+        L_PLEASE_ENTER_INFORMATION = LabelFBBOR022.Any(c => c.Name == "L_PLEASE_ENTER_INFORMATION") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_PLEASE_ENTER_INFORMATION").DisplayValue : "";
+        L_PLEASE_SELECT = LabelFBBOR022.Any(c => c.Name == "L_PLEASE_SELECT") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_PLEASE_SELECT").DisplayValue : "";
+        B_REGISTER = LabelFBBOR022.Any(c => c.Name == "B_REGISTER") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "B_REGISTER").DisplayValue : "";
+        B_RESET = LabelFBBOR022.Any(c => c.Name == "B_RESET") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "B_RESET").DisplayValue : "";
+        L_SAVE_SUCCESS = LabelFBBOR022.Any(c => c.Name == "L_SAVE_SUCCESS") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_SAVE_SUCCESS").DisplayValue : "";
+        L_SAVE_NOT_SUCCESS = LabelFBBOR022.Any(c => c.Name == "L_SAVE_NOT_SUCCESS") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_SAVE_NOT_SUCCESS").DisplayValue : "";
+        B_CLOSE = LabelFBBOR022.Any(c => c.Name == "B_CLOSE") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        L_PLACE_HOLDER_MOBILE_INTERNET_NUMBER = LabelFBBOR022.Any(c => c.Name == "L_PLACE_HOLDER_MOBILE_INTERNET_NUMBER") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_PLACE_HOLDER_MOBILE_INTERNET_NUMBER").DisplayValue : "";
+        L_PLACE_HOLDER_MOBILE_NUMBER = LabelFBBOR022.Any(c => c.Name == "L_PLACE_HOLDER_MOBILE_NUMBER") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_PLACE_HOLDER_MOBILE_NUMBER").DisplayValue : "";
+        L_EXPIRED_DATE = LabelFBBOR022.Any(c => c.Name == "L_EXPIRED_DATE") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_EXPIRED_DATE").DisplayValue : "";
+        L_INTERNET_NUMBER_INCORRECT = LabelFBBOR022.Any(c => c.Name == "L_INTERNET_NUMBER_INCORRECT") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_INTERNET_NUMBER_INCORRECT").DisplayValue : "";
+        L_HELP_CONTACT = LabelFBBOR022.Any(c => c.Name == "L_HELP_CONTACT") ? LabelFBBOR022.FirstOrDefault(c => c.Name == "L_HELP_CONTACT").DisplayValue : "";
+    }
+
+    if (ViewBag.Language != null)
+    {
+        L_LANGUAGE = ViewBag.Language;
+    }
+
+}
+<style>
+    #btnNonRegister {
+        background-color: #8dc63f;
+        color: #fff;
+    }
+
+        #btnNonRegister:hover {
+            background-color: #8dc63f;
+            color: #fff;
+            cursor: not-allowed;
+        }
+
+    #btnRegiste {
+        background-color: #8dc63f;
+        color: #fff;
+    }
+
+        #btnRegiste:hover {
+            background-color: black;
+            color: #fff;
+        }
+
+    .tgray {
+        color: #666;
+    }
+</style>
+
+
+@using (Html.BeginForm("SaveRegister", "Campaign", FormMethod.Post, new { id = "RegisterForm", enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    <h4 class="page-header tgreen">@L_PLEASE_ENTER_INFORMATION</h4>
+
+    @*<h4 class="page-header tgreen">@L_HEADER_NEIGHBOR_GET_NEIGHBOR</h4>
+        if (ViewBag.Expried != null && ViewBag.Expried)
+        {
+            //expried date
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <p class="text-left">
+                    @Html.Raw(L_EXPIRED_DATE)
+                </p>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        }
+        else
+        {*@
+
+    <div class="row" style="display:none;">
+        <div class="col-xs-12 col-sm-12">
+            <p class="text-center tgreen">
+                @Html.Raw(L_PLEASE_ENTER_INFORMATION)
+            </p>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    <div class="row" style="display:none;">
+        @Html.Label("L_EMP_NAME", L_NAME, new
+       {
+           @class = "control-label col-xs-4 col-sm-3"
+       })
+        <div class="col-xs-8 col-sm-4">
+
+
+            @Html.TextBoxFor(m => m.NeighborName, "",
+                    new
+                    {
+                        @class = "form-control",
+                        @title = L_NAME,
+                        @maxlength = 50
+                    })
+            <p class="clearfix"></p>
+        </div>
+        @Html.Label("L_EMP_SURNAME", L_SURNAME, new
+       {
+           @class = "control-label col-xs-4 col-sm-1"
+       })
+        <div class="col-xs-8 col-sm-4">
+
+            @Html.TextBoxFor(m => m.NeighborSurname, "",
+                    new
+                    {
+                        @class = "form-control",
+                        @title = L_SURNAME,
+                        @maxlength = 50
+                    })
+            <p class="clearfix"></p>
+        </div>
+    </div>
+    <div class="row" style="display:none;">
+        @Html.Label("L_INTERNET_CODE", L_INTERNET_NO, new
+       {
+           @class = "control-label col-xs-4 col-sm-3"
+       })
+        <div class="col-xs-8 col-sm-4">
+
+            @Html.TextBoxFor(m => m.InternetNo, "",
+                    new
+                    {
+                        @class = "form-control",
+                        @title = L_INTERNET_NO,
+                        @maxlength = 10,
+                        @placeholder = L_PLACE_HOLDER_MOBILE_INTERNET_NUMBER
+                    })
+            <p class="clearfix"></p>
+        </div>
+    </div>
+    <div class="row" style="display:none;">
+        @Html.Label("L_MOBILE_CALLBACK", L_CONTACT_NUMBER, new
+       {
+           @class = "control-label col-xs-4 col-sm-3"
+       })
+        <div class="col-xs-8 col-sm-4">
+
+            @Html.TextBox("txtMobileNo", "",
+                    new
+                    {
+                        @class = "form-control",
+                        @title = L_CONTACT_NUMBER,
+                        @readonly = true
+                    })
+            @Html.HiddenFor(m => m.MobileNo)
+            <p class="clearfix"></p>
+        </div>
+    </div>
+    <div class="row" style="display:none;">
+        <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+            <p class="tgray">
+                @Html.Raw(L_HELP_CONTACT)
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        @Html.Label("L_TOTAL_FRIEND", L_TOTAL, new
+       {
+           @class = "control-label col-xs-4 col-sm-3"
+       })
+        <div class="col-xs-8 col-sm-4">
+            <select class="select" style="width: 100%" id="TotalFriend" name="TotalFriend" onchange=" ddlTotalFriendChange(this); ">
+                <option disabled="disabled" selected="selected">@L_PLEASE_SELECT</option>
+            </select>
+
+            <p class="clearfix"></p>
+        </div>
+    </div>
+
+    <div id="divCustomer">
+        @Html.Partial("_PartialNeighborCustomer", Model.CustomerNeighborList)
+    </div>
+
+    <div class="col-md-12 text-center">
+        <p class="clearfix"></p>
+        <button id="btnReset" type="button" class="btn btn-default">
+            &nbsp; @B_RESET&nbsp;
+        </button>
+        <button id="btnNonRegister" type="button" class="btn btn-success">
+            &nbsp; @B_REGISTER&nbsp;
+        </button>
+        <button id="btnRegister" type="button" style="display: none;" class="btn btn-success">
+            &nbsp; @B_REGISTER&nbsp;
+        </button>
+        <p class="clearfix"></p>
+    </div>
+
+    <div class="hidden">
+        @Html.Hidden("hndLanguage", L_LANGUAGE)
+        @Html.Hidden("hndFirstName", "")
+        @Html.Hidden("hndLastName", "")
+        @Html.Hidden("hndInternetNo", "")
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: none;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-border-rounded-green">
+                        <p class="clearfix"></p>
+                        <h5 id="modal001txt" class="text-center">
+                            <span id="LastPopupMessage"></span>
+                        </h5>
+                        <p class="clearfix"></p>
+                        <div class="col-md-12 text-center">
+                            <p class="clearfix"></p>
+                            <button type="button" id="modal001btn" class="btn btn-default" data-dismiss="modal">&nbsp; @B_CLOSE &nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*}*@
+
+}
+
+<script>
+    $(function () {
+        getNoFriend();
+
+        $("#btnRegister").on('click', function () {
+            if (ValidateNeighnor()) {
+                var dataObj = genDataSubmit();
+                LockScreen(true, "");
+                $.ajax({
+                    type: "POST",
+                    url: "/Campaign/SubmitMemberGetMember",
+                    contentType: 'application/json',
+                    data: dataObj,
+                    async: true,
+                    success: function (response) {
+                        if (response.saveStatus == "Y") {
+                            LockScreen(false, "");
+                            PopupMessage('@Html.Raw(L_SAVE_SUCCESS)');
+                            _Search();//R22.05
+                            reset();
+
+                        } else {
+                            LockScreen(false, "");
+                            PopupMessage('@Html.Raw(L_SAVE_NOT_SUCCESS)');
+                        }
+                        $('#myModal').modal('show');
+                    }
+                });
+
+            }
+        });
+
+        @* R22.05 *@
+        @*$("#InternetNo").on('blur', function () {
+            if ($("#InternetNo").val().length == 10) {
+                CheckInternetNo($("#InternetNo").val());
+            } else if ($("#InternetNo").val() != "") {
+                $("#txtMobileNo").val("");
+                toastrErrorMessage("@L_INTERNET_NUMBER_INCORRECT");
+            } else if ($("#InternetNo").val() == "") {
+                $("#txtMobileNo").val("");
+            }
+        });*@
+
+
+        $("#btnReset").on('click', function() {
+            reset();
+        });
+
+        var chkCondition = $('#chkCondition');
+
+        chkCondition.change(function() {
+            if (chkCondition.prop('checked')) {
+                $("#btnRegister").show();
+                $("#btnNonRegister").hide();
+            } else {
+                $("#btnRegister").hide();
+                $("#btnNonRegister").show();
+            }
+        });
+
+    });
+
+    function reset() {
+        $('.form-control').val('');
+        $(".form-control").removeClass("errorinput");
+        getNoFriend();
+        clearDetial();
+        $("#btnRegister").hide();
+        $("#btnNonRegister").show();
+    }
+
+    function ValidateNeighnor() {
+        var a = [];
+        //a.push({ id: "NeighborName" });
+        //a.push({ id: "NeighborSurname" });
+        //a.push({ id: "InternetNo" });
+        //a.push({ id: "MobileNo", condition: "MobileNumber" });
+        a.push({ id: "TotalFriend" });
+
+        var isSubmit = ValidationProcessing(ValidateDetail(a, CheckKeyDetail()), "err001");
+        //if (isSubmit)
+        //    isSubmit = CheckInternetNo($('#InternetNo').val());
+        return isSubmit;
+    }
+
+    function CheckKeyDetail() {
+        var a = [];
+
+        var totalFriend = $('#TotalFriend').val();
+        var total = parseInt(totalFriend);
+        var keyDetail = false;
+        for (i = 1; i <= total; i++) {
+            if (checkDetail(i)) {
+                keyDetail = true;
+            }
+        }
+        return keyDetail;
+    }
+
+    function checkDetail(i) {
+
+        var key = false;
+        if ($("#CustomerNeighborList_" + i + "__Name").val().trim() != ""
+            || $("#CustomerNeighborList_" + i + "__Surname").val().trim() != ""
+            || $("#ContactNo" + i).val().trim() != ""
+            //|| $("#CustomerNeighborList_" + i + "__Email").val().trim() != ""
+            || $("#CustomerNeighborList_" + i + "__Building").val().trim() != ""
+            //|| $("#CustomerNeighborList_" + i + "__FullAddress").val().trim() != ""
+            || $("#CustomerNeighborList_" + i + "__HouseNo").val().trim() != ""
+            //|| $("#CustomerNeighborList_" + i + "__LineId").val().trim() != ""
+            || $("#CustomerNeighborList_" + i + "__Soi").val().trim() != ""
+            || $("#CustomerNeighborList_" + i + "__Road").val().trim() != ""
+            || $("#Rewards" + i).val() != null
+            || $("#Province" + i).val() != null
+            || $("#District" + i).val() != null
+            || $("#SubDistrict" + i).val() != null
+            || $("#PostalCode" + i).val() != null
+            || $("#ContactTime" + i).val() != null) {
+            key = true;
+        }
+        return key;
+    }
+
+    function ValidateDetail(a, keyDetail) {
+
+        var totalFriend = $('#TotalFriend').val();
+        var total = parseInt(totalFriend);
+
+        for (i = 1; i <= total; i++) {
+
+            if (checkDetail(i)) {
+                a.push({ id: "CustomerNeighborList_" + i + "__Name" });
+                a.push({ id: "CustomerNeighborList_" + i + "__Surname" });
+                a.push({ id: "ContactNo" + i, condition: "MobileNumber" });
+                //if ($("#CustomerNeighborList_" + i + "__Email").val() != "") {
+                //    a.push({ id: "CustomerNeighborList_" + i + "__Email", condition: "Email" });
+                //} else {
+                //    $("#CustomerNeighborList_" + i + "__Email").removeClass("form-control errorinput ").addClass("form-control");
+                //}
+
+                a.push({ id: "Rewards" + i });
+                a.push({ id: "CustomerNeighborList_" + i + "__Building" });
+                //a.push({ id: "CustomerNeighborList_" + i + "__FullAddress" });
+                a.push({ id: "Province" + i });
+                a.push({ id: "District" + i });
+                a.push({ id: "SubDistrict" + i });
+                a.push({ id: "PostalCode" + i });
+                a.push({ id: "CustomerNeighborList_" + i + "__HouseNo" });
+                a.push({ id: "ContactTime" + i });
+            } else if (!keyDetail) {
+
+                a.push({ id: "CustomerNeighborList_" + i + "__Name" });
+                a.push({ id: "CustomerNeighborList_" + i + "__Surname" });
+                a.push({ id: "ContactNo" + i, condition: "MobileNumber" });
+                //if ($("#CustomerNeighborList_" + i + "__Email").val() != "") {
+                //    a.push({ id: "CustomerNeighborList_" + i + "__Email", condition: "Email" });
+                //} else {
+                //    $("#CustomerNeighborList_" + i + "__Email").removeClass("form-control errorinput ").addClass("form-control");
+                //}
+                a.push({ id: "Rewards" + i });
+                a.push({ id: "CustomerNeighborList_" + i + "__Building" });
+                //a.push({ id: "CustomerNeighborList_" + i + "__FullAddress" });
+                a.push({ id: "Province" + i });
+                a.push({ id: "District" + i });
+                a.push({ id: "SubDistrict" + i });
+                a.push({ id: "PostalCode" + i });
+                a.push({ id: "CustomerNeighborList_" + i + "__HouseNo" });
+                a.push({ id: "ContactTime" + i });
+            }
+        }
+        return a;
+    }
+
+    function ddlTotalFriendChange(ddl) {
+        //R22.05
+        $('.Customer').hide();
+        var total = parseInt(ddl.value);
+        for (var i = 1; i <= total; i++) {
+            $("#Customer" + i.toString()).show();
+            $('#ContactNo' + i.toString()).blur(function () {
+                contactNoFocusout(this);
+            });
+        }
+        $('.chkCondition').show();
+
+        @*var a = [];
+        a.push({ id: "NeighborName" });
+        a.push({ id: "NeighborSurname" });
+        a.push({ id: "InternetNo" });
+
+        var isValidateSuccess = ValidationProcessing(a, "err001");
+        if (isValidateSuccess) {
+
+            if ($("#InternetNo").val().length == 10) {
+                $("#InternetNo").removeClass("errorinput");
+                if (CheckInternetNo($("#InternetNo").val())) {
+                    $('.Customer').hide();
+                    var total = parseInt(ddl.value);
+                    for (var i = 1; i <= total; i++) {
+                        $("#Customer" + i.toString()).show();
+                        $('#ContactNo' + i.toString()).blur(function () {
+                            contactNoFocusout(this);
+                        });
+                    }
+                    $('.chkCondition').show();
+                } else {
+                    getNoFriend();
+                }
+            } else {
+                toastrErrorMessage("@L_INTERNET_NUMBER_INCORRECT");
+                $("#InternetNo")[0].className = "form-control errorinput";
+                getNoFriend();
+            }
+        } else {
+            getNoFriend();
+        }*@
+    }
+
+    function getNoFriend() {
+
+        $('#TotalFriend').empty();
+        var str = '<option disabled selected value="">' + "@L_PLEASE_SELECT" + '</option>';
+
+        $('#TotalFriend').append(str);
+        var strBuilder = '';
+        var total = parseInt("@TotalDdlNeighbor");
+        for (i = 1; i <= total; i++) {
+            strBuilder += '<option value="' + i + '">' + i + '</option>';
+        }
+
+        $('#TotalFriend').append(strBuilder);
+        $('#TotalFriend').select2();
+
+    }
+
+    function genDataSubmit() {
+
+        var dataDetail = [];
+        var total = parseInt($("#TotalFriend :selected").text());
+        for (var i = 1; i <= total; i++) {
+
+            if (checkDetail(i)) {
+
+                dataDetail.push({
+                    Name: $("#CustomerNeighborList_" + i + "__Name").val().trim(),
+                    Surname: $("#CustomerNeighborList_" + i + "__Surname").val().trim(),
+                    ContactNo: $("#ContactNo" + i).val().trim(),
+                    IsAisMobile: $("#IsAisMobile" + i).val(),
+                    //Email: $("#CustomerNeighborList_" + i + "__Email").val().trim(),
+                    SelectAddressType: $("#CustomerNeighborList_" + i + "__SelectAddressType").val().trim(),
+                    Building: $("#CustomerNeighborList_" + i + "__Building").val().trim(),
+                    HouseNo: $("#CustomerNeighborList_" + i + "__HouseNo").val().trim(),
+                    Soi: $("#CustomerNeighborList_" + i + "__Soi").val().trim(),
+                    Road: $("#CustomerNeighborList_" + i + "__Road").val().trim(),
+                    SubDistrict: $("#SubDistrict" + i).val(),
+                    District: $("#District" + i).val(),
+                    Province: $("#Province" + i).val(),
+                    PostalCode: $("#PostalCode" + i).val(),
+                    ContactTime: $("#ContactTime" + i).val(),
+                    //LineId: $("#CustomerNeighborList_" + i + "__LineId").val().trim(),
+                    Rewards: $("#Rewards" + i).val(),
+                    //FullAddress: $("#CustomerNeighborList_" + i + "__FullAddress").val().trim(),
+                    //InstallAddress: $("#CustomerNeighborList_" + i + "__Name").val().trim(),
+                });
+
+            }
+        }
+
+        var tmpLanguage = $("#hndLanguage").val() == "1" ? "T" : "E";//R22.08 Issue Language MGM
+        var dataObject = JSON.stringify({
+            NeighborName: $("#hndFirstName").val(),
+            NeighborSurname: $("#hndLastName").val(),
+            //InternetNo: $("#InternetNo").val(),
+            //InternetNo: $("#AisAirNumber").val() + '|' + $("#ID_CARD_NAMEs :selected").val() + '|' + $("#L_CARD_NOs").val(),
+            InternetNo: $("#AisAirNumber").val() + '|' + $("#L_CARD_NOs").val(),
+            MobileNo: $("#MobileNo").val(),
+            TotalFriend: $("#TotalFriend :selected").text(),
+            Language: tmpLanguage, //R22.08 Issue Language MGM
+            CustomerNeighborList: dataDetail
+        });
+
+        return dataObject.toString();
+    }
+
+    function PopupMessage(msg) {
+        $('#LastPopupMessage').html(msg);
+    }
+
+    function CheckInternetNo(internetNo) {
+        var c = true;
+        $.ajax({
+            type: "GET",
+            url: "/Campaign/CheckInternetNumber",
+            data: { internetNo: internetNo },
+            dataType: "json",
+            async: false,
+            success: function (response) {
+                if (response.check != "1") {
+                    toastrErrorMessage("@L_INTERNET_NUMBER_INCORRECT");
+                    $("#InternetNo")[0].className = "form-control errorinput";
+                    $("#MobileNo").val('');
+                    $("#txtMobileNo").val('');
+                    c = false;
+                } else {
+                    $("#InternetNo").removeClass("errorinput");
+                    $("#MobileNo").val(response.mobileNumber);
+                    $("#txtMobileNo").val(response.mobileNumberShow);
+                }
+            }
+        });
+        return c;
+    }
+
+</script>
+

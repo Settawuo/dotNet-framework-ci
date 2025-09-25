@@ -1,0 +1,182 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.CadModelView
+
+<style>
+    .popupTextBox {
+        width: 170px;
+    }
+
+    .popupTDLabel {
+        margin-left: 25px;
+        width: 150px;
+    }
+</style>
+
+<table class="table" style="width:100%;">
+    <tr>
+        <td class="popupTDLabel">
+            <span>Model</span>
+
+        </td>
+        <td>
+
+             @*<input type="text" name="MODEL"  id="MODEL" class="k-textbox form-control" maxlength=""/>*@
+      
+            @Html.TextBoxFor(Model => Model.MODEL,
+
+                     new
+                     {
+                         @onblur = "$('#hdid').val($('#txtCode').val())",
+                         //@onkeypress = "ChangemodeName2()",
+                         @data_bind = "value:MODEL",
+                         @placeholder = "MODEL",
+                         @title = "Input  data Model",
+                         @type = "text",
+                         @id = "txtCode",
+                        
+                         @class = "k-textbox form-control",
+                         @maxlength = 50
+                     })
+
+                      
+        </td>
+    </tr>
+    <tr>
+        <td class="popupTDLabel">
+            <span>Brand</span>
+        </td>
+        <td>
+            @Html.TextBoxFor(Model => Model.BRAND,
+                     new
+                     {
+                         @data_bind = "value:BRAND",
+                         @placeholder = "BRAND",
+                         @title = "Input data Brand",
+                         @type = "text",
+                         @id = "txtCode",
+                         @class = "k-textbox form-control",
+                         @maxlength = 50
+                     })
+
+               @*     /// @Html.ValidationMessageFor(model => model.BRAND)*@
+
+        </td>
+    </tr>
+    <tr>
+        <td class="popupTDLabel">
+            <span>Max Port</span>
+        </td>
+        <td>
+            @*@Html.TextBoxFor(Model => Model.MAXPORT,
+                     new
+                     {
+                         @data_bind = "value:MAXPORT",
+                         @placeholder = "MAXPORT",
+                         @title = "MAXPORT",
+                         @type = "text",
+                         @id = "txtDLRuningNumber",
+
+                         @class = "k-textbox form-control",
+                         @maxlength = 2
+                     })*@
+
+
+              @(Html.Kendo().NumericTextBox()
+                .Name("MAXPORT")
+                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                  .Format("n0")
+                .Spinners(false)
+                .Value(1)
+                .Max(99)
+                .Min(1)
+              
+                
+                
+                )
+        </td>
+    </tr>
+    <tr>
+        <td class="popupTDLabel">
+            <span>Resrve Port Spare</span>
+        </td>
+        <td>
+          @*  @Html.TextBoxFor(Model => Model.RESERVEPORTSPARE,
+                     new
+                     {
+                         @data_bind = "value:RESERVEPORTSPARE",
+                         @placeholder = "RESERVEPORTSPARE",
+                         @title = "RESERVEPORTSPARE",
+                         @type = "text",
+                         @id = "RESERVEPORTSPARE",
+                         @class = "k-textbox form-control",
+                         @maxlength =2
+                     })*@
+
+             
+            @(Html.Kendo().NumericTextBox()
+                .Name("RESERVEPORTSPARE")
+                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                 .Format("n0")
+                .Spinners(false)
+                
+                .Min(0)
+                .Max(9)
+                )
+
+
+
+        </td>
+    </tr>
+    <tr>
+        <td class="popupTDLabel">
+            <span>Start Index</span>
+        </td>
+        <td>
+          @*  @Html.NumericTextBox(Model => Model.PORTSTARTINDEX,
+                     new
+                     {
+                         @data_bind = "value:PORTSTARTINDEX",
+                         @placeholder = "PORTSTARTINDEX",
+                         @title = "PORTSTARTINDEX",
+                         @type = "text",
+                         @id = "txtMC",
+                         @class = "k-textbox form-control",
+                         @maxlength = 1
+                            .Min(1)
+                            .Max(99)
+                     })*@
+
+             @(Html.Kendo().NumericTextBox()
+                .Name("PORTSTARTINDEX")
+                .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                 .Format("n0")
+                .Spinners(false)
+              
+                .Min(0)
+                .Max(9)
+                )
+        </td>
+    </tr>
+    <tr>
+        <td class="popupTDLabel">
+            <span>Port Type</span>
+        </td>
+        <td>
+            <div class="form-inline">
+                <div class="radio i-gap-right-2">
+                    <label>
+                      
+                         @Html.RadioButtonFor(model => model.DATAONLY_FLAG,"N",new {@checked="checked" }) Data +Voice
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                         @Html.RadioButtonFor(model => model.DATAONLY_FLAG, "Y") Data
+                    </label>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+
+</table>
+ 

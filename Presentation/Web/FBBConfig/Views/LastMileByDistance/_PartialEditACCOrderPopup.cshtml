@@ -1,0 +1,421 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.LastMileByDistanceModel
+@{
+    string L_STATUS = "Status";
+    string L_PAIDDATE = "Paid Date(วันที่โอน)";
+    string L_REMARK = "Remark";
+    string L_INV_DATE = "Invoice Date";
+    string L_INV_NO = "Invoice No.";
+    string B_SAVE = "SAVE";
+    string B_CANCEL = "CANCEL";
+}
+
+
+<div class="row">
+    <div class=" col-sm-12 col-md-4">
+    
+            <label>@L_STATUS <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label style="color:red;font-size:15px">*</label>
+            <div class="i-fg-data-entry">
+                @(Html.Kendo().DropDownList()
+                      .Name("ddlStatus")
+                      .HtmlAttributes(new {@class = "form-control i-form-control-extend"})
+                      .DataTextField("DISPLAY_VAL")
+                      .DataValueField("LOV_VAL1")
+                      .DataSource(source =>
+                      {
+                          source.Read(read =>
+                          {
+                              read.Action("SelectAccWorkFlowStatus", "LastMileByDistance")
+                                  .Data("getAdditionalParam");
+
+                          }).ServerFiltering(true);
+
+                      })
+                      .Events(e => e.Change("onddlChangeDropDown"))
+                      )
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-ddlStatus"></div>
+       
+    </div>
+    <div id="paiddt" class=" col-sm-12 col-md-4">
+        <label>@L_PAIDDATE <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label style="color:red;font-size:15px">*</label>
+        @(Html.Kendo().DatePicker().Name("dtPaidDate")
+                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                      .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                      .Format("dd/MM/yyyy")
+                      .Min(new DateTime(1900, 1, 1))
+                      .Max(new DateTime(2099, 12, 31))
+                //  .Events(e => e.Change("onChangedtpInvDate"))
+        )
+        <div class="i-fg-data-entry-validation" id="validatefor-dtPaidDate"></div>
+    </div>
+</div>
+<div id="_invno-date" class="row">
+    <div id="_accinvdate" class=" col-sm-12 col-md-4">
+        <label>@L_INV_DATE <span id="requiredfor-SectorInfo"></span></label>@*&nbsp;<label style="color:red;font-size:15px">*</label>*@
+        @(Html.Kendo().DatePicker().Name("accinvdate")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                              .Format("dd/MM/yyyy")
+                                              .Min(new DateTime(1900, 1, 1))
+                                              .Max(new DateTime(2099, 12, 31))
+                //  .Events(e => e.Change("onChangedtpInvDate"))
+        )
+        @*<div class="i-fg-data-entry-validation" id="validatefor-accinvdate"></div>*@
+    </div>
+    <div class=" col-sm-12 col-md-4">
+
+        <label>Invoice No</label>
+        <input type="text" id="acct_accNo" class="k-textbox form-control" />
+
+    </div>
+</div>
+<div id="accrm" class="row">
+    <div class=" col-sm-12 col-md-4">
+        <label>@L_REMARK <span id="requiredfor-SectorInfo"></span></label>&nbsp;<label id="_rqremark" style="color:red;font-size:15px">*</label>
+        @Html.TextArea("REMARK", new { maxlength = 500, @rows = 3, @style = "resize:none; width:437px", @class = "k-textbox form-control", @id = "REMARK" })
+        <div class="i-fg-data-entry-validation" id="validatefor-REMARK"></div>
+    </div>
+    
+</div>
+<div class="row">
+    <br />
+</div>
+<div class="row i-text-align-center">
+  
+        <a class="btn btn-info" id="saveAcc" onclick="ACCTConfirmPaid();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+        <a class="btn btn-info" id="saveChkAcc" onclick="CheckBoxACCTConfirmPaid();"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;@B_SAVE</a>
+    
+        <a class="btn btn-info" onclick="CancelEditACCConfig();"><i class="fa fa-times"></i>&nbsp;&nbsp;@B_CANCEL</a>
+   
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#_rqremark").html("*");
+
+    });
+ 
+    function onddlChangeDropDown() {
+        var st = $("#ddlStatus").val();
+        if (st == "Hold") {
+           //  paiddt
+            document.getElementById('paiddt').style.display = 'none';
+            $("#_invno-date").hide();
+            $("#_rqremark").html("*");
+        }
+        else {
+           
+            $("#_invno-date").show();
+            document.getElementById('paiddt').style.display = 'block';
+            $("#_rqremark").html("");
+        }
+
+    }
+    function CancelEditACCConfig()
+    {
+       // $("#validatefor-" + "REMARK").html("");
+      $("#EditConfigPopup").data("kendoWindow").close();
+      $("#ddlStatus").data('kendoDropDownList').value("ALL");
+        document.getElementById('paiddt').style.display = 'block';
+        $("#REMARK").val("");
+        $("#acct_accNo").val("");//acct_accNo
+        $("#accinvdate").val("");//accinvdate
+       $("#validatefor-ddlStatus").html("");
+       $("#validatefor-dtPaidDate").html("");
+       $("#validatefor-REMARK").html("");
+    }
+
+    function AccValidationDateValue() {
+        $("#validatefor-ddlStatus").html("");
+        $("#validatefor-" + "dtPaidDate").html("");
+        $("#validatefor-" + "REMARK").html("");
+        var chk = ValidationProcessing("dateselect");
+
+        //  alert("SCMValidation");
+        if (chk) //check blank value
+        {
+            /// alert("ValidationBlankValue");
+            if ($("#ddlStatus").val() == "ALL" || $("#ddlStatus").val() == "") {
+                $("#validatefor-ddlStatus").html(ValidationIcon() + "This field is required.");
+                chk = false;
+
+            } else if ($("#ddlStatus").val() == "Paid") {
+                $("#validatefor-" + "REMARK").html("");
+              
+                if ($.trim($("#dtPaidDate").val()) == "") {
+                    $("#validatefor-dtPaidDate").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                } else {
+                    if (!kendo.parseDate($("#dtPaidDate").val(), "dd/MM/yyyy")) {
+                        if ($("#dtPaidDate").val() != "") {
+                            $("#validatefor-dtPaidDate").html(ValidationIcon() + "This field is not correct format.");
+                            chk = false;
+                        }
+                    } else {
+                        $("#validatefor-" + "dtPaidDate").html("");
+                    }
+                }
+                $("#validatefor-ddlStatus").html("");
+            }
+            else if ($("#ddlStatus").val() == "Hold") {
+            
+                $("#validatefor-" + "dtPaidDate").html("");
+                $("#validatefor-ddlStatus").html("");
+                //  REMARK
+                if ($.trim($("#REMARK").val()) == "") {
+                    $("#validatefor-REMARK").html(ValidationIcon() + "This field is required.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "REMARK").html("");
+                }
+            } else {
+                $("#validatefor-ddlStatus").html("");
+                $("#validatefor-" + "dtPaidDate").html("");
+                $("#validatefor-" + "REMARK").html("");
+            }
+
+
+        }
+        return chk;
+    }
+        var AccessList = function () {
+            ACCESS_NUMBER = "";
+        }
+        function ACCTConfirmPaid(checked) {
+            $("#chk").val("False");
+            var index = 0;
+            idsToSend = [];
+            var data;
+
+            var chk = AccValidationDateValue();
+            if (chk) {
+
+    
+                // alert("AccChk");
+                var AccNO = $("#accNo").val();
+                var user = " ";
+                var IntF = " ";
+                //SCM VALUE
+                var status = $("#ddlStatus").val();
+                var InvNo = $("#acct_accNo").val();//acct_accNo
+                var InvDate = $("#accinvdate").val();//accinvdate
+                var IrDoc = " ";
+                var remark = $("#REMARK").val();
+                var remarksub = " ";
+                //FAPO Value
+                var ValDis = " ";
+                var Reason = " ";
+                var TranDT = $("#dtPaidDate").val();
+
+
+                var AccessListModel = new AccessList();
+                console.log($("#accNo").val());
+                AccessListModel.ACCESS_NUMBER = $("#accNo").val();
+                idsToSend.push(AccessListModel);
+                // console.log(checked);
+                console.log("Not checkbox");
+                index++;
+                data = JSON.stringify({
+                    'AccNOList': idsToSend, 'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+                });
+
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "/LastMileByDistance/UpdateByOrder",
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response === "Update success.") {
+
+                            $("#ddlStatus").data('kendoDropDownList').value("ALL");
+
+                            $("#REMARK").val("");
+                            $("#dtPaidDate").val("");
+                            $("#acct_accNo").val("");//acct_accNo
+                            $("#accinvdate").val("");//accinvdate
+                            $("#EditConfigPopup").data("kendoWindow").close();
+      
+
+                            //  $('#FAPOView').data('kendoGrid').refresh();
+                            showFeedback("success", response, "System Information");
+                        }
+                        else {
+                            $("#EditConfigPopup").data("kendoWindow").close();
+                            showFeedback("error", response, "System Information");
+                        }
+                    },
+                    failure: function (msg) {
+
+                    }
+                });
+                $("#AccountingView").data("kendoGrid").dataSource.read();
+            }
+
+
+
+             
+            // alert(status + invNo + invDate + irdoc + remark);
+            hidepanel();
+        }
+    
+        function CheckBoxACCTConfirmPaid(checked) {
+            $("#chk").val("False");
+            var index = 0;
+            idsToSend = [];
+            var data;
+
+            var chk = AccValidationDateValue();
+            if (chk) {
+
+
+                // alert("AccChk");
+                var AccNO = $("#accNo").val();
+                var user = " ";
+                var IntF = " ";
+                //SCM VALUE
+                var status = $("#ddlStatus").val();
+                var InvNo = $("#acct_accNo").val();//acct_accNo
+                var InvDate = $("#accinvdate").val();//accinvdate
+                var IrDoc = " ";
+                var remark = $("#REMARK").val();
+                var remarksub = " ";
+                //FAPO Value
+                var ValDis = " ";
+                var Reason = " ";
+                var TranDT = $("#dtPaidDate").val();
+
+
+
+                if (checked != null) {
+
+                    data = JSON.stringify({
+                        'AccNOList': checked, 'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+                    });
+                    console.log("checkbox");
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: 'application/json',
+                        url: "/LastMileByDistance/UpdateByOrder",
+                        data: data,
+                        async: false,
+                        dataType: "json",
+                        success: function (response) {
+
+                            if (response === "Update success.") {
+
+                                $("#ddlStatus").data('kendoDropDownList').value("ALL");
+
+                                $("#REMARK").val("");
+                                $("#dtPaidDate").val("");
+                                $("#acct_accNo").val("");//acct_accNo
+                                $("#accinvdate").val("");//accinvdate
+                                $("#EditConfigPopup").data("kendoWindow").close();
+                  
+                          
+                                showFeedback("success", response, "System Information");
+                            }
+                            else {
+                                $("#EditConfigPopup").data("kendoWindow").close();
+                                showFeedback("error", response, "System Information");
+                            }
+                        },
+                        failure: function (msg) {
+
+                        }
+                    });
+                    $("#AccountingView").data("kendoGrid").dataSource.read();
+                }
+
+
+                else {
+                    //    alert("AccNotChk");
+                }
+                // alert(status + invNo + invDate + irdoc + remark);
+            }
+            hidepanel();
+        }
+
+        function CheckBoxALLACCTConfirmPaid() {
+            $("#chk").val("False");
+            $("#chkall").val("False")
+            var index = 0;
+            idsToSend = [];
+            var data;
+
+            var chk = AccValidationDateValue();
+            if (chk) {
+
+
+                // alert("AccChk");
+                var AccNO = $("#accNo").val();
+                var user = " ";
+                var IntF = " ";
+                //SCM VALUE
+                var status = $("#ddlStatus").val();
+                var InvNo = $("#acct_accNo").val();//acct_accNo
+                var InvDate = $("#accinvdate").val();//accinvdate
+                var IrDoc = " ";
+                var remark = $("#REMARK").val();
+                var remarksub = " ";
+                //FAPO Value
+                var ValDis = " ";
+                var Reason = " ";
+                var TranDT = $("#dtPaidDate").val();
+
+
+
+                    data = JSON.stringify({
+                        'AccNO': AccNO, 'USER': user, 'IntFace': IntF, 'Status': status, 'InvNo': InvNo, 'InvDate': InvDate, 'IrDoc': IrDoc, 'remark': remark, 'remarksub': remarksub, 'ValDis': ValDis, 'Reason': Reason, 'TranDT': TranDT
+                    });
+                    console.log("checkbox");
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: 'application/json',
+                        url: "/LastMileByDistance/UpdateAllByOrder",
+                        data: data,
+                        async: false,
+                        dataType: "json",
+                        success: function (response) {
+
+                            if (response === "Update success.") {
+
+                                $("#ddlStatus").data('kendoDropDownList').value("ALL");
+
+                                $("#REMARK").val("");
+                                $("#dtPaidDate").val("");
+                                $("#acct_accNo").val("");//acct_accNo
+                                $("#accinvdate").val("");//accinvdate
+                                $("#EditConfigPopup").data("kendoWindow").close();
+                           
+                                $("#chkall").val("False");
+
+                                showFeedback("success", response, "System Information");
+                            }
+                            else {
+                                $("#EditConfigPopup").data("kendoWindow").close();
+                                showFeedback("error", response, "System Information");
+                            }
+                        },
+                        failure: function (msg) {
+
+                        }
+                    });
+                    $("#AccountingView").data("kendoGrid").dataSource.read();
+            
+                // alert(status + invNo + invDate + irdoc + remark);
+            }
+            hidepanel();
+        }
+    
+        function getAdditionalParam(dropDown) {
+            console.log(ddlStatusModel)
+            return ddlStatusModel;
+            //do stuff with dropDown
+        }
+</script>

@@ -1,0 +1,661 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.ConfigurationEventSubContactSearchData
+@using WBBEntity.PanelModels;
+
+@{
+    string L_EVENT_CODE = "";
+    string L_TECHNOLOGY = "";
+    string L_PROVICE = "";
+    string L_AMPHUR  = "";
+    string L_TUMBON = "";
+    string L_ZIPCODE = "";       
+    string L_EFFECTIVE_DATE = "";
+    string L_EXPIRE_DATE = "";
+    string C_PLUG_AND_PLAY = "";
+    string L_WARNING = "";
+
+    string B_SEARCH = "";
+    string B_ADD_ANOTHER_SUB = "";
+    string B_SAVE = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_EVENT_CODE = configscreen.Any(f => f.Name == "L_EVENT_CODE") ? configscreen.First(f => f.Name == "L_EVENT_CODE").LovValue1 : "";
+        L_TECHNOLOGY = configscreen.Any(f => f.Name == "L_TECHNOLOGY") ? configscreen.First(f => f.Name == "L_TECHNOLOGY").LovValue1 : "";
+        L_PROVICE = configscreen.Any(f => f.Name == "L_PROVICE") ? configscreen.First(f => f.Name == "L_PROVICE").LovValue1 : "";
+        L_AMPHUR = configscreen.Any(f => f.Name == "L_AMPHUR") ? configscreen.First(f => f.Name == "L_AMPHUR").LovValue1 : "";
+        L_TUMBON = configscreen.Any(f => f.Name == "L_TUMBON") ? configscreen.First(f => f.Name == "L_TUMBON").LovValue1 : "";
+        L_ZIPCODE = configscreen.Any(f => f.Name == "L_ZIPCODE") ? configscreen.First(f => f.Name == "L_ZIPCODE").LovValue1 : "";
+        L_EFFECTIVE_DATE = configscreen.Any(f => f.Name == "L_EFFECTIVE_DATE") ? configscreen.First(f => f.Name == "L_EFFECTIVE_DATE").LovValue1 : "";
+        L_EXPIRE_DATE = configscreen.Any(f => f.Name == "L_EXPIRE_DATE") ? configscreen.First(f => f.Name == "L_EXPIRE_DATE").LovValue1 : "";
+        C_PLUG_AND_PLAY = configscreen.Any(f => f.Name == "C_PLUG_AND_PLAY") ? configscreen.First(f => f.Name == "C_PLUG_AND_PLAY").LovValue1 : "";
+        L_WARNING = configscreen.Any(f => f.Name == "L_WARNING") ? configscreen.First(f => f.Name == "L_WARNING").LovValue1 : "";
+
+        B_SEARCH = configscreen.Any(f => f.Name == "B_SEARCH") ? configscreen.First(f => f.Name == "B_SEARCH").LovValue1 : "";
+        B_ADD_ANOTHER_SUB = configscreen.Any(f => f.Name == "B_ADD_ANOTHER_SUB") ? configscreen.First(f => f.Name == "B_ADD_ANOTHER_SUB").LovValue1 : "";
+        B_SAVE = configscreen.Any(f => f.Name == "B_SAVE") ? configscreen.First(f => f.Name == "B_SAVE").LovValue1 : "";
+
+    }
+}
+
+<div class="page-header i-header-fit" id="HeadPage1">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">Configuration Event</h3>
+            <ol class="breadcrumb">
+                <li><a onclick="_backSearch()">Main Page</a></li>
+                <li class="active">Event Detail</li>
+            </ol>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("SaveConfigurationEvent", "ConfigurationEvents", FormMethod.Post, new { id = "frmConfigurationEvent", @enctype = "multipart/form-data" }))
+{
+    <div class="row" id="DetailPane">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>Event Detail</span>
+                        <a data-toggle="collapse" class="pull-right" href="#EventDetailPanel" onclick="onPanelToggle(this);" id="EventDetailPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="EventDetailPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="EventDetailPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 200px;">
+                        <div id="EventDetailRow1" class="row  i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_EVENT_CODE</label>
+                                @Html.HiddenFor(t => t.service_option)
+                                @Html.TextBoxFor(t => t.event_code, new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_TECHNOLOGY</label>
+                                @if (@Model.hastmp == "Y")
+                                {
+                                  @Html.Hidden("technology",Model.technology)
+                                   @(Html.Kendo().DropDownListFor(t => t.technology)
+                                      .Name("technologyTmp")
+                                      .DataTextField("LOV_NAME")
+                                      .DataValueField("LOV_VAL1")                                      
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend", @disabled = "disabled" })
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("SelectLovByTypeAndLovVal5", "MasterData", new { type = "TECHNOLOGY", lovval5 = "FBBOR013" });
+                                          });
+                                      })
+
+                                   )
+                                }
+                                else
+                                {
+                                @(Html.Kendo().DropDownListFor(t => t.technology)
+                                      .Name("technology")
+                                      .DataTextField("LOV_NAME")
+                                      .DataValueField("LOV_VAL1")                                      
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("SelectLovByTypeAndLovVal5", "MasterData", new { type = "TECHNOLOGY", lovval5 = "FBBOR013" });
+                                          });
+                                      })
+                                       .SelectedIndex(0)
+                                       .Events(e => e.Change("onTechnologyChange"))
+
+                                   )
+                                }
+                            </div>
+                        </div>
+                        @*end row1*@
+                        <div id="EventDetailRow2" class="row  i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_PROVICE</label>
+                                @if (@Model.hastmp == "Y")
+                                {
+                                    @Html.TextBox("provice",Model.provice , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+                                }
+                                else
+                                {
+                                @(Html.Kendo().DropDownListFor(t => t.provice)
+                                              .Name("provice")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                              .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectProvinceConfigEvent", "DormitoryMaster");
+                                                    });
+                                                })
+                                               .Events(e => e.Change("onProvinceChange"))
+                                )
+                                }
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_AMPHUR</label>
+                                @if (@Model.hastmp == "Y")
+                                {
+                                    @Html.TextBox("district",Model.district , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+                                }
+                                else
+                                {
+                                @(Html.Kendo().DropDownListFor(t => t.district)
+                                              .Name("district")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .Filter(FilterType.Contains)
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("SelectAmphur", "DormitoryMaster");
+                                                });
+                                            })
+                                            .Events(e => e.Change("onAumphurChange"))
+                                            )
+                                }
+                            </div>
+                        </div>
+                        @*end row2*@
+                        <div id="EventDetailRow3" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_TUMBON</label>
+                                @if (@Model.hastmp == "Y")
+                                {
+                                     @Html.TextBox("sub_district",Model.sub_district , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+                                }
+                                else
+                                {
+                                @(Html.Kendo().DropDownListFor(t => t.sub_district)
+                                              .Name("sub_district")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .Filter(FilterType.Contains)
+                                              .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectTumbon", "DormitoryMaster");
+                                                    });
+                                                })
+                                                   .Events(e => e.Change("onTumbonChange"))
+                                                )
+                                }
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_ZIPCODE</label>
+                                @if (@Model.hastmp == "Y")
+                                {
+                                    @Html.TextBox("post_code",Model.post_code , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+                                }
+                                else
+                                {
+                                @(Html.Kendo().DropDownListFor(t => t.post_code)
+                                              .Name("post_code")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("SelectPostcode", "DormitoryMaster");
+                                                    });
+                                                })
+
+                                                )
+                                }
+                            </div>
+                        </div>
+                        @*end row3*@
+                        <div id="EventDetailRow4" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_EFFECTIVE_DATE</label>
+                                @if (@Model.hastmp == "Y")
+                                {
+                                    @Html.TextBox("start_date",Model.start_date , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+                                }
+                                else
+                                { 
+                                    @(Html.Kendo().DatePicker()
+                                        .Name("start_date")
+                                        .Format("dd/MM/yyyy")
+                                        .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                        .Value(@Model.start_date != null ? @Model.start_date.Substring(3, 2) + "/" + @Model.start_date.Substring(0, 2) + "/" + @Model.start_date.Substring(6, 4) : "")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                        .Events(e => e.Change("StartDateChange"))
+                                        .Min(@Model.start_date != null ? @Model.start_date.Substring(3, 2) + "/" + @Model.start_date.Substring(0, 2) + "/" + @Model.start_date.Substring(6, 4) : "")
+                                    )
+                                }
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <label>@L_EXPIRE_DATE</label>
+                                @if (@Model.hastmp == "Y")
+                                {
+                                    @Html.TextBox("end_date",Model.end_date , new { maxlength = 255, @class = "k-textbox form-control", @readonly = true })
+                                }
+                                else
+                                { 
+                                    @(Html.Kendo().DatePicker()
+                                        .Name("end_date")
+                                        .Format("dd/MM/yyyy")
+                                        .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                        .Value(@Model.end_date != null ? @Model.end_date.Substring(3, 2) + "/" + @Model.end_date.Substring(0, 2) + "/" + @Model.end_date.Substring(6, 4) : "")
+                                        .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                        .Events(e => e.Change("EndDateChange"))
+                                        .Min(@Model.start_date != null ? @Model.start_date.Substring(3, 2) + "/" + @Model.start_date.Substring(0, 2) + "/" + @Model.start_date.Substring(6, 4) : "")
+                                    )
+                                }
+                            </div>
+                        </div>
+                        @*end row4*@
+                        <div id="EventDetailRow5" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                                 @if (@Model.ShownButtom == "N")
+                                 {
+                                    @Html.CheckBoxFor(t => t.plug_and_play_flag_bool,new {onclick = "return false" })
+                                 }
+                                else
+                                 {
+                                    @Html.CheckBoxFor(t => t.plug_and_play_flag_bool)
+                                 }
+                                &nbsp;&nbsp;
+                                @Html.Label(@C_PLUG_AND_PLAY)
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                            </div>
+                        </div>
+                        @*end row5*@
+                        <div id="EventDetailRow6" class="row i-gap-top-1">
+                            <div class="col-sm-6 col-md-6">
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a class="btn btn-info" onclick="SearchSubContact();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@B_SEARCH</a>
+                            </div>
+                        </div>
+                        @*end row5*@
+                        <div id="EventDetailRow7" class="row i-gap-top-1">
+                            <div class="col-sm-12 col-md-12 i-text-align-left">
+                                  <label  style="color:red;">@L_WARNING</label>
+                            </div>
+                        </div>
+                        @*end row6*@
+                    </div>
+                </div>
+                @*end SearchPanel*@
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span>Sub Contractor</span>
+                        <a data-toggle="collapse" class="pull-right" href="#SubContactPanel" onclick="onPanelToggle(this);" id="SubContactPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SubContactPanelHeaderArrow"></i></a>
+                    </h3>
+                </div>
+                <div id="SubContactPanel" class="panel-collapse collapse in">
+                    <div class="panel-body" style="min-height: 50px;">
+                        <div id="SubContacts" class="col-sm-12 col-md-12">
+                        </div>
+                        <div class="col-sm-12 col-md-12">
+                            <div class="col-sm-6 col-md-6">
+                            </div>
+                            <div class="col-sm-6 col-md-6 i-text-align-right">
+                                <a id="btnAddSubContact" class="btn btn-default" onclick="AddSubContact();"><i class="fa fa-plus fa-lg"></i>&nbsp;&nbsp;@B_ADD_ANOTHER_SUB</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (@Model.hastmp == "Y" && @Model.ShownButtom == "")
+        {
+        <div class="col-md-12">
+            <button class="btn btn-default i-gap-top-1 pull-right" onclick="onSave"><i class="fa fa-floppy-o fa-lg"></i>&nbsp;@B_SAVE</button>
+        </div>
+        }
+    </div>
+}
+<script>
+
+    var SubContactIndex = '@Model.ConfigurationEventSubContactDataList.Count';
+    var EventCode = '@Model.event_code';
+
+    $(document).ready(function () {
+
+        $.ajaxSetup({
+            // Disable caching of AJAX responses
+            cache: false
+        });
+
+        var Mode = '@Model.service_option';
+        var HasTmp = '@Model.hastmp';
+        var StaffValidateFail = '@Model.StaffValidateFail';
+
+        if (StaffValidateFail != "") {
+            showFeedback("warning", "ช่างมี Event อื่นในช่วงเวลานี้แล้ว : (" + '@Model.StaffValidateFail'+" )");
+        }
+
+        if (Mode == "E") {
+            $("#EventDetailRow6").hide();
+
+            $(".SubContactRow").remove();
+            var addModel = defaultSubContactData();
+            for (var i = 0; i < SubContactIndex; i++) {
+                $.ajax({
+                    url: '/ConfigurationEvents/AddSubContact',
+                    data: {
+                        SubContactIndex: i,
+                        StartDate: addModel.start_date,
+                        EndDate: addModel.end_date,
+                        ShownButtom: '@Model.ShownButtom'
+                    },
+                    dataType: "html",
+                    type: 'POST',
+                    success: function (response) {
+                        $("#SubContacts").append(response);
+                        Loading(0);
+                    },
+                    error: function (err) {
+                        showFeedback("error", err);
+                        Loading(0);
+                    }
+
+                });
+            }
+            if ('@Model.ShownButtom' == "N") {
+                $("#btnAddSubContact").hide();
+                $("#btnAddSubContact").hide();
+            }
+
+        }
+        else {
+            if (HasTmp == "Y") {
+                $("#EventDetailRow6").hide();
+
+                $(".SubContactRow").remove();
+                var addModel = defaultSubContactData();
+                for (var i = 0; i < SubContactIndex; i++) {
+                    $.ajax({
+                        url: '/ConfigurationEvents/AddSubContact',
+                        data: {
+                            SubContactIndex: i,
+                            StartDate: addModel.start_date,
+                            EndDate: addModel.end_date
+                        },
+                        dataType: "html",
+                        type: 'POST',
+                        success: function (response) {
+                            $("#SubContacts").append(response);
+                            Loading(0);
+                        },
+                        error: function (err) {
+                            showFeedback("error", err);
+                            Loading(0);
+                        }
+
+                    });
+                }
+            }
+            else {
+                $("#btnAddSubContact").hide();
+                onProvinceChange();
+            }
+        }
+        
+    });
+
+    $('#plug_and_play_flag_bool').click(function () {
+        if ($('#plug_and_play_flag_bool').is(":checked")) {
+            var technology = $("#technology").val();
+            if (technology != "VDSL") {
+                $('#plug_and_play_flag_bool').removeAttr('checked');
+                showFeedback("warning", "Technology ต้องมีค่าเป็น FTTB เท่านั้น");
+            }
+        }
+    });
+
+    var SearchDataSubContactMasterModel = function () {
+
+        technology: "";
+        provice: "";
+        amphur: "";
+        tumbon: "";
+        zipcode: "";
+        effective_date: "";
+        expire_date: "";
+        plug_and_play_flag: "";
+
+    }
+
+    function defaultData() {
+        var searchModel = new SearchDataSubContactMasterModel();
+        searchModel.technology = $("#technology").val();
+        searchModel.provice = $("#provice").val();
+        searchModel.amphur = $("#district").val();
+        searchModel.tumbon = $("#sub_district").val();
+        searchModel.zipcode = $("#post_code").val();
+        searchModel.effective_date = $("#start_date").val();
+        searchModel.expire_date = $("#end_date").val();
+        if ($('#plug_and_play_flag_bool').is(":checked")) {
+            searchModel.plug_and_play_flag = "true";
+        }
+        else {
+            searchModel.plug_and_play_flag = "false";
+        }
+        return searchModel;
+    }
+
+    function SearchSubContact() {
+        var searchModel = defaultData();
+        if (searchModel.provice == "" || searchModel.amphur == "" || searchModel.tumbon == "" || searchModel.zipcode == "") {
+            var conditions = "";
+            if (searchModel.provice == "") {
+                conditions = conditions + " Provice";
+            }
+            if (searchModel.amphur == "") {
+                conditions = conditions + " District";
+            }
+            if (searchModel.tumbon == "") {
+                conditions = conditions + " SubDistrict";
+            }
+            if (searchModel.zipcode == "") {
+                conditions = conditions + " PostCode";
+            }
+            showFeedback("warning", "Please choose condition." + conditions);
+        }
+        else {
+            Loading();
+            $.ajax({
+                url: '/ConfigurationEvents/SearchDataSubContactMaster',
+                data: {
+                    technology: searchModel.technology,
+                    provice: searchModel.provice,
+                    amphur: searchModel.amphur,
+                    tumbon: searchModel.tumbon,
+                    zipcode: searchModel.zipcode,
+                    effective_date: searchModel.effective_date,
+                    expire_date: searchModel.expire_date,
+                    plug_and_play_flag: searchModel.plug_and_play_flag
+                },
+                dataType: "text",
+                type: 'POST',
+                success: function (response1) {
+                    console.log("data :", response1);
+                    if (response1 == "true") {
+                        $("#btnAddSubContact").show();
+                    }
+                    else {
+                        $("#btnAddSubContact").hide();
+                    }
+                }
+                , error: function (err) {
+                    showFeedback("error", err);
+                }
+            });
+            Loading(0);
+        }
+    }
+
+    var AddSubContactModel = function () {
+
+        subcontactindex: "";
+        start_date: "";
+        end_date: "";
+
+    }
+
+    function defaultSubContactData() {
+        var addModel = new AddSubContactModel();
+        addModel.subcontactindex = SubContactIndex;
+        addModel.start_date = $("#start_date").val();
+        addModel.end_date = $("#end_date").val();
+
+        return addModel;
+    }
+
+    function AddSubContact() {
+
+        Loading();
+        var url = '@Url.Action("ConfigurationEventsSubContactEdit", "ConfigurationEvents")';
+        if (EventCode != "") {
+            url = url + "?EventCode=" + EventCode;
+        }
+          window.location.href = url;
+
+    }
+
+    function EditSubContact(index) {
+        Loading();
+        var url = '@Url.Action("ConfigurationEventsSubContactEdit", "ConfigurationEvents")';
+        if (EventCode != "") {
+            url = url + "?EventCode=" + EventCode + "&IndexValue=" + index;
+        }
+        else {
+            url = url + "?IndexValue=" + index;
+        }
+        window.location.href = url;
+    }
+
+    function DeleteSubContact(index) {
+        $.ajax({
+            url: '/ConfigurationEvents/DelSubContactToTmp',
+            data: {
+                IndexData: index
+            },
+            dataType: "text",
+            type: 'POST',
+            success: function (response1) {
+                if (response1 != "") {
+                    showFeedback("warning", response1);
+                }
+            }
+                , error: function (err) {
+                    showFeedback("error", err);
+                }
+        });
+        $("#ConfigurationEventSubContactDataList_" + index + "__is_delete").val(true);
+        $("#SubContactRow_" + index).hide();
+    }
+
+    function onSave() {
+        Loading();
+        $('#frmConfigurationEvent').submit();
+    }
+
+    function StartDateChange() {
+
+        var startPicker = $("#start_date").data("kendoDatePicker"),
+            endPicker = $("#end_date").data("kendoDatePicker"),
+            startDate = startPicker.value(),
+            startDateTmp = startPicker.value(),
+            endDate = endPicker.value();
+        if (startDate) {
+            startDate = new Date(startDate);
+            //startDate.setDate(startDate.getDate() + 1);
+            endPicker.min(startDate);
+
+            if (startDate > endDate) {
+                startDateTmp = new Date(startDateTmp);
+                startDateTmp.setDate(startDateTmp.getDate() + 7);
+                endPicker.value(startDateTmp);
+                endPicker.min(startDate);
+            }
+        }
+        else {
+            if (endDate) {
+                endPicker.min(endDate);
+                endDate = new Date(endDate);
+                //endDate.setDate(endDate.getDate() - 1);
+                //startPicker.max(endDate);
+                startPicker.value(endDate);
+            }
+            else {
+                startPicker.value("");
+            }
+        }
+    }
+
+    function EndDateChange() {
+        var startPicker = $("#start_date").data("kendoDatePicker"),
+            endPicker = $("#end_date").data("kendoDatePicker"),
+            startDate = startPicker.value(),
+            endDate = endPicker.value();
+        if (endDate) {
+            endDate = new Date(endDate);
+            //endDate.setDate(endDate.getDate() - 1);
+            //startPicker.max(endDate);
+        }
+        else {
+            if (startDate) {
+                //startPicker.max(startDate);
+                startDate = new Date(startDate);
+                //startDate.setDate(startDate.getDate() + 1);
+                endPicker.min(startDate);
+                endPicker.value(startDate);
+            }
+            else {
+                endPicker.value("");
+            }
+        }
+    }
+
+    function onTechnologyChange() {
+        if ($('#plug_and_play_flag_bool').is(":checked")) {
+            var technology = $("#technology").val();
+            if (technology != "VDSL") {
+                $('#plug_and_play_flag_bool').removeAttr('checked');
+            }
+        }
+    }
+
+    function onProvinceChange() {
+        $("#district").data("kendoDropDownList").dataSource.read({ province: $("#provice").val() });
+        $("#sub_district").data("kendoDropDownList").dataSource.read({ province: $("#provice").val(), aumphur: $("#district").val() });
+        $("#post_code").data("kendoDropDownList").dataSource.read({ province: $("#provice").val(), aumphur: $("#district").val(), tumbon: $("#sub_district").val() });
+    }
+
+    function onAumphurChange() {
+        $("#sub_district").data("kendoDropDownList").dataSource.read({ province: $("#provice").val(), aumphur: $("#district").val() });
+        $("#post_code").data("kendoDropDownList").dataSource.read({ province: $("#provice").val(), aumphur: $("#district").val(), tumbon: $("#sub_district").val() });
+    }
+
+    function onTumbonChange() {
+        $("#post_code").data("kendoDropDownList").dataSource.read({ province: $("#provice").val(), aumphur: $("#district").val(), tumbon: $("#sub_district").val() });
+    }
+
+    function _backSearch() {
+        Loading();
+        var url = '@Url.Action("Index", "ConfigurationEvents")';
+        window.location.href = url;
+    }
+
+</script>

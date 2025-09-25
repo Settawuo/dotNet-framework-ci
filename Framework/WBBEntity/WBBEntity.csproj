@@ -1,0 +1,857 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{41681256-03E6-4034-A050-146BD09ADF2D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WBBEntity</RootNamespace>
+    <AssemblyName>WBBEntity</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'staging|AnyCPU'">
+    <OutputPath>bin\staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'staging|x64'">
+    <OutputPath>bin\x64\staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'staging|x86'">
+    <OutputPath>bin\x86\staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=3.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\Npgsql.3.2.7\lib\net45\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.23.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Oracle.ManagedDataAccess.23.7.0\lib\net472\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.122.23.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Oracle.ManagedDataAccess.EntityFramework.23.7.0\lib\net472\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.6.0.1\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Formats.Asn1, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Formats.Asn1.8.0.1\lib\net462\System.Formats.Asn1.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Pipelines.9.0.0\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Encodings.Web.9.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Json.9.0.0\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\Constants.cs" />
+    <Compile Include="Extensions\DynamicDictionary.cs" />
+    <Compile Include="Extensions\NpgsqlTypeMapper_Extension.cs" />
+    <Compile Include="Extensions\PostgresqlCustomTypeMappingAttribute.cs" />
+    <Compile Include="Extensions\Validation\DateTimeFormatValidation.cs" />
+    <Compile Include="Extensions\Validation\LanguageCodeValidation.cs" />
+    <Compile Include="Extensions\WBBExtension.cs" />
+    <Compile Include="Extensions\OracleCustomTypeUtilities.cs" />
+    <Compile Include="FBBHVRModels\GetOrderByASCEmpIdHVRModel.cs" />
+    <Compile Include="FBBHVRModels\GetOrderDetailHVRModel.cs" />
+    <Compile Include="FBBShareplexModels\FBBShareplexContext.cs" />
+    <Compile Include="FBBShareplexModels\WFS_TEAM_ATTR.cs" />
+    <Compile Include="FBBShareplexModels\Mapping\WFS_TEAM_ATTRMap.cs" />
+    <Compile Include="FBBShareplexModels\GetOrderByASCEmpIdModel.cs" />
+    <Compile Include="FBBShareplexModels\GetOrderDetailModel.cs" />
+    <Compile Include="FBSSModels\CheckFMCPackageModel.cs" />
+    <Compile Include="FBSSModels\CheckPremiumFlagModel.cs" />
+    <Compile Include="FBSSModels\CheckTimeslotBySubtypeModel.cs" />
+    <Compile Include="Models\FBBPAYG_ORDER_FEE.cs" />
+    <Compile Include="Models\FBBPAYG_PATCH_SN_SENDMAIL_LOG.cs" />
+    <Compile Include="Models\FBBPAYG_SIM_SLOC_TEMP.cs" />
+    <Compile Include="Models\FBB_CFG_IDS.cs" />
+    <Compile Include="Models\FBB_CFG_PAYMENT.cs" />
+    <Compile Include="Models\FBB_CFG_QUERY_REPORT.cs" />
+    <Compile Include="Models\FBB_CONSENT_LOG.cs" />
+    <Compile Include="Models\FBB_EMAIL_TRANSACTION.cs" />
+    <Compile Include="Models\FBB_INTERFACE_LOG_3BB.cs" />
+    <Compile Include="Models\FBB_LOAD_CONFIG_LOV.cs" />
+    <Compile Include="Models\FBBPAYG_ORDER_PACKAGE.cs" />
+    <Compile Include="Models\FBB_REGISTER_PAYMENT_LOG_SPDP.cs" />
+    <Compile Include="Models\FBB_REGISTER_PENDING_DEDUCTION.cs" />
+    <Compile Include="Models\FBB_REGISTER_PENDING_PAYMENT.cs" />
+    <Compile Include="Models\FBB_SPECIALIST.cs" />
+    <Compile Include="Models\FBSS_FIXED_OM010_RPT.cs" />
+    <Compile Include="Models\GetTokenFbbModel.cs" />
+    <Compile Include="Models\Mapping\FBBPAYG_ORDER_FEEMap.cs" />
+    <Compile Include="Models\Mapping\FBBPAYG_PATCH_SN_SENDMAIL_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBBPAYG_SIM_SLOC_TEMPMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CFG_IDSMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CFG_PAYMENTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CFG_QUERY_REPORTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_EMAIL_TRANSACTIONMap.cs" />
+    <Compile Include="Models\Mapping\FBB_INTERFACE_LOG_3BBMap.cs" />
+    <Compile Include="Models\Mapping\FBB_LOAD_CONFIG_LOVMap.cs" />
+    <Compile Include="Models\Mapping\FBB_REGISTER_PAYMENT_LOG_SPDPMap.cs" />
+    <Compile Include="Models\Mapping\FBB_REGISTER_PENDING_DEDUCTIONMap.cs" />
+    <Compile Include="Models\Mapping\FBB_REGISTER_PENDING_PAYMENTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_SPECIALISTMap.cs" />
+    <Compile Include="Models\Mapping\FBBPAYG_ORDER_PACKAGEMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_FIXED_OM010_RPTMap.cs" />
+    <Compile Include="PanelModels\ConfigModel.cs" />
+    <Compile Include="PanelModels\ExWebApiModel\GetDataFBBPreRegisterQueryModel.cs" />
+    <Compile Include="PanelModels\ExWebApiModel\RetrieveAddressQueryModel.cs" />
+    <Compile Include="PanelModels\ExWebApiModel\GetListWebsiteConfigurationQueryModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\DataCoverageAreaResultModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\evCorpESQueryAccountInformationListInfoForWelcomeModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\GetOutstandingBalanceModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\InsertCoverageRusultModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\PatchAdressESRIModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\PermissionUserModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\MicrositeActionModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\MicrositeWSModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\QueryLOVForWebModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\UpdateCoverageRusultModel.cs" />
+    <Compile Include="PanelModels\FbbCFGReportModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\D_LstPMETaxRcptModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\FBBPendingDeductionModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\FBBPendingDeductionResponse.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\ListMaxMeshInstallmentRespond.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\QuestionCustomerInsightResponse.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ConfigurationEditRulePriorityModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ConfigurationLookupModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ConfigurationRulePriorityModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FBBMeshReportQueryModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FBBReturnedRevalueAssetS4HANAModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FBSSInvSendTerminateS4HANAModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetConfigDropDownModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetEmployeeProfileByPINModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetListDataLookupIDModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetListDataOntopLookupModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetListLookupNameModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetListLookupParamModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetListPLookupNameModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetListRulePriorityModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetOfficerInfoModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\PAYGLoadFileToTableEnhanceModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\PayGTransMatdocLogModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ReportInstallationCostbyOrderModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ListPopupModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ListSubCompanyNameModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\OfficerInfoPanelModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\evAMQueryCustomerProfileByTaxIdModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\GenerateFilenamesForWorkflowModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\QueryOrderByASCEmpIdResponse.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\QueryOrderDetailResponse.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\UpdateDocumentOrCSNoteByNotifyOrderResponse.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FBBReconcileInvRPTBatchModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ListSubcontractModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ResendWssaps4Model.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\RuleReportInstallationCostbyOrderModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\SubcontractLocationModel.cs" />
+    <Compile Include="PanelModels\FileFormatFraudModel.cs" />
+    <Compile Include="PanelModels\GenerateTokenModel.cs" />
+    <Compile Include="PanelModels\GetListPackageSellRouterV2Model.cs" />
+    <Compile Include="PanelModels\LoadConfigLovModel.cs" />
+    <Compile Include="PanelModels\CFGqueryReportModel.cs" />
+    <Compile Include="PanelModels\PdfOnWebModel.cs" />
+    <Compile Include="PanelModels\BillingAddressModel.cs" />
+    <Compile Include="PanelModels\ShareplexModels\GenReportReconcileModel.cs" />
+    <Compile Include="PanelModels\ShareplexModels\LowUtilizeSaleReportModel.cs" />
+    <Compile Include="FBSSModels\FBSSContext.cs" />
+    <Compile Include="Minions\MinionGetExternalSoapServiceQueryModel.cs" />
+    <Compile Include="Minions\MinionGetListPackageByChangeQueryModel.cs" />
+    <Compile Include="Minions\MinionGetListPackageByServiceQueryModel.cs" />
+    <Compile Include="Minions\MinionGetListPackageBySffRomoQueryModel.cs" />
+    <Compile Include="Minions\MinionGetListProfileAddressQueryModel.cs" />
+    <Compile Include="Minions\MinionGetListProfileContactQueryModel.cs" />
+    <Compile Include="Minions\MinionGetListProfileCustomerQueryModel.cs" />
+    <Compile Include="Minions\MinionGetListProfilePackageQueryModel.cs" />
+    <Compile Include="Minions\MinionGetListProfileSplitterQueryModel.cs" />
+    <Compile Include="Minions\MinionGetMinionServiceQueryModel.cs" />
+    <Compile Include="Minions\MinionGetSaveOrderNewModel.cs" />
+    <Compile Include="Minions\MinionResponseCommandModel.cs" />
+    <Compile Include="Minions\MinionResponseExternalSmsSurveyFoaCommandModel.cs" />
+    <Compile Include="Minions\MinionResponseInsAddrCommandModel.cs" />
+    <Compile Include="Minions\MinionResponseInsContactCommandModel.cs" />
+    <Compile Include="Minions\MinionResponseInsPackageCommandModel.cs" />
+    <Compile Include="Minions\MinionResponseInsSplitterCommandModel.cs" />
+    <Compile Include="Minions\MinionResponseMessageLogCommandModel.cs" />
+    <Compile Include="Minions\UploadFileResponse.cs" />
+    <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\FBBDORM_DORMITORY_DTL.cs" />
+    <Compile Include="Models\FBBDORM_DORMITORY_MASTER.cs" />
+    <Compile Include="Models\FBBDORM_DORMITORY_L_PRE.cs" />
+    <Compile Include="Models\FBBDORM_DORMITORY_REQUEST.cs" />
+    <Compile Include="Models\FBBDORM_DORMITORY_TRN_IPAY.cs" />
+    <Compile Include="Models\FBBDORM_ORDER_INTERFACE.cs" />
+    <Compile Include="Models\FBBPAYG_STANDARD_ADDRESS.cs" />
+    <Compile Include="Models\FBBPAYG_VENDOR.cs" />
+    <Compile Include="Models\FBBPAYG_WFM_SUBCONTRACTOR.cs" />
+    <Compile Include="Models\FBB_EMPLOYEE.cs" />
+    <Compile Include="Models\FBB_MINION_SERVICE.cs" />
+    <Compile Include="Models\FBB_SUBMIT_FOA_ERROR_LOG.cs" />
+    <Compile Include="Models\FBSS_CONFIG_TBL.cs" />
+    <Compile Include="Models\FBSS_FIXED_ASSET_REASON.cs" />
+    <Compile Include="Models\FBSS_FIXED_ASSET_SN_ACT.cs" />
+    <Compile Include="Models\FBSS_FIXED_ASSET_SYMPTOM.cs" />
+    <Compile Include="Models\FBSS_FOA_SYMPTOM.cs" />
+    <Compile Include="Models\FBSS_FOA_VENDOR_CODE.cs" />
+    <Compile Include="Models\FBSS_HISTORY_LOG.cs" />
+    <Compile Include="Models\FBSS_INSTALLATION_COST.cs" />
+    <Compile Include="Models\FBB_CFG_REPORT.cs" />
+    <Compile Include="Models\FBB_EVENT_CODE.cs" />
+    <Compile Include="Models\FBB_CUST_PACKAGE.cs" />
+    <Compile Include="Models\FBB_EVENT_SUBCONTRACT.cs" />
+    <Compile Include="Models\FBB_FBSS_COVERAGEAREA_RESULT.cs" />
+    <Compile Include="Models\FBB_FBSS_LISTBV.cs" />
+    <Compile Include="Models\FBB_FIXED_ASSET_HISTORY_LOG.cs" />
+    <Compile Include="Models\FBSS_FIXED_ASSET_TRAN_LOG.cs" />
+    <Compile Include="Models\FBSS_FOA_SUBMIT_ORDER.cs" />
+    <Compile Include="Models\FBSS_FOA_SUBMIT_ORDER_DTL.cs" />
+    <Compile Include="Models\FBB_INTERFACE_LOG_PAYG.cs" />
+    <Compile Include="Models\FBB_PAYMENT_LOG.cs" />
+    <Compile Include="Models\FBB_PRE_REGISTER.cs" />
+    <Compile Include="Models\FBB_SESSION_LOGIN.cs" />
+    <Compile Include="Models\FBB_SFF_PROMOTION_CONFIG.cs" />
+    <Compile Include="Models\FBB_SFF_PROMOTION_MAPPING.cs" />
+    <Compile Include="Models\FBSS_FIXED_ASSET_CONFIG.cs" />
+    <Compile Include="Models\Mapping\FBBPAYG_STANDARD_ADDRESSMap.cs" />
+    <Compile Include="Models\Mapping\FBBPAYG_VENDORMap.cs" />
+    <Compile Include="Models\Mapping\FBBPAYG_WFM_SUBCONTRACTORMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CFG_REPORTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_EMPLOYEEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_FIXED_ASSET_HISTORY_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_MINION_SERVICEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_SUBMIT_FOA_ERROR_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_CONFIG_TBLMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_FIXED_ASSET_REASONMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_FIXED_ASSET_SN_ACTMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_FIXED_ASSET_SYMPTOMMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_FIXED_ASSET_TRAN_LOG.cs" />
+    <Compile Include="Models\Mapping\FBSS_FOA_SUBMIT_ORDERMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_FOA_SUBMIT_ORDER_DTLMap.cs" />
+    <Compile Include="Models\Mapping\FBB_INTERFACE_LOG_PAYGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_SESSION_LOGINMap.cs" />
+    <Compile Include="Models\Mapping\FBBDORM_DORMITORY_REQUESTMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_FOA_SYMPTOMMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_FOA_VENDOR_CODEMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_HISTORY_LOGmap.cs" />
+    <Compile Include="Models\Mapping\FBSS_INSTALLATION_COSTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_PRE_REGISTERMap.cs" />
+    <Compile Include="Models\Mapping\FBB_SFF_PROMOTION_CONFIGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_SFF_PROMOTION_MAPPINGMap.cs" />
+    <Compile Include="Models\Mapping\FBSS_FIXED_ASSET_CONFIGMap.cs" />
+    <Compile Include="Models\Mapping\XML_TESTMap.cs" />
+    <Compile Include="Models\XML_TEST.cs" />
+    <Compile Include="PanelModels\AddBundlingModels.cs" />
+    <Compile Include="PanelModels\CampaignModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\CustomerProfileInfoModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\ServiceLogNewRegisterModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\ListStatusLeaveMessageResponse.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\MonitorLmrResponse.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ConfigurationLMREmailModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ConfigurationInstallationCostModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FBBReturnedFixedAssetModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FBSSInvSendTerminateModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FoaWriteOffModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GetORDPendingPaymentModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\InterfaceARCSendMailDetailModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\NewRegistForSubmitFOAMainAssetModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ResendFoaModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ReverseAssetModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\RuleLastMileByDistanceModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\SaleTrackingReportModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\SubContractEmailInfoModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\UpdateAssetModel.cs" />
+    <Compile Include="PanelModels\FBSSFixedOM010SendMailFileLogModel.cs" />
+    <Compile Include="PanelModels\GetListPackageSellRouterModel.cs" />
+    <Compile Include="PanelModels\InstallLeaveMessageModel.cs" />
+    <Compile Include="PanelModels\LeavemessageIIPanelModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\CreateOrderPreRegisterModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\evESeServiceQueryPrivilegeByMobileNoModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\evOMNewRegisMultiInstanceModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\evOMQueryListServiceAndPromotionByNeighborModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\InsertFoaInfoParmModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\LastmilePaymentModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\QueryOrderPreRegisterModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\SAPOnlineModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ArchiveInterfaceLogSendMailDetailModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\BulkExistingRegisterModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FBBPAYG_Dropdown.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FBBTrackingCompetitorModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FixedAssetInventoryModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\LastMileByDistanceModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\SubmitFOAGetErrorDesc.cs" />
+    <Compile Include="PanelModels\LeavemessageIPanelModel.cs" />
+    <Compile Include="PanelModels\LeavemessageIMPanelModel.cs" />
+    <Compile Include="PanelModels\MenuAuthorizeModel.cs" />
+    <Compile Include="PanelModels\PackagePromotionModel.cs" />
+    <Compile Include="PanelModels\SaveChangeStatusBuildingModel.cs" />
+    <Compile Include="PanelModels\SaveOutgoingMessageModel.cs" />
+    <Compile Include="PanelModels\SavePaymentLogModel.cs" />
+    <Compile Include="PanelModels\SearchLeaveMessageModel.cs" />
+    <Compile Include="PanelModels\ShareplexModels\PremiumAreaModel.cs" />
+    <Compile Include="PanelModels\ShareplexModels\QueryDataFBBDashboardModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\AutoCheckCoverageModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CFGQueryreportModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckAROrderModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckCoverage3bbQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckCoverageListbvByAddressIDDataModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckCoverageMapServiceDataModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckFraudCentralizeQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckNotiProductModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckOrderPendingCreateModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckOrderPendingDeductionModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckPendingOrderFbssModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckPendingOrderModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckPrivilegeQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckPromotionTopupReplaceModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\confirmPaymenModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CreateCaseGenericFlowModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CreateOrderNewRegisterWTTxModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ContractDeviceDataModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\DetailCalliMTopupReplaceModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\DetailOrderFeeTopupReplaceModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\DoServiceConfirmModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ResendOrderGetData.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBBInventoryResendPendingSAPS4QueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBBMonitorLMRSAPS4QueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBBNoDataResendPendingSAPS4QueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\IdentifyServiceRedirectQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetTableAirFbbModels.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetProfileQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetAPIMicrositeModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckATVTopupReplaceModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetAPISendmailModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetContractDeviceNewModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetCreateOrderMeshRentalModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ConfirmPaymentDeductionModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetCustomerRiskLimitAssetWatchListQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetDataAddressBillModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetDataAddressInstallModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetDisplayContractModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetIMCaseFBBRestServiceModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetIMQueryCampaignContactModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetListQueryConfigContractModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetOnlineAuthenRequestTokenQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetOnlineQueryAppointmentModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetOnlineQueryCheckFraudQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetOnlineQueryMAappointmentModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetOnlineQueryMobileInfoModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPaymentToDeductionModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPaymentRabbitToSuperDuperModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetAccessTokenQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetRedirectIDSQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetRegisterPendingDeductionModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetDeliveryIPCameraModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetSplitterDummy3bbQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GoodsMovementKAFKAQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\InsertSaveOrderNew911Data.cs" />
+    <Compile Include="PanelModels\WebServiceModels\LinePayServicesModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\NotifyDeductionModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\NotifySuperDuperModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBBFBSSToPAYGModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\OrderMCModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\QueryOrderPendingDeductionModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\QueryPortModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\RelatedMobileServiceATNModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ReleaseReservePort3bbQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\RequestsGSSOServiceModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ReservePort3bbQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SMSFlagRegisterPendingModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ConfigurationFileQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CreateOrderPendingPaymentModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CreateOrderSCPEModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CreateOrderMeshModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\DelectInterfaceLogARCModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\EncryptIntraAISServiceModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBBDeleteTransactionLogModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBBResetSequenceModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBBTransactionWorkflowModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBSSQueryCPEPenaltyModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetConfigGenLineQrCodeModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetConfigReqPaymentModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPaymentEnquiryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPaymentEnquiryToSuperDuperModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPaymentInquiryToSuperDuperModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPaymentLogDataSuperDuperModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPaymentQRToSuperDuperModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPaymentToSuperDuperModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPendingDeductionModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetQuestionByChannelModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetRegisterPendingPaymentByTransactionIDInModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetSendSMSDeductionPaymentModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetServicePlayboxMappingCodeModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetServicePlayboxModels.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPrivilegeBarcodeModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\MeshCompareDeviceModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\MeshCheckTechnologyModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\MeshCompareDeviceOrderModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\MeshParameterAppointmentModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\MeshParameterPackageModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckCardByLaserMappingModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckCardByLaserModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckFileNameLeaveMessageModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckFlagProcessModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckPremiumInstallModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\DataFromIDCardVerify.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBBDeleteFileOrderCancelModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetListGroupMailSpecialAccountModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\MeshParameterReserveModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\OrderPaymentModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ConfigurationCheckQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ConfigurationReportQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ConfigurationReportModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\DirectoryModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\PmModleDetailResponse.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\evAMQueryCustomerInfoModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ExportPaymentModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ExportReportProblemsModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FileFormatModelBulk.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\LogInterfaceModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\OrderErrorLogModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\PAYGTransAirnetModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\QuickBulkCorpPanelModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\RegisterBulkCorpInstallModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\RegisterBulkCorpModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ReportPaymentModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ReportProblemsModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\RequestFormReportModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ResendOrderBulkCorpModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\SaleTrackingModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\SAPOnlineModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\SearchBulkCorpModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\SLAModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\StandardAddressModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\TrackingCompetitorRptModel.cs" />
+    <Compile Include="PanelModels\GetPathPdfModel.cs" />
+    <Compile Include="PanelModels\LeaveMessageDataModel.cs" />
+    <Compile Include="PanelModels\LeavemessagePanelModel.cs" />
+    <Compile Include="PanelModels\LoginPaymentReportProblemModel.cs" />
+    <Compile Include="PanelModels\MemberGetMemberModel.cs" />
+    <Compile Include="PanelModels\MulitPlayboxModel.cs" />
+    <Compile Include="PanelModels\PDFData.cs" />
+    <Compile Include="PanelModels\ProcSiebelModel.cs" />
+    <Compile Include="PanelModels\ReplacePlayboxModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\AppointmentTrackingModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\AutoMoveFileBatchModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckInOrderModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FbbIqsFoaModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetCreateMerchantQrCodeModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetDeveloperQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\OrderPendingPaymentModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\PackageGroupV2Model.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetPackageSequenceModels.cs" />
+    <Compile Include="PanelModels\WebServiceModels\QueryDBDProfileModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\RedeemCodeModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ReportAutoMailModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\BatchBulkCorpModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\BatchNoRouterModel.cs" />
+    <Compile Include="PanelModels\FBB_IDCARDREADER.cs" />
+    <Compile Include="Models\FBB_INTERFACE_LOG.cs" />
+    <Compile Include="Models\FBB_INTERFACE_LOG_ADMIN.cs" />
+    <Compile Include="Models\FBB_LISTBV_LOCATION_GROUP.cs" />
+    <Compile Include="Models\FBB_ORD_CHANGE_PACKAGE.cs" />
+    <Compile Include="Models\FBB_SFF_CHKPROFILE_LOG.cs" />
+    <Compile Include="Models\FBB_COMPONENT_PERMISSION.cs" />
+    <Compile Include="Models\FBB_COMPONENT.cs" />
+    <Compile Include="Models\FBB_COVERAGEAREA_BUILDING.cs" />
+    <Compile Include="Models\FBB_CUST_ADDRESS.cs" />
+    <Compile Include="Models\FBB_CUST_CONTACT.cs" />
+    <Compile Include="Models\FBB_CUST_PROFILE.cs" />
+    <Compile Include="Models\FBB_HISTORY_LOG.cs" />
+    <Compile Include="Models\FBB_IMPLEMENT_REGIS_RABBIT.cs" />
+    <Compile Include="Models\FBB_MESSAGE_LOG.cs" />
+    <Compile Include="Models\FBB_RPT_LOG.cs" />
+    <Compile Include="Models\FBB_COVERAGE_REGION.cs" />
+    <Compile Include="Models\FBB_COVERAGE_ZIPCODE.cs" />
+    <Compile Include="Models\FBB_ADDRESS.cs" />
+    <Compile Include="Models\FBB_ALERT_MESSAGE.cs" />
+    <Compile Include="Models\FBB_APCOVERAGE.cs" />
+    <Compile Include="Models\FBB_CARDMODEL.cs" />
+    <Compile Include="Models\FBB_CARD_INFO.cs" />
+    <Compile Include="Models\FBB_CFG_LOV.cs" />
+    <Compile Include="Models\FBB_COVERAGEAREA.cs" />
+    <Compile Include="Models\FBB_COVERAGEAREA_RELATION.cs" />
+    <Compile Include="Models\FBB_COVERAGEAREA_RESULT.cs" />
+    <Compile Include="Models\FBB_DSLAMMODEL.cs" />
+    <Compile Include="Models\FBB_DSLAM_INFO.cs" />
+    <Compile Include="Models\FBB_EMAIL_PROCESSING.cs" />
+    <Compile Include="Models\FBB_GROUP.cs" />
+    <Compile Include="Models\FBB_GROUP_PERMISSION.cs" />
+    <Compile Include="Models\FBB_NATIONALITY_MASTER.cs" />
+    <Compile Include="Models\FBB_PORT_INFO.cs" />
+    <Compile Include="Models\FBB_PORT_NOTE.cs" />
+    <Compile Include="Models\FBB_PROGRAM.cs" />
+    <Compile Include="Models\FBB_PROGRAM_PERMISSION.cs" />
+    <Compile Include="Models\FBB_REGISTER.cs" />
+    <Compile Include="Models\FBB_SENDMAIL_LOG.cs" />
+    <Compile Include="Models\FBB_TITLE_MASTER.cs" />
+    <Compile Include="Models\FBB_TRACKING_IMPLEMENT_LOG.cs" />
+    <Compile Include="Models\FBB_USER.cs" />
+    <Compile Include="Models\FBB_VISIT_LOG.cs" />
+    <Compile Include="Models\FBB_VOUCHER_MASTER.cs" />
+    <Compile Include="Models\FBB_VOUCHER_PIN.cs" />
+    <Compile Include="Models\FBB_VSMP_LOG.cs" />
+    <Compile Include="Models\FBB_ZIPCODE.cs" />
+    <Compile Include="Models\FBB_AP_INFO.cs" />
+    <Compile Include="Models\FBB_LISTBV_BY_LOCATION.cs" />
+    <Compile Include="Models\Mapping\FBBDORM_DORMITORY_DTLMap.cs" />
+    <Compile Include="Models\Mapping\FBBDORM_DORMITORY_L_PREMap.cs" />
+    <Compile Include="Models\Mapping\FBBDORM_DORMITORY_MASTERMap.cs" />
+    <Compile Include="Models\Mapping\FBBDORM_DORMITORY_TRN_IPAYMap.cs" />
+    <Compile Include="Models\Mapping\FBBDORM_ORDER_INTERFACEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_EVENT_CODEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CUST_PACKAGEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_EVENT_SUBCONTRACTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_FBSS_COVERAGEAREA_RESULTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_FBSS_LISTBVMap.cs" />
+    <Compile Include="Models\Mapping\FBB_INTERFACE_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_INTERFACE_LOG_ADMINMap.cs" />
+    <Compile Include="Models\Mapping\FBB_LISTBV_BY_LOCATIONMap.cs" />
+    <Compile Include="Models\Mapping\FBB_LISTBV_LOCATION_GROUPMap.cs" />
+    <Compile Include="Models\Mapping\FBB_ORD_CHANGE_PACKAGEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_SFF_CHKPROFILE_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_COMPONENT_PERMISSIONMap.cs" />
+    <Compile Include="Models\Mapping\FBB_COMPONENTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_AP_INFOMap.cs" />
+    <Compile Include="Models\Mapping\FBB_COVERAGEAREA_BUILDINGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CUST_ADDRESSMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CUST_CONTACTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CUST_PROFILEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_HISTORY_LOGmap.cs" />
+    <Compile Include="Models\Mapping\FBB_IMPLEMENT_REGIS_RABBITMap.cs" />
+    <Compile Include="Models\Mapping\FBB_MESSAGE_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_RPT_LOG.cs" />
+    <Compile Include="Models\Mapping\FBB_COVERAGE_REGIONMap.cs" />
+    <Compile Include="Models\Mapping\FBB_COVERAGE_ZIPCODEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_GROUPMap.cs" />
+    <Compile Include="Models\Mapping\FBB_GROUP_PERMISSIONMap.cs" />
+    <Compile Include="Models\Mapping\FBB_NATIONALITY_MASTERMap.cs" />
+    <Compile Include="Models\Mapping\FBB_PROGRAMMap.cs" />
+    <Compile Include="Models\Mapping\FBB_PROGRAM_PERMISSIONMap.cs" />
+    <Compile Include="Models\Mapping\FBB_TITLE_MASTERMap.cs" />
+    <Compile Include="Models\Mapping\FBB_ADDRESSMap.cs" />
+    <Compile Include="Models\Mapping\FBB_ALERT_MESSAGEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_APCOVERAGEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CARDMODELMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CARD_INFOMap.cs" />
+    <Compile Include="Models\Mapping\FBB_CFG_LOVMap.cs" />
+    <Compile Include="Models\Mapping\FBB_COVERAGEAREAMap.cs" />
+    <Compile Include="Models\Mapping\FBB_COVERAGEAREA_RELATIONMap.cs" />
+    <Compile Include="Models\Mapping\FBB_COVERAGEAREA_RESULTMap.cs" />
+    <Compile Include="Models\Mapping\FBB_DSLAMMODELMap.cs" />
+    <Compile Include="Models\Mapping\FBB_DSLAM_INFOMap.cs" />
+    <Compile Include="Models\Mapping\FBB_EMAIL_PROCESSINGMap.cs" />
+    <Compile Include="Models\FBB_PACKAGE_TRAN.cs" />
+    <Compile Include="Models\Mapping\FBB_PACKAGE_TRANMap.cs" />
+    <Compile Include="Models\Mapping\FBB_PORT_INFOMap.cs" />
+    <Compile Include="Models\Mapping\FBB_PORT_NOTEMap.cs" />
+    <Compile Include="Models\Mapping\FBB_REGISTERMap.cs" />
+    <Compile Include="Models\Mapping\FBB_SENDMAIL_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_TRACKING_IMPLEMENT_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_USERMap.cs" />
+    <Compile Include="Models\Mapping\FBB_VISIT_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_VOUCHER_MASTERMap.cs" />
+    <Compile Include="Models\Mapping\FBB_VOUCHER_PINMap.cs" />
+    <Compile Include="Models\Mapping\FBB_VSMP_LOGMap.cs" />
+    <Compile Include="Models\Mapping\FBB_ZIPCODEMap.cs" />
+    <Compile Include="Models\WBBContext.cs" />
+    <Compile Include="PanelModels\Account\UserModel.cs" />
+    <Compile Include="PanelModels\AddressPanelModel.cs" />
+    <Compile Include="PanelModels\AirPanelModel.cs" />
+    <Compile Include="PanelModels\CoveragePictureModel.cs" />
+    <Compile Include="PanelModels\DisplayVasPackagePanelModel.cs" />
+    <Compile Include="PanelModels\DomitoryModel.cs" />
+    <Compile Include="PanelModels\EventCodeModel.cs" />
+    <Compile Include="PanelModels\EventDetailModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\AisMobileModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\BuildingVillageModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\CustRegisterInfoModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\evDormNewRegisResponse.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\evDormUpdateStatusModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\evESeServiceQueryMassCommonAccountInfoModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\FbbCpGwResponse.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\FBBWebserviceResponse.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\FBSSBuildingModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\AdminDormitoryMasterModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\AWCModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\CardModelView.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\AirNetWirelessImportExcelModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\AirNetWirelessImportExcellistModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ConfigurationEventsModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ConfigurationPackagesModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\Coverage_CardPortModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\DormitoryReportModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FixedlineDetail.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\GiftVoucherPINModels.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ImportDormDataModels.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ModelNameCardModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\CoverageSitePanelModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\CardModelConfigurationModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\DSLAMModels.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\FTTxModels.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\LovModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\PAYGReportModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ReportModels.cs" />
+    <Compile Include="PanelModels\FileFormatModel.cs" />
+    <Compile Include="PanelModels\Fttx_Fbb_PanelModel.cs" />
+    <Compile Include="PanelModels\ListPackageDisplayModel.cs" />
+    <Compile Include="PanelModels\LoginPanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\ChangePackagePanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\ChangeWifiPassPanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\BatchRequestForServiceModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\bssBrokerDoQueryServiceModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\ChangeWifiModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\evESeServiceQueryMassCommonAccountInfoModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\evOMServiceCheckChangePromotionModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\evOMServiceQueryListServiceAndPromotionByPackageTypeModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\MainModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\PackageByServiceModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\RequestParamPageControlModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\ResponseMapEntryModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\ResponseParamPageControlModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\ReturnResultModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\SetChangeWifiModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\InWebServices\TerminateModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\LoginPanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\LoginRegisterModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\LRegisterPanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\MainPanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\ManualPanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\RegisterPanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\RegisterRouterPanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\RequestFormModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\TerminatePanelModel.cs" />
+    <Compile Include="PanelModels\One2NetModels\TopupPanelModel.cs" />
+    <Compile Include="PanelModels\PopupPanelModel.cs" />
+    <Compile Include="PanelModels\FBBWebConfigModels\ReportPortAssignmentModel.cs" />
+    <Compile Include="PanelModels\PreregisterModel.cs" />
+    <Compile Include="PanelModels\SessionLoginStatusModel.cs" />
+    <Compile Include="PanelModels\StoredProc\TimeSlotModel.cs" />
+    <Compile Include="PanelModels\TrackingModels.cs" />
+    <Compile Include="PanelModels\Vdsl_fbb_PanelModel.cs" />
+    <Compile Include="PanelModels\VersionModel.cs" />
+    <Compile Include="PanelModels\CoverageAreaResultModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\A_GetCCCustInfoModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ChangeCountInstallDateQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ChangeInstallDateModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ChangePackageBundlingData.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckChangePackageOntopModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckMoblieNumberSerenadeModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckOrderCancelModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CheckPackageDownloadSpeedModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\EvOMPlayboxExtensionInfoModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBSSAccessModeInfo.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBSSChangAddressInfo.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBSSCheckCPEModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBSSCoverageResult.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBSSModelBase.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBSSPlanSite.cs" />
+    <Compile Include="PanelModels\WebServiceModels\FBSSTimeSlot.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GetSFFPromotionConfigBySFFPromotionCodeAndClassTypeQueryData.cs" />
+    <Compile Include="PanelModels\WebServiceModels\GssoSsoResponseModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ListShortNameModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\MobileDataUsageModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\OwnerByBuildingModels.cs" />
+    <Compile Include="PanelModels\WebServiceModels\QueryOrderModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\RPAEquipmentReplenishmentToSubModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SalePortalChannelModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SalePortalLeaveMessageModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SearchInterfaceLogData.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SeibelResultModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SelfServiceChangeModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SessionLoginModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SiebelCreateTroubleTicketModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SiebelGenActivityQueryModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\TrackingModel.cs" />
+    <Compile Include="PanelModels\CoveragePanelModel.cs" />
+    <Compile Include="PanelModels\CustomerRegister.cs" />
+    <Compile Include="PanelModels\DisplayPackagePanelModel.cs" />
+    <Compile Include="PanelModels\DropdownModel.cs" />
+    <Compile Include="PanelModels\EmailModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\PortValueModel.cs" />
+    <Compile Include="PanelModels\ExWebServiceModels\SBNCheckCoverageResponse.cs" />
+    <Compile Include="PanelModels\FbbConstantModel.cs" />
+    <Compile Include="PanelModels\FileUploadModel.cs" />
+    <Compile Include="PanelModels\LovScreenValueModel.cs" />
+    <Compile Include="PanelModels\LovValueModel.cs" />
+    <Compile Include="PanelModels\NationalityModel.cs" />
+    <Compile Include="PanelModels\PanelModelBase.cs" />
+    <Compile Include="PanelModels\QuickWinPanelModel.cs" />
+    <Compile Include="PanelModels\StoredProc\CustRegisterReturnModel.cs" />
+    <Compile Include="PanelModels\SummaryPanelModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\CustomerTitleModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\ResponseBase.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SaveOrderNewModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\SaveOrderResp.cs" />
+    <Compile Include="PanelModels\WebServiceModels\UpdateListBuildingVillageIMModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\UpdateListBuildingVillageSDModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\UpdateOrdTimeSlotModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\WBBDbAccount.cs" />
+    <Compile Include="PanelModels\WebServiceModels\PackageModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\WebHookNotifyModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\WebhookResponseModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\WsLdapQueryIdModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\WTTXReserveModel.cs" />
+    <Compile Include="PanelModels\WebServiceModels\WTTXInfoModel.cs" />
+    <Compile Include="PanelModels\ZipCodeModel.cs" />
+    <Compile Include="PanelModels\ZTEReleaseTimeslotModel.cs" />
+    <Compile Include="PanelModels\ZTEResQueryModel.cs" />
+    <Compile Include="PanelModels\ZTEReservedTimeslotRespModel.cs" />
+    <Compile Include="PanelModels\ZTEResReservedModel.cs" />
+    <Compile Include="PanelModels\ZTESelfServiceAppointModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Oracle.ManagedDataAccess.Client.Configuration.Section.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PanelModels\One2NetModels\ExWebServices\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

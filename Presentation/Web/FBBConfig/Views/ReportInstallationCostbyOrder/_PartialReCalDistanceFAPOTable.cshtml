@@ -1,0 +1,81 @@
+﻿@model FBBConfig.Controllers.ReportInstallationCostbyOrderController.DynamicGridModel
+@{
+    string gridName = ViewBag.GridName ?? "DynamicGrid";
+    var gridIndex = ViewBag.GridIndex;
+    var dynamicColumns = ViewBag.DynamicColumns as List<dynamic>;
+    string dynamicIdField = ViewBag.DynamicIdField ?? "ID";
+}
+<style>
+    .radio-container {
+        display: flex;
+        justify-content: center; /* Centers the radio button horizontally */
+        align-items: center; /* Centers the radio button vertically */
+        height: 100%; /* Ensure it takes full height of the grid cell */
+    }
+</style>
+<div>
+    <div id="@gridName"></div> <!-- Empty div to initialize the grid via JS -->
+</div>
+<div class="i-fg-data-entry-validation" id="validatefor-ValidateCal_radio_dynamicGrid@(ViewBag.GridIndex)"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gridName = '@gridName';
+        var gridIndex = '@gridIndex';
+        var columns = @Html.Raw(Json.Encode(ViewBag.DynamicColumns)); // Pass columns from ViewBag
+        var data = @Html.Raw(Json.Encode(Model.Data)); // Pass the data from the model
+        console.log("gridIndex ", gridIndex);
+        console.log("gridName ", gridName);
+        // Create dynamic columns including selection column
+        var dynamicColumns = [
+            {
+                field: "Selection",
+                title: "Select",
+                width: 100,
+                headerAttributes: {
+                    style: "text-align:center;" // Center header text
+                },
+                attributes: {
+                    class: "align-center" // Apply custom class to center radio button
+                },
+                template: function (dataItem) {
+                    return "<div class='radio-container'><input type='radio' id='radio_" + gridName + "' name='" + gridName + "_selectedRow' class='radio_grid_" + gridIndex + "' data-price='" + dataItem.base_price + "'/></div>";
+                }
+            }
+        ];
+
+
+        // Append dynamic fields to columns array
+        columns.forEach(function(column) {
+            dynamicColumns.push({
+                field: column.Field,
+                title: column.Title,
+                width: 150
+            });
+        });
+
+        // Initialize the grid with dynamic data and columns
+        $("#" + gridName).kendoGrid({
+            columns: dynamicColumns,
+            dataSource: {
+                data: data,  // Set the data directly
+                schema: {
+                    model: {
+                        id: '@dynamicIdField' // Ensure dynamic ID is set properly
+                    }
+                }
+            },
+            scrollable: true,
+            pageable: false,
+            resizable: true
+        });
+        //$(document).on('change', "input[name='" + gridName + "_selectedRow']", function () {
+        //    updateTotalPrice(gridName); // Pass the grid name to the function
+        //});
+
+
+        $(document).on('change', "input[type='radio']", function () {
+            updateTotalPrice(); // Recalculate total price on change
+        });
+        
+    });
+</script>

@@ -1,0 +1,1030 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels.WebServiceModels
+@using WBBEntity.PanelModels;
+@{
+    Layout = "~/Views/Shared/New_Layout.cshtml";
+    string text1 = "";
+    string text2 = "";
+    string text3 = "";
+    string text4 = "";
+    string bBACK = "";
+    string bNEXT = "";
+    var lclose = "";
+    string name = "";
+    string date = "";
+    //string bOK = "";
+    string header = "";
+    string slot = "";
+
+
+    string bEdit = "";
+    string bSubmit = "";
+
+    string installation_Date = "";
+    string access_Mode = "";
+    string address_Id = "";
+    string serviceCode = "";
+    string district = "";
+    string subDistrict = "";
+    string province = "";
+    string postalCode = "";
+    string orderno = "";
+    string idcard = "";
+    string taxid = "";
+    string idcardtype = "";
+    string timeslot = "";
+    string installation_capacity = "";
+    string interface_status = "";
+    string interface_result = "";
+    string eng_flag = "";
+    string date_now = "";
+    string product_name = "";
+    string register_date = "";
+    string before_date = "";
+    string before_time = "";
+    string location_code = "";
+    string reserved_id = "";
+    string assign_rule = "";
+    string fibrenet_id = "";
+    string message_fail = "";
+    string message_success = "";
+    int lineSelect = 1;
+    //int days = 6;
+    string productSpecCode = "";
+    string AisAirNumber = "";
+    string SFF_CA_NUMBER = "";
+    string L_CHANGE_INSTALL_CONFIRM1 = "";
+    string L_CHANGE_INSTALL_CONFIRM2 = "";
+    string L_CHANGE_INSTALL_CONFIRM3 = "";
+    string L_CHANGE_INSTALL_VALID_INST_DATE = "";
+
+    string L_MESSAGE_VALID_CHANGE_INSTALL = "";
+    string END_DATE = "";
+    string START_DATE = "";
+
+    string L_CHANGE_INSTALL_REMARK1 = "";
+    string L_CHANGE_INSTALL_REMARK2 = "";
+    string L_CHANGE_INSTALL_REMARK3 = "";
+    string L_CHANGE_INSTALL_REMARK4 = "";
+    string L_CHANGE_INSTALL_REMARK5 = "";
+    string L_CHANGE_INSTALL_DAY = "";
+    string L_CHANGE_INSTALL_SUBMIT2 = "";
+    string L_CHANGE_INSTALL_MESSAGE_CONTACT = "";
+    string CHANGE_INSTALL_COUNT = "";
+    string L_CHANGE_INSTALL_TIME_AM = "";
+    string L_CHANGE_INSTALL_TIME_PM = "";
+    string L_CHANGE_INSTALL_FAIL_ORDER_NO = "";
+    string L_CHANGE_INSTALL_DAY_START = "";
+    string L_CHANGE_INSTALL_DAY_START_PROSPECT = "";
+    string L_CHANGE_INSTALL_DAY_END_PROSPECT = "";
+    string L_CHANGE_INSTALL_COUNT_APPOINTMENT = "";
+    string L_CHANGE_INSTALL_TIME_PROSPECT = "";
+    string L_CHANGE_INSTALL_TIME_BEFORE_PROSPECT = "";
+    string service_level = "";
+    string area_region = "";
+    string event_rule = "";
+    string SubAccessMode = "";
+    string TaskType = "";
+    if (null != ViewBag.LCLOSE)
+    {
+        lclose = ViewBag.LCLOSE;
+    }
+    if (ViewBag.LabelWBB != null && ViewBag.LabelWBB.Count > 0)
+    {
+        var LabelFBBWEB030 = (List<LovScreenValueModel>)ViewBag.LabelWBB;
+        text1 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_WELCOME") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_WELCOME").DisplayValue : "";
+        text2 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_MOBILE") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_MOBILE").DisplayValue : "";
+        text3 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_APPOINT_DATE") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_APPOINT_DATE").DisplayValue : "";
+        text4 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_INSTALL_DATE") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_INSTALL_DATE").DisplayValue : "";
+        bBACK = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_BACK") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_BACK").DisplayValue : "";
+        bNEXT = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_NEXT") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_NEXT").DisplayValue : "";
+        header = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_CHANGE_INSTALL") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_CHANGE_INSTALL").DisplayValue : "";
+        bEdit = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_EDIT") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_EDIT").DisplayValue : "";
+        bSubmit = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_SUBMIT") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_SUBMIT").DisplayValue : "";
+        message_fail = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_FAILD") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_FAILD").DisplayValue : "";
+        message_success = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_SUCCESS") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_SUCCESS").DisplayValue : "";
+
+        L_CHANGE_INSTALL_CONFIRM1 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_CONFIRM1") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_CONFIRM1").DisplayValue : "";
+        L_CHANGE_INSTALL_CONFIRM2 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_CONFIRM2") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_CONFIRM2").DisplayValue : "";
+        L_CHANGE_INSTALL_CONFIRM3 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_CONFIRM3") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_CONFIRM3").DisplayValue : "";
+        L_CHANGE_INSTALL_VALID_INST_DATE = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_VALID_INST_DATE") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_VALID_INST_DATE").DisplayValue : "";
+        SFF_CA_NUMBER = LabelFBBWEB030.Any(c => c.Name == "SFF_CA_NUMBER") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "SFF_CA_NUMBER").DisplayValue : "";
+        START_DATE = LabelFBBWEB030.Any(c => c.Name == "START_DATE") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "START_DATE").DisplayValue : "";
+        END_DATE = LabelFBBWEB030.Any(c => c.Name == "END_DATE") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "END_DATE").DisplayValue : "";
+        L_MESSAGE_VALID_CHANGE_INSTALL = LabelFBBWEB030.Any(c => c.Name == "L_MESSAGE_VALID_CHANGE_INSTALL") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_MESSAGE_VALID_CHANGE_INSTALL").DisplayValue : "";
+        L_CHANGE_INSTALL_REMARK1 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_REMARK1") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_REMARK1").DisplayValue : "";
+        L_CHANGE_INSTALL_REMARK2 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_REMARK2") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_REMARK2").DisplayValue : "";
+        L_CHANGE_INSTALL_REMARK3 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_REMARK3") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_REMARK3").DisplayValue : "";
+        L_CHANGE_INSTALL_REMARK4 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_REMARK4") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_REMARK4").DisplayValue : "";
+        L_CHANGE_INSTALL_REMARK5 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_REMARK5") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_REMARK5").DisplayValue : "";
+        L_CHANGE_INSTALL_DAY = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_DAY") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_DAY").DisplayValue : "";
+        L_CHANGE_INSTALL_SUBMIT2 = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_SUBMIT2") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_SUBMIT2").DisplayValue : "";
+        L_CHANGE_INSTALL_MESSAGE_CONTACT = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_MESSAGE_CONTACT") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_MESSAGE_CONTACT").DisplayValue : "";
+        L_CHANGE_INSTALL_TIME_AM = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_TIME_AM") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_TIME_AM").DisplayValue : "";
+        L_CHANGE_INSTALL_TIME_PM = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_TIME_PM") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_TIME_PM").DisplayValue : "";
+        L_CHANGE_INSTALL_FAIL_ORDER_NO = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_FAIL_ORDER_NO") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_FAIL_ORDER_NO").DisplayValue : "";
+        L_CHANGE_INSTALL_DAY_START = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_DAY_START") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_DAY_START").DisplayValue : "";
+        L_CHANGE_INSTALL_DAY_START_PROSPECT = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_DAY_START_PROSPECT") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_DAY_START_PROSPECT").DisplayValue : "";
+        L_CHANGE_INSTALL_DAY_END_PROSPECT = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_DAY_END_PROSPECT") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_DAY_END_PROSPECT").DisplayValue : "";
+        L_CHANGE_INSTALL_COUNT_APPOINTMENT = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_COUNT_APPOINTMENT") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_COUNT_APPOINTMENT").DisplayValue : "";
+        L_CHANGE_INSTALL_TIME_PROSPECT = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_TIME_PROSPECT") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_TIME_PROSPECT").DisplayValue : "";
+        L_CHANGE_INSTALL_TIME_BEFORE_PROSPECT = LabelFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_TIME_BEFORE_PROSPECT") ? LabelFBBWEB030.FirstOrDefault(c => c.Name == "L_CHANGE_INSTALL_TIME_BEFORE_PROSPECT").DisplayValue : "";
+    }
+
+    string DISPLAY_TIMESLOT_TRACKING = "";
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        DISPLAY_TIMESLOT_TRACKING = labelFBBTR003.Any(c => c.Name == "DISPLAY_TIMESLOT_TRACKING") ? labelFBBTR003.FirstOrDefault(c => c.Name == "DISPLAY_TIMESLOT_TRACKING").DisplayValue : "";
+    }
+
+    if (ViewBag.SelfData != null && ViewBag.SelfData.Count > 0)
+    {
+        var data = (List<ListTimeSlotModel>)ViewBag.SelfData;
+        installation_Date = data.FirstOrDefault().INSTALL_DATE;
+        access_Mode = data.FirstOrDefault().ACCESS_MODE;
+        address_Id = data.FirstOrDefault().ADDRESS_ID;
+        serviceCode = data.FirstOrDefault().ACCESS_MODE;
+        district = data.FirstOrDefault().AMPHUR;
+        subDistrict = data.FirstOrDefault().TUMBON;
+        province = data.FirstOrDefault().PROVINCE;
+        postalCode = data.FirstOrDefault().ZIPCODE;
+        productSpecCode = data.FirstOrDefault().PRODUCTSPECCODE;
+        AisAirNumber = data.FirstOrDefault().Mobile_No;
+        name = data.FirstOrDefault().CUSTOMER_NAME;
+        date = data.FirstOrDefault().REGISTER_DATE;
+        orderno = data.FirstOrDefault().ORDER_NO;
+        idcard = data.FirstOrDefault().ID_CARD_NO;
+        taxid = data.FirstOrDefault().TAX_ID;
+        idcardtype = data.FirstOrDefault().ID_CARD_TYPE;
+        timeslot = data.FirstOrDefault().TIME_SLOT == null ? "00:00-00:00" : data.FirstOrDefault().TIME_SLOT;
+        installation_capacity = data.FirstOrDefault().INSTALLATION_CAPACITY;
+        interface_status = data.FirstOrDefault().INTERFACE_STATUS;
+        interface_result = data.FirstOrDefault().INTERFACE_RESULT;
+        eng_flag = data.FirstOrDefault().ENG_FLAG;
+        date_now = data.FirstOrDefault().DATE_NOW;
+        product_name = data.FirstOrDefault().PRODUCT_NAME;
+        register_date = data.FirstOrDefault().REGISTER_DATE;
+        before_date = data.FirstOrDefault().BEFORE_DATE;
+        before_time = data.FirstOrDefault().BEFORE_TIME;
+        location_code = data.FirstOrDefault().LOCATION_CODE;
+        reserved_id = data.FirstOrDefault().RESERVED_ID;
+        assign_rule = data.FirstOrDefault().ASSIGN_RULE;
+        fibrenet_id = data.FirstOrDefault().FIBRENET_ID;
+        SFF_CA_NUMBER = data.FirstOrDefault().SFF_CA_NUMBER;
+        END_DATE = data.FirstOrDefault().END_DATE;
+        START_DATE = data.FirstOrDefault().START_DATE;
+        L_MESSAGE_VALID_CHANGE_INSTALL = data.FirstOrDefault().L_MESSAGE_VALID_CHANGE_INSTALL;
+        CHANGE_INSTALL_COUNT = data.FirstOrDefault().CHANGE_INSTALL_COUNT;
+        service_level =  data.FirstOrDefault().LIST_SERVICE_LEVEL;
+        area_region = data.FirstOrDefault().LIST_AREA_REGION;
+        event_rule = data.FirstOrDefault().LIST_EVENT_RULE;
+    }
+
+    if (event_rule == "UpdateProfile")
+    {
+        SubAccessMode = "OUTSOURCE";
+        TaskType = "JOIN";
+    }
+    string START_DATE_APP = "";
+    string END_DATE_APP = "";
+    if (interface_status == "Create Prospect" && interface_result == "Success")
+    {
+        START_DATE_APP = L_CHANGE_INSTALL_DAY_START_PROSPECT;
+        END_DATE_APP = L_CHANGE_INSTALL_DAY_END_PROSPECT;
+    }
+    else
+    {
+        START_DATE_APP = L_CHANGE_INSTALL_DAY_START;
+        END_DATE_APP = L_CHANGE_INSTALL_DAY;
+    }
+
+    if(ViewBag.TimeSlotMessage != null)
+    {
+        slot = ViewBag.TimeSlotMessage;
+    }
+
+    string language = "";
+    string lang = "";
+    if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+    {
+        language = "1"; //th
+        lang = "th";
+    }
+    else
+    {
+        language = "2"; //en
+        lang = "en";
+    }
+}
+<style>
+    .btnmodal {
+        padding: 10px 15px;
+        background-color: #58AA0C;
+        color: #fff !important;
+    }
+
+    .btnmodal:hover {
+        padding: 10px 15px;
+        background-color: #4a831c;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .modal-dialog-center {
+        margin-top: 10%;
+    }
+
+    .greenheader {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+</style>
+
+<div id="ManageSelfServiceDiv" class="container">
+    <p class="clearfix"></p>
+    <div class="row">
+        <label class="font_green col-md-3">@text1</label>
+        <label class="col-md-9">@name</label>
+        <p class="clearfix"></p>
+    </div>
+    <div class="row">
+        <label class="font_green col-md-3">@text2</label>
+        <label class="col-md-9">@AisAirNumber</label>
+        <p class="clearfix"></p>
+    </div>
+    <div class="row">
+        <label class="font_green col-md-3">@text3</label>
+        <label class="col-md-9">@installation_Date @timeslot</label>
+        <p class="clearfix"></p>
+    </div>
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="page-header greenheader">
+                <h5 class="font_white">@header</h5>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="divCalendar">
+        <label class="control-label col-md-2">@text4</label>
+        <div class="col-sm-4 col-xs-12 right-inner-addon">
+            <i class="fa fa-calendar"></i>
+            <input type="text" id="dtpMeeting" class="form-control" autocomplete="off" readonly="readonly" />
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix visible-xs"></p>
+        <div id="divTimeFlag" class="col-sm-4 col-xs-12"></div>
+        <p class="clearfix"></p>
+    </div>
+    <div class="row">
+        @Html.Hidden("hdTimeSlotRegisterHR")
+        @Html.Hidden("hdTimeSlotRegisterFlowActionNo")
+        <div id="divResponsiveTimeSLotWarning" class="text-center" style="display: none;">
+            <img src="~/Content/Content2016/images/loading-icon.gif" />
+        </div>
+        <div id="divResponsiveTimeSLot">
+            <div class="col-sm-12 col-xs-12">
+                <div class="visible-sm visible-xs" style="left: 40%; top: 10%; position: absolute;" id="swipe">
+                    <img src="~/img/i-swipe.png">
+                </div>
+                <div class="table-responsive">
+                    <div id="divTimeSlot" style="margin-left: auto; margin-right: auto; width: 730px;"></div>
+                    <p class="clearfix"></p>
+                </div>
+                <div id="divTextSelectTimeSlot" class="center-block" style="max-width: 730px; height: 100%; color: #7fc71f;">
+                </div>
+                <p class="clearfix"></p>
+                <div style="clear: both;"></div>
+                <div id="divTimeSlotRemark">
+                </div>
+            </div>
+        </div>
+    </div>
+    @*TODO: Splitter Management*@
+    <div class="row">
+        <p class="clearfix"></p>
+        <div style="clear: both;"></div>
+        <div id="divResponsiveTimeSLotMessage" class="center-block" style="text-align: center; max-width: 730px; margin-top: 15px; height: 100%">
+            @Html.Raw(@Html.DisplayText(slot))
+        </div>
+    </div>
+    <div class="row" id="alretError">
+        <p class="clearfix"></p>
+        <div class="col-md-12 text-center">
+            <label class="text-danger">@L_CHANGE_INSTALL_MESSAGE_CONTACT</label>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    <div class="row">
+        <p class="clearfix"></p>
+        <div class="col-md-12">
+            <p>
+                <label style="font-size: 10px">@L_CHANGE_INSTALL_REMARK1</label>
+            </p>
+            <p>
+                <label style="font-size: 10px">@L_CHANGE_INSTALL_REMARK2</label>
+            </p>
+            <p>
+                <label style="font-size: 10px">@L_CHANGE_INSTALL_REMARK3</label>
+            </p>
+            <p>
+                <label style="font-size: 10px">@L_CHANGE_INSTALL_REMARK4</label>
+            </p>
+            <p>
+                <label style="font-size: 10px">@L_CHANGE_INSTALL_REMARK5</label>
+            </p>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    <div class="row">
+        <p class="clearfix page-header"></p>
+        <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-default" onclick="back()">&nbsp; @bBACK &nbsp; </button>
+            <button id="nextbtn" type="button" class="btn btn-success" onclick="next()">
+                &nbsp; @bNEXT &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </button>
+            <button id="okbtn" type="button" class="btn btn-success" onclick="Ok()" style="display: none">
+                &nbsp; @L_CHANGE_INSTALL_SUBMIT2 &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </button>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+
+    <div class="row" style="display: none">
+        <input id="CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate" value="" type="text">
+        <input id="CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity" value="" type="text">
+        <input id="CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot" value="" type="text">
+        <input id="CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId" value="" type="text">
+        <input id="L_INSTALL_DATE" value="" type="text">
+        <input type="hidden" name="Sub_Access_Mode" id="Sub_Access_Mode" />
+    </div>
+
+</div>
+
+<div class="modal fade cancel-sm-box" tabindex="-1" id="modal_submit" data-order-id="" role="dialog" aria-labelledby="modal_submit">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center">
+            <div class="modal-header" style="padding-bottom: 25px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle"></i></button>
+            </div>
+            <p class="clearfix"></p>
+            <div class="col-sm-12">
+                <label id="modal-text-submit" class="text-center"></label>
+            </div>
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-md btn-default" data-dismiss="modal">&nbsp; @bEdit &nbsp; </button>
+                <button type="button" class="btn btn-md btn-success" onclick="submit();">&nbsp; @bSubmit &nbsp;</button>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div id="LastPopupMessage" style="text-align: center;"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btnmodal" data-dismiss="modal" aria-label="Close">@lclose</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script>
+    var dayTimeslot = 7;
+    $(function () {
+        checkTimeBefore();
+
+        $('#dtpMeeting').datetimepicker({
+            format: 'd/m/Y',
+            lang: '@lang',
+            timepicker: false,
+            closeOnDateSelect: true,
+        });
+        
+        // 18.8 Premium Install
+        var urlParams = new URLSearchParams(window.location.search);
+        var tmpOrderNo = urlParams.get('order_no');
+        GetCheckPremiumInstall(tmpOrderNo);
+
+        setTimeSlotConfigSelectDate();
+    });
+    function submit() {
+        LockScreen(true, "");
+        var model = {
+            ORDER_NO: '@orderno',
+            ID_CARD_NO: '@idcard',
+            TAX_ID: '@taxid',
+            ID_CARD_TYPE: '@idcardtype',
+            Mobile_No: '@AisAirNumber',
+            INSTALL_DATE: '@installation_Date',
+            TIME_SLOT: '@timeslot',
+            INSTALLATION_CAPACITY: '@installation_capacity',
+            INTERFACE_STATUS: '@interface_status',
+            INTERFACE_RESULT: '@interface_result',
+            ENG_FLAG: '@eng_flag',
+            DATE_NOW: '@date_now',
+            ACCESS_MODE: '@access_Mode',
+            ADDRESS_ID: '@address_Id',
+            PROVINCE: '@province',
+            AMPHUR: '@district',
+            TUMBON: '@subDistrict',
+            ZIPCODE: '@postalCode',
+            PRODUCTSPECCODE: '@productSpecCode',
+            PRODUCT_NAME: '@product_name',
+            CUSTOMER_NAME: '@name',
+            REGISTER_DATE: '@register_date',
+            BEFORE_DATE: '@before_date',
+            BEFORE_TIME: '@before_time',
+            LOCATION_CODE: '@location_code',
+            RESERVED_ID: '@reserved_id',
+            ASSIGN_RULE: '@assign_rule',
+            FBSSAPPOINTMENTDATE: $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val(),
+            FBSSTIMESLOT: $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val(),
+            FBSSINSTALLATIONCAPACITY: $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val(),
+            FBSSINSTALLDATE: $('#L_INSTALL_DATE').val(),
+            FIBRENET_ID: '@fibrenet_id',
+            SFF_CA_NUMBER: '@SFF_CA_NUMBER',
+            START_DATE: '@START_DATE',
+            END_DATE: '@END_DATE',
+            LIST_SERVICE_LEVEL : '@service_level',
+            LIST_AREA_REGION : '@area_region',
+            LIST_EVENT_RULE : '@event_rule'
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/SelfServiceChange/Submit",
+            data: model,
+            dataType: "json",
+            success: function (data) {
+                //console.log(data)
+                LockScreen(false);
+                window.location.href = '@Url.Action("Index", "SelfServiceChange")?isSaveCommplete=' + data;
+            },
+        });
+
+
+    }
+
+    function back() {
+        window.location.href = '@Url.Action("Index", "SelfServiceChange")';
+    }
+
+    function getval(hours, minutes) {
+        if (minutes < 10)
+            minutes = "0" + minutes;
+
+        var suffix = "@L_CHANGE_INSTALL_TIME_AM";
+        if (hours >= 12) {
+            suffix = "@L_CHANGE_INSTALL_TIME_PM";
+            hours = hours - 12;
+        }
+        if (hours == 0) {
+            hours = 12;
+        }
+        return suffix;
+    }
+
+    function next() {
+        if ($('#L_INSTALL_DATE').val() != "" && $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val() != "") {
+            var time = $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val().split('-');
+            var result = time[1].split(':');
+            var hours = result[0];
+            var minutes = result[1];
+
+            $('#modal-text-submit').html('<p>@L_CHANGE_INSTALL_CONFIRM1</p><p>@L_CHANGE_INSTALL_CONFIRM2 ' + $('#L_INSTALL_DATE').val() + '</p><p>@L_CHANGE_INSTALL_CONFIRM3 ' + $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val() + ' ' + getval(hours, minutes) + '</p>');
+            $("#modal_submit").modal('show');
+        } else {
+            toastrErrorMessage("@L_CHANGE_INSTALL_VALID_INST_DATE");
+        }
+    }
+
+    function onChangeTimeFlag(timeFlag, timeSlotId) {
+        if ($("#" + timeSlotId).find(".color-green").length > 0) {
+            $("#" + timeSlotId).find(".select-header").hide();
+            $("#" + timeSlotId).find(".day-item").removeClass("day-item-select");
+            $("#" + timeSlotId).find(".day-footer").hide();
+            $("#" + timeSlotId).find(".header-label").show();
+            $("#" + timeSlotId).find(".header-label-hidden").hide();
+            $("#" + timeSlotId).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+            $("#divTextSelectTimeSlot").html("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+            $('#L_INSTALL_DATE').val("");
+        }
+        $(".slot-m").hide();
+        $(".slot-a").hide();
+        if (timeFlag.value == "M") {
+            $(".slot-m").show();
+        }
+        else {
+            $(".slot-a").show();
+        }
+    }
+
+    function convertToThaiDate(englishDate) {
+        var dd = englishDate.substring('0', '2');
+        var MM = englishDate.substring('3', '5');
+        var yyyy = englishDate.substring('6', '10');
+        var year = parseInt(yyyy, 10) + 543;
+        return dd + "/" + MM + "/" + year;
+    }
+
+    function getAppointment(e, isThai, timeSlotId, setDefault) {
+        //console.log(e,isThai,timeSlotId)
+        //$("#divResponsiveTimeSLot").hide();
+        //var i = $("input[name=SelectPackage]:checked").val();
+
+        $('#divTextSelectTimeSlot').html("");
+        $("#divTimeFlag").html("");
+        $('#L_INSTALL_DATE').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+
+        var installDate = e;
+        //if (jQuery.type(e) === "string")
+        //    installDate = e;
+        //else
+        //    installDate = e.dateFormat('d/m/Y');
+        //$("#L_INSTALL_DATE").val("");
+
+        $.ajax({
+            type: "POST",
+            url: "/CustomerRegister/GetAppointment",
+            data: {
+                'installation_Date': installDate, "access_Mode": "@access_Mode", "address_Id": "@address_Id",
+                "serviceCode": "@serviceCode", "district": "@district",
+                "subDistrict": "@subDistrict", "province": "@province",
+                "postalCode": "@postalCode", "lineSelect": "@lineSelect",
+                "days": dayTimeslot, "productSpecCode": "@productSpecCode", "isThai": isThai, "timeSlotId": timeSlotId, "smallSize": false,
+                "SubAccessMode": "@SubAccessMode", "taskType": "@TaskType",
+                "AisAirNumber": "@AisAirNumber", "serviceLevel": "@service_level", "areaRegion": '@area_region', "eventRule": '@event_rule',
+                //R21.3 Timeslot Fix Hrs.
+                "timeSlotRegisterFlag": "Y", "timeSlotRegisterHR": $("#hdTimeSlotRegisterHR").val(), "timeSlotRegisterFlowActionNo": $("#hdTimeSlotRegisterFlowActionNo").val(),
+                "SpecialSkilL": "",
+                "configLineLOV": "_TRACKING"
+            },
+            dataType: "json",
+            beforeSend: function () {
+                $("#" + timeSlotId).html("");
+                $("#divTimeSlotRemark").html("");
+                $("#divResponsiveTimeSLotWarning").show();
+            },
+            success: function (data) {
+                
+                $("#" + timeSlotId).html(data.timeSlotData);
+                $("#divTimeSlotRemark").html(data.timeSlotRemark);
+
+                var dataCount = data.timeSlotData.toString().indexOf("List data = 0");
+                var dataNull = data.timeSlotData.toString().indexOf(" Data null");
+                var dataError = data.timeSlotData.toString().indexOf("Data error");
+
+                //$("#checkTimeSlot").val(dataCount);
+                $("#dataCount").val(dataCount);
+                $("#dataNull").val(dataNull);
+                $("#dataError").val(dataError);
+
+                //set dllTimeFlage
+                if (data.dllTimeFlag != "") {
+                    $("#divTimeFlag").html(data.dllTimeFlag);
+                    $('#dll_TimeFlag').select2();
+                    $(".slot-m").hide();
+                    $(".slot-a").hide();
+                    if ($('#dll_TimeFlag :selected').val() == "M") {
+                        $(".slot-m").show();
+                    }
+                    else {
+                        $(".slot-a").show();
+                    }
+                }
+
+                //R21.3 Timeslot Fix Hrs. Comment Logic
+                @*//today
+                var today = addDays(new Date(), parseInt('@START_DATE_APP'));
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+                var yyyy = today.getFullYear();
+                var hour = today.getHours();
+                if (dd < 10) {
+                    dd = '0' + dd
+                }
+
+                if (mm < 10) {
+                    mm = '0' + mm
+                }
+
+                today = yyyy + '/' + mm + '/' + dd;
+
+                //end date
+
+                var endday = addDays(new Date(), parseInt('@END_DATE_APP'));
+                var dd2 = endday.getDate();
+                var mm2 = endday.getMonth() + 1; //January is 0!
+                var yyyy2 = endday.getFullYear();
+                if (dd2 < 10) {
+                    dd2 = '0' + dd2
+                }
+
+                if (mm2 < 10) {
+                    mm2 = '0' + mm2
+                }
+
+                endday = yyyy2 + '/' + mm2 + '/' + dd2;
+                var dateend = new Date(endday);
+                console.log(today, dateend);
+                //
+                $('#divTimeSlot input[type="text"]').each(function (index, el) {
+                    if (el.parentNode.parentNode.children[1].children[1].value == today) {
+                        var timeslot = el.parentNode.parentNode.children[1].children[2].value.split('-');
+                        var hour_timeslot = timeslot[0].split(':');
+                        if (hour >= hour_timeslot[0])
+                            el.parentNode.parentNode.children[0].className = "fa fa-circle color-red";
+                    }
+                    if (new Date(el.parentNode.parentNode.children[1].children[1].value) > dateend) {
+                        el.parentNode.parentNode.children[0].className = "fa fa-circle color-red";
+                    }
+                });*@
+            },
+            complete: function () {
+                $("#divResponsiveTimeSLotWarning").hide();
+            }
+        });
+    }
+
+    function addDays(theDate, days) {
+        return new Date(theDate.getTime() + days * 24 * 60 * 60 * 1000);
+    }
+
+    function checkCountAppointment() {
+        if ('@CHANGE_INSTALL_COUNT' >= '@L_CHANGE_INSTALL_COUNT_APPOINTMENT') {
+            $('#divResponsiveTimeSLot').hide();
+            $('#divCalendar').hide();
+            $('#alretError').show();
+            $('#nextbtn').hide();
+            // $('#okbtn').show();
+            $('#dtpMeeting').prop('disabled', true);
+        } else {
+            $('#dtpMeeting').prop('disabled', false);
+            $('#nextbtn').prop('disabled', false);
+            $('#divResponsiveTimeSLot').show();
+            $('#divCalendar').show();
+            $('#nextbtn').show();
+            $('#alretError').hide();
+            //$('#okbtn').hide();
+        }
+    }
+
+    function checkTimeBefore() {
+
+        //get date now
+        var today = new Date();
+        var today_time = today.getHours() + ':' + today.getMinutes();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var today = dd + '-' + mm + '-' + yyyy;
+        //end
+
+        var time1 = '@timeslot'.split('-');
+        var date1 = toDate(replaceAll('@installation_Date', '/', '-'), time1[0]);
+        var date2 = toDate(today, today_time);
+        var diffMs = (date1 - date2); // milliseconds between date1 & date2
+        var diffDays = Math.floor(diffMs / 86400000); // days
+        var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+        var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+        //console.log(date1,date2)
+        //console.log(diffDays + " days, " + diffHrs + " hours, " + diffMins + " minutes");
+        var hour = (diffDays * 24) + diffHrs + (diffMins / 60);
+        //console.log(hour)
+        if ('@interface_result' == "Success" && '@interface_status' == "Create Prospect") {
+            if (hour < '@L_CHANGE_INSTALL_TIME_PROSPECT') {
+                @*$('#nextbtn').prop('disabled',true);
+                $('#LastPopupMessage').html('<p>@L_MESSAGE_VALID_CHANGE_INSTALL</p>');
+                $("#myModal").modal('show');*@
+                $('#divResponsiveTimeSLot').hide();
+                $('#nextbtn').hide();
+                //$('#okbtn').show();
+                $('#dtpMeeting').prop('disabled', true);
+                $('#alretError').show();
+                $('#divCalendar').hide();
+            }
+            else {
+                //$('#nextbtn').prop('disabled',false);
+                $('#alretError').hide();
+                $('#divResponsiveTimeSLot').show();
+                $('#nextbtn').show();
+                //$('#okbtn').hide();
+                $('#dtpMeeting').prop('disabled', false);
+                $('#divCalendar').show();
+                checkCountAppointment();
+            }
+        }
+        else {
+            if (hour < '@L_CHANGE_INSTALL_TIME_BEFORE_PROSPECT') {
+                @*$('#nextbtn').prop('disabled',true);
+                $('#LastPopupMessage').html('<p>@L_MESSAGE_VALID_CHANGE_INSTALL</p>');
+                $("#myModal").modal('show');*@
+                $('#divResponsiveTimeSLot').hide();
+                $('#nextbtn').hide();
+                $('#alretError').show();
+                //$('#okbtn').show();
+                $('#divCalendar').hide();
+                $('#dtpMeeting').prop('disabled', true);
+            }
+            else {
+                //$('#nextbtn').prop('disabled',false);
+                $('#divResponsiveTimeSLot').show();
+                $('#nextbtn').show();
+                //$('#okbtn').hide();
+                $('#alretError').hide();
+                $('#dtpMeeting').prop('disabled', false);
+                $('#divCalendar').show();
+                checkCountAppointment();
+            }
+        }
+    }
+
+    function Ok() {
+        $('#LastPopupMessage').html('<p>@L_CHANGE_INSTALL_MESSAGE_CONTACT</p>');
+        $("#myModal").modal('show');
+    }
+
+    function onDayItemClick(t, timeSlotId) {
+
+        var parentDiv = $(t).parent();
+
+        if ($(t).find(".color-red").length > 0 || $(t).find(".color-darkgrey").length > 0 || $(t).find(".color-holiday").length > 0) {
+            return;
+        }
+
+        $("#" + timeSlotId).find(".select-header").hide();
+        $("#" + timeSlotId).find(".day-item").removeClass("day-item-select");
+        $("#" + timeSlotId).find(".day-footer").hide();
+        $("#" + timeSlotId).find(".header-label").show();
+        $("#" + timeSlotId).find(".header-label-hidden").hide();
+        $('#divTextSelectTimeSlot').html("");
+
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+        $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+        $('#L_INSTALL_DATE').val("");
+
+        if ($(t).find(".color-green").length > 0) {
+            $(t).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+            return;
+        }
+        else if ($("#" + timeSlotId).find(".color-green").length > 0) {
+            $("#" + timeSlotId).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+        }
+
+        if ($(t).find(".color-gray").length > 0) {
+            $(parentDiv).find(".select-header").show();
+            $(parentDiv).find(".day-item").addClass("day-item-select");
+            $(parentDiv).find(".day-footer").show();
+
+            $(parentDiv).find(".header-label").hide();
+            $(parentDiv).find(".header-label-hidden").show();
+
+            $(t).find(".color-gray").removeClass("color-gray").addClass("color-green");
+
+            //$('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val($(t).find("input[name='FBSSAppointmentDate']").val());
+            var appointmentDate = $(t).find("input[name='FBSSAppointmentDate']").val().split("/");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val(appointmentDate[0] + "-" + appointmentDate[1] + "-" + appointmentDate[2]);
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val($(t).find("input[name='FBSSInstallationCapacity']").val());
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val($(t).find("input[name='FBSSTimeSlot']").val());
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val($(t).find("input[name='TimeSlotId']").val());
+            $('#L_INSTALL_DATE').val($(t).find("input[name='FBSSInstallDate']").val());
+
+            var textSelectTimeSlot = "@DISPLAY_TIMESLOT_TRACKING";
+            textSelectTimeSlot = textSelectTimeSlot.replace("{TIMESLOT}", $(t).find("input[name='FBSSTimeSlot']").val());
+            $('#divTextSelectTimeSlot').html(textSelectTimeSlot);
+        }
+    }
+
+    function toDate(dateStr, time) {
+        var parts = dateStr.split("-");
+        var time = time.split(":");
+        return new Date(parts[2], parts[1] - 1, parts[0], time[0], time[1]);
+    }
+
+    function replaceAll(str, find, replace) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
+
+    function setTimeSlotConfigSelectDate() {
+        $.ajax({
+            type: "GET",
+            url: "/CustomerRegister/GetTimeSlotConfigSelectDate",
+            data: {
+                'technology': "@access_Mode"
+                , 'subtype': ''
+                , 'flowflag': ''
+                , 'splitterflagFirst': ''
+                , 'splitterflag': ''
+                , 'aisAirNumber': ''
+                , 'timeStamp': ''
+                , 'subAccessMode': $("#Sub_Access_Mode").val()
+                , 'timeSlotRegisterFlag': 'Y' //R21.3 Timeslot Fix Hrs.
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                //console.log(data)
+                //onGenerate: function (ct) {
+                //    //jQuery(this).find('.xdsoft_date')
+                //    //  .toggleClass('xdsoft_disabled');
+                //    jQuery(this).find('.xdsoft_disabled')
+                //      .toggleClass('xdsoft_date');
+                //},
+                //minDate: '2558/07/29',
+                //maxDate: '2558/08/10',
+
+                var minDate = "";
+                var maxDate = "";
+                var currentDate = "";
+                var currentDateTH = "";
+                var tempSubtype = $("#CustomerRegisterPanelModel_outSubType").val();
+
+                if (data != "" && data != null && data != undefined) {
+
+                    ////TODO: Splitter Management
+                    //if ($("#L_SplitterFlagFirstTime").val() == "3") {
+                    //    $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+                    //    $("#divInstallDate").hide();
+                    //    $("#divResponsiveTimeSLot").hide();
+                    //    return;
+                    //}
+
+                    dayTimeslot = data.LovValue2;
+
+                    var minDayPlus = parseInt('@START_DATE_APP', 10) * 24;
+                    var maxDayPlus = parseInt('@END_DATE_APP', 10) * 24;
+
+                    //var defaultDate = new Date(new Date().getTime() + minDayPlus * 60 * 60 * 1000);
+                    //var defaultDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt('@START_DATE_APP', 10));
+                    //R21.3 Timeslot Fix Hrs.
+                    var defaultDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt(data.LovValue1, 10));
+                    var month = defaultDate.getMonth() + 1;
+                    var day = defaultDate.getDate();
+
+                    //18.6
+                    sessionStorage.setItem('DefaultDateCompare', defaultDate.getDate().toString() + '/' + (defaultDate.getMonth() + 1).toString() + '/' + defaultDate.getFullYear().toString());
+
+                    var minDateTH = (defaultDate.getFullYear() + 543) + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (day < 10 ? '0' : '') + day;
+
+                    var minDateEN = defaultDate.getFullYear() + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (day < 10 ? '0' : '') + day;
+
+                    currentDateTH = (day < 10 ? '0' : '') + day + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (defaultDate.getFullYear() + 543);
+
+                    var currentDateEN = (day < 10 ? '0' : '') + day + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        defaultDate.getFullYear();
+
+                    //var defaultDateMax = new Date(new Date().getTime() + maxDayPlus * 60 * 60 * 1000);
+                    //var defaultDateMax = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt('@END_DATE_APP', 10));
+                    //R21.3 Timeslot Fix Hrs.
+                    var defaultDateMax = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + parseInt(data.DefaultValue, 10));
+                    var monthMax = defaultDateMax.getMonth() + 1;
+                    var dayMax = defaultDateMax.getDate();
+
+                    var maxDateTH = (defaultDateMax.getFullYear() + 543) + '/' +
+                       (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                       (dayMax < 10 ? '0' : '') + dayMax;
+
+                    var maxDateEN = defaultDateMax.getFullYear() + '/' +
+                        (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                        (dayMax < 10 ? '0' : '') + dayMax;
+
+
+                    minDate = minDateEN;
+                    maxDate = maxDateEN;
+                    currentDate = currentDateEN;
+
+                    //R21.3 Timeslot Fix Hrs.
+                    if (data.Type == "TIME_SLOT_BY_SUBTYPE_HR") {
+                        $("#hdTimeSlotRegisterHR").val(data.LovValue3);
+                        $("#hdTimeSlotRegisterFlowActionNo").val(data.LovValue4);
+                    }
+                }
+                else {
+
+                    //var defaultDate = new Date();
+                    var defaultDate = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day));
+                    var month = defaultDate.getMonth() + 1;
+                    var day = defaultDate.getDate();
+
+                    var minDateTH = (defaultDate.getFullYear() + 543) + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (day < 10 ? '0' : '') + day;
+
+                    var minDateEN = defaultDate.getFullYear() + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        (day < 10 ? '0' : '') + day;
+
+                    currentDateTH = (day < 10 ? '0' : '') + day + '/' +
+                      (month < 10 ? '0' : '') + month + '/' +
+                      (defaultDate.getFullYear() + 543);
+
+                    var currentDateEN = (day < 10 ? '0' : '') + day + '/' +
+                        (month < 10 ? '0' : '') + month + '/' +
+                        defaultDate.getFullYear();
+
+                    //var defaultDateMax = new Date(new Date().getTime() + 1200 * 60 * 60 * 1000);
+                    var defaultDateMax = new Date(parseInt(@DateTime.Now.Year), parseInt(@DateTime.Now.Month) - 1, parseInt(@DateTime.Now.Day) + 50);
+                    var monthMax = defaultDateMax.getMonth() + 1;
+                    var dayMax = defaultDateMax.getDate();
+
+                    var maxDateTH = (defaultDateMax.getFullYear() + 543) + '/' +
+                       (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                       (dayMax < 10 ? '0' : '') + dayMax;
+
+                    var maxDateEN = defaultDateMax.getFullYear() + '/' +
+                        (monthMax < 10 ? '0' : '') + monthMax + '/' +
+                        (dayMax < 10 ? '0' : '') + dayMax;
+
+
+                    minDate = minDateEN;
+                    maxDate = maxDateEN;
+                    currentDate = currentDateEN;
+                }
+                var l = false;
+                if ("@language" == "1") {
+                    l = true;
+                }
+
+                $('#dtpMeeting').datetimepicker({
+                    onGenerate: function (ct) {
+                        jQuery(this).find('.xdsoft_disabled')
+                          .toggleClass('xdsoft_date');
+                    },
+                    onSelectDate: function (ct, $i) {
+                        var ct = null;
+
+                        if (l == true) {
+                            ct = convertToThaiDate($('#dtpMeeting').val());
+                        } else {
+                            ct = $('#dtpMeeting').val();
+                        }
+                        getAppointment(ct, l, "divTimeSlot", "N");
+                    },
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    value: currentDate,
+                    lang: '@lang'
+                });
+                //
+                if ("@language" == "1") {
+                    getAppointment(currentDateTH, true, "divTimeSlot", "Y");
+                }
+                else {
+                    getAppointment(currentDateEN, false, "divTimeSlot", "Y");
+                }
+
+            },
+        });
+    }
+
+    function GetCheckPremiumInstall(tmpOrderNo)
+    {
+        $.ajax({
+            type: "GET",
+            url: "/SelfServiceChange/CheckPremiumInstall",
+            data: {
+                'order_no': tmpOrderNo
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data != "")
+                    $("#Sub_Access_Mode").val(data);
+                else 
+                    $("#Sub_Access_Mode").val("");
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,983 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@{
+    var isSaveCommplete = false;
+    var productSubType = "";
+    var languagePage = "";
+    var lclose = "";
+    var lsave = "";
+    var lpopupsave = "";
+    var NamePackageFail = "";
+    var dup = "";
+
+    var PageShow = "";
+    var NonMobileNo = "";
+    var IdCard = "";
+    var CardType = "";
+
+
+    if (null != ViewBag.NamePackageFail)
+    {
+        NamePackageFail = ViewBag.NamePackageFail;
+    }
+    if (null != ViewBag.SWifi)
+    {
+        productSubType = ViewBag.SWiFi;
+    }
+    if (null != ViewBag.SaveSuccess)
+    {
+        isSaveCommplete = ViewBag.SaveSuccess;
+    }
+    if (null != ViewBag.LanguagePage)
+    {
+        languagePage = ViewBag.LanguagePage;
+    }
+    if (null != ViewBag.LCLOSE)
+    {
+        lclose = ViewBag.LCLOSE;
+    }
+    if (null != ViewBag.LSAVE)
+    {
+        lsave = ViewBag.LSAVE;
+    }
+    if (null != ViewBag.LPOPUPSAVE)
+    {
+        lpopupsave = ViewBag.LPOPUPSAVE;
+    }
+    if (null != ViewBag.DUP)
+    {
+        dup = ViewBag.DUP;
+    }
+    Layout = null;
+
+    /// V 17.5
+
+    if (null != ViewBag.PageShow)
+    {
+        PageShow = ViewBag.PageShow;
+    }
+    if (null != ViewBag.NonMobileNo)
+    {
+        NonMobileNo = ViewBag.NonMobileNo;
+    }
+    if (null != ViewBag.IdCard)
+    {
+        IdCard = ViewBag.IdCard;
+    }
+    if (null != ViewBag.CardType)
+    {
+        CardType = ViewBag.CardType;
+    }
+
+    string L_NEW_CUST_NOT_FOUND = "";
+    string L_TITLE_WEB = "";
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        L_NEW_CUST_NOT_FOUND = LabelFBBTR001.Any(c => c.Name == "L_NEW_CUST_NOT_FOUND") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_NEW_CUST_NOT_FOUND").DisplayValue : "";
+        L_TITLE_WEB = LabelFBBTR001.Any(c => c.Name == "L_TITLE_WEB") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_TITLE_WEB").DisplayValue : "";
+    }
+
+    string LcCode = "";
+    string ASCCode = "";
+    string EmployeeID = "";
+    string outType = "";
+    string outSubType = "";
+    string outEmpName = "";
+    string isOfficer = "";
+
+    if (ViewBag.LcCode != null)
+    {
+        LcCode = ViewBag.LcCode;
+    }
+    if (ViewBag.ASCCode != null)
+    {
+        ASCCode = ViewBag.ASCCode;
+    }
+    if (ViewBag.EmployeeID != null)
+    {
+        EmployeeID = ViewBag.EmployeeID;
+    }
+    if (ViewBag.outType != null)
+    {
+        outType = ViewBag.outType;
+    }
+    if (ViewBag.outSubType != null)
+    {
+        outSubType = ViewBag.outSubType;
+    }
+    if (ViewBag.outEmpName != null)
+    {
+        outEmpName = ViewBag.outEmpName;
+    }
+    if (ViewBag.isOfficer != null)
+    {
+        isOfficer = ViewBag.isOfficer;
+    }
+
+    string outTitle = "";
+    string outCompanyName = "";
+    string outDistChn = "";
+    string outChnSales = "";
+    string outShopType = "";
+    string outOperatorClass = "";
+    string outASCTitleThai = "";
+    string outASCPartnerName = "";
+    string outMemberCategory = "";
+    string outPosition = "";
+    string outLocationRegion = "";
+    string outLocationSubRegion = "";
+    string THFirstName = "";
+    string THLastName = "";
+    //21.5 Pool Villa
+    string outLocationProvince = "";
+
+    //19.2021
+    if (ViewBag.outTitle != null)
+    {
+        outTitle = ViewBag.outTitle;
+    }
+    if (ViewBag.outCompanyName != null)
+    {
+        outCompanyName = ViewBag.outCompanyName;
+    }
+    if (ViewBag.outDistChn != null)
+    {
+        outDistChn = ViewBag.outDistChn;
+    }
+    if (ViewBag.outChnSales != null)
+    {
+        outChnSales = ViewBag.outChnSales;
+    }
+    if (ViewBag.outShopType != null)
+    {
+        outShopType = ViewBag.outShopType;
+    }
+    if (ViewBag.outOperatorClass != null)
+    {
+        outOperatorClass = ViewBag.outOperatorClass;
+    }
+    if (ViewBag.outASCTitleThai != null)
+    {
+        outASCTitleThai = ViewBag.outASCTitleThai;
+    }
+    if (ViewBag.outASCPartnerName != null)
+    {
+        outASCPartnerName = ViewBag.outASCPartnerName;
+    }
+    if (ViewBag.outMemberCategory != null)
+    {
+        outMemberCategory = ViewBag.outMemberCategory;
+    }
+    if (ViewBag.outPosition != null)
+    {
+        outPosition = ViewBag.outPosition;
+    }
+    if (ViewBag.outLocationRegion != null)
+    {
+        outLocationRegion = ViewBag.outLocationRegion;
+    }
+    if (ViewBag.outLocationSubRegion != null)
+    {
+        outLocationSubRegion = ViewBag.outLocationSubRegion;
+    }
+    if (ViewBag.THFirstName != null)
+    {
+        THFirstName = ViewBag.THFirstName;
+    }
+    if (ViewBag.THLastName != null)
+    {
+        THLastName = ViewBag.THLastName;
+    }
+    //21.5 Pool Villa
+    if (ViewBag.outLocationProvince != null)
+    {
+        outLocationProvince = ViewBag.outLocationProvince;
+    }
+}
+
+
+<html class="no-js" lang="th">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10,9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0" />
+    <meta name="date" content="2016-03-12" />
+    <meta name="sitecode" content="TH" />
+
+    <title>@L_TITLE_WEB</title>
+
+    <!-- Cahing Browser -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <meta name="description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์">
+    <meta name="KeyWords" content="ais, เอไอเอส, เน็ต, อินเทอร์เน็ต, ไฟเบอร์" />
+    <meta name="thumbnail" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+    <meta name="thumbnail_height" content="110">
+    <!--Fix ขนาดของความสูง ไว้เท่านี้ ไม่เปลี่ยน-->
+    <meta name="thumbnail_width" content="75">
+    <!--Fix ขนาดของความกว้าง ไว้เท่านี้ ไม่เปลี่ยน-->
+    <!-- Facebook Propertie แชร์ Facebook -->
+    <meta property="og:title" content="AIS Fibre Broadband ความเร็วสูง 1 Gbps" />
+    <meta property="og:description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์" />
+    <meta property="og:image" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+
+    <!-- Tweet Propertie แชร์ Tweet -->
+    <meta property="tw:description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์" />
+
+    <!-- Google Plus แชร์  Google -->
+    <meta itemprop="name" content="AIS Fibre Broadband ความเร็วสูง 1 Gbps">
+    <meta itemprop="description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์">
+    <meta itemprop="image" content="https://www.ais.co.th/fibre_postpaid/share.jpg">
+
+    <!--Include Style Script-->
+    <link rel="stylesheet" href="~/Content/Content2016/css/dna.global.css" />
+    <link rel="stylesheet" href="~/Content/Content2016/css/foundation.css" />
+    <link rel="stylesheet" href="~/Content/Content2016/css/fibrepostpaid.css" />
+
+    <!--Include Style Script-->
+    <link rel="stylesheet" href="~/Content/Content2016/plugin/sod/selectordie.css">
+    <link rel="stylesheet" href="~/Content/Content2016/css/menutypeahead.css">
+    <link rel="stylesheet" href="~/Content/Content2016/css/jquery.typeahead.css">
+    <link rel="stylesheet" href="~/Content/Content2016/css/index.css" />
+    <link rel="stylesheet" href="~/Content/Content2016/css/navais.min.css" />
+    <link rel="stylesheet" href="~/Content/Content2016/css/dna.global.css" />
+    <link rel="stylesheet" href="~/Content/Content2016/css/foundation.css" />
+    <link rel="stylesheet" href="~/Content/Content2016/fonts/helvetica.css" />
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
+
+    <script src="~/Content/Content2016/js/jquery-1.11.3.min.js"></script>
+    <script src="~/Content/Content2016/js/tweenmax.js"></script>
+    <script src="~/Content/Content2016/js/dna.global.js"></script>
+    <script src="~/Content/Content2016/js/jquery.mainnav.min.js"></script>
+
+    <script src="~/Content/Content2016/plugin/sod/selectordie.js"></script>
+    <script src="~/Content/Content2016/js/menutypeahead.js"></script>
+    
+    <script src="~/Content/Content2016/js/jquery.typeahead.min.js"></script>
+
+    <link href="~/Content/Content2016/plugin/sod/selectordie_theme.css" rel="stylesheet" type="text/css">
+    <script src="~/Content/Content2016/plugin/sod/selectordie.min.js"></script>
+
+    <!--slick -->
+    <link rel="stylesheet" type="text/css" href="~/Content/Content2016/plugin/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/Content2016/plugin/slick/slick-theme.css" />
+    <script type="text/javascript" src="~/Content/Content2016/plugin/slick/slick.min.js"></script>
+    <script type="text/javascript" src="~/js/ifbbweb.min.js"></script>
+
+
+    <!-- start old -->
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
+
+    <link href="~/Content/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="http://localhost:50960/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+    <link href="~/Scripts/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+
+    @*@Styles.Render("~/Content/css/rabbit")
+
+    *@
+    @Styles.Render("~/Content/css/bootsrapcss")
+    @Scripts.Render("~/bundles/js/rabbit")
+    @Scripts.Render("~/bundles/js/boostrapjs")
+
+    <!-- end old -->
+
+</head>
+<style>
+    .i-hidden {
+            display: none;
+        }
+    .btnP1, .btnP1:hover, .btnP2 {
+            background-color: #8dc63f;
+            color: #fff;
+        }
+    .btnP1:hover {
+            cursor: not-allowed;
+        }
+
+    .btnP2:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .btnP3, .btnP3:hover {
+            color: #fff !important;
+        }
+
+        .btnP3 {
+            background-color: #ccc;
+        }
+
+            .btnP3:hover {
+                background-color: #aaa;
+                text-decoration: none;
+            }
+    fieldset {
+        border: 2px solid #83ad47;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        -khtml-border-radius: 5px;
+        -moz-border-radius: 5px;
+    }
+
+    #tbl-popup {
+        width: 100%;
+    }
+
+    .btnmodal {
+        padding: 10px 15px;
+        background-color: #58AA0C;
+        color: #fff !important;
+    }
+
+        .btnmodal:hover {
+            padding: 10px 15px;
+            background-color: #4a831c;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .modal-dialog-center {
+        margin-top: 10%;
+    }
+
+    .btn1 {
+        background-color: #8dc63f;
+        color: #fff;
+    }
+
+        .btn1:hover {
+            background-color: #8dc63f;
+            color: #fff;
+            cursor: not-allowed;
+        }
+
+    .btn2 {
+        background-color: #8dc63f;
+        color: #fff;
+    }
+
+        .btn2:hover {
+            background-color: black;
+            color: #fff;
+        }
+
+    .btn3 {
+        background-color: #ccc;
+        color: #fff !important;
+    }
+
+        .btn3:hover {
+            background-color: #aaa;
+            color: #fff !important;
+            text-decoration: none;
+        }
+
+        #ais_topbar {
+            display: block;
+        }
+
+            #ais_topbar .topbar_ribbon {
+                padding-left: 10px;
+                float: left;
+                height: 60px;
+            }
+
+        #ribbonking {
+            width: 100%;
+            height: 60px;
+            background: url("/Images/bg1366.jpg") no-repeat center;
+            background-color: #000;
+        }
+
+        #ribbonking_wrapper {
+            height: 60px;
+            margin: 0 auto;
+            max-width: 1140px;
+        }
+
+</style>
+<div id="ais_topbar">
+    @*<div id="ribbonking">
+	        <div id="ribbonking_wrapper">
+    	        <div class="topbar_ribbon"><img src="~/Images/iconribbon.png" alt="ais logo"></div>
+            </div>
+        </div>*@
+    @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+    {
+        @Html.Partial("_MenuTH")
+    }
+    else
+    {
+        @Html.Partial("_MenuEN")
+    }
+
+</div>
+
+<div id="fibre_container">
+    <form id="SearchProfilefrm" method="post" action="">
+
+        @Html.Partial("~/Views/Process/ExistingFibre/New_AisAirNumber.cshtml")
+        @Html.Partial("~/Views/Process/ExistingFibre/New_Error.cshtml")
+        @Html.Partial("~/Views/Process/ExistingFibre/New_MobileNumber.cshtml")
+
+        <div>
+
+            <input type="hidden" id="LanguagePage" />
+
+            <input type='hidden' name='outPrimaryContactFirstName' id='outPrimaryContactFirstName' />
+            <input type='hidden' name='outContactLastName' id='outContactLastName' />
+            <input type='hidden' name='outAmphur' id='outAmphur' />
+            <input type='hidden' name='outBuildingName' id='outBuildingName' />
+            <input type='hidden' name='outFloor' id='outFloor' />
+            <input type='hidden' name='outHouseNumber' id='outHouseNumber' />
+            <input type='hidden' name='outMoo' id='outMoo' />
+            <input type='hidden' name='outMooban' id='outMooban' />
+            <input type='hidden' name='outProvince' id='outProvince' />
+            <input type='hidden' name='outRoom' id='outRoom' />
+            <input type='hidden' name='outSoi' id='outSoi' />
+            <input type='hidden' name='outStreetName' id='outStreetName' />
+            <input type='hidden' name='outBillLanguage' id='outBillLanguage' />
+            <input type='hidden' name='outtumbol' id='outtumbol' />
+
+            <input type='hidden' name='outBirthDate' id='outBirthDate' />
+            <input type='hidden' name='outEmail' id='outEmail' />
+            <input type='hidden' name='outparameter2' id='outparameter2' />
+            <input type='hidden' name='outAccountName' id='outAccountName' />
+            <input type='hidden' name='outAccountNumber' id='outAccountNumber' />
+            <input type='hidden' name='outServiceAccountNumber' id='outServiceAccountNumber' />
+            <input type='hidden' name='outBillingAccountNumber' id='outBillingAccountNumber' />
+            <input type='hidden' name='outProductName' id='outProductName' />
+            <input type='hidden' name='outDayOfServiceYear' id='outDayOfServiceYear' />
+            <input type='hidden' name='no' id='no' />
+
+
+            <input type='hidden' name='outcardType' id='outcardType' />
+            <input type='hidden' name='outAccountSubCategory' id='outAccountSubCategory' />
+            <input type='hidden' name='outPostalCode' id='outPostalCode' />
+            <input type='hidden' name='mainProCode' id='mainProCode' />
+            <input type='hidden' name='outOwnerProduct' id='outOwnerProduct' />
+            <input type='hidden' name='outMobileNo' id='outMobileNo' />
+
+            <input type='hidden' name='outAccountCategory' id='outAccountCategory' />
+
+            <input type='hidden' name='old_relate_mobile' id='old_relate_mobile' />
+            <input type='hidden' name='relate_mobile_action' id='relate_mobile_action' />
+            <input type='hidden' name='mobileNumberContact' id='mobileNumberContact' />
+            @* new *@
+
+            @* AddressPanel *@
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_HOME_NUMBER_2' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_HOME_NUMBER_2' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOO' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOO' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOOBAN' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOOBAN' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_BUILD_NAME' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NAME' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_FLOOR' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_FLOOR' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROOM' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROOM' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_SOI' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_SOI' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROAD' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROAD' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_TUMBOL' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_TUMBOL' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_AMPHUR' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_AMPHUR' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_PROVINCE' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_PROVINCE' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_ZIPCODE' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_ZIPCODE' />
+
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_HOME_NUMBER_2' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_HOME_NUMBER_2' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOO' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOO' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOOBAN' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOOBAN' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_BUILD_NAME' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_BUILD_NAME' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_FLOOR' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_FLOOR' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROOM' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROOM' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_SOI' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_SOI' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROAD' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROAD' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_TUMBOL' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_TUMBOL' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_AMPHUR' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_AMPHUR' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_PROVINCE' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_PROVINCE' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ZIPCODE' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ZIPCODE' />
+
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_HOME_NUMBER_2' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_HOME_NUMBER_2' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_MOO' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_MOO' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_MOOBAN' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_MOOBAN' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_BUILD_NAME' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NAME' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_FLOOR' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_FLOOR' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_ROOM' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_ROOM' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_SOI' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_SOI' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_ROAD' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_ROAD' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_TUMBOL' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_TUMBOL' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_AMPHUR' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_AMPHUR' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_PROVINCE' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_PROVINCE' />
+            <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_ZIPCODE' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_ZIPCODE' />
+
+
+            @* New AddressPanel 15.7*@
+            <input type='hidden' name='CustomerRegisterPanelModel.installAddress1' id='CustomerRegisterPanelModel_installAddress1' />
+            <input type='hidden' name='CustomerRegisterPanelModel.installAddress2' id='CustomerRegisterPanelModel_installAddress2' />
+            <input type='hidden' name='CustomerRegisterPanelModel.installAddress3' id='CustomerRegisterPanelModel_installAddress3' />
+            <input type='hidden' name='CustomerRegisterPanelModel.installAddress4' id='CustomerRegisterPanelModel_installAddress4' />
+            <input type='hidden' name='CustomerRegisterPanelModel.installAddress5' id='CustomerRegisterPanelModel_installAddress5' />
+            <input type='hidden' name='CustomerRegisterPanelModel.pbox_count' id='CustomerRegisterPanelModel_pbox_count' />
+
+            @* New VAT AddressPanel 15.7*@
+            <input type='hidden' name='CustomerRegisterPanelModel.vatAddress1' id='CustomerRegisterPanelModel_vatAddress1' />
+            <input type='hidden' name='CustomerRegisterPanelModel.vatAddress2' id='CustomerRegisterPanelModel_vatAddress2' />
+            <input type='hidden' name='CustomerRegisterPanelModel.vatAddress3' id='CustomerRegisterPanelModel_vatAddress3' />
+            <input type='hidden' name='CustomerRegisterPanelModel.vatAddress4' id='CustomerRegisterPanelModel_vatAddress4' />
+            <input type='hidden' name='CustomerRegisterPanelModel.vatAddress5' id='CustomerRegisterPanelModel_vatAddress5' />
+            <input type='hidden' name='CustomerRegisterPanelModel.vatAddressFull' id='CustomerRegisterPanelModel_vatAddressFull' />
+            <input type='hidden' name='CustomerRegisterPanelModel.vatPostalCd' id='CustomerRegisterPanelModel_vatPostalCd' />
+
+            @* user detail *@
+            <input type='hidden' name='CustomerRegisterPanelModel.L_FIRST_NAME' id='CustomerRegisterPanelModel_L_FIRST_NAME' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_LAST_NAME' id='CustomerRegisterPanelModel_L_LAST_NAME' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_GOVERNMENT_NAME' id='CustomerRegisterPanelModel_L_GOVERNMENT_NAME' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_CONTACT_PERSON' id='CustomerRegisterPanelModel_L_CONTACT_PERSON' />
+            <input type='hidden' name='CustomerRegisterPanelModel.SubCateType' id='CustomerRegisterPanelModel_SubCateType' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_CONTACT_PHONE' id='CustomerRegisterPanelModel_L_CONTACT_PHONE' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_BIRTHDAY' id='CustomerRegisterPanelModel_L_BIRTHDAY' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_EMAIL' id='CustomerRegisterPanelModel_L_EMAIL' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_TITLE' id='CustomerRegisterPanelModel_L_TITLE' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_MOBILE' id='CustomerRegisterPanelModel_L_MOBILE' />
+
+
+            @* other *@
+            <input type='hidden' name='CoveragePanelModel.CA_ID' id='CoveragePanelModel_CA_ID' />
+            <input type='hidden' name='CoveragePanelModel.BA_ID' id='CoveragePanelModel_BA_ID' />
+            <input type='hidden' name='CoveragePanelModel.SA_ID' id='CoveragePanelModel_SA_ID' />
+            <input type='hidden' name='CoveragePanelModel.P_MOBILE' id='CoveragePanelModel_P_MOBILE' />
+            <input type='hidden' name='CoveragePanelModel.SffProductName' id='CoveragePanelModel_SffProductName' />
+            <input type='hidden' name='CoveragePanelModel.SffServiceYear' id='CoveragePanelModel_SffServiceYear' />
+            <input type='hidden' name='CoveragePanelModel.MobileStatus' id='CoveragePanelModel_MobileStatus' />
+            <input type='hidden' name='CoveragePanelModel.MobileSegment' id='CoveragePanelModel_MobileSegment' />
+            <input type='hidden' name='CoveragePanelModel.ChargeType' id='CoveragePanelModel_ChargeType' />
+            <input type='hidden' name='CoveragePanelModel.Serenade_Flag' id='CoveragePanelModel_Serenade_Flag' />
+            <input type='hidden' name='CoveragePanelModel.ARPU' id='CoveragePanelModel_ARPU' />
+            <input type='hidden' name='CustomerRegisterPanelModel.Project_name' id='CustomerRegisterPanelModel_Project_name' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_CARD_TYPE' id='CustomerRegisterPanelModel_L_CARD_TYPE' />
+            <input type='hidden' name='CustomerRegisterPanelModel.L_CARD_NO' id='CustomerRegisterPanelModel_L_CARD_NO' />
+            <input type='hidden' name='CustomerRegisterPanelModel.CateType' id='CustomerRegisterPanelModel_CateType' />
+            <input type="hidden" name="SffProfileLogID" id="SffProfileLogID" />
+            <input type="hidden" name="TopUp" id="TopUp" />
+
+
+            @* New Value 15.7*@
+            <input type='hidden' name='CustomerRegisterPanelModel.v_installAddress' id='CustomerRegisterPanelModel_v_installAddress' />
+            <input type='hidden' name='CustomerRegisterPanelModel.outFullAddress' id='CustomerRegisterPanelModel_outFullAddress' />
+
+            <input type='hidden' name='CoveragePanelModel.Address.AddressId' id='CoveragePanelModel_Address_AddressId' />
+
+            <input type="hidden" name="v_number_of_pb" id="v_number_of_pb" />
+            <input type="hidden" name="v_sff_main_promotionCD" id="v_sff_main_promotionCD" />
+            <input type="hidden" name="v_owner_product" id="v_owner_product" />
+            <input type="hidden" name="L_NUMBER_OF_PLAYBOX" id="L_NUMBER_OF_PLAYBOX" />
+            <input type="hidden" name="v_PackageCode" id="v_PackageCode" />
+
+            @* New Value 17.11*@
+            @if (isOfficer == "Y")
+            {
+                <input type="hidden" name="LcCode" id="LcCode" value="@LcCode" />
+                <input type="hidden" name="ASCCode" id="ASCCode" value="@ASCCode" />
+                <input type="hidden" name="EmployeeID" id="EmployeeID" value="@EmployeeID" />
+                <input type="hidden" name="outType" id="outType" value="@outType" />
+                <input type="hidden" name="outSubType" id="outSubType" value="@outSubType" />
+                <input type="hidden" name="outEmpName" id="outEmpName" value="@outEmpName" />
+                <input type="hidden" name="isOfficer" id="isOfficer" value="@isOfficer" />
+                <input id="pageNo" name="pageNo" type="hidden" value="2" />
+
+                <input type='hidden' name='outTitle' id='outTitle' value="@outTitle" />
+                <input type='hidden' name='outCompanyName' id='outCompanyName' value="@outCompanyName" />
+                <input type='hidden' name='outDistChn' id='outDistChn' value="@outDistChn" />
+                <input type='hidden' name='outChnSales' id='outChnSales' value="@outChnSales" />
+                <input type='hidden' name='outShopType' id='outShopType' value="@outShopType" />
+                <input type='hidden' name='outOperatorClass' id='outOperatorClass' value="@outOperatorClass" />
+                <input type='hidden' name='outASCTitleThai' id='outASCTitleThai' value="@outASCTitleThai" />
+                <input type='hidden' name='outASCPartnerName' id='outASCPartnerName' value="@outASCPartnerName" />
+                <input type='hidden' name='outMemberCategory' id='outMemberCategory' value="@outMemberCategory" />
+                <input type='hidden' name='outPosition' id='outPosition' value="@outPosition" />
+                <input type='hidden' name='outLocationRegion' id='outLocationRegion' value="@outLocationRegion" />
+                <input type='hidden' name='outLocationSubRegion' id='outLocationSubRegion' value="@outLocationSubRegion" />
+                <input type='hidden' name='THFirstName' id='THFirstName' value="@THFirstName" />
+                <input type='hidden' name='THLastName' id='THLastName' value="@THLastName" />
+                //21.5 Pool Villa
+                <input type='hidden' name='outLocationProvince' id='outLocationProvince' value="@outLocationProvince" />
+
+            }
+            else
+            {
+                <input type='hidden' name='IDCardNo' id='IDCardNo' />
+                <input type='hidden' name='IDCardType' id='IDCardType' />
+                <input type='hidden' name='IDCardTypeENG' id='IDCardTypeENG' />
+            }
+
+            @* 18.11*@
+            <input type="hidden" name="v_package_subtype" id="v_package_subtype" />
+
+            @*R20.5 add by Aware : Atipon Wiparsmongkol*@
+            <input type="hidden" name="CustomerRegisterPanelModel.ServiceLevel" id="CustomerRegisterPanelModel_ServiceLevel" />
+        </div>
+    </form>
+
+</div>
+<table class="i-hidden" id="tempV2" border="1" bordercolor="red"></table>
+
+<div class="modal fade" id="myModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-center">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" onclick="Reload();" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div id="LastPopupMessage" style="text-align: center;"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btnmodal" onclick="Reload();">@lclose</a>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        ais_interface_setup('mini-menu', 'postpaid', 'th', '', false);
+        if ('@PageShow' == '') {
+            $("#col-form").show();
+            $("#col-err").hide();
+            $("#col-ChangeContactMobile").hide();
+            $('#col-formInputMobileNo').hide();
+            $('#col-formInputOTP').hide();
+        }
+        else if ('@PageShow' == 'Mobile') {
+            $("#col-form").hide();
+            $("#col-err").hide();
+            $("#col-ChangeContactMobile").hide();
+            $('#col-formInputMobileNo').show();
+            $('#col-formInputOTP').hide();
+
+            checkProcessMyAisHandler();
+        }
+        else if ('@PageShow' == 'LoginFail') {
+            $("#col-form").hide();
+            $("#col-err").show();
+            $("#col-ChangeContactMobile").hide();
+            $('#col-formInputMobileNo').hide();
+            $('#col-formInputOTP').hide();
+            $('#btnerror').hide();
+            LockScreen(false);
+        }
+
+        $("#ID_CARD_NAMEs").selectOrDie();
+    });
+
+///////////// begin popup ////////////
+var success = '@isSaveCommplete';
+    var swifi = '@productSubType';
+    var language_ = '@languagePage';
+
+    if (success == 'True') {
+
+        PopupMessage();
+        $('#myModal').modal('show');
+        //showjpopup('580px', '250px');
+    }
+
+
+    function DownloadPDF() {
+
+        window.location.href = "/Process/download";
+        setTimeout(function () { Reload() }, 3000);
+    }
+
+    function Reload() {
+        //window.location.href = "/Process/ChangePackagePromotion";
+        window.location.href = window.location.href;
+    }
+
+    function ClosePopupReload() {
+        if (success == 'True') {
+            Reload();
+        }
+    }
+
+    function showjpopup(width_, height_) {
+        $('#basic-modal-content').modal('show');
+        $('#basic-modal-content').css('display', 'block');
+
+        var div1 = $('#simplemodal-container');
+        if (width_ != null) { div1.css('width', width_); }
+        if (height_ != null) { div1.css('height', height_); }
+
+        div1.css('margin-left', '10%');
+
+        return false;
+    }
+
+    $(function () {
+
+        if ("@ViewBag.Vas" == "") {
+            $("#btnBack").hide();
+        }
+
+        $("#lb-failed").html("");
+        $.post('/WBB/GetCurrentCulture').done(function (x) {
+            $("#LanguagePage").val(x);
+            changeLanguage();
+
+            var language = "";
+            if (x == 1)
+                language = "th";
+            else
+                language = "en";
+        });
+
+        sessionStorage.setItem("outTitle", '@outTitle');
+        sessionStorage.setItem("outCompanyName", '@outCompanyName');
+        sessionStorage.setItem("outDistChn", '@outDistChn');
+        sessionStorage.setItem("outChnSales", '@outChnSales');
+        sessionStorage.setItem("outShopType", '@outShopType');
+        sessionStorage.setItem("outOperatorClass", '@outOperatorClass');
+        sessionStorage.setItem("outASCTitleThai", '@outASCTitleThai');
+        sessionStorage.setItem("outASCPartnerName", '@outASCPartnerName');
+        sessionStorage.setItem("outMemberCategory", '@outMemberCategory');
+        sessionStorage.setItem("outPosition", '@outPosition');
+        sessionStorage.setItem("outLocationRegion", '@outLocationRegion');
+        sessionStorage.setItem("outLocationSubRegion", '@outLocationSubRegion');
+        sessionStorage.setItem("THFirstName", '@THFirstName');
+        sessionStorage.setItem("THLastName", '@THLastName');
+        sessionStorage.setItem("outLocationProvince", '@outLocationProvince');
+
+        $("#SearchProfilefrm").attr("action", "@ViewBag.SetAction");
+    });
+
+    function changeLanguage() {
+        if ($("#LanguagePage").val() == "1") {
+            $("#btnTh").show();
+            $("#btnEn").hide();
+
+        }
+        else {
+            $("#btnTh").hide();
+            $("#btnEn").show();
+
+
+        }
+    }
+
+    function CheckKeyUps(id, RexStr, checkMobile) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        if (checkMobile == undefined || checkMobile != "M") {
+            var filter = new RegExp(RexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+        }
+        else {
+            var filterM = new RegExp(RexStr, "g");
+            strBuilder = strKey.match(filterM);
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function CheckAirNumber88(id) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp("[8]");
+        for (var i = 0; i < strKey.length; i++) {
+            if (i < 2) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            } else {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function checkProcessMyAisHandler() {
+        alert('dd');
+        $.ajax({
+            url: '/CheckCoverage/evESeServiceQueryMassCommonAccountInfo',
+            data: { mobileNo: codefbb.fbbMessage('@NonMobileNo'), cardNo: $.trim('@IdCard'), cardType: '@CardType', line: "2" },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                var data = response.data;
+
+                $.ajax({
+                    url: '/CheckCoverage/GetCheckChanvePackageProcess',
+                    data: { key: data.GUIDKEY, },
+                    dataType: "json",
+                    type: 'POST',
+                    async: false,
+                    success: function (response) {
+                        var data = response.data;
+                        $("#L_MOBILE_NOs").val(data.outMobileNumber);
+                        $("#old_relate_mobile").val(data.outMobileNumber);
+                        $("#outMobileNo").val(data.outMobileNumber);
+                        $("#CoveragePanelModel_Address_AddressId").val(data.outAddressId);
+                        $("#CustomerRegisterPanelModel_L_MOBILE").val(data.outMobileNumber);
+                        if ($("#L_MOBILE_NOs").val() != "") {
+                        }
+                        else {
+                        }
+
+                        if ($.trim(data.errorMessage) == "EB0001" || $.trim(data.errorMessage) == "EB0574") {
+                            $("#col-form").hide();
+                            $("#col-err").show();
+                            $("#lb-failed").html("@L_NEW_CUST_NOT_FOUND.");
+                            $("#FromPage").val("col-form");
+                        } else if (data.errorMessage == "") {
+                            var v_icon_pb = "";
+                            var v_icon_fl = "";
+                            var v_add_playbox = data.checkPlayBox;
+
+                            $("#outOwnerProduct").val(data.OwnerProduct);
+                            $("#outPrimaryContactFirstName").val(data.outPrimaryContactFirstName);
+                            $("#outContactLastName").val(data.outContactLastName);
+                            $("#outAmphur").val(data.outAmphur);
+                            $("#outBuildingName").val(data.outBuildingName);
+                            $("#outFloor").val(data.outFloor);
+                            $("#outHouseNumber").val(data.outHouseNumber);
+                            $("#outMoo").val(data.outMoo);
+                            $("#outMooban").val(data.outMooban);
+                            $("#outProvince").val(data.outProvince);
+                            $("#outRoom").val(data.outRoom);
+                            $("#outSoi").val(data.outSoi);
+                            $("#outStreetName").val(data.outStreetName);
+                            $("#outBillLanguage").val(data.outBillLanguage);
+                            $("#outtumbol").val(data.outTumbol);
+                            $("#outBirthDate").val(data.outBirthDate);
+                            $("#outEmail").val(data.outEmail);
+                            $("#outparameter2").val(data.outparameter2);
+                            $("#outAccountName").val(data.outAccountName);
+                            $("#outAccountNumber").val(data.outAccountNumber);
+                            $("#outServiceAccountNumber").val(data.outServiceAccountNumber);
+                            $("#outBillingAccountNumber").val(data.outBillingAccountNumber);
+                            $("#outProductName").val(data.outProductName);
+                            $("#outDayOfServiceYear").val(data.outDayOfServiceYear);
+                            $("#no").val($("#AisAirNumber").val());
+                            $("#CustomerRegisterPanelModel_outFullAddress").val(data.outFullAddress);
+
+                            $("#outcardType").val(data.cardType);
+                            $("#outAccountSubCategory").val(data.outAccountSubCategory);
+                            $("#outPostalCode").val(data.outPostalCode);
+                            //console.log('====> debug 2');
+                            $("#IDCardType").val($('#ID_CARD_NAMEs :selected').text());
+                            $("#IDCardTypeENG").val($('#ID_CARD_NAMEs').val());
+                            $("#IDCardNo").val($("#L_CARD_NOs").val());
+
+                            $("#outAccountCategory").val(data.outAccountCategory);
+
+                            /// address //
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_HOME_NUMBER_2").val(data.outHouseNumber);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOO").val(data.outMoo);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOOBAN").val(data.outMooban);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NAME").val(data.outBuildingName);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_FLOOR").val(data.outFloor);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROOM").val(data.outRoom);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_SOI").val(data.outSoi);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROAD").val(data.outStreetName);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_TUMBOL").val(data.outTumbol);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_AMPHUR").val(data.outAmphur);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_PROVINCE").val(data.outProvince);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSetup_L_ZIPCODE").val(data.outPostalCode);
+
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_HOME_NUMBER_2").val(data.outHouseNumber);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOO").val(data.outMoo);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOOBAN").val(data.outMooban);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_BUILD_NAME").val(data.outBuildingName);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_FLOOR").val(data.outFloor);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROOM").val(data.outRoom);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_SOI").val(data.outSoi);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROAD").val(data.outStreetName);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_TUMBOL").val(data.outTumbol);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_AMPHUR").val(data.outAmphur);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_PROVINCE").val(data.outProvince);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ZIPCODE").val(data.outPostalCode);
+
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_HOME_NUMBER_2").val(data.outHouseNumber);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_MOO").val(data.outMoo);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_MOOBAN").val(data.outMooban);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NAME").val(data.outBuildingName);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_FLOOR").val(data.outFloor);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_ROOM").val(data.outRoom);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_SOI").val(data.outSoi);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_ROAD").val(data.outStreetName);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_TUMBOL").val(data.outTumbol);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_AMPHUR").val(data.outAmphur);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_PROVINCE").val(data.outProvince);
+                            $("#CustomerRegisterPanelModel_AddressPanelModelVat_L_ZIPCODE").val(data.outPostalCode);
+
+                            ///detail ///
+                            $("#CustomerRegisterPanelModel_L_FIRST_NAME").val(data.outPrimaryContactFirstName);
+                            $("#CustomerRegisterPanelModel_L_LAST_NAME").val(data.outContactLastName);
+                            $("#CustomerRegisterPanelModel_L_GOVERNMENT_NAME").val(data.outAccountName);
+                            $("#CustomerRegisterPanelModel_L_CONTACT_PERSON").val(data.outPrimaryContactFirstName + " " + data.outContactLastName);
+                            $("#CustomerRegisterPanelModel_SubCateType").val(data.outAccountSubCategory);
+                            $("#CustomerRegisterPanelModel_L_CONTACT_PHONE").val(data.outparameter2);
+                            $("#CustomerRegisterPanelModel_L_BIRTHDAY").val(data.outBirthDate);
+                            $("#CustomerRegisterPanelModel_L_EMAIL").val(data.outEmail);
+
+                            $("#CustomerRegisterPanelModel_L_CARD_TYPE").val('@CardType');
+                        $("#CustomerRegisterPanelModel_L_CARD_NO").val('@IdCard');
+                        $("#CoveragePanelModel_CA_ID").val(data.outAccountNumber);
+                        $("#CoveragePanelModel_SA_ID").val(data.outServiceAccountNumber);
+                        $("#CoveragePanelModel_BA_ID").val(data.outBillingAccountNumber);
+                        $("#CoveragePanelModel_SffProductName").val(data.outProductName);
+                        $("#CoveragePanelModel_SffServiceYear").val(data.outDayOfServiceYear);
+                        $("#CoveragePanelModel_P_MOBILE").val('@NonMobileNo');
+                        $("#CustomerRegisterPanelModel_CateType").val(data.cardType);
+                        $("#CustomerRegisterPanelModel_L_TITLE").val(data.outTitle);
+                        $("#SffProfileLogID").val(data.SffProfileLogID);
+                        $('#CustomerRegisterPanelModel_Project_name').val(data.projectName);
+
+                        $("#CustomerRegisterPanelModel_vatAddress1").val(data.vatAddress1);
+                        $("#CustomerRegisterPanelModel_vatAddress2").val(data.vatAddress2);
+                        $("#CustomerRegisterPanelModel_vatAddress3").val(data.vatAddress3);
+                        $("#CustomerRegisterPanelModel_vatAddress4").val(data.vatAddress4);
+                        $("#CustomerRegisterPanelModel_vatAddress5").val(data.vatAddress5);
+                        $("#CustomerRegisterPanelModel_vatPostalCd").val(data.vatPostalCd);
+                        $("#CustomerRegisterPanelModel_vatAddressFull").val(data.vatAddressFull);
+                            $("#v_PackageCode").val(data.PackageCode);
+
+                        $("#col-form").hide();
+                        checkBeforeNextProcess();
+
+
+                        $("#col-formInputMobileNo").show();
+                        $("#col-ChangeContactMobile").show();
+                        $("#col-Condition").show();
+                    }
+                    else { //error service
+                        $("#col-form").hide();
+                        $("#col-err").show();
+                        $("#lb-failed").html("@L_NEW_CUST_NOT_FOUND.");
+                        $("#FromPage").val("col-form");
+                    }
+                    }
+                });
+
+            },
+            error: function (err) {
+                $("#col-form").hide();
+                $("#col-err").show();
+                $("#lb-failed").html("@L_NEW_CUST_NOT_FOUND.");
+            $("#FromPage").val("col-form");
+        }
+        });
+}
+
+
+</script>
+
+</html>

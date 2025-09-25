@@ -1,0 +1,284 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@{
+    string Length_Name_Lastname = "";
+    string Length_Contact_Mobile = "";
+    string Char_Not_on_Name = "";
+    string Char_Not_on_Name_LastName = "";
+    string Input_Contact_Mobile = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var LabelFbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        Length_Name_Lastname = LabelFbbConstant.Any(f => f.Field == "Length_Name_Lastname") ? LabelFbbConstant.First(f => f.Field == "Length_Name_Lastname").Validation : "";
+        Length_Contact_Mobile = LabelFbbConstant.Any(f => f.Field == "Length_Contact_Mobile") ? LabelFbbConstant.First(f => f.Field == "Length_Contact_Mobile").Validation : "";
+        Char_Not_on_Name = LabelFbbConstant.Any(f => f.Field == "Char Not on Name") ? LabelFbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        Char_Not_on_Name_LastName = LabelFbbConstant.Any(f => f.Field == "Char Not on Name LastName") ? LabelFbbConstant.First(f => f.Field == "Char Not on Name LastName").Validation : "";
+        Input_Contact_Mobile = LabelFbbConstant.Any(f => f.Field == "Input_Contact_Mobile") ? LabelFbbConstant.First(f => f.Field == "Input_Contact_Mobile").Validation : "";
+    }
+
+    string lBConfirm = "";
+    string lResult = "";
+    string lResultDetail = "";
+    string lFirstLast = "";
+    string ContactPhone = "";
+    string L_RESULT_PLAN = "";
+    string L_RESULT_NO = "";
+    string L_ADDRESS_COVERAGE = "";
+
+    string L_INSTALL_MONTH_OF_YEAR = "";
+    string L_INSTALL_MONTH_OF_YEARENG = "";
+
+    string FirstName = "";
+    string LastName = "";
+
+    string ContactEmail = "";
+    string ContactLineID = "";
+
+    if (ViewBag.LabelFBBOR028 != null)
+    {
+        var LabelFBBOR028 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR028;
+        lBConfirm = LabelFBBOR028.Any(c => c.Name == "B_CONFIRM") ? LabelFBBOR028.First(c => c.Name == "B_CONFIRM").DisplayValue : "";
+        lResult = LabelFBBOR028.Any(c => c.Name == "L_RESULT") ? LabelFBBOR028.First(c => c.Name == "L_RESULT").DisplayValue : "";
+        lResultDetail = LabelFBBOR028.Any(c => c.Name == "L_RESULT_DETAIL") ? LabelFBBOR028.First(c => c.Name == "L_RESULT_DETAIL").DisplayValue : "";
+        lFirstLast = LabelFBBOR028.Any(c => c.Name == "L_FIRST_LAST") ? LabelFBBOR028.First(c => c.Name == "L_FIRST_LAST").DisplayValue : "";
+        ContactPhone = LabelFBBOR028.Any(c => c.Name == "L_CONTACT_PHONE_OUT_COVERAGE") ? LabelFBBOR028.First(c => c.Name == "L_CONTACT_PHONE_OUT_COVERAGE").DisplayValue : "";
+
+        L_RESULT_NO = LabelFBBOR028.Any(c => c.Name == "L_RESULT_NO") ? LabelFBBOR028.First(c => c.Name == "L_RESULT_NO").DisplayValue : "";
+        L_RESULT_PLAN = LabelFBBOR028.Any(c => c.Name == "L_RESULT_PLAN") ? LabelFBBOR028.First(c => c.Name == "L_RESULT_PLAN").DisplayValue : "";
+        L_ADDRESS_COVERAGE = LabelFBBOR028.Any(c => c.Name == "L_ADDRESS_COVERAGE") ? LabelFBBOR028.First(c => c.Name == "L_ADDRESS_COVERAGE").DisplayValue : "";
+
+        FirstName = LabelFBBOR028.Any(c => c.Name == "L_CUST_NAME") ? LabelFBBOR028.First(c => c.Name == "L_CUST_NAME").DisplayValue : "";
+        LastName = LabelFBBOR028.Any(c => c.Name == "L_CUST_SURNAME") ? LabelFBBOR028.First(c => c.Name == "L_CUST_SURNAME").DisplayValue : "";
+
+        L_INSTALL_MONTH_OF_YEAR = LabelFBBOR028.Any(c => c.Name.StartsWith("L_INSTALL_MONTH_OF_YEAR")) ? LabelFBBOR028.First(c => c.Name.StartsWith("L_INSTALL_MONTH_OF_YEAR")).LovValue3 : "";
+        L_INSTALL_MONTH_OF_YEARENG = LabelFBBOR028.Any(c => c.Name.StartsWith("L_INSTALL_MONTH_OF_YEAR")) ? LabelFBBOR028.First(c => c.Name.StartsWith("L_INSTALL_MONTH_OF_YEAR")).DisplayValueJing : "";
+
+        ContactEmail = LabelFBBOR028.Any(c => c.Name == "L_EMAIL") ? LabelFBBOR028.First(c => c.Name == "L_EMAIL").DisplayValue : "";
+
+        ContactLineID = LabelFBBOR028.Any(c => c.Name == "L_LINEID") ? LabelFBBOR028.First(c => c.Name == "L_LINEID").DisplayValue : "";
+    }
+
+    string L_TITLE = "";
+
+    if (ViewBag.LabelFBBOR003 != null)
+    {
+        var LabelFBBOR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR003;
+
+        L_TITLE = LabelFBBOR003.Any(c => c.Name == "L_TITLE") ? LabelFBBOR003.FirstOrDefault(c => c.Name == "L_TITLE").DisplayValue : "";
+    }
+    
+}
+<div id="page12" class="container addrounded" style="display: none;">
+    <h4 class="page-header tgreen">@lResult</h4>
+    <p class="clearfix"></p>
+    <p class="clearfix text-center" id="lbPlanSite"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <div class="col-md-10 col-md-offset-1 col-xs-12">
+        <div>
+            <ul id="errxvalidatepage12" class="i-red"></ul>
+        </div>
+        <p class="clearfix"></p>
+
+        <div class="col-sm-4 col-xs-12">
+            <select id="COVERATE_RESULT_TITLE_CODE" name="CoveragePanelModel.L_FIRST_LAST" class="select" style="width: 100%"></select>
+
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            @Html.TextBoxFor(Model => Model.CoveragePanelModel.L_FIRST_NAME,
+            new
+            {
+                @id = "L_FIRST_NAME_PAGE12",
+                @class = "form-control",
+                @title = FirstName,
+                @maxlength = Length_Name_Lastname,
+                @placeholder = FirstName,
+            })
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            @Html.TextBoxFor(Model => Model.CoveragePanelModel.L_LAST_NAME,
+            new
+            {
+                @id = "L_LAST_NAME_PAGE12",
+                @class = "form-control",
+                @title = LastName,
+                @maxlength = Length_Name_Lastname,
+                @placeholder = LastName,
+            })
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-8 col-xs-12">
+            @Html.TextBoxFor(Model => Model.CoveragePanelModel.L_CONTACT_PHONE,
+            new
+            {
+                @id = "L_CONTACT_PHONE_PAGE12",
+                @class = "form-control",
+                @title = ContactPhone,
+                @maxlength = Length_Contact_Mobile,
+                @placeholder = ContactPhone,
+            })
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            @Html.TextBoxFor(Model => Model.CoveragePanelModel.L_CONTACT_EMAIL,
+            new
+            {
+                @id = "L_CONTACT_EMAIL_PAGE12",
+                @class = "form-control",
+                @title = ContactEmail,
+                @maxlength = "100",
+                @placeholder = ContactEmail,
+            })
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            @Html.TextBoxFor(Model => Model.CoveragePanelModel.L_CONTACT_LINE_ID,
+            new
+            {
+                @id = "L_CONTACT_LINE_ID_PAGE12",
+                @class = "form-control",
+                @title = ContactLineID,
+                @maxlength = "50",
+                @placeholder = ContactLineID,
+            })
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-sm-12 col-xs-12">
+            <p class="clearfix" id="lbAddress"></p>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix page-header"></p>
+
+        <div class="col-md-12 text-center">
+
+            <button id="btnCoverageResult_Confirm" type="button" class="btn btn-success btn-for-xs pull-right">
+                &nbsp; @lBConfirm &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+            </button>
+        </div>
+
+        <p class="clearfix"></p>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        $("#L_FIRST_NAME_PAGE12").inputmask('Regex', {
+            regex: "@Char_Not_on_Name",
+        });
+
+        $("#L_LAST_NAME_PAGE12").inputmask('Regex', {
+            regex: "@Char_Not_on_Name_LastName",
+        });
+
+        $("#L_CONTACT_PHONE_PAGE12").inputmask('Regex', {
+            regex: "@Input_Contact_Mobile",
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetCustomerTitle",
+            data: { 'customerCardType': 'R' },
+            dataType: "json",
+            success: function (data) {
+                var strBuilder = "<option value='' disabled selected>@L_TITLE</option>";
+                $.each(data, function (i, e) {
+                    var sl = "";
+                    if (e.DefaultValue != undefined)
+                        sl = "selected";
+
+                    var str = "<option value='" + e.Value + "' " + sl + ">" + e.Text + "</option>";
+                    strBuilder += str;
+                });
+                $('#COVERATE_RESULT_TITLE_CODE').append(strBuilder);
+                $('#COVERATE_RESULT_TITLE_CODE').select2();
+            }
+        });
+
+        $('#btnCoverageResult_Confirm').click(function () {
+
+            onClick_CoverageResult_Confirm();
+        });
+    });
+
+    function onClick_CoverageResult_Confirm() {
+
+        var validatepage12 = new Array();
+        validatepage12.push({ id: "COVERATE_RESULT_TITLE_CODE" });
+        validatepage12.push({ id: "L_FIRST_NAME_PAGE12"});
+        validatepage12.push({ id: "L_LAST_NAME_PAGE12"});
+        validatepage12.push({ id: "L_CONTACT_PHONE_PAGE12"});
+        var chkEmail = true;
+        if ($("#L_CONTACT_EMAIL_PAGE12").val() != "") {
+            chkEmail = validateEmail($("#L_CONTACT_EMAIL_PAGE12").val());
+        }
+        var chk = ValidationProcessing(validatepage12, "errxvalidatepage12");
+        if (chk && chkEmail) {
+            LockScreen(true, "");
+            $("#ForCoverageResult").val(true);
+            $("#CoveragePanelModel_RESULT_ID").val($("#HdResultId").val());
+            $("#CheckXDSL").val($("#HdCheckXDSL").val());
+            $('#iForm').attr('action', '/Scpe/SaveCoverageResult');
+            $("#iForm").submit();
+        }
+    }
+
+    function AddDetail() {
+
+        if ($("#CoveragePanelModel_CoverageResult").val() == "PLAN") {
+            $("#lbPlanSite").empty();
+
+            var temp = $("#ZTEPlanSite").val().split(',');
+            var year = '';
+            var monthofyear = '';
+            var datee = new Date(temp[1]).getFullYear();
+            if ($("#LanguagePage").val() == "1") {
+                year = (parseInt(datee) + 543).toString();
+                monthofyear = '@L_INSTALL_MONTH_OF_YEAR';
+            }
+            else {
+                year = datee.toString();
+                monthofyear = '@L_INSTALL_MONTH_OF_YEARENG'
+            }
+
+            var result = "@Html.Raw(L_RESULT_PLAN)".replace("{1}", monthofyear);
+            result = result.replace("{2}", year);
+            $("#lbPlanSite").append(result);
+
+        }
+        else if ($("#CoveragePanelModel_CoverageResult").val() == "NO") {
+            $("#lbPlanSite").empty();
+            $("#lbPlanSite").append("@Html.Raw(L_RESULT_NO)");
+        }
+    }
+
+    function loadAddress(hnum, bnum, floor, moo, soi, rd, tumbol, amphur, prov, zip) {
+        var htmlAddress = "";
+        var bnumVal = $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val();bnumVal = bnumVal != "" ? bnumVal : "-";
+        var floorVal = $("#CoveragePanelModel_Address_L_FLOOR").val();floorVal = floorVal != "" ? floorVal : "-";
+        var mooVal = $("#CoveragePanelModel_Address_L_MOO").val();mooVal = mooVal != "" ? mooVal : "-";
+        var soiVal = $("#CoveragePanelModel_Address_L_SOI").val();soiVal = soiVal != "" ? soiVal : "-";
+        var rdVal = $("#CoveragePanelModel_Address_L_ROAD").val();rdVal = rdVal != "" ? rdVal : "-";
+        var tumbolVal = $("#COVERAGE_L_TUMBOL").val();tumbolVal = tumbolVal != "" ? tumbolVal : "-";
+        var amphurVal = $('#COVERAGE_L_AMPHUR').val();amphurVal = amphurVal != "" ? amphurVal : "-";
+        var provVal = $('#COVERAGE_L_PROVINCE').val();provVal = provVal != "" ? provVal : "-";
+        var zipVal = $("#CoveragePanelModel_Address_L_ZIPCODE option:selected").text();zipVal = zipVal != "" ? zipVal : "-";
+
+        htmlAddress += "@L_ADDRESS_COVERAGE" + ": " + $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").val() + " " + hnum.slice(1) + " " + $("#CoveragePanelModel_Address_L_HOME_NUMBER_1").val() + " "
+                    + bnum + " " + bnumVal + " " + floor + " " + floorVal + " " + moo + " " + mooVal + " " + soi + " " + soiVal + " "
+                    + rd + " " + rdVal + "<br /> &emsp;&emsp;" + tumbol + " " + tumbolVal + " " + amphur + " " + amphurVal + " " + prov + " " + provVal + " " + zip + " " + zipVal;
+        //console.log(htmlAddress);
+        $("#lbAddress").empty();
+        $("#lbAddress").append(htmlAddress);
+    }
+
+    function ResourceInfo() {
+        ResourceName: "";
+    }
+
+</script>

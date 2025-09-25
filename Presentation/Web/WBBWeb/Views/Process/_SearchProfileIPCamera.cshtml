@@ -1,0 +1,274 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.QuickWinPanelModel
+
+@{#region
+    string lInstalllAddress = "";
+    string lInstalllCoverage = "";
+    string lHouseNo = "";
+    string lMoo = "";
+    string lMooban = "";
+    string lBuildingName = "";
+    string lFloor = "";
+    string lRoom = "";
+    string lSoi = "";
+    string lRoadName = "";
+    string lTumbol = "";
+    string lAmpher = "";
+    string lProvince = "";
+    string lZipcode = "";
+    string lContactMobile = "";
+    string pDeliveryDetail = "";
+    string DiyEquipment = "";
+    string DiyReceiptProduct = "";
+    string DiyTotal = "";
+    string DiyTel = "";
+    var PACKAGE_NAME_LIST = new List<LovScreenValueModel>();
+    var IMG_PATH = "";
+    if (ViewBag.LabelAddressIPCam != null)
+    {
+        var addressIPCam = (List<LovScreenValueModel>)ViewBag.LabelAddressIPCam;
+        lInstalllAddress = addressIPCam.Any(f => f.Name == "L_C_INSTALL_ADDRESS") ? addressIPCam.First(f => f.Name == "L_C_INSTALL_ADDRESS").DisplayValue : "";
+        lInstalllCoverage = addressIPCam.Any(f => f.Name == "L_ADDRESS_COVERAGE") ? addressIPCam.First(f => f.Name == "L_ADDRESS_COVERAGE").DisplayValue : "";
+        lHouseNo = addressIPCam.Any(f => f.Name == "L_HOME_NO") ? addressIPCam.First(f => f.Name == "L_HOME_NO").DisplayValue.Remove(0, 1) : "";
+        lMoo = addressIPCam.Any(f => f.Name == "L_MOO") ? addressIPCam.First(f => f.Name == "L_MOO").DisplayValue : "";
+        lMooban = addressIPCam.Any(f => f.Name == "L_MOOBAN") ? addressIPCam.First(f => f.Name == "L_MOOBAN").DisplayValue : "";
+        lBuildingName = addressIPCam.Any(f => f.Name == "L_BUILDING_NAME") ? addressIPCam.First(f => f.Name == "L_BUILDING_NAME").DisplayValue : "";
+        lFloor = addressIPCam.Any(f => f.Name == "L_FLOOR") ? addressIPCam.First(f => f.Name == "L_FLOOR").DisplayValue : "";
+        lRoom = addressIPCam.Any(f => f.Name == "L_ROOM") ? addressIPCam.First(f => f.Name == "L_ROOM").DisplayValue : "";
+        lSoi = addressIPCam.Any(f => f.Name == "L_SOI") ? addressIPCam.First(f => f.Name == "L_SOI").DisplayValue : "";
+        lRoadName = addressIPCam.Any(f => f.Name == "L_ROAD") ? addressIPCam.First(f => f.Name == "L_ROAD").DisplayValue : "";
+        lTumbol = addressIPCam.Any(f => f.Name == "L_SUB_DISTRICT") ? addressIPCam.First(f => f.Name == "L_SUB_DISTRICT").DisplayValue : "";
+        lAmpher = addressIPCam.Any(f => f.Name == "L_DISTRICT") ? addressIPCam.First(f => f.Name == "L_DISTRICT").DisplayValue : "";
+        lProvince = addressIPCam.Any(f => f.Name == "L_PROVINCE") ? addressIPCam.First(f => f.Name == "L_PROVINCE").DisplayValue : "";
+        lZipcode = addressIPCam.Any(f => f.Name == "L_ZIP_CODE") ? addressIPCam.First(f => f.Name == "L_ZIP_CODE").DisplayValue : "";
+    }
+
+    if (ViewBag.IpCamera != null)
+    {
+        var ipCamera = (List<LovScreenValueModel>)ViewBag.IpCamera;
+        lContactMobile = ipCamera.Any(f => f.Name == "IPCamera_INS_TYPE_TEL") ? ipCamera.First(f => f.Name == "IPCamera_INS_TYPE_TEL").DisplayValue : "";
+        pDeliveryDetail = ipCamera.Any(f => f.Name == "IPCamera_INS_TYPE_DETAIL_SUM") ? ipCamera.First(f => f.Name == "IPCamera_INS_TYPE_DETAIL_SUM").DisplayValue : "";
+        DiyEquipment = ipCamera.Any(f => f.Name == "IPCamera_INS_TYPE_EQUIPMENT") ? ipCamera.First(f => f.Name == "IPCamera_INS_TYPE_EQUIPMENT").DisplayValue : "";
+        DiyReceiptProduct = ipCamera.Any(f => f.Name == "IPCamera_INS_TYPE_RECEIPT_PRODUCT") ? ipCamera.First(f => f.Name == "IPCamera_INS_TYPE_RECEIPT_PRODUCT").DisplayValue : "";
+        DiyTotal = ipCamera.Any(f => f.Name == "IPCamera_INS_TYPE_TOTAL") ? ipCamera.First(f => f.Name == "IPCamera_INS_TYPE_TOTAL").DisplayValue : "";
+        DiyTel = ipCamera.Any(f => f.Name == "IPCamera_INS_TYPE_TEL") ? ipCamera.First(f => f.Name == "IPCamera_INS_TYPE_TEL").DisplayValue : "";
+        PACKAGE_NAME_LIST = ipCamera.Where(w => w.Name == "IPCamera_Package_Name_Existing" && w.GroupByPDF != null).ToList();
+        IMG_PATH = ipCamera.Any(c => c.Name == "IPCamera_Detail_Picture_Existing") ? ipCamera.FirstOrDefault(c => c.Name == "IPCamera_Detail_Picture_Existing").Blob : "";
+    }
+
+    var fullAddress = Model.CustomerRegisterPanelModel.v_installAddress;
+    var billAddress = Model.CustomerRegisterPanelModel.outFullAddress;
+    string AisAirNumberByPass = ViewBag.AisAirNumberByPass ?? "";
+    #endregion
+}
+
+<span id="lbSummary3" style="display: none;">@fullAddress</span>
+<span id="lbSummary4" style="display: none;">@billAddress</span>
+
+<div class="divDeliveryDetailHidden" style="display:none">
+    <p class='clearfix'></p>
+    <h4 class="page-header"><b>@pDeliveryDetail</b></h4>
+    <div style="display:flex;">
+        <div style="flex:1;margin:10px;">
+            <img src="data:image/png;base64,@IMG_PATH" class='img-responsive center-block'
+                 style="float: left; border: 2px solid #8DC63F; ">
+            <p class='clearfix'></p>
+        </div>
+        <div id="deliveryProductName" style="flex: 3; margin: 10px; place-self: center;"></div>
+    </div>
+    <div style="display:flex;">
+        <div style="flex:1;margin:10px;">
+            @*<div class="diyequipment">@DiyEquipment </div>*@
+            <div class="diytotal"></div>
+        </div>
+        <div style="flex:3;margin:10px;">
+            <div class="diyusername"></div>
+            <div class="diyaddress">@lInstalllCoverage </div>
+            <div class="diytel">@DiyTel </div>
+            <p class="clearfix"></p>
+            <div class="diyreceiptproduct">@DiyReceiptProduct</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var address = null;
+    function getAddressCustomer() {
+        var aisNumber = sessionStorage.getItem("AisAirNumber") == null || sessionStorage.getItem("AisAirNumber") == "" ? "@AisAirNumberByPass" : sessionStorage.getItem("AisAirNumber");
+        if (aisNumber == "") {
+            return address;
+        }
+        $.ajax({
+            url: '/CheckCoverage/getAddressCustomer',
+            data: {
+                mobileNo: aisNumber,
+                option: "5"
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response !== "") {
+                    address = response;
+                    const phoneNumber = $("#Summary1Detail11 span").html();
+                    if (!$('.diytel').text().includes(phoneNumber)) {
+                        $('.diytel').append(phoneNumber);
+                    }
+                }
+            }
+        });
+
+        GetDeliveryIPCamera(address.ProvinceName); //wait dev cloud
+        $(".diyreceiptproduct").html($(".diyreceiptproduct").html().replace('{x}', '2-3'));
+        $("#deliveryProductName").text($("#vasBox0 .checkbox").text().trim().split('\n')[0]);
+
+        return address;
+    }
+    function getAddressCustomerV2() {
+    var aisNumber = sessionStorage.getItem("AisAirNumber") == null || sessionStorage.getItem("AisAirNumber") == "" ? "@AisAirNumberByPass" : sessionStorage.getItem("AisAirNumber");
+    //if (aisNumber == "") {
+    //    return address;
+    //}
+    //$.ajax({
+    //    url: '/CheckCoverage/GetListServiceAndPromotionByPackageType',
+    //    data: {
+    //        NonMobileNo: aisNumber
+    //    },
+    //    dataType: "json",
+    //    type: 'POST',
+    //    async: false,
+    //    success: function (response) {
+    //        if (response !== "") {
+    //            address = response;
+                const phoneNumber = $("#Summary1Detail11 span").html();
+                if (!$('.diytel').text().includes(phoneNumber)) {
+                    $('.diytel').append(phoneNumber);
+                }
+    //        }
+    //    }
+        //});
+        //address = {
+        //    HouseNo: $("#outHouseNumber").val(),
+        //    Moo: $("#outMoo").val(),
+        //    Mooban: $("#outMooban").val(),
+        //    BuildingName: $("#outBuildingName").val(),
+        //    Floor: $("#outFloor").val(),
+        //    Room: $("#outRoom").val(),
+        //    Soi: $("#outSoi").val(),
+        //    RoadName: $("#outStreetName").val(),
+        //    Tumbol: $("#CustomerRegisterPanelModel_installAddress2").val(),
+        //    Amphur: $("#CustomerRegisterPanelModel_installAddress3").val(),
+        //    ProvinceName: $("#CustomerRegisterPanelModel_installAddress4").val(),
+        //    ZipCode: $("#CustomerRegisterPanelModel_installAddress5").val(),
+        //};
+
+        GetDeliveryIPCamera($("#outProvince").val());
+    $(".diyreceiptproduct").html($(".diyreceiptproduct").html().replace('{x}', '2-3'));
+    $("#deliveryProductName").text($("#vasBox0 .checkbox").text().trim().split('\n')[0]);
+
+    return address;
+}
+    var delivery = null;
+    function GetDeliveryIPCamera(p_province) {
+        $.ajax({
+            url: '/CheckCoverage/GetDeliveryIPCamera',
+            data: {
+                p_province: p_province,
+            },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response !== "") {
+                    $(".diyreceiptproduct").html(response.ServiceMobileNo.delivery_text_thai);
+                }
+            }, error: function (err) {
+                console.log(err);
+                $(".diyreceiptproduct").html($(".diyreceiptproduct").html().replace('{x}', '5-7'));
+            }
+        });
+    }//
+
+    function drawAddress() {
+        //getAddressCustomer();
+        getAddressCustomerV2();
+        //setAddressCustomer();
+        setDiyDeliveryDetail();//for edit 07/08/2023
+        setDiyDeliverySelected();//for edit 09/08/2023
+    }
+
+    function setAddressCustomer() {
+        let adsStrBuilder = '<div id="divAddressSetUp"><div class="col-md-20   col-xs-24"><p class="clearfix"></p><i /class="fa fa-chevron-right tgreen"></i><span style="font-size: 16px; font-weight: bold;">@lInstalllAddress</span><p class="clearfix"></p><p class="clearfix"></p>';
+
+        adsStrBuilder += mkInputAds(1, '@lHouseNo', address.HouseNo);
+        adsStrBuilder += mkInputAds(1, '@lMoo', address.Moo);
+        adsStrBuilder += mkInputAds(2, '@lMooban', address.Mooban);
+        adsStrBuilder += '<p class="clearfix"></p><p class="clearfix"></p>';
+        adsStrBuilder += mkInputAds(2, '@lBuildingName', address.BuildingName);
+        adsStrBuilder += mkInputAds(1, '@lFloor', address.Floor);
+        adsStrBuilder += mkInputAds(1, '@lRoom', address.Room);
+        adsStrBuilder += '<p class="clearfix"></p><p class="clearfix"></p>';
+        adsStrBuilder += mkInputAds(2, '@lSoi', address.Soi);
+        adsStrBuilder += mkInputAds(2, '@lRoadName', address.RoadName);
+        adsStrBuilder += '<p class="clearfix"></p><p class="clearfix"></p>';
+        adsStrBuilder += mkSelectAds(address.Tumbol);
+        adsStrBuilder += mkSelectAds(address.Amphur);
+        adsStrBuilder += mkSelectAds(address.ProvinceName);
+        adsStrBuilder += mkSelectAds(address.ZipCode)
+        $('#lbSummary3').append('<p class="clearfix"></p>');
+        $('#divInstallTypeDIY').html(adsStrBuilder);
+    }
+
+    function mkSelectAds(value) {
+        $('#lbSummary3').append(value + ' ');
+        return '<div class="col-sm-6 col-xs-12"><select style="width: 100%" disabled><option value="" disabled selected>' + value + '</option></select><p class="clearfix"></p><p class="clearfix"></p></div>'
+    }
+
+    function mkInputAds(num, pName, value) {
+        var inputPlaceholder = "";
+        var inputColorStyle = "";
+        if (value === null || value === undefined) {
+            inputPlaceholder = pName;
+        } else {
+            inputPlaceholder = value;
+            inputColorStyle = 'color: black;';
+            $('#lbSummary3').append(value + ' ');
+        }
+
+        return '<div class="col-sm-' + (3 * num) + ' col-xs-' + (6 * num) +
+            '"><input class="form-control" placeholder="' + inputPlaceholder +
+            '" style="' + inputColorStyle + '" readonly></div>';
+    }
+
+    function setDiyDeliveryDetail() {
+        $('#divAddressSetUp').hide();
+        if ($('.diyusername').html() === '') {
+            //$('.diyusername').append(address.Title + address.FirstName + '   ' + address.LastName);//V1
+            $('.diyusername').append($('#CustomerRegisterPanelModel_L_TITLE').val() + $('#outAccountName').val());//V2
+            $('.diyusername').text(privacyNameSurname($('.diyusername').text()));
+            $('.diyaddress').append($('#lbSummary3').text());
+            $('#lbSummary3').append('<p class="clearfix"></p>');
+        }
+        $('#divInstallTypeDIY').append('<div class="divDeliveryDetail"></div>');
+        BindHidden('.divDeliveryDetail');
+    }
+
+    function setDiyDeliverySelected() {
+        var packageList = @Html.Raw(Json.Encode(PACKAGE_NAME_LIST));
+        $.each(packageSelectedList, function (index, value) {
+            if (value > 0) {
+                $('.diytotal').text('@DiyTotal' + '   :   ' + $("select[name='ddlPurchaseNo" + index +"']").val());
+            }
+        });
+    }
+</script>
+
+<style>
+    #divInstallTypeDIY .col-sm-6.col-xs-12 select[disabled] {
+        background-color: #8DC63F;
+        color: #fff;
+        height: 34px;
+        opacity: 1;
+    }
+</style>

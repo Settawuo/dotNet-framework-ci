@@ -1,0 +1,428 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using WBBWeb.Controllers;
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string langflag = Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString();
+
+    string B_BACK = "";
+
+    if (ViewBag.LabelLovScreenFBBWEB031 != null)
+    {
+        var LabelLovScreenFBBWEB031 = (List<LovScreenValueModel>)ViewBag.LabelLovScreenFBBWEB031;
+
+        B_BACK = LabelLovScreenFBBWEB031.Any(c => c.Name == "B_BACK") ? LabelLovScreenFBBWEB031.First(c => c.Name == "B_BACK").DisplayValue : "";
+    }
+
+    string LcCode = "";
+    string ASCCode = "";
+    string EmployeeID = "";
+    string outType = "CUSTOMER";
+    string outSubType = "CUSTOMER";
+    string outMobileNo = "";
+    string PartnerName = "";
+    string outLocationEmailByRegion = "";
+    string outEmpName = "";
+
+    if (ViewBag.LcCode != null)
+    {
+        LcCode = ViewBag.LcCode;
+    }
+    if (ViewBag.ASCCode != null)
+    {
+        ASCCode = ViewBag.ASCCode;
+    }
+    if (ViewBag.EmployeeID != null)
+    {
+        EmployeeID = ViewBag.EmployeeID;
+    }
+    if (ViewBag.outType != null)
+    {
+        outType = ViewBag.outType;
+    }
+    if (ViewBag.outSubType != null)
+    {
+        outSubType = ViewBag.outSubType;
+    }
+    if (ViewBag.outMobileNo != null)
+    {
+        outMobileNo = ViewBag.outMobileNo;
+    }
+    if (ViewBag.PartnerName != null)
+    {
+        PartnerName = ViewBag.PartnerName;
+    }
+    if (ViewBag.outLocationEmailByRegion != null)
+    {
+        outLocationEmailByRegion = ViewBag.outLocationEmailByRegion;
+    }
+    if (ViewBag.outEmpName != null)
+    {
+        outEmpName = ViewBag.outEmpName;
+    }
+
+    //20.3
+    string outTitle = "";
+    string outCompanyName = "";
+    string outDistChn = "";
+    string outChnSales = "";
+    string outShopType = "";
+    string outOperatorClass = "";
+    string outASCTitleThai = "";
+    string outASCPartnerName = "";
+    string outMemberCategory = "";
+    string outPosition = "";
+    string outLocationRegion = "";
+    string outLocationSubRegion = "";
+    string THFirstName = "";
+    string THLastName = "";
+    //21.5 Pool Villa
+    string outLocationProvince = "";
+
+    if (ViewBag.outTitle != null)
+    {
+        outTitle = ViewBag.outTitle;
+    }
+    if (ViewBag.outCompanyName != null)
+    {
+        outCompanyName = ViewBag.outCompanyName;
+    }
+    if (ViewBag.outDistChn != null)
+    {
+        outDistChn = ViewBag.outDistChn;
+    }
+    if (ViewBag.outChnSales != null)
+    {
+        outChnSales = ViewBag.outChnSales;
+    }
+    if (ViewBag.outShopType != null)
+    {
+        outShopType = ViewBag.outShopType;
+    }
+    if (ViewBag.outOperatorClass != null)
+    {
+        outOperatorClass = ViewBag.outOperatorClass;
+    }
+    if (ViewBag.outASCTitleThai != null)
+    {
+        outASCTitleThai = ViewBag.outASCTitleThai;
+    }
+    if (ViewBag.outASCPartnerName != null)
+    {
+        outASCPartnerName = ViewBag.outASCPartnerName;
+    }
+    if (ViewBag.outMemberCategory != null)
+    {
+        outMemberCategory = ViewBag.outMemberCategory;
+    }
+    if (ViewBag.outPosition != null)
+    {
+        outPosition = ViewBag.outPosition;
+    }
+    if (ViewBag.outLocationRegion != null)
+    {
+        outLocationRegion = ViewBag.outLocationRegion;
+    }
+    if (ViewBag.outLocationSubRegion != null)
+    {
+        outLocationSubRegion = ViewBag.outLocationSubRegion;
+    }
+    if (ViewBag.THFirstName != null)
+    {
+        THFirstName = ViewBag.THFirstName;
+    }
+    if (ViewBag.THLastName != null)
+    {
+        THLastName = ViewBag.THLastName;
+    }
+    //21.5 Pool Villa
+    if (ViewBag.outLocationProvince != null)
+    {
+        outLocationProvince = ViewBag.outLocationProvince;
+    }
+
+    var token = WBBController.Encrypt(LcCode.ToString() + "," + ASCCode.ToString() + "," + EmployeeID.ToString() + "," + outSubType.ToString());
+
+    bool HaveListMenuAuthorize = false;
+
+    var controller = DependencyResolver.Current.GetService<ProcessController>();
+
+    int countMenu = 0;
+    int divspace = 12;
+
+    var ListMenuAuthorize = controller.GetListMenuAuthorize(outType, outSubType);
+
+    if (ListMenuAuthorize != null && ListMenuAuthorize.Count > 0)
+    {
+        HaveListMenuAuthorize = true;
+        if (ListMenuAuthorize.Where(t => t.menu_code == "NEW_CUSTOMER" && t.menu_authorize == "Y").ToList().Count > 0)
+        {
+            countMenu = countMenu + 1;
+        }
+        if (ListMenuAuthorize.Where(t => t.menu_code == "EXISTING_CUSTOMER" && t.menu_authorize == "Y").ToList().Count > 0)
+        {
+            countMenu = countMenu + 1;
+        }
+    }
+
+    bool HaveListMenuAuthorizeJobOrder = false;
+
+    var ListMenuAuthorizeJobOrder = controller.GetListMenuAuthorize("", outSubType);
+    if (ListMenuAuthorizeJobOrder != null && ListMenuAuthorizeJobOrder.Count > 0)
+    {
+        if (ListMenuAuthorizeJobOrder.Where(t => (t.menu_code == "FBB_PORTAL_JOB_ORDER" || t.menu_code == "SUBCONTRACT_JOB_ORDER") && t.menu_authorize == "Y").Any())
+        {
+            HaveListMenuAuthorizeJobOrder = true;
+
+            countMenu = countMenu + 1;
+        }
+    }
+
+    //divspace = divspace / countMenu;
+    divspace = 4;
+}
+<form id="MenuOfficerForm" method="post" action="/process/ProcessLineOfficer">
+    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12 add-border-rounded-green grayscale">
+        <span><img src="~/img/logo-fibre.jpg" class="center-block img-responsive"></span>
+        <p class="clearfix"></p>
+        @if (countMenu < 3)
+        {
+            <div class="col-md-@(divspace / countMenu) hidden-xs-up">
+            </div>
+        }
+        @if (HaveListMenuAuthorize && ListMenuAuthorize.Where(t => t.menu_code == "NEW_CUSTOMER" && t.menu_authorize == "Y").ToList().Count > 0)
+        {
+            <div class="col-md-@divspace">
+                @if (langflag == "1")
+                {
+                    <input type="image" src="~/img/NewCustomer_TH.jpg" class="img-responsive" alt="Submit">
+                }
+                else
+                {
+                    <input type="image" src="~/img/NewCustomer_EN.jpg" class="img-responsive" alt="Submit">
+                }
+                <p class="clearfix hidden-xs-up"></p>
+            </div>
+        }
+        @if (HaveListMenuAuthorize && ListMenuAuthorize.Where(t => t.menu_code == "EXISTING_CUSTOMER" && t.menu_authorize == "Y").ToList().Count > 0)
+        {
+            <div class="col-md-@divspace">
+                @if (langflag == "1")
+                {
+                    <input type="image" src="~/img/ExistingCustomer_TH.jpg" class="img-responsive" onclick="ExistingCustomer()">
+                }
+                else
+                {
+                    <input type="image" src="~/img/ExistingCustomer_EN.jpg" class="img-responsive" onclick="ExistingCustomer()">
+                }
+                <p class="clearfix hidden-xs-up"></p>
+            </div>
+        }
+        @if (HaveListMenuAuthorizeJobOrder && ListMenuAuthorize.Where(t => t.menu_code == "JOB_ORDER" && t.menu_authorize == "Y").ToList().Count > 0)
+        {
+            <div class="col-md-@divspace">
+                @if (langflag == "1")
+                {
+                    <img id="btnStTrackTH" src="~/img/StatusTracking-TH.jpg" class="img-responsive" style="cursor: pointer;" onclick="RedirectJobOrder()" />
+                }
+                else
+                {
+                    <img id="btnStTrackEN" src="~/img/StatusTracking-EN.jpg" class="img-responsive" style="cursor: pointer;" onclick="RedirectJobOrder()" />
+                }
+            </div>
+        }
+        @if (countMenu < 3)
+        {
+            <div class="col-md-@(divspace / countMenu) hidden-xs-up">
+            </div>
+        }
+        <p class="clearfix hidden-xs-up"></p>
+        <p class="clearfix hidden-xs-up"></p>
+        <p class="clearfix"></p>
+        <div class="col-xs-12  text-center">
+            <button id="btn1" type="button" class="btn btn-default btn-for-xs">&nbsp; @B_BACK &nbsp; </button>
+        </div>
+        <p class="clearfix hidden-xs-up"></p>
+        <p class="clearfix hidden-xs-up"></p>
+        <p class="clearfix"></p>
+    </div>
+
+    <input id="LcCode" name="LcCode" type="hidden" />
+    <input id="ASCCode" name="ASCCode" type="hidden" />
+    <input id="EmployeeID" name="EmployeeID" type="hidden" />
+    <input id="outType" name="outType" type="hidden" />
+    <input id="outSubType" name="outSubType" type="hidden" />
+    <input id="outMobileNo" name="outMobileNo" type="hidden" />
+    <input id="PartnerName" name="PartnerName" type="hidden" />
+    <input id="outLocationEmailByRegion" name="outLocationEmailByRegion" type="hidden" />
+    <input id="outEmpName" name="outEmpName" type="hidden" />
+    <input id="isOfficer" name="isOfficer" type="hidden" value="Y" />
+    <input id="pageNo" name="pageNo" type="hidden" value="1" />
+
+    <input id="outTitle" name="outTitle" type="hidden" />
+    <input id="outCompanyName" name="outCompanyName" type="hidden" />
+    <input id="outDistChn" name="outDistChn" type="hidden" />
+    <input id="outChnSales" name="outChnSales" type="hidden" />
+    <input id="outShopType" name="outShopType" type="hidden" />
+    <input id="outOperatorClass" name="outOperatorClass" type="hidden" />
+    <input id="outASCTitleThai" name="outASCTitleThai" type="hidden" />
+    <input id="outASCPartnerName" name="outASCPartnerName" type="hidden" />
+    <input id="outMemberCategory" name="outMemberCategory" type="hidden" />
+    <input id="outPosition" name="outPosition" type="hidden" />
+    <input id="outLocationRegion" name="outLocationRegion" type="hidden" />
+    <input id="outLocationSubRegion" name="outLocationSubRegion" type="hidden" />
+    <input id="THFirstName" name="THFirstName" type="hidden" />
+    <input id="THLastName" name="THLastName" type="hidden" />
+    @*21.5 Pool Villa*@
+    <input id="outLocationProvince" name="outLocationProvince" type="hidden" />
+
+    <div style="display: none;" class="modal fade" id="modal_error" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: none;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-border-rounded-green">
+                        <div style="padding: 0 20px 20px 20px;font-size:18px;">
+                            <p class="clearfix"></p>
+                            <b>เนื่องจากปัจจุบัน Web officer พบปัญหาไม่สามารถใช้งานได้ อยู่ระหว่างการปิดปรับปรุง รบกวนทุกท่านใช้ช่องทางสำรองในการสมัครดังนี้</b>
+                            <p class="clearfix"></p>
+                            <ul>
+                                <li>
+                                    1. New Register AIS Fibre </br>
+                                    ให้เปลี่ยนไปใช้การสมัครผ่าน IM System หรือ Sale Digitize </br>
+                                    [<a href="https://mychannel.cloud.ais.th/ais-fibre/" target="_blank"><span style="color: blue;">https://mychannel.cloud.ais.th/ais-fibre/</span></a>]
+                                    <p class="clearfix"></p>
+                                </li>
+                                <li>
+                                    2. Add servcie on-top (Mesh,Playbox) </br>
+                                    ให้สมัครผ่าน web existing </br>
+                                    [<a href="https://newfibre.ais.co.th/Process/ExistingFibre" target="_blank"><span style="color: blue;">https://newfibre.ais.co.th/Process/ExistingFibre</span></a>]
+                                </li>
+                            </ul>
+                        </div>
+                        <p class="clearfix"></p>
+                        <div class="col-xs-12 text-center">
+                            <p class="clearfix"></p>
+                            <button type="button" id="" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; close &nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+    var language = "";
+
+    $(document).ready(function () {
+        $("#logo_div").hide();
+        $("#btn_th").hide();
+        $("#btn_en").hide();
+        $.get('/WBB/GetCurrentCulture').done(function (x) {
+            $("#LanguagePage").val(x);
+            changeLanguage();
+
+            //script Adobe Analytic
+            if (x == 1)
+                language = "th";
+            else
+                language = "en";
+
+        });
+
+        var empid = '@EmployeeID';
+        if (empid != "00000000") {
+            empid = empid.replace(/^0+/, '');
+        }
+
+        $("#LcCode").val('@LcCode');
+        $("#ASCCode").val('@ASCCode');
+        $("#EmployeeID").val(empid);
+        $("#outType").val('@outType');
+        $("#outSubType").val('@outSubType');
+        $("#outMobileNo").val('@outMobileNo');
+        $("#PartnerName").val('@PartnerName');
+        $("#outLocationEmailByRegion").val('@outLocationEmailByRegion');
+        $("#outEmpName").val('@outEmpName');
+
+        //20.3
+        $('#outTitle').val('@outTitle');
+        $('#outCompanyName').val('@outCompanyName');
+        $('#outDistChn').val('@outDistChn');
+        $('#outChnSales').val('@outChnSales');
+        $('#outShopType').val('@outShopType');
+        $('#outOperatorClass').val('@outOperatorClass');
+        $('#outASCTitleThai').val('@outASCTitleThai');
+        $('#outASCPartnerName').val('@outASCPartnerName');
+        $('#outMemberCategory').val('@outMemberCategory');
+        $('#outPosition').val('@outPosition');
+        $('#outLocationRegion').val('@outLocationRegion');
+        $('#outLocationSubRegion').val('@outLocationSubRegion');
+        $('#THFirstName').val('@THFirstName');
+        $('#THLastName').val('@THLastName');
+        //21.5 Pool Villa
+        $('#outLocationProvince').val('@outLocationProvince');
+    });
+
+    function changeLanguage() {
+        if ($("#LanguagePage").val() == "1") {
+
+        }
+        else {
+
+        }
+    }
+
+    $('#btn1').click(function () {
+        window.location.href = '@Url.Action("Index", "Officer")';
+    });
+
+    function MyCustomer() {
+        $("#MenuOfficerForm").submit();
+    }
+
+    function MychannelCustomer() {
+        $("#LcCode").val('SD');
+        $("#MenuOfficerForm").submit();
+    }
+
+</script>
+
+@if (HaveListMenuAuthorizeJobOrder)
+{
+    <script type="text/javascript">
+        function RedirectJobOrder() {
+            var url = '@ListMenuAuthorizeJobOrder.FirstOrDefault(t => (t.menu_code == "FBB_PORTAL_JOB_ORDER" || t.menu_code == "SUBCONTRACT_JOB_ORDER") && t.menu_authorize == "Y").menu_url';
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", url);
+            form.setAttribute("target", "_self");
+
+            var in_token = document.createElement("input");
+            in_token.setAttribute("type", "hidden");
+            in_token.setAttribute("name", "token");
+            in_token.setAttribute("value", "@token");
+            form.appendChild(in_token);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+}
+
+@if (HaveListMenuAuthorize && ListMenuAuthorize.Where(t => t.menu_code == "EXISTING_CUSTOMER" && t.menu_authorize == "Y").ToList().Count > 0)
+{
+    <script type="text/javascript">
+        function ExistingCustomer() {
+            $("#MenuOfficerForm").attr("action", "@ViewBag.SetAction");
+        }
+    </script>
+}

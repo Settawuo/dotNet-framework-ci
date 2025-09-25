@@ -1,0 +1,212 @@
+﻿@model WBBContract.Minions.MinionGetListPackageByServiceQuery
+
+@{
+    Layout = "~/Views/Minion/_LayoutMinion.cshtml";
+    ViewBag.Title = "Index";
+}
+
+<div id="divMain" class="col-md-12 well hidden">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="sr-only" for="inpEndPoint">Amount (in dollars)</label>
+            <div class="input-group">
+                <div class="input-group-addon">URL : </div>
+                <input type="text" class="form-control" id="inpEndPoint" placeholder="Enter request URL">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <label class="radio-inline">
+            <input type="radio" name="rdoRequest" id="rdoRequest1" value="form-data" checked="checked">
+            form-data-test
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="rdoRequest" id="rdoRequest2" value="raw-xml">
+            raw-xml-test
+        </label>
+    </div>
+
+    <div class="row" id="divPartial">
+        @{
+            @Html.Partial("_listPackageServicePartial", new WBBContract.Minions.MinionGetListPackageByServiceQuery())
+            @Html.Partial("_listPackageSffPromoPartial", new WBBContract.Minions.MinionGetListPackageBySffPromoQuery())
+            @Html.Partial("_listPackageChangePartial", new WBBContract.Minions.MinionGetListPackageByChangeQuery())
+        }
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div id="dvResponse" class="row hidden">
+        <div class=""><strong>Response</strong> </div>
+        <div class="foo">
+            <div class="col-md-12">
+                <label class="radio-inline">
+                    <input type="radio" name="rdoResponse" id="rdoResponseXml" value="xml" checked="checked">
+                    Xml
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="rdoResponse" id="rdoResponseJson" value="json">
+                    Json
+                </label>
+            </div>
+
+            <div class="col-md-12" id="response-xml">
+                <div class="form-group">
+                    <pre class="prettyprint  linenums" id="quine"></pre>
+                    <pre contenteditable="true" class="prettyprint" spellcheck="false"></pre>
+                    @*<textarea class="form-control" readonly="readonly" rows="30"></textarea>*@
+                </div>
+            </div>
+
+            <div class="col-md-12 hidden" id="response-json">
+                <div class="form-group">
+                    <pre contenteditable="true" class="prettyprint" spellcheck="false"></pre>
+                    @*<textarea class="form-control" readonly="readonly" rows="30"></textarea>*@
+                </div>
+            </div>
+         
+        </div>
+    </div>
+</div>
+
+<script src="https://rawgit.com/google/code-prettify/master/loader/run_prettify.js?autoload=true&amp;lang=css" defer=""></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        function htmlEscape(s) {
+            return s
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;');
+        }
+
+
+        $('input[type=radio][name=rdoRequest]').change(function () {
+            if (this.value == 'form-data') {
+                $('#form-data').removeClass('hidden');
+                $('#raw-xml').addClass('hidden');
+            }
+            else if (this.value == 'raw-xml') {
+                $('#form-data').addClass('hidden');
+                $('#raw-xml').removeClass('hidden');
+            }
+        });
+
+        $('input[type=radio][name=rdoResponse]').change(function () {
+
+            $('#hdnxmlString').val('');
+
+            if (this.value == 'xml') {
+                $('#response-xml').removeClass('hidden');
+                $('#response-json').addClass('hidden');
+            }
+            else if (this.value == 'json') {
+                $('#response-xml').addClass('hidden');
+                $('#response-json').removeClass('hidden');
+            }
+          
+        });
+
+        $('button[type=reset]').click(function () {
+            $('#dvResponse').addClass('hidden');
+            $('#response-xml pre').html('');
+            $('#response-json pre').html('');
+
+            $('#rdoResponseXml').prop('checked', true);
+            $('#response-xml').removeClass('hidden');
+            $('#response-json').addClass('hidden');
+        });
+    
+
+        $('#frmListPackageService').submit(function (e) {
+
+            $('#ProgressLoading').modal('show');
+
+            $('#response-xml pre').html('');
+            $('#response-json pre').html('');
+
+            if ($('input[name=rdoRequest]:checked').val() == 'raw-xml') {
+                if (!!$('#xmlString').val()) {
+                    $('#hdnxmlString').val(htmlEscape($('#xmlString').val()));
+                }
+            } else {
+                $('#hdnxmlString').val('');
+            }
+
+            var $this = $(this);
+            var frmValues = $this.serialize();
+            console.log('frmValues',frmValues);
+
+            // console.log("frmValues", frmValues);
+            $.ajax({
+                //url: '@Url.Action("GetListPackageByService")',
+                url: $('#inpEndPoint').val(),
+                type: "POST",
+                dataType: "json",
+                data: frmValues,
+                success: function (result) {
+
+                    console.log("result", result);
+                    if (!!result) {
+                        // this page's own source code
+                        var quineHtml = htmlEscape(
+                          '<!DOCTYPE html>\n<html>\n' +
+                          result.rawxml +
+                          '\n<\/html>\n');
+
+                        // Highlight the operative parts:
+                        quineHtml = quineHtml.replace(
+                          /&lt;script src[\s\S]*?&gt;&lt;\/script&gt;|&lt;!--\?[\s\S]*?--&gt;|&lt;pre\b[\s\S]*?&lt;\/pre&gt;/g,
+                          '<span class="operative">$&<\/span>');
+
+                        // insert into PRE
+                        document.getElementById("quine").innerHTML = quineHtml;
+
+                        //$('#response-xml pre').innerHTML = quineHtml;
+                        //$('#response-xml pre').text(result.rawxml);
+
+                        //$('#response-json pre').text(result.rawjson);
+
+                        var jsonObj = JSON.parse(result.rawjson);
+                        var jsonPretty = JSON.stringify(jsonObj, null, '\t');
+
+                        $('#response-json pre').text(jsonPretty);
+
+                    }
+
+                    $('#ProgressLoading').modal('hide');
+                    $('#dvResponse').removeClass('hidden');
+
+                },
+                error: function (jqXhr) {
+                    var quineHtml = htmlEscape(
+                         '<!DOCTYPE html>\n<html>\n' +
+                        jqXhr.responseText +
+                         '\n<\/html>\n');
+
+                    // Highlight the operative parts:
+                    quineHtml = quineHtml.replace(
+                      /&lt;script src[\s\S]*?&gt;&lt;\/script&gt;|&lt;!--\?[\s\S]*?--&gt;|&lt;pre\b[\s\S]*?&lt;\/pre&gt;/g,
+                      '<span class="operative">$&<\/span>');
+
+                    // insert into PRE
+                    document.getElementById("quine").innerHTML = quineHtml;
+
+
+                  //  $('#response-xml pre').text(jqXhr.responseText);
+
+                    $('#ProgressLoading').modal('hide');
+                    $('#dvResponse').removeClass('hidden');
+
+                }
+            });
+
+            return false;
+        });
+
+
+    });
+
+</script>

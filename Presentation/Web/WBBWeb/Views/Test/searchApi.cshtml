@@ -1,0 +1,65 @@
+﻿@{
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Demo</title>
+
+</head>
+
+<body ng-app="sample">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+    <script>
+        angular.module('sample', [])
+            .controller('sampleController', function($scope, AddrSearch) {
+                $scope.listAddr = [];
+
+                $scope.callAddrSearch = function (address) {
+                    AddrSearch.find(address).then(function(data){
+                        console.log('success: ', data.data.results);
+                        $scope.listAddr = data.data.results;
+                    }).catch(function(error){
+                        console.log('error: ', error);
+                    });
+                };
+
+            })
+            .service('AddrSearch', function ($http) {
+                this.find = function (searchKey) {
+                    console.log("searchKey: ", searchKey)
+                    return $http.get('https://gisapi.mea.or.th/api/address/search?q=' + searchKey + '&key=767e0c8c798adf7b7e367632ea579c7a');
+                };
+
+            })
+    </script>
+    <div ng-controller="sampleController">
+        <div class="sample ten">
+            <input type="text" ng-model="address" placeholder="Search for Address" />
+            <input type="submit" ng-click="callAddrSearch(address)" Value="Search" />
+            @*<button type="reset" class="btn btn-reset fa fa-times"></button>*@
+        </div>
+        <br>
+        <table >
+            <thead>
+                <tr>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="addr in listAddr">
+                    <td>{{addr.geometry[0]}}, {{addr.geometry[1]}}  ||  {{addr.properties.name}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

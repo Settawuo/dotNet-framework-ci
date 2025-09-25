@@ -1,0 +1,153 @@
+﻿@model WBBWeb.Models.OtpVerificationModel
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutVerification.cshtml";
+}
+
+<style type="text/css">
+    body {
+        /*display: flex;
+        flex-direction: column;
+         align-items: center;
+        justify-content: center;*/
+        overflow: hidden;
+        height: 100%;
+        margin: 0;
+    }
+
+    .from-verification {
+        height: 100vh;
+        /*margin-top: 150px;*/
+    }
+
+    .from-internetno {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+
+    /* .otp-verification {
+        height: 100vh;
+        margin-top: 10px;
+        justify-content: center;
+    }*/
+    label {
+        font-weight: bold;
+        text-align: left; /* Add this line to align the label to the left */
+        margin-bottom: 5px; /* Add some bottom margin for spacing */
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease; /* Add transition for smooth effect */
+    }
+
+        input[type="text"]:hover {
+            border-color: #8b4; /* Set the desired light green color on hover */
+        }
+
+        input[type="text"]:focus {
+            border-color: #8b4; /* Set the desired light green color on focus */
+        }
+
+    input[type="submit"] {
+        background-color: #8b4;
+        color: black;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        input[type="submit"]:hover {
+            background-color: #7CB342;
+        }
+
+    .container-btn-submit {
+        text-align: center;
+        width: 100%;
+        font-weight: bold;
+        justify-content: center;
+    }
+</style>
+<body>
+    <div class="from-verification">
+        <div class="row"><div class="col-12">
+                <div style="text-align: left; font-style: normal; font-size: 16px;">
+                    <label for="otp">OTP has been sent to</label>
+                    <br />
+                    <label>Mobile No: &nbsp; @ViewData["MobileNo"]</label>
+                </div>
+                <div style="text-align: left; margin-top: 20px; font-size: 18px; ">
+                    <label for="otp">OTP:</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form class="from-internetno" action="/Home/VerifyOTP" method="post">
+                    <input type="text" id="otp" name="otp" placeholder="1234" required>
+
+                    <div style="text-align: left; text-decoration: underline;">
+                        <a href="/Home/ResendOTP">Resend OTP</a>
+                        <p>@ViewData["ResponseMessage"]</p>
+                    </div>
+
+                    <div class="container-btn">
+                        <input type="button" value="NEXT >>">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    var obj = document.getElementById('partitioned');
+    obj.addEventListener('keydown', stopCarret);
+    obj.addEventListener('keyup', stopCarret);
+
+    function stopCarret() {
+        if (obj.value.length > 5) {
+            setCaretPosition(obj, 3);
+        }
+    }
+
+    function setCaretPosition(elem, caretPos) {
+        if (elem != null) {
+            if (elem.createTextRange) {
+                var range = elem.createTextRange();
+                range.move('character', caretPos);
+                range.select();
+            }
+            else {
+                if (elem.selectionStart) {
+                    elem.focus();
+                    elem.setSelectionRange(caretPos, caretPos);
+                }
+                else
+                    elem.focus();
+            }
+        }
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        function OTPInput() {
+            const inputs = document.querySelectorAll('#otp > *[id]');
+            for (let i = 0; i < inputs.length; i++) { inputs[i].addEventListener('keydown', function (event) { if (event.key === "Backspace") { inputs[i].value = ''; if (i !== 0) inputs[i - 1].focus(); } else { if (i === inputs.length - 1 && inputs[i].value !== '') { return true; } else if (event.keyCode > 47 && event.keyCode < 58) { inputs[i].value = event.key; if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } else if (event.keyCode > 64 && event.keyCode < 91) { inputs[i].value = String.fromCharCode(event.keyCode); if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } } }); }
+        } OTPInput();
+
+
+    });
+
+</script>

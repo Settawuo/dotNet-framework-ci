@@ -1,0 +1,231 @@
+﻿@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.Models;
+@{
+    ViewBag.Title = "AirnetWirelessCoveragddde";
+}
+<style>    
+   .table > thead > tr > th,
+   .table > tbody > tr > th, 
+   .table > tfoot > tr > th, 
+   .table > thead > tr > td, 
+   .table > tbody > tr > td, 
+   .table > tfoot > tr > td {
+        border:none;
+    }
+    .col-md-10 {
+        width:84%;
+        }
+
+    @@media
+     only screen and (max-width: 875px), 
+     only screen and (max-width: 320px),
+     only screen and (max-width: 360px),
+     only screen and (max-width: 768px),
+     only screen and (max-width: 800px),
+     only screen and (max-width: 980px){
+        .col-md-10 {
+        width:98.5%;
+        }
+       
+
+    }
+   
+</style>
+<script>
+    function onGridDataBound() {
+        var total = $("#GridMyReport").data("kendoGrid").dataSource.total();        
+        $("#totalMyReport").text(total);
+    }
+
+    function customCommand() {
+        alert('Export to Excel');
+     }
+
+    function showDetails(e) {
+        e.preventDefault();
+     
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        alert(dataItem.REPORT_ID);
+
+    }
+</script>
+<div class="i-gap-top-1 i-gap-left-1  i-gap-right-1 " >
+    <div class="row" >
+
+
+        <div class="col-md-5 panel panel-default i-gap-top-1 i-gap-left-1" style="height:200px;">
+       
+             <table class="table">
+            <tr>
+                <td> @(Html.Kendo().DropDownList()
+                      .Name("CCx")
+                      .DataTextField("Text")
+                      .DataValueField("Value")
+                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                      .BindTo(new List<SelectListItem>() {
+                          new SelectListItem() {
+                              Text = "ภาค",
+                              Value = ""
+                          },
+                          new SelectListItem() {
+                              Text = "ภาคกลาง",
+                              Value = "1"
+                          },
+                          new SelectListItem() {
+                              Text = "ภาคเหนือ",
+                              Value = "2"
+                          },
+                          new SelectListItem() {
+                              Text = "ภาคใต้",
+                              Value = "2"
+                          }
+                      })
+                )</td>
+                <td>@(Html.Kendo().DropDownList()
+                      .Name("CC1x")
+                      .DataTextField("Text")
+                      .DataValueField("Value")
+                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                      .BindTo(new List<SelectListItem>() {
+                           new SelectListItem() {
+                              Text = "จังหวัด",
+                              Value = ""
+                          },
+                          new SelectListItem() {
+                              Text = "กรุงเทพ",
+                              Value = "1"
+                          }
+                       
+                      })
+                )</td>
+
+            </tr>
+            <tr>
+                <td>@(Html.Kendo().DropDownList()
+                      .Name("CC3x")
+                      .DataTextField("Text")
+                      .DataValueField("Value")
+                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                      .BindTo(new List<SelectListItem>() {
+                          new SelectListItem() {
+                              Text = "อำเภอ",
+                              Value = ""
+                          },
+                          new SelectListItem() {
+                              Text = "พระขโนง",
+                              Value = "1"
+                          }
+                      })
+                )</td>
+                <td> @(Html.Kendo().DropDownList()
+                      .Name("CC4x")
+                      .DataTextField("Text")
+                      .DataValueField("Value")
+                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                      .BindTo(new List<SelectListItem>() {
+                          new SelectListItem() {
+                              Text = "สถานะ",
+                              Value = ""
+                          },
+                          new SelectListItem() {
+                              Text = "ภาคกลาง",
+                              Value = "1"
+                          }
+                      })
+                )</td>
+
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="SendTo1" class="k-textbox form-control" />
+
+                </td>
+                <td>@(Html.Kendo().DropDownList()
+                      .Name("CC5x")
+                      .DataTextField("Text")
+                      .DataValueField("Value")
+                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                      .BindTo(new List<SelectListItem>() {
+                          new SelectListItem() {
+                              Text = "Port Utilization < 30%",
+                              Value = ""
+                          },
+                          new SelectListItem() {
+                              Text = "Port Utilization < 20%",
+                              Value = "1"
+                          },
+                          new SelectListItem() {
+                              Text = "Port Utilization < 10%",
+                              Value = "2"
+                          }
+                      })
+                )</td>
+
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="SendTo2" class="k-textbox form-control" />
+
+                </td>
+                <td>
+                   <a class="btn btn-info i-width-sm" onclick="Reset();"><i class="fa fa-undo fa-lg"></i>&nbsp;Reset&nbsp;</a>
+                   <a class="btn btn-primary i-width-sm" onclick="Save();"><i class="fa fa-search fa-lg"></i>&nbsp;Search&nbsp;</a>
+                </td>
+            </tr>
+           
+        </table>
+
+        </div>
+
+        <div class="col-md-5 panel panel-default i-gap-top-1 i-gap-left-1" style="height:200px;">
+        <table class="table">
+            <tr>
+               
+                <td>Total Coverage : 160</td>
+            </tr>
+             <tr>
+                <td>Total AP : 1536</td>
+              
+            </tr>
+             <tr>
+                <td> <a class="btn btn-primary i-width-sm" onclick="Save();"><i class="fa fa-search fa-lg"></i>&nbsp;New Covererage&nbsp;</a></td>
+                <td> <a class="btn btn-primary i-width-sm" onclick="Save();"><i class="fa fa-search fa-lg"></i>&nbsp;New Covererage&nbsp;</a></td>
+            </tr>
+          
+           
+
+        </table>
+    </div>
+
+        <div class="col-md-10 panel panel-default i-gap-left-1">
+            
+            <div class="i-gap-top-1" style="padding-right:-89px;">
+             @(Html.Kendo().Grid<FBB_RPT_LOG>()
+        .Name("GridMyReportxx")        
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.CREATED_DATE).Title("Created Date").Format("{0:dd/MM/yyyy HH:mm:ss}");
+            columns.Bound(p => p.CREATED_BY).Title("Created By");
+            columns.Bound(p => p.REPORT_NAME).Title("Report Name");
+            columns.Bound(p => p.REPORT_STATUS).Title("Status");
+            columns.Command(command => command.Custom("Edit").Click("showDetails"));
+        })
+            .ToolBar(toolBar => toolBar.Template("<a class='k-button k-button-icontext' onclick='customCommand()' href='#'></span>Export to Excel</a>"))
+            .Pageable()
+            .Sortable()
+            .Scrollable()
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(10)
+                .Model(model => model.Id(p => p.REPORT_ID))
+                .Read(read => read.Action("GetMyReport", "Report"))  
+                           
+             )
+            .Events(e => e.DataBound("onGridDataBound"))
+    )
+                </div>
+        </div>
+        
+</div>
+
+    </div>

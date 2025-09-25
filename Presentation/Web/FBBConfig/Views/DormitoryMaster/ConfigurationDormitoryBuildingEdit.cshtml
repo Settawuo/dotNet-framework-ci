@@ -1,0 +1,461 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.DormitoryMasterModel
+@using WBBEntity.PanelModels;
+@{
+ 
+
+    string ADMIN001_H_01 = "";
+    string L_BUILDING_TH = "";
+    string L_BUILDING_EN = "";
+    string L_OTY_ROOM = "";
+
+    string B_ADD_NEW = "";
+    string B_SAVE = "";
+    string B_EDIT = "";
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        ADMIN001_H_01 = configscreen.Any(f => f.Name == "H_DORMITORY_SUB_MENU_1_5") ? configscreen.FirstOrDefault(f => f.Name == "H_DORMITORY_SUB_MENU_1_5").LovValue2 : "";
+        L_BUILDING_TH = configscreen.Any(f => f.Name == "G_BUILDING_NAME") ? configscreen.First(f => f.Name == "G_BUILDING_NAME").LovValue1 : "";
+        L_BUILDING_EN = configscreen.Any(f => f.Name == "G_BUILDING_NAME") ? configscreen.First(f => f.Name == "G_BUILDING_NAME").LovValue2 : "";
+        L_OTY_ROOM = configscreen.Any(f => f.Name == "G_ROOM_AMOUNT") ? configscreen.First(f => f.Name == "G_ROOM_AMOUNT").LovValue2 : "";
+        B_ADD_NEW = configscreen.Any(f => f.Name == "B_ADD_NEW_BUILDING") ? configscreen.First(f => f.Name == "B_ADD_NEW_BUILDING").LovValue2 : "";
+        B_EDIT = configscreen.Any(f => f.Name == "B_EDIT") ? configscreen.First(f => f.Name == "B_EDIT").LovValue2 : "";
+        B_SAVE = configscreen.Any(f => f.Name == "B_SAVE") ? configscreen.FirstOrDefault(f => f.Name == "B_SAVE").LovValue2 : "";
+    }
+
+    string INPUT_BUILDING_TH = "";
+    string INPUT_BUILDING_EN = "";
+    string INPUT_ROOM_OF_NO = "";
+    string LENGTH_BUILDING_TH = "";
+    string LENGTH_BUILDING_EN = "";
+    string LENGTH_ROOM_OF_NO = "";
+
+
+    if (ViewBag.DormConstant != null)
+    {
+        var DormConstant = (List<FbbConstantModel>)ViewBag.DormConstant;
+
+        INPUT_BUILDING_TH = DormConstant.Any(f => f.Field == "V_BUILDING_NAME_TH") ? DormConstant.First(f => f.Field == "V_BUILDING_NAME_TH").Validation : "";
+        INPUT_BUILDING_EN = DormConstant.Any(f => f.Field == "V_BUILDING_NAME_EN") ? DormConstant.First(f => f.Field == "V_BUILDING_NAME_EN").Validation : "";
+        INPUT_ROOM_OF_NO = DormConstant.Any(f => f.Field == "V_ROOM_AMOUNT") ? DormConstant.First(f => f.Field == "V_ROOM_AMOUNT").Validation : "";
+        LENGTH_BUILDING_TH = DormConstant.Any(f => f.Field == "INPUT_BUILDING_NAME") ? DormConstant.First(f => f.Field == "INPUT_BUILDING_NAME").Validation : "";
+        LENGTH_BUILDING_EN = DormConstant.Any(f => f.Field == "INPUT_BUILDING_NAME") ? DormConstant.First(f => f.Field == "INPUT_BUILDING_NAME").Validation : "";
+        LENGTH_ROOM_OF_NO = DormConstant.Any(f => f.Field == "INPUT_ROOM_AMOUNT") ? DormConstant.First(f => f.Field == "INPUT_ROOM_AMOUNT").Validation : "";
+   
+    
+    }
+}
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        @Html.HiddenFor(t=> t.dormitory_id,@Model.dormitory_id)
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i style="font-size: large;">&nbsp;@ADMIN001_H_01</i>
+                </h3>
+            </div>@*endpanel heading*@
+            <div id="CoverageInformation" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <div class=" panel panel-default">
+                            <div id="panelbodyCoverageIformation" class="panel-body">
+                                <div>                                   
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>รายละเอียดของอาคาร/ตึก</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 i-gap-top-1">
+                                        <div class=" panel panel-default">
+                                            <div id="panelbody2" class="panel-body">
+                                                <div class="col-sm-12 col-md-12 ">
+                                                    <div id="gridresult" class="row">
+                                                        @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.DormitoryBuilding>()
+                                                            .Name("gridBuilding")
+                                                            .Columns(columns =>
+                                                                {
+                                                                    columns.Bound(p => p.indexBuilding).Title("Index").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                                                    columns.Bound(p => p.dormitory_no_th_old).Title("").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                                                    columns.Bound(p => p.mode).Title("Mode").HtmlAttributes(new { style = "text-align:left;" }).Hidden();
+                                                                    columns.Bound(p => p.dormitory_no_th).Title(@L_BUILDING_TH).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                                                    columns.Bound(p => p.dormitory_no_en).Title(@L_BUILDING_EN).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                                                    columns.Bound(p => p.number_of_room).Title(@L_OTY_ROOM).HtmlAttributes(new { style = "text-align:right;" }).Width(200);
+                                                                   // columns.Bound(p => p.state).Title("On Service").HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                                                                    columns.Command(command =>
+                                                                    {
+                                                                        command.Custom("Edit").Click("editBuilding").Text("<i class='fa fa-pencil-square-o fa-lg'></i>&nbsp; " + @B_EDIT);
+                                                                    }).Width(100);
+                                                                })
+                                                            .ToolBar
+                                                            (
+                                                                toolbar => toolbar.Template
+                                                                (
+                                                                    "<div class='pull-right'>" + "<a onclick='addNewBuilding()' id='addnew' class='btn btn-default'><i class='fa fa-plus-circle fa-lg'></i>&nbsp;" +@B_ADD_NEW + "</a>&nbsp;</div>"
+                                                                )
+                                                            )
+                                                            .Pageable
+                                                            (
+                                                                pageable => pageable
+                                                                    .PageSizes(false)
+                                                                    .Numeric(true)
+                                                            )
+                                                            .Scrollable
+                                                            (
+                                                                scrollable => scrollable.Height("auto")
+                                                            )
+                                                            .AutoBind(true)
+                                                            .DataSource
+                                                            (   
+                                                                dataSource => dataSource
+                                                                .Ajax()
+                                                                .PageSize(10)
+                                                                .Read(read => read.Action("BuildingData", "DormitoryMaster"))
+                                                            )
+                                                            .Events(e => e.DataBound("onGridDataBound"))
+                                                        )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>@*end apconfig*@
+                                <div class="wrap01 col-sm-12 col-md-12" style="margin-top: -10px">
+                                    <ul id="error" class="i-red"></ul>
+                                </div>
+                                <div id="panelbody4" class="panel-body">
+                                    <div id="row8" class="row">
+                                        <div class="col-sm-12 col-md-12 i-text-align-center">
+                                            <a class="btn btn-default" onclick="_SaveDormitory();"><i class="fa fa-floppy-o fa-lg"></i>&nbsp;&nbsp;@B_SAVE</a>&nbsp;&nbsp;
+                                            <a class="btn btn-default" onclick="_Back();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;Back</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>@*end panel*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+@(Html.Kendo().Window()
+    .Name("AddBuildingPopup")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title("Add Building")
+    .Width(350)
+    .Draggable()
+    .Visible(false)
+    .Modal(true)
+    .Events(events => events .Close("onCloseAddBuilding"))
+    .Content(@<text>
+<div class="row i-no-over" id="AddBuildingPopupPanel">
+     @Html.Hidden("Index")   
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@L_BUILDING_TH <span id="requiredfor-BuildingNameTH"></span></label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="BuildingNameTH" class="dis k-textbox form-control" maxlength="@LENGTH_BUILDING_TH" />
+            </div>
+              <input type="hidden" id="BuildingNameTHOld"/>
+            <div class="i-fg-data-entry-validation" id="validatefor-BuildingNameTH"></div>            
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@L_BUILDING_EN <span id="requiredfor-BuildingNameEN"></span></label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="BuildingNameEN" class="dis k-textbox form-control" maxlength="@LENGTH_BUILDING_EN" /> 
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-BuildingNameEN"></div>           
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>@L_OTY_ROOM <span id="requiredfor-NumberOfRoom"></span></label>
+            <div class="i-fg-data-entry">
+               <input type="text" id="NumberOfRoom" class="dis k-textbox form-control" maxlength="@LENGTH_ROOM_OF_NO" /> 
+            </div>
+            <div class="i-fg-data-entry-validation" id="validatefor-NumberOfRoom"></div>            
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-default i-gap-top-1 pull-right" onclick="_SaveBuilding('Add')" id="btnAdd"><i class="fa fa-check-circle fa-lg"></i>&nbsp; Add</button>
+        <button class="btn btn-default i-gap-top-1 i-hidden pull-right" onclick="_SaveBuilding('Edit')" id="btnEdit"><i class="fa fa-check-circle fa-lg"></i>&nbsp;@B_SAVE</button>
+    </div>
+
+</div>
+</text>)
+)
+
+<script>
+
+    function onGridDataBound() {
+        Loading(0);
+    }
+
+    function addNewBuilding() {
+
+        var validateModel = [];
+
+        validateModel.push({ id: "BuildingNameTH" });
+        validateModel.push({ id: "BuildingNameEN" });
+        validateModel.push({ id: "NumberOfRoom" });
+        SetRequired(validateModel);
+
+        $("#btnAdd").show();
+        $("#btnEdit").hide();
+
+        $("#OnServicePanel").hide();
+
+        $("#AddBuildingPopup").prev().find(".k-window-title").text("Add Building");
+        $("#AddBuildingPopup").data("kendoWindow").center();
+        $("#AddBuildingPopup").data("kendoWindow").open();
+
+    }
+
+    function editBuilding(e) {
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        if (dataItem.mode != "N") {
+            $("#OnServicePanel").show();
+        }
+        $("#BuildingNameTH").val(dataItem.dormitory_no_th);
+        $("#BuildingNameTHOld").val(dataItem.dormitory_no_th_old);
+        $("#BuildingNameEN").val(dataItem.dormitory_no_en);
+        $("#NumberOfRoom").val(dataItem.number_of_room);
+        $("#Index").val(dataItem.indexBuilding);
+        var validateModel = [];
+
+        validateModel.push({ id: "BuildingNameTH" });
+        validateModel.push({ id: "BuildingNameEN" });
+        validateModel.push({ id: "NumberOfRoom" });
+        SetRequired(validateModel);
+
+        $("#btnAdd").hide();
+        $("#btnEdit").show();
+
+        $("#AddBuildingPopup").prev().find(".k-window-title").text("Edit Building");
+        $("#AddBuildingPopup").data("kendoWindow").center();
+        $("#AddBuildingPopup").data("kendoWindow").open();
+    }
+
+    function onCloseAddBuilding() {
+        
+        $("#BuildingNameTH").val("");
+        $("#BuildingNameEN").val("");
+        $("#NumberOfRoom").val("");
+     
+        ClearTextValidation("AddBuildingPopupPanel");
+    }
+
+    function _SaveBuilding(status)
+    {
+        var chk = ValidationProcessingRequired("AddBuildingPopupPanel");
+        if (chk) {
+            if (status == "Add") {
+                $.ajax({
+                    type: "POST",
+                    url: "/DormitoryMaster/AddBuildingData",
+                    data: {
+                        "DormitoryID": $("#dormitory_id").val()
+                        ,"BuildingNameTH": $("#BuildingNameTH").val()
+                        , "BuildingNameEN": $("#BuildingNameEN").val()
+                        , "NumberOfRoom": $("#NumberOfRoom").val()
+                    },
+                    dataType: "text",
+                    async: false,
+                    success: function (response) {
+                        
+                        if (response == "Success") {
+                            showFeedback("success", " Complete","Add Building");
+                            $("#AddBuildingPopup").data("kendoWindow").close();
+                        }
+                        else {
+                            $("#AddBuildingPopup").data("kendoWindow").close();
+                            showFeedback("error", "Data Is Duplicate", "Add Building");
+                        }
+                    },
+                    failure: function (err) {
+                        showFeedback("failure", "Save Fail")
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/DormitoryMaster/EditBuildingData",
+                    data: {
+                        "DormitoryID": $("#dormitory_id").val()
+                        ,"BuildingNameTH": $("#BuildingNameTH").val()
+                        , "BuildingNameOld": $("#BuildingNameTHOld").val()
+                        , "BuildingNameEN": $("#BuildingNameEN").val()
+                        , "NumberOfRoom": $("#NumberOfRoom").val()
+                        , "Index": $("#Index").val()
+                    },
+                    dataType: "text",
+                    async: false,
+                    success: function (response) {
+                        if (response == "Success") {
+                            showFeedback("success", " Complete","Add Building");
+                            $("#AddBuildingPopup").data("kendoWindow").close();
+                        }
+                        else {
+                            $("#AddBuildingPopup").data("kendoWindow").close();
+                            showFeedback("error", "Data Is Duplicate", "Add Building");
+                        }
+                    },
+                    failure: function (err) {
+                        $("#AddBuildingPopup").data("kendoWindow").close();
+                        showFeedback("error", "Data Is Duplicate", "Add Building");
+                    }
+                });
+            }
+            var grid = $("#gridBuilding").data("kendoGrid");
+            grid.dataSource.page(1);
+        }
+    }
+
+    function _SaveDormitory() {
+
+        var chk = ValidationProcessingRequired("panelbodyCoverageIformation");
+        if (chk) {
+            Loading();
+            $.ajax({
+                type: "POST",
+                url: "/DormitoryMaster/SaveDormBuildingMaster",
+                data: {"DormitoryID": $("#dormitory_id").val()
+                },
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    Loading(0);
+                    showFeedback("success", "Save Success", "SaveDormitory Master");
+                    _Back();
+                },
+                failure: function (err) {
+                    Loading(0);
+                    showFeedback("error", "Save Fail", "SaveDormitory Master");
+                }
+
+            });
+            _Clear();
+        }
+    }
+
+    function ValidationIcon() {
+        return "<i class='fa fa-warning i-red'></i> ";
+    }
+
+    function ValidationProcessingRequired(panel) {
+        var chk = true;
+        $("#" + panel + " .i-required").each(function (index, e) {
+            var field = e.id.split('requiredfor-')[1];
+            var value = $("#" + field).val();
+            if ($.trim(value) == "") {
+                $("#validatefor-" + field).html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + field).html("");
+            }
+        });
+
+        if (chk) {
+            $("#" + panel + " .i-validate-length").each(function (index, e) {
+                var field = e.id.split('validatefor-')[1];
+                var value = $("#" + field).val();
+                var length = parseInt(e.className.split('i-length-')[1]);
+                var val_length = 0;
+                if (value != "") {
+                    val_length = value.length;
+                }
+
+                if (val_length > length) {
+                    $("#" + e.id).html(ValidationIcon() + "This maxlength field is " + length + ".");
+                    chk = false;
+                }
+                else {
+                    $("#" + e.id).html("");
+                }
+            });
+        }
+
+        return chk;
+    }
+
+    function SetRequired(validateModel) {
+        var i = 0;
+        for (i = 0; i < validateModel.length; i++) {
+            var id = validateModel[i].id;
+            $("#requiredfor-" + id).addClass("label label-danger i-gap-left-md i-required");
+            $("#requiredfor-" + id).text("Required");
+        }
+    }
+
+    function SetValidateLength(validateLengthModel) {
+        var i = 0;
+        for (i = 0; i < validateLengthModel.length; i++) {
+            var id = validateLengthModel[i].id;
+            var length = validateLengthModel[i].length;
+            if (length !== undefined) {
+                $("#validatefor-" + id).addClass("i-validate-length i-length-" + length);
+            }
+        }
+    }
+
+    function RemoveRequired(panel) {
+        $("#" + panel + " span[id*=requiredfor-]").removeClass("label label-danger i-gap-left-md i-required");
+        $("#" + panel + " span[id*=requiredfor-]").text("");
+        ClearTextValidation(panel);
+    }
+
+    function ClearTextValidation(panel) {
+        $("#" + panel + " .i-required").each(function (index, e) {
+            var field = e.id.split('requiredfor-')[1];
+            $("#validatefor-" + field).text("");
+        });
+    }
+
+    function RemoveValidation(validateModel) {
+        var i = 0;
+        for (i = 0; i < validateModel.length; i++) {
+            var id = validateModel[i].id;
+            $("#validatefor-" + id).html("");
+        }
+    }
+
+    function CheckKeyUps(id, RexStr) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        var filter = new RegExp(RexStr);
+        for (var i = 0; i < strKey.length; i++) {
+            if (filter.test(strKey.substr(i, 1))) {
+                strBuilder += strKey.substr(i, 1);
+            }
+        }
+        $("#" + id).val(strBuilder);
+
+    }
+
+    $("#BuildingNameTH").keyup(function () {
+        CheckKeyUps("BuildingNameTH", '@INPUT_BUILDING_TH');
+    });
+
+    $("#BuildingNameEN").keyup(function () {
+        CheckKeyUps("BuildingNameEN", '@INPUT_BUILDING_EN');
+    });
+
+    $("#NumberOfRoom").keyup(function () {
+        CheckKeyUps("NumberOfRoom", '@INPUT_ROOM_OF_NO');
+    });
+
+    function _Back() {
+        Loading();
+        var url = '@Url.Action("ConfigurationDormitoryDetail", "DormitoryMaster")';
+        url = url + "?DormitoryID=" + $('#dormitory_id').val();
+        window.location.href = url;
+    }
+</script>

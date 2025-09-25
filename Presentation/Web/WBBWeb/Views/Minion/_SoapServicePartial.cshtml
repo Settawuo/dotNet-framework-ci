@@ -1,0 +1,270 @@
+﻿@model WBBContract.Minions.MinionGetMinionServiceQuery
+@{
+    ViewBag.Title = "RequestSoap";
+}
+@using (Html.BeginForm("RequestSoap", "Minion", FormMethod.Post, new { @id = "frmRequestSoap" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+   
+    
+    <div id="divMain" class="col-md-12 well">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="">Server :</label>
+                <label class="radio-inline">
+                    <input type="radio" name="rdoServerType" id="rdoDev" value="UrlEnpointDev" checked="checked">
+                    DEV
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="rdoServerType" id="rdoStg" value="UrlEnpointStg">
+                    STG
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="rdoServerType" id="rdoPrd" value="UrlEnpointPrd">
+                    PRD
+                </label>
+                @Html.Hidden("Server", "DEV", new { @id = "hdnServer" })
+                @Html.Hidden("ServicId", "0", new { @id = "hdnServicId" })
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">URL : </div>
+                    @Html.TextBox("UrlEnpoint", null, new { @class = "form-control" })
+                    @Html.Hidden("UrlEnpointDev", "", new { @id = "UrlEnpointDev" })
+                    @Html.Hidden("UrlEnpointStg", "", new { @id = "UrlEnpointStg" })
+                    @Html.Hidden("UrlEnpointPrd", "", new { @id = "UrlEnpointPrd" })
+
+                    <div id="btnOption" class="btn input-group-addon"><i class="fa fa-cog" aria-hidden="true"></i></div>
+                </div>
+            </div>
+            <div class="form-inline ajaxOption hidden">
+                <div class="form-group">
+                    <label for="">Method :</label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rdoAjaxType" id="rdoGet" value="GET">
+                        GET
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rdoAjaxType" id="rdoPost" value="POST" checked="checked">
+                        POST
+                    </label>
+                    @Html.Hidden("Method", "POST", new { @id = "hdnMethod" })
+                </div>
+
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">SoapHeader : </span>
+                            <input type="text" class="form-control" id="newsoapHeader" placeholder="SoapHeader">
+                            @Html.TextBox("SoapHeader", null, new { @class = "form-control hidden" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">ContentType : </span>
+                            <input type="text" class="form-control" id="newcontent" placeholder="ContentType">
+                            @Html.TextBox("ContentType", null, new { @class = "form-control hidden" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">Charset : </span>
+                            <input type="text" class="form-control" id="newcharset" placeholder="Charset">
+                            @Html.TextBox("Charset", null, new { @class = "form-control hidden" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <p class="clearfix"></p>
+
+        @*        <div class="col-md-12">
+            <label class="radio-inline">
+                <input type="radio" name="rdoResponseService" id="rdoRequest2" value="raw-xml" checked="checked">
+                raw-xml
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="rdoResponseService" id="rdoRequest3" value="soap">
+                soap
+            </label>
+            @Html.Hidden("ContentType", "raw-xml", new { @id="hdnContentType" })
+        </div>*@
+
+        <div class="row">
+            <div class="col-md-12">
+                <textarea class="form-control txtRequestDataExternalService" id="xmlString" rows="20" spellcheck="false"></textarea>
+                @Html.TextArea("RequestData", null, new { @class = "form-control hidden", rows = "20" })
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary" data-toggle="modal">Send</button>
+                <button type="reset" class="btn btn-default" data-toggle="modal">Reset</button>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div id="dvResponse" class="row hidden dvResponseExternalService">
+            <div class=""><strong>Response</strong> </div>
+            <div class="foo">
+                <div class="col-md-12">
+                    <label class="radio-inline">
+                        <input type="radio" name="rdoResponse" id="rdoResponseXml" value="xml" checked="checked">
+                        Xml
+                    </label>
+                    @*<label class="radio-inline">
+                        <input type="radio" name="rdoResponse" id="rdoResponseJson" value="json">
+                        Json
+                    </label>*@
+                </div>
+
+                <div class="col-md-12" id="response-xml">
+                    <div class="form-group">
+                        @*<pre class="prettyprint" id="quine"></pre>*@
+                        <pre contenteditable="true" class="prettyprint" spellcheck="false"></pre>
+                        @*<textarea class="form-control" readonly="readonly" rows="30"></textarea>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        function htmlEscape(s) {
+            return s
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;');
+        }
+
+        $('button[type=reset]').click(function () {
+            $('#frmRequestSoap #dvResponse').addClass('hidden');
+            $('#frmRequestSoap #response-xml pre').html('');
+            $('#frmRequestSoap #response-json pre').html('');
+
+            $('#frmRequestSoap #rdoResponseXml').prop('checked', true);
+            $('#frmRequestSoap #response-xml').removeClass('hidden');
+            $('#frmRequestSoap #response-json').addClass('hidden');
+
+            if ($('#frmRequestSoap .ajaxOption.hidden').length == 0) {
+                $('#frmRequestSoap .ajaxOption').addClass('hidden');
+            }
+            $('#frmRequestSoap #rdoPost').prop('checked', true);
+            $('#frmRequestSoap #ddlAjaxType').val("text/xml");
+            $('#frmRequestSoap #ddlAjaxType').val("text/xml");
+        });
+
+        $('input[type=radio][name=rdoResponseService]').change(function () {
+            console.log('this.value ', this.value);
+            if (this.value == 'raw-xml') {
+                $('#hdnContentType').val('text/xml');
+            }
+            else if (this.value == 'soap') {
+
+                $('#hdnContentType').val('soap');
+            }
+        });
+
+        $('input[type=radio][name=rdoAjaxType]').change(function () {
+            console.log('this.value ', this.value);
+            if (this.value == 'POST') {
+                $('#hdnMethod').val('POST');
+            }
+            else if (this.value == 'GET') {
+
+                $('#hdnMethod').val('GET');
+            }
+        });
+
+        $('input[type=radio][name=rdoServerType]').change(function () {
+            console.log('this.value ', this.value);
+
+            $('#hdnServer').val(this.value);
+
+            $('#frmRequestSoap #UrlEnpoint').val($('#' + this.value.toString()).val());
+            
+            //$.ajax({
+            //    type: "GET",
+            //    data: { "serviceId": $('#hdnServicId').val(), "environment": this.value },
+            //    url: '/Minion/GetRequestXml',
+            //    success: function (data) {
+            //        $('#frmRequestSoap #UrlEnpoint').val(data.url);
+            //    }
+            //});
+
+        });
+
+        $('#frmRequestSoap').submit(function (e) {
+            $('#ProgressLoading').modal('show');
+            console.log('submit');
+            $('#frmRequestSoap #ContentType').val(htmlEscape($('#frmRequestSoap #newcontent').val()));
+            $('#frmRequestSoap #SoapHeader').val(htmlEscape($('#frmRequestSoap #newsoapHeader').val()));
+            $('#frmRequestSoap #Charset').val(htmlEscape($('#frmRequestSoap #newcharset').val()));
+            $('#frmRequestSoap #RequestData').val(htmlEscape($('#frmRequestSoap #xmlString').val()));
+
+            $('#frmRequestSoap #response-xml pre').html('');
+
+            var $this = $(this);
+            var frmValues = $this.serialize();
+            console.log('ajax');
+            $.ajax({
+                url: '@Url.Action("GetExteranlService")',
+                type: 'POST',
+                dataType: 'json',
+                data: frmValues,
+                success: function (result) {
+                    console.log('result => ' + result);
+                    if (!!result && result.query.StatusCode == "0") {
+                        console.log('true');
+                        $('#response-xml pre').text('<?xml version="1.0" encoding="UTF-8"?>' + result.query.ResponseData);
+
+                        //var jsonObj = JSON.parse(result.rawjson);
+                        //var jsonPretty = JSON.stringify(jsonObj, null, '\t');
+
+                        //$('#response-json pre').text(jsonPretty);
+
+                    } else {
+                        console.log('false');
+                        $('#response-xml pre').text(result.query.StatusMessage);
+                    }
+
+                    $('#ProgressLoading').modal('hide');
+                    $('#frmRequestSoap #dvResponse').removeClass('hidden');
+
+                },
+                error: function (jqXhr) {
+                    console.log('error');
+                    $('#frmRequestSoap #response-xml pre').text(jqXhr.responseText);
+
+                    $('#ProgressLoading').modal('hide');
+                    $('#frmRequestSoap #dvResponse').removeClass('hidden');
+
+                }
+            });
+
+            return false;
+        });
+
+        $('#frmRequestSoap #btnOption').click(function () {
+            if ($('#frmRequestSoap .ajaxOption.hidden').length > 0) {
+                $('#frmRequestSoap .ajaxOption').removeClass('hidden');
+            } else {
+                $('#frmRequestSoap .ajaxOption').addClass('hidden');
+            }
+        });
+
+    });
+
+</script>

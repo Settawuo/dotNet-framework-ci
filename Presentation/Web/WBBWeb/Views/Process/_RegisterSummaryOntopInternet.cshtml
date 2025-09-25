@@ -1,0 +1,894 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@using WBBWeb.Extension;
+@{
+    string language = Session[WebConstants.SessionKeys.CurrentUICulture] != null ? Session[WebConstants.SessionKeys.CurrentUICulture].ToString() : "";
+
+    string hFBB004 = "";
+    string hFBB003 = "";
+    string lYOUR_PACK = "";
+
+    string lONTOP_PACK = "";
+    string lRESIDENTIAL = "";
+    string lGOVERNMENT = "";
+    string lNAME = "";
+    string lCARD_TYPE = "";
+    string lCARD_NO = "";
+    string lGENDER = "";
+    string lBIRTHDAY = "";
+    string lCONTACT_PHONE = "";
+    string lEMAIL = "";
+
+    string lGOVERNMENT_NAME = "";
+    string lCONTACT_PERSON = "";
+
+    string lVAT_DETAIL = "";
+
+    string bBACK = "";
+    string bNEXT = "";
+    string bSubmit = "";
+
+    string L_SUMM_DETAIL9 = "";
+    string L_SUMM_DETAIL11 = "";
+    string L_SUMM_DETAIL12 = "";
+    string L_BAHT = "";
+    string vas_flag = "";
+
+    var topUp = "";
+
+    var L_CAPTCHA = "";
+    var L_CAPTCHA_ERR = "";
+
+    if (null != ViewBag.TopUp)
+    {
+        topUp = ViewBag.TopUp;
+    }
+
+    if (null != ViewBag.Vas)
+    {
+        vas_flag = ViewBag.Vas;
+        if (vas_flag == "") { vas_flag = "0"; }
+    }
+
+    if (ViewBag.LabelFBBORV24 != null)
+    {
+        var LabelFBBORV24 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV24;
+        hFBB003 = LabelFBBORV24.Any(c => c.Name == "H_FBB003_INTERNET") ? LabelFBBORV24.First(c => c.Name == "H_FBB003_INTERNET").DisplayValue : "";
+        hFBB004 = LabelFBBORV24.Any(c => c.Name == "H_FBB004_INTERNET") ? LabelFBBORV24.First(c => c.Name == "H_FBB004_INTERNET").DisplayValue : "";
+        lYOUR_PACK = LabelFBBORV24.Any(c => c.Name == "L_YOUR_PACK_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_YOUR_PACK_INTERNET").DisplayValue : "";
+        lONTOP_PACK = LabelFBBORV24.Any(c => c.Name == "L_ONTOP_PACK_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_ONTOP_PACK_INTERNET").DisplayValue : "";
+        lRESIDENTIAL = LabelFBBORV24.Any(c => c.Name == "L_RESIDENTIAL_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_RESIDENTIAL_INTERNET").DisplayValue : "";
+        lGOVERNMENT = LabelFBBORV24.Any(c => c.Name == "L_GOVERNMENT_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_GOVERNMENT_INTERNET").DisplayValue : "";
+        lNAME = LabelFBBORV24.Any(c => c.Name == "L_NAME_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_NAME_INTERNET").DisplayValue : "";
+        lCARD_TYPE = LabelFBBORV24.Any(c => c.Name == "L_CARD_TYPE_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_CARD_TYPE_INTERNET").DisplayValue : "";
+        lCARD_NO = LabelFBBORV24.Any(c => c.Name == "L_CARD_NO_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_CARD_NO_INTERNET").DisplayValue.Substring(1) : "";
+
+        lGENDER = LabelFBBORV24.Any(c => c.Name == "L_GENDER_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_GENDER_INTERNET").DisplayValue : "";
+        lBIRTHDAY = LabelFBBORV24.Any(c => c.Name == "L_BIRTHDAY_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_BIRTHDAY_INTERNET").DisplayValue.Substring(1) : "";
+
+        lBIRTHDAY = lBIRTHDAY.Replace("วว/ดด/ปปปป(พ.ศ.)", "");
+        lBIRTHDAY = lBIRTHDAY.Replace("dd/mm/yyyy", "");
+
+        lCONTACT_PHONE = LabelFBBORV24.Any(c => c.Name == "L_CONTACT_PHONE_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_CONTACT_PHONE_INTERNET").DisplayValue : "";
+        lEMAIL = LabelFBBORV24.Any(c => c.Name == "L_EMAIL_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_EMAIL_INTERNET").DisplayValue : "";
+        lGOVERNMENT_NAME = LabelFBBORV24.Any(c => c.Name == "L_GOVERNMENT_NAME_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_GOVERNMENT_NAME_INTERNET").DisplayValue : "";
+        lCONTACT_PERSON = LabelFBBORV24.Any(c => c.Name == "L_CONTACT_PERSON_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_CONTACT_PERSON_INTERNET").DisplayValue : "";
+
+        L_CAPTCHA = LabelFBBORV24.Any(c => c.Name == "L_CAPTCHA_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_CAPTCHA_INTERNET").DisplayValue : "";
+        L_CAPTCHA_ERR = LabelFBBORV24.Any(c => c.Name == "L_CAPTCHA_ERR_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_CAPTCHA_ERR_INTERNET").DisplayValue : "";
+
+        bBACK = LabelFBBORV24.Any(c => c.Name == "B_BACK_INTERNET") ? LabelFBBORV24.First(c => c.Name == "B_BACK_INTERNET").DisplayValue : "";
+        bNEXT = LabelFBBORV24.Any(c => c.Name == "B_NEXT_INTERNET") ? LabelFBBORV24.First(c => c.Name == "B_NEXT_INTERNET").DisplayValue : "";
+
+
+        L_SUMM_DETAIL9 = LabelFBBORV24.Any(c => c.Name == "L_SUMM_DETAIL9_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL9_INTERNET").DisplayValue : "";
+        L_SUMM_DETAIL11 = LabelFBBORV24.Any(c => c.Name == "L_SUMM_DETAIL11_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL11_INTERNET").DisplayValue : "";
+        L_SUMM_DETAIL12 = LabelFBBORV24.Any(c => c.Name == "L_SUMM_DETAIL12_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_SUMM_DETAIL12_INTERNET").DisplayValue : "";
+        L_BAHT = LabelFBBORV24.Any(c => c.Name == "L_BAHT_INTERNET") ? LabelFBBORV24.FirstOrDefault(c => c.Name == "L_BAHT_INTERNET").DisplayValue : "";
+        bSubmit = LabelFBBORV24.Any(c => c.Name == "B_SUBMIT_INTERNET") ? LabelFBBORV24.First(c => c.Name == "B_SUBMIT_INTERNET").DisplayValue : "";
+
+    }
+
+}
+
+<div id="page4" class="container addrounded" style="display: none;">
+    <h4 class="page-header tgreen">@hFBB004</h4>
+
+    <p class="clearfix"></p>
+
+    <div id="summarytab0">
+        <div class="col-xs-10 col-xs-offset-1 add-border-rounded-green">
+            <h4 class="tgreen"><span class="hightlight">@hFBB003</span></h4>
+            <div class="col-md-3 col-xs-12">@lRESIDENTIAL <p class="clearfix"></p></div>
+            <div class="col-md-3 col-xs-12"></div>
+            <div class="col-md-3 col-xs-6">@lNAME</div>
+            <div class="col-md-3 col-xs-6">
+                <span>
+                    <span id="txtfor_L_TITLE_NAME">-</span>
+                    <span id="txtfor_L_FIRST_NAME">-</span>
+                    <span id="txtfor_L_LAST_NAME">-</span>
+                </span>
+            </div>
+            <p class="clearfix" style="display: contents;"></p>
+
+            <div class="col-md-3 col-xs-6" style="display: none;">@lCARD_TYPE</div>
+            <div class="col-md-3 col-xs-6" style="display: none;"><span id="txtfor_ID_CARD_NAME">-</span></div>
+            <div class="col-md-3 col-xs-6" style="display: none;">@lCARD_NO</div>
+            <div class="col-md-3 col-xs-6" style="display: none;"><span id="txtfor_L_CARD_NO">-</span></div>
+            <p class="clearfix" style="display: none;"></p>
+
+            <div class="col-md-3 col-xs-6" style="display: none;">@lGENDER</div>
+            <div class="col-md-3 col-xs-6" style="display: none;"><span id="txtfor_L_GENDER">-</span></div>
+            <div class="col-md-3 col-xs-6" style="display: none;">@lBIRTHDAY</div>
+            <div class="col-md-3 col-xs-6" style="display: none;"><span id="txtfor_L_BIRTHDAY">0/0/</span></div>
+            <p class="clearfix" style="display: none;"></p>
+
+            <div class="col-md-3 col-xs-6">@lCONTACT_PHONE</div>
+            <div class="col-md-3 col-xs-6"><span id="txtfor_L_HOME_PHONE">-</span></div>
+            <div class="col-md-3 col-xs-6">@lEMAIL</div>
+            <div class="col-md-3 col-xs-6">
+                <span id="txtfor_L_EMAIL">-</span>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="summarytab1" @*style="display: none;"*@>
+        <div class="col-xs-10 col-xs-offset-1 add-border-rounded-green">
+            <h4 class="tgreen"><span class="hightlight">@hFBB003</span></h4>
+            <div class="col-md-3 col-xs-12">@lGOVERNMENT <p class="clearfix"></p></div>
+            <div class="col-md-3 col-xs-12"></div>
+            <div class="col-md-3 col-xs-6">@lGOVERNMENT_NAME</div>
+            <div class="col-md-3 col-xs-6">
+                <span id="txtfor_L_GOVERNMENT_NAME">-</span>
+            </div>
+            <p class="clearfix"></p>
+
+            <div class="col-md-3 col-xs-6">@lCARD_TYPE</div>
+            <div class="col-md-3 col-xs-6"><span id="txtfor_L_CARD_TYPE2">-</span></div>
+            <div class="col-md-3 col-xs-6">@lCARD_NO</div>
+            <div class="col-md-3 col-xs-6"><span id="txtfor_L_CARD_NO2">-</span></div>
+            <p class="clearfix"></p>
+
+            <div class="col-md-3 col-xs-6">@lGENDER</div>
+            <div class="col-md-3 col-xs-6"><span id="txtfor_L_GENDER">-</span></div>
+            <div class="col-md-3 col-xs-6">@lBIRTHDAY</div>
+            <div class="col-md-3 col-xs-6"><span id="txtfor_L_BIRTHDAY">0/0/</span></div>
+            <p class="clearfix"></p>
+
+            <div class="col-md-3 col-xs-6">@lCONTACT_PERSON</div>
+            <div class="col-md-3 col-xs-6"><span id="txtfor_L_CONTACT_PERSON2">-</span></div>
+            <div class="col-md-3 col-xs-6">@lCONTACT_PHONE</div>
+            <div class="col-md-3 col-xs-6"><span id="txtfor_L_CONTACT_PHONE2">-</span></div>
+            <p class="clearfix"></p>
+
+            <div class="col-md-3 col-xs-6">@lEMAIL</div>
+            <div class="col-md-3 col-xs-6"><span id="txtfor_L_EMAIL2">-</span></div>
+            <div class="col-md-3 col-xs-6"></div>
+            <div class="col-md-3 col-xs-6"></div>
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="summarytab2" @*style="display: none;"*@>
+        <div class="col-xs-10 col-xs-offset-1 add-border-rounded-green">
+            <h4 class="tgreen"><span class="hightlight">@lYOUR_PACK</span></h4>
+            <p class="clearfix"></p>
+            <div id="HeadDetail"></div>
+            <p class="clearfix page-header"></p>
+            <div id="BodyDetail"></div>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="summarytabCaptcha" style="display: none;">
+        <div class="col-xs-10 col-xs-offset-1 add-border-rounded-green">
+            <h4 class="tgreen"><span class="hightlight">@L_CAPTCHA</span></h4>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <div class="col-sm-4 col-xs-12 text-center">
+                <input type="text" id="defaultReal" name="defaultReal" class="form-control">
+            </div>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    <p class="clearfix page-header"></p>
+    <div class="col-md-12 text-center">
+        <div id="conditions2">
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-default btn-for-xs" onclick="registerSummary.backPage(0);">&nbsp; @bBACK &nbsp; </button>
+                <p class="clerfix visible-xs"></p>
+                <button id="btnNoAccept" disabled type="button" class="btn btn-success">
+                    &nbsp; @bSubmit &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                </button>
+                <p class="clerfix visible-xs"></p>
+                <button id="btnSubmit" type="button" class="btn btn-success btn-for-xs" onclick="onSubmit();">
+                    &nbsp; @bSubmit &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                </button>
+            </div>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    <p class="clearfix"></p>
+</div>
+
+<div id="AddressforVas">
+    @Html.HiddenFor(Model => Model.outPrimaryContactFirstName, new { @id = "outPrimaryContactFirstName" })
+    @Html.HiddenFor(Model => Model.outContactLastName, new { @id = "outContactLastName" })
+    @Html.HiddenFor(Model => Model.outAmphur, new { @id = "outAmphur" })
+    @Html.HiddenFor(Model => Model.outBuildingName, new { @id = "outBuildingName" })
+    @Html.HiddenFor(Model => Model.outFloor, new { @id = "outFloor" })
+    @Html.HiddenFor(Model => Model.outHouseNumber, new { @id = "outHouseNumber" })
+    @Html.HiddenFor(Model => Model.outMoo, new { @id = "outMoo" })
+    @Html.HiddenFor(Model => Model.outMooban, new { @id = "outMooban" })
+    @Html.HiddenFor(Model => Model.outProvince, new { @id = "outProvince" })
+    @Html.HiddenFor(Model => Model.outRoom, new { @id = "outRoom" })
+    @Html.HiddenFor(Model => Model.outSoi, new { @id = "outSoi" })
+    @Html.HiddenFor(Model => Model.outStreetName, new { @id = "outStreetName" })
+    @Html.HiddenFor(Model => Model.outBillLanguage, new { @id = "outBillLanguage" })
+    @Html.HiddenFor(Model => Model.outtumbol, new { @id = "outtumbol" })
+    @Html.HiddenFor(Model => Model.outBirthDate, new { @id = "outBirthDate" })
+    @Html.HiddenFor(Model => Model.outEmail, new { @id = "outEmail" })
+    @Html.HiddenFor(Model => Model.outparameter2, new { @id = "outparameter2" })
+    @Html.HiddenFor(Model => Model.outAccountName, new { @id = "outAccountName" })
+    @Html.HiddenFor(Model => Model.outAccountNumber, new { @id = "outAccountNumber" })
+    @Html.HiddenFor(Model => Model.outServiceAccountNumber, new { @id = "outServiceAccountNumber" })
+    @Html.HiddenFor(Model => Model.outBillingAccountNumber, new { @id = "outBillingAccountNumber" })
+    @Html.HiddenFor(Model => Model.outProductName, new { @id = "outProductName" })
+    @Html.HiddenFor(Model => Model.outDayOfServiceYear, new { @id = "outDayOfServiceYear" })
+
+    @Html.HiddenFor(Model => Model.outAccountSubCategory, new { @id = "outAccountSubCategory" })
+    @Html.HiddenFor(Model => Model.outPostalCode, new { @id = "outPostalCode" })
+    @Html.HiddenFor(Model => Model.outcardType, new { @id = "outcardType" })
+    @Html.HiddenFor(Model => Model.IDCardNo, new { @id = "IDCardNo" })
+    @Html.HiddenFor(Model => Model.IDCardType, new { @id = "IDCardType" })
+    @Html.HiddenFor(Model => Model.no, new { @id = "no" })
+
+</div>
+
+<div id="testadvas">
+    @{
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_CARD_TYPE, new { @id = "CustomerRegisterPanelModel_L_CARD_TYPE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_CARD_NO, new { @id = "CustomerRegisterPanelModel_L_CARD_NO" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.CA_ID, new { @id = "CoveragePanelModel_CA_ID" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.BA_ID, new { @id = "CoveragePanelModel_BA_ID" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.SA_ID, new { @id = "CoveragePanelModel_SA_ID" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.SffProductName, new { @id = "CoveragePanelModel_SffProductName" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.SffServiceYear, new { @id = "CoveragePanelModel_SffServiceYear" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.P_MOBILE, new { @id = "CoveragePanelModel_P_MOBILE" })
+        @Html.HiddenFor(Model => Model.v_sff_main_promotionCD, new { @id = "v_sff_main_promotionCD" })
+        @Html.HiddenFor(Model => Model.v_PackageCode, new { @id = "v_PackageCode" })
+        @Html.HiddenFor(Model => Model.v_owner_product, new { @id = "v_owner_product" })
+
+        /// address
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_HOME_NUMBER_2, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_HOME_NUMBER_2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOO, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOO" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOOBAN, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOOBAN" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_BUILD_NAME, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_FLOOR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_FLOOR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROOM, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROOM" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_SOI, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_SOI" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROAD, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROAD" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_TUMBOL, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_TUMBOL" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_AMPHUR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_AMPHUR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_PROVINCE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_PROVINCE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ZIPCODE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_ZIPCODE" })
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_HOME_NUMBER_2, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_HOME_NUMBER_2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOO, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOO" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOOBAN, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOOBAN" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_BUILD_NAME, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_BUILD_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_FLOOR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_FLOOR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROOM, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROOM" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_SOI, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_SOI" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROAD, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROAD" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_TUMBOL, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_TUMBOL" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_AMPHUR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_AMPHUR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_PROVINCE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_PROVINCE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ZIPCODE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ZIPCODE" })
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_HOME_NUMBER_2, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_HOME_NUMBER_2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_MOO, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_MOO" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_MOOBAN, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_MOOBAN" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_BUILD_NAME, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_FLOOR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_FLOOR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_ROOM, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_ROOM" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_SOI, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_SOI" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_ROAD, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_ROAD" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_TUMBOL, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_TUMBOL" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_AMPHUR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_AMPHUR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_PROVINCE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_PROVINCE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_ZIPCODE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_ZIPCODE" })
+
+        /// detail
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_FIRST_NAME, new { @id = "CustomerRegisterPanelModel_L_FIRST_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_LAST_NAME, new { @id = "CustomerRegisterPanelModel_L_LAST_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_GOVERNMENT_NAME, new { @id = "CustomerRegisterPanelModel_L_GOVERNMENT_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_CONTACT_PERSON, new { @id = "CustomerRegisterPanelModel_L_CONTACT_PERSON" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.SubCateType, new { @id = "CustomerRegisterPanelModel_SubCateType" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_GENDER, new { @id = "CustomerRegisterPanelModel_L_GENDER" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_CONTACT_PHONE, new { @id = "CustomerRegisterPanelModel_L_CONTACT_PHONE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_BIRTHDAY, new { @id = "CustomerRegisterPanelModel_L_BIRTHDAY" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_EMAIL, new { @id = "CustomerRegisterPanelModel_L_EMAIL" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_SPECIFIC_TIME, new { @id = "CustomerRegisterPanelModel_L_SPECIFIC_TIME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_TITLE, new { @id = "CustomerRegisterPanelModel_L_TITLE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.CateType, new { @id = "CustomerRegisterPanelModel_CateType" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_FOR_CS_TEAM, new { @id = "CustomerRegisterPanelModel_L_FOR_CS_TEAM" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.Address.AddressId, new { @id = "CoveragePanelModel_Address_AddressId" })
+
+        ///New AddressPanel 15.7
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress1, new { @id = "CustomerRegisterPanelModel_installAddress1" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress2, new { @id = "CustomerRegisterPanelModel_installAddress2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress3, new { @id = "CustomerRegisterPanelModel_installAddress3" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress4, new { @id = "CustomerRegisterPanelModel_installAddress4" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress5, new { @id = "CustomerRegisterPanelModel_installAddress5" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.pbox_count, new { @id = "CustomerRegisterPanelModel_pbox_count" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.v_installAddress, new { @id = "CustomerRegisterPanelModel_v_installAddress" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.outFullAddress, new { @id = "CustomerRegisterPanelModel_outFullAddress" })
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress1, new { @id = "CustomerRegisterPanelModel_vatAddress1" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress2, new { @id = "CustomerRegisterPanelModel_vatAddress2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress3, new { @id = "CustomerRegisterPanelModel_vatAddress3" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress4, new { @id = "CustomerRegisterPanelModel_vatAddress4" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress5, new { @id = "CustomerRegisterPanelModel_vatAddress5" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddressFull, new { @id = "CustomerRegisterPanelModel_vatAddressFull" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatPostalCd, new { @id = "CustomerRegisterPanelModel_vatPostalCd" })
+
+
+
+    }
+    @Html.HiddenFor(a => a.CoveragePanelModel.AccessMode, new { @id = "CoveragePanelModel_AccessMode" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.ServiceCode, new { @id = "CoveragePanelModel_ServiceCode" })
+
+    @*18.4 Add Parameter Existing*@
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_LOC_CODE, new { @id = "Location_Code" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_ASC_CODE, new { @id = "ASC_Code" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_STAFF_ID, new { @id = "Employee_ID" })
+
+</div>
+
+<div id="listvas"></div>
+
+<script type="text/javascript">
+    $(function () {
+
+        $(".wrapSwitchLanguage").hide();
+        $('#defaultReal').realperson({
+            length: 5,
+            regenerate: 'Change',
+            dot: '*',
+            dots: $.realperson.defaultDots,
+            chars: $.realperson.alphanumeric
+        });
+        $("#btnSubmit").show();
+        $("#btnNoAccept").hide();
+
+        var selValue = $('#outcardType').val();
+
+        if (selValue == 'R') {
+            $("#summarytab0").show();
+            $("#summarytab1").hide();
+        } else {
+            $("#summarytab0").hide();
+            $("#summarytab1").show();
+        }
+
+        $("#summarytab2").show();
+        $("#summarytabCaptcha").show();
+
+    });
+</script>
+
+<script type="text/javascript">
+    var registerSummary = new RegisterSummary();
+    var checkvas = '@vas_flag';
+    function RegisterSummary() {
+        this.backPage = function (type) {
+            if (type == 0) {
+                currentPage = 0;
+                $("#page4").hide();
+                $("#SelectOntopPage").show();
+            }
+        }
+    }
+
+    function DataBindPage() {
+        $("#listvas").html("");
+        value = $('#CustomerRegisterPanelModel_L_CARD_TYPE').val(); if (value != "") { $('#txtfor_ID_CARD_NAME').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_CARD_NO').val(); if (value != "") { $('#txtfor_L_CARD_NO').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_FIRST_NAME').val(); if (value != "") { $('#txtfor_L_FIRST_NAME').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_LAST_NAME').val(); if (value != "") { $('#txtfor_L_LAST_NAME').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_TITLE').val(); if (value != "") { $('#txtfor_L_TITLE_NAME').text(value); }
+
+        $.ajax({
+            url: '/Process/GetOtherInformation',
+            data: { mobileno: $('#CoveragePanelModel_P_MOBILE').val(), caid: $('#CoveragePanelModel_CA_ID').val(), baid: $('#CoveragePanelModel_BA_ID').val(), selectvalue: 'GENDER' },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                if (response != "") {
+                    $('#txtfor_L_GENDER').text(response);
+                    $('#CustomerRegisterPanelModel_L_GENDER').val(response);
+                }
+                else {
+                    if ($("#LanguagePage").val() == 1) {
+                        $('#CustomerRegisterPanelModel_L_GENDER').val('');
+                        $('#txtfor_L_GENDER').text('');
+                    }
+                    else {
+                        $('#CustomerRegisterPanelModel_L_GENDER').val('');
+                        $('#txtfor_L_GENDER').text('');
+                    }
+                }
+            }
+        });
+
+        value = "";
+
+        //$('#CustomerRegisterPanelModel_L_CONTACT_PHONE').val(value);
+        //$('#txtfor_L_HOME_PHONE').text("-");
+
+        //R18.11
+        $.ajax({
+            url: '/Process/GetOtherInformation',
+            data: { mobileno: $('#CoveragePanelModel_P_MOBILE').val(), caid: $('#CoveragePanelModel_CA_ID').val(), baid: $('#CoveragePanelModel_BA_ID').val(), selectvalue: 'CONTACT' },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                if (response != "") {
+                    var arrayRespon = response.split(',');
+                    //R18.11
+                    $('#CustomerRegisterPanelModel_L_CONTACT_PHONE').val(arrayRespon[2]);
+                    $("#txtfor_L_HOME_PHONE").html(arrayRespon[2]);
+                }
+            }
+        });
+
+        value = $('#CustomerRegisterPanelModel_L_BIRTHDAY').val();
+        if ($("#LanguagePage").val() == 1) {
+            if (value != "") {
+                var temp = value.split("/");
+                temp[2] = temp[2] * 1 + 543;
+                value = temp[0] + "/" + temp[1] + "/" + temp[2];
+            }
+        }
+        if (value != "") { $('#txtfor_L_BIRTHDAY').text(value); }
+
+        value = $('#CustomerRegisterPanelModel_L_EMAIL').val(); if (value != "") { $('#txtfor_L_EMAIL').text(value); }
+
+        var sTime = '';
+
+        if ($("#LanguagePage").val() == 1) {
+            sTime = '08:00 - 17:00 น.';
+        }
+        else {
+            sTime = '08:00 AM - 5:00 PM';
+        }
+
+        $("#CustomerRegisterPanelModel_L_SPECIFIC_TIME").val(sTime);
+
+        value = $('#CustomerRegisterPanelModel_L_TITLE').val(); if (value != "") { value = value + " " }
+        value += $('#CustomerRegisterPanelModel_L_GOVERNMENT_NAME').val(); if (value != "") { $('#txtfor_L_GOVERNMENT_NAME').text(value); }
+
+        value = $('#CustomerRegisterPanelModel_L_CARD_TYPE').val(); if (value != "") { $('#txtfor_L_CARD_TYPE2').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_CARD_NO').val(); if (value != "") { $('#txtfor_L_CARD_NO2').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_FIRST_NAME').val() + ' ' + $('#CustomerRegisterPanelModel_L_LAST_NAME').val(); if (value != "") { $('#txtfor_L_CONTACT_PERSON2').text(value); }
+
+        value = "";
+
+        //$('#CustomerRegisterPanelModel_L_CONTACT_PHONE').val(value);
+        $('#txtfor_L_CONTACT_PHONE2').text("-");
+
+        value = $('#CustomerRegisterPanelModel_L_EMAIL').val(); if (value != "") { $('#txtfor_L_EMAIL2').text(value); }
+
+        var sTime = '';
+        if ($("#LanguagePage").val() == 1) {
+            sTime = '08:00 - 17:00 น.';
+        }
+        else {
+            sTime = '08:00 AM - 5:00 PM';
+        }
+
+        $("#CustomerRegisterPanelModel_L_SPECIFIC_TIME").val(sTime);
+
+        //end summarytab1
+        var indexlist = 0;
+        // summary tab2
+
+        //--------- Head ------------------
+        $("#HeadDetail").html("");
+        var strHeadDetail = "";
+        strHeadDetail += "<dl class='dl-horizontal'>";
+        strHeadDetail += "<dt>" + "@lONTOP_PACK" + ": </dt>";
+
+        $("#divOntopBoxDynamic input[type=checkbox]:checked").each(function (i, e) {
+            var selectedOntopId = $(this).attr("ontopid");
+            var productSubTypeSUM = $("#" + selectedOntopId + " input[name='productType']").val();
+            if (i == 0) {
+                strHeadDetail += "<dd>" + $("#lbl" + productSubTypeSUM + "Detail").text() + "</dd>";
+            }
+            else {
+                strHeadDetail += "<dd>" + $("#lbl" + productSubTypeSUM + "Detail").text() + "</dd>";
+            }
+        });
+        strHeadDetail += "</dl>";
+        $("#HeadDetail").append(strHeadDetail);
+        //--------- End Head --------------
+
+
+        //--------- Deatail ------------------
+        $("#BodyDetail").html("");
+        var strBodyDetail = "";
+        strBodyDetail += "<div class='table-responsive'>";
+        strBodyDetail += "<table class='table-non-border'>";
+        strBodyDetail += "<tr>";
+        strBodyDetail += "<th>" + "@L_SUMM_DETAIL9" + "</th>";
+        strBodyDetail += "<tr>";
+        $("#divOntopBoxDynamic input[type=checkbox]:checked").each(function (i, e) {
+            var selectedOntopId = $(this).attr("ontopid");
+            var productSubTypeSUM = $("#" + selectedOntopId + " input[name='productType']").val();
+            strBodyDetail += "<tr>";
+            strBodyDetail += "<td>";
+            strBodyDetail += $("#lbl" + productSubTypeSUM + "Detail").text();
+            strBodyDetail += "</td>";
+            strBodyDetail += "<td>";
+            strBodyDetail += $("#lbl" + productSubTypeSUM + "Price").text() + "&nbsp;";
+            strBodyDetail += "@L_BAHT";
+            strBodyDetail += "</td>";
+            strBodyDetail += "<tr>";
+        });
+
+        strBodyDetail += "<tr>";
+        strBodyDetail += "<td>";
+        strBodyDetail += "<span style='font-weight: bold'>" + "@L_SUMM_DETAIL11" + "</span>";
+        strBodyDetail += "</td>";
+        strBodyDetail += "<td>";
+        strBodyDetail += "<span style='font-weight: bold'>" + $('#lblSumOntop').text() + "&nbsp;";
+        strBodyDetail += "@Html.Raw(L_BAHT)";
+        strBodyDetail += "</span>";
+        strBodyDetail += "</td>";
+        strBodyDetail += "</tr>";
+        strBodyDetail += "<td>";
+        strBodyDetail += "<span style='font-weight: bold'>" + "@L_SUMM_DETAIL12" + "</span>";
+        strBodyDetail += "</td>";
+        strBodyDetail += "<td>";
+        strBodyDetail += "</td>";
+        strBodyDetail += "</table>";
+        strBodyDetail += "</div>";
+
+        $("#BodyDetail").append(strBodyDetail);
+
+        //--------- End Deatail ------------------
+
+        //--------- Mapping Data ---------------------
+
+        var havecontent = false;
+        $("#divOntopBoxDynamic input[type=checkbox]:checked").each(function (i, e) {
+            var selectedOntopId = $(this).attr("ontopid");
+            var selectedOntopcontentId = $(this).attr("ontopgroupid");
+            if (selectedOntopcontentId != undefined) {
+                havecontent = true;
+            }
+            var productIDSUM = $("#" + selectedOntopId + " input[name='ontop_id']").val();
+            appenArrayPackage(indexlist);
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PACKAGE_CODE']").val($("#PACKAGE_CODE" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PACKAGE_CLASS']").val($("#PACKAGE_TYPE" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PACKAGE_GROUP']").val($("#PACKAGE_GROUP" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PRODUCT_SUBTYPE']").val($("#PRODUCT_SUBTYPE_" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PACKAGE_NAME']").val($("#PACKAGE_NAME" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].TECHNOLOGY']").val($("#TECHNOLOGY" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].RECURRING_CHARGE']").val($("#RECURRING_CHARGE" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].INITIATION_CHARGE']").val($("#INITIATION_CHARGE" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].DISCOUNT_INITIATION_CHARGE']").val("0");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].SFF_PROMOTION_BILL_THA']").val($("#SFF_PROMOTION_BILL_THA" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].SFF_PROMOTION_BILL_ENG']").val($("#SFF_PROMOTION_BILL_ENG" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].DOWNLOAD_SPEED']").val($("#DOWNLOAD_SPEED" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].UPLOAD_SPEED']").val($("#UPLOAD_SPEED" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].OWNER_PRODUCT']").val($("#OWNER_PRODUCT" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].VOIP_IP']").val("");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].IDD_FLAG']").val("");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].FAX_FLAG']").val("");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].TEMP_IA']").val($("#MAPPING_PRODUCT" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].MOBILE_FORWARD']").val("");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].SFF_PROMOTION_CODE']").val($("#SFF_PROMOTION_CODE" + productIDSUM).val());
+            indexlist++;
+        });
+
+        if (havecontent && $("#PruductCD_Content").val() != "" && $("input[name='SelectOntop" + $("#PruductCD_Content").val() + "']").val() != undefined) {
+            var productIDSUM = $("input[name='SelectOntop" + $("#PruductCD_Content").val() + "']").val();
+            appenArrayPackage(indexlist);
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PACKAGE_CODE']").val($("#PACKAGE_CODE" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PACKAGE_CLASS']").val($("#PACKAGE_TYPE" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PACKAGE_GROUP']").val($("#PACKAGE_GROUP" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PRODUCT_SUBTYPE']").val($("#PRODUCT_SUBTYPE_" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].PACKAGE_NAME']").val($("#PACKAGE_NAME" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].TECHNOLOGY']").val($("#TECHNOLOGY" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].RECURRING_CHARGE']").val($("#RECURRING_CHARGE" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].INITIATION_CHARGE']").val($("#INITIATION_CHARGE" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].DISCOUNT_INITIATION_CHARGE']").val("0");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].SFF_PROMOTION_BILL_THA']").val($("#SFF_PROMOTION_BILL_THA" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].SFF_PROMOTION_BILL_ENG']").val($("#SFF_PROMOTION_BILL_ENG" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].DOWNLOAD_SPEED']").val($("#DOWNLOAD_SPEED" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].UPLOAD_SPEED']").val($("#UPLOAD_SPEED" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].OWNER_PRODUCT']").val($("#OWNER_PRODUCT" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].VOIP_IP']").val("");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].IDD_FLAG']").val("OldContent");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].FAX_FLAG']").val("");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].TEMP_IA']").val($("#MAPPING_PRODUCT" + productIDSUM).val());
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].MOBILE_FORWARD']").val("");
+            $("[name*='SummaryPanelModel.PackageModelList[" + indexlist + "].SFF_PROMOTION_CODE']").val($("#SFF_PROMOTION_CODE" + productIDSUM).val());
+            indexlist++;
+        }
+
+
+
+        //------------End Mapping Data ---------------
+    }
+
+    function onSubmit() {
+        LockScreen(true, "");
+
+        if ("@vas_flag" != "0")
+            $("[name*='SummaryPanelModel.VAS_FLAG']").val("@vas_flag");
+
+        $.ajax({
+            url: '/Process/ValidateCaptcha',
+            data: { inputUser: $('#defaultReal').val(), inputHash: $('#defaultReal').realperson('getHash') },
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (response) {
+                if (!response) {
+                    toastrErrorMessage("@L_CAPTCHA_ERR");
+                    $("#defaultReal").removeClass('form-control').addClass('form-control errorinput');
+                    LockScreen(false);
+                }
+                else {
+                    $("#SummaryPanelModel_L_SEND_EMAIL").val(true);
+                    var tempmail = $('#CustomerRegisterPanelModel_L_EMAIL').val()
+                    if (tempmail == undefined || tempmail == "") {
+                        $('#CustomerRegisterPanelModel_L_EMAIL').val($("#NEW_L_EMAIL").val());
+                    }
+
+                    // 18.4  Add Parameter Existing
+                    var locationCd = "";
+                    var ascCode = "";
+                    var employee_id = "";
+                    // Line officer : Send => Location Code , ASC Code , Employee ID
+                    // Line other : Send => Location Code = "" , ASC Code = "" , Employee ID = ""
+                    if (window.parent.$("#isOfficer").length > 0 && window.parent.$("#isOfficer").val() == "Y") {
+                        if (window.parent.$("#LcCode").length > 0) {
+                            locationCd = window.parent.$('#LcCode').val();
+                            $("#Location_Code").val(locationCd);
+                        }
+
+                        if (window.parent.$("#ASCCode").length > 0) {
+                            ascCode = window.parent.$('#ASCCode').val();
+                            $("#ASC_Code").val(ascCode);
+                        }
+
+                        if (window.parent.$("#EmployeeID").length > 0) {
+                            employee_id = window.parent.$('#EmployeeID').val();
+                            $("#Employee_ID").val(employee_id);
+                        }
+                    }
+                    else {
+                        $("#Location_Code").val("");
+                        $("#ASC_Code").val("");
+                        $("#Employee_ID").val("");
+                    }
+                    //-----
+
+                    $("#btnSubmit").hide();
+                    $("#btnNoAccept").show();
+                    $("#iForm").submit(); //save
+                }
+            }
+        });
+    }
+
+    function appenArrayPackage(index) {
+        $("#listvas").append("<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_CODE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TEMP_IA'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_CLASS'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_GROUP'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRODUCT_SUBTYPE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_NAME'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TECHNOLOGY'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].RECURRING_CHARGE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].INITIATION_CHARGE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_INITIATION_CHARGE'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_BILL_THA'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_BILL_ENG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DOWNLOAD_SPEED'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].UPLOAD_SPEED'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].OWNER_PRODUCT'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].VOIP_IP'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].IDD_FLAG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].FAX_FLAG'/>" +
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].MOBILE_FORWARD'/>"+
+                "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_CODE'/>"
+                );
+    }
+
+    function DataBindPageV2() {
+        $("#listvas").html("");
+        value = $('#CustomerRegisterPanelModel_L_CARD_TYPE').val(); if (value != "") { $('#txtfor_ID_CARD_NAME').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_CARD_NO').val(); if (value != "") { $('#txtfor_L_CARD_NO').text(privacyInfoCard(value)); }
+        value = $('#CustomerRegisterPanelModel_L_FIRST_NAME').val(); if (value != "") { $('#txtfor_L_FIRST_NAME').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_LAST_NAME').val(); if (value != "") { $('#txtfor_L_LAST_NAME').text(privacyNameSurname(value)); }
+        value = $('#CustomerRegisterPanelModel_L_TITLE').val(); if (value != "") { $('#txtfor_L_TITLE_NAME').text(value); }
+
+        $.ajax({
+            url: '/Process/GetOtherInformation',
+            data: { mobileno: $('#CoveragePanelModel_P_MOBILE').val(), caid: $('#CoveragePanelModel_CA_ID').val(), baid: $('#CoveragePanelModel_BA_ID').val(), selectvalue: 'GENDER' },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                if (response != "") {
+                    $('#txtfor_L_GENDER').text(response);
+                    $('#CustomerRegisterPanelModel_L_GENDER').val(response);
+                }
+                else {
+                    if ($("#LanguagePage").val() == 1) {
+                        $('#CustomerRegisterPanelModel_L_GENDER').val('');
+                        $('#txtfor_L_GENDER').text('');
+                    }
+                    else {
+                        $('#CustomerRegisterPanelModel_L_GENDER').val('');
+                        $('#txtfor_L_GENDER').text('');
+                    }
+                }
+            }
+        });
+
+        $.ajax({
+            url: '/Process/GetOtherInformation',
+            data: { mobileno: $('#CoveragePanelModel_P_MOBILE').val(), caid: $('#CoveragePanelModel_CA_ID').val(), baid: $('#CoveragePanelModel_BA_ID').val(), selectvalue: 'CONTACT' },
+            dataType: "json",
+            type: 'POST',
+            success: function (response) {
+                if (response != "") {
+                    var arrayRespon = response.split(',');
+                    $('#CustomerRegisterPanelModel_L_CONTACT_PHONE').val(arrayRespon[2]);
+                    $("#txtfor_L_HOME_PHONE").html(privacyMsisdn(arrayRespon[2]));
+                }
+            }
+        });
+
+        value = $('#CustomerRegisterPanelModel_L_BIRTHDAY').val();
+        if ($("#LanguagePage").val() == 1) {
+            if (value != "") {
+                var temp = value.split("/");
+                temp[2] = temp[2] * 1 + 543;
+                value = temp[0] + "/" + temp[1] + "/" + temp[2];
+            }
+        }
+        if (value != "") { $('#txtfor_L_BIRTHDAY').text(value); }
+
+        value = $('#CustomerRegisterPanelModel_L_EMAIL').val(); if (value != "") { $('#txtfor_L_EMAIL').html(privacyEmail(value, "20")); }
+
+        var sTime = '';
+
+        if ($("#LanguagePage").val() == 1) {
+            sTime = '08:00 - 17:00 น.';
+        }
+        else {
+            sTime = '08:00 AM - 5:00 PM';
+        }
+
+        $("#CustomerRegisterPanelModel_L_SPECIFIC_TIME").val(sTime);
+
+        value = $('#CustomerRegisterPanelModel_L_TITLE').val(); if (value != "") { value = value + " " }
+        value += $('#CustomerRegisterPanelModel_L_GOVERNMENT_NAME').val(); if (value != "") { $('#txtfor_L_GOVERNMENT_NAME').text(value); }
+
+        value = $('#CustomerRegisterPanelModel_L_CARD_TYPE').val(); if (value != "") { $('#txtfor_L_CARD_TYPE2').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_CARD_NO').val(); if (value != "") { $('#txtfor_L_CARD_NO2').text(value); }
+        value = $('#CustomerRegisterPanelModel_L_FIRST_NAME').val() + ' ' + $('#CustomerRegisterPanelModel_L_LAST_NAME').val(); if (value != "") { $('#txtfor_L_CONTACT_PERSON2').text(value); }
+
+        value = "";
+
+        $('#txtfor_L_CONTACT_PHONE2').text("-");
+
+        value = $('#CustomerRegisterPanelModel_L_EMAIL').val(); if (value != "") { $('#txtfor_L_EMAIL2').text(value); }
+
+        var sTime = '';
+        if ($("#LanguagePage").val() == 1) {
+            sTime = '08:00 - 17:00 น.';
+        }
+        else {
+            sTime = '08:00 AM - 5:00 PM';
+        }
+
+        $("#CustomerRegisterPanelModel_L_SPECIFIC_TIME").val(sTime);
+
+        // summary tab2
+
+        //--------- Head ------------------
+        $("#HeadDetail").html("");
+        $("#BodyDetail").html("");
+        var strHeadDetail = "";
+        var strBodyDetail = "";
+        var sffPromotioncode = "";
+        var contentDetail = "";
+        var sumPricecharge = 0;
+        var hasHead = false;
+        if (tmpPackageContent != undefined && tmpPackageContent.length > 0 && tmpContentDetailSelected != undefined && tmpContentDetailSelected.length > 0) {
+            var indexData = 0;
+            $.each(tmpContentDetailSelected, function (itemIndex, itemData) {
+                sffPromotioncode = itemData[0];
+                var tmpPackageContentSelect = tmpPackageContent.filter(function (elem) {
+                    return elem.SFF_PROMOTION_CODE.indexOf(sffPromotioncode) !== -1;
+                });
+                if (tmpPackageContentSelect != undefined && tmpPackageContentSelect.length > 0) {
+                    //--------- Mapping Data --//                    
+                    appenArrayNewPackageV2(indexData, tmpPackageContentSelect[0]);
+                    indexData++;
+                    //-------- End ------------//
+                    price = parseFloat(tmpPackageContentSelect[0].PRICE_CHARGE);
+                    if ('@language' == "1") {
+                        contentDetail = tmpPackageContentSelect[0].PACKAGE_DISPLAY_THA;
+                    }
+                    else {
+                        contentDetail = tmpPackageContentSelect[0].PACKAGE_DISPLAY_ENG;
+                    }
+                    strHeadDetail += "<dl class='dl-horizontal'><dt>@lONTOP_PACK: </dt><dd>" + contentDetail + "</dd></dl>";
+
+                    if (!hasHead) {
+                        strBodyDetail += "<div class='table-responsive'><table class='table-non-border'><tr><th>@L_SUMM_DETAIL9</th>";
+                        hasHead = true;
+                    }
+                    strBodyDetail += "<tr><td>" + contentDetail + "</td><td>" + accounting.formatNumber(parseFloat(tmpPackageContentSelect[0].PRICE_CHARGE), 2) + "&nbsp;@L_BAHT</td><tr>";
+                    sumPricecharge += parseFloat(tmpPackageContentSelect[0].PRICE_CHARGE);
+                }
+            });
+            strBodyDetail += "<tr><td><span style='font-weight: bold'>@L_SUMM_DETAIL11</span></td>";
+            strBodyDetail += "<td><span style='font-weight: bold'>" + accounting.formatNumber(sumPricecharge, 2) + "&nbsp;@L_BAHT</span></td></tr>";
+            strBodyDetail += "<td><span style='font-weight: bold'>@L_SUMM_DETAIL12</span></td><td></td></table></div>";
+        }
+        $("#HeadDetail").append(strHeadDetail);
+        $("#BodyDetail").append(strBodyDetail);
+    }
+
+    function appenArrayNewPackageV2(index, data) {
+            var strListVas = "";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_CODE' value='" + data.SFF_PROMOTION_CODE + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_TYPE_DESC' value='" + data.PACKAGE_TYPE_DESC + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_GROUP' value='" + data.PACKAGE_GROUP + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRODUCT_SUBTYPE' value='" + data.PRODUCT_SUBTYPE + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PRODUCT_NAME' value='" + data.SFF_PRODUCT_NAME + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRICE_CHARGE' value='" + data.PRICE_CHARGE + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRE_PRICE_CHARGE' value='" + data.PRE_PRICE_CHARGE + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_INITIATION_CHARGE' value='0'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_WORD_IN_STATEMENT_THA' value='" + data.SFF_WORD_IN_STATEMENT_THA + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_WORD_IN_STATEMENT_ENG' value='" + data.SFF_WORD_IN_STATEMENT_ENG + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DOWNLOAD_SPEED' value='" + data.DOWNLOAD_SPEED + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].UPLOAD_SPEED' value='" + data.UPLOAD_SPEED + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].OWNER_PRODUCT' value='" + data.OWNER_PRODUCT + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_SERVICE_CODE' value='" + data.PACKAGE_SERVICE_CODE + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_TYPE' value='" + data.PACKAGE_TYPE + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_DISPLAY_THA' value='" + data.PACKAGE_DISPLAY_THA + "'/>";
+            strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_DISPLAY_ENG' value='" + data.PACKAGE_DISPLAY_ENG + "'/>";
+            if ('@language' == '1') {
+                strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TECHNOLOGY' value='" + data.SFF_WORD_IN_STATEMENT_THA + "'/>";
+            }
+            else {
+                strListVas += "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TECHNOLOGY' value='" + data.SFF_WORD_IN_STATEMENT_ENG + "'/>";
+            }
+            $("#listvas").append(strListVas);
+        }
+
+</script>

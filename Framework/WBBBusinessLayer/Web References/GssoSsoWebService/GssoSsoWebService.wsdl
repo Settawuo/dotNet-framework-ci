@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://ws.sso.gsso/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="GssoSsoWebService" targetNamespace="http://ws.sso.gsso/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://10.240.141.222:8080/GSSO-SSO/GssoSsoWeb?xsd=1" namespace="http://ws.sso.gsso/" />
+    </xsd:schema>
+  </types>
+  <message name="confirmOneTimePW">
+    <part name="parameters" element="tns:confirmOneTimePW" />
+  </message>
+  <message name="confirmOneTimePWResponse">
+    <part name="parameters" element="tns:confirmOneTimePWResponse" />
+  </message>
+  <message name="sendOneTimePW">
+    <part name="parameters" element="tns:sendOneTimePW" />
+  </message>
+  <message name="sendOneTimePWResponse">
+    <part name="parameters" element="tns:sendOneTimePWResponse" />
+  </message>
+  <portType name="GssoSsoWeb">
+    <operation name="confirmOneTimePW">
+      <input wsam:Action="http://ws.sso.gsso/GssoSsoWeb/confirmOneTimePWRequest" message="tns:confirmOneTimePW" />
+      <output wsam:Action="http://ws.sso.gsso/GssoSsoWeb/confirmOneTimePWResponse" message="tns:confirmOneTimePWResponse" />
+    </operation>
+    <operation name="sendOneTimePW">
+      <input wsam:Action="http://ws.sso.gsso/GssoSsoWeb/sendOneTimePWRequest" message="tns:sendOneTimePW" />
+      <output wsam:Action="http://ws.sso.gsso/GssoSsoWeb/sendOneTimePWResponse" message="tns:sendOneTimePWResponse" />
+    </operation>
+  </portType>
+  <binding name="GssoSsoWebPortBinding" type="tns:GssoSsoWeb">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="confirmOneTimePW">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="sendOneTimePW">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="GssoSsoWebService">
+    <port name="GssoSsoWebPort" binding="tns:GssoSsoWebPortBinding">
+      <soap:address location="http://10.240.141.222:8080/GSSO-SSO/GssoSsoWeb" />
+    </port>
+  </service>
+</definitions>

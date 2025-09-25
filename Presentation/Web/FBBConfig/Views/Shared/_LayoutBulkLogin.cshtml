@@ -1,0 +1,575 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.RegisterBulkCorpModel
+
+@{
+    
+    Layout = "~/Views/Shared/_LayoutReference.cshtml";
+    //Layout = null; 
+    var VasDatalala22 = "";
+    if (ViewBag.Vas22 != null)
+    {
+        VasDatalala22 = ViewBag.Vas22;
+    }
+
+}
+
+<style>
+    a, a:link, a:active, a:visited, a:hover, a:focus {
+        color: #fff;
+    }
+
+    .vertical-alignment-helper {
+        display: table;
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .vertical-align-center {
+        display: table-cell;
+        vertical-align: middle;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        pointer-events: all;
+    }
+
+    .fa-6 {
+        font-size: 10em;
+    }
+
+    .topbar_ribbon {
+        padding-left: 10px;
+        float: left;
+        height: 60px;
+    }
+
+    .nav-nopadding {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        width: 20%;
+        background-color: #8DC63F;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .vertical-alignment-helper {
+        display: table;
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .vertical-align-center {
+        display: table-cell;
+        vertical-align: middle;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        width: inherit;
+        height: inherit;
+        margin: 0 auto;
+        pointer-events: all;
+    }
+
+    .fa-6 {
+        font-size: 10em;
+    }
+
+    .preview-img {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+    }
+
+    .preview-pdf {
+        width: 200px;
+        height: 160px;
+        cursor: pointer;
+        margin: 7px;
+        border: 1px solid black;
+    }
+
+    #ais_topbar {
+        display: block;
+    }
+
+        #ais_topbar .topbar_ribbon {
+            padding-left: 10px;
+            float: left;
+            height: 60px;
+        }
+
+    #ribbonking {
+        width: 100%;
+        height: 60px;
+        background: url("/Content/images/bg1366.jpg") no-repeat center;
+        background-color: #000;
+    }
+
+    #ribbonking_wrapper {
+        height: 60px;
+        margin: 0 auto;
+        max-width: 1140px;
+    }
+</style>
+<div id="ribbonking">
+    <div id="ribbonking_wrapper">
+        <div class="topbar_ribbon"><img src="~/Content/images/iconribbon.png" alt="ais logo"></div>
+    </div>
+</div>
+
+<header>
+    <div class="container">
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+
+                <div class="col-md-9 col-xs-12 hidden-xs" id="add_service_th_div">
+                    <img src="~/Content/images/bulkcorp/add-service-th-1.png"
+                         class="img-responsive center-block" id="add_service_th_1_img" style="display: none;">
+                    <img src="~/Content/images/bulkcorp/add-service-th-2.png"
+                         class="img-responsive center-block" id="add_service_th_2_img" style="display: none;">
+                    <img src="~/Content/images/bulkcorp/add-service-th-3.png"
+                         class="img-responsive center-block" id="add_service_th_3_img" style="display: none;">
+                </div>
+    </div>
+
+</header>
+<body>
+    <div class="panel_ais">
+        <div class="row_ais">
+            <div class="column large-11 large-centered">
+                <div class="content-menu">
+                    <div class="row_ais">
+                        <div class="column large-12 medium-12 small-12">
+                            <div class="detail-for-menu">
+                                <div class="innercontent">
+                                    <div class="row_ais">
+                                        <div class="column large-10">
+                                            <div id="renderBody" class="card"></div>
+                                            @RenderBody()
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pre-footer">
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+
+    <p class="clearfix"></p>
+
+    <div id="aisfooter">
+
+    </div>
+    <div class="truehits-bg">&nbsp;</div>
+</body>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        ais_interface_process('mini-menu', 'postpaid', 'th', '', false);
+
+    });
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#ProgressIcon #txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+
+    function configScreenPage() {
+        window.scrollTo(0, 0);
+        $("#silder").css("visibility", "hidden");
+        $("body").css("overflow-y", "hidden");
+    }
+
+    function hideHeader() {
+        $("#status_th_div").children().hide();
+        $("#add_service_th_div").children().hide();
+        $("#logo_div").children().hide();
+    }
+
+    function changePageHeader(operNo) {
+        toastr.clear();
+        $("#status_th_div").children().hide();
+        $("#status_en_div").children().hide();
+        
+    }
+
+    function ValidationProcessing(validateModel, err) {
+        var chk = true;
+        var error = "#" + err;
+        var temp = "";
+        $(error).html(temp);
+        $(validateModel).each(function (index, e) {
+            if (e.id == undefined) {
+                var vgroup = e.vgroup;
+                if (vgroup != undefined) {
+                    var tempkid = "";
+                    var vchk = false;
+                    $.each(vgroup, function (j, k) {
+                        var kid = "#" + k.id;
+                        var kvalue = $(kid).val();
+                        if (j == 0) tempkid = $(kid);
+
+                        if ($.trim(kvalue) != "")
+                            vchk = true;
+                    });
+                    if (vchk) {
+                        $(tempkid)[0].className = "form-control";
+                    } else {
+                        chk = false;
+                        $(tempkid)[0].className = "form-control errorinput";
+                        if ($("#LanguagePage").val() == "1")
+                            temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                        else
+                            temp = "Please Fill In All Required Fields."
+                    }
+                }
+            } else {
+                var id = "#" + e.id;
+                var value = $(id).val();
+                var lb = $(id)[0].placeholder;
+                var cond = e.condition;
+                var required = e.required;
+                if (required == undefined) required = true;
+                if ($.trim(value) == "" && required) {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                            theme: "classic"
+                        });
+                    } else if ($(id)[0].className == "form-control" || $(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control errorinput";
+                    } else {
+                        $(id)[0].className = "form-control errorinput";
+                    }
+
+                    if ($("#LanguagePage").val() == "1") {
+                        temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                    }
+                    else {
+                        temp = "Please Fill In All Required Fields."
+                    }
+                    chk = false;
+                } else if (cond != undefined) {
+                    var cchk = true;
+                    if ((!required && value != "") || required) {
+                        if (cond == "IDCard")
+                            cchk = validateIdCard(value);
+                        else if (cond == "Email")
+                            cchk = validateEmail(value);
+                        else if (cond == "Birthday")
+                            cchk = validateBirthDay(value);
+                        else if (cond == "Place")
+                            cchk = validatePlace(value);
+                        else if (cond == "HomeNo")
+                            cchk = validateHomeNumber(value);
+                        else if (cond == "LatLong")
+                            cchk = validateLatLong(value);
+                        else if (cond == "Number")
+                            cchk = validateNumber(value);
+                        else if (cond == "Name")
+                            cchk = validateName(value);
+                        else if (cond == "FreePhone")
+                            cchk = validateFreePhone(value);
+                        else if (cond == "MobileNumber")
+                            cchk = validateMobileNumber(value);
+                    }
+
+                    if (!cchk) {
+                        $(id)[0].className = "form-control errorinput";
+                        chk = false;
+
+                        if ($("#LanguagePage").val() == "1")
+                            temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                        else
+                            temp = "Please Fill In All Required Fields."
+                    } else {
+                        if ($(id)[0].className == "form-control"
+                                || $(id)[0].className.indexOf("errorinput") > -1) {
+                            $(id)[0].className = "form-control";
+                        } else
+                            $(id)[0].className = "form-control";
+                    }
+                } else {
+                    if ($(id)[0].className.indexOf("select") > -1) {
+                        $($(id)[0]).select2({
+                        });
+                    } else if ($(id)[0].className == "form-control errorinput") {
+                        $(id)[0].className = "form-control";
+                    } else if ($(id)[0].className.indexOf("errorinput") > -1) {
+                        $(id)[0].className = "form-control";
+                    }
+                }
+            }
+        });
+
+        if (temp) {
+            toastrErrorMessage(temp);
+        }
+        return chk;
+    }
+
+    function validateEmail(email) {
+        var filter = /^(((([a-zA-Z0-9\_\-]{1,50})+(([\.]{1,50}[a-zA-Z0-9\_\-]{1,50}){0,50})){1,95})+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        if (email.substr(0, 2) == "-@@" || email.substr(0, 2) == "_@@") {
+            return false;
+        }
+        if (filter.test(email)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateHomeNumber(value) {
+        var rex = /^[0-9/\-]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumber(value) {
+        if (value.length < 10) {
+            return false
+        }
+        else {
+            return true;
+        }
+    }
+     
+
+    function validatePlace(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\/\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateLatLong(value) {
+        var rex = /^(-)?[0-9]*[.]{1}[0-9]{6}$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateNumber(value) {
+        var rex = /^[0-9]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateName(value) {
+        var rex = /^[ก-๙a-zA-Z\.\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateFreePhone(value) {
+        var rex = /^[ก-๙a-zA-Z0-9\.\-\,\(\)\s]+$/;
+        if (rex.test(value)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function validateMobileNumberOR(id, error) {
+
+        var temp = "";
+        var iid = "#" + id;
+        if ($(iid).val() != "") {
+            if ($(iid).val().length < 10) {
+
+                $(iid)[0].className = "form-control errorinput";
+
+                if ($("#LanguagePage").val() == "1")
+                    temp = "<li>กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน</li>"
+                else
+                    temp = "<li>Please fill in all required fields.</li>"
+
+                $("#" + error).html(temp);
+                return false;
+            }
+            else if ($(iid).val().length == 10) {
+                var value = $(iid).val();
+                var chkMobile2 = false;
+                ////// Begin add new function to check mobile2 by using LOV /////
+                chkMobile2 = validateMobileNumber(value); 
+                if (chkMobile2 == false) {
+                    $(iid)[0].className = "form-control errorinput";
+
+                    if ($("#LanguagePage").val() == "1")
+                        temp = "กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน"
+                    else
+                        temp = "Please fill in all required fields."
+
+                    toastrErrorMessage(temp);
+                    return false;
+
+                } else {
+                    $(iid)[0].className = "form-control";
+                    return true;
+                }
+                ////// End add new function to check mobile2 by using LOV /////
+            }
+
+            else {
+                $(iid)[0].className = "form-control";
+                $("#" + error).html(temp);
+                return true;
+            }
+        }
+        else {
+            $(iid)[0].className = "form-control";
+            $("#" + error).html(temp);
+            return true;
+        }
+    }
+
+    function toastrErrorMessage(message) {
+        toastr.options.positionClass = "toast-top-center";
+        toastr.options.closeButton = true;
+        toastr.error(message)
+    }
+
+    var get_current_language = $.ajax({
+        type: "GET",
+        url: "/WBB/GetCurrentCulture",
+        async: false,
+        success: function (x) {
+            $("#LanguagePage").val(x);
+            return x;
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    var language = "";
+    var oldIE;
+    $(function () {
+
+        changeLanguage();
+
+        if ($("#LanguagePage").val() == 1)
+            language = "th";
+        else
+            language = "en";
+
+        $('#page1').bind('show', function () {
+            changePageHeader(1);
+        });
+        $('#page2').bind('show', function () {
+            changePageHeader(2);
+        });
+        $('#page2_1').bind('show', function () {
+            if ("@ViewBag.Vas" == "2" || "@ViewBag.TopUp" == "1") {
+                changePageHeader_Vas(2);
+            } else {
+                changePageHeader(3);
+            }
+        });
+        $('#PackageDetailPage').bind('show', function () {
+            changePageHeader(3);
+        });
+        $('#page3').bind('show', function () {
+            changePageHeader(4);
+        });
+        $('#page4').bind('show', function () {
+            if ("@ViewBag.Vas" == "2" || "@ViewBag.TopUp" == "1" || "@ViewBag.Vas" == "4") {
+                changePageHeader_Vas(3);
+            } else {
+                changePageHeader(5);
+            }
+        });
+        $('#SelectOntopPage').bind('show', function () {
+            changePageHeader_Vas(2);
+        });
+        $('#OntopDetailPage').bind('show', function () {
+            changePageHeader_Vas(2);
+        });
+
+        // Detecting IE
+        if ($('html').is('.lt-ie7, .lt-ie8, .lt-ie9')) {
+            oldIE = true;
+        }
+
+        if (oldIE) {
+            if (sessionStorage.getItem('detectedIE') != 'detected') {
+                var oldIENoticeMassage = 'เว็ปไซต์สามารถใช้งานได้ดีกับ Microsoft Internet Explorer 9 ขึ้นไป หรือ Google Chrome / Firefox เวอร์ชั่นล่าสุด',
+                oldIEBtnMessage = 'ตกลง';
+
+                if (language == 'en') {
+                    oldIENoticeMassage = 'This site is best viewed using Internet Explorer 9, Chrome, Safari and browser later.';
+                    oldIEBtnMessage = 'Okay';
+                }
+
+                sessionStorage.setItem('detectedIE', 'detected');
+                bootbox.dialog({
+                    message:
+                            "<p class='clearfix'></p>" +
+                            "<div class='add-border-rounded-green'>" +
+                                "<p class='clearfix'></p>" +
+                                "<h3 class='text-center'>" +
+                                oldIENoticeMassage +
+                                "</h3>" +
+                            "</div>" +
+                            "<p class='clearfix'></p>",
+                    buttons: {
+                        success: {
+                            label: oldIEBtnMessage,
+                            className: "btn-success",
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>

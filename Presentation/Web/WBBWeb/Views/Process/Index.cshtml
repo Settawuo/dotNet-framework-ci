@@ -1,0 +1,1345 @@
+﻿@using WBBWeb.Controllers;
+@using WBBWeb.Extension
+@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.QuickWinPanelModel
+
+@{
+    Layout = "~/Views/Shared/New_Layout.cshtml";
+
+    if (Session["EOS_COVERAGEMODEL"] != null)
+    {
+        string DataFromCoverage = Session["EOS_COVERAGEMODEL"] as String; ;
+        if (!string.IsNullOrEmpty(DataFromCoverage))
+        {
+            if (DataFromCoverage.IndexOf('|') != -1)
+            {
+                string[] DataFromCoverageArry = DataFromCoverage.Split('|');
+                ViewBag.PromotionCodeFBBxEOS = DataFromCoverageArry[1].ToString();
+                ViewBag.EOS_AccountTitle = DataFromCoverageArry[2].ToString();
+                ViewBag.EOS_CustomerName = DataFromCoverageArry[3].ToString();
+                ViewBag.EOS_OfficeTelNo = DataFromCoverageArry[4].ToString();
+                ViewBag.CARD_NOsFBBxEOS = DataFromCoverageArry[5].ToString();
+                ViewBag.LanguageEOS = DataFromCoverageArry[6].ToString();
+                ViewBag.FromFBBxEOS = "Y";
+                ViewBag.FromCoverageFBBxEOS = "Y";
+            }
+        }
+        Session["EOS_COVERAGEMODEL"] = null;
+    }
+
+    string L_TIMEOUT_MSG = "";
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var labelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        L_TIMEOUT_MSG = labelFBBTR001.Any(c => c.Name == "L_TIMEOUT_MSG") ? labelFBBTR001.FirstOrDefault(c => c.Name == "L_TIMEOUT_MSG").DisplayValue : "";
+    }
+
+    string L_TIMEOUT_VALUE = "";
+    string NON_RESIDENTIAL_NONRESFLAG_YES = "";
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        L_TIMEOUT_VALUE = FbbConstant.Any(f => f.Field == "L_TIMEOUT_VALUE") ? FbbConstant.First(f => f.Field == "L_TIMEOUT_VALUE").Validation : "60";
+        NON_RESIDENTIAL_NONRESFLAG_YES = FbbConstant.Any(f => f.Field == "NON_RESIDENTIAL_NONRESFLAG_YES") ? FbbConstant.First(f => f.Field == "NON_RESIDENTIAL_NONRESFLAG_YES").Validation : "";
+    }
+
+    var isSaveCommplete = false;
+    var productSubType = "";
+    var languagePage = "";
+    var lclose = "";
+    var lsave = "";
+    var lpopupsave = "";
+    var vas_flag = "";
+    var topUp = "";
+    string officeEnd = "";
+    //string L_REQUIRE_ID_CARD = "";
+    //string L_DOWNLOAD_DATA = "";
+    //string L_PHOTO_DOC = "";
+
+    string RegisterChannelSaveOrder = "";
+    string AutoCreateProspectFlag = "";
+    string OrderVerify = "";
+
+    string existingFlag = "";
+
+    string settimeout = "";
+
+    if (null != ViewBag.TopUp)
+    {
+        topUp = ViewBag.TopUp;
+    }
+
+    if (null != ViewBag.SaveSuccess)
+    {
+        isSaveCommplete = ViewBag.SaveSuccess;
+    }
+    if (null != ViewBag.SWifi)
+    {
+        productSubType = ViewBag.SWiFi;
+    }
+    if (null != ViewBag.LanguagePage)
+    {
+        languagePage = ViewBag.LanguagePage;
+    }
+    if (null != ViewBag.LCLOSE)
+    {
+        lclose = ViewBag.LCLOSE;
+    }
+    if (null != ViewBag.LSAVE)
+    {
+        lsave = ViewBag.LSAVE;
+    }
+    if (null != ViewBag.LPOPUPSAVE)
+    {
+        lpopupsave = ViewBag.LPOPUPSAVE;
+    }
+    if (null != ViewBag.officeEnd)
+    {
+        officeEnd = ViewBag.officeEnd;
+    }
+    var ESRIflag = "false";
+    if (null != ViewBag.ESRIflag)
+    {
+        ESRIflag = ViewBag.ESRIflag;
+    }
+
+    if (null != ViewBag.Vas)
+    {
+        vas_flag = ViewBag.Vas;
+        if (vas_flag == "") { vas_flag = "0"; }
+    }
+    if (null != ViewBag.ExistingFlag)
+    {
+        existingFlag = ViewBag.ExistingFlag;
+    }
+
+    var chkCoverage = false;
+    if (null != ViewBag.chkCoverage)
+    {
+        chkCoverage = ViewBag.chkCoverage;
+    }
+
+    string PromotionCodeFBBxEOS = "";
+    if (ViewBag.PromotionCodeFBBxEOS != null)
+    {
+        PromotionCodeFBBxEOS = ViewBag.PromotionCodeFBBxEOS;
+    }
+
+    string LanguageEOS = "";
+    if (ViewBag.LanguageEOS != null)
+    {
+        LanguageEOS = ViewBag.LanguageEOS;
+    }
+
+
+    string CheckShowMenuChangeService = "";
+    string CheckShowMenuChangeServiceMsg = "";
+
+    if (ViewBag.CheckShowMenuChangeService != null)
+    {
+        string[] CheckShowMenuChangeServiceData = ViewBag.CheckShowMenuChangeService.Split('|');
+        CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+        if (CheckShowMenuChangeService == "N")
+        {
+            CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+        }
+    }
+
+    string CheckPendingOrder = "";
+
+    if (ViewBag.CheckPendingOrder != null)
+    {
+        CheckPendingOrder = ViewBag.CheckPendingOrder;
+    }
+
+    string officer = "";
+    string saleChannel = "CUSTOMER"; //R21.5
+    if (null != ViewBag.officer)
+    {
+        officer = "1";
+        saleChannel = "OFFICER";
+    }
+    else
+    {
+        if (Session["OfficerModel"] != null)
+        {
+            officer = "1";
+            saleChannel = "OFFICER";
+        }
+    }
+
+    var reloadPage = "/Process";
+    string ErrorMsgNotPaid = "";
+
+    var popup3bberror = ViewBag.PopupMessageError;
+
+}
+
+<div class="i-hidden">
+    <input id="hdTransactionGuid" type="hidden" value="@Guid.NewGuid()" />
+
+</div>
+
+@using (Html.BeginForm("Index", "Process", FormMethod.Post, new { id = "iForm", enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    @functions{
+        public string GetAntiForgeryToken()
+        {
+            string cookieToken, formToken;
+            AntiForgery.GetTokens(null, out cookieToken, out formToken);
+            return cookieToken + "," + formToken;
+        }
+    }
+
+    @Html.HiddenFor(Model => Model.CoveragePanelModel.BundlingSpecialFlag, new { @id = "CoveragePanelModel_BUNDLINGSPECIALFLAG" })
+    @Html.Hidden("TopUp");
+    @Html.Hidden("SummaryPanelModel.VAS_FLAG");
+    @Html.Hidden("SummaryPanelModel.TOPUP");
+    @Html.Hidden("hdTransactionGuid");
+    @Html.HiddenFor(t => t.PruductCD_Content);
+    @Html.HiddenFor(t => t.ClientIP);
+    @Html.Hidden("IsAutoMapping");
+    @Html.Hidden("haveInstallPlayBoxAutoMapping");
+    @Html.Hidden("haveDiscountPlayBoxAutoMapping");
+    @Html.Hidden("haveFullHDAutoMapping");
+    @Html.Hidden("fullHDAutoMappingMsg");
+    @Html.Hidden("haveFullHD2AutoMapping");
+    @Html.Hidden("fullHD2AutoMappingMsg");
+    @Html.Hidden("haveInstallMonthVasAutoMapping");
+    @Html.Hidden("haveInstallFixedLineAutoMapping");
+    @Html.Hidden("haveDiscountFixedLineAutoMapping");
+    @Html.Hidden("haveBundlingAutoMapping");
+    @Html.Hidden("haveDiscountAutoMapping");
+    @Html.Hidden("haveFreeTVAutoMapping");
+    @Html.Hidden("haveSpeedBoostAutoMapping");
+    @Html.Hidden("SpeedBoostAutoMappingMsg");
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.RentalFlag, new { @id = "CustomerRegisterPanelModel_RentalFlag" });
+    @Html.HiddenFor(t => t.Entrancefee, new { @id = "Entrancefee" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.AccountCategory, new { @id = "CustomerRegisterPanelModel_AccountCategory" });
+    @Html.HiddenFor(t => t.CoveragePanelModel.Address.ZIPCODE_ID, new { @id = "CoveragePanelModel_Address_ZIPCODE_ID" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.CustomerSubtype, new { @id = "CustomerRegisterPanelModel_CustomerSubtype" });
+    @Html.Hidden("ExistingFlag", existingFlag);
+    //R18.1 FTTB Sell Router
+    @Html.Hidden("ActiveSellRouterFlag");
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.SelectFlagCheckPlugAndPlayFlow, new { @id = "SelectFlagCheckPlugAndPlayFlow" });
+    //R18.5 Dslam
+    @Html.Hidden("fromVDSL", false);
+    @Html.Hidden("checkShowtimeslotCaseDslam", "");
+    @Html.Hidden("messageNotShowtimeslot", "");
+
+    @Html.Hidden("VerificationToken", GetAntiForgeryToken())
+    //18.8 Premium Install
+    @Html.HiddenFor(a => a.CustomerRegisterPanelModel.SUB_ACCESS_MODE, new { @id = "CustomerRegisterPanelModel_SUB_ACCESS_MODE" });
+    @Html.HiddenFor(a => a.CustomerRegisterPanelModel.REQUEST_SUB_FLAG, new { @id = "CustomerRegisterPanelModel_REQUEST_SUB_FLAG" });
+    @Html.HiddenFor(a => a.CustomerRegisterPanelModel.PREMIUM_FLAG, new { @id = "CustomerRegisterPanelModel_PREMIUM_FLAG", @value = "N" });
+    @Html.HiddenFor(a => a.CustomerRegisterPanelModel.RELATE_MOBILE_SEGMENT, new { @id = "CustomerRegisterPanelModel_RELATE_MOBILE_SEGMENT" });
+    @Html.HiddenFor(a => a.CustomerRegisterPanelModel.REF_UR_NO, new { @id = "CustomerRegisterPanelModel_REF_UR_NO" });
+    @Html.HiddenFor(a => a.CustomerRegisterPanelModel.LOCATION_EMAIL_BY_REGION, new { @id = "CustomerRegisterPanelModel_LOCATION_EMAIL_BY_REGION" });
+    @Html.HiddenFor(a => a.CustomerRegisterPanelModel.EMP_NAME, new { @id = "CustomerRegisterPanelModel_EMP_NAME" });
+
+    //18.12
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.SffServiceYear, new { @id = "CustomerRegisterPanelModel_SffServiceYear" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.SubNetworkType, new { @id = "CustomerRegisterPanelModel_SubNetworkType" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.FlagDopa, new { @id = "CustomerRegisterPanelModel_FlagDopa" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.FlagFaceRecognition, new { @id = "CustomerRegisterPanelModel_FlagFaceRecognition" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.FlagTakePhoto, new { @id = "CustomerRegisterPanelModel_FlagTakePhoto" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.FlagBrowseFile, new { @id = "CustomerRegisterPanelModel_FlagBrowseFile" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.FlagVarifyDocuments, new { @id = "CustomerRegisterPanelModel_FlagVarifyDocuments" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.FlagDopaSubmit, new { @id = "CustomerRegisterPanelModel_FlagDopaSubmit", @value = "N" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.FlagFaceRecognitionSubmit, new { @id = "CustomerRegisterPanelModel_FlagFaceRecognitionSubmit", @value = "N" });
+
+    //19.2
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.MobilePrice, new { @id = "CustomerRegisterPanelModel_MobilePrice" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.Existing_Mobile, new { @id = "CustomerRegisterPanelModel_Existing_Mobile" });
+
+    //19.6 Mesh
+    @Html.HiddenFor(t => t.PayMentOrderID, new { @id = "PayMentOrderID" });
+    @Html.HiddenFor(t => t.PayMentMethod, new { @id = "PayMentMethod" });
+    @Html.HiddenFor(t => t.PayMentPointType, new { @id = "PayMentPointType" });
+    @Html.HiddenFor(t => t.PayMentRecurringChargeVAT, new { @id = "PayMentRecurringChargeVAT" });
+    @Html.Hidden("tmpDataSendSMS");
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.mesh_count, new { @id = "CustomerRegisterPanelModel_mesh_count" })
+
+    //19.6 Redcap
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.DownloadSpeed, new { @id = "CustomerRegisterPanelModel_DownloadSpeed" });
+
+    //19.7
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.RegisterChannelSaveOrder, new { @id = "RegisterChannelSaveOrder" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.AutoCreateProspectFlag, new { @id = "AutoCreateProspectFlag" });
+    @Html.HiddenFor(t => t.CustomerRegisterPanelModel.OrderVerify, new { @id = "OrderVerify" });
+
+    //20.1
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_SALE_CHANNEL, new { @id = "CoveragePanelModel_SAVEORDER_SALE_CHANNEL" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_OWNER_PRODUCT, new { @id = "CoveragePanelModel_SAVEORDER_OWNER_PRODUCT" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_PACKAGE_FOR, new { @id = "CoveragePanelModel_SAVEORDER_PACKAGE_FOR" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_REGION, new { @id = "CoveragePanelModel_SAVEORDER_REGION" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_PROVINCE, new { @id = "CoveragePanelModel_SAVEORDER_PROVINCE" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_DISTRICT, new { @id = "CoveragePanelModel_SAVEORDER_DISTRICT" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_SUB_DISTRICT, new { @id = "CoveragePanelModel_SAVEORDER_SUB_DISTRICT" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_SERENADE_FLAG, new { @id = "CoveragePanelModel_SAVEORDER_SERENADE_FLAG" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_FMPA_FLAG, new { @id = "CoveragePanelModel_SAVEORDER_FMPA_FLAG" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_CVM_FLAG, new { @id = "CoveragePanelModel_SAVEORDER_CVM_FLAG" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_FMC_SPECIAL_FLAG, new { @id = "CoveragePanelModel_SAVEORDER_FMC_SPECIAL_FLAG" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.EXISTING_MOBILE_FLAG, new { @id = "CoveragePanelModel_EXISTING_MOBILE_FLAG" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.USE_INPUT_MOBILE_ONLINE_QUERY, new { @id = "CoveragePanelModel_USE_INPUT_MOBILE_ONLINE_QUERY" });
+
+    //20.2
+    @Html.HiddenFor(model => model.CoveragePanelModel.GRID_ID, new { @id = "GRID_ID" })
+    @Html.HiddenFor(model => model.CoveragePanelModel.WTTX_MAXBANDWITH, new { @id = "WTTX_MAXBANDWITH" })
+    @Html.HiddenFor(model => model.CoveragePanelModel.WTTX_COVERAGE_RESULT, new { @id = "WTTX_COVERAGE_RESULT" })
+
+    //20.3 Service Level
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ServiceLevel, new { @id = "ServiceLevel" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ServiceLevel_Flag, new { @id = "ServiceLevel_Flag" })
+    @Html.Hidden("ServiceLevel_Initial")
+    @Html.Hidden("ServiceLevel_Flag_Initial")
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_INSTALL_DATE, new { @id = "L_INSTALL_DATE", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.AppointmentDate_Initial, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate_Initial", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.CurrentDate_Initial, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_CurrentDate_Initial", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.TimeSlotRegisterHR, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotRegisterHR", @value = "" })
+    @Html.Hidden("ServiceLevel_Action");
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.Online_Flag, new { @id = "Online_Flag" })
+
+    //20.3 Channel Report
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outTitle, new { @id = "outTitle" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outCompanyName, new { @id = "outCompanyName" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outDistChn, new { @id = "outDistChn" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outChnSales, new { @id = "outChnSales" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outShopType, new { @id = "outShopType" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outOperatorClass, new { @id = "outOperatorClass" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outASCTitleThai, new { @id = "outASCTitleThai" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outASCPartnerName, new { @id = "outASCPartnerName" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outMemberCategory, new { @id = "outMemberCategory" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outPosition, new { @id = "outPosition" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outLocationRegion, new { @id = "outLocationRegion" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outLocationSubRegion, new { @id = "outLocationSubRegion" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.THFirstName, new { @id = "THFirstName" })
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.THLastName, new { @id = "THLastName" })
+    //21.5 Pool Villa
+    @Html.HiddenFor(model => model.OfficerInfoPanelModel.outLocationProvince, new { @id = "outLocationProvince" })
+
+    @Html.HiddenFor(model => model.HdResultId);
+    @Html.HiddenFor(model => model.DataBypass_FlowFlag);
+    @Html.HiddenFor(model => model.DataBypass_Casecode);
+    @Html.HiddenFor(model => model.DataBypass_ShowTimeSlot);
+    @Html.HiddenFor(model => model.DataBypass_CasecodeMessage);
+    @Html.HiddenFor(model => model.DataBypass_BuildName);
+    @Html.HiddenFor(model => model.DataBypass_BuildNo);
+    @Html.HiddenFor(model => model.SffPromotiontCodeMeshSelect);
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.pbox_count, new { @id = "pBoxCount" });
+    @Html.Hidden("MobilePoints");
+    @Html.Hidden("InternetPoints");
+    RegisterChannelSaveOrder = "FBBWF";
+    AutoCreateProspectFlag = "N";
+    OrderVerify = "";
+
+    //20.5 Service Level
+    @Html.HiddenFor(t => t.CoveragePanelModel.Address.Region, new { @id = "CoveragePanelModel_Address_AreaRegion" });
+    //20.5 Non-Res Register Residential
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.Non_Res_Flag, new { @id = "Customer_NonResFlag", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.LINE_TEMP_ID, new { @id = "Customer_LINE_TEMP_ID", @value = "" });
+
+    @*R20.5 add by Aware : Atipon Wiparsmongkol*@
+    @Html.Hidden("ServiceLevel_Mesh");
+
+    @*R20.5 Service Level : Jirawadee*@
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ServiceLevel, new { @id = "CustomerRegisterPanelModel_ServiceLevel" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.Address.AddressId, new { @id = "CoveragePanelModel_Address_AddressId" });
+
+    @*20.8 Payment - mPay Super Duper*@
+    @Html.HiddenFor(model => model.SuperDuperProductName);
+    @Html.HiddenFor(model => model.SuperDuperServiceName);
+
+    @*21.3*@
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.StaffPrivilegeBypass_TransactionID, new { @id = "CustomerRegisterPanelModel_StaffPrivilegeBypass_TransactionID" });
+    @Html.HiddenFor(model => model.StaffPrivilegeBypass_TransactionID, new { @id = "StaffPrivilegeBypass_TransactionID" });
+    @Html.HiddenFor(model => model.StaffPrivilegeBypass_Channel, new { @id = "StaffPrivilegeBypass_Channel" });
+    @Html.HiddenFor(model => model.StaffPrivilegeBypass_Flag, new { @id = "StaffPrivilegeBypass_Flag" });
+    @*21.6 eApplication*@
+    @Html.Hidden("Install_Package_Duration");
+    @*21.8 Contract Device*@
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.TDMContractId, new { @id = "CustomerRegisterPanelModel_TDMContractId" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.TDMRuleId, new { @id = "CustomerRegisterPanelModel_TDMRuleId" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.TDMPenaltyId, new { @id = "CustomerRegisterPanelModel_TDMPenaltyId" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.TDMPenaltyGroupId, new { @id = "CustomerRegisterPanelModel_TDMPenaltyGroupId" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.Duration, new { @id = "CustomerRegisterPanelModel_Duration" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ContractFlag, new { @id = "CustomerRegisterPanelModel_ContractFlag" });
+
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ContractFlagFbb, new { @id = "CustomerRegisterPanelModel_ContractFlagFbb" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CountContractFbb, new { @id = "CustomerRegisterPanelModel_CountContractFbb" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.FBBLimitContract, new { @id = "CustomerRegisterPanelModel_FBBLimitContract" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ContractProfileCountFbb, new { @id = "CustomerRegisterPanelModel_ContractProfileCountFbb" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.FlagTDM, new { @id = "CustomerRegisterPanelModel_FlagTDM" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ContractID, new { @id = "CustomerRegisterPanelModel_ContractID" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ContractName, new { @id = "CustomerRegisterPanelModel_ContractName" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.PenaltyInstall, new { @id = "CustomerRegisterPanelModel_PenaltyInstall" });
+    @*21.10 MOU*@
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.FIBRE_ID, new { @id = "CustomerRegisterPanelModel_FIBRE_ID" });
+    @Html.HiddenFor(model => model.CoveragePanelModel.SAVEORDER_MOU_FLAG, new { @id = "CoveragePanelModel_SAVEORDER_MOU_FLAG" });
+    @Html.HiddenFor(model => model.OrderSubLine);
+    @Html.HiddenFor(model => model.OrderSubID);
+
+    //R23.05.2023 Created: THOTST49
+    @Html.HiddenFor(model => model.MobileNoRegister);
+    @Html.HiddenFor(model => model.IsCheckConsentTerm);
+    //R24.01 Check Fraud
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CHECK_FRAUD_INFO.FRAUD_SCORE, new { @id = "CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FRAUDSCORE", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CHECK_FRAUD_INFO.CEN_FRAUD_FLAG, new { @id = "CustomerRegisterPanelModel_CHECK_FRAUD_INFO_CEN_FRAUDFLAG", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CHECK_FRAUD_INFO.VERIFY_REASON, new { @id = "CustomerRegisterPanelModel_CHECK_FRAUD_INFO_VERIFYREASON", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CHECK_FRAUD_INFO.FRAUD_REASONS, new { @id = "CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FRAUDREASONS", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CHECK_FRAUD_INFO.NOTIFY_POPUP, new { @id = "CustomerRegisterPanelModel_CHECK_FRAUD_INFO_NOTIFYPOPUP", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CHECK_FRAUD_INFO.NOTIFY_MESSAGE, new { @id = "CustomerRegisterPanelModel_CHECK_FRAUD_INFO_NOTIFYMESSAGE", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CHECK_FRAUD_INFO.AUTO_CREATE_PROSPECT, new { @id = "CustomerRegisterPanelModel_CHECK_FRAUD_INFO_AUTOCREATEPROSPECT", @value = "" });
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.CHECK_FRAUD_INFO.FLAG_GO_NOGO, new { @id = "CustomerRegisterPanelModel_CHECK_FRAUD_INFO_FLAGGONOGO", @value = "" });
+
+    @*//R20.04 Data Privacy*@
+    @Html.Partial("~/Views/Shared/_DataPrivacy.cshtml");
+
+    if (vas_flag == "2" || topUp == "1" || vas_flag == "7")
+    {
+        string FullUrl = "";
+        if (Session["FullUrl"] != null)
+        {
+            FullUrl = Session["FullUrl"].ToString();
+        }
+        var controller = DependencyResolver.Current.GetService<ProcessController>();
+        var LovData = controller.GetScreenConfig("FBBOR041");
+        RegisterChannelSaveOrder = "WEB";
+        AutoCreateProspectFlag = "Y";
+        OrderVerify = "";
+        if (string.IsNullOrEmpty(existingFlag))
+        {
+            //Multiple Playbox
+            int countPlayboxTry;
+            int countPlaybox = int.TryParse(Model.CustomerRegisterPanelModel.pbox_count, out countPlayboxTry) ? int.Parse(Model.CustomerRegisterPanelModel.pbox_count) : 0;
+            if (countPlaybox > 0)
+            {
+                @Html.Partial("~/Views/Process/_SelectVasMutiplePlaybox.cshtml");
+            }
+            else
+            {
+                @Html.Partial("~/Views/Process/_SelectVas.cshtml");
+            }
+            @Html.Partial("~/Views/Process/_VasSummary.cshtml");
+            @Html.Partial("~/Views/Process/_RegisterSummaryVas.cshtml");
+            reloadPage = "/Process/Topup";
+            if (CheckShowMenuChangeService == "")
+            {
+                CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo);
+                string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+                CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+                if (CheckShowMenuChangeService == "N")
+                {
+                    if (CheckShowMenuChangeServiceData[1] != "")
+                    {
+                        CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+                    }
+                    else
+                    {
+                        CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+                    }
+                }
+            }
+        }
+        else if ((existingFlag == "PLAYBOX") || (existingFlag == "PLAYBOX:MENU"))
+        {
+            int countPlayboxTry;
+            int countPlaybox = int.TryParse(Model.CustomerRegisterPanelModel.pbox_count, out countPlayboxTry) ? int.Parse(Model.CustomerRegisterPanelModel.pbox_count) : 0;
+            if (countPlaybox > 0)
+            {
+                @Html.Partial("~/Views/Process/_SelectVasPlaybox.cshtml");
+            }
+            else
+            {
+                @Html.Partial("~/Views/Process/_selectVasPlayboxcheckbox.cshtml");
+            }
+            @Html.Partial("~/Views/Process/_VasSummary.cshtml");
+            @Html.Partial("~/Views/Process/_RegisterSummaryVas.cshtml");
+            reloadPage = "/Process/TopupPlaybox";
+            if (CheckShowMenuChangeService == "")
+            {
+                CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo);
+                string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+                CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+                if (CheckShowMenuChangeService == "N")
+                {
+                    if (CheckShowMenuChangeServiceData[1] != "")
+                    {
+                        CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+                    }
+                    else
+                    {
+                        CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+                    }
+                }
+            }
+        }
+        else if ((existingFlag == "MESH") || (existingFlag == "MESH:MENU"))
+        {
+            @Html.Partial("~/Views/Process/_SelectOntopMesh.cshtml");
+            @Html.Partial("~/Views/Process/_SelectTimeSlot_Mesh.cshtml");
+            @Html.Partial("~/Views/Process/_RegisterSummaryOntopMesh.cshtml");
+            @Html.Partial("~/Views/Process/_PayMentMesh.cshtml");
+            @Html.Partial("~/Views/Process/_MPayQrCode.cshtml");
+            settimeout = "Y";
+            reloadPage = "/Process/TopupMesh";
+            if (CheckShowMenuChangeService == "")
+            {
+                CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo, FullUrl);
+                string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+                CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+                if (CheckShowMenuChangeService == "N")
+                {
+                    if (CheckShowMenuChangeServiceData[1] != "")
+                    {
+                        CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+                    }
+                    else
+                    {
+                        CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+                    }
+                }
+            }
+            if (CheckShowMenuChangeService == "Y" && CheckPendingOrder == "")
+            {
+                CheckPendingOrder = controller.CheckPendingOrder(Model.CoveragePanelModel.P_MOBILE, "TOPUP_MESH", FullUrl);
+                ErrorMsgNotPaid = LovData.Where(t => t.Name == "ERROR_NOT_PAID").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_NOT_PAID").Select(t => t.DisplayValue).FirstOrDefault() : "";
+
+            }
+        }
+        else if ((existingFlag == "FIXLINE") || (existingFlag == "FIXLINE:MENU"))
+        {
+            @Html.Partial("~/Views/Process/_SelectVasFixline.cshtml");
+            @Html.Partial("~/Views/Process/_VasSummaryFixline.cshtml");
+            @Html.Partial("~/Views/Process/_RegisterSummaryVasFixline.cshtml");
+            RegisterChannelSaveOrder = "FBBWF";
+            AutoCreateProspectFlag = "N";
+            OrderVerify = "";
+            reloadPage = "/Process/TopUpFixedline";
+            if (CheckShowMenuChangeService == "")
+            {
+                CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo);
+                string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+                CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+                if (CheckShowMenuChangeService == "N")
+                {
+                    if (CheckShowMenuChangeServiceData[1] != "")
+                    {
+                        CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+                    }
+                    else
+                    {
+                        CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+                    }
+                }
+            }
+        }
+        else if ((existingFlag == "PLAYBOXREPLACE") || (existingFlag == "PLAYBOXREPLACE:MENU")) /*R22.03 TopupReplace*/
+        {
+            @Html.Partial("~/Views/Process/_SelectVasPBoxReplace.cshtml");
+            @Html.Partial("~/Views/Process/_RegisterSummaryPBoxReplace.cshtml");
+            reloadPage = "/Process/TopupReplace";
+            if (CheckShowMenuChangeService == "")
+            {
+                CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo);
+                string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+                CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+                if (CheckShowMenuChangeService == "N")
+                {
+                    if (CheckShowMenuChangeServiceData[1] != "")
+                    {
+                        CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+                    }
+                    else
+                    {
+                        CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+                    }
+                }
+            }
+        }
+
+        else if ((existingFlag == "IP_CAMERA") || (existingFlag == "IP_CAMERA:MENU"))
+        {
+            @Html.Partial("~/Views/Process/_SelectOntopIPCamera.cshtml");
+            @Html.Partial("~/Views/Process/_SidebarSummaryIPCamera.cshtml");
+            @Html.Partial("~/Views/Process/_SidebarButtonIPCamera.cshtml");
+            @Html.Partial("~/Views/Process/_SelectInstallTypeIPCamera.cshtml");
+            @Html.Partial("~/Views/Process/_SearchProfileIPCamera.cshtml");
+            @Html.Partial("~/Views/Process/_SelectTimeSlot_IPCamera.cshtml");
+            @Html.Partial("~/Views/Process/_RegisterSummaryOntopIPCamera.cshtml");
+            settimeout = "Y";
+            reloadPage = "/Process/TopupIPCamera";
+            if (CheckShowMenuChangeService == "")
+            {
+                CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo, FullUrl);
+                string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+                CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+                if (CheckShowMenuChangeService == "N")
+                {
+                    if (CheckShowMenuChangeServiceData[1] != "")
+                    {
+                        CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+                    }
+                    else
+                    {
+                        CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+                    }
+                }
+            }
+        }
+    }
+    else if (vas_flag == "4")
+    {
+        var controller = DependencyResolver.Current.GetService<ProcessController>
+            ();
+        var LovData = controller.GetScreenConfig("FBBOR041");
+        if (string.IsNullOrEmpty(existingFlag))
+        {
+            @Html.Partial("~/Views/Process/_SelectOntop.cshtml");
+            @Html.Partial("~/Views/Process/_RegisterSummaryOntopPlayBox.cshtml");
+            reloadPage = "/Process/Topup";
+            if (CheckShowMenuChangeService == "")
+            {
+                CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo);
+                string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+                CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+                if (CheckShowMenuChangeService == "N")
+                {
+                    if (CheckShowMenuChangeServiceData[1] != "")
+                    {
+                        CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+                    }
+                    else
+                    {
+                        CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+                    }
+                }
+            }
+        }
+        else if ((existingFlag == "INTERNET") || (existingFlag == "INTERNET:MENU"))
+        {
+            @Html.Partial("~/Views/Process/_SelectOntopInternet.cshtml");
+            @Html.Partial("~/Views/Process/_RegisterSummaryOntopInternet.cshtml");
+            reloadPage = "/Process/TopupInternet";
+            if (CheckShowMenuChangeService == "")
+            {
+                CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo);
+                string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+                CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+                if (CheckShowMenuChangeService == "N")
+                {
+                    if (CheckShowMenuChangeServiceData[1] != "")
+                    {
+                        CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+                    }
+                    else
+                    {
+                        CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+                    }
+                }
+            }
+        }
+        else if ((existingFlag == "PLAYBOX") || (existingFlag == "PLAYBOX:MENU"))
+        {
+            @Html.Partial("~/Views/Process/_SelectOntopPlaybox.cshtml");
+            @Html.Partial("~/Views/Process/_RegisterSummaryOntopPlayBox.cshtml");
+            reloadPage = "/Process/TopupPlaybox";
+            if (CheckShowMenuChangeService == "")
+            {
+                CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo);
+                string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+                CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+                if (CheckShowMenuChangeService == "N")
+                {
+                    if (CheckShowMenuChangeServiceData[1] != "")
+                    {
+                        CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+                    }
+                    else
+                    {
+                        CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+                    }
+                }
+            }
+        }
+    }
+    else if (topUp == "7")
+    {
+        @Html.Partial("~/Views/Process/_CheckCoverageEdit.cshtml");
+    }
+    else if (chkCoverage)
+    {
+        @Html.Partial("~/Views/Process/_CheckCoverage.cshtml");
+        @Html.Partial("~/Views/Process/_CoverageResult.cshtml");
+    }
+    else
+    {
+        @Html.Partial("~/Views/Process/_CheckCoverage.cshtml");
+        @Html.Partial("~/Views/Process/_CoverageResult.cshtml");
+        @Html.Partial("~/Views/Process/_SelectRouter.cshtml");
+        @Html.Partial("~/Views/Process/_SelectPackage.cshtml");
+        @Html.Partial("~/Views/Process/_PackageDetail.cshtml");
+        @Html.Partial("~/Views/Process/_SelectVasContentPlaybox.cshtml");
+        @Html.Partial("~/Views/Process/_VasSummaryContentPlaybox.cshtml");
+        @Html.Partial("~/Views/Process/_CustomerRegister.cshtml");
+        @Html.Partial("~/Views/Process/_RegisterSummary.cshtml");
+        @Html.Partial("~/Views/Process/_PrePrintform.cshtml");
+        settimeout = "Y";
+    }
+
+    //20.6 AI Chat Bot - Bypass
+    if (Model != null && !string.IsNullOrEmpty(Model.AIChatBotBypass_Channel))
+    {
+        RegisterChannelSaveOrder = Model.AIChatBotBypass_Channel;
+    }
+
+    if (Model != null && !string.IsNullOrEmpty(Model.StaffPrivilegeBypass_Channel))
+    {
+        RegisterChannelSaveOrder = Model.StaffPrivilegeBypass_Channel;
+    }
+}
+
+<div class="modal fade" id="basic-modal-content" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <div id="LastPopupMessage">
+                    </div>
+                    <h3 class="">
+                        @foreach (var rowpopupsave in DataConvertHelpers.ToDecodeList(lpopupsave))
+                        {
+                            @rowpopupsave<br />
+                        }
+                    </h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-success" onclick="DownloadPDF();">
+                            &nbsp; @lsave &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                        </button>
+                        &nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();Reload();">&nbsp; @lclose &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modolCheckFail" tabindex="-1" role="dialog" aria-labelledby="modal003_label" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupCheckFailMessage" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="Reload();">&nbsp; @lclose &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modolTimeout" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 id="LastPopupTimeoutMessage" class="text-center"></h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="Reload();">&nbsp; @lclose &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("Index", "FBBxEOS", FormMethod.Post, new { id = "iFormByPassEOS", enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    @Html.Hidden("Language", LanguageEOS);
+    @Html.Hidden("PromotionCode", PromotionCodeFBBxEOS);
+}
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+
+    $(document).ready(function () {
+
+        //window.location.replace("/CheckIn/Index");
+
+        var timeoutValue = 60000 * parseInt('@L_TIMEOUT_VALUE');
+        if ('@settimeout' == 'Y') {
+            setTimeout("ShowTimeout();", timeoutValue)
+        }
+        console.log("vas_flag : ", '@vas_flag');
+        if ('@vas_flag' == '4' || '@vas_flag' == '2' || '@vas_flag' == '0') {
+            if (window.parent.document.getElementById("EmpName") != null) {
+                var _EmpName = window.parent.document.getElementById("EmpName").value;
+                if (_EmpName.length > 0) {
+                    $("#CustomerRegisterPanelModel_EMP_NAME").val(_EmpName);
+                }
+            }
+        }
+
+        $("#RegisterChannelSaveOrder").val('@RegisterChannelSaveOrder');
+        $("#AutoCreateProspectFlag").val('@AutoCreateProspectFlag');
+        $("#OrderVerify").val('@OrderVerify');
+
+        //R21-2.19
+        if (sessionStorage.getItem('outCompanyName') != 'null') {
+            $("#outTitle").val(sessionStorage.getItem('outTitle'));
+            $("#outCompanyName").val(sessionStorage.getItem('outCompanyName'));
+            $("#outDistChn").val(sessionStorage.getItem('outDistChn'));
+            $("#outChnSales").val(sessionStorage.getItem('outChnSales'));
+            $("#outShopType").val(sessionStorage.getItem('outShopType'));
+            $("#outOperatorClass").val(sessionStorage.getItem('outOperatorClass'));
+            $("#outASCTitleThai").val(sessionStorage.getItem('outASCTitleThai'));
+            $("#outASCPartnerName").val(sessionStorage.getItem('outASCPartnerName'));
+            $("#outMemberCategory").val(sessionStorage.getItem('outMemberCategory'));
+            $("#outPosition").val(sessionStorage.getItem('outPosition'));
+            $("#outLocationRegion").val(sessionStorage.getItem('outLocationRegion'));
+            $("#outLocationSubRegion").val(sessionStorage.getItem('outLocationSubRegion'));
+            $("#THFirstName").val(sessionStorage.getItem('THFirstName'));
+            $("#THLastName").val(sessionStorage.getItem('THLastName'));
+            //21.5 Pool Villa
+            $("#outLocationProvince").val(sessionStorage.getItem('outLocationProvince'));
+        }
+
+        $('#LastPopupCheckFailMessage').html("");
+        if ('@vas_flag' == "2" || '@vas_flag' == "4" || '@topUp' == "1") {
+            if ('@string.IsNullOrEmpty(existingFlag)' == "False"
+                || ('@existingFlag' == "PLAYBOX") || ('@existingFlag' == "PLAYBOX:MENU")
+                || ('@existingFlag' == "FIXLINE") || ('@existingFlag' == "FIXLINE:MENU")
+                || ('@existingFlag' == "PLAYBOXREPLACE") || ('@existingFlag' == "PLAYBOXREPLACE:MENU")//R22.03 Topup Replace
+            ) {
+                if ('@CheckShowMenuChangeService' == "N") {
+                    $('#LastPopupCheckFailMessage').html("@CheckShowMenuChangeServiceMsg");
+                    $('#modolCheckFail').modal('show');
+                }
+            }
+
+            if (('@existingFlag' == "MESH") || ('@existingFlag' == "MESH:MENU")) {
+                if ('@CheckShowMenuChangeService' == "N") {
+                    $('#LastPopupCheckFailMessage').html("@CheckShowMenuChangeServiceMsg");
+                    $('#modolCheckFail').modal('show');
+                }
+                else if ('@CheckShowMenuChangeService' == "Y" && '@CheckPendingOrder' == "Y") {
+                    $('#LastPopupCheckFailMessage').html('@Html.Raw(ErrorMsgNotPaid)');
+                    $('#modolCheckFail').modal('show');
+                }
+            }
+            if (('@existingFlag' == "IP_CAMERA") || ('@existingFlag' == "IP_CAMERA:MENU")) {
+                if ('@CheckShowMenuChangeService' == "N") {
+                    $('#LastPopupCheckFailMessage').html("@CheckShowMenuChangeServiceMsg");
+                    $('#modolCheckFail').modal('show');
+                }
+            }
+        }
+    });
+
+    function ShowTimeout() {
+        $('#LastPopupTimeoutMessage').html('@Html.Raw(L_TIMEOUT_MSG)');
+        $('#modolTimeout').modal('show');
+    }
+
+    var esri_handle = function (callfestCheckFlag) {
+        LockScreen(true, "");
+        if ((sessionStorage.getItem("AisAirNumber") && sessionStorage.getItem("AisAirNumber") != "null")
+            && (sessionStorage.getItem("ID_CARD_NAMEs") && sessionStorage.getItem("ID_CARD_NAMEs") != "null")
+            && (sessionStorage.getItem("L_CARD_NOs") && sessionStorage.getItem("L_CARD_NOs") != "null")
+            && (sessionStorage.getItem("CoveragePanelModel_P_PrePostpiad") && sessionStorage.getItem("CoveragePanelModel_P_PrePostpiad") == "null")) {
+
+            $("#AisAirNumber").val(sessionStorage.getItem("AisAirNumber"));
+            $("#ID_CARD_NAMEs").val(sessionStorage.getItem("ID_CARD_NAMEs"));
+            $("#L_CARD_NOs").val(sessionStorage.getItem("L_CARD_NOs"));
+
+            $("#CoveragePanelModel_L_CONTACT_PHONE").val(sessionStorage.getItem("CoveragePanelModel_L_CONTACT_PHONE"));
+            $("#CoveragePanelModel_MobileSegment").val(sessionStorage.getItem("CoveragePanelModel_MobileSegment"));
+            $("#CoveragePanelModel_NetworkType").val(sessionStorage.getItem("CoveragePanelModel_NetworkType"));
+            $("#CoveragePanelModel_ChargeType").val(sessionStorage.getItem("CoveragePanelModel_ChargeType"));
+            $("#CustomerRegisterPanelModel_Project_name").val(sessionStorage.getItem("CustomerRegisterPanelModel_Project_name"));
+            $("#CoveragePanelModel_Serenade_Flag").val(sessionStorage.getItem("CoveragePanelModel_Serenade_Flag"));
+            $("#CustomerRegisterPanelModel_AccountCategory").val(sessionStorage.getItem("CustomerRegisterPanelModel_AccountCategory"));
+            $("#CustomerRegisterPanelModel_CustomerSubtype").val(sessionStorage.getItem("CustomerRegisterPanelModel_CustomerSubtype"));
+            sessionStorage.setItem("type", "AIS");
+            $("#CustomerRegisterPanelModel_SffServiceYear").val(sessionStorage.getItem("SffServiceYear"));
+            $("#CoveragePanelModel_SffServiceYear").val(sessionStorage.getItem("SffServiceYear"));
+            $("#CustomerRegisterPanelModel_SubNetworkType").val(sessionStorage.getItem("SubNetworkType"));
+            $("#CustomerRegisterPanelModel_SffRegisteredDate").val(sessionStorage.getItem("SffRegisteredDate"));
+            checkProcessAisAirnet();
+
+            $("[name*='SummaryPanelModel.VAS_FLAG']").val(sessionStorage.getItem("vas_flag"));
+            $("[name*='SummaryPanelModel.TOPUP']").val("@topUp");
+        }
+        else if ((sessionStorage.getItem("AisAirNumber") && sessionStorage.getItem("AisAirNumber") != "null")
+            //&& (sessionStorage.getItem("L_CARD_NOs") && sessionStorage.getItem("L_CARD_NOs") != "null")
+              && (sessionStorage.getItem("CoveragePanelModel_P_PrePostpiad") && sessionStorage.getItem("CoveragePanelModel_P_PrePostpiad") != "null")) {
+
+            $("#AisAirNumber").val(sessionStorage.getItem("AisAirNumber"));
+            $("#ID_CARD_NAMEs").val(sessionStorage.getItem("ID_CARD_NAMEs"));
+            $("#L_CARD_NOs").val(sessionStorage.getItem("L_CARD_NOs"));
+            $("#CoveragePanelModel_L_CONTACT_PHONE").val(sessionStorage.getItem("CoveragePanelModel_L_CONTACT_PHONE"));
+            $("#CoveragePanelModel_MobileSegment").val(sessionStorage.getItem("CoveragePanelModel_MobileSegment"));
+            $("#CoveragePanelModel_NetworkType").val(sessionStorage.getItem("CoveragePanelModel_NetworkType"));
+            $("#CoveragePanelModel_ChargeType").val(sessionStorage.getItem("CoveragePanelModel_ChargeType"));
+            $("#CustomerRegisterPanelModel_Project_name").val(sessionStorage.getItem("CustomerRegisterPanelModel_Project_name"));
+            $("#CoveragePanelModel_Serenade_Flag").val(sessionStorage.getItem("CoveragePanelModel_Serenade_Flag"));
+            $("#CustomerRegisterPanelModel_L_MOBILE").val(sessionStorage.getItem("AisAirNumber"));//ส่งค่าไป CustomerRegister
+            $("#L_MOBILE").val(sessionStorage.getItem("AisAirNumber"));//ส่งค่าไป CustomerRegister
+            $('#CoveragePanelModel_P_MOBILE').val(sessionStorage.getItem("AisAirNumber"));
+            $("#CustomerRegisterPanelModel_AccountCategory").val(sessionStorage.getItem("CustomerRegisterPanelModel_AccountCategory"));
+            $("#CustomerRegisterPanelModel_CustomerSubtype").val(sessionStorage.getItem("CustomerRegisterPanelModel_CustomerSubtype"));
+            $("#CustomerRegisterPanelModel_SffServiceYear").val(sessionStorage.getItem("SffServiceYear"));
+            $("#CoveragePanelModel_SffServiceYear").val(sessionStorage.getItem("SffServiceYear"));
+            $("#CustomerRegisterPanelModel_SubNetworkType").val(sessionStorage.getItem("SubNetworkType"));
+            $("#CustomerRegisterPanelModel_SffRegisteredDate").val(sessionStorage.getItem("SffRegisteredDate"));
+            if (!('@vas_flag' == "2" || '@topUp' == "1")) {
+                checkProcessAisAirnets();
+            }
+            $("[name*='SummaryPanelModel.VAS_FLAG']").val(sessionStorage.getItem("vas_flag"));
+            $("[name*='SummaryPanelModel.TOPUP']").val("@topUp");
+
+        }
+        else {
+
+            sessionStorage.setItem("type", "NEW");
+            $("#AisAirNumber").val(sessionStorage.getItem("AisAirNumber"));
+            $("#CoveragePanelModel_L_CONTACT_PHONE").val(sessionStorage.getItem("CoveragePanelModel_L_CONTACT_PHONE"));
+            $("#CustomerRegisterPanelModel_L_MOBILE").val(sessionStorage.getItem("AisAirNumber"));//ส่งค่าไป CustomerRegister
+            if ($('#CoveragePanelModel_P_MOBILE').val() == null || $('#CoveragePanelModel_P_MOBILE').val() == "") {
+                $('#CoveragePanelModel_P_MOBILE').val(sessionStorage.getItem("AisAirNumber"));
+            }
+            $("#L_MOBILE").val(sessionStorage.getItem("AisAirNumber"));//ส่งค่าไป CustomerRegister
+
+            $("[name*='SummaryPanelModel.VAS_FLAG']").val(sessionStorage.getItem("vas_flag"));
+            //$("[name*='SummaryPanelModel.VAS_FLAG']").val("@vas_flag");
+            $("[name*='SummaryPanelModel.TOPUP']").val("@topUp");
+            $("[name*='hdTransactionGuid']").val($("#hdTransactionGuid").val());
+        }
+
+        if(sessionStorage.getItem("CustomerRegisterPanelModel_RELATE_MOBILE_SEGMENT") && sessionStorage.getItem("CustomerRegisterPanelModel_RELATE_MOBILE_SEGMENT") != "null")
+        {
+                $("#CustomerRegisterPanelModel_RELATE_MOBILE_SEGMENT").val(sessionStorage.getItem("CustomerRegisterPanelModel_RELATE_MOBILE_SEGMENT"));
+        }
+
+        if (callfestCheckFlag == 'Y') {
+            $("#page1").hide();
+        }
+        else {
+            $("#page1").hide();
+            $("#page2").show();
+        }
+    }
+
+    $(function () {
+        //20.5 Non-Res Register Residential
+        $("#Customer_NonResFlag").val(sessionStorage.getItem("Customer_NonResFlag"));
+
+        if ("@ESRIflag" == "true") {
+            esri_handle('@Model.CallfeascheckFlag');
+        }
+        else if ("@ESRIflag" == "false" && (sessionStorage.getItem("AisAirNumber") && sessionStorage.getItem("AisAirNumber") != "null")
+            //&& (sessionStorage.getItem("L_CARD_NOs") && sessionStorage.getItem("L_CARD_NOs") != "null")
+            && (sessionStorage.getItem("CoveragePanelModel_P_PrePostpiad") && sessionStorage.getItem("CoveragePanelModel_P_PrePostpiad") != "null")) {
+
+            console.log("TYPE NOT NEW = ", sessionStorage.getItem("AisAirNumber"));
+
+            $("#AisAirNumber").val(sessionStorage.getItem("AisAirNumber"));
+            $("#ID_CARD_NAMEs").val(sessionStorage.getItem("ID_CARD_NAMEs"));
+            $("#L_CARD_NOs").val(sessionStorage.getItem("L_CARD_NOs"));
+
+            $("#CoveragePanelModel_L_CONTACT_PHONE").val(sessionStorage.getItem("CoveragePanelModel_L_CONTACT_PHONE"));
+            $("#CoveragePanelModel_MobileSegment").val(sessionStorage.getItem("CoveragePanelModel_MobileSegment"));
+            $("#CoveragePanelModel_NetworkType").val(sessionStorage.getItem("CoveragePanelModel_NetworkType"));
+            $("#CoveragePanelModel_ChargeType").val(sessionStorage.getItem("CoveragePanelModel_ChargeType"));
+            $("#CustomerRegisterPanelModel_Project_name").val(sessionStorage.getItem("CustomerRegisterPanelModel_Project_name"));
+            $("#CustomerRegisterPanelModel_L_MOBILE").val(sessionStorage.getItem("AisAirNumber"));//ส่งค่าไป CustomerRegister
+            $("#L_MOBILE").val(sessionStorage.getItem("AisAirNumber"));//ส่งค่าไป CustomerRegister
+            $('#CoveragePanelModel_P_MOBILE').val(sessionStorage.getItem("AisAirNumber"));
+            $("#CustomerRegisterPanelModel_AccountCategory").val(sessionStorage.getItem("CustomerRegisterPanelModel_AccountCategory"));
+            $("#CustomerRegisterPanelModel_CustomerSubtype").val(sessionStorage.getItem("CustomerRegisterPanelModel_CustomerSubtype"));
+            $("#CustomerRegisterPanelModel_SffServiceYear").val(sessionStorage.getItem("SffServiceYear"));
+            $("#CoveragePanelModel_SffServiceYear").val(sessionStorage.getItem("SffServiceYear"));
+            $("#CustomerRegisterPanelModel_SubNetworkType").val(sessionStorage.getItem("SubNetworkType"));
+            $("#CustomerRegisterPanelModel_SffRegisteredDate").val(sessionStorage.getItem("SffRegisteredDate"));
+            if (!('@vas_flag' == "2" || '@topUp' == "1")) {
+                checkProcessAisAirnets();
+            }
+
+            $("[name*='SummaryPanelModel.VAS_FLAG']").val(sessionStorage.getItem("vas_flag"));
+            $("[name*='SummaryPanelModel.TOPUP']").val("@topUp");
+        }
+        else {
+            console.log("TYPE NEW = ", sessionStorage.getItem("AisAirNumber"));
+
+            sessionStorage.setItem("type", "NEW");
+            $("#AisAirNumber").val(sessionStorage.getItem("AisAirNumber"));
+            $("#CoveragePanelModel_L_CONTACT_PHONE").val(sessionStorage.getItem("CoveragePanelModel_L_CONTACT_PHONE"));
+            $("#CustomerRegisterPanelModel_L_MOBILE").val(sessionStorage.getItem("AisAirNumber"));//ส่งค่าไป CustomerRegister
+            $("#L_MOBILE").val(sessionStorage.getItem("AisAirNumber"));//ส่งค่าไป CustomerRegister
+            if ($('#CoveragePanelModel_P_MOBILE').val() == null || $('#CoveragePanelModel_P_MOBILE').val() == "") {
+                $('#CoveragePanelModel_P_MOBILE').val(sessionStorage.getItem("AisAirNumber"));
+            }
+            $("#CustomerRegisterPanelModel_AccountCategory").val(sessionStorage.getItem("CustomerRegisterPanelModel_AccountCategory"));
+            $("#CustomerRegisterPanelModel_CustomerSubtype").val(sessionStorage.getItem("CustomerRegisterPanelModel_CustomerSubtype"));
+            $("#CustomerRegisterPanelModel_SffServiceYear").val(sessionStorage.getItem("SffServiceYear"));
+            $("#CoveragePanelModel_SffServiceYear").val(sessionStorage.getItem("SffServiceYear"));
+            $("#CustomerRegisterPanelModel_SubNetworkType").val(sessionStorage.getItem("SubNetworkType"));
+            $("#CustomerRegisterPanelModel_SffRegisteredDate").val(sessionStorage.getItem("SffRegisteredDate"));
+        }
+
+        //R20.5 add by Aware : Atipon Wiparsmongkol
+        $("#ServiceLevel_Mesh").val($("#ServiceLevel").val());
+
+        //20.3 Service Level
+        if ("@ViewBag.IsSetServiceLevel" == "") {
+            $("#ServiceLevel_Action").val(sessionStorage.getItem("ServiceLevel_Action"));
+            $("#ServiceLevel").val(sessionStorage.getItem("ServiceLevel"));
+            $("#ServiceLevel_Flag").val(sessionStorage.getItem("ServiceLevel_Flag"));
+            $("#ServiceLevel_Initial").val(sessionStorage.getItem("ServiceLevel"));
+            $("#ServiceLevel_Flag_Initial").val(sessionStorage.getItem("ServiceLevel_Flag"));
+        } else {
+            $("#ServiceLevel_Action").val("");
+            $("#ServiceLevel").val("");
+            $("#ServiceLevel_Flag").val("");
+            $("#ServiceLevel_Initial").val("");
+            $("#ServiceLevel_Flag_Initial").val("");
+        }
+
+        $("[name*='SummaryPanelModel.VAS_FLAG']").val(sessionStorage.getItem("vas_flag"));
+        //$("[name*='SummaryPanelModel.VAS_FLAG']").val("@vas_flag");
+        $("[name*='SummaryPanelModel.TOPUP']").val("@topUp");
+        $("[name*='hdTransactionGuid']").val($("#hdTransactionGuid").val());
+
+
+        //R24.04 Add loading block screen on /topup, /topupinternet and /topupmesh by max kunlp885
+            LockScreen(false)
+        //end R24.04 Add loading block screen on /topup, /topupinternet and /topupmesh by max kunlp885
+    });
+
+    function checkProcessAisAirnets() {
+        $("#chkTypePass").val("");
+        $("#tAisAirNumber").val("");
+        $("#tL_CARD_NOs").val("");
+        $("#tID_CARD_NAMEs").val("");
+        $("#tMooban").val("");
+        $("#SffProfileLogID").val("");
+
+        sessionStorage.setItem("AisAirNumber", $("#AisAirNumber").val());
+
+        $.ajax({
+            url: '/Process/evESeServiceQueryMassCommonAccountInfo',
+            data: {
+                mobileNo: codefbb.fbbMessage($("#AisAirNumber").val()),
+                SubNetworkType: $("#CoveragePanelModel_ChargeType").val(),
+                idCardNo: $("#Customer_NonResFlag").val() == "@NON_RESIDENTIAL_NONRESFLAG_YES" ? base64_decode(sessionStorage.getItem("L_CARD_NO_2")) : $("#L_CARD_NOs").val(),
+                idCardType: $("#Customer_NonResFlag").val() == "@NON_RESIDENTIAL_NONRESFLAG_YES" ? base64_decode(sessionStorage.getItem("L_CARD_TYPE")) : $("#ID_CARD_NAMEs").val()
+            },
+            dataType: "json",
+            type: 'POST',
+            //async: false,
+            success: function (response) {
+                var data = response.data;
+                //debugger;
+                $("#dataSFF").val(data.errorMessage + " ,Full Error: " + data.outErrorMessage);
+                if (data.errorMessage == "") {
+
+                    $.ajax({
+                        url: '/Process/GetProcessAisAirnets',
+                        data: { key: data.GUIDKEY, },
+                        dataType: "json",
+                        type: 'POST',
+                        //async: false,
+                        success: function (response) {
+                            var data = response.data;
+
+                            $("#HdAddTriple").val(data.vataddTripleplay);
+                            if ("@ViewBag.Vas" == "6") { /// stafff มองไม่เห็น tripleplay
+                                $("#HdAddTriple").val('N');
+                            }
+
+                            var twName = "";
+                            var bdName = "";
+
+                            if ((data.outMooban != undefined && data.outMooban != null && data.outMooban != "")
+                                    || data.outBuildingName == undefined
+                                    || data.outBuildingName == null
+                                    || data.outBuildingName == "") {
+                                onBuildChange();
+                                return;
+
+                                $("#R_OTHER").prop("checked", false);
+                                $("#R_BUILD").prop("checked", true);
+                                $("#R_MOOBAN").prop("checked", false);
+                                $("#divTower").hide();
+                                $("#divBaan").show();
+                                $("#tMooban").val(data.outMooban);
+                                $("#Mooban1").val("0");
+                                $("#Mooban2").typeahead("val", data.outMooban);
+                                selected_building_obj.building_name = data.outMooban;
+
+                                getZipCode(undefined, bdName, data.outProvince, data.outAmphur, data.outTumbol, data.outMooban, data.outBuildingName);
+                                getProvince(data.outProvince);
+                                onProvinceChangeNew(data.outAmphur, data.outProvince);
+                                onAmphurChangeNew(data.outAmphur, data.outTumbol, data.outProvince);
+                                $("#RD_L_LAT_LONG").removeAttr("disabled");
+                                $("#L_SPECIFIC_LOC222").removeAttr("disabled");
+                            }
+                            else {
+
+                                if (data.outBuildingName != undefined && data.outBuildingName != null && data.outBuildingName != "") {
+                                }
+                                else {
+                                    data.outBuildingName = "";
+                                }
+                                var twSp = data.outBuildingName.split(' ');
+                                bdName = twSp[twSp.length - 1];
+                                twName = data.outBuildingName.replace(" " + bdName, "");
+                                if (bdName.length > 3) {
+                                    twName += " " + bdName;
+                                    bdName = "";
+                                }
+
+                                $("#R_MOOBAN").prop("checked", false);
+                                $("#R_OTHER").prop("checked", false);
+                                $("#R_BUILD").prop("checked", true);
+
+                                getProvince(data.outProvince);
+                                onProvinceChangeNew(data.outAmphur, data.outProvince);
+                                onAmphurChangeNew(data.outAmphur, data.outTumbol, data.outProvince);
+
+                                getZipCode(twName, bdName, data.outProvince, data.outAmphur, data.outTumbol);
+                                $("#CoveragePanelModel_Address_L_BUILD_NAME_Hied").typeahead("val", twName);
+
+                                selected_building_obj.building_name = twName;
+                                $("#CoveragePanelModel_Address_L_BUILD_NO_Hied").val(bdName);
+
+                            }
+                            $("#CoveragePanelModel_Address_L_FLOOR").val(data.outFloor);
+                            $("#CoveragePanelModel_Address_L_HOME_NUMBER_1").val(data.outHouseNumber);
+                            $("#CoveragePanelModel_Address_L_MOO").val(data.outMoo);
+                            $("#CoveragePanelModel_Address_L_SOI").val(data.outSoi);
+                            $("#CoveragePanelModel_Address_L_ROAD").val(data.outStreetName);
+
+                            $("#L_EMAIL").val(data.outEmail);
+                            $("#chkTypePass").val("1");
+
+
+                            if ($("#chkTypePass").val() != "1") {
+                                resetBody();
+                            }
+                            $("#cvrbody").show();
+                            $("#cvrbodybtn").show();
+                            $("#cvrbodyno").hide();
+                            $("#cvrbodynobtn").hide();
+
+                            $("#tAisAirNumber").val($("#AisAirNumber").val());
+                            $("#tL_CARD_NOs").val($("#L_CARD_NOs").val());
+                            $("#tID_CARD_NAMEs").val($("#ID_CARD_NAMEs").val());
+                            $("#L_CARD_NO").val($("#tL_CARD_NOs").val());
+                            $("#tCardType").val(data.cardType);
+                            $("#CoveragePanelModel_BA_ID").val(data.outBillingAccountNumber);
+                            $("#CoveragePanelModel_CA_ID").val(data.outAccountNumber);
+                            $("#CoveragePanelModel_SA_ID").val(data.outServiceAccountNumber);
+                            $("#CoveragePanelModel_P_MOBILE").val($("#AisAirNumber").val());
+                            $("#CoveragePanelModel_SffProductName").val(data.outProductName);
+                            $("#CoveragePanelModel_SffServiceYear").val(data.outDayOfServiceYear);
+                            $("#tTitle").val(data.outTitle);
+                            $("#CoveragePanelModel_BillingSystem").val(data.outBillingSystem);
+
+
+                            var nst = $("#tAisAirNumber").val().substr(0, 1);
+                            if (nst == "0") {
+                                $("#L_MOBILE").val($("#tAisAirNumber").val());
+                            }
+
+                            $("#tDD").val("");
+                            $("#tMM").val("");
+                            $("#tYY").val("");
+
+                            $("#SffProfileLogID").val(data.SffProfileLogID);
+                            $("#IsAWNProduct").val(data.IsAWNProduct);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function base64_decode(str) {
+        if (window.atob) // Internet Explorer 10 and above
+            return decodeURIComponent(escape(window.atob(str)));
+        else {
+            // Cross-Browser Method (compressed)
+
+            // Create Base64 Object
+            var Base64 = { _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", encode: function (e) { var t = ""; var n, r, i, s, o, u, a; var f = 0; e = Base64._utf8_encode(e); while (f < e.length) { n = e.charCodeAt(f++); r = e.charCodeAt(f++); i = e.charCodeAt(f++); s = n >> 2; o = (n & 3) << 4 | r >> 4; u = (r & 15) << 2 | i >> 6; a = i & 63; if (isNaN(r)) { u = a = 64 } else if (isNaN(i)) { a = 64 } t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a) } return t }, decode: function (e) { var t = ""; var n, r, i; var s, o, u, a; var f = 0; e = e.replace(/[^A-Za-z0-9\+\/\=]/g, ""); while (f < e.length) { s = this._keyStr.indexOf(e.charAt(f++)); o = this._keyStr.indexOf(e.charAt(f++)); u = this._keyStr.indexOf(e.charAt(f++)); a = this._keyStr.indexOf(e.charAt(f++)); n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2; i = (u & 3) << 6 | a; t = t + String.fromCharCode(n); if (u != 64) { t = t + String.fromCharCode(r) } if (a != 64) { t = t + String.fromCharCode(i) } } t = Base64._utf8_decode(t); return t }, _utf8_encode: function (e) { e = e.replace(/\r\n/g, "\n"); var t = ""; for (var n = 0; n < e.length; n++) { var r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r) } else if (r > 127 && r < 2048) { t += String.fromCharCode(r >> 6 | 192); t += String.fromCharCode(r & 63 | 128) } else { t += String.fromCharCode(r >> 12 | 224); t += String.fromCharCode(r >> 6 & 63 | 128); t += String.fromCharCode(r & 63 | 128) } } return t }, _utf8_decode: function (e) { var t = ""; var n = 0; var r = c1 = c2 = 0; while (n < e.length) { r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r); n++ } else if (r > 191 && r < 224) { c2 = e.charCodeAt(n + 1); t += String.fromCharCode((r & 31) << 6 | c2 & 63); n += 2 } else { c2 = e.charCodeAt(n + 1); c3 = e.charCodeAt(n + 2); t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63); n += 3 } } return t } }
+            // Encode the String
+            return decodeURIComponent(escape(Base64.decode(str)));
+        }
+    }
+
+    </text>)
+</script>
+
+<script type="text/javascript">
+    @Html.JsMinify(
+    @<text>
+    //script Adobe Analytic
+    var digitalData = {};
+    digitalData.page = {};
+    digitalData.page.pageInfo = {};
+
+    var FlagOntopSP = false;
+    var ie = (function () {
+        var undef,
+            v = 3,
+            div = document.createElement('div'),
+            all = div.getElementsByTagName('i');
+        while (
+            div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',
+            all[0]
+        );
+        return v > 4 ? v : undef;
+    }());
+
+
+    function post(path, params, method) {
+        method = method || "post";
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function get(path, params, method) {
+        method = method || "get";
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+
+    </text>)
+
+    function loadScript(url, callback) {
+        var script = document.createElement("script")
+        script.type = "text/javascript";
+        if (script.readyState) {  //IE
+            script.onreadystatechange = function () {
+                if (script.readyState === "loaded" || script.readyState === "complete") {
+                    script.onreadystatechange = null;
+                    callback();
+                }
+            };
+        } else {  //Others
+            script.onload = function () {
+                callback();
+            };
+        }
+
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
+    }
+
+    function DisposeCache() {
+
+        $.ajax({
+            url: '/Process/DisposeCache',
+            data: {},
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function Reload() {
+        if ('@officer' != "" && "@reloadPage" == "/Process") {
+
+            $.ajax({
+                type: "POST",
+                url: "/Process/CheckOfficerTimeOut",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data) {
+                        window.location.href = "/Process";
+                    }
+                    else {
+                        window.location.href = "/Officer/Index";
+                    }
+                }
+            });
+
+        }
+        else
+        {
+            window.location.href = "@reloadPage";
+        }
+    }
+
+    function sortJSON(data, key, way) {
+        return data.sort(function (a, b) {
+            var x = a[key]; var y = b[key];
+            if (way === '123') { return ((x < y) ? -1 : ((x > y) ? 1 : 0)); }
+            if (way === '321') { return ((x > y) ? -1 : ((x < y) ? 1 : 0)); }
+        });
+    }
+
+
+</script>

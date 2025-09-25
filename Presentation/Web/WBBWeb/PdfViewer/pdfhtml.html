@@ -1,0 +1,72 @@
+﻿<button style="float:right; width:50px; height:50px; margin-right:1%" id="printbutton" onclick="printHTML()" >Print</button>
+<div id="printContainer">
+    
+</div>
+<script src="js/jquery-2.1.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+
+    function getDataUri(url, callback) {
+        var image = new Image();
+
+        image.onload = function () {
+            var canvas = document.createElement('canvas');
+            canvas.width = this.naturalWidth;
+            canvas.height = this.naturalHeight;
+            canvas.getContext('2d').drawImage(this, 0, 0);
+
+            callback(canvas.toDataURL('image/jpg'));
+        };
+
+        image.src = url;
+    }
+
+    getDataUri('/Images/logo_awn.jpg', function (dataUri) {
+        $("#header1").attr("src", dataUri);
+        $("#header2").attr("src", dataUri);
+    });
+
+    function QueryGeneratePDFApp() {
+        $.ajax({
+            type: "GET",
+            url: "/Process/QueryGeneratePDFApp",
+            dataType: "json",
+            success: function (data) {
+                //var pdfAppData = JSON.parse(data)
+                //console.log("pdfAppData from SESSION", pdfAppData);
+
+                $("#printContainer").html(data);
+                $("#prePrintTable").css("font-size", "16px");
+
+                getDataUri('/Images/aisFibre.JPG', function (dataUri) {
+                    $("#imgFibre").attr("src", dataUri);
+                });
+
+                if($("#Sign").html() == "{Sign}")
+                    $("#Sign").html("<img id='signature-pad' style='width: 100%; height:80px' src=''>");
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Process/getPDFSignature",
+                    dataType: "json",
+                    success: function (data) {
+                        var PDFSignature = JSON.parse(data)
+                        console.log("GetPDFPlugAndPlay from SESSION", PDFSignature)
+                        $("#signature-pad").attr("src", PDFSignature.SIGNATURE1);
+
+                    }
+                });
+
+            }
+        });
+    }
+    QueryGeneratePDFApp();
+
+    if (typeof aisNative == "undefined" || typeof aisNative == "" || typeof aisNative == null) {
+        $("#printbutton").hide();
+    }
+
+    function printHTML() {
+        aisNative.printToNetwork($("#printContainer").html())
+    }
+</script>

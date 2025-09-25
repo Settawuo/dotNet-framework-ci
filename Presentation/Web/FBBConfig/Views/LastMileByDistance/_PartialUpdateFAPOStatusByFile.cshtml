@@ -1,0 +1,122 @@
+﻿@{
+    string B_CONFIRM = "CONFIRM";
+    string B_CLOSE = "CLOSE";
+    string B_EXPORT = "EXPORT Template";
+}
+
+<div style="padding: 15px;">
+    <div class="row">
+        <label>Import File</label>
+        @(Html.Kendo().Upload()
+              .Name("fapoLastMilefile")
+              .HtmlAttributes(new
+              {
+                  accept = ".csv, text/csv, application/csv"
+              })
+              .Async(a => a
+                  .Save("FapoLastMilefile_Save", "LastMileByDistance")
+                  .Remove("FapoLastMilefile_Remove", "LastMileByDistance")
+                  .AutoUpload(true))
+              .Multiple(false)
+              .Events(e => e.Success("onFapoLastMilefileSuccess"))
+              .Events(e => e.Error("onFapoLastMilefileError"))
+        )
+        <div class="i-fg-data-entry-validation" id="validatefor-fapoLastMilefile"></div>
+    </div>
+    <div class="row i-gap-top-1">
+        <div class="i-text-align-center">
+            <a id="btnCancelUpdateFAPOStatusByFile" class="btn btn-danger"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@B_CLOSE</a>
+            <a id="btnExportTemplate" class="btn btn-success"><i class="fa fa-file-excel-o fa-lg"></i>&nbsp;&nbsp;@B_EXPORT</a>
+            <a id="btnConfirmUpdateFAPOStatusByFile" class="btn btn-success"><i class="fa fa-check-square-o fa-lg"></i>&nbsp;&nbsp;@B_CONFIRM</a>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnConfirmUpdateFAPOStatusByFile").on('click', function () {
+            submitUpdateSCMStatusByFile();
+        });
+
+        $("#btnCancelUpdateFAPOStatusByFile").on('click', function () {
+            resetUpdateFapoStatusByFile();
+        });
+      //  $("#btnExportTemplate").attr("disabled", true);
+        $("#btnExportTemplate").on('click', function () {
+            ExportTemple();
+        });
+
+    });
+
+    function resetUpdateFapoStatusByFile() {
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $("#validatefor-fapoLastMilefile").html("");
+        $("#UpdateStatusByFileConfig").data("kendoWindow").close();
+    }
+    function ExportTemple() {
+        var Status ="";
+        window.open("/LastMileByDistance/ExportSample?Status=" + Status + "");
+    }
+
+    function submitUpdateSCMStatusByFile() {
+        if (!ValidationUpdateFapoStatusbyFileValue()) { return; }
+
+        var data = JSON.stringify({
+            "status": "",
+            "fileName": $(".k-filename").text()
+        });
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            url: "/LastMileByDistance/LastMileByDistanceUpdateByFile",
+            data: data,
+            async: false,
+            dataType: "json",
+            success: function (response) {
+                if (response) {
+                    resetUpdateFapoStatusByFile();
+                    if (response === "Update file success.") {
+                        showFeedback("success", response, "System Information");
+                    } else {
+                        showFeedback("error", response, "System Information");
+                    }
+                }
+            },
+            failure: function (msg) {
+                $("#validatefor-fapoLastMilefile").html(ValidationIcon() + msg);
+            }
+
+        });
+    }
+
+    function onFapoLastMilefileSuccess(e) {
+        $(".k-filename").text(e.response.fileName);
+        if (!e.response.status) {
+            $("#validatefor-fapoLastMilefile").html(ValidationIcon() + e.response.message);
+        } else {
+            $("#validatefor-fapoLastMilefile").html("");
+        }
+    };
+
+    function onFapoLastMilefileError(e) {
+        if (!e.response.status) {
+            $("#validatefor-fapoLastMilefile").html(ValidationIcon() + e.response.message);
+        }
+    };
+
+    function ValidationUpdateFapoStatusbyFileValue() {
+        var error = true;
+        if ($("#validatefor-fapoLastMilefile").html()) {
+            error = false;
+        }
+
+        if (!$(".k-filename").text()) {
+            $("#validatefor-fapoLastMilefile").html(ValidationIcon() + "Please upload file.");
+            error = false;
+        }
+
+        return error;
+    }
+</script>

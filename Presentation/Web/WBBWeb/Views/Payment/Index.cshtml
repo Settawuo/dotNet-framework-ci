@@ -1,0 +1,251 @@
+﻿@using System.Web.UI.WebControls
+@using WBBEntity.PanelModels
+@using WBBWeb.Extension
+@model WBBEntity.PanelModels.ExWebServiceModels.PmModleDetailResponse
+@{
+    Layout = "~/Views/Shared/_LayoutPaymentAndReportProblem.cshtml";
+    //Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutPaymentAndReportProblem.cshtml";
+    var lHeaderPayment = "ชำระค่าบริการ";
+    var lSubHeaderPayment = "ค่าบริการของคุณ";
+    var lInternetNo = "หมายเลขอินเทอร์เน็ต";
+    var lAmount = "ค่าบริการรอบบิลนี้";
+    var lCurrentText = "บาท";
+    var lDueDate = "วันครบกำหนดชำระ";
+    var lMpay = "mPAY";
+    var lCredit = "บัตรเครดิต";
+
+    //mPay
+    var valmPayUrl = "";
+    var valmPayMode = "";
+    var valmPayMethod = "";
+    var valmPayServiceId = "";
+    //var valmPayRef1 = "";
+    var valmPayRef2 = "";
+    var valmPayUsername = "";
+    //var valmPayPassword = "";
+    var valmPayPW = "";
+
+
+    //Credit
+    var valCreditUrl = "";
+    var valCreditMode = "";
+    var valCreditMerchantId = "";
+    var valCreditServiceId = "";
+    //var valCreditRef1 = "";
+    var valCreditRef2 = "";
+
+    //20.9 Payment - mPay Payment Page
+    var FIBRE_PAYMENT_CALL_SUPER_DUPER_FLAG = "";
+
+    if (ViewBag.LabelFBBOR019 != null)
+    {
+        var lovlist = (List<LovScreenValueModel>)ViewBag.LabelFBBOR019;
+
+        var lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_MENU_FIRST_PAGE") ?? new LovScreenValueModel();
+        lHeaderPayment = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_HEADER") ?? new LovScreenValueModel();
+        lHeaderPayment = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_SUB_HEADER") ?? new LovScreenValueModel();
+        lSubHeaderPayment = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_AIS_FIRE_NO") ?? new LovScreenValueModel();
+        lInternetNo = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_CURRENT_CHARGES") ?? new LovScreenValueModel();
+        lAmount = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_TOTAL") ?? new LovScreenValueModel();
+        lCurrentText = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_DUE_DATE") ?? new LovScreenValueModel();
+        lDueDate = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_MPAY") ?? new LovScreenValueModel();
+        lMpay = lovScreenValueModel.DisplayValue;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "L_PAYMENT_CREDIT") ?? new LovScreenValueModel();
+        lCredit = lovScreenValueModel.DisplayValue;
+
+
+        //form mpay
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "MPAY_PARM_URL") ?? new LovScreenValueModel();
+        valmPayUrl = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "MPAY_PARM_MODE") ?? new LovScreenValueModel();
+        valmPayMode = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "MPAY_PARM_PAYMENT_METHOD") ?? new LovScreenValueModel();
+        valmPayMethod = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "MPAY_PARM_SERVICE_ID") ?? new LovScreenValueModel();
+        valmPayServiceId = lovScreenValueModel.DisplayValueJing;
+
+        //lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "MPAY_PARM_REF_1") ?? new LovScreenValueModel();
+        //valmPayRef1 = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "MPAY_PARM_REF_2") ?? new LovScreenValueModel();
+        valmPayRef2 = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "MPAY_PARM_USER_NAME") ?? new LovScreenValueModel();
+        valmPayUsername = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "MPAY_PARM_PASSWORD") ?? new LovScreenValueModel();
+        valmPayPW = lovScreenValueModel.DisplayValueJing;
+
+        //form credit
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "CREDIT_PARM_URL") ?? new LovScreenValueModel();
+        valCreditUrl = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "CREDIT_PARM_MODE") ?? new LovScreenValueModel();
+        valCreditMode = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "CREDIT_PARM_MERCHANT_ID") ?? new LovScreenValueModel();
+        valCreditMerchantId = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "CREDIT_PARM_SERVICE_ID") ?? new LovScreenValueModel();
+        valCreditServiceId = lovScreenValueModel.DisplayValueJing;
+
+        //lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "CREDIT_PARM_REF_1") ?? new LovScreenValueModel();
+        //valCreditRef1 = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "CREDIT_PARM_REF_2") ?? new LovScreenValueModel();
+        valCreditRef2 = lovScreenValueModel.DisplayValueJing;
+
+        lovScreenValueModel = lovlist.FirstOrDefault(item => item.Name == "FIBRE_PAYMENT_CALL_SUPER_DUPER_FLAG") ?? new LovScreenValueModel();
+        FIBRE_PAYMENT_CALL_SUPER_DUPER_FLAG = lovScreenValueModel.DisplayValue;
+
+    }
+
+}
+
+<div id="divMainDetailBoxData" class="boxPayment">
+    <div class="row_ais">
+        <div class="row">
+            <p class="col-sm-12 col-md-12 col-lg-12 payment-headtext payment-box">@lHeaderPayment</p>
+            <p class="col-sm-12 col-md-12 col-lg-12 payment-subheadtext">@lSubHeaderPayment</p>
+        </div>
+        <div class="row">
+            <dl class="col-sm-12 col-md-12 col-lg-12 dl-horizontal">
+                <dt style="text-align: left" class="payment-detail-text1">@lInternetNo</dt>
+                <dd class="payment-detail-text2">@Model.InternetNo</dd>
+
+                <dt style="text-align: left" class="payment-detail-text1">@lAmount</dt>
+                <dd class="payment-detail-text2">@string.Format(lCurrentText, DataConvertHelpers.ToStrCurrencyFormat(Model.TotalBalance))</dd>
+
+                <dt style="text-align: left" class="payment-detail-text1">@lDueDate</dt>
+                <dd class="payment-detail-text2">@(string.IsNullOrEmpty(Model.DueDate) ? "-" : Model.DueDate)</dd>
+
+            </dl>
+        </div>
+    </div>
+
+    @if (Model.TotalBalance > 0)
+    {
+
+        <div class="row_ais">
+            <form class="form-inline">
+                <div class="form-group mpay-credit" id="mpay-credit">
+                    <div class="payment-button-right" id="credit">
+                        <img id="imgCredit" src="~/Content/Content2016/images/postpaid/icon-credit-card.png" />&nbsp;@lCredit
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row_ais hidden">
+            @{
+                using (Html.BeginForm(null, null, FormMethod.Post, new { action = valmPayUrl, id = "pay-with-mpay", target = "_self", accept_charset = "UTF-8" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.Hidden("mode", valmPayMode)
+                    @Html.Hidden("paymentMethod", valmPayMethod)
+                    @Html.Hidden("serviceId", valmPayServiceId)
+                    @Html.Hidden("ref1", Model.InternetNo)
+                    @Html.Hidden("ref2", Model.TransactionId)
+                    @Html.Hidden("amount", Model.TotalBalance)
+                }
+
+                if (FIBRE_PAYMENT_CALL_SUPER_DUPER_FLAG == "Y")
+                {
+                    using (Html.BeginForm(null, null, FormMethod.Post, new { action = valCreditUrl, id = "pay-with-credit-card", target = "_self", accept_charset = "UTF-8" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        //20.9 Payment - mPay Payment Page
+                        @Html.Hidden("productName", "FIBRE_PAYMENT")
+                        @Html.Hidden("serviceName", "Payment Order")
+                        @Html.Hidden("amount", Model.TotalBalance)
+                        @Html.Hidden("internetNo", Model.InternetNo)
+                        @Html.Hidden("billingNo", Model.BillingNo)
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm(null, null, FormMethod.Post, new { action = valCreditUrl, id = "pay-with-credit-card", target = "_self", accept_charset = "UTF-8" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.Hidden("mode", valCreditMode)
+                        @Html.Hidden("merchantId", valCreditMerchantId)
+                        @Html.Hidden("serviceId", valCreditServiceId)
+                        @Html.Hidden("ref1", Model.InternetNo)
+                        @Html.Hidden("ref2", Model.TransactionId)
+                        @Html.Hidden("amount", Model.TotalBalance)
+                    }
+                }
+
+            }
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('li').removeClass('active');
+        $('.bd-3').addClass('active');
+        $('.pay').addClass('active');
+    });
+
+    $('#mpay').click(function (e) {
+
+        var parm = $('#pay-with-mpay').serialize();
+        parm = parm + '&requestUrl=@valmPayUrl';
+
+        $.ajax({
+            url: '/Payment/LogPayment',
+            type: 'POST',
+            data: parm,
+            success: function (result) {
+                $("#pay-with-mpay").submit();
+            }
+        });
+        return false;
+
+    });
+
+
+    $('#credit').click(function (e) {
+        if ('@FIBRE_PAYMENT_CALL_SUPER_DUPER_FLAG' == "Y") {
+            $('#pay-with-credit-card').attr('action', '@Url.Action("PaymentToDeduction", "Payment")');
+            $("#pay-with-credit-card").submit();
+        }
+        else {
+            var parm = $('#pay-with-credit-card').serialize();
+            parm = parm + '&requestUrl=@valCreditUrl';
+            $.ajax({
+                url: '/Payment/LogPayment',
+                type: 'POST',
+                data: parm,
+                success: function (result) {
+                    //$("#pay-with-credit-card").attr("action", "http://localhost:4454/Default1/TestmPay");
+                    $("#pay-with-credit-card").submit();
+                }
+            });
+        }
+        return false;
+    });
+
+
+</script>

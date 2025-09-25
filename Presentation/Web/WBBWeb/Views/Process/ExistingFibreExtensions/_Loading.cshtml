@@ -1,0 +1,51 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutReferences.cshtml";
+}
+
+<div id="ProgressIcon" class="modal fade in" style="display: block; padding-right: 15px;">
+    <div class="vertical-alignment-helper" style="display: table; height: 100%; width: 100%; pointer-events: none;">
+        <div class="modal-dialog vertical-align-center" style="display: table-cell; vertical-align: middle; pointer-events: none;">
+            <div class="text-center" style="color: white;">
+                <div>
+                    <i class="fa fa-spinner fa-spin fa-6" style="position: inherit; font-size: 10em;"></i>
+                </div>
+                <div id="txtLoading" style="text-align: center;">
+                    LOADING
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#ProgressIcon').modal();
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            data: { Data: '@ViewBag.LoadingBlockData' == null || '@ViewBag.LoadingBlockData' == ''? null:'@ViewBag.LoadingBlockData' },
+            url: '@ViewBag.LoadingBlockCaller',
+            success: function (result) {
+                $('body').html(result);
+                LockScreen(true);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    });
+
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#ProgressIcon #txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+</script>

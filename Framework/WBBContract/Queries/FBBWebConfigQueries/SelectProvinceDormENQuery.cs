@@ -1,0 +1,11 @@
+﻿using System.Collections.Generic;
+using WBBEntity.PanelModels.FBBWebConfigModels;
+
+namespace WBBContract.Queries.FBBWebConfigQueries
+{
+    public class SelectProvinceDormENQuery : IQuery<List<LovModel>>
+    {
+        public string REGION_CODE { get; set; }
+        public string Lang_Flag { get; set; }
+    }
+}

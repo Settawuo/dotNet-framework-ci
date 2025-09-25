@@ -1,0 +1,68 @@
+﻿@using WBBEntity.PanelModels
+<!DOCTYPE html>
+
+@{
+    Layout = null;
+    string bContinue = "";
+    string lMyPersonalInfo = "";
+    string lAisFibreNo = "";
+    string lSelectItem = "";
+    string lCardNumber = "";
+    
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var labelFbbtr001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        var lovContinue = labelFbbtr001.FirstOrDefault(c => c.Name == "B_CONTINUE");
+        if (lovContinue != null)
+        {
+            bContinue = labelFbbtr001.Any(c => c.Name == "B_CONTINUE") ? lovContinue.DisplayValue : "";
+        }
+        var lovMyPersonalInfo = labelFbbtr001.FirstOrDefault(c => c.Name == "L_MY_PERSONAL_INFO");
+        if (lovMyPersonalInfo != null)
+        {
+            lMyPersonalInfo = labelFbbtr001.Any(c => c.Name == "L_MY_PERSONAL_INFO") ? lovMyPersonalInfo.DisplayValue : "";
+        }
+        var lovSelectItem = labelFbbtr001.FirstOrDefault(c => c.Name == "L_SELECT_ITEM");
+        if (lovSelectItem != null)
+        {
+            lSelectItem = labelFbbtr001.Any(c => c.Name == "L_SELECT_ITEM") ? lovSelectItem.DisplayValue : "";
+        }
+        var lovCardNumber = labelFbbtr001.FirstOrDefault(c => c.Name == "L_CARD_NUMBER");
+        if (lovCardNumber != null)
+        {
+            lCardNumber = labelFbbtr001.Any(c => c.Name == "L_CARD_NUMBER") ? lovCardNumber.DisplayValue : "";
+        }
+    }
+
+    if (ViewBag.LabelFBBOR019 != null)
+    {
+        var lovlist = (List<LovScreenValueModel>)ViewBag.LabelFBBOR019;
+        var lovAisFibreNo = lovlist.FirstOrDefault(c => c.Name == "L_LOGIN_INTERNET_NUM");
+        if (lovAisFibreNo != null)
+        {
+            lAisFibreNo = lovlist.Any(c => c.Name == "L_LOGIN_INTERNET_NUM") ? lovAisFibreNo.DisplayValue : "";
+        }
+
+    }
+}
+
+<div id="divLoginMain" class="row_ais">
+    <div class="column large-5 medium-6 small-12" id="col-form">
+        <div class="labeltext">@lMyPersonalInfo</div>
+        <div class="mobile-number">
+            @Html.TextBox("custInternetNum",null,new {type = "text",@class = "inputform", id = "AisAirNumber", maxlength = "10",placeholder=lAisFibreNo,autocomplete="off"})
+        </div>
+        <div class="cardtype">
+            @Html.DropDownList("custIdCardType", new List<SelectListItem>(), new {@class="basic",id ="ID_CARD_NAMEs",onchange="onChangeID_CARD_NAMEs();",title=lSelectItem,data_placeholder_option="true",autocomplete="off"})
+        </div>
+        <div class="card-number">
+            @Html.TextBox("custIdCardNum",null,new {type = "text",@class = "inputform", id = "L_CARD_NOs", maxlength = "30",placeholder=lCardNumber,autocomplete="off"})
+        </div>        
+    </div>
+    <div class="column large-5">
+        <div class="submit-manual" id="div_btn_submit">
+            <input id="btnhide" class="btn1 btn btn-for-xs" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important;" value="@bContinue" onmouseover="checkBeforeProcess()" />
+            <input id="btnCheckProcess" class="btn2 btn btn-for-xs i-hidden" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; display: none;" value="@bContinue" onmouseover="checkBeforeProcess()" />
+        </div>
+    </div>
+</div>

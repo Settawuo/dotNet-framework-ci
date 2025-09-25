@@ -1,0 +1,295 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using System.Text.RegularExpressions;
+@using WBBEntity.Extensions;
+@model WBBEntity.PanelModels.AddBundlingModels
+
+@{
+    Layout = "~/Views/Shared/_LayoutReferences.cshtml";
+
+    string B_DISCOUNT_CONFIRM = "";
+
+    if (ViewBag.LabelFBBOR018 != null)
+    {
+        var labelFBBOR018 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR018;
+
+        B_DISCOUNT_CONFIRM = labelFBBOR018.Any(c => c.Name == "B_DISCOUNT_CONFIRM") ? labelFBBOR018.FirstOrDefault(c => c.Name == "B_DISCOUNT_CONFIRM").DisplayValue : "";
+
+    }
+
+    string LOADING = "";
+
+    if (ViewBag.LabelLovScreen != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.LabelLovScreen;
+
+        LOADING = labelLovScreen.Any(m => m.Name == "TOPUP_LOADING") ? labelLovScreen.FirstOrDefault(m => m.Name == "TOPUP_LOADING").DisplayValue : "";
+    }
+}
+@Styles.Render("~/Content/css/rabbit")
+@Scripts.Render("~/bundles/js/rabbit")
+
+<style>
+    fieldset {
+        border: 2px solid #83ad47;
+        -webkit-border-radius: 5px;
+        -khtml-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    #tbl-popup {
+        width: 100%;
+    }
+
+    .btnmodal {
+        padding: 10px 15px;
+        background-color: #58AA0C;
+        color: #fff !important;
+    }
+
+        .btnmodal:hover {
+            padding: 10px 15px;
+            background-color: #4a831c;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .modal-dialog-center {
+        margin-top: 10%;
+    }
+    #ais_topbar {
+        display: block;
+    }
+
+    #ais_topbar .topbar_ribbon {
+	    padding-left:10px;
+        float: left;
+        height: 60px;
+    }
+
+    #ribbonking{ width:100%; height:60px;  background: url("/Images/bg1366.jpg") no-repeat center;  background-color:#000;}
+    #ribbonking_wrapper{height:60px; margin: 0 auto; max-width: 1140px;}
+
+</style>
+
+<div id="ais_topbar">
+    @*<div id="ribbonking">
+	    <div id="ribbonking_wrapper">
+    	    <div class="topbar_ribbon"><img src="~/Images/iconribbon.png" alt="ais logo"></div>
+        </div>
+    </div>*@
+</div>
+<div id="container">
+    <div id="box1N_holder">
+        <div class="row_ais">
+            <div class="column large-11 large-centered">
+                <div class="container">
+                    <div id="wrapSwitchLanguage" class="col-xs-12 text-right nopading">
+                        <a id="btn_th" class="btn-sm btn-success rippler rippler-default" href="~/WBB/ChangeCurrentCulture?culture=1" role="button"
+                           style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">ภาษาไทย</a>&nbsp;&nbsp;
+                        <a id="btn_en" class="btn-sm btn-default rippler rippler-default" href="~/WBB/ChangeCurrentCulture?culture=2" role="button"
+                           style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">English</a>&nbsp;&nbsp;
+                    </div>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+
+                    <div class="col-md-2 hidden-xs hidden-sm" id="logo_div" style=" margin-top: 12px;">
+                        <img src="~/Content/images/postpaid/fibre_logo.png" class="img-responsive left">
+                    </div>
+
+                    @* -------------------- แถบ status เก่า ใช้ไปก่อน รอของใหม่ ------------------ *@
+                    <div class="col-md-10 hidden-xs col-sm-12" id="status_th_div">
+                        <img src="~/img/changepromotion/thai2.png"
+                             class="img-responsive center-block" id="status_th_2_img" style="display: none;">
+                        <img src="~/img/changepromotion/thai3.png"
+                             class="img-responsive center-block" id="status_th_3_img" style="display: none;">
+                    </div>
+                    <div class="col-md-10 hidden-xs col-sm-12" id="status_en_div" style="display: none;">
+                        <img src="~/img/changepromotion/eng2.png"
+                             class="img-responsive center-block" id="status_en_2_img" style="display: none;">
+                        <img src="~/img/changepromotion/eng3.png"
+                             class="img-responsive center-block" id="status_en_3_img" style="display: none;">
+                    </div>
+                    @* -------------------------------------------------------------------- *@
+
+                </div>
+                <input type="hidden" id="LanguagePage" />
+
+
+            </div>
+        </div>
+        <div class="panel_ais">
+            <div class="row_ais">
+                <div class="column large-11 large-centered">
+                    <div class="content-menu">
+                        <div class="row_ais">
+                            <div class="column large-12 medium-12 small-12">
+                                <div class="detail-for-menu">
+                                    <div class="innercontent">
+                                        <div class="row_ais">
+                                            <div class="column large-10">
+                                                <div id="renderBody" class="card"></div>
+                                                <form id="ChangePromotionMainfrm" method="post" action="">
+                                                    <div class="container">
+                                                        <div class="form-summary col-md-12 col-xs-12 addrounded">
+                                                            @Html.Partial("~/Views/ProcessAddBundling/_SelectBundling.cshtml")
+                                                            @Html.Partial("~/Views/ProcessAddBundling/_Confirm.cshtml")
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    @Html.HiddenFor(Model => Model.LanguagePage)
+                                                    @Html.HiddenFor(Model => Model.NonMobileNo)
+                                                    @Html.HiddenFor(Model => Model.MobileNo)
+                                                    @Html.HiddenFor(Model => Model.AccountNumber)
+                                                    @Html.HiddenFor(Model => Model.AccountNumberMobile)
+                                                    @Html.HiddenFor(Model => Model.OwnerProduct)
+                                                    @Html.HiddenFor(Model => Model.ProductCD)
+                                                    @Html.HiddenFor(Model => Model.ProductOntopCD)
+                                                    @Html.HiddenFor(Model => Model.MobileSegment)
+                                                    @Html.HiddenFor(Model => Model.ChargeType)
+                                                    @Html.HiddenFor(Model => Model.HaveOnTopExtra)
+                                                    @Html.HiddenFor(Model => Model.AddressId)
+                                                    @Html.HiddenFor(Model => Model.TransactionID)
+
+
+                                                    <input type="hidden" id="ERROR_MSG" />
+
+                                                    <div id="HiddenForPersonalPackage" style="display:none">
+                                                    </div>
+                                                </form>
+
+                                                <div class="modal fade" id="basic-modal-content" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="border-bottom: none;">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="add-border-rounded-green">
+                                                                    <p class="clearfix"></p>
+                                                                    <div id="LastPopupMessage">
+                                                                    </div>
+                                                                    <h3 class="text-center">
+                                                                    </h3>
+                                                                    <p class="clearfix"></p>
+                                                                    <p class="clearfix"></p>
+                                                                    <div class="col-md-12 text-center">
+                                                                        <p class="clearfix"></p>
+                                                                        <button type="button" class="btn btn-success btn-lg" style="background-image:none" data-dismiss="modal" onclick="$('#basic-modal-content').modal('hide'); cancel();">&nbsp; @B_DISCOUNT_CONFIRM &nbsp; </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer" style="border-top: none;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="ProgressIcon" class="modal fade">
+                                                    <div class="modal-dialog" style="top:38%;">
+                                                        <div class="row" style="margin-left:auto; margin-right:auto; width:150px; height:100px; color:white;">
+                                                            <div>
+                                                                <i class="fa-li fa fa-spinner fa-spin fa-5x" style="position:inherit;"></i>
+                                                            </div>
+                                                            <div id="txtLoading" style="text-align:center;">
+                                                                @LOADING
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--  Put Content Here จบเนื้อหา  -->
+
+    <div style="clear:both;"></div>
+    <div id="aisfooter">
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_FooterTH")
+        }
+        else
+        {
+            @Html.Partial("_FooterEN")
+        }
+
+    </div>
+    <div class="truehits-bg">&nbsp;</div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        ais_interface_process('mini-menu', 'postpaid', 'th', '', false);
+        $("#slt_OVERRULE").selectOrDie();
+    });
+    $(function () {
+        var get_current_language = $.ajax({
+            type: "GET",
+            url: "/WBB/GetCurrentCulture",
+            async: false,
+            success: function (x) {
+                $("#LanguagePage").val(x);
+                return x;
+            }
+        });
+        changeLanguage();
+        $("#wrapSwitchLanguage").hide();
+        changePageHeader(2);
+        GetTableBundlingPackageList();
+    });
+
+    function changeLanguage() {
+        if ($("#LanguagePage").val() == "1") {
+            $("#btn_th").addClass('btn-success');
+            $("#btn_en").removeClass('btn-success').addClass('btn-default');
+        }
+        else {
+            $("#btn_th").removeClass('btn-success').addClass('btn-default');
+            $("#btn_en").addClass('btn-success');
+        }
+    }
+
+    function changePageHeader(operNo) {
+        $("#status_th_div").children().hide();
+        $("#status_en_div").children().hide();
+        if ($("#LanguagePage").val() === "1") {
+            $("#status_th_div").show();
+            $("#status_en_div").hide();
+            $("#status_th_div").children("#status_th_" + operNo + "_img").show();
+        } else {
+            $("#status_th_div").hide();
+            $("#status_en_div").show();
+            $("#status_en_div").children("#status_en_" + operNo + "_img").show();
+        }
+    }
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+</script>

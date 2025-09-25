@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "Card/Port";
+}
+<ol class="breadcrumb">
+  <li><a onclick="$('#navPage1').click();">Main Page</a></li>
+  <li><a onclick="$('#navPage2').click();">Site/Coverage</a></li>
+  <li><a onclick="$('#navPage3').click();">Building/DSLAM</a></li>
+  <li class="active" >Card/Port</li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+    
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-info-circle" style="font-size: large;"><b>&nbsp;Card/Port</b></i>
+                    <a data-toggle="collapse" class="pull-right" href="#CardPanel" onclick="onPanelToggle(this);" id="CardPanelHeader">
+                        <i class="fa fa-chevron-down" id="ArrowIcon"></i>
+                    </a>
+                </h3>
+            </div>
+            <div id="CardPanel" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="i-gap-top-1">
+                        @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.CardPanel>()
+                    .Name("gridCard")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(p => p.Number).Title("Number");
+                        columns.Bound(p => p.Model).Title("Model");
+                        columns.Bound(p => p.CardType).Title("Card Type");
+                        columns.Bound(p => p.Reserve).Title("Reserve");
+                        columns.Bound(p => p.NodeId).Title("Node Id").Hidden();
+                        columns.Command(command => { command.Edit(); command.Destroy(); }).Width(180);
+                        columns.Command(command => command.Custom("GenReport").Click("GenReport").Text("<li class='fa fa-external-link'></li> Generate Report"));
+                        
+                    })
+                        .Selectable(selectable => selectable
+                        .Mode(GridSelectionMode.Single)
+                        .Type(GridSelectionType.Row))
+                        .Events(events => events.Change("onChangeCard"))
+                        .ToolBar(toolBar => toolBar.Create())
+                        .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                        .Pageable()
+                        .Sortable()
+                        .Scrollable()
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .PageSize(10)
+                            .Events(events => events.Error("error_handler"))
+                            .Model(model => model.Id(p => p.Number))
+                            .Read(read => read.Action("Read_Card", "CoverageManagement"))
+                            .Create(create => create.Action("Create_Card", "CoverageManagement"))
+                            .Update(update => update.Action("Update_Card", "CoverageManagement"))
+                            .Destroy(destroy => destroy.Action("Destroy_Card", "CoverageManagement"))
+                            )                                
+                )
+                    </div>
+                             
+                    <div class="i-gap-top-2">
+                        <ul class="nav nav-tabs" id="myTabPort">
+                            <li class="active"><a data-toggle="tab" href="#divPort">Port</a></li>
+                            <li class=""><a data-toggle="tab" href="#divPortHistory">Port History</a></li>
+                        </ul>
+                        <div class="tab-content" id="myTabPortContent">
+                            <div id="divPort" class="tab-pane fade active in">
+                                @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.PortPanel>()
+                        .Name("gridPort")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.PortNumber).Title("PortNumber");
+                            columns.Bound(p => p.PortStatus).Title("PortStatus");
+                            columns.Bound(p => p.PortType).Title("Port Type");
+                            columns.Command(command => command.Custom("Edit").Click("showDetails"));
+                        })
+                            .Pageable()
+                            .Sortable()
+                            .Scrollable()
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(10)
+                                .Model(model => model.Id(p => p.PortNumber))
+                                .Read(read => read.Action("Read_Port", "CoverageManagement"))
+
+                                )
+                    )
+                            </div>
+                            <div id="divPortHistory" class="tab-pane fade" style="height:300px;" >
+                            </div>
+                        </div>
+                    </div>              
+                </div>
+            </div>
+        </div> 
+
+    </div>
+</div>
+
+<script>
+    function onChangeCard() {
+        var entityGrid = $("#gridCard").data("kendoGrid");
+        var selectedItem = entityGrid.dataItem(entityGrid.select());
+
+        $("#gridPort").data("kendoGrid").dataSource.read({ id: selectedItem.Number });
+    }
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+    function GenReport() {
+    }
+
+</script>

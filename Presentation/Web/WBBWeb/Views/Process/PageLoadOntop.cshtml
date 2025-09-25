@@ -1,0 +1,79 @@
+﻿@using System.Collections.Generic;
+@using WBBContract.Models;
+@model WBBContract.Models.PageLoadOntopModel
+@{
+    Layout = null;
+    var PageGo = "";
+    if (null != ViewBag.PageGo)
+    {
+        PageGo = ViewBag.PageGo;
+    }
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10,9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0" />
+    <meta name="date" content="2016-03-12" />
+    <meta name="sitecode" content="TH" />
+
+    <title>AIS Fibre Broadband ความเร็วสูง 1 Gbps</title>
+
+    <meta name="description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์">
+    <meta name="KeyWords" content="ais, เอไอเอส, เน็ต, อินเทอร์เน็ต, ไฟเบอร์" />
+    <meta name="thumbnail" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+    <meta name="thumbnail_height" content="110">
+    <!--Fix ขนาดของความสูง ไว้เท่านี้ ไม่เปลี่ยน-->
+    <meta name="thumbnail_width" content="75">
+    <!--Fix ขนาดของความกว้าง ไว้เท่านี้ ไม่เปลี่ยน-->
+    <!-- Facebook Propertie แชร์ Facebook -->
+    <meta property="og:title" content="AIS Fibre Broadband ความเร็วสูง 1 Gbps" />
+    <meta property="og:description" content="สิทธิพิเศษจากเอไอเอสไฟเบอร์" />
+    <meta property="og:image" content="https://www.ais.co.th/fibre_postpaid/share.jpg" />
+
+    <!-- Cahing Browser -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    @Scripts.Render("~/bundles/js/jquery")
+
+    <style type="text/css">
+	    .spinner-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+ 
+        .spinner {
+            width: 57px;
+            height: 57px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #8dc63f;
+            border-radius: 80%;
+            animation: spin 0.8s linear infinite;
+        }
+ 
+        @@keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#BypassForm").submit();
+        });
+  </script>
+</head>
+<body>
+    <div class="spinner-container">
+        <div class="spinner"></div>
+    </div>
+     <form id="BypassForm" method="post" action="/Process/@PageGo">
+            @Html.HiddenFor(t => t.Data, new { @id = "Data" })
+     </form>
+</body>
+</html>

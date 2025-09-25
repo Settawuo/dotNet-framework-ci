@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title id="txttitle"></title>
+    @{
+        string th = "";
+        string en = "";
+        var dataTitle = WBBWeb.Extension.WebExtension.Get_TitleName();
+        if(dataTitle.Any())
+        {
+            var data = dataTitle.FirstOrDefault(); 
+            th = data.LovValue1.ToString();
+            en = data.LovValue2.ToString();
+        }
+    }
+    
+    @Styles.Render("~/Content/css/wbb")
+    @Styles.Render("~/Content/css/typeaheadcss")
+
+    <link href="~/Content/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/js/jquery")
+    @Scripts.Render("~/bundles/js/jquerymigrate")
+
+    @Scripts.Render("~/bundles/js/wbb")
+    @Scripts.Render("~/bundles/js/typeaheadjs")
+
+    <script src="~/Scripts/custom.js"></script>
+
+    <script src="~/Scripts/hmac-sha256.js"></script>
+    <script src="~/Scripts/enc-base64-min.js"></script>
+    <link href="~/Content/jquery.realperson.css" rel="stylesheet" />
+    <link href="~/Content/css/foundation.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.plugin.js"></script>
+    <script>$.salt = '978692';</script>
+    <script src="~/Scripts/jquery.realperson.js"></script>
+    <script src="~/Scripts/foundation.min.js"></script>
+</head>
+<body background="~/Content/src/BG_base.jpg" style="background-repeat: repeat;">
+      <input type="hidden" id="txtTH" value="@th" />
+    <input type="hidden" id="txtEN" value="@en" />
+    @RenderBody()
+</body>
+</html>
+
+<script>
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/WBB/GetCurrentCulture",
+            dataType: "json",
+            async: false,
+            success: function (x) {
+                if (x == 1) {
+                    $('#txttitle').html($('#txtTH').val());
+                }
+                else {
+                    $('#txttitle').html($('#txtEN').val());
+                }
+
+            }
+
+        });
+    });
+</script>

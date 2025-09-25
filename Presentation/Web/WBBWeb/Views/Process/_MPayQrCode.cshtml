@@ -1,0 +1,212 @@
+﻿@using WBBEntity.PanelModels
+@model QuickWinPanelModel
+@{
+    var B_GEN_QR_CODE = "";
+    var B_BACK = "";
+    var L_PAY_WITH_QR_CODE_1 = "";
+    var L_PAY_WITH_QR_CODE_2 = "";
+    var L_MPAY_QR_CODE_FOOTER_1 = "";
+    var L_MPAY_QR_CODE_FOOTER_2 = "";
+    var L_QR_CODE_REMARK = "";
+    var L_QR_CODE_REMARK_IMG = "";
+
+    if (ViewBag.LabelFBBORV41 != null)
+    {
+        var LabelFBBORV41 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV41;
+        L_PAY_WITH_QR_CODE_1 = LabelFBBORV41.Any(c => c.Name == "L_PAY_WITH_QR_CODE_1") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "L_PAY_WITH_QR_CODE_1").DisplayValue : "";
+        L_PAY_WITH_QR_CODE_2 = LabelFBBORV41.Any(c => c.Name == "L_PAY_WITH_QR_CODE_2") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "L_PAY_WITH_QR_CODE_2").DisplayValue : "";
+        B_GEN_QR_CODE = LabelFBBORV41.Any(c => c.Name == "B_GEN_QR_CODE") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "B_GEN_QR_CODE").DisplayValue : "";
+        B_BACK = LabelFBBORV41.Any(c => c.Name == "B_BACK") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "B_BACK").DisplayValue : "";
+        L_MPAY_QR_CODE_FOOTER_1 = LabelFBBORV41.Any(c => c.Name == "L_MPAY_QR_CODE_FOOTER_1") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "L_MPAY_QR_CODE_FOOTER_1").DisplayValue : "";
+        L_MPAY_QR_CODE_FOOTER_2 = LabelFBBORV41.Any(c => c.Name == "L_MPAY_QR_CODE_FOOTER_2") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "L_MPAY_QR_CODE_FOOTER_2").DisplayValue : "";
+        L_QR_CODE_REMARK = LabelFBBORV41.Any(c => c.Name == "L_QR_CODE_REMARK") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "L_QR_CODE_REMARK").DisplayValue : "";
+        L_QR_CODE_REMARK_IMG = LabelFBBORV41.Any(c => c.Name == "L_QR_CODE_REMARK") ? LabelFBBORV41.FirstOrDefault(c => c.Name == "L_QR_CODE_REMARK").Blob : "";
+
+
+        if (L_QR_CODE_REMARK_IMG != "")
+        {
+            string ImgSCPEText = "";
+            String img64Url = string.Format("data:image/jpg;base64,{0}", L_QR_CODE_REMARK_IMG);
+            ImgSCPEText = "<img src='" + img64Url + "'/>";
+            L_QR_CODE_REMARK = L_QR_CODE_REMARK.Replace("[Image]", ImgSCPEText);
+        }
+        else
+        {
+            L_QR_CODE_REMARK = L_QR_CODE_REMARK.Replace("[Image]", "");
+        }
+    }
+
+    //20.8 Payment - mPay Super Duper
+    string CALL_SUPER_DUPER_FLAG = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+
+        CALL_SUPER_DUPER_FLAG = FbbConstant.Any(f => f.Field == "CALL_SUPER_DUPER_FLAG") ? FbbConstant.First(f => f.Field == "CALL_SUPER_DUPER_FLAG").Validation : "";
+    }
+}
+
+<style>
+    #qrcodePic {
+        text-align: center;
+    }
+
+        #qrcodePic canvas {
+            max-height: 256px !important;
+            max-width: 256px !important;
+            display: inline !important;
+            width: 100%;
+            height: 100%;
+            margin: auto;
+            padding: 0;
+        }
+
+    #qrcodeHeader {
+        max-width: 330px !important;
+        max-height: 115px !important;
+        margin: auto;
+        width: 100%;
+        padding-bottom: 3px;
+    }
+
+    #qrcodeFooter {
+        text-align: center;
+        max-width: 256px !important;
+        margin: auto;
+        width: 100%;
+    }
+
+    #lblFooter1 {
+        float: left;
+    }
+
+    #lblFooter {
+        float: right;
+    }
+
+    #lblFooter2 {
+        color: #cccccc;
+        font-weight: 200;
+        float: right;
+        clear: left;
+        margin-top: -6px;
+    }
+
+    #lblFooterRemark {
+    }
+
+    #qrcodePicContent {
+        max-width: 330px;
+        height: 100%;
+        padding: 0px;
+        text-align: center;
+        margin: auto;
+        border: 3px solid #cccccc;
+        padding: 0 0 50px 0;
+    }
+</style>
+
+@Html.Hidden("qrCodeStr")
+
+<div id="divQrCode" class="container addrounded" style="display: none;">
+    <h4 class="page-header tgreen">@Html.Raw(L_PAY_WITH_QR_CODE_1)</h4>
+    <h5> @Html.Raw(L_PAY_WITH_QR_CODE_2)</h5>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <div class="col-md-10 col-md-offset-1 col-xs-12">
+        <div class="col-sm-6 col-xs-12">
+            <div id="qrcodePicContent">
+                <div id="qrcodeHeader">
+                    <img src="~/Content/images/scpe/MyQrCodeHeader.png" />
+                </div>
+                <div id="qrcodePic"></div>
+                <div id="qrcodeFooter">
+                    <label id="lblFooter1">@L_MPAY_QR_CODE_FOOTER_1</label>
+                    <label id="lblFooter"></label>
+                    <label id="lblFooter2">@L_MPAY_QR_CODE_FOOTER_2</label>
+                </div>
+            </div>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+            @Html.Raw(L_QR_CODE_REMARK)
+        </div>
+    </div>
+    <div class="col-md-10 col-md-offset-1 col-xs-12">
+        <div class="col-md-6 col-xs-12 text-center">
+            <button id="btnReGenQrCode" type="button" class="btn btn-success btn-for-xs">&nbsp; @Html.Raw(B_GEN_QR_CODE) &nbsp; </button>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix page-header"></p>
+    <div class="col-md-10 col-md-offset-1 col-xs-12">
+        <div class="col-md-12 text-center">
+            <button id="btnQrCode_Back" type="button" class="btn btn-default btn-for-xs">&nbsp; @Html.Raw(B_BACK) &nbsp; </button>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function convertStringToMoneyFormat(input) {
+        var result = "";
+        try {
+            if (input == "undefined" || input == "") {
+                result = "";
+            }
+            else {
+                input = input.replace(",", "");
+                var numInput = parseFloat(input);
+
+                if (isNaN(numInput)) {
+                    result = "";
+                }
+                else {
+                    result = numInput.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+                }
+            }
+
+        }
+        catch (ex) {
+            result = input;
+        }
+        return result;
+    }
+
+    function makeCode() {
+        $('#qrcodePic').html('');
+
+        jQuery('#qrcodePic').qrcode({
+            text: $('#qrCodeStr').val()
+        });
+
+
+    }
+
+    $('#btnReGenQrCode').click(function () {
+        //20.8 Payment - mPay Super Duper
+        if ('@CALL_SUPER_DUPER_FLAG' == "Y") {
+            // QRCode SuperDuper
+            $("#SuperDuperProductName").val("MESH");
+            $("#SuperDuperServiceName").val("Generate QR");
+            getPaymentQRCodeToSuperDuper();
+        }
+        else {
+            getPaymentToMerchantQrCode();
+        }
+    });
+
+    $('#btnQrCode_Back').click(function () {
+        LockScreen(true);
+        $('#divQrCode').hide();
+        $('#divPayMent').show();
+        stopWaitForPayQrCode();
+        LockScreen(false);
+    });
+
+</script>

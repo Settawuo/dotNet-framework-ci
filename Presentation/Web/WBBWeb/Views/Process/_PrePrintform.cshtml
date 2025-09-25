@@ -1,0 +1,1046 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.QuickWinPanelModel
+
+@{
+
+    string L_PLS_SIGN_NORMAL_FLOW = "";
+    string L_PLS_SIGN_PLUG_AND_PLAY_FLOW = "";
+    string L_PLS_SIGN_SIGNATURE = "";
+    string lACCEPTED = "";
+    string bBACK = "";
+    string bSubmit = "";
+    string L_ACCEPTED_PAPER_BY_EMAIL = "";
+    string L_RECEIVING_CHANNEL_EBILL = "";
+    string L_BILLING_ADDRESS = "";
+
+    //20.2
+    string L_IDENTIFY_WTTX_SERIAL = "";
+    string L_PLACE_HOLDER_WTTX_SERIAL = "";
+    //string L_HOWTO_IDENTIFY_WTTX_SERIAL = "";
+    //string L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL = "";
+    //string L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL_DETAIL = "";
+    //string B_CLOSE = "";
+    string L_ERROR_WTTX = "";
+    //string C_BARCODE_WTTX = "";
+    string L_REQUIRED_FIELDS_WTTX = "";
+    string L_ERROR_MAC_ADDR = "";
+    if (ViewBag.LabelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR000;
+        bBACK = labelFBBTR000.Any(c => c.Name == "B_BACK") ? labelFBBTR000.First(c => c.Name == "B_BACK").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR004 != null)
+    {
+        var labelFBBTR004 = (List<LovScreenValueModel>)ViewBag.labelFBBTR004;
+        L_PLS_SIGN_NORMAL_FLOW = labelFBBTR004.Any(c => c.Name == "L_PLS_SIGN_NORMAL_FLOW") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_PLS_SIGN_NORMAL_FLOW").DisplayValue : "";
+        L_PLS_SIGN_PLUG_AND_PLAY_FLOW = labelFBBTR004.Any(c => c.Name == "L_PLS_SIGN_PLUG_AND_PLAY_FLOW") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_PLS_SIGN_PLUG_AND_PLAY_FLOW").DisplayValue : "";
+        L_PLS_SIGN_SIGNATURE = labelFBBTR004.Any(c => c.Name == "L_PLS_SIGN_SIGNATURE") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_PLS_SIGN_SIGNATURE").DisplayValue : "";
+        lACCEPTED = labelFBBTR004.Any(c => c.Name == "L_ACCEPTED") ? labelFBBTR004.First(c => c.Name == "L_ACCEPTED").DisplayValue : "";
+        bSubmit = labelFBBTR004.Any(c => c.Name == "B_SUBMIT") ? labelFBBTR004.First(c => c.Name == "B_SUBMIT").DisplayValue : "";
+        L_ACCEPTED_PAPER_BY_EMAIL = labelFBBTR004.Any(c => c.Name == "L_ACCEPTED_PAPER_BY_EMAIL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_ACCEPTED_PAPER_BY_EMAIL").DisplayValue : "";
+        L_RECEIVING_CHANNEL_EBILL = labelFBBTR004.Any(c => c.Name == "L_RECEIVING_CHANNEL_EBILL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_RECEIVING_CHANNEL_EBILL").DisplayValue : "";
+        L_BILLING_ADDRESS = labelFBBTR004.Any(c => c.Name == "L_BILLING_ADDRESS") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_BILLING_ADDRESS").DisplayValue : "";
+
+        //20.2
+        L_IDENTIFY_WTTX_SERIAL = labelFBBTR004.Any(c => c.Name == "L_IDENTIFY_WTTX_SERIAL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_IDENTIFY_WTTX_SERIAL").DisplayValue : "";
+        L_PLACE_HOLDER_WTTX_SERIAL = labelFBBTR004.Any(c => c.Name == "L_PLACE_HOLDER_WTTX_SERIAL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_PLACE_HOLDER_WTTX_SERIAL").DisplayValue : "";
+        //L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL = labelFBBTR004.Any(c => c.Name == "L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL").DisplayValue : "";
+        //L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL_DETAIL = labelFBBTR004.Any(c => c.Name == "L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL_DETAIL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL_DETAIL").DisplayValue : "";
+        //L_HOWTO_IDENTIFY_WTTX_SERIAL = labelFBBTR004.Any(c => c.Name == "L_HOWTO_IDENTIFY_WTTX_SERIAL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_HOWTO_IDENTIFY_WTTX_SERIAL").DisplayValue : "";
+        //B_CLOSE = labelFBBTR004.Any(c => c.Name == "B_CLOSE") ? labelFBBTR004.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";
+        L_ERROR_WTTX = labelFBBTR004.Any(c => c.Name == "L_ERROR_WTTX") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_ERROR_WTTX").DisplayValue : "";
+        //C_BARCODE_WTTX = labelFBBTR004.Any(c => c.Name == "C_BARCODE_WTTX") ? labelFBBTR004.FirstOrDefault(c => c.Name == "C_BARCODE_WTTX").DisplayValue : "";
+        L_REQUIRED_FIELDS_WTTX = labelFBBTR004.Any(c => c.Name == "L_REQUIRED_FIELDS_WTTX") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_REQUIRED_FIELDS_WTTX").DisplayValue : "";
+        L_ERROR_MAC_ADDR = labelFBBTR004.Any(c => c.Name == "L_ERROR_MAC_ADDR") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_ERROR_MAC_ADDR").DisplayValue : "";
+    }
+
+
+
+}
+
+<style>
+    .signaturePrePrint-pad {
+        width: 500px;
+        height: 200px;
+        background-color: rgb(240,240,240);
+    }
+
+    .signaturePrePrint-pad-open {
+        width: 100%;
+    }
+
+    .PDFSignaturePrePrint-modal {
+        width: 100%;
+        height: 100%;
+        font-size: 6px;
+    }
+</style>
+
+<div id="preprint" class="container addrounded" style="display: none;">
+    <div id="preprintDetail" class="table-responsive">
+        <table style="width: 80%; margin: 5% auto;">
+            <tbody>
+                <tr>
+                    <td style="width: 80%; font-weight: bold;" colspan="10" id="bindData_AWN_NAME"></td>
+                    <td style="width: 20%;" colspan="2" rowspan="2" align=right><img src="~/Images/aisFibre.JPG" alt="" border=0 height=55 width=106 /></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%; font-weight: bold;" colspan="12" id="bindData_AWN_ADDRESS"></td>
+                </tr>
+                <tr bgcolor="#66CC00">
+                    <td style="text-align: center; width: 100%; font-weight: bold;" colspan="12" id="bindData_APPLICATION_FORM"></td>
+                </tr>
+                <tr>
+                    <td style="width: 50%; font-weight:bold;" colspan="6" id="bindData_SUBSCRIBER"></td>
+                    <td style="width: 50%;" colspan="6" id="bindData_DATE"></td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="width: 25%;" colspan="3" id="bindData_NAME"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_NAME_DATA"></td>
+                    <td style="width: 30%;" colspan="3" id="bindData_CARD_TYPE"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_CARD_NO"></td>
+                </tr>
+                <tr>
+                    <td style="width: 25%;" colspan="3" id="bindData_MOBILE_NO"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_MOBILE_NO_DATA"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_TELEPHONE_NO"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_TELEPHONE_NO_DATA"></td>
+                </tr>
+
+                <tr bgcolor="#C0C0C0" style="vertical-align: top;">
+                    <td style="width: 100%; font-weight: bold;" colspan="12" id="bindData_INSTALLATION_ADDRESS"></td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_INSTALLATION_ADDRESS_DATA"></td>
+                </tr>
+                @* Update 18.2 *@
+                <tr bgcolor="#C0C0C0" style="vertical-align: top;">
+                    <td style="width: 100%; font-weight: bold;" colspan="12" id="">@L_RECEIVING_CHANNEL_EBILL</td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_BILLING_MEDIA_EBILL"></td>
+                </tr>
+                <tr bgcolor="#C0C0C0" style="vertical-align: top;">
+                    <td style="width: 100%; font-weight: bold;" colspan="12" id="">
+                        @*bindData_BILLING_ADDRESS*@
+                        @L_BILLING_ADDRESS
+                    </td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_BILLING_ADDRESS_DATA"></td>
+                </tr>
+                <tr bgcolor="#C0C0C0" style="vertical-align: top;">
+                    <td style="width: 100%; font-weight: bold;" colspan="12" id="bindData_FOR_REQUEST_SERVICE"><b></b></td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_REQUEST_SERVICE"></td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="width: 100%; display:none" colspan="12" id="bindData_REQUEST_SERVICE_PB"></td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="width: 26%;" colspan="3" id="bindData_PACKAGE"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_PACKAGE_DATA"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_MONTHLY_FEE"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_MONTHLY_FEE_DATA"></td>
+                </tr>
+                <tr style="vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_INSTALLATION"></td>
+                </tr>
+                <tr id="showPlaybox" style="display: none; vertical-align: top;">
+                    <td style="width: 25%;" colspan="3" id="bindData_CONTENT_PLAYBOX"></td>
+                    <td style="width: 30%;" colspan="3" id="bindData_CONTENT_PLAYBOX_DATA"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_CONTENT_PLAYBOX_FEE"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_CONTENT_PLAYBOX_FEE_DATA"></td>
+                </tr>
+                <tr id="showPlaybox2" style="display: none; vertical-align: top;">
+                    <td style="width: 25%;" colspan="3" id="bindData_CONTENT_PLAYBOX2"></td>
+                    <td style="width: 30%;" colspan="3" id="bindData_CONTENT_PLAYBOX_DATA2"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_CONTENT_PLAYBOX_FEE2"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_CONTENT_PLAYBOX_FEE_DATA2"></td>
+                </tr>
+                <tr class="showEntryFee" id="showEntryFee0" style="display: none; vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_ENTRY_FEE0"></td>
+                </tr>
+                <tr class="showEntryFee" id="showEntryFee1" style="display: none; vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_ENTRY_FEE1"></td>
+                </tr>
+                <tr class="showEntryFee" id="showEntryFee2" style="display: none; vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_ENTRY_FEE2"></td>
+                </tr>
+                <tr class="showEntryFee" id="showEntryFee3" style="display: none; vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_ENTRY_FEE3"></td>
+                </tr>
+                <tr class="showEntryFee" id="showEntryFee4" style="display: none; vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_ENTRY_FEE4"></td>
+                </tr>
+                <tr id="showFixedline" style="display: none; vertical-align: top;">
+                    <td style="width: 100%;" colspan="12" id="bindData_FIXEDLINE_SERVICE"></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%; display: none;" colspan="12" id="bindData_PAY_ENTRY_FEE"></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%;" colspan="12" id="bindData_REMARK"></td>
+                </tr>
+                <tr bgcolor="#C0C0C0" id="plugandplayHeader" style="display: none; vertical-align: top;">
+                    <td style="width: 100%; font-weight:bold;" colspan="12" id="bindData_RECEIVED_MODEM"></td>
+                </tr>
+                <tr id="plugandplayData" style="display: none; vertical-align: top;">
+                    <td style="width: 25%;" colspan="3" id="bindData_BRAND_MODEL"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_BRAND_MODEL_2"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_SERIAL_NO"></td>
+                    <td style="width: 25%;" colspan="3" id="bindData_SERIAL_NO_DATA">/td>
+                </tr>
+                <tr>
+                    @*R18.1 FTTB Sell Router*@
+                    <td style="width: 100%; padding-top: 1em;" colspan="12" id="bindData_SELL_ROUTER_REMARK"></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%; padding-top: 1em;" colspan="12" id="bindData_CERTIFY"></td>
+                </tr>
+                <tr>
+                    <td style="width: 50%; text-align: right;" colspan="6" id="bindData_SIGN"></td>
+                    <td style="width: 30%; text-align: Center;" colspan="5" id="bindData_SIGN_DATA"><canvas id="signaturePrePrint-pad" class="signaturePrePrint-pad-open" onclick="$('#modalSignaturePrePrint').modal()"></canvas></td>
+                    <td style="width: 20%;" colspan="1" id="bindData_SIGN_2"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-12">
+        <div>
+        @*<div class="col-md-12" id="divWTTxLabel" style="display: none;padding-left: 100px !important;">@L_IDENTIFY_WTTX_SERIAL</div>
+        <p class="clearfix"></p>
+        <div class="col-md-12" id="divInputWTTx" style="display: none;">
+            <div class="col-lg-4 col-md-5 col-sm-7 col-xs-9" style="padding-left: 85px !important;">
+                @Html.TextBoxFor(Model => Model.CustomerRegisterPanelModel.WTTx_Serial,
+                    new
+                    {
+                        @id = "WTTx_Serial",
+                        @class = "form-control",
+                        @maxlength = "30",
+                        @placeholder = @Html.Raw(L_PLACE_HOLDER_WTTX_SERIAL),
+                    })
+                <p class="clearfix"></p>
+                <span id="wttx_serial_barcode_hdn" style="display: none;"></span>
+            </div>
+            <div class="col-lg-1 col-sm-2 col-xs-3">
+                <img id="iconBarcode_WTTx" width="60" src="/Content/images/barcode.png" class="img-responsive left" onclick="ScanWTTx()" />
+            </div>
+        </div>
+        <p class="clearfix"></p>
+        <div class="col-sm-6 col-xs-12">
+            <div id="interactiveWTTx" class="viewport">
+                <video autoplay="autoplay" preload="auto"></video>
+                <canvas class="drawingBuffer" style="display:none;"></canvas>
+            </div>
+        </div>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>*@
+
+            <div class="col-md-12 checkbox text-center">
+                <label>
+                    <input id="ChkConPrePrint" type="checkbox" value="" />
+                    @lACCEPTED
+                </label>
+                <p class="clearfix"></p>
+            </div>
+            <div class="col-md-12" style="padding-left: 100px !important;">@L_ACCEPTED_PAPER_BY_EMAIL</div>
+            <p class="clearfix"></p>
+            <div class="col-sm-4 col-xs-12" style="padding-left: 100px !important;">
+                <input id="L_EMAIL_EBILL_NEW" name="" placeholder="Email" class="form-control" type="text" />
+                <p class="visible-xs"></p>
+            </div>
+            <p class="clearfix"></p>
+            <div class="col-md-12 text-center" style="padding-top:10px;">
+                <button type="button" class="btn btn-default btn-for-xs" onclick="backToSummary()">&nbsp; @bBACK &nbsp; </button>
+                <p class="clerfix visible-xs"></p>
+                <button id="btnNoAcceptPrePrint" disabled type="button" class="btn btn-success btn-for-xs">
+                    &nbsp; @bSubmit &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                </button>
+                <p class="clerfix visible-xs"></p>
+                <button id="btnSubmitPrePrint" type="button" class="btn btn-success btn-for-xs">
+                    &nbsp; @bSubmit &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                </button>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalSignaturePrePrint" tabindex="-1" role="dialog" aria-labelledby="modal003_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 class="text-center">
+                        <div id="normalSignFlow">@L_PLS_SIGN_NORMAL_FLOW</div>
+                        <div id="plugAndPlaySignFlow">@L_PLS_SIGN_PLUG_AND_PLAY_FLOW</div>
+                        <h5 style="text-align: left; padding-left: 3em; ">
+                            @L_PLS_SIGN_SIGNATURE
+                        </h5>
+                        <div id="PDFSignaturePrePrint-modal" class="PDFSignaturePrePrint-modal">
+                            <canvas id="signaturePrePrint-pad-modal" class="signaturePrePrint-pad" width="500px" height="200px"></canvas>
+                        </div>
+                    </h3>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="col-md-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-success" onclick="cloneCanvasPrePrint(); $('#modalSignaturePrePrint').modal('hide');">
+                            &nbsp; Save &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                        </button>
+                        &nbsp;&nbsp;
+                        <button id="clear" type="button" class="btn btn-default" onclick="clearSignaturePadPrePrint();">&nbsp; Clear &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div style="display: none;" class="modal fade" id="modalBarcode" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: none;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-border-rounded-green">
+                        <h4 class="tgreen"><span class="hightlight">@Html.Raw(L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL)</span></h4>
+                        <p class="clearfix"></p>
+                        <div style="padding: 0 10px 0 10px;">
+                            @Html.Raw(L_POPUP_HOWTO_IDENTIFY_WTTX_SERIAL_DETAIL)
+                        </div>
+                        <p class="clearfix"></p>
+                        <div class="col-sm-2 col-xs-2">
+                        </div>
+                        <div class="col-sm-8 col-xs-8">
+                            <img src="/Content/images/barcode2.png" class="img-responsive left">
+                        </div>
+                        <div class="col-sm-2 col-xs-2">
+                        </div>
+                        <p class="clearfix"></p>
+                        <div class="col-xs-12 text-center">
+                            <p class="clearfix"></p>
+                            <button type="button" id="" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; @Html.Raw(B_CLOSE) &nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+<div class="modal fade" id="modalSerial_txtError" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add-border-rounded-green">
+                    <p class="clearfix"></p>
+                    <h3 class="text-center" style="font-weight: bold;">@L_ERROR_WTTX</h3>
+                    <div id="WTTxError">
+                        <span style="font-weight: bold;margin-left:20px;">
+                            WTTx SERIAL NO.
+                        </span> <span id="txtWTTxSerial"></span>
+                        <p class="clearfix"></p>
+                        <span style="font-weight: bold;margin-left:20px;">
+                            Error:
+                        </span> <span id="txtWTTxError"></span>
+                        <p class="clearfix"></p>
+                        <span style="font-weight: bold;margin-left:20px;">
+                            Status:
+                        </span> <span id="txtWTTxStatusDes"></span>
+                        <p class="clearfix"></p>
+                    </div>
+                    <p class="clearfix"></p>
+                    <div class="col-xs-12 text-center">
+                        <p class="clearfix"></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.modal.close();">&nbsp; OK &nbsp; </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var ChkConPrePrint = $('#ChkConPrePrint');
+    $("#btnSubmitPrePrint").hide();
+
+    ChkConPrePrint.change(function () {
+        if (ChkConPrePrint.prop('checked')) {
+            $("#btnSubmitPrePrint").show();
+            $("#btnNoAcceptPrePrint").hide();
+        }
+        else {
+            $("#btnSubmitPrePrint").hide();
+            $("#btnNoAcceptPrePrint").show();
+        }
+    });
+
+    function findElementDisplay(arr, propName, propValue) {
+        for (var i = 0; i < arr.length; i++)
+            if (arr[i][propName] == propValue)
+                return arr[i]["DisplayValue"];
+
+        // will return undefined if not found; you could return a default instead
+    }
+
+    // R23.05.2023 Created: FIRST
+    function findElementDisplayDynamic(arr, propName, propValue) {
+        var resultConcat = "";
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i][propName] == propValue) {
+                resultConcat += arr[i]["DisplayValue"];
+            }
+        }
+        return resultConcat;
+        // Use of E-App 
+    }
+
+    // R23.05.2023 Created: FIRST
+    function getSellRouterRemark() {
+
+        var strRouterRemark = "<div>";
+
+        $.ajax({
+            type: "GET",
+            url: "/MasterData/GetConditionLov",
+            data: {
+                lovType: 'PRE_PRINT_FORM',
+                lovName: 'SELL_ROUTER_REMARK'
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                var strRouterBuilder = '';
+
+                $.each(data, function (i, e) {
+                    if ($("#LanguagePage").val() == "2") {
+                        var str = e.LovValue2;
+                    }
+                    else {
+                        var str = e.LovValue1;
+                    }
+                    strRouterBuilder += str;
+                });
+                strRouterRemark += strRouterBuilder;
+            }
+        });
+
+        strRouterRemark += "</div>";
+
+        return strRouterRemark;
+    }
+
+    function GeneratePrePrintForm() {
+        $.ajax({
+            type: "GET",
+            url: "/PrePrint/GetPrePrintForm",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                console.log("Pre PrintForm: ", data);
+
+                var typeR = $("input[name=typeselect]:checked").val() == "R" ? true : false;
+                var dataDate = findElementDisplay(data, "Name", "DATE");
+                $.ajax({
+                    type: "GET",
+                    url: "/PrePrint/getToday",
+                    data: {
+                        language: $("#LanguagePage").val()
+                    },
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        dataDate = dataDate.substring(0, dataDate.indexOf("{Sysdate}"));
+                        dataDate = dataDate + data.today;
+                        $("#bindData_DATE").html(dataDate);
+                    }
+                });
+
+                $("#showPlaybox").hide();
+                $("#showPlaybox2").hide();
+                $("#showFixedline").hide();
+                $("#bindData_REQUEST_SERVICE_PB").hide();
+
+                var address = "";
+                address = address + findElementDisplay(data, "Name", "HOUSE_NO") + " " + $('#txtfor_L_INSTALL_HOME_NUMBER_2').text() + " ";
+                if ($('#txtfor_L_INSTALL_MOO').text() != "")
+                    address = address + findElementDisplay(data, "Name", "MOO") + " " + $('#txtfor_L_INSTALL_MOO').text() + " ";
+                if ($('#txtfor_L_INSTALL_MOOBAN').text() != "")
+                    address = address + findElementDisplay(data, "Name", "VILLAGE") + " " + $('#txtfor_L_INSTALL_MOOBAN').text() + " ";
+                if ($('#txtfor_L_INSTALL_BUILD_NAME').text() != "")
+                    address = address + findElementDisplay(data, "Name", "BUILDING") + " " + $('#txtfor_L_INSTALL_BUILD_NAME').text() + " ";
+                if ($('#txtfor_L_INSTALL_SOI').text() != "")
+                    address = address + findElementDisplay(data, "Name", "LANE") + " " + $('#txtfor_L_INSTALL_SOI').text() + " ";
+                if ($('#txtfor_L_INSTALL_ROAD').text() != "")
+                    address = address + findElementDisplay(data, "Name", "ROAD") + " " + $('#txtfor_L_INSTALL_ROAD').text() + " ";
+                if ($('#txtfor_L_INSTALL_TUMBOL').text() != "")
+                    address = address + findElementDisplay(data, "Name", "SUB_DISTRICT") + " " + $('#txtfor_L_INSTALL_TUMBOL').text() + " ";
+                address = address + findElementDisplay(data, "Name", "DISTRICT") + " " + $('#txtfor_L_INSTALL_AMPHUR').text() + " ";
+                address = address + findElementDisplay(data, "Name", "PROVINCE") + " " + $('#txtfor_L_INSTALL_PROVINCE').text() + " ";
+                address = address + findElementDisplay(data, "Name", "POSTAL_CODE") + " " + $('#txtfor_L_INSTALL_ZIPCODE').text() + " ";
+
+                var sendDocAddress = "";
+                sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "HOUSE_NO") + " " + $('#AddressPanelModelSendDoc_L_HOME_NUMBER_2').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_MOO').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "MOO") + " " + $('#AddressPanelModelSendDoc_L_MOO').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_MOOBAN').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "VILLAGE") + " " + $('#AddressPanelModelSendDoc_L_MOOBAN').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_BUILD_NAME').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "BUILDING") + " " + $('#AddressPanelModelSendDoc_L_BUILD_NAME').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_SOI').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "LANE") + " " + $('#AddressPanelModelSendDoc_L_SOI').val() + " ";
+                if ($('#AddressPanelModelSendDoc_L_ROAD').val() != "")
+                    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "ROAD") + " " + $('#AddressPanelModelSendDoc_L_ROAD').val() + " ";
+                //R23.08 Billing Address
+                sendDocAddress += findElementDisplay(data, "Name", "SUB_DISTRICT") + " " + ($('#TumbonSendDoc').val() != null ? $('#TumbonSendDoc').val() : $('#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_TUMBOL').val()) + " ";
+                sendDocAddress += findElementDisplay(data, "Name", "DISTRICT") + " " + ($('#AmphurSendDoc').val() != null ? $('#AmphurSendDoc').val() : $('#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_AMPHUR').val()) + " ";
+                sendDocAddress += findElementDisplay(data, "Name", "PROVINCE") + " " + ($('#ProvinceSendDoc').val() != null ? $('#ProvinceSendDoc').val() : $('#CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_PROVINCE').val()) + " ";
+                sendDocAddress += findElementDisplay(data, "Name", "POSTAL_CODE") + " " + ($("#ZipCodeSendDoc").val() != null ? $("#ZipCodeSendDoc :selected").text() : $('#txtfor_L_BILL_ZIPCODE').text()) + " ";
+                //if ($('#TumbonSendDoc').val() != "")
+                //    sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "SUB_DISTRICT") + " " + $('#TumbonSendDoc').val() + " ";
+                //sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "DISTRICT") + " " + $('#AmphurSendDoc').val() + " ";
+                //sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "PROVINCE") + " " + $('#ProvinceSendDoc').val() + " ";
+                //sendDocAddress = sendDocAddress + findElementDisplay(data, "Name", "POSTAL_CODE") + " " + $("#ZipCodeSendDoc :selected").text() + " ";
+
+
+                $("#bindData_AWN_NAME").html(findElementDisplay(data, "Name", "AWN_NAME"));
+                $("#bindData_AWN_ADDRESS").html(findElementDisplay(data, "Name", "AWN_ADDRESS"));
+                $("#bindData_APPLICATION_FORM").html(findElementDisplay(data, "Name", "APPLICATION_FORM"));
+                if (typeR) {
+                    $("#bindData_SUBSCRIBER").html(findElementDisplay(data, "Name", "SUBSCRIBER_INDIVIDUAL"));
+                    $("#bindData_NAME").html(findElementDisplay(data, "Name", "INDIVIDUAL_NAME"));
+                    var indName = $("#txtfor_L_TITLE_NAME").html() + " " + $("#txtfor_L_FIRST_NAME").html() + " " + $("#txtfor_L_LAST_NAME").html();
+                    $("#bindData_NAME_DATA").html(indName);
+                    $("#bindData_CARD_TYPE").html(findElementDisplay(data, "Name", "INDIVIDUAL_CARD_TYPE"));
+                }
+                else {
+                    $("#bindData_SUBSCRIBER").html(findElementDisplay(data, "Name", "SUBSCRIBER_JURISTIC"));
+                    $("#bindData_NAME").html(findElementDisplay(data, "Name", "JURISTIC_NAME"));
+                    $("#bindData_NAME_DATA").html($("#txtfor_L_GOVERNMENT_NAME").html());
+                    $("#bindData_CARD_TYPE").html(findElementDisplay(data, "Name", "JURISTIC_CARD_TYPE"));
+                }
+                $("#bindData_CARD_NO").html($('#CustomerRegisterPanelModel_L_CARD_NO').val());
+
+                var telephoneNo = $("#CustomerRegisterPanelModel_L_MOBILE").val();
+                if (!!$("#L_OR").val() && $("#L_OR").val() != "")
+                    telephoneNo += (", " + $("#L_OR").val());
+
+                $("#bindData_MOBILE_NO").html(findElementDisplay(data, "Name", "MOBILE_NO"));
+                $("#bindData_MOBILE_NO_DATA").html(telephoneNo);
+                $("#bindData_TELEPHONE_NO").html(findElementDisplay(data, "Name", "TELEPHONE_NO"));
+                $("#bindData_TELEPHONE_NO_DATA").html($("#L_HOME_PHONE").val());
+                $("#bindData_INSTALLATION_ADDRESS").html(findElementDisplay(data, "Name", "INSTALLATION_ADDRESS"));
+                $("#bindData_INSTALLATION_ADDRESS_DATA").html(address);
+                $("#bindData_BILLING_ADDRESS").html(findElementDisplay(data, "Name", "BILLING_ADDRESS"));
+                $("#bindData_BILLING_ADDRESS_DATA").html(sendDocAddress);
+
+                $("#bindData_FOR_REQUEST_SERVICE").html(findElementDisplay(data, "Name", "FOR_REQUEST_SERVICE"));
+                if ($('#CoveragePanelModel_AccessMode').val() == "VDSL")
+                    $("#bindData_REQUEST_SERVICE").html(findElementDisplay(data, "Name", "FTTB_ROUTER"));
+                else if ($('#CoveragePanelModel_AccessMode').val() == "FTTH")
+                    $("#bindData_REQUEST_SERVICE").html(findElementDisplay(data, "Name", "FTTH_ROUTER"));
+                else if ($('#CoveragePanelModel_AccessMode').val() == "WTTx")
+                    $("#bindData_REQUEST_SERVICE").html(findElementDisplay(data, "Name", "WTTX_ROUTER"));
+
+                if ($('#SummaryPanelModel_PackageModel_SelectPlayBox_Flag').val() == "1") {
+                    $("#bindData_REQUEST_SERVICE_PB").show();
+                    $("#bindData_REQUEST_SERVICE_PB").html(findElementDisplay(data, "Name", "PLAYBOX_ROUTER"));
+                }
+
+                var packageData = findElementDisplay(data, "Name", "MONTHLY_FEE");
+                var monthlyFee = findElementDisplay(data, "Name", "MONTHLY_FEE");
+                var monthlyFeeData = $("#SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_PAKAGE").val() + " " + monthlyFee.substring(monthlyFee.indexOf("{RecurringCharge}") + "{RecurringCharge}".length);
+
+                $("#bindData_PACKAGE").html(findElementDisplay(data, "Name", "PACKAGE") + $("#TechnologyDisplay").val().replace(/\|/g, '<br>'));
+                //$("#bindData_PACKAGE").html($('#o6').text() + ' ' + $("#TechnologyDisplay").val());
+                $("#bindData_MONTHLY_FEE").html(monthlyFee.substring(0, monthlyFee.indexOf("{RecurringCharge}")));
+                $("#bindData_MONTHLY_FEE_DATA").html(monthlyFeeData);
+
+                if (typeof isNoRouter !== "undefined" && !isNoRouter) {
+                    $("#bindData_INSTALLATION").show();
+                    $("#bindData_REQUEST_SERVICE").show();
+                    if ($("input[name=SelectOptionInstallation]:checked").val() == "0") {
+                        //R21.6 eApplication
+                        var strFREE_INSTALLATION = findElementDisplay(data, "Name", "FREE_INSTALLATION");
+                        var strREMARK = findElementDisplay(data, "Name", "REMARK");
+                        if ($("#Install_Package_Duration").val() != "") {
+                            strFREE_INSTALLATION = strFREE_INSTALLATION.replace("{Mouth}", $("#Install_Package_Duration").val());
+                            strREMARK = strREMARK.replace("{Mouth}", $("#Install_Package_Duration").val());
+                        }
+                        else {
+                            strFREE_INSTALLATION = strFREE_INSTALLATION.replace("{Mouth}", "null");
+                            strREMARK = strREMARK.replace("{Mouth}", "null");
+                        }
+                        $("#bindData_INSTALLATION").html(strFREE_INSTALLATION);
+                        $("#bindData_REMARK").html(strREMARK);
+                        //$("#bindData_INSTALLATION").html(findElementDisplay(data, "Name", "FREE_INSTALLATION"));
+                        //$("#bindData_REMARK").html(findElementDisplay(data, "Name", "REMARK"));
+                        $("#bindData_REMARK").show();
+                    }
+                    else {
+                        $("#bindData_INSTALLATION").html(findElementDisplay(data, "Name", "PAY_INSTALLATION"));
+                        $("#bindData_REMARK").hide();
+                    }
+                }
+                else {
+                    $("#bindData_REMARK").hide();
+                    $("#bindData_INSTALLATION").hide();
+                    $("#bindData_REQUEST_SERVICE").hide();
+                }
+
+                $(".showEntryFee").hide();
+                if ($("#showEntrancefee").val() == "true") {
+                    var entryFee;
+
+                    $(".lblEntranceFee").get().forEach(function (entry, index, array) {
+                        $("#showEntryFee" + index).show();
+                        if (parseInt($("#entranceFeeDetail" + index).text(), 10) > 0) {
+                            if ($("#entranceFeeDetail" + index).attr("name") == "EF") {
+                                entryFee = findElementDisplay(data, "Name", "ENTRY_FEE");
+                                $("#bindData_ENTRY_FEE" + index).html(entryFee.replace("{EntryFee}", $("#entranceFeeDetail" + index).text()));
+                                $("#bindData_PAY_ENTRY_FEE").show();
+                                var payEntryFee = findElementDisplay(data, "Name", "PAY_ENTRY_FEE");
+                                $("#bindData_PAY_ENTRY_FEE").html(payEntryFee.replace("{EntryFee}", $("#entranceFeeDetail" + index).text()));
+                            }
+                            //else if ($("#entranceFeeDetail" + index).attr("name") == "RT") {
+                            //    if ($("#ActiveSellRouterFlag").val() == "Y" && $('#TopUp').val() == "5" && $('#CustomerRegisterPanelModel_RouterFlag').val() == "S") {
+                            //        if ($("#ActiveSellRouterFlag").val() == "Y" && $('#TopUp').val() == "5" && $('#CustomerRegisterPanelModel_RouterFlag').val() == "S") {
+                            //            $("#bindData_REQUEST_SERVICE").html("");
+                            //            entryFee = findElementDisplay(data, "Name", "SELL_ROUTER_PRICE");
+                            //            $("#bindData_REQUEST_SERVICE").html(entryFee.replace("{RouterPrice}", $("#entranceFeeDetail" + index).text()));
+                            //        }
+                            //    }
+                            //}
+                            else {
+                                entryFee = findElementDisplay(data, "Name", "PAY_IN_ADVANCE");
+                                $("#bindData_ENTRY_FEE" + index).html(entryFee.replace("{PayInAdvance}", $("#entranceFeeDetail" + index).text()));
+                            }
+                        }
+                        else {
+
+                            if ($("#entranceFeeDetail" + index).attr("name") == "EF") {
+                                $("#bindData_PAY_ENTRY_FEE").hide();
+                                entryFee = findElementDisplay(data, "Name", "EXCEPT_ENTRY_FEE");
+                                $("#bindData_ENTRY_FEE" + index).html(entryFee);
+                            }
+
+                        }
+                    });
+
+                }
+
+                //18.1 FTTB Sell Router
+                //if ($("#ActiveSellRouterFlag").val() == "Y" && $('#TopUp').val() == "5") {
+                //    if ($('#CustomerRegisterPanelModel_RouterFlag').val() == "S") {
+                //        $("#bindData_REQUEST_SERVICE").show();
+                //        $("#bindData_INSTALLATION").hide();
+                //        $("#bindData_REMARK").hide();
+                //    }
+                //    if ($('#CustomerRegisterPanelModel_RouterFlag').val() == "M") {
+                //        $("#bindData_REQUEST_SERVICE").hide();
+                //        $("#bindData_INSTALLATION").hide();
+                //        $("#bindData_REMARK").hide();
+                //    }
+                //    if ($('#CustomerRegisterPanelModel_RouterFlag').val() == "B") {
+                //        $("#bindData_REQUEST_SERVICE").show();
+                //        $("#bindData_INSTALLATION").show();
+                //        $("#bindData_REMARK").show();
+                //    }
+                //}
+
+                //18.2 Ebill
+                var hdBillingMediaText = $('#hdBillingMediaText').val();
+                var hdBillingMediaEmail = $('#hdBillingMediaEmail').val();
+                if (hdBillingMediaText != "undefined" && hdBillingMediaText != '') {
+                    $("#bindData_BILLING_MEDIA_EBILL").html(hdBillingMediaText);
+                }
+                if (hdBillingMediaEmail != "undefined" && hdBillingMediaEmail != '') {
+                    $("#L_EMAIL_EBILL_NEW").val(hdBillingMediaEmail);
+                    $('#L_EMAIL_EBILL_NEW').prop('disabled', true);
+                }
+                else {
+                    $("#L_EMAIL_EBILL_NEW").val('');
+                    $('#L_EMAIL_EBILL_NEW').prop('disabled', false);
+                }
+
+                if ($('#hdGetPlayBox').val() == "1" && $("#SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_LABEL_FULLHD").val() != "") {
+                    $("#showPlaybox").show();
+                    var packagePlayboxData = findElementDisplay(data, "Name", "CONTENT_PLAYBOX");
+                    var monthlyFeePlaybox = findElementDisplay(data, "Name", "CONTENT_PLAYBOX_FEE");
+                    var monthlyFeePlayboxData = $("#SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_LABEL_FULLHD").val() + " " + monthlyFeePlaybox.substring(monthlyFeePlaybox.indexOf("{CPRecurringCharge}") + "{CPRecurringCharge}".length);
+
+                    $("#bindData_CONTENT_PLAYBOX").html(packagePlayboxData.substring(0, packagePlayboxData.indexOf("{ContentPlaybox}")));
+                    $("#bindData_CONTENT_PLAYBOX_DATA").html($('#o6').text() + ' ' + $('#ContendPBDisplay').val());
+                    $("#bindData_CONTENT_PLAYBOX_FEE").html(monthlyFeePlaybox.substring(0, monthlyFeePlaybox.indexOf("{CPRecurringCharge}")));
+                    $("#bindData_CONTENT_PLAYBOX_FEE_DATA").html(monthlyFeePlayboxData);
+                }
+                if ($('#hdGetPlayBox').val() == "1" && $("#SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_LABEL_FULLHD2").val() != "") {
+                    $("#showPlaybox2").show();
+                    var packagePlayboxData = findElementDisplay(data, "Name", "CONTENT_PLAYBOX");
+                    var monthlyFeePlaybox = findElementDisplay(data, "Name", "CONTENT_PLAYBOX_FEE");
+                    var monthlyFeePlayboxData = $("#SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_LABEL_FULLHD2").val() + " " + monthlyFeePlaybox.substring(monthlyFeePlaybox.indexOf("{CPRecurringCharge}") + "{CPRecurringCharge}".length);
+
+                    $("#bindData_CONTENT_PLAYBOX2").html(packagePlayboxData.substring(0, packagePlayboxData.indexOf("{ContentPlaybox}")));
+                    var tempContendPBDisplay = $('#ContendPB2Display').val();
+                    tempContendPBDisplay = tempContendPBDisplay.replace(/\|/g, '<br>');
+
+                    $("#bindData_CONTENT_PLAYBOX_DATA2").html($('#o6').text() + ' ' + tempContendPBDisplay);
+                    $("#bindData_CONTENT_PLAYBOX_FEE2").html(monthlyFeePlaybox.substring(0, monthlyFeePlaybox.indexOf("{CPRecurringCharge}")));
+                    $("#bindData_CONTENT_PLAYBOX_FEE_DATA2").html(monthlyFeePlayboxData);
+                }
+                if ($('#hdGetVoip').val() == "1") {
+                    $("#showFixedline").show();
+                    $("#bindData_FIXEDLINE_SERVICE").html(findElementDisplay(data, "Name", "FIXEDLINE_SERVICE"));
+                }
+
+                if ($("#PlugAndPlayFlow").val() == "Y" || $('#CPE_Serial').val() != "") {
+                    $("#normalSignFlow").hide();
+
+                    $("#plugAndPlaySignFlow").show();
+
+                    $("#plugandplayHeader").show();
+                    $("#plugandplayData").show();
+                    var serialNo = findElementDisplay(data, "Name", "SERIAL_NO");
+                    $("#bindData_RECEIVED_MODEM").html(findElementDisplay(data, "Name", "RECEIVED_MODEM"));
+                    $("#bindData_BRAND_MODEL").html(findElementDisplay(data, "Name", "BRAND_MODEL").substring(0, 11));
+                    $("#bindData_BRAND_MODEL_2").html(findElementDisplay(data, "Name", "BRAND_MODEL").substring(11));
+                    $("#bindData_SERIAL_NO").html(serialNo.substring(0, serialNo.indexOf("{SerialNo}")));
+                    $("#bindData_SERIAL_NO_DATA").html($("#CPE_Serial").val());
+                }
+                else {
+                    $("#normalSignFlow").show();
+
+                    $("#plugAndPlaySignFlow").hide();
+                    $("#plugandplayHeader").hide();
+                    $("#plugandplayData").hide();
+                }
+
+                //R18.1 FTTB Sell Router
+                //$("#bindData_SELL_ROUTER_REMARK").html("");
+                //if ($("#ActiveSellRouterFlag").val() == "Y" && $('#TopUp').val() == "5" && $('#CustomerRegisterPanelModel_RouterFlag').val() == "S") {
+                //    $("#bindData_SELL_ROUTER_REMARK").html(getSellRouterRemark());
+                //}
+
+                //R23.05.2023 Created: FIRST
+                $("#bindData_CERTIFY").html("&emsp;" + findElementDisplayDynamic(data, "Name", "CERTIFY_EAPP_CONTRACT"));
+
+                //$("#bindData_CERTIFY").html("&emsp;" + findElementDisplay(data, "Name", "CERTIFY"));
+                var signTemp = findElementDisplay(data, "Name", "SIGN");
+                $("#bindData_SIGN").html(signTemp.substring(0, signTemp.indexOf("{Sign}")));
+                $("#bindData_SIGN_2").html(signTemp.substring(signTemp.indexOf("{Sign}") + "{Sign}".length));
+                if ($("#Register_device").val() != "MOBILE APP") {
+                    if (typeR)
+                        $("#bindData_SIGN_DATA").html($("#txtfor_L_FIRST_NAME").html() + " " + $("#txtfor_L_LAST_NAME").html());
+                    else
+                        $("#bindData_SIGN_DATA").html($("#txtfor_L_GOVERNMENT_NAME").html());
+
+                }
+
+            }
+        });
+    }
+
+    if (typeof aisNative != "undefined" && typeof aisNative != "" && typeof aisNative != null) {
+        var signaturePadPrePrint = new SignaturePad(document.getElementById('signaturePrePrint-pad-modal'), {
+            backgroundColor: 'rgba(255, 255, 255, 0)',
+            penColor: 'rgb(0, 0, 0)'
+        });
+
+
+        var saveButton = document.getElementById('save');
+        var cancelButton = document.getElementById('clear');
+
+        //saveButton.addEventListener('click', function (event) {
+        //    var data = signaturePad.toDataURL('image/png');
+
+        //    // Send data to server instead...
+        //    //window.open(data);
+        //});
+    }
+
+    function cloneCanvasPrePrint() {
+        document.getElementById('signaturePrePrint-pad').parentNode.removeChild(document.getElementById('signaturePrePrint-pad'));
+        var cloneSign = document.getElementById("signaturePrePrint-pad-modal").cloneNode();
+        cloneSign.getContext('2d').drawImage(document.getElementById("signaturePrePrint-pad-modal"), 0, 0);
+        cloneSign.className = 'signaturePrePrint-pad-open';
+        cloneSign.id = 'signaturePrePrint-pad';
+        $('#bindData_SIGN_DATA').append(cloneSign);
+        $('#signaturePrePrint-pad').attr('onclick', "$('#modalSignaturePrePrint').modal()");
+
+        return;
+    }
+    function clearSignaturePadPrePrint() {
+        signaturePadPrePrint.clear();
+    }
+
+    function backToSummary() {
+        $("#preprint").hide();
+        $("#page4").show();
+        document.getElementById("ChkConPrePrint").checked = false;
+        $("#btnSubmitPrePrint").hide();
+        $("#btnNoAcceptPrePrint").show();
+        //DataBindPage();
+    }
+    //testpreprint();
+
+    ////20.2
+
+    var isScanWTTx = false;
+    function ScanWTTx() {
+        isScanWTTx = true;
+        if (isAisNative()) {
+            aisNative.scanBarcode();
+        } else {
+            ScanBarCodeWTTx();
+        }
+    }
+
+    function ScanBarCodeWTTx() {
+        var CodeScan = Code_ScanBarcodeWTTX();
+        console.log(CodeScan);
+
+        $("#interactiveWTTx").show();
+
+        if (!console) console = { log: function () { } };
+
+        var BarCodeApp = {
+            init: function () {
+                console.log(this.state);
+                //alert("state " + this.state)
+                Quagga.init(this.state, function (err) {
+                    if (err) {
+                        console.log(err);
+                        alert("error init " + err)
+                        return;
+                    }
+                    Quagga.start();
+                });
+            },
+
+            state: CodeScan,
+
+            //state: {
+            //    inputStream: {
+            //    type:"LiveStream",
+            //    constraints: {
+            //        width: 200,
+            //        height: 100,
+            //        //facingMode: "environment"
+            //    }
+            //},
+            //    locator: {
+            //        Resolution: "1920px",
+            //        patchSize: "x-large",
+            //        halfSample: true
+            //    },
+            //    numOfWorkers: 1,
+            //    decoder: { readers: ["code_128_reader"] },
+            //    locate: true
+            //}
+
+            lastResult: null
+        };
+
+        BarCodeApp.init();
+
+        Quagga.onProcessed(function (result) {
+            var drawingCtx = Quagga.canvas.ctx.overlay,
+                drawingCanvas = Quagga.canvas.dom.overlay;
+
+            if (result) {
+                if (result.boxes) {
+                    drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                    result.boxes.filter(function (box) {
+                        return box !== result.box;
+                    }).forEach(function (box) {
+                        Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                    });
+                }
+
+                if (result.box) {
+                    Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+                }
+
+                if (result.codeResult && result.codeResult.code) {
+                    Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+                }
+            }
+        });
+
+        Quagga.onDetected(function (result) {
+            var code = result.codeResult.code;
+            if (BarCodeApp.lastResult !== code) {
+                BarCodeApp.lastResult = code;
+                var $node = null, canvas = Quagga.canvas.dom.image;
+
+                //$node = $('<li><div class="thumbnail"><div class="imgWrapper"><img /></div><div class="caption"><h4 class="code"></h4></div></div></li>');
+                //$node.find("img").attr("src", canvas.toDataURL());
+                //$node.find("h4.code").html(code);
+                //$("#result_strip ul.thumbnails").prepend($node);
+                if (isScanWTTx == true) {
+                    $("#WTTx_Serial").val(code);
+                }
+            }
+        });
+    }
+
+    function Code_ScanBarcodeWTTX() {
+        var CodeScan = "";
+        $.ajax({
+            type: "GET",
+            url: "/CustomerRegister/Get_ScanBarcode",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+
+                if (data != null && data != undefined) {
+                    CodeScan = data;
+                    CodeScan = JSON.parse(CodeScan);
+                    CodeScan.inputStream["target"] = document.querySelector('#interactiveWTTx');
+                }
+            }
+        });
+
+        return CodeScan;
+    }
+
+    function isAisNative() {
+        if (typeof aisNative == "undefined" || typeof aisNative == "" || typeof aisNative == null) {
+            return false;
+
+        } else {
+            return true;
+        }
+
+        return false;
+    }
+
+    $(document).on("click", "#btnSubmitPrePrint", function () {
+        //if ($("#WTTX_COVERAGE_RESULT").val() == "YES") {
+        //    if (CheckSerialWTTx()) {
+        //        onSubmit();
+        //    }
+        //}
+        //else {
+        //    onSubmit();
+        //}
+
+        
+        onSubmit();
+    })
+    function CheckSerialWTTx() {
+        var check = false
+        var serialWTTx = $("#WTTx_Serial").val().trim()
+        var WTTxSerialNo = "";
+        var WTTxErrorDes = "";
+        var WTTxStatusDes = "";
+        //var PBSerialNo = "";
+        //var PBErrorDes = "";
+        //var PBStatusDev = "";
+        $("#modalSerial_txtError").find("#txtWTTxError").html("");
+        //$("#modalSerial_txtError").find("#txtPBError").html("");
+        //var chkErrorWTTx = "";
+        //var chkErrorPB = "";
+
+        if (serialWTTx != "" && serialWTTx != null) {
+            $("#WTTx_Serial").removeClass("form-control errorinput").addClass("form-control");
+            $.ajax({
+                url: '/CustomerRegister/GetCheckCPE',
+                data: {
+                    CPECode: serialWTTx,
+                    playbox: "",
+                    idcardNo: "",
+                    AisAirNumber: sessionStorage.getItem("AisAirNumber")
+                },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (data) {
+
+                    if (data != null || data != undefined) {
+
+                        $.each(data, function (i, e) {
+                            //debugger;
+                            if (e.SN == serialWTTx) {
+                                if (e.cpe_type == "CPE") {
+                                    if (e.Check_Result_Code == "0" && e.STATUS_DESC == "Available" ) {
+                                        if (e.CPE_MAC_ADDR == "" || e.CPE_MAC_ADDR == null) {
+                                            $("#WTTx_Serial").removeClass("form-control").addClass("form-control errorinput");
+                                            toastrErrorMessage("@L_ERROR_MAC_ADDR");
+                                        }
+                                        else {
+                                            var div = $("#DIV_WTTx_INFO");
+                                            div.empty();
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].cpe_type" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__cpe_type" value="' + e.cpe_type + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].SN" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__SN" value="' + e.SN + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].CPE_MAC_ADDR" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__CPE_MAC_ADDR" value="' + e.CPE_MAC_ADDR + '" />');
+                                            //strDataValue += '<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].WTTx_type" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__WTTx_type" value="' + e.WTTx_type + '" />'
+                                            //strDataValue += '<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].SN" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__SN" value="' + e.SN + '" />'
+                                            //strDataValue += '<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].WTTx_MAC_ADDR" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__WTTx_MAC_ADDR" value="' + e.WTTx_MAC_ADDR + '" />'
+
+                                            //R20.4
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].STATUS_DESC" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__STATUS_DESC" value="' + e.STATUS_DESC + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].CPE_MODEL_NAME" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__CPE_MODEL_NAME" value="' + e.CPE_MODEL_NAME + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].CPE_COMPANY_CODE" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__CPE_COMPANY_CODE" value="' + e.CPE_COMPANY_CODE + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].CPE_PLANT" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__CPE_PLANT" value="' + e.CPE_PLANT + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].CPE_STORAGE_LOCATION" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__CPE_STORAGE_LOCATION" value="' + e.CPE_STORAGE_LOCATION + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].CPE_MATERIAL_CODE" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__CPE_MATERIAL_CODE" value="' + e.CPE_MATERIAL_CODE + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].REGISTER_DATE" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__REGISTER_DATE" value="' + e.REGISTER_DATE + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].FIBRENET_ID" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__FIBRENET_ID" value="' + e.FIBRENET_ID + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].SN_PATTERN" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__SN_PATTERN" value="' + e.SN_PATTERN + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].SHIP_TO" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__SHIP_TO" value="' + e.SHIP_TO + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].WARRANTY_START_DATE" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__WARRANTY_START_DATE" value="' + e.WARRANTY_START_DATE + '" />');
+                                            div.append('<input type="hidden" name="CustomerRegisterPanelModel.WTTx_Info[' + i + '].WARRANTY_END_DATE" id ="CustomerRegisterPanelModel_WTTx_Info_' + i + '__WARRANTY_END_DATE" value="' + e.WARRANTY_END_DATE + '" />');
+                                            check = true
+                                        }
+                                    }
+                                    else {
+                                        //  toastrErrorMessage(e.WTTx_TYPE_ERR);
+                                        WTTxSerialNo = e.SN;
+                                        WTTxErrorDes = e.Check_Result_Desc;
+                                        WTTxStatusDes = e.STATUS_DESC;
+                                        $("#WTTx_Serial").removeClass("form-control").addClass("form-control errorinput");
+                                        $("#modalSerial_txtError").find("#txtWTTxSerial").html(WTTxSerialNo);
+                                        $("#modalSerial_txtError").find("#txtWTTxError").html(e.CPE_TYPE_ERR);
+                                        $("#modalSerial_txtError").find("#txtWTTxStatusDes").html(WTTxStatusDes);
+                                        chkErrorWTTx = "WTTxError";
+                                        $("#modalSerial_txtError").find("#WTTxError").show();
+                                        $('#modalSerial_txtError').modal();
+                                        // chkInstallDate = false;
+                                    }
+                                    return;
+                                }
+                            }
+                        })
+                    }
+                }
+            });
+        }
+        else {
+            $("#WTTx_Serial").removeClass("form-control").addClass("form-control errorinput");
+            toastrErrorMessage("@L_REQUIRED_FIELDS_WTTX");
+        }
+        return check
+    }
+</script>

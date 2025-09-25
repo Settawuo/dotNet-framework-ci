@@ -1,0 +1,845 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@{#region
+    string hFBB003 = "";
+    string hFBB004 = "";
+    string bBACK = "";
+    string bSubmit = "";
+    string lINSTALL_ADDR = "";
+    string lBILLING_ADDR = "";
+    string lCONDITION = "";
+    string L_CAPTCHA = "";
+    string L_CAPTCHA_ERR = "";
+    string SUMMARY_02_01 = "";
+    string FBBOR041_OTP_1 = "";
+    string FBBOR041_OTP_6 = "";
+    var topUp = "";
+    string vas_flag = "";
+    string L_AUTOMATE = "";
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR003;
+        hFBB003 = labelFBBTR003.Any(c => c.Name == "H_FBB003") ? labelFBBTR003.First(c => c.Name == "H_FBB003").DisplayValue : "";
+        L_CAPTCHA = labelFBBTR003.Any(c => c.Name == "L_CAPTCHA") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_CAPTCHA").DisplayValue : "";
+        L_CAPTCHA_ERR = labelFBBTR003.Any(c => c.Name == "L_CAPTCHA_ERR") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_CAPTCHA_ERR").DisplayValue : "";
+        L_AUTOMATE = labelFBBTR003.Any(c => c.Name == "L_AUTOMATE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_AUTOMATE").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR004 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR004;
+        hFBB004 = labelFBBTR004.Any(c => c.Name == "H_FBB004") ? labelFBBTR004.First(c => c.Name == "H_FBB004").DisplayValue : "";
+        bSubmit = labelFBBTR004.Any(c => c.Name == "B_SUBMIT") ? labelFBBTR004.First(c => c.Name == "B_SUBMIT").DisplayValue : "";
+        lINSTALL_ADDR = labelFBBTR004.Any(c => c.Name == "L_INSTALL_DETAIL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_INSTALL_DETAIL").DisplayValue : "";
+        lBILLING_ADDR = labelFBBTR004.Any(c => c.Name == "L_BILLING_DETAIL") ? labelFBBTR004.FirstOrDefault(c => c.Name == "L_BILLING_DETAIL").DisplayValue : "";
+        lCONDITION = labelFBBTR004.Any(c => c.Name == "L_CONDITION") ? labelFBBTR004.First(c => c.Name == "L_CONDITION").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR000 != null)
+    {
+        var labelFBBTR000 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR000;
+
+        bBACK = labelFBBTR000.Any(c => c.Name == "B_BACK") ? labelFBBTR000.First(c => c.Name == "B_BACK").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBORV41 != null)
+    {
+        var LabelFBBORV41 = (List<LovScreenValueModel>)ViewBag.LabelFBBORV41;
+        SUMMARY_02_01 = LabelFBBORV41.Any(c => c.Name == "SUMMARY_02_01") ? LabelFBBORV41.First(c => c.Name == "SUMMARY_02_01").DisplayValue : "";
+        FBBOR041_OTP_1 = LabelFBBORV41.Any(c => c.Name == "FBBOR041_OTP_1") ? LabelFBBORV41.First(c => c.Name == "FBBOR041_OTP_1").DisplayValue : "";
+        FBBOR041_OTP_6 = LabelFBBORV41.Any(c => c.Name == "FBBOR041_OTP_6") ? LabelFBBORV41.First(c => c.Name == "FBBOR041_OTP_6").DisplayValue : "";
+    }
+    if (null != ViewBag.TopUp)
+    {
+        topUp = ViewBag.TopUp;
+    }
+
+    if (null != ViewBag.Vas)
+    {
+        vas_flag = ViewBag.Vas;
+        if (vas_flag == "") { vas_flag = "0"; }
+    }
+
+    string Staff_id = "";
+    if (ViewBag.Staff_id != null)
+    {
+        Staff_id = ViewBag.Staff_id;
+    }
+    string Location_code = "";
+    if (ViewBag.Location_code != null)
+    {
+        Location_code = ViewBag.Location_code;
+    }
+    string Install_date = "";
+    if (ViewBag.Install_date != null)
+    {
+        Install_date = ViewBag.Install_date;
+    }
+    string Time_slot = "";
+    if (ViewBag.Time_slot != null)
+    {
+        Time_slot = ViewBag.Time_slot;
+    }
+    string Channel = "";
+    if (ViewBag.Channel != null)
+    {
+        Channel = ViewBag.Channel;
+    }
+    string ChnOTP = "";
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        ChnOTP = FbbConstant.Any(f => f.Field == "CHANNEL_OTP_IPCamera") ? FbbConstant.First(f => f.Field == "CHANNEL_OTP_IPCamera").Validation : "";
+    }
+    string AccessModeByPass = "";
+    if (ViewBag.AccessModeByPass != null)
+    {
+        AccessModeByPass = ViewBag.AccessModeByPass;
+    }
+    string FullUrl = "";
+    if (Session["FullUrl"] != null)
+    {
+        FullUrl = Session["FullUrl"].ToString();
+    }
+    var ErrorMessageOrderPending = "";
+    if (ViewBag.LabelFBBOR041 != null)
+    {
+        var LabelFBBOR041 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR041;
+        ErrorMessageOrderPending = LabelFBBOR041.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LabelFBBOR041.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+    }
+    string CheckShowMenuChangeService = "";
+    string CheckShowMenuChangeServiceMsg = "";
+    #endregion
+}
+<input type="hidden" id="INITIATION_CHARGE" />
+<div id="listvas"></div>
+<div id="PDF_Detail">
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_MAIN_PACKAGE, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_MAIN_PACKAGE", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_LABEL_TIDTUN, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_LABEL_TIDTUN", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_TIDTUN, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_TIDTUN", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_BASEPHONE, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_BASEPHONE", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_DISCOUNTBASEPHONE, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_DISCOUNTBASEPHONE", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_PLAYBOXINSTALL, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_PLAYBOXINSTALL", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_DISCOUNTPLAYBOX, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_DISCOUNTPLAYBOX", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_DISCOUNT, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_DISCOUNT", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_SUM1, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_SUM1", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_LABEL_PAKAGENAME, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_LABEL_PAKAGENAME", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_PAKAGE, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_PAKAGE", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_FULLHD, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_FULLHD", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_LABEL_FULLHD, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_LABEL_FULLHD", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_FULLHD2, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_FULLHD2", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_LABEL_FULLHD2, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_LABEL_FULLHD2", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_SPEEDBOOST, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_SPEEDBOOST", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_LABEL_SPEEDBOOST, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_LABEL_SPEEDBOOST", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_MAINTAINPHONE, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_MAINTAINPHONE", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_SUM2, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_SUM2", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_VALUE_DETAIL_4DAY, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_VALUE_DETAIL_4DAY", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_LABEL_DETAIL_ALLFIRSTBILL, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_LABEL_DETAIL_ALLFIRSTBILL", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_BUNDLING_DISCOUNT_DETAIL, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_BUNDLING_DISCOUNT_DETAIL", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PDFPackageModel.PDF_L_DISCOUNT_DETAIL, new { @id = "SummaryPanelModel_PDFPackageModel_PDF_L_DISCOUNT_DETAIL", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PackageModel.SelectVas_Flag, new { @id = "SummaryPanelModel_PackageModel_SelectVas_Flag", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PackageModel.SelectPlayBox_Flag, new { @id = "SummaryPanelModel_PackageModel_SelectPlayBox_Flag", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.PackageModel.SelectPlayPBL_Flag, new { @id = "SummaryPanelModel_PackageModel_SelectPlayPBL_Flag", @value = "" })
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.L_SEND_EMAIL, new { @id = "SummaryPanelModel_L_SEND_EMAIL", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_INSTALL_DATE, new { @id = "L_INSTALL_DATE", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_SPECIFIC_TIME, new { @id = "CustomerRegisterPanelModel_L_SPECIFIC_TIME", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.AppointmentDate, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.InstallationCapacity, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.TimeSlot, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.FBSSTimeSlot.TimeSlotId, new { @id = "CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId", @value = "" })
+    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.ASSIGN_RULE, new { @id = "CustomerRegisterPanelModel_ASSIGN_RULE", @value = "" })
+
+</div>
+<div id="AddressforVas">
+    @Html.HiddenFor(Model => Model.outPrimaryContactFirstName, new { @id = "outPrimaryContactFirstName" })
+    @Html.HiddenFor(Model => Model.outContactLastName, new { @id = "outContactLastName" })
+    @Html.HiddenFor(Model => Model.outAmphur, new { @id = "outAmphur" })
+    @Html.HiddenFor(Model => Model.outBuildingName, new { @id = "outBuildingName" })
+    @Html.HiddenFor(Model => Model.outFloor, new { @id = "outFloor" })
+    @Html.HiddenFor(Model => Model.outHouseNumber, new { @id = "outHouseNumber" })
+    @Html.HiddenFor(Model => Model.outMoo, new { @id = "outMoo" })
+    @Html.HiddenFor(Model => Model.outMooban, new { @id = "outMooban" })
+    @Html.HiddenFor(Model => Model.outProvince, new { @id = "outProvince" })
+    @Html.HiddenFor(Model => Model.outRoom, new { @id = "outRoom" })
+    @Html.HiddenFor(Model => Model.outSoi, new { @id = "outSoi" })
+    @Html.HiddenFor(Model => Model.outStreetName, new { @id = "outStreetName" })
+    @Html.HiddenFor(Model => Model.outBillLanguage, new { @id = "outBillLanguage" })
+    @Html.HiddenFor(Model => Model.outtumbol, new { @id = "outtumbol" })
+    @Html.HiddenFor(Model => Model.outBirthDate, new { @id = "outBirthDate" })
+    @Html.HiddenFor(Model => Model.outEmail, new { @id = "outEmail" })
+    @Html.HiddenFor(Model => Model.outparameter2, new { @id = "outparameter2" })
+    @Html.HiddenFor(Model => Model.outAccountName, new { @id = "outAccountName" })
+    @Html.HiddenFor(Model => Model.outAccountNumber, new { @id = "outAccountNumber" })
+    @Html.HiddenFor(Model => Model.outServiceAccountNumber, new { @id = "outServiceAccountNumber" })
+    @Html.HiddenFor(Model => Model.outBillingAccountNumber, new { @id = "outBillingAccountNumber" })
+    @Html.HiddenFor(Model => Model.outProductName, new { @id = "outProductName" })
+    @Html.HiddenFor(Model => Model.outDayOfServiceYear, new { @id = "outDayOfServiceYear" })
+    @Html.HiddenFor(Model => Model.outAccountSubCategory, new { @id = "outAccountSubCategory" })
+    @Html.HiddenFor(Model => Model.outPostalCode, new { @id = "outPostalCode" })
+    @Html.HiddenFor(Model => Model.outcardType, new { @id = "outcardType" })
+    @Html.HiddenFor(Model => Model.IDCardNo, new { @id = "IDCardNo" })
+    @Html.HiddenFor(Model => Model.IDCardType, new { @id = "IDCardType" })
+    @Html.HiddenFor(Model => Model.no, new { @id = "no" })
+</div>
+<div id="testadvas">
+    @{
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_CARD_TYPE, new { @id = "CustomerRegisterPanelModel_L_CARD_TYPE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_CARD_NO, new { @id = "CustomerRegisterPanelModel_L_CARD_NO" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.CA_ID, new { @id = "CoveragePanelModel_CA_ID" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.BA_ID, new { @id = "CoveragePanelModel_BA_ID" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.SA_ID, new { @id = "CoveragePanelModel_SA_ID" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.SffProductName, new { @id = "CoveragePanelModel_SffProductName" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.SffServiceYear, new { @id = "CoveragePanelModel_SffServiceYear" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.P_MOBILE, new { @id = "CoveragePanelModel_P_MOBILE" })
+        @Html.HiddenFor(Model => Model.v_sff_main_promotionCD, new { @id = "v_sff_main_promotionCD" })
+        @Html.HiddenFor(Model => Model.v_PackageCode, new { @id = "v_PackageCode" })
+        @Html.HiddenFor(Model => Model.v_owner_product, new { @id = "v_owner_product" })
+
+        /// address
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_HOME_NUMBER_2, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_HOME_NUMBER_2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOO, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOO" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOOBAN, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOOBAN" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_BUILD_NAME, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_FLOOR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_FLOOR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROOM, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROOM" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_SOI, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_SOI" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROAD, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROAD" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_TUMBOL, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_TUMBOL" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_AMPHUR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_AMPHUR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_PROVINCE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_PROVINCE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSetup.L_ZIPCODE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSetup_L_ZIPCODE" })
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_HOME_NUMBER_2, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_HOME_NUMBER_2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOO, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOO" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOOBAN, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOOBAN" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_BUILD_NAME, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_BUILD_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_FLOOR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_FLOOR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROOM, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROOM" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_SOI, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_SOI" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROAD, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROAD" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_TUMBOL, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_TUMBOL" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_AMPHUR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_AMPHUR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_PROVINCE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_PROVINCE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ZIPCODE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ZIPCODE" })
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_HOME_NUMBER_2, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_HOME_NUMBER_2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_MOO, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_MOO" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_MOOBAN, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_MOOBAN" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_BUILD_NAME, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_FLOOR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_FLOOR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_ROOM, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_ROOM" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_SOI, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_SOI" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_ROAD, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_ROAD" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_TUMBOL, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_TUMBOL" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_AMPHUR, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_AMPHUR" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_PROVINCE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_PROVINCE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.AddressPanelModelVat.L_ZIPCODE, new { @id = "CustomerRegisterPanelModel_AddressPanelModelVat_L_ZIPCODE" })
+
+        /// detail
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_FIRST_NAME, new { @id = "CustomerRegisterPanelModel_L_FIRST_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_LAST_NAME, new { @id = "CustomerRegisterPanelModel_L_LAST_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_GOVERNMENT_NAME, new { @id = "CustomerRegisterPanelModel_L_GOVERNMENT_NAME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_CONTACT_PERSON, new { @id = "CustomerRegisterPanelModel_L_CONTACT_PERSON" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.SubCateType, new { @id = "CustomerRegisterPanelModel_SubCateType" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_GENDER, new { @id = "CustomerRegisterPanelModel_L_GENDER" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_CONTACT_PHONE, new { @id = "CustomerRegisterPanelModel_L_CONTACT_PHONE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_BIRTHDAY, new { @id = "CustomerRegisterPanelModel_L_BIRTHDAY" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_EMAIL, new { @id = "CustomerRegisterPanelModel_L_EMAIL" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_SPECIFIC_TIME, new { @id = "CustomerRegisterPanelModel_L_SPECIFIC_TIME" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_TITLE, new { @id = "CustomerRegisterPanelModel_L_TITLE" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.CateType, new { @id = "CustomerRegisterPanelModel_CateType" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_FOR_CS_TEAM, new { @id = "CustomerRegisterPanelModel_L_FOR_CS_TEAM" })
+        @Html.HiddenFor(Model => Model.CoveragePanelModel.Address.AddressId, new { @id = "CoveragePanelModel_Address_AddressId" })
+
+        ///New AddressPanel 15.7
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress1, new { @id = "CustomerRegisterPanelModel_installAddress1" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress2, new { @id = "CustomerRegisterPanelModel_installAddress2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress3, new { @id = "CustomerRegisterPanelModel_installAddress3" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress4, new { @id = "CustomerRegisterPanelModel_installAddress4" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.installAddress5, new { @id = "CustomerRegisterPanelModel_installAddress5" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.pbox_count, new { @id = "CustomerRegisterPanelModel_pbox_count" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.v_installAddress, new { @id = "CustomerRegisterPanelModel_v_installAddress" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.outFullAddress, new { @id = "CustomerRegisterPanelModel_outFullAddress" })
+
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress1, new { @id = "CustomerRegisterPanelModel_vatAddress1" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress2, new { @id = "CustomerRegisterPanelModel_vatAddress2" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress3, new { @id = "CustomerRegisterPanelModel_vatAddress3" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress4, new { @id = "CustomerRegisterPanelModel_vatAddress4" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddress5, new { @id = "CustomerRegisterPanelModel_vatAddress5" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatAddressFull, new { @id = "CustomerRegisterPanelModel_vatAddressFull" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.vatPostalCd, new { @id = "CustomerRegisterPanelModel_vatPostalCd" })
+        @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_MOBILE, new { @id = "CustomerRegisterPanelModel_L_MOBILE" });
+
+
+    }
+    @Html.HiddenFor(a => a.CoveragePanelModel.AccessMode, new { @id = "CoveragePanelModel_AccessMode" })
+    @Html.HiddenFor(a => a.CoveragePanelModel.ServiceCode, new { @id = "CoveragePanelModel_ServiceCode" })
+    @Html.HiddenFor(Model => Model.DisplayPackagePanelModel.L_SPECIAL_BUNDLING_DISCOUNT, new { @id = "DisplayPackagePanelModel_L_SPECIAL_BUNDLING_DISCOUNT" })
+    @Html.HiddenFor(Model => Model.DisplayPackagePanelModel.L_SPECIAL_DISCOUNT, new { @id = "DisplayPackagePanelModel_L_SPECIAL_DISCOUNT" })
+
+    @Html.HiddenFor(Model => Model.SummaryPanelModel.RESERVED_ID, new { @id = "SummaryPanelModel_RESERVED_ID" })
+    @*18.4 Add Parameter Existing*@
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_LOC_CODE, new { @id = "Location_Code" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_ASC_CODE, new { @id = "ASC_Code" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.L_STAFF_ID, new { @id = "Employee_ID" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.DELIVERY_METHOD, new { @id = "Delivery_Method" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.DIY_FLAG, new { @id = "DIY_Flag" })
+    @Html.HiddenFor(model => model.CustomerRegisterPanelModel.ServiceLevel, new { @id = "ServiceLevel" })
+</div>
+<div class="summarytabHidden" style="display: none;">
+    <div class="col-xs-10 col-xs-offset-1 add-border-rounded-green">
+        <h4 class="tgreen"><span class="hightlight"></span></h4>
+        <div id="summarytabWrite"></div>
+    </div><p class="clearfix"></p><p class="clearfix"></p><p class="clearfix"></p>
+</div>
+
+<div id="Page4" class="container addrounded" style="display: none;">
+    <div id="divSummaryIPCam">
+        <h4 class="page-header tgreen">@hFBB004</h4><p class="clearfix"></p>
+    </div>
+    <div class="col-md-12 text-center">
+        <button type="button" class="btn btn-default btn-for-xs" onclick="onBtnSumIPCameraBack_Click()">
+            &nbsp; @bBACK &nbsp;
+        </button>
+        <button id="btnSubmitIPcamera" type="button" class="btn btn-success btn-for-xs" onclick="onSubmitIPcamera()">
+            &nbsp; @bSubmit &nbsp;<i class="fa fa-arrow-circle-o-right "></i>
+        </button>
+    </div>
+    <p class="clearfix"></p><p class="clearfix"></p><p class="clearfix"></p>
+</div>
+<div id="listDcontract" style="display:none;"></div>@*21.4 ATV*@
+<input type="hidden" id="inpHd_AUTOMATE" value="@L_AUTOMATE" />
+
+<script type="text/javascript">
+    function drawSummary() {
+        const topicDivList = ["1", "2", "3","4", "5", "6", "7", "Captcha", "OTP"];
+        const topicNameList = ["@hFBB003", "@SUMMARY_02_01", "@lINSTALL_ADDR", "@lBILLING_ADDR", "", "@lCONDITION", "@lCONDITION", "@L_CAPTCHA", "@FBBOR041_OTP_1"];
+        if ($('.summarytab1').html() == undefined) {
+            $.each(topicDivList, function (idx, topic) {
+                $("#divSummaryIPCam").append('<div class="summarytab"></div>');
+                BindHidden('.summarytab');
+                $('.summarytab .hightlight').html(topicNameList[idx]);
+                $('#divSummaryIPCam').find(".summarytab").attr('class', 'summarytab' + topic);
+                $('.summarytab' + topic).find('#summarytabWrite').replaceWith($('#lbSummary' + topic).html());
+            });
+
+            if (!isSubContact || "@Channel" != "@ChnOTP") {
+                $('.summarytabOTP').hide();
+            }
+
+            $('#lbSummaryCaptcha').html('')
+            setCaptcha();
+            setGender();
+        }
+
+        drawSummaryExtension();
+    }
+
+    function onSubmitIPcamera() {
+        var AccessMode = sessionStorage.getItem('ACCESS_MODE');
+        var ServiceCode = sessionStorage.getItem('SERVICE_CODE');
+        $('#CoveragePanelModel_AccessMode').val(AccessMode);
+        $('#CoveragePanelModel_ServiceCode').val(ServiceCode);
+        $("#CustomerRegisterPanelModel_L_FOR_CS_TEAM").val("สมัครเฉพาะ IP Camera ");
+        $("#CustomerRegisterPanelModel_ASSIGN_RULE").val("PUSH");
+        $("#CustomerRegisterPanelModel_FIBRE_ID").val(sessionStorage.getItem("AisAirNumber"));
+        sessionStorage.setItem("CoveragePanelModel_L_CONTACT_PHONE", phoneNo);
+        $("#CustomerRegisterPanelModel_L_CONTACT_PHONE").val(phoneNo);
+        $("#SummaryPanelModel_PackageModel_SelectVas_Flag").val("0");
+        $("#SummaryPanelModel_PackageModel_SelectPlayBox_Flag").val("0");
+        $("#SummaryPanelModel_PackageModel_SelectPlayPBL_Flag").val("0");
+
+        if ("@Channel" == "@ChnOTP") {
+            var datetimeinstall = "@Install_date";
+            var datesplit = datetimeinstall.split("/");
+            var formatdate = datesplit[2] + "/" + datesplit[1] + "/" + datesplit[0];
+            $('#L_INSTALL_DATE').val("@Install_date");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("@Time_slot");
+            $('#Location_Code').val("@Location_code");
+            $('#Employee_ID').val("@Staff_id");
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val(formatdate);
+            $('#DIY_Flag').val('N');
+            $('#Delivery_Method').val('SUBCONTACT');
+            $('#CoveragePanelModel_AccessMode').val("@AccessModeByPass");
+        } else {
+            $('#L_INSTALL_DATE').val(install_date);
+            if ($('input[name="diy-option"]:checked').val() == 'Y') {
+                $('#DIY_Flag').val('Y');
+                $('#Delivery_Method').val('KMART');
+                $("#divTextSelectTimeSlot").html("");
+                $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val("");
+                $('#CustomerRegisterPanelModel_FBSSTimeSlot_InstallationCapacity').val("");
+                $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val("");
+                $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val("");
+                $('#L_INSTALL_DATE').val("");
+            } else {
+                $('#DIY_Flag').val('N');
+                $('#Delivery_Method').val('SUBCONTACT');
+            }
+        }
+        LockScreen(true, "");
+        // Update 17.4 Script Adobe Analytic
+        digitalData.customLinkName = "summary:confirm-button";
+        console.log("custom-link-click : button btnSubmit2 func onSubmit");
+
+        databidepage();
+        if ($("#PlugAndPlayFlow").val() == "Y") {
+            $("#CustomerRegisterPanelModel_JOB_ORDER_TYPE").val("U");
+            $("#CustomerRegisterPanelModel_ASSIGN_RULE").val("PULL");
+
+            $('#CustomerRegisterPanelModel_L_OLD_ISP').val("");
+        }
+        CheckChangeService();
+        CheckAROrder();
+           $.ajax({
+                url: '/Process/ValidateCaptcha',
+                data: { inputUser: $('#defaultReal').val(), inputHash: $('#defaultReal').realperson('getHash') },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function(response) {
+                    if (!response) {
+                        LockScreen(false);
+                        toastrErrorMessage("@L_CAPTCHA_ERR");
+                        $("#defaultReal").removeClass('form-control').addClass('form-control errorinput');
+                    } else {
+                            if ("@vas_flag" == "2" || "@topUp" == "1") {
+                                //$("#SummaryPanelModel_VAS_FLAG").val("");
+                                var tempmail = $('#CustomerRegisterPanelModel_L_EMAIL').val();
+                                if (tempmail == undefined || tempmail == "") {
+                                    $('#CustomerRegisterPanelModel_L_EMAIL').val($("#NEW_L_EMAIL").val());
+                                }
+                                $('#CustomerRegisterPanelModel_EStatmentFlag').val('');
+                                if ("@Channel" == "@ChnOTP") {
+                                    if ($('#otppwd').val() != "") {
+                                        $.ajax({
+                                            url: '/Process/ConfirmOneTimePasswordGSSOService',
+                                            data: { MobileNo: phoneNo, pwd: $('#otppwd').val(), transactionID: tmpTransactionID, GSSOServiceFlag: 1},
+                                            dataType: "json",
+                                            async: false,
+                                            type: 'POST',
+                                            success: function (response) {
+                                                console.log("ConfirmOneTimePasswordGSSOService :", response.status);
+                                                if (response.status == "Y") {
+                                                    if (checkDateTimeSlot) {
+                                                        ReservedTimeSlot();
+                                                    }
+                                                    else {
+                                                        $("#SummaryPanelModel_RESERVED_ID").val("");
+                                                    }
+                                                    //console.log("Service Level");
+                                                    //console.log($("#ServiceLevel").val());
+                                                    setDcontract();//R21.11 ATV
+                                                    if (flagChangeService == "N") {
+                                                        LockScreen(false);
+                                                        $('#LastPopupCheckFailMessage').html(messageChangeService);
+                                                        $('#modolCheckFail').modal('show');
+                                                        window.location.href = FullUrl;
+                                                    } else {
+                                                        InsertFbbConsentLog();
+                                                        $("#iForm").submit();
+                                                    }
+                                                }
+                                                else {
+                                                    LockScreen(false);
+                                                    toastrErrorMessage("@FBBOR041_OTP_6");
+                                                    $('#otppwd').val("");
+                                                    $("#otppwd").removeClass('form-control').addClass('form-control errorinput');
+                                                    $("#btnSubmitPrePrint").hide();
+                                                    $("#btnNoAcceptPrePrint").show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        LockScreen(false);
+                                        toastrErrorMessage("@FBBOR041_OTP_6");
+                                        $('#otppwd').val("")
+                                        $("#otppwd").removeClass('form-control').addClass('form-control errorinput');
+                                        $("#btnSubmitPrePrint").hide();
+                                        $("#btnNoAcceptPrePrint").show();
+                                    }
+                                }
+                                else {
+                                    // 18.3  Add Parameter Existing
+                                    var locationCd = "";
+                                    var ascCode = "";
+                                    var employee_id = "";
+                                    // Line officer : Send => Location Code , ASC Code , Employee ID
+                                    // Line other : Send => Location Code = "" , ASC Code = "" , Employee ID = ""
+                                    if (window.parent.$("#isOfficer").length > 0 && window.parent.$("#isOfficer").val() == "Y") {
+                                        if (window.parent.$("#LcCode").length > 0) {
+                                            locationCd = window.parent.$('#LcCode').val();
+                                            $("#Location_Code").val(locationCd);
+                                        }
+
+                                        if (window.parent.$("#ASCCode").length > 0) {
+                                            ascCode = window.parent.$('#ASCCode').val();
+                                            $("#ASC_Code").val(ascCode);
+                                        }
+
+                                        if (window.parent.$("#EmployeeID").length > 0) {
+                                            employee_id = window.parent.$('#EmployeeID').val();
+                                            $("#Employee_ID").val(employee_id);
+                                        }
+                                    }
+                                    if (checkDateTimeSlot) {
+                                        if ($('input[name="diy-option"]:checked').val() == 'Y') {
+                                        }
+                                        else {
+                                            ReservedTimeSlot();
+                                        }
+                                    }
+                                    else {
+                                        $("#SummaryPanelModel_RESERVED_ID").val("");
+                                    }
+                                    var outServiceLevel = sessionStorage.getItem("ServiceLevel");
+                                    $("#CustomerRegisterPanelModel_ServiceLevel").val(outServiceLevel);
+                                    $("#ServiceLevel").val(outServiceLevel);
+                                    setDcontract();//R21.11 ATV
+                                    if (flagChangeService == "N") {
+                                            LockScreen(false);
+                                            $('#LastPopupCheckFailMessage').html(messageChangeService);
+                                            $('#modolCheckFail').modal('show');
+                                            window.location.href = FullUrl;
+                                        } else {
+                                                InsertFbbConsentLog();
+                                                $("#iForm").submit();
+                                        }
+                                    }
+                                }
+                        }
+                    }
+            });
+    }
+    function ReservedTimeSlot() {
+        var chkPass = true;
+
+        var i = $("input[name=SelectCamera]:checked").val();
+        var tmp = $('select[name=ddlNewPlaybox]').val();
+        var tasktype = "MA";
+
+        //R20.5 Service Level
+        var eventRule = "";
+        var PlayBoxCountOld = "0";
+        var PlayBoxCountNew = "0";
+        var serviceLevel = sessionStorage.getItem("ServiceLevel");
+        var areaRegion = $("#CoveragePanelModel_Address_AreaRegion").val();
+        if (tasktype == "MA") { //กล่อง 2,3
+            eventRule = ""; areaRegion = "";
+            //R20.6 Service Level
+            //serviceLevel = ""; //Comment serviceLevel
+            //PlayBoxCountOld = $("#pBoxCount").val();
+            //PlayBoxCountNew = $('select[name=ddlNewPlaybox] option:selected').text();
+        }
+        else { //กล่อง Main
+            eventRule = "Join";
+        }
+
+        var datetemp = $('#CustomerRegisterPanelModel_FBSSTimeSlot_AppointmentDate').val();
+        var sentdata = {
+            ACCESS_MODE: sessionStorage.getItem('ACCESS_MODE'),
+            PROD_SPEC_CODE: sessionStorage.getItem('SERVICE_CODE'),
+            ADDRESS_ID: $("#ZTEVasAddressID").val(),
+            LOCATION_CODE: $("#L_LOC_CODE").val(),
+            SUBDISTRICT: $("#CustomerRegisterPanelModel_installAddress2").val(),
+            POSTAL_CODE: $("#CustomerRegisterPanelModel_installAddress5").val(),
+            ASSIGN_RULE: $("#CustomerRegisterPanelModel_ASSIGN_RULE").val(),
+            AISAIRNUMBER: sessionStorage.getItem("AisAirNumber"),
+            //AISAIRNUMBER: "8850118086",
+            SUB_ACCESS_MODE: "",
+            TASK_TYPE: tasktype,
+            //R20.5 Service Level
+            SERVICE_LEVEL: serviceLevel,
+            AREA_REGION: areaRegion,
+            EVENT_RULE: eventRule,
+            PlayBoxCountOld: PlayBoxCountOld,
+            PlayBoxCountNew: PlayBoxCountNew,
+            SPECIAL_SKILL: "",
+            SymptonCodePBreplace: symtomcode
+        }
+
+        //if ($("#PlugAndPlayFlow").val() == "Y") {
+        if (checkDateTimeSlot) {
+            sentdata.APPOINTMENT_DATE = parseInt(datetemp.split('/')[0].toString()) + "-" + datetemp.split('/')[1] + "-" + datetemp.split('/')[2];
+            sentdata.TIME_SLOT = $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlot').val();
+        }
+        else if ($("#divTimeSlot").find("i.color-green").closest("div").find("input[name='FBSSAppointmentDate']").val() != undefined
+            && $("#divTimeSlot").find("i.color-green").closest("div").find("input[name='FBSSTimeSlot']").val() != undefined) {
+            sentdata.APPOINTMENT_DATE = $("#divTimeSlot").find("i.color-green").closest("div").find("input[name='FBSSAppointmentDate']").val();
+            sentdata.TIME_SLOT = $("#divTimeSlot").find("i.color-green").closest("div").find("input[name='FBSSTimeSlot']").val();
+        }
+
+        if ($("#ZTEVasAddressID").val() != "") {
+            if (($("#divTimeSlotVas").find("i.color-green").closest("div").find("input[name='FBSSAppointmentDate']").val() != undefined
+                && $("#divTimeSlotVas").find("i.color-green").closest("div").find("input[name='FBSSTimeSlot']").val() != undefined)) //|| $("#PlugAndPlayFlow").val() == "Y"
+            {
+                $.ajax({
+                    type: "GET",
+                    url: "/CustomerRegister/ReservedTimeslot",
+                    data: sentdata,
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+
+                        if (data.RESULT == "0") {
+                            $("#SummaryPanelModel_RESERVED_ID").val(data.RESERVED_ID);
+                        }
+                        else if (data.RESULT == "-2") {
+                            $("#SummaryPanelModel_RESERVED_ID").val("");
+                            chkPass = false;
+                        }
+                        else {
+                            $("#SummaryPanelModel_RESERVED_ID").val("");
+                        }
+                    },
+                    error: function () {
+                        $("#SummaryPanelModel_RESERVED_ID").val("");
+                        chkPass = false;
+                    }
+                });
+            } else {
+                $("#SummaryPanelModel_RESERVED_ID").val("");
+            }
+        }
+        else {
+            $("#SummaryPanelModel_RESERVED_ID").val("");
+        }
+        return chkPass;
+    }
+    function setDcontract() {
+        $("#listDcontract").html("");
+        var strBuilderValue = "";
+        var indexVal = 0;
+        var findOntop = $("[name=SelectCamera]");
+        let sffPromotionCodeInstall = '';
+        $.each(findOntop, function (j, k) {
+            if ($('#PACKAGE_TYPE' + this.value).val() == '14') {
+                sffPromotionCodeInstall = $('#SFF_PROMOTION_CODE' + this.value).val()
+            }
+        });
+        if (findOntop != undefined && findOntop.length > 0) {
+                if (tmpPackageDataDeviceContract.ContractDeviceList != undefined && tmpPackageDataDeviceContract.ContractDeviceList.length > 0) {
+                    var tmpPboxContractDeviceList = tmpPackageDataDeviceContract.ContractDeviceList.filter(function (elem) {
+                        return elem.PRODUCT_SUBTYPE.indexOf("IP_CAMERA") !== -1
+                            && elem.SFF_PROMOTION_CODE.indexOf(sffPromotionCodeInstall) !== -1;
+                    });
+                    if (tmpPboxContractDeviceList != undefined && tmpPboxContractDeviceList.length > 0) {
+                        $.each(tmpPboxContractDeviceList, function (i, e) {
+                            strBuilderValue += "<input type='hidden' name='CustomerRegisterPanelModel.ListDcontract[" + indexVal + "].PRODUCT_SUBTYPE' value='" + e.PRODUCT_SUBTYPE + "' />";
+                            strBuilderValue += "<input type='hidden' name='CustomerRegisterPanelModel.ListDcontract[" + indexVal + "].PBOX_EXT' value='" + "" + "' />";
+                            strBuilderValue += "<input type='hidden' name='CustomerRegisterPanelModel.ListDcontract[" + indexVal + "].TDM_CONTRACT_ID' value='" + e.CONTRACT_ID + "' />";
+                            strBuilderValue += "<input type='hidden' name='CustomerRegisterPanelModel.ListDcontract[" + indexVal + "].TDM_RULE_ID' value='" + e.CONTRACT_RULE_ID + "' />";
+                            strBuilderValue += "<input type='hidden' name='CustomerRegisterPanelModel.ListDcontract[" + indexVal + "].TDM_PENALTY_ID' value='" + e.PENALTY_ID + "' />";
+                            strBuilderValue += "<input type='hidden' name='CustomerRegisterPanelModel.ListDcontract[" + indexVal + "].TDM_PENALTY_GROUP_ID' value='" + e.PENALTY_TYPE + "' />";
+                            strBuilderValue += "<input type='hidden' name='CustomerRegisterPanelModel.ListDcontract[" + indexVal + "].DURATION' value='" + e.DURATION + "' />";
+                            strBuilderValue += "<input type='hidden' name='CustomerRegisterPanelModel.ListDcontract[" + indexVal + "].CONTRACT_FLAG' value='" + e.CONTRACT_FLAG + "' />";
+                            strBuilderValue += "<input type='hidden' name='CustomerRegisterPanelModel.ListDcontract[" + indexVal + "].DEVICE_COUNT' value='" + ipcamPurchaseCount + "' />";
+                            indexVal++;
+                        });
+                    }
+                }
+            }
+        if (indexVal > 0) {
+            $("#listDcontract").html(strBuilderValue);
+        }
+    }
+    var indexlist = 0;
+    function databidepage() {
+        var index = 0;
+        var findOntop = $("[name=SelectCamera]");
+        $.each(findOntop, function (j, k) {
+            if ($('#PACKAGE_TYPE' + this.value).val() == '14') {
+                $("#listvas")
+                    .append("<div id='sum_panel_packagelist_" + index + "'>" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_CODE' value='" + $('#SFF_PROMOTION_CODE' + this.value).val() + "'/>" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TEMP_IA' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_CLASS' value='" + $('#PACKAGE_TYPE_DESC' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_GROUP' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRODUCT_SUBTYPE' value='" + $('#PRODUCT_SUBTYPE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_NAME' value='" + $('#PACKAGE_DISPLAY_ENG' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TECHNOLOGY' value='" + $('#PACKAGE_DISPLAY_THA' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].RECURRING_CHARGE' value='" + summTotal + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].INITIATION_CHARGE' value='" + $('#INITIATION_CHARGE').val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_INITIATION_CHARGE' value='" + 0 + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_BILL_THA' value='" + $('#PACKAGE_DISPLAY_THA' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_BILL_ENG' value='" + $('#PACKAGE_DISPLAY_ENG' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DOWNLOAD_SPEED' value='" + $('#DOWNLOAD_SPEED' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].UPLOAD_SPEED' value='" + $('#UPLOAD_SPEED' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].OWNER_PRODUCT' value='" + $('#OWNER_PRODUCT' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].VOIP_IP' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].IDD_FLAG' value='" + 'N' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].FAX_FLAG' value='" + 'Y' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_CODE' value='" + $('#SFF_PROMOTION_CODE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SERVICE_CODE' value='" + $('#SERVICE_CODE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].MAPPING_PRODUCT' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_TYPE_DESC' value='" + $('#PACKAGE_TYPE_DESC' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PRODUCT_NAME' value='" + $('#SFF_PRODUCT_NAME' + this.value).val() + "' />" +
+                        //"<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRICE_CHARGE' value='" + $('#PRICE_CHARGE' + i).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRICE_CHARGE' value='" + summTotal + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_WORD_IN_STATEMENT_THA' value='" + $('#SFF_WORD_IN_STATEMENT_THA' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_WORD_IN_STATEMENT_ENG' value='" + $('#SFF_WORD_IN_STATEMENT_ENG' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_COUNT' value='" + ipcamPurchaseCount + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_TYPE' value='" + $('#PACKAGE_TYPE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].MAPPING_CODE' value='" + $('#MAPPING_CODE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRODUCT_SUBTYPE3' value='" + $('#PRODUCT_SUBTYPE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_DISPLAY_THA' value='" + $('#PACKAGE_DISPLAY_THA' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_DISPLAY_ENG' value='" + $('#PACKAGE_DISPLAY_ENG' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_SERVICE_CODE' value='" + $('#PACKAGE_SERVICE_CODE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_SERVICE_NAME' value='" + $('#PACKAGE_SERVICE_NAME' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_FOR_SALE_FLAG' value='" + $('#PACKAGE_FOR_SALE_FLAG' + this.value).val() + "' />" +
+                        "</div>"
+                    );
+            }
+            else if ($('#PACKAGE_TYPE' + this.value).val() == '6') {
+                $("#listvas")
+                    .append("<div id='sum_panel_packagelist_" + index + "'>" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_CODE' value='" + $('#SFF_PROMOTION_CODE' + this.value).val() + "'/>" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TEMP_IA' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_CLASS' value='" + $('#PACKAGE_TYPE_DESC' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_GROUP' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRODUCT_SUBTYPE' value='" + $('#PRODUCT_SUBTYPE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_NAME' value='" + $('#PACKAGE_DISPLAY_ENG' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].TECHNOLOGY' value='" + $('#PACKAGE_DISPLAY_THA' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].RECURRING_CHARGE' value='" + 0 + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].INITIATION_CHARGE' value='" + 0 + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DISCOUNT_INITIATION_CHARGE' value='" + 0 + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_BILL_THA' value='" + $('#PACKAGE_DISPLAY_THA' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_BILL_ENG' value='" + $('#PACKAGE_DISPLAY_ENG' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].DOWNLOAD_SPEED' value='" + $('#DOWNLOAD_SPEED' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].UPLOAD_SPEED' value='" + $('#UPLOAD_SPEED' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].OWNER_PRODUCT' value='" + $('#OWNER_PRODUCT' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].VOIP_IP' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].IDD_FLAG' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].FAX_FLAG' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PROMOTION_CODE' value='" + $('#SFF_PROMOTION_CODE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SERVICE_CODE' value='" + $('#SERVICE_CODE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].MAPPING_PRODUCT' value='" + '' + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_TYPE_DESC' value='" + $('#PACKAGE_TYPE_DESC' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_PRODUCT_NAME' value='" + $('#SFF_PRODUCT_NAME' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRICE_CHARGE' value='" + 0 + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_WORD_IN_STATEMENT_THA' value='" + $('#SFF_WORD_IN_STATEMENT_THA' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].SFF_WORD_IN_STATEMENT_ENG' value='" + $('#SFF_WORD_IN_STATEMENT_ENG' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_TYPE' value='" + $('#PACKAGE_TYPE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].MAPPING_CODE' value='" + $('#MAPPING_CODE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PRODUCT_SUBTYPE3' value='" + $('#PRODUCT_SUBTYPE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_DISPLAY_THA' value='" + $('#PACKAGE_DISPLAY_THA' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_DISPLAY_ENG' value='" + $('#PACKAGE_DISPLAY_ENG' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_SERVICE_CODE' value='" + $('#PACKAGE_SERVICE_CODE' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_SERVICE_NAME' value='" + $('#PACKAGE_SERVICE_NAME' + this.value).val() + "' />" +
+                        "<input type='hidden' name='SummaryPanelModel.PackageModelList[" + index + "].PACKAGE_FOR_SALE_FLAG' value='" + $('#PACKAGE_FOR_SALE_FLAG' + this.value).val() + "' />" +
+                        "</div>"
+                    );
+            }
+            index++
+        });
+    }
+
+    //R23.09 Max E-app term & condition,  InsertFbbConsent Log
+    var termTable1Scrolled = false;
+    var termTable2Scrolled = false;
+    function CheckTermConScrolled(element) {
+        const termPosition = Math.round(element.scrollTop + element.offsetHeight + 3);
+        if (termPosition >=element.scrollHeight) {
+            switch ($(element).find('span').attr('id')) {
+                case "TermCon1": termTable1Scrolled = true; break;
+                case "TermCon2": termTable2Scrolled = true; break;
+                default: break;
+            }
+            if (termTable1Scrolled & termTable2Scrolled) {
+                document.getElementById("checkboxTermConIPCam").disabled = false;
+            }
+        }
+    }
+
+    function EnableSummit(status) {
+        $('#btnSubmitIPcamera').prop('disabled', !status);
+    }
+
+    function InsertFbbConsentLog() {
+        var locationCd = "";
+        var ascCode = "";
+        var employee_id = "";
+        var employee_name = "";
+        if (window.parent.$("#isOfficer").length > 0 && window.parent.$("#isOfficer").val() == "Y") {
+            if (window.parent.$("#LcCode").length > 0) {
+                locationCd = window.parent.$('#LcCode').val();
+                $("#Location_Code").val(locationCd);
+            }
+
+            if (window.parent.$("#ASCCode").length > 0) {
+                ascCode = window.parent.$('#ASCCode').val();
+                $("#ASC_Code").val(ascCode);
+            }
+
+            if (window.parent.$("#EmployeeID").length > 0) {
+                employee_id = window.parent.$('#EmployeeID').val();
+                $("#Employee_ID").val(employee_id);
+            }
+
+            if (window.parent.$("#outEmpName").length > 0) {
+                employee_name = window.parent.$('#outEmpName').val();
+            }
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/ChangePromotion/InsertFbbConsentLog",
+            data: {
+                internet_no: $("#CoveragePanelModel_P_MOBILE").val(),
+                contact_mobile: $("#CustomerRegisterPanelModel_L_MOBILE").val(),
+                location_code: $("#Location_Code").val(),
+                asc_code: $("#ASC_Code").val(),
+                employee_id: $("#Employee_ID").val(),
+                employee_name: employee_name,
+                ip_address: $("#hdIPaddress").val(),
+                type_flag: "IP_CAMERA_CONSENT_FLAG"
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) { console.log(data); },
+            error: function (err) { console.log(err); }
+        });
+    }
+    var flagChangeService = "";
+    var messageChangeService = "";
+    function CheckAROrder() {
+            $.ajax({
+                url: '/Process/CheckAROrder',
+                data: { "NonMobileNo" : $("#CoveragePanelModel_P_MOBILE").val(), "PackageType" : "IP Camera" },
+                dataType: "json",
+                async: false,
+                type: 'POST',
+                success: function (response) {
+                    if (!response || flagChangeService == "N") {
+                        flagChangeService = "N";
+                        messageChangeService = "@ErrorMessageOrderPending";
+                    }
+                },
+                error: function (err) { console.log(err); }
+            });
+    }
+    function CheckChangeService() {
+        $.ajax({
+            url: '/Process/CheckShowMenuChangeService',
+            data: { "InternetNo": $("#CoveragePanelModel_P_MOBILE").val(), "IDCardNo": $("#IDCardNo").val(), "FullUrl": '@FullUrl' },
+            dataType: "text",
+            async: false,
+            type: 'POST',
+            success: function (response) {
+                var result = response.split("|");
+                flagChangeService = result[0];
+                if (flagChangeService == "N") {
+                    messageChangeService = result[1];
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+</script>

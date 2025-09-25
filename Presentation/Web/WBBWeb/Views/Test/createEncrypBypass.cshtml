@@ -1,0 +1,140 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutReferences.cshtml";
+}
+
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<div class="row_ais">
+    <div class="column large-12">
+        <div class="panel_ais">
+            <div class="detail-for-menu" style="min-height:0px;">
+                <div class="innercontent">
+                    <div class="container addrounded" style="width:auto !important;">
+                        <h4 class="page-header tgreen">Create Encryp by pass</h4>
+                        <div>
+                            <div class="col-xs-12 col-sm-12">
+                                <label style="text-decoration:underline;">Step</label>
+                                <br>
+                                <label>1.Click Button "Gen Encryp"</label>
+                                <br>
+                                <label>2.Click Button "Submit"</label>
+                                <br>
+                            </div>
+                            <p class="clearfix"></p>
+                            <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid #eee;"></div>
+                            <p class="clearfix"></p>
+                            <div class="col-xs-12 col-sm-12">
+                                <label>URL : </label>
+                                <input class="form-control" type="text" id="inUrl" name="inUrl">
+                            </div>
+                            <p class="clearfix"></p>
+                            <div class="col-xs-12 col-sm-12">
+                                <label>Input Parameter : </label>
+                                <input class="form-control" type="text" id="inParam" name="inParam">
+                            </div>
+                            <p class="clearfix"></p>
+                            <div class="col-xs-12 col-sm-12">
+                                <button type="button" id="btnGen" class="btn btn-success" data-dismiss="modal" onclick="GenEncryp();">&nbsp; Gen Encryp &nbsp; </button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button type="button" id="btnReset" class="btn btn-default" data-dismiss="modal" onclick="Reset();">&nbsp; Reset &nbsp; </button>
+                            </div>
+                            <p class="clearfix"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<div class="row_ais">
+    <div class="column large-12">
+        <div class="panel_ais">
+            <div class="detail-for-menu" style="min-height:0px;">
+                <div class="innercontent">
+                    <div class="container addrounded" style="width:auto !important;">
+                        <h4 class="page-header tgreen">Action by pass</h4>
+                        <div>
+                            <form id="form1" action="#" onsubmit="return validateFormOnSubmit(this);" method="post">
+                                <div class="col-xs-2 col-sm-2">
+                                    <label>URL Action : </label>
+                                </div>
+                                <div class="col-xs-10 col-sm-10">
+                                    <label id="lblUrl" style="color:red"></label><br>
+                                </div>
+                                <p class="clearfix"></p>
+                                <div class="col-xs-12 col-sm-12">
+                                    <label for="lname">Data :</label><br>
+                                    <input class="form-control" type="text" id="Data" name="Data">
+                                </div>
+                                <p class="clearfix"></p>
+                                <div class="col-xs-12 col-sm-12">
+                                    <input type="submit" class="btn btn-success" value="Submit">
+                                </div>
+                                <p class="clearfix"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function GenEncryp() {
+        $.ajax({
+            type: "POST",
+            url: "/Test/EncryptBypass",
+            data: {
+                "inParam": $.trim($("#inParam").val())
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var tmp = data.result;
+                $("#Data").val(tmp);
+                var strUrl = $("#inUrl").val();
+                $("#lblUrl").text(strUrl);
+            }
+        });
+    }
+
+    function Reset() {
+        $("#inUrl").val("");
+        $("#inParam").val("");
+        $("#Data").val("");
+        $("#lblUrl").text("");
+    }
+
+    function validateFormOnSubmit(theForm) {
+        //var reason = "";
+        //reason += validateName(theForm.name);
+        //reason += validatePhone(theForm.phone);
+        //reason += validateEmail(theForm.emaile);
+
+        //if (reason != "") {
+        //    alert("Some fields need correction:\n" + reason);
+        //} else {
+        //    simpleCart.checkout();
+        //}
+        //return false;
+
+        let form = theForm; //document.createElement('form');
+        form.action = $("#inUrl").val();
+        form.method = 'POST';
+        //form.innerHTML = '<input name="q" value="test">';
+        // the form must be in the document to submit it
+        document.body.append(form);
+        form.submit();
+    }
+</script>
+

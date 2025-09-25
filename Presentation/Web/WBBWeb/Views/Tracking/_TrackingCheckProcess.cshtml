@@ -1,0 +1,1422 @@
+﻿@using AIRNETEntity.PanelModel
+@model AIRNETEntity.PanelModel.TrackingPanelModel
+@{
+    string L_LANGUAGE = ViewBag.Language.ToLower();
+    string L_CARD_NO = "";
+    string B_CONFIRM = "";
+    string L_FILL_IDCARD = "";
+    string L_REG_STATE = "";
+    string L_CUST_REG_TITLE = "";
+    string L_CUST_SELECTED_NAME = "";
+    string L_TRACKING_STATE_1 = "";
+    string L_TRACKING_STATE_2 = "";
+    string L_TRACKING_STATE_3 = "";
+    string L_TRACKING_STATE_4 = "";
+    string L_TRACKING_QUESTION = "";
+    string L_BACK_TO_MAINPAGE = "";
+    string L_TRACKING_REG_DATE = "";
+    string L_TRACKING_PACKAGE = "";
+    string L_TRACKING_HOUSE_NO = "";
+    string L_TRACKING_INCOVERAGE_1 = "";
+    string L_TRACKING_INCOVERAGE_2 = "";
+    string L_TRACKING_CANNOT_INSTALL = "";
+    string L_TRACKING_COMPLATE_INSTALL = "";
+    string L_TRACKING_NOT_FOUND = "";
+    string L_TRACKING_OUTCOVERAGE_1 = "";
+    string L_TRACKING_OUTCOVERAGE_2 = "";
+    string L_TRACKING_APPOINTMENT_DATE_1 = "";
+    string L_TRACKING_APPOINTMENT_DATE_2 = "";
+    string L_TRACKING_APPOINTMENT_DATE_3 = "";
+    string L_TRACKING_CANNOT_INSTALL_2 = "";
+
+    // V 16.6
+    string L_TRACKING_STATE_5 = "";
+    string L_TRACKING_INSTALL_DATE = "";
+    string L_TRACKING_ONTOP_PACKAGE = "";
+    string L_TRACKING_ONSERVICE_DATE = "";
+
+    // V 16.8
+    string L_CONFIRM_INSTALL_DATE = "";
+
+    // V16.8 30/08/206
+    string L_TRACKING_INCOVERAGE_3 = "";
+    string L_TRACKING_INCOVERAGE_4 = "";
+
+    // end
+
+    string L_TRACKING_ADDITIONAL_PACKAGE = "";
+
+    string lCARD_NO = "";
+    string L_FIRST_NAME = "";
+    string L_LAST_NAME = "";
+    string L_TRACKING_OR = "";
+    string L_REDIRECT = "";
+
+    string FBB_CON_CHAR_NOT_ON_NAME = "";
+    string FBB_CON_ID_CARD_NUMBER_NON_RES = "";
+    string FBB_Con_CharNotOnNameLastName = "";
+
+    string FBB_Con_Input_GOV_LET = "";
+    string FBB_Con_Input_Company_Name = "";
+    string FBB_Con_Length_ID_Card_Number_GOV_LET = "";
+    string FBB_Con_Length_Name_Lastname = "";
+
+    string L_TRACKING_HEADER = "";
+    //new 21.07.17
+    string L_CHANGE_INSTALL_BUTTON_CHANG = "";
+    string L_CHANGE_INSTALL_DISABLED_BTN_TRACKING = "";
+    string L_CHANGE_INSTALL_MESSAGE_CONTACT = "";
+    string L_CHANGE_INSTALL_COUNT_APPOINTMENT = "";
+    if (ViewBag.LabelWBBFBBWEB030 != null)
+    {
+        var LabelWBBFBBWEB030 = (List<LovScreenValueModel>)ViewBag.LabelWBBFBBWEB030;
+        L_CHANGE_INSTALL_BUTTON_CHANG = LabelWBBFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_BUTTON_CHANG") ? LabelWBBFBBWEB030.First(c => c.Name == "L_CHANGE_INSTALL_BUTTON_CHANG").DisplayValue : "";
+        L_CHANGE_INSTALL_DISABLED_BTN_TRACKING = LabelWBBFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_DISABLED_BTN_TRACKING") ? LabelWBBFBBWEB030.First(c => c.Name == "L_CHANGE_INSTALL_DISABLED_BTN_TRACKING").DisplayValue : "";
+        L_CHANGE_INSTALL_MESSAGE_CONTACT = LabelWBBFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_MESSAGE_CONTACT") ? LabelWBBFBBWEB030.First(c => c.Name == "L_CHANGE_INSTALL_MESSAGE_CONTACT").DisplayValue : "";
+        L_CHANGE_INSTALL_COUNT_APPOINTMENT = LabelWBBFBBWEB030.Any(c => c.Name == "L_CHANGE_INSTALL_COUNT_APPOINTMENT") ? LabelWBBFBBWEB030.First(c => c.Name == "L_CHANGE_INSTALL_COUNT_APPOINTMENT").DisplayValue : "";
+    }
+    //end
+    //Download PDF
+    string L_DOWNLOAD_PDF = "";
+
+    string C_IDCARD = (string)ViewBag.IdCard;
+    string L_BTN_SATISFACTION_SURVEY = "";
+    string L_LBL_CHECKING_TECHINICIAN_STATUS = "";
+    string L_BTN_CHECKING_TECHINICIAN_STATUS = "";
+    string L_SHOW_PROCESS_PAGE = "";
+    if (!string.IsNullOrEmpty(C_IDCARD))
+    {
+        L_SHOW_PROCESS_PAGE = "display:none;";
+    }
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var fbbConstant = (List<WBBEntity.PanelModels.FbbConstantModel>)ViewBag.FbbConstant;
+
+        FBB_CON_CHAR_NOT_ON_NAME = fbbConstant.Any(f => f.Field == "Char Not on Name") ? fbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        FBB_CON_ID_CARD_NUMBER_NON_RES = fbbConstant.Any(f => f.Field == "ID Card Number Non-Res") ? fbbConstant.First(f => f.Field == "ID Card Number Non-Res").Validation : "";
+        FBB_Con_CharNotOnNameLastName = fbbConstant.Any(f => f.Field == "Char Not on Name LastName") ? fbbConstant.First(f => f.Field == "Char Not on Name LastName").Validation : "";
+
+        FBB_Con_Input_GOV_LET = fbbConstant.Any(f => f.Field == "Input GOV_LET") ? fbbConstant.First(f => f.Field == "Input GOV_LET").Validation : "";
+        FBB_Con_Input_Company_Name = fbbConstant.Any(f => f.Field == "Input_Company_Name") ? fbbConstant.First(f => f.Field == "Input_Company_Name").Validation : "";
+        FBB_Con_Length_ID_Card_Number_GOV_LET = fbbConstant.Any(f => f.Field == "Length ID Card Number GOV LET") ? fbbConstant.First(f => f.Field == "Length ID Card Number GOV LET").Validation : "";
+        FBB_Con_Length_Name_Lastname = fbbConstant.Any(f => f.Field == "Length_Name_Lastname") ? fbbConstant.First(f => f.Field == "Length_Name_Lastname").Validation : "";
+    }
+
+    if (ViewBag.LabelWBB != null)
+    {
+        var LabelWBB = (List<LovScreenValueModel>)ViewBag.LabelWBB;
+
+        L_CARD_NO = LabelWBB.Any(c => c.Name == "L_CARD_NO") ? LabelWBB.First(c => c.Name == "L_CARD_NO").DisplayValue : "";
+        B_CONFIRM = LabelWBB.Any(c => c.Name == "B_CONFIRM") ? LabelWBB.First(c => c.Name == "B_CONFIRM").DisplayValue : "";
+        L_FILL_IDCARD = LabelWBB.Any(c => c.Name == "L_FILL_IDCARD") ? LabelWBB.First(c => c.Name == "L_FILL_IDCARD").DisplayValue : "";
+        L_REG_STATE = LabelWBB.Any(c => c.Name == "L_REG_STATE") ? LabelWBB.First(c => c.Name == "L_REG_STATE").DisplayValue : "";
+        L_CUST_REG_TITLE = LabelWBB.Any(c => c.Name == "L_CUST_REG_TITLE") ? LabelWBB.First(c => c.Name == "L_CUST_REG_TITLE").DisplayValue : "";
+        L_CUST_SELECTED_NAME = LabelWBB.Any(c => c.Name == "L_CUST_SELECTED_NAME") ? LabelWBB.First(c => c.Name == "L_CUST_SELECTED_NAME").DisplayValue : "";
+        L_TRACKING_STATE_1 = LabelWBB.Any(c => c.Name == "L_TRACKING_STATE_1") ? LabelWBB.First(c => c.Name == "L_TRACKING_STATE_1").DisplayValue : "";
+        L_TRACKING_STATE_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_STATE_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_STATE_2").DisplayValue : "";
+        L_TRACKING_STATE_3 = LabelWBB.Any(c => c.Name == "L_TRACKING_STATE_3") ? LabelWBB.First(c => c.Name == "L_TRACKING_STATE_3").DisplayValue : "";
+        L_TRACKING_STATE_4 = LabelWBB.Any(c => c.Name == "L_TRACKING_STATE_4") ? LabelWBB.First(c => c.Name == "L_TRACKING_STATE_4").DisplayValue : "";
+        L_TRACKING_STATE_5 = LabelWBB.Any(c => c.Name == "L_TRACKING_STATE_5") ? LabelWBB.First(c => c.Name == "L_TRACKING_STATE_5").DisplayValue : "";
+        L_TRACKING_QUESTION = LabelWBB.Any(c => c.Name == "L_TRACKING_QUESTION") ? LabelWBB.First(c => c.Name == "L_TRACKING_QUESTION").DisplayValue : "";
+        L_BACK_TO_MAINPAGE = LabelWBB.Any(c => c.Name == "L_BACK_TO_MAINPAGE") ? LabelWBB.First(c => c.Name == "L_BACK_TO_MAINPAGE").DisplayValue : "";
+        L_TRACKING_REG_DATE = LabelWBB.Any(c => c.Name == "L_TRACKING_REG_DATE") ? LabelWBB.First(c => c.Name == "L_TRACKING_REG_DATE").DisplayValue : "";
+        L_TRACKING_PACKAGE = LabelWBB.Any(c => c.Name == "L_TRACKING_PACKAGE") ? LabelWBB.First(c => c.Name == "L_TRACKING_PACKAGE").DisplayValue : "";
+        L_TRACKING_HOUSE_NO = LabelWBB.Any(c => c.Name == "L_TRACKING_HOUSE_NO") ? LabelWBB.First(c => c.Name == "L_TRACKING_HOUSE_NO").DisplayValue : "";
+        L_TRACKING_INCOVERAGE_1 = LabelWBB.Any(c => c.Name == "L_TRACKING_INCOVERAGE_1") ? LabelWBB.First(c => c.Name == "L_TRACKING_INCOVERAGE_1").DisplayValue : "";
+        L_TRACKING_INCOVERAGE_1 = L_TRACKING_INCOVERAGE_1.Replace("\n", "");
+        L_TRACKING_INCOVERAGE_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_INCOVERAGE_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_INCOVERAGE_2").DisplayValue : "";
+        L_TRACKING_INCOVERAGE_2 = L_TRACKING_INCOVERAGE_2.Replace("\n", "");
+        L_TRACKING_CANNOT_INSTALL = LabelWBB.Any(c => c.Name == "L_TRACKING_CANNOT_INSTALL") ? LabelWBB.First(c => c.Name == "L_TRACKING_CANNOT_INSTALL").DisplayValue : "";
+        L_FILL_IDCARD = LabelWBB.Any(c => c.Name == "L_FILL_IDCARD") ? LabelWBB.First(c => c.Name == "L_FILL_IDCARD").DisplayValue : "";
+        L_REG_STATE = LabelWBB.Any(c => c.Name == "L_REG_STATE") ? LabelWBB.First(c => c.Name == "L_REG_STATE").DisplayValue : "";
+        L_CUST_REG_TITLE = LabelWBB.Any(c => c.Name == "L_CUST_REG_TITLE") ? LabelWBB.First(c => c.Name == "L_CUST_REG_TITLE").DisplayValue : "";
+        L_CUST_SELECTED_NAME = LabelWBB.Any(c => c.Name == "L_CUST_SELECTED_NAME") ? LabelWBB.First(c => c.Name == "L_CUST_SELECTED_NAME").DisplayValue : "";
+
+        L_TRACKING_COMPLATE_INSTALL = LabelWBB.Any(c => c.Name == "L_TRACKING_COMPLATE_INSTALL") ? LabelWBB.First(c => c.Name == "L_TRACKING_COMPLATE_INSTALL").DisplayValue : "";
+        L_TRACKING_NOT_FOUND = LabelWBB.Any(c => c.Name == "L_TRACKING_NOT_FOUND") ? LabelWBB.First(c => c.Name == "L_TRACKING_NOT_FOUND").DisplayValue : "";
+        L_TRACKING_OUTCOVERAGE_1 = LabelWBB.Any(c => c.Name == "L_TRACKING_OUTCOVERAGE_1") ? LabelWBB.First(c => c.Name == "L_TRACKING_OUTCOVERAGE_1").DisplayValue : "";
+        L_TRACKING_OUTCOVERAGE_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_OUTCOVERAGE_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_OUTCOVERAGE_2").DisplayValue : "";
+
+        L_TRACKING_APPOINTMENT_DATE_1 = LabelWBB.Any(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_1") ? LabelWBB.First(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_1").DisplayValue : "";
+        L_TRACKING_APPOINTMENT_DATE_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_2").DisplayValue : "";
+        L_TRACKING_APPOINTMENT_DATE_3 = LabelWBB.Any(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_3") ? LabelWBB.First(c => c.Name == "L_TRACKING_APPOINTMENT_DATE_3").DisplayValue : "";
+
+        lCARD_NO = LabelWBB.Any(c => c.Name == "L_CARD_NO") ? LabelWBB.First(c => c.Name == "L_CARD_NO").DisplayValue : "";
+        L_FIRST_NAME = LabelWBB.Any(c => c.Name == "L_FIRST_NAME") ? LabelWBB.First(c => c.Name == "L_FIRST_NAME").DisplayValue : "";
+        L_LAST_NAME = LabelWBB.Any(c => c.Name == "L_LAST_NAME") ? LabelWBB.First(c => c.Name == "L_LAST_NAME").DisplayValue : "";
+        L_TRACKING_OR = LabelWBB.Any(c => c.Name == "L_TRACKING_OR") ? LabelWBB.First(c => c.Name == "L_TRACKING_OR").DisplayValue : "";
+
+        L_REDIRECT = LabelWBB.Any(c => c.Name == "L_REDIRECT") ? LabelWBB.First(c => c.Name == "L_REDIRECT").DisplayValue : "";
+        L_TRACKING_CANNOT_INSTALL_2 = LabelWBB.Any(c => c.Name == "L_TRACKING_CANNOT_INSTALL_2") ? LabelWBB.First(c => c.Name == "L_TRACKING_CANNOT_INSTALL_2").DisplayValue : "";
+        L_TRACKING_HEADER = LabelWBB.Any(c => c.Name == "L_TRACKING_HEADER") ? LabelWBB.First(c => c.Name == "L_TRACKING_HEADER").DisplayValue : "";
+
+        L_TRACKING_INSTALL_DATE = LabelWBB.Any(c => c.Name == "L_TRACKING_INSTALL_DATE") ? LabelWBB.First(c => c.Name == "L_TRACKING_INSTALL_DATE").DisplayValue : "";
+        L_TRACKING_ONTOP_PACKAGE = LabelWBB.Any(c => c.Name == "L_TRACKING_ONTOP_PACKAGE") ? LabelWBB.First(c => c.Name == "L_TRACKING_ONTOP_PACKAGE").DisplayValue : "";
+        L_TRACKING_ONSERVICE_DATE = LabelWBB.Any(c => c.Name == "L_TRACKING_ONSERVICE_DATE") ? LabelWBB.First(c => c.Name == "L_TRACKING_ONSERVICE_DATE").DisplayValue : "";
+
+        L_TRACKING_ADDITIONAL_PACKAGE = LabelWBB.Any(c => c.Name == "L_ADDITIONAL_PACKAGE") ? LabelWBB.First(c => c.Name == "L_ADDITIONAL_PACKAGE").DisplayValue : "";
+
+        L_CONFIRM_INSTALL_DATE = LabelWBB.Any(c => c.Name == "L_TRACKING_ONTOP_PACKAGE") ? LabelWBB.First(c => c.Name == "L_TRACKING_ONTOP_PACKAGE").DisplayValue : "";
+
+        L_TRACKING_INCOVERAGE_3 = LabelWBB.Any(c => c.Name == "L_TRACKING_INCOVERAGE_3") ? LabelWBB.First(c => c.Name == "L_TRACKING_INCOVERAGE_3").DisplayValue : "";
+        L_TRACKING_INCOVERAGE_3 = L_TRACKING_INCOVERAGE_3.Replace("\n", "");
+        L_TRACKING_INCOVERAGE_4 = LabelWBB.Any(c => c.Name == "L_TRACKING_INCOVERAGE_4") ? LabelWBB.First(c => c.Name == "L_TRACKING_INCOVERAGE_4").DisplayValue : "";
+        L_TRACKING_INCOVERAGE_4 = L_TRACKING_INCOVERAGE_4.Replace("\n", "");
+
+        L_DOWNLOAD_PDF = LabelWBB.Any(c => c.Name == "L_DOWNLOAD_PDF") ? LabelWBB.First(c => c.Name == "L_DOWNLOAD_PDF").DisplayValue : "";
+        //R23.07
+        L_BTN_SATISFACTION_SURVEY = LabelWBB.Any(c => c.Name == "L_BTN_SATISFACTION_SURVEY") ? LabelWBB.First(c => c.Name == "L_BTN_SATISFACTION_SURVEY").DisplayValue : "";
+        L_LBL_CHECKING_TECHINICIAN_STATUS = LabelWBB.Any(c => c.Name == "L_LBL_CHECKING_TECHINICIAN_STATUS") ? LabelWBB.First(c => c.Name == "L_LBL_CHECKING_TECHINICIAN_STATUS").DisplayValue : "";
+        L_BTN_CHECKING_TECHINICIAN_STATUS = LabelWBB.Any(c => c.Name == "L_BTN_CHECKING_TECHINICIAN_STATUS") ? LabelWBB.First(c => c.Name == "L_BTN_CHECKING_TECHINICIAN_STATUS").DisplayValue : "";
+    }
+
+}
+
+<link href="~/Content/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
+<link href="~/Content/css/jquery.dataTables.css" rel="stylesheet" />
+<link href="~/Content/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/css/Dialog-theme/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" />
+<script src="~/Scripts/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="~/Scripts/js/jquery.dataTables.js"></script>
+
+<style type="text/css" media="screen">
+    /*Dialog*/
+
+    .ui-dialog-title {
+        font-size: 14px;
+    }
+
+    .ui-widget .ui-widget {
+        font-size: 14px;
+    }
+
+    .ui-dialog .ui-dialog-buttonpane {
+        text-align: center;
+    }
+
+        .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+            float: none;
+        }
+
+    .ui-widget-overlay {
+        background-image: none;
+    }
+
+    /*Datatable in Dialog*/
+
+    table.dataTable thead th, table.dataTable thead td {
+        border-bottom: 1px solid #d6d6d6 !important;
+    }
+
+    .dataTables_wrapper.no-footer .dataTables_scrollBody {
+        border-bottom: 1px solid #d6d6d6 !important;
+    }
+
+    .dataTables_filter {
+        /*margin: 6px auto 15px 0px;*/
+        margin: auto;
+    }
+
+    .sorting_1 {
+        line-height: 16px;
+    }
+</style>
+
+<style>
+    .table > thead > tr > th {
+        vertical-align: bottom;
+        border-bottom: 0px solid #ddd;
+    }
+
+    .table > thead > tr > th,
+    .table > tbody > tr > th,
+    .table > tfoot > tr > th,
+    .table > thead > tr > td,
+    .table > tbody > tr > td,
+    .table > tfoot > tr > td {
+        padding: 4px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: 0px solid #ddd;
+    }
+
+    .table-responsive {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .icongreen {
+        color: #74a333;
+        opacity: 1;
+    }
+
+        .icongreen.disable {
+            color: #74a333;
+            opacity: 0.5;
+        }
+
+    .iconwarning {
+        color: #f7b70b;
+        opacity: 1;
+    }
+
+    .iconcancel {
+        color: #7f7f80;
+        opacity: 0.3;
+    }
+
+    .fa-fibre {
+        width: 60px;
+        height: 39px;
+        background: url("~/Content/images/tracking/i-fibre.png") no-repeat;
+        margin-top: 20px;
+        margin-left: 10px;
+        margin-right: auto;
+    }
+
+    .t_gap10 {
+        margin-top: 3px;
+    }
+
+    .t_gap20 {
+        margin-top: 20px;
+    }
+
+    .t_gap30 {
+        margin-top: 30px;
+    }
+
+    .t_gap40 {
+        margin-top: 40px;
+    }
+
+    .t_gap50 {
+        margin-top: 50px;
+    }
+
+    .fa-angle {
+        width: 3px;
+    }
+
+    .circleLink {
+        background: #ff3333;
+        border-radius: 30px;
+        color: white;
+        height: 33px;
+        width: 33px;
+        margin: 10px auto;
+        text-align: center;
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+    .aClick {
+        float: left;
+    }
+
+    .aText {
+        float: left;
+        padding: 8px 0 0 8px;
+    }
+
+    .aClick:hover {
+        cursor: pointer;
+    }
+
+    .aText:hover {
+        cursor: pointer;
+    }
+</style>
+
+<style type="text/css" media="screen and (max-width: 992px)">
+    .btn-lang-th {
+        padding-left: 2.2em;
+        padding-right: 2.2em;
+    }
+</style>
+<style type="text/css" media="screen and (min-width: 992px)">
+    .btn-lang-th {
+        padding-left: 2.5em;
+        padding-right: 2.5em;
+    }
+</style>
+
+
+<div id="CheckProcessPage" style="@L_SHOW_PROCESS_PAGE">
+    <div class="col-md-12 ">
+        <div class=" page-header tgreen">
+            <h4>@L_FILL_IDCARD</h4>
+        </div>
+    </div>
+
+    <p class="clearfix"></p>
+    <div id="row1" class="row">
+        <div class="col-md-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="@lCARD_NO" title="@lCARD_NO" maxlength="@FBB_Con_Length_ID_Card_Number_GOV_LET" id="txtIDCardType" value="@C_IDCARD" />
+            </div>
+            <div class="col-md-1" style="text-align: left">
+                <i id="txtIDCardType-require"></i>
+            </div>
+        </div>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <div id="row2" class="row">
+        <div class="col-md-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="img-circle" style="padding-top: 20px; height: 60px; padding-right: 1px; margin-left: 2px; text-align: center; background-image: url('../Content/images/tracking/or_1.png'); background-repeat: no-repeat; background-position: center;">
+                    <label style="color: white;">@L_TRACKING_OR</label>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <div id="row3" class="row">
+        <div class="col-md-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <p class="pp" id="ptxtIDCardType"></p>
+                <input type="text" class="form-control" placeholder="@L_FIRST_NAME" title="@L_FIRST_NAME" maxlength="@FBB_Con_Length_Name_Lastname" id="txtFirstName" />
+                <i id="txtFirstName-require"></i>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+    <p class="clearfix"></p>
+    <div id="row4" class="row">
+        <div class="col-md-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                @*<p class="pp" id="ptxtIDCardType"></p>*@
+                <input type="text" class="form-control" placeholder="@L_LAST_NAME" title="@L_LAST_NAME" maxlength="@FBB_Con_Length_Name_Lastname" id="txtLastName" />
+                <i id="txtLastName-require"></i>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-left: -30px;">
+        <ul id="errMsg" class="i-red"></ul>
+    </div>
+
+    <p class="clearfix"></p>
+
+    <div id="row5" class="row">
+        <div class="col-md-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4" style="text-align: center;">
+                <button id="btnNextToDisplay" type="button" class="btn btn-success rippler rippler-default btn-for-xs" role="button" onclick="nextToDisplayResult()">@B_CONFIRM</button>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <div style="padding-bottom: 50px;">
+            <div style="float: right;">
+
+                @*<button id="btnNextToDisplay1" type="button"  class="btn btn-default btn-for-xs" role="button"   onclick="nextToDisplayResult()">@B_CONFIRM</button>*@
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog-form" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p class="clear-fixed"></p>
+                <p class="clear-fixed"></p>
+            </div>
+            <div class="modal-body">
+                <table id="myDataTable" class="display t-font">
+                    <thead style="background-color: #d6d6d6; line-height: 5px;">
+                    </thead>
+                    <tbody style="line-height: 7px;">
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div id="ProgressIcon" class="modal fade">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="text-center" style="color: white;">
+                <div>
+                    <i class="fa fa-spinner fa-spin fa-6" style="position: inherit;"></i>
+                </div>
+                <div id="txtLoading" style="text-align: center;">
+                    LOADING
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="dialog-form" title="" style="width: 100%; overflow-x: visible; overflow-y: visible;">
+        <table id="myDataTable" class="display t-font" style="width: 400px">
+            <thead style="background-color: #d6d6d6; line-height: 5px;">
+            </thead>
+            <tbody style="line-height: 7px;">
+            </tbody>
+        </table>
+    </div>*@
+
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + "," + formToken;
+    }
+}
+
+<script>
+    var opt = {
+        autoOpen: false,
+        height: 380,
+        minHeight: 380,
+        maxHeight: 380,
+        width: 320,
+        minWidth: 320,
+        maxWidth: 320,
+        modal: true,
+        buttons: {
+            "ยกเลิก": function () {
+                $(this).dialog("close");
+            }
+        }
+        //close: function () {
+
+        //}
+    };
+
+    $(function () {
+        var ie = (function () {
+
+            var undef,
+                v = 3,
+                div = document.createElement('div'),
+                all = div.getElementsByTagName('i');
+
+            while (
+                div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',
+                all[0]
+            );
+
+            return v > 4 ? v : undef;
+
+        }());
+
+        if (ie != undefined && ie <= 8) {
+            $("#ptxtIDCardType").text("@lCARD_NO");
+            $("#ptxtFirstName").text("@L_FIRST_NAME");
+            $("#ptxtLastName").text("@L_LAST_NAME");
+        }
+
+        var l_firstname = '@L_FIRST_NAME'; l_firstname = l_firstname.replace('*', '');
+        var l_lastname = '@L_LAST_NAME'; l_lastname = l_lastname.replace('*', '');
+
+        $('#myDataTable').dataTable({
+            "oLanguage": {
+                "sSearch": "<i class='fa fa-search' style='color:#bababa;'></i>"
+            },
+            "columns": [
+               { "title": l_firstname, "width": "25%" },
+               { "title": l_lastname, "width": "25%" },
+            ],
+            //"bLengthChange": false,
+            //"sPaginationType": "full_numbers",
+            "bInfo": false,
+            //"iDisplayLength": 2,
+            "scrollY": "100px",
+            //"scrollX": true,
+            //"scrollCollapse": true,
+            "paging": false
+        });
+
+        if ("@C_IDCARD" != null && "@C_IDCARD" != "") {
+            lockScreen(true);
+            $("#CheckProcessPage").hide();
+            goBack("@C_IDCARD");
+            //console.log("goback","@C_IDCARD");
+        }
+
+        //$('#dialog-form').modal(opt);
+
+        ////////////////////////////////////////////////////////////
+
+        function CheckKeyUp(id, RexStr) {
+            var strKey = $("#" + id).val();
+            var strBuilder = "";
+            var filter = new RegExp(RexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+            $("#" + id).val(strBuilder);
+        }
+
+        $('#txtIDCardType').keyup(function () {
+            CheckKeyUp("txtIDCardType", "@FBB_Con_Input_GOV_LET");
+        });
+
+        $('#txtFirstName').keyup(function () {
+            CheckKeyUp("txtFirstName", "@FBB_Con_Input_Company_Name");
+        });
+
+        $('#txtLastName').keyup(function () {
+            CheckKeyUp("txtLastName", "@FBB_Con_Input_Company_Name");
+        });
+    });
+
+    function onNameSelect(idcard, p_firstname, p_lastname) {
+
+        getOrderResult(idcard, p_firstname, p_lastname);
+        $("#CheckProcessPage").hide();
+        $("#DisplayResult").show();
+        $("#wrapSwitchLanguage").hide();
+
+        $("#dialog-form").modal('hide')
+
+        digitalData.page = {
+            pageInfo: {
+                pageName: "Tracking:" + language + ":TrackingDisplayResult",
+                site: "Tracking",
+                language: language
+            },
+            category: {
+                pageType: "content page",
+                primaryCategory: "newfibre:" + language + ":TrackingDisplayResult",
+                subCategory1: "",
+                subCategory2: ""
+            }
+        }
+        
+    }
+
+    function lockScreen(x) {
+        if (x) {
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+
+    function nextToDisplayResult() {
+
+        var validateChk = false;
+        var temp = "";
+
+        $('#txtIDCardType').removeClass("textFieldFalse").addClass("textField");
+        $('#txtFirstName').removeClass("textFieldFalse").addClass("textField");
+        $('#txtLastName').removeClass("textFieldFalse").addClass("textField");
+
+        $('#txtIDCardType-require').removeClass("fa fa-check").removeClass("fa fa-times");
+        $('#txtFirstName-require').removeClass("fa fa-check").removeClass("fa fa-times");
+        $('#txtLastName-require').removeClass("fa fa-check").removeClass("fa fa-times");
+
+        if ($('#txtIDCardType').val() == "") {
+            if ($('#txtFirstName').val() == "" && $('#txtLastName').val() == "") {
+                $('#txtIDCardType').removeClass("textField").addClass("textFieldFalse");
+                $('#txtIDCardType-require').addClass("fa fa-times").css('font-size', '20px').css('color', 'red');
+            }
+            else if ($('#txtFirstName').val() == "" && $('#txtLastName').val() != "") {
+                $('#txtFirstName').removeClass("textField").addClass("textFieldFalse");
+                $('#txtFirstName-require').addClass("fa fa-times").css('font-size', '20px').css('color', 'red');
+                $('#txtLastName-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+            }
+            else if ($('#txtFirstName').val() != "" && $('#txtLastName').val() == "") {
+                $('#txtLastName').removeClass("textField").addClass("textFieldFalse");
+                $('#txtLastName-require').addClass("fa fa-times").css('font-size', '20px').css('color', 'red');
+                $('#txtFirstName-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+            }
+            else {
+                //pass
+                $('#txtFirstName-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+                $('#txtLastName-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+                validateChk = true;
+            }
+        }
+        else {
+            //pass
+            $('#txtIDCardType-require').addClass("fa fa-check").css('font-size', '20px').css('color', '#74A433');
+            validateChk = true;
+        }
+        if (validateChk) {
+            var idcard = $("#txtIDCardType").val();
+            var p_firstname = $("#txtFirstName").val();
+            var p_lastname = $("#txtLastName").val();
+            temp = getCustomer(idcard, p_firstname, p_lastname);
+        }
+        else {
+            if ($("#LanguagePage").val() == "1") {
+                temp = '<i class="fa fa-times-circle" style="font-size:20px; color:red"></i> &nbsp กรุณาระบุข้อมูลให้ถูกต้องและครบถ้วน';
+            }else{
+                temp = '<i class="fa fa-times-circle" style="font-size:20px; color:red"></i> &nbsp Please fill in all required fields.';
+            }
+        }
+        $("#errMsg").html(temp);
+    }
+
+    function goBack(refIdCard) {
+        if (refIdCard) {
+            if ($('#txtIDCardType').val() != refIdCard) {
+                $('#txtIDCardType').val(refIdCard);
+            }
+            nextToDisplayResult();
+        }
+    }
+
+    function submitWfmfurl(e) {
+        e = e || window.event;
+        var target = e.target || e.srcElement;
+
+        var forgeryId = "@GetAntiForgeryToken()";
+        var formData = {
+            p_type: $("input[name='p_type']", "#f_wfmfurl").val(),
+            p_language: $("input[name='p_language']", "#f_wfmfurl").val(),
+            p_option: $("input[name='p_option']", "#f_wfmfurl").val(),
+            p_channel: $("input[name='p_channel']", "#f_wfmfurl").val(),
+            p_refId: $("input[name='p_refId']", "#f_wfmfurl").val(),
+            p_urlback: $("input[name='p_urlback']", "#f_wfmfurl").val()
+        };
+	    $.ajax({
+            url: "/Tracking/WriteToLog",
+            type: 'POST',
+            dataType: "json",
+            encode: true,
+		    headers: {
+			    'VerificationToken': forgeryId,
+			    'isLog': true
+		    },
+            data: formData,
+            success: function (data) {
+                console.log('submitWfmfurl', data);
+                if (data == "Success") {
+                    $("#f_wfmfurl").submit();
+                    return true;
+                }
+		    }
+        });
+        return false;
+    }
+
+    function saveLogTracking(idcard, p_firstname, p_lastname, p_retCode, p_returnOrder) {
+        idcard = $('#txtIDCardType').val();
+        $.ajax({
+            type: 'GET',
+            url: "/Tracking/SaveTrackingLog?IDCard=" + idcard + "&FirstName=" + p_firstname + "&LastName=" + p_lastname + "&resultCode=" + p_retCode + "&returnOrder=" + p_returnOrder,
+        });
+        return false;
+    }
+
+    function checkValue(val) {
+        if (val == undefined || val == null || val == "" || val == "-")
+            return "";
+        else
+            return val;
+    }
+
+    function getCustomer(idcard, p_firstname, p_lastname) {
+        var custNotfound = '';
+        $.ajax({
+            type: "GET",
+            url: "/Tracking/GetCustormes",
+            dataType: "json",
+            headers: {
+                'VerificationToken': $("#forgeryToken").val()
+            },
+            data: {
+                'idcard': idcard,
+                'firstname': p_firstname,
+                'lastname': p_lastname
+            },
+            async: false,
+            success: function (data) {
+                $("#forgeryToken").val("@GetAntiForgeryToken()");
+                var strBuilder = '';
+                var itemsCount = 0;
+
+                var dataSet = [];
+
+                $.each(data, function (i, e) {
+                    itemsCount += 1;
+
+                    var first = checkValue(e.first_name);
+                    var last = checkValue(e.last_name);
+
+                    dataSet.push(['<a href="#" onclick="onNameSelect(\'\',\'' + first + '\',\'' + last + '\');" >' + first + '</a>', last, []]);
+                });
+
+                if (itemsCount > 1) {
+                    var table = $('#myDataTable').dataTable();
+
+                    table.fnClearTable(0);
+                    table.fnAddData(dataSet);
+                    table.fnDraw();
+                    table.fnFilter('');
+
+                    $(".dataTables_scrollHeadInner table").css("width", "552px");
+                    //$("#dialog-form").dialog(opt).dialog('close');
+                    $("#dialog-form").modal('show');
+                }
+                else if (itemsCount == 1) {
+                    getOrderResult(idcard, p_firstname, p_lastname);
+
+                    $("#CheckProcessPage").hide();
+                    $("#DisplayResult").show();
+                    $(".wrapSwitchLanguage").hide();
+
+                    digitalData.page = {
+                        pageInfo: {
+                            pageName: "Tracking:" + language + ":TrackingDisplayResult",
+                            site: "Tracking",
+                            language: language
+                        },
+                        category: {
+                            pageType: "content page",
+                            primaryCategory: "newfibre:" + language + ":TrackingDisplayResult",
+                            subCategory1: "",
+                            subCategory2: ""
+                        }
+                    }
+                    
+                }
+                else {
+                    custNotfound = '<i class="fa fa-times-circle" style="font-size:20px; color:red"></i> &nbsp @L_TRACKING_NOT_FOUND';
+                }
+                lockScreen(false);
+            }, error: function (ex) {
+                lockScreen(false);
+                custNotfound = '<i class="fa fa-times-circle" style="font-size:20px; color:red"></i> &nbsp @L_TRACKING_NOT_FOUND';
+            }
+        });
+        return custNotfound;
+    }
+
+    function getOrderResult(idcard, p_firstname, p_lastname) {
+        var returnOrder = '';
+        var retCode = '';
+        var p_location_code = '';
+        var p_asc_code = '';
+        var p_date_from = '';
+        var p_date_to = '';
+        var p_cust_name = '';
+        var p_user = 'CUSTOMER';
+
+        $.ajax({
+            type: "GET",
+            url: "/Tracking/GetOrders",
+            cache: false,
+            dataType: "json",
+            data: {
+                'idcard': idcard,
+                'firstname': p_firstname,
+                'lastname': p_lastname,
+                'location_code': p_location_code,
+                'asc_code': p_asc_code,
+                'date_from': p_date_from,
+                'date_to': p_date_to,
+                'cust_name': p_cust_name,
+                'user': p_user
+            },
+            async: false,
+            success: function (data) {
+                //console.table(data);
+                var strBuilder = '';
+                var currentPage = 1;
+                var currentOrder = 1;
+                var idtable = "";
+                var nextpage_ = "";
+
+                var strBuilderMobile = '';
+                var currentPageMobile = 1;
+                var currentOrderMobile = 1;
+                var idtablemobile = "";
+                var nextPageMobile_ = "";
+                var panelGroupMobileID = 0;
+                var panelMobileID = 0;
+
+                $.each(data.data, function (i, e) {
+                    console.log("ReturnOrderType:" + e.order_type);
+                    console.log("ReturnOrderState:" + e.current_state);
+
+                    //circle_box1 => เขียว(เสร็จสิ้น),circle_box2 => เขียวอ่อน(อยู่ระหว่างดำเนินการ),circle_box3 => ส้ม(ยกเลิกหรือไม่สามารถให้บริการ),circle_box4 => เทา(รอดำเนินการ),
+
+                    //1 icongreen เสร็จสิ้น 2 icongreen disable อยู่ระหว่างดำเนินการ 3 iconcancel รอดำเนินการ 4 iconwarning ยกเลิกหรือไม่สามารถให้บริการ
+
+                    returnOrder += e.order_no + '|';
+                    retCode = e.ret_code;
+
+                    var circle_box1 = "icongreen";
+                    var circle_box2 = "icongreen disable";
+                    var circle_box3 = "iconwarning";
+                    var circle_box4 = "iconcancel";
+
+                    var box1 = "circle_box4";
+                    var box2 = "circle_box4";
+                    var box3 = "circle_box4";
+                    var box4 = "circle_box4";
+                    var box5 = "circle_box4";
+
+                    var mbox1 = circle_box4;
+                    var mbox2 = circle_box4;
+                    var mbox3 = circle_box4;
+                    var mbox4 = circle_box4;
+                    var mbox5 = circle_box4;
+
+                    //Check path pdf
+                    var pdfText = '';
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Tracking/CheckPdf',
+                        headers: {
+                            'VerificationToken': $("#forgeryToken").val()
+                        },
+                        async: false,
+                        data: { orderNo: e.order_no },
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.status == "found") {
+                                pdfText = '<br /><br />' + '<a class ="aClick"><p class="circleLink"><i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></p></a>'+
+                                '<a class ="aText"><p class="textLink"><b> @L_DOWNLOAD_PDF</b></p></a>';
+                                $("#forgeryToken").val("@GetAntiForgeryToken()")
+
+                            }
+                        }
+
+
+                    });
+
+
+                    //State: Register
+                    var detailbox1 = '<b>' + '@L_TRACKING_REG_DATE ' + '</b>' + e.register_date_str +
+                        '<br />' + '<b>' + '@L_TRACKING_HOUSE_NO' + '</b>' + e.install_address +
+                        '<br />' + '<b>' + '@L_TRACKING_PACKAGE' + '</b>' + e.technology +
+                        '<br />' + '<b>' + '@L_TRACKING_ADDITIONAL_PACKAGE' + '</b>' + '\n' + e.additional_package +
+                        '<br />' + '<b>' + '@L_TRACKING_INSTALL_DATE' + '</b>' + e.expect_install_date +
+                        '<br />' + '<b>' + '@L_TRACKING_ONTOP_PACKAGE' + '</b>' + e.ontop_package + pdfText;
+                    @*console.log(@L_CHANGE_INSTALL_DISABLED_BTN_TRACKING);
+                    console.log(e.current_state);
+                    console.log(e.count_appointment);
+                    console.log(@L_CHANGE_INSTALL_COUNT_APPOINTMENT);*@
+
+
+                    var detailbox2 = '@L_TRACKING_INCOVERAGE_1';
+
+                    var detailbox3 = '';
+                    if (e.appointment_date_1_str != '-') { detailbox3 = '<b>' + '@L_TRACKING_APPOINTMENT_DATE_1' + '</b>' + e.appointment_date_1_str + '<br />'; }
+                    if (e.appointment_date_2_str != '-') { detailbox3 += '<b>' + '@L_TRACKING_APPOINTMENT_DATE_2' + '</b>' + e.appointment_date_2_str + '<br />'; }
+                    if (e.appointment_date_3_str != '-') { detailbox3 += '<b>' + '@L_TRACKING_APPOINTMENT_DATE_3' + '</b>' + e.appointment_date_3_str; }
+                    //var detailbox4 = '<b>' + '@L_TRACKING_COMPLATE_INSTALL' + '</b>' + checkValue(e.complete_install_date_str);
+                    var chkcountmesh = 0;
+                    if (e.appointment_date_1_str != '-') {
+                        chkcountmesh = 0;
+                    }
+                    if (e.appointment_date_2_str != '-') {
+                        chkcountmesh = 1;
+                    }
+                    if (e.appointment_date_3_str != '-') {
+                        chkcountmesh = 2;
+                    }
+                    var detailbox4 = '';
+                    var detailbox5 = '';
+
+
+                    if (e.current_state == "Cancel Installation" || e.current_state == "Confirmed location" || e.current_state == "Cancel Appointment" || e.current_state == "Auto Cancel Order") {
+                        box1 = "circle_box1"; box2 = "circle_box3"; box3 = "circle_box4"; box4 = "circle_box4"; box5 = "circle_box4";
+                        mbox1 = circle_box1; mbox2 = circle_box3; mbox3 = circle_box4; mbox4 = circle_box4; mbox5 = circle_box4;
+                        if (e.cancel_install_reason_th != "" && e.cancel_install_reason_en != "") {
+                            if ($('#LanguagePage').val() == "1") {
+                                detailbox2 = e.cancel_install_reason_th;
+                            }
+                            else {
+                                detailbox2 = e.cancel_install_reason_en;
+                            }
+                        }
+                        else {
+                            detailbox2 = "@L_TRACKING_CANNOT_INSTALL_2";
+                        }
+                    }
+                    else if (e.current_state == "Cancel Appointment") {
+                        box1 = "circle_box1"; box2 = "circle_box1"; box3 = "circle_box3"; box4 = "circle_box4"; box5 = "circle_box4";
+                        mbox1 = circle_box1; mbox2 = circle_box1; mbox3 = circle_box3; mbox4 = circle_box4; mbox5 = circle_box4;
+
+                        if ($('#LanguagePage').val() == "1") {
+                            detailbox3 = e.cancel_install_reason_th;
+                        }
+                        else {
+                            detailbox3 = e.cancel_install_reason_en;
+                        }
+                        detailbox4 = '';
+                    }
+                    else if (e.current_state == "Register") {
+                        box1 = "circle_box2"; box2 = "circle_box4"; box3 = "circle_box4"; box4 = "circle_box4"; box5 = "circle_box4";
+                        mbox1 = circle_box2; mbox2 = circle_box4; mbox3 = circle_box4; mbox4 = circle_box4; mbox5 = circle_box4;
+                        detailbox2 = '';
+                        detailbox3 = '';
+                        detailbox4 = '';
+                        detailbox5 = '';
+
+                    }
+                    else if (e.current_state == "Verify-NoCoverage") {
+                        if (e.coverage_flag != "N") {
+                            box1 = "circle_box1"; box2 = "circle_box2"; box3 = "circle_box4"; box4 = "circle_box4"; box5 = "circle_box4";
+                            mbox1 = circle_box1; mbox2 = circle_box2; mbox3 = circle_box4; mbox4 = circle_box4; mbox5 = circle_box4;
+                            detailbox2 = '@L_TRACKING_INCOVERAGE_3' + '<br />' + '@L_TRACKING_INCOVERAGE_4';
+                            detailbox3 = '';
+                            detailbox4 = '';
+                            detailbox5 = '';
+                        }
+                        else {
+                            box1 = "circle_box1"; box2 = "circle_box3"; box3 = "circle_box4"; box4 = "circle_box4"; box5 = "circle_box4";
+                            mbox1 = circle_box1; mbox2 = circle_box3; mbox3 = circle_box4; mbox4 = circle_box4; mbox5 = circle_box4;
+                            detailbox2 = "@L_TRACKING_OUTCOVERAGE_1" + "<br/>" + "@L_TRACKING_OUTCOVERAGE_2";
+                            detailbox3 = '';
+                            detailbox4 = '';
+                            detailbox5 = '';
+                        }
+                    }
+                    else if (e.current_state == "Verify-Document") {
+                        box1 = "circle_box1"; box2 = "circle_box2"; box3 = "circle_box4"; box4 = "circle_box4"; box5 = "circle_box4";
+                        mbox1 = circle_box1; mbox2 = circle_box2; mbox3 = circle_box4; mbox4 = circle_box4; mbox5 = circle_box4;
+                        detailbox2 = "@L_TRACKING_INCOVERAGE_3" + "<br/>" + "@L_TRACKING_INCOVERAGE_4";
+                        detailbox3 = '';
+                        detailbox4 = '';
+                        detailbox5 = '';
+                    }
+                    else if (e.current_state == "Verify-Coverage") {
+                        box1 = "circle_box1"; box2 = "circle_box2"; box3 = "circle_box4"; box4 = "circle_box4"; box5 = "circle_box4";
+                        mbox1 = circle_box1; mbox2 = circle_box2; mbox3 = circle_box4; mbox4 = circle_box4; mbox5 = circle_box4;
+                        detailbox2 = "@L_TRACKING_INCOVERAGE_3";
+                        detailbox3 = '';
+                        detailbox4 = '';
+                        detailbox5 = '';
+                    }
+                    else if (e.current_state == "No_Order") {
+                        box1 = "circle_box1"; box2 = "circle_box2"; box3 = "circle_box4"; box4 = "circle_box4"; box5 = "circle_box4";
+                        mbox1 = circle_box1; mbox2 = circle_box2; mbox3 = circle_box4; mbox4 = circle_box4; mbox5 = circle_box4;
+                        detailbox2 = '';
+                        detailbox3 = '';
+                        detailbox4 = '';
+                        detailbox5 = '';
+                    }
+                    else if (e.current_state == "Wait_for_Appointment") {
+                        box1 = "circle_box1"; box2 = "circle_box2"; box3 = "circle_box4"; box4 = "circle_box4"; box5 = "circle_box4";
+                        mbox1 = circle_box1; mbox2 = circle_box2; mbox3 = circle_box4; mbox4 = circle_box4; mbox5 = circle_box4;
+                        detailbox2 = '';
+                        detailbox3 = '';
+                        detailbox4 = '';
+                        detailbox5 = '';
+                    }
+                    else if (e.current_state == "Appointment") {
+                        box1 = "circle_box1"; box2 = "circle_box1"; box4 = "circle_box4"; box5 = "circle_box4";
+                        mbox1 = circle_box1; mbox2 = circle_box2; mbox4 = circle_box4; mbox5 = circle_box4;
+                        if (e.transaction_state == "Cancelled") {
+                            box3 = "circle_box3";
+                            mbox3 = circle_box3;
+                            detailbox3 = '';
+                        }
+                        else if (e.transaction_state == "Handling") {
+                            box3 = "circle_box2";
+                            mbox3 = circle_box2;
+                            detailbox3 = '';
+                            if (e.appointment_date_1_str != "-")
+                                detailbox3 += '<b>' + '@L_TRACKING_APPOINTMENT_DATE_1' + '</b>' + e.appointment_date_1_str + ' ' + e.appointment_timeslot_1_str;
+                            if (e.appointment_date_2_str != "-")
+                                detailbox3 += '<br />' + '<b>' + '@L_TRACKING_APPOINTMENT_DATE_2' + '</b>' + e.appointment_date_2_str + ' ' + e.appointment_timeslot_2_str;
+                            if (e.appointment_date_3_str != "-")
+                                detailbox3 += '<br />' + '<b>' + '@L_TRACKING_APPOINTMENT_DATE_3' + '</b>' + e.appointment_date_3_str + ' ' + e.appointment_timeslot_3_str;
+                        }
+                        else {
+                            box3 = "circle_box1";
+                            mbox3 = circle_box1;
+                            detailbox3 = '';
+                            if (e.appointment_date_1_str != "-")
+                                detailbox3 += '<b>' + '@L_TRACKING_APPOINTMENT_DATE_1' + '</b>' + e.appointment_date_1_str + ' ' + e.appointment_timeslot_1_str;
+                            if (e.appointment_date_2_str != "-")
+                                detailbox3 += '<br />' + '<b>' + '@L_TRACKING_APPOINTMENT_DATE_2' + '</b>' + e.appointment_date_2_str + ' ' + e.appointment_timeslot_2_str;
+                            if (e.appointment_date_3_str != "-")
+                                detailbox3 += '<br />' + '<b>' + '@L_TRACKING_APPOINTMENT_DATE_3' + '</b>' + e.appointment_date_3_str + ' ' + e.appointment_timeslot_3_str;
+                        }
+
+                        //if ((e.appointment_date_1_str != undefined) || (e.appointment_date_2_str != undefined) || (e.appointment_date_3_str != undefined))
+                        //{ box3 = "circle_box2"; }
+                        //else { box3 = "circle_box4"; detailbox3 = ''; }
+                        detailbox2 = "@L_TRACKING_INCOVERAGE_1" + "<br/>" + "@L_TRACKING_INCOVERAGE_2";
+                        detailbox4 = '';
+                        detailbox5 = '';
+                    }
+                    else if (e.current_state == "Installation") {
+                        box1 = "circle_box1"; box2 = "circle_box1"; box3 = "circle_box1"; box5 = "circle_box4";
+                        //Cancel Install
+                        if (e.transaction_state == "Cancelled" && e.complete_install_date_str != "" && e.cancel_install_reason_en != "") {
+                            box4 = "circle_box3";
+                            mbox4 = circle_box3;
+                            detailbox4 = '<b>' + '@L_CONFIRM_INSTALL_DATE' + '</b>' + e.complete_install_date_str + '<br />' + e.cancel_install_reason_en;
+                        }
+                            //Installing
+                        else if (e.transaction_state == "Handling") {
+                            box4 = "circle_box2";
+                            mbox4 = circle_box2;
+                            detailbox4 = e.complete_install_date_str == "" ? '' : '<b>' + '@L_CONFIRM_INSTALL_DATE' + '</b>' + e.complete_install_date_str;
+                        }
+                            //Complete Install
+                        else {
+                            box4 = "circle_box1";
+                            mbox4 = circle_box1;
+                            detailbox4 = '<b>' + '@L_CONFIRM_INSTALL_DATE' + '</b>' + e.complete_install_date_str;
+                        }
+                        detailbox2 = "@L_TRACKING_INCOVERAGE_1" + "<br/>" + "@L_TRACKING_INCOVERAGE_2";
+                        detailbox3 = '';
+                        if (e.appointment_date_1_str != "-")
+                            detailbox3 += '<b>' + '@L_TRACKING_APPOINTMENT_DATE_1' + '</b>' + e.appointment_date_1_str + ' ' + e.appointment_timeslot_1_str;
+                        if (e.appointment_date_2_str != "-")
+                            detailbox3 += '<br />' + '<b>' + '@L_TRACKING_APPOINTMENT_DATE_2' + '</b>' + e.appointment_date_2_str + ' ' + e.appointment_timeslot_2_str;
+                        if (e.appointment_date_3_str != "-")
+                            detailbox3 += '<br />' + '<b>' + '@L_TRACKING_APPOINTMENT_DATE_3' + '</b>' + e.appointment_date_3_str + ' ' + e.appointment_timeslot_3_str;
+                        detailbox5 = '';
+                    }
+                    else if (e.current_state == "On Service") {
+                        box1 = "circle_box1"; box2 = "circle_box1"; box3 = "circle_box1"; box4 = "circle_box1"; box5 = "circle_box1";
+                        mbox1 = circle_box1; mbox2 = circle_box1; mbox3 = circle_box1; mbox4 = circle_box1; mbox5 = circle_box1;
+                        detailbox2 = "@L_TRACKING_INCOVERAGE_1" + "<br/>" + "@L_TRACKING_INCOVERAGE_2";
+                        detailbox3 = '';
+                        if (e.appointment_date_1_str != "-")
+                            detailbox3 += '<b>' + '@L_TRACKING_APPOINTMENT_DATE_1' + '</b>' + e.appointment_date_1_str + ' ' + e.appointment_timeslot_1_str;
+                        if (e.appointment_date_2_str != "-")
+                            detailbox3 += '<br />' + '<b>' + '@L_TRACKING_APPOINTMENT_DATE_2' + '</b>' + e.appointment_date_2_str + ' ' + e.appointment_timeslot_2_str;
+                        if (e.appointment_date_3_str != "-")
+                            detailbox3 += '<br />' + '<b>' + '@L_TRACKING_APPOINTMENT_DATE_3' + '</b>' + e.appointment_date_3_str + ' ' + e.appointment_timeslot_3_str;
+                        detailbox4 = '<b>' + '@L_CONFIRM_INSTALL_DATE' + '</b>' + e.complete_install_date_str;
+                        detailbox5 = '<b>' + '@L_TRACKING_ONSERVICE_DATE' + '</b>' + e.onservice_date;
+
+                        if (e.customerSatisfactionSurveyUrl) {
+                            detailbox5 += '<br/><button type="button" class="btn btn-sm btn-success" onclick="window.location.href=\'' + e.csaturl +'\';">&nbsp;'+'@L_BTN_SATISFACTION_SURVEY'+'&nbsp;</button>';
+                        }
+                    }
+                    if (currentOrder == 1) {
+                        idtable = "viewpage" + currentPage;
+                    }
+                    else if (currentOrder == 4) {
+                        currentOrder = 0;
+                        currentPage += 1;
+                    }
+
+                    if (currentOrderMobile == 1) {
+                        idtablemobile = "viewpagemobile" + currentPageMobile;
+                    }
+                    else if (currentOrderMobile == 4) {
+                        currentOrderMobile = 0;
+                        currentPageMobile += 1;
+                    }
+                    var dis = "";
+                    var checkmesh = true;
+                    // console.log(e.order_no)
+                    var strorderNo = e.order_no;
+                    // console.log(strorderNo);
+                    if (strorderNo.includes('AIR-NW')) {
+                        console.log("Found NEW");
+                        checkmesh = false;
+                    }
+                    else {
+                        console.log("Found MESH");
+                        checkmesh = true;
+                    }
+                    if (checkmesh == true) {
+                        if ('@L_CHANGE_INSTALL_DISABLED_BTN_TRACKING' == 'N' || e.current_state == "On Service" || chkcountmesh >= '@L_CHANGE_INSTALL_COUNT_APPOINTMENT') {
+                            dis = 'style="display: none;"';
+                        }
+                    }
+                    else {
+                        if ('@L_CHANGE_INSTALL_DISABLED_BTN_TRACKING' == 'N' || e.current_state == "On Service" || e.count_appointment >= '@L_CHANGE_INSTALL_COUNT_APPOINTMENT' || e.order_cancel == false) {
+                            dis = 'style="display: none;"';
+                        }
+                    }
+
+
+                    if (e.order_cancel == true) {
+                        if (e.count_appointment >= '@L_CHANGE_INSTALL_COUNT_APPOINTMENT') {
+                            detailbox3 += '<label class="text-danger text-center">@L_CHANGE_INSTALL_MESSAGE_CONTACT</label>';
+                        }
+                    }
+                    if (checkmesh == true) {
+                    if (chkcountmesh >= '@L_CHANGE_INSTALL_COUNT_APPOINTMENT') {
+                            detailbox3 += '<label class="text-danger text-center">@L_CHANGE_INSTALL_MESSAGE_CONTACT</label>';
+                        }
+                    }
+
+                    if (dis == "") {
+                        detailbox3 += '<br/><button type="button" class="btn btn-md btn-success" onclick="ToSelfServiceChange(\'' + e.order_no + '\',\'' + e.order_type + '\');"' + dis + ' >&nbsp; @L_CHANGE_INSTALL_BUTTON_CHANG &nbsp;</button>';
+                    }
+
+                    if (dis != "" && e.current_state == "Installation") {
+                        if (e.track_enable){
+                            if (e.track && e.track.wfmfurl != '') {
+                                detailbox3 += '<form id="f_wfmfurl" action="' + e.track.wfmfurl + '" method="POST" enctype="application/x-www-form-urlencoded">';
+                                detailbox3 += '<button type="button" class="btn btn-sm btn-success btn-lang-'+'@L_LANGUAGE'+'" onclick="submitWfmfurl(event)">&nbsp;' + '@L_BTN_CHECKING_TECHINICIAN_STATUS' + '&nbsp;</button>';
+                                detailbox3 += '<input type="hidden" name="type" value="' + e.track.p_type + '"/>';
+                                detailbox3 += '<input type="hidden" name="language" value="' + e.track.p_language + '"/>';
+                                detailbox3 += '<input type="hidden" name="option" value="' + e.track.p_option + '"/>';
+                                detailbox3 += '<input type="hidden" name="channel" value="' + e.track.p_channel + '"/>';
+                                detailbox3 += '<input type="hidden" name="refId" value="' + e.track.p_refId + '"/>';
+                                detailbox3 += '<input type="hidden" name="urlback" value="' + e.track.p_urlback + '"/>';
+                                detailbox3 += '</form>';
+                            } else {
+                                detailbox3 += '<br/><button type="button" class="btn btn-sm btn-secondary btn-lang-'+'@L_LANGUAGE'+'" disabled style="background-color:#F5F5F5;">&nbsp;' + '@L_BTN_CHECKING_TECHINICIAN_STATUS' + '&nbsp;</button>';
+                                detailbox3 += '<br/><span>' + '@L_LBL_CHECKING_TECHINICIAN_STATUS' + '</span>';
+                            }
+                        }
+                    }
+
+                    currentOrder += 1;
+                    currentOrderMobile += 1;
+
+                    strBuilder += '<div  class="table-responsive  hidden-xs ' + idtable + '"><table class="table">';
+                    strBuilder += '<thead>';
+                    strBuilder += '<tr>';
+                    strBuilder += '<th style="text-align:center"><div class="bg_circle ' + box1 + '"><i class="fa fa-file-text-o" style="color:white; font-size:27px; margin-top:17px;" ></i></div></th>';
+                    strBuilder += '<th style="vertical-align: bottom"><i class="fa fa-angle-right fa-2x tgreen t_gap10" aria-hidden="true"></i></th>';
+                    strBuilder += '<th style="text-align:center"><div class="bg_circle ' + box2 + '"><i class="fa fa-envelope-o" style="color:white; font-size:27px; margin-top:17px;" ></i></div></th>';
+                    strBuilder += '<th style="vertical-align: bottom"><i class="fa fa-angle-right fa-2x tgreen t_gap10" aria-hidden="true"></i></th>';
+                    strBuilder += '<th style="text-align:center"><div class="bg_circle ' + box3 + '"><i class="fa fa-user" style="color:white; font-size:27px; margin-top:17px;" ></i></div></th>';
+                    strBuilder += '<th style="vertical-align: bottom"><i class="fa fa-angle-right fa-2x tgreen t_gap10" aria-hidden="true"></i></th>';
+                    strBuilder += '<th style="text-align:center"><div class="bg_circle ' + box4 + '"><i class="fa fa-wrench" style="color:white; font-size:27px; margin-top:18px;" ></i></div></th>';
+                    strBuilder += '<th style="vertical-align: bottom"><i class="fa fa-angle-right fa-2x tgreen t_gap10" aria-hidden="true"></i></th>';
+                    //strBuilder += '<th style="text-align:center"><div class="bg_circle ' + box5 + '"><i class="fa fa-fibre" style="color:white; font-size:20px; margin-top:18px;" ></i></div></th>';
+                    strBuilder += '<th style="text-align:center"><div class="bg_circle ' + box5 + '"><img src="/Content/images/tracking/i-fibre.png" alt="" style="width:40px;height:30px;color:white; font-size:27px; margin-top:18px;"></div></th>';
+                    strBuilder += '</tr>';
+
+
+
+                    strBuilder += '<tr>';
+                    strBuilder += '<th style="text-align:center"><label style="color:' + checkColorBox(box1) + '; font-size:16px;">@L_TRACKING_STATE_1</label></th>';
+                    strBuilder += '<th><i class="t_gap10" aria-hidden="true"></i></th>';
+                    strBuilder += '<th style="text-align:center"><label style="color:' + checkColorBox(box2) + '; font-size:16px;">@L_TRACKING_STATE_2</label></th>';
+                    strBuilder += '<th><i class="t_gap10" aria-hidden="true"></i></th>';
+                    strBuilder += '<th style="text-align:center"><label style="color:' + checkColorBox(box3) + '; font-size:16px;">@L_TRACKING_STATE_3</label></th>';
+                    strBuilder += '<th><i class="t_gap10" aria-hidden="true"></i></th>';
+                    strBuilder += '<th style="text-align:center"><label style="color:' + checkColorBox(box4) + '; font-size:16px;">@L_TRACKING_STATE_4</label></th>';
+                    strBuilder += '<th><i class="t_gap10" aria-hidden="true"></i></th>';
+                    strBuilder += '<th style="text-align:center"><label style="color:' + checkColorBox(box5) + '; font-size:16px;">@L_TRACKING_STATE_5</label></th>';
+                    strBuilder += '</tr>';
+                    strBuilder += '</thead>';
+
+                    strBuilder += '<tbody>';
+                    strBuilder += '<tr>';
+                    strBuilder += '<td>' + detailbox1 + '</td>';
+                    strBuilder += '<td><i class="t_gap10" aria-hidden="true"></i></td>';
+                    strBuilder += '<td>' + detailbox2 + '</td>';
+                    strBuilder += '<td><i class="t_gap10" aria-hidden="true"></i></td>';
+                    strBuilder += '<td>' + detailbox3 + '</td>';
+                    strBuilder += '<td><i class="t_gap10" aria-hidden="true"></i></td>';
+                    strBuilder += '<td>' + detailbox4 + '</td>';
+                    strBuilder += '<td><i class="t_gap10" aria-hidden="true"></i></td>';
+                    strBuilder += '<td>' + detailbox5 + '</td>';
+                    strBuilder += '</tr></tbody></table></div>';
+
+                    //panel Mobile
+                    panelGroupMobileID++;
+                    strBuilderMobile += '<div class="' + idtablemobile + '">';
+                    strBuilderMobile += '<div class="panel-group visible-xs " id="accordion' + panelGroupMobileID + '">';
+                    //panel1
+                    panelMobileID++;
+                    strBuilderMobile += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion' + panelGroupMobileID + '" href="#collapse' + panelMobileID + '">';
+                    strBuilderMobile += '<span class="fa-stack fa-lg "><i class="fa fa-circle fa-stack-2x ' + mbox1 + ' "></i><i class="fa fa-file-text-o fa-stack-1x fa-inverse"></i></span>@L_TRACKING_STATE_1';
+                    strBuilderMobile += '</a></h4></div>';
+                    strBuilderMobile += '<div id="collapse' + panelMobileID + '" class="panel-collapse collapse"><div class="panel-body">';
+                    strBuilderMobile += detailbox1;
+                    strBuilderMobile += '</div></div></div>';
+
+                    //panel2
+                    panelMobileID++;
+                    strBuilderMobile += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion' + panelGroupMobileID + '" href="#collapse' + panelMobileID + '">';
+                    strBuilderMobile += '<span class="fa-stack fa-lg "><i class="fa fa-circle fa-stack-2x ' + mbox2 + ' "></i><i class="fa fa-envelope-o fa-stack-1x fa-inverse"></i></span>@L_TRACKING_STATE_2';
+                    strBuilderMobile += '</a></h4></div>';
+                    strBuilderMobile += '<div id="collapse' + panelMobileID + '" class="panel-collapse collapse"><div class="panel-body">';
+                    strBuilderMobile += detailbox2;
+                    strBuilderMobile += '</div></div></div>';
+
+                    //panel3
+                    panelMobileID++;
+                    strBuilderMobile += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion' + panelGroupMobileID + '" href="#collapse' + panelMobileID + '">';
+                    strBuilderMobile += '<span class="fa-stack fa-lg "><i class="fa fa-circle fa-stack-2x ' + mbox3 + ' "></i><i class="fa fa-calendar-check-o fa-stack-1x fa-inverse"></i></span>@L_TRACKING_STATE_3';
+                    strBuilderMobile += '</a></h4></div>';
+                    strBuilderMobile += '<div id="collapse' + panelMobileID + '" class="panel-collapse collapse"><div class="panel-body">';
+                    strBuilderMobile += detailbox3;
+                    strBuilderMobile += '</div></div></div>';
+
+                    //panel4
+                    panelMobileID++;
+                    strBuilderMobile += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion' + panelGroupMobileID + '" href="#collapse' + panelMobileID + '">';
+                    strBuilderMobile += '<span class="fa-stack fa-lg "><i class="fa fa-circle fa-stack-2x ' + mbox4 + ' "></i><i class="fa fa-wrench fa-stack-1x fa-inverse"></i></span>@L_TRACKING_STATE_4';
+                    strBuilderMobile += '</a></h4></div>';
+                    strBuilderMobile += '<div id="collapse' + panelMobileID + '" class="panel-collapse collapse"><div class="panel-body">';
+                    strBuilderMobile += detailbox4;
+                    strBuilderMobile += '</div></div></div>';
+
+                    //panel5
+                    panelMobileID++;
+                    strBuilderMobile += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion' + panelGroupMobileID + '" href="#collapse' + panelMobileID + '">';
+                    strBuilderMobile += '<span class="fa-stack fa-lg "><i class="fa fa-circle fa-stack-2x ' + mbox5 + ' "></i><i class="fa fa-fibre-s fa-stack-1x "></i></span>@L_TRACKING_STATE_5';
+                    strBuilderMobile += '</a></h4></div>';
+                    strBuilderMobile += '<div id="collapse' + panelMobileID + '" class="panel-collapse collapse"><div class="panel-body">';
+                    strBuilderMobile += detailbox5;
+                    strBuilderMobile += '</div></div></div>';
+
+                    strBuilderMobile += '</div>';
+                    strBuilderMobile += '</div>';
+                    $("#lblFirstName").text(e.first_name);
+                    $("#lblLastName").text(privacyNameSurname(e.last_name));
+                });
+
+                strBuilder += '</table>';
+
+                var strNextPage = '</ul></nav>';
+                //create next page
+                strNextPage = '<nav class="text-center hidden-xs"><ul class="pagination ">';
+                if (currentOrder == 1 && currentPage != 1) {
+                    currentPage -= 1;
+                }
+                for (var i = 1; i <= currentPage; i++) {
+                    nextpage_ = "nextpage" + i;
+                    strNextPage += '<li><a href="#" id="' + nextpage_ + '" onclick="nextViewPage(' + i + ',' + currentPage + ')" >' + i + '</a></li>';
+                }
+                strNextPage += "";
+
+                var strNextPageMobile = '</ul></nav>';
+                //create next page Moble
+                strNextPageMobile = '<nav class="text-center visible-xs "><ul class="pagination ">';
+                if (currentOrderMobile== 1 && currentPageMobile != 1) {
+                    currentPageMobile -= 1;
+                }
+                for (var i = 1; i <= currentPageMobile; i++) {
+                    nextPageMobile_ = "nextpagemobile" + i;
+                    strNextPageMobile += '<li><a href="#" id="' + nextPageMobile_ + '" onclick="nextViewPageMobile(' + i + ',' + currentPageMobile + ')" >' + i + '</a></li>';
+                }
+                strNextPageMobile += "";
+
+                $('#divOrderResult').empty();
+                $('#divNextPageOrderResult').empty();
+
+                $('#divOrderMobileResult').empty();
+                $('#divNextPageOrderMobileResult').empty();
+
+                $('#divOrderResult').append(strBuilder);
+                $('#divNextPageOrderResult').append(strNextPage);
+
+                $('#divOrderMobileResult').append(strBuilderMobile);
+                $('#divNextPageOrderMobileResult').append(strNextPageMobile);
+
+                for (var r2 = 1; r2 <= currentPage; r2++) {
+                    $(".viewpage" + r2).hide();
+                }
+
+                for (var r2 = 1; r2 <= currentPageMobile; r2++) {
+                    $(".viewpagemobile" + r2).hide();
+                }
+
+                saveLogTracking(idcard, p_firstname, p_lastname, retCode, returnOrder);
+
+                $("#nextpage1").addClass("track_paging_select");
+                $(".viewpage1").show();
+
+                $("#nextpagemobile1").addClass("track_paging_select");
+                $(".viewpagemobile1").show();
+            }
+        });
+    }
+
+    function checkColorBox(box) {
+        var result = "";
+        switch (box) {
+            case "circle_box1": result = "#82ad47";
+                break;
+            case "circle_box2": result = "#cee4af";
+                break;
+            case "circle_box3": result = "#ff9313";
+                break;
+            case "circle_box4": result = "#a2a2a2";
+                break;
+        }
+        return result;
+    }
+    function ToSelfServiceChange(orderid,ordertype) {
+        var data = [{
+            session_name: 'tracking_order',
+            session_data: orderid
+
+        },
+            {
+                session_name: 'tracking_ordertype',
+                session_data: ordertype
+        }
+        ];
+        $.ajax({
+            url: '@Url.Action("SetSession", "SelfServiceChange")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                window.location.href = '@Url.Action("Index", "SelfServiceChange")';
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
+
+    }
+    function nextViewPage(currentpage_, maxpage_) {
+        for (var r2 = 1; r2 <= maxpage_; r2++) {
+            $(".viewpage" + r2).hide();
+            $("#nextpage" + r2).removeClass("track_paging_select");
+            $("#nextpage" + r2).addClass("track_paging");
+        }
+
+        $("#nextpage" + r2).removeClass("track_paging");
+        $("#nextpage" + currentpage_).addClass("track_paging_select");
+        $(".viewpage" + currentpage_).show();
+    }
+
+    function nextViewPageMobile(currentpage_, maxpage_) {
+        for (var r2 = 1; r2 <= maxpage_; r2++) {
+            $(".viewpagemobile" + r2).hide();
+            $("#nextpagemobile" + r2).removeClass("track_paging_select");
+            $("#nextpagemobile" + r2).addClass("track_paging");
+        }
+
+        $("#nextpagemobile" + r2).removeClass("track_paging");
+        $("#nextpagemobile" + currentpage_).addClass("track_paging_select");
+        $(".viewpagemobile" + currentpage_).show();
+    }
+
+    //download pdf
+    $(document).on("click", ".aClick,.aText", function (e) {
+
+        //var pathPdf = $(this).parent().find('.pathPdf').val();
+        window.location.href = "/Tracking/Download";
+        return false;
+    });
+
+</script>

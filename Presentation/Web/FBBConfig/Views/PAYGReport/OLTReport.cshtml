@@ -1,0 +1,720 @@
+﻿@using WBBEntity.PanelModels;
+@{
+    string L_PAGE_EXPORT = "Export to Excel";
+    string L_PAGE_NAME = "Report Name: OLT Report.";
+    string L_PAGE_UPDATE = "Update Data";
+
+    string L_GRID_OLT_VENDOR = "OLT Brand (Vendor by OLT)";
+    string L_GRID_PHASE = "PHASE";
+    string L_GRID_REGION = "REGION";
+    string L_GRID_DISTRICT = "OLT District(TH)";
+    string L_GRID_SUB_DISTRICT = "OLT Sub District(TH)";
+    string L_GRID_OLT_NAME = "OLT_NAME";
+    string L_GRID_REGISTER_DT = "วันที่ลูกค้าเกาะใช้ OLT ครั้งแรก";
+    string L_GRID_SERVICE_USED = "service year from OLT first time used (days)";
+    string L_GRID_PORT_QUAN = "จำนวน Port ทั้งหมดต่อOTL";
+    string L_GRID_OLT_STATUS_HEAD = "ทำเฉพาะเมื่อจะโอน OLT เป็นของ AWN แล้วเท่านั้น";
+    string L_GRID_OLT_STATUS = "Status";
+    string L_GRID_MAX_PORT = "Max";
+    string L_GRID_MAX_DATE = "Max as of";
+    string L_GRID_LAST_PERIOD = "Last period";
+    string L_GRID_CURR_PERIOD = "current period";
+    string L_GRID_DIFF_CURR_MAX = "diff from Current-MAX";
+    string L_GRID_OLT_VALUE_HEAD = "No. of actives subcribers";
+
+    string OLT_STATUS_W = "Waiting Closed";
+    string OLT_STATUS_C = "Closed";
+
+    string L_PAGE_SEARCH_PANEL = "Search Panel";
+    string L_PAGE_DATE_FROM = "Date From";
+    string L_PAGE_DATE_TO = "Date To";
+    string L_PAGE_CANCEL = "ล้างข้อมูล";
+    string L_PAGE_SEARCH = "ค้นหา";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_GRID_OLT_VENDOR = configscreen.Any(f => f.Name == "R_HEADER_olt_brand") ? configscreen.First(f => f.Name == "R_HEADER_olt_brand").LovValue1 : "";
+        L_GRID_PHASE = configscreen.Any(f => f.Name == "R_HEADER_phase") ? configscreen.First(f => f.Name == "R_HEADER_phase").LovValue1 : "";
+        L_GRID_REGION = configscreen.Any(f => f.Name == "R_HEADER_region") ? configscreen.First(f => f.Name == "R_HEADER_region").LovValue1 : "";
+        L_GRID_DISTRICT = configscreen.Any(f => f.Name == "R_HEADER_district") ? configscreen.First(f => f.Name == "R_HEADER_district").LovValue1 : "";
+        L_GRID_SUB_DISTRICT = configscreen.Any(f => f.Name == "R_HEADER_sub_district") ? configscreen.First(f => f.Name == "R_HEADER_sub_district").LovValue1 : "";
+        L_GRID_OLT_NAME = configscreen.Any(f => f.Name == "R_HEADER_olt_name") ? configscreen.First(f => f.Name == "R_HEADER_olt_name").LovValue1 : "";
+        L_GRID_REGISTER_DT = configscreen.Any(f => f.Name == "R_HEADER_register_dt") ? configscreen.First(f => f.Name == "R_HEADER_register_dt").LovValue1 : "";
+        L_GRID_SERVICE_USED = configscreen.Any(f => f.Name == "R_HEADER_day_used") ? configscreen.First(f => f.Name == "R_HEADER_day_used").LovValue1 : "";
+        L_GRID_PORT_QUAN = configscreen.Any(f => f.Name == "R_HEADER_port_number") ? configscreen.First(f => f.Name == "R_HEADER_port_number").LovValue1 : "";
+
+        L_GRID_OLT_STATUS = configscreen.Any(f => f.Name == "R_HEADER_status") ? configscreen.First(f => f.Name == "R_HEADER_status").LovValue1 : "";
+        L_GRID_MAX_PORT = configscreen.Any(f => f.Name == "R_HEADER_max") ? configscreen.First(f => f.Name == "R_HEADER_max").LovValue1 : "";
+        L_GRID_MAX_DATE = configscreen.Any(f => f.Name == "R_HEADER_max_as_of") ? configscreen.First(f => f.Name == "R_HEADER_max_as_of").LovValue1 : "";
+        L_GRID_LAST_PERIOD = configscreen.Any(f => f.Name == "R_HEADER_last_period") ? configscreen.First(f => f.Name == "R_HEADER_last_period").LovValue1 : "";
+        L_GRID_CURR_PERIOD = configscreen.Any(f => f.Name == "R_HEADER_curr_period") ? configscreen.First(f => f.Name == "R_HEADER_curr_period").LovValue1 : "";
+        L_GRID_DIFF_CURR_MAX = configscreen.Any(f => f.Name == "R_HEADER_diff_number") ? configscreen.First(f => f.Name == "R_HEADER_diff_number").LovValue1 : "";
+
+        L_PAGE_NAME = configscreen.Any(f => f.Name == "LABEL_report_name") ? configscreen.First(f => f.Name == "LABEL_report_name").LovValue1 : "";
+        L_GRID_OLT_VALUE_HEAD = configscreen.Any(f => f.Name == "R_HEADER_active_number") ? configscreen.First(f => f.Name == "R_HEADER_active_number").LovValue1 : "";
+        L_GRID_OLT_STATUS_HEAD = configscreen.Any(f => f.Name == "R_HEADER_olt_transfer") ? configscreen.First(f => f.Name == "R_HEADER_olt_transfer").LovValue1 : "";
+
+        L_PAGE_DATE_FROM = configscreen.Any(f => f.Name == "LABEL_regist_date_fr") ? configscreen.First(f => f.Name == "LABEL_regist_date_fr").LovValue1 : "Regist date from :";
+        L_PAGE_DATE_TO = configscreen.Any(f => f.Name == "LABEL_regist_date_to") ? configscreen.First(f => f.Name == "LABEL_regist_date_to").LovValue1 : "To :";
+
+    }   
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">@L_PAGE_NAME</h3>
+        </div>
+        @*<div class="col-sm-12 col-md-12">
+            <label>Run report date/time:</label>
+            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label id="lblDate"></label>                                                     
+        </div>*@
+    </div>
+</div>
+
+<div class="row">     
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>Criteria Panel</span>
+                    <a data-toggle="collapse" class="pull-right" href="#SearchPanel1" onclick="onPanelToggle(this);" id="SearchPanelHeader1"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow1"></i></a>
+                </h3>
+            </div>
+            <div id="SearchPanel1" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <label>Criteria : <span id="lblCariteris"></span></label>
+                            @*<label id="lblCariteris"></label>*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <label>Run report date/time : <span id="lblDate"></span></label>
+                            @*<label id="lblDate"></label>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">            
+        <div class="panel-heading">
+           <h3 class="panel-title">
+              <span>@L_PAGE_SEARCH_PANEL</span>
+              <a data-toggle="collapse" class="pull-right" href="#SearchPanel2" onclick="onPanelToggle(this);" id="SearchPanelHeader2"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow2"></i></a>
+           </h3>
+        </div>
+        <div id="SearchPanel2" class="panel-collapse collapse in">
+            <div class="panel-body" >                                
+                   <div id="Row1" class="row i-gap-top-1"> 
+                    <div class="col-sm-6 col-md-6">
+                            <label>@L_PAGE_DATE_FROM</label>
+                            <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .Events(e => e.Change("ChangdtpDateFrom"))
+                                 )
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-dtpDateFrom"></div>
+                            <span class="k-invalid-msg" data-for="PickupDate"></span>
+                    </div>
+                    
+                    <div class="col-sm-6 col-md-6">
+                            <label>@L_PAGE_DATE_TO</label>
+                            <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Events(e => e.Change("ChangdtpDateTo"))
+                                 )
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-dtpDateTo"></div>
+                  </div>
+                   </div>              
+                @*end row1*@                  
+              <div id="row3" class="row i-gap-top-1">                   
+                   <div class="col-sm-6 col-md-6">       
+                       <div class="i-text-align-right">  
+                           </div>                              
+                    </div>
+                  <div class="col-sm-6 col-md-6 i-text-align-right">                                     
+                            
+                        <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@L_PAGE_CANCEL</a>            
+                        <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@L_PAGE_SEARCH</a>                                                                                                                                  
+                   </div>    
+              </div>                        
+            
+        </div> @*end SearchPanel2*@
+    </div>  
+    </div> 
+
+</div>
+</div>
+<div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12 " >
+                    
+                     @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.OLTList>()
+                        .Name("gridOLTStatus")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.OLT_VENDOR).Title(@L_GRID_OLT_VENDOR).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                            columns.Bound(p => p.PHASE).Title(@L_GRID_PHASE).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.REGION).Title(@L_GRID_REGION).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.SUB_DISTRICT).Title(@L_GRID_SUB_DISTRICT).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                            columns.Bound(p => p.DISTRICT).Title(@L_GRID_DISTRICT).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                            columns.Bound(p => p.OLT_NAME).Title(@L_GRID_OLT_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(250);
+                            columns.Bound(p => p.REGISTER_DT).Title(@L_GRID_REGISTER_DT).HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" }).HtmlAttributes(new { style = "text-align:center;" }).Format("{0:dd/MM/yyyy}").Width(200);
+                            columns.Bound(p => p.SERVICE_USED).Title(@L_GRID_SERVICE_USED).HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" }).HtmlAttributes(new { style = "text-align:left;" }).Width(200);
+                            columns.Bound(p => p.PORT_QUAN).Title(@L_GRID_PORT_QUAN).HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" }).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+
+                            columns.Bound(p => p.OLT_STATUS).Title(@L_GRID_OLT_STATUS).HtmlAttributes(new { style = "text-align:center;" }).Width(250)
+                                .EditorTemplateName("PopupOLTStatusBuilding")
+                                .ClientTemplate("#if(OLT_STATUS =='W') {#" + @OLT_STATUS_W + "# } else if(OLT_STATUS =='C') {#" + @OLT_STATUS_C + "#} else if(OLT_STATUS != undefined) {##=OLT_STATUS##} else {#" + @OLT_STATUS_W + "#}#");
+                            
+                            columns.Bound(p => p.MAX_PORT).Title(@L_GRID_MAX_PORT).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.MAX_DATE).Title(@L_GRID_MAX_DATE).HtmlAttributes(new { style = "text-align:center;" }).Format("{0:dd/MM/yyyy}").Width(150);
+                            columns.Bound(p => p.LAST_PERIOD).Title(@L_GRID_LAST_PERIOD).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.CURR_PERIOD).Title(@L_GRID_CURR_PERIOD).HtmlAttributes(new { style = "text-align:center;" }).Width(150);
+                            columns.Bound(p => p.DIFF_CURR_MAX).Title(L_GRID_DIFF_CURR_MAX).HtmlAttributes(new { style = "text-align:center;" }).Width(200);
+                        })
+                        .ToolBar(toolbar => toolbar.Template("" +
+                            //disabled='disabled'
+                        "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp;"+ @L_PAGE_EXPORT +"</a>&nbsp;</div>"+
+                        "<div class='pull-right'><a onclick='_UpdateData()' id='btnUpdate'  class='btn btn-default'><i class='fa fa-floppy-o fa-lg'></i>&nbsp;" + @L_PAGE_UPDATE + "</a>&nbsp;</div>"                         
+
+                        ))
+                             //.ToolBar(toolBar =>
+                             //    {
+                             //        toolBar.Custom().Name("NewCoverExcel").Text("<i class='fa fa-file-excel-o'></i> New Coverage").HtmlAttributes(new { onclick = "goimortexcel();return false;" });
+                             //        toolBar.Custom().Name("NewCoverNormal").Text("<i class='fa fa-plus-circle fa-lg'></i> New Coverage").HtmlAttributes(new { onclick = "goaddnew();return false;" });
+                             //        toolBar.Custom().Text("<i class='fa fa-reply'></i> Export to Excel").HtmlAttributes(new { onclick = "_ExportToExcel();return false;" });                               
+                             //    }
+                             //    )
+                            .Selectable(s => s.Mode(GridSelectionMode.Single))
+                            .Editable(editable => editable.Mode(GridEditMode.InCell))
+                            .Scrollable(scrollable => scrollable.Height("auto"))                                       
+                            .Pageable(pageable => pageable
+                            //.PageSizes(true)
+                            .Numeric(true)
+                            .PageSizes(new int[] {20, 50, 100})
+                            )
+                            .Sortable()
+                            .AutoBind(false)
+                            //.Filterable()
+                            .Events(e => e.Edit("onGridEdit"))
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(20)
+                                .Read(read => read.Action("ReadReport05Search", "PAYGReport").Data("bindingValue"))
+                                .Model(model =>
+                                {
+                                    model.Id(p => p.OLT_NAME);
+                                    model.Field(p => p.OLT_VENDOR).Editable(false);
+                                    model.Field(p => p.PHASE).Editable(false);
+                                    model.Field(p => p.REGION).Editable(false);
+                                    model.Field(p => p.SUB_DISTRICT).Editable(false);
+                                    model.Field(p => p.DISTRICT).Editable(false);
+                                    model.Field(p => p.OLT_NAME).Editable(false);
+                                    model.Field(p => p.REGISTER_DT).Editable(false);
+                                    model.Field(p => p.SERVICE_USED).Editable(false);
+                                    model.Field(p => p.PORT_QUAN).Editable(false);
+                                    model.Field(p => p.MAX_PORT).Editable(false);
+                                    model.Field(p => p.MAX_DATE).Editable(false);
+                                    model.Field(p => p.LAST_PERIOD).Editable(false);
+                                    model.Field(p => p.CURR_PERIOD).Editable(false);
+                                    model.Field(p => p.DIFF_CURR_MAX).Editable(false);                                  
+                                    
+                                    model.Field(p => p.OLT_STATUS).Editable(true);
+                                })
+                                ) 
+                                .Events(e => e.DataBound("onGridDataBound"))                           
+                            )
+      </div>                
+</div>         
+    @(Html.Kendo().Window()
+    .Name("MyPopupLoading")
+    .HtmlAttributes(new { @class = "i-gap-popup" })
+    .Title(false)
+    .Modal(true)
+    .Visible(false)
+    .Content(@<text>
+    <div style="margin: 0 80px;"><font size="4">Loading &nbsp;<i class="fa fa-refresh fa-spin"></i></font></div>
+    </text>)
+    )      
+</body>
+
+<script>
+    var dataItem;
+    var gridTotal = 0;
+    var dateVal = '';
+    var criteriaVal = '';
+    $(document).ready(function () {
+        //debugger        
+        $('#btnExport').attr("disabled", true);
+        $('#btnUpdate').attr("disabled", true);
+
+        $('#gridOLTStatus').data().kendoGrid.thead.prepend("<tr class=\"k-link\" style = \"text-align:center;\"><td colspan=1></td><td colspan=1></td><td colspan=1></td><td colspan=1></td><td colspan=1></td>"+
+            "<td colspan=1></td><td colspan=1></td><td colspan=1></td><td colspan=1></td><td colspan=1 class=\"k-grid-header\" style=\"background-color:#f2f2f2;\"> @L_GRID_OLT_STATUS_HEAD </td><td colspan=5 class=\"k-grid-header\" style=\"background-color:#f2f2f2;\"> @L_GRID_OLT_VALUE_HEAD </td></tr>")
+        //LoadingOLT();
+        //var grid = $("#gridOLTStatus").data("kendoGrid");
+        //grid.dataSource.page(1);
+                        
+        //$.ajax({
+        //    url: '/PAYGReport/ReadSearchOLTReport',
+        ////data: { dataS: JSON.stringify(model) },
+        //dataType: "json",
+        //type: 'POST',
+        //success: function (response) {
+        //    $('#btnExport').attr("disabled", true);
+        //    if (response) {
+        //        if (response.item == "0") {
+        //            $('#btnExport').attr("disabled", true);
+        //        }
+        //        else {
+        //            $('#btnExport').attr("disabled", false);
+        //        }
+        //    }
+        //},
+        //failure: function (msg) {
+        //    $('#btnExport').attr("disabled", true);
+        //}
+        //});
+        //Loading();
+
+        ReplaceDateTimeReport();
+    });
+
+    function post(path, params, method) {
+
+        method = method || "post"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function _ExportToExcel()
+    {
+        var model = new defaultData();
+        var criterModel = new criterData();
+
+        window.open("/PAYGReport/ExportOLTReport?dataS=" + JSON.stringify(model) + "&criteria=" + JSON.stringify(criterModel) + "");
+    }
+
+    function onGridDataBound()
+    {
+        LoadingOLT(0);
+        gridTotal = this.dataSource.view().length;
+
+        if (this.dataSource.view().length == 0) {
+            //insert empty row
+
+            var colspan = this.thead.find("th").length;
+            //alert(colspan)
+            var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+            this.tbody.html(emptyRow);
+
+            //workarounds for IE lt 9
+            //this.table.width(800);
+            //$(".k-grid-content").width(2 * kendo.support.scrollbar());
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+        }
+        else
+        {
+            $(".k-grid-content").height("auto");
+        }
+
+        $('#btnExport').attr("disabled", !(this.dataSource.view().length != 0));
+    }
+
+    function onOLTStatusChange()
+    {
+        //alert(45);
+        $('#btnUpdate').attr("disabled", false);
+    }
+
+    function onGridEdit(arg)
+    {
+        var indexCell = arg.container.context.cellIndex;
+        var grid = $('#gridOLTStatus').data('kendoGrid');
+        dataItem = $("#gridOLTStatus").data("kendoGrid").dataSource.data()[grid.select()[0].rowIndex];
+
+        if (indexCell != 'undefined' && grid.columns[indexCell].title == "STATUS") {
+
+            if (grid.columns[indexCell].field == 'OLT_STATUS' && dataItem.OLT_STATUS != 'W')
+            {
+                //$('#gridOLTStatus').data("kendoGrid").closeCell();
+            }
+        }        
+    }
+    
+    function ddlOLTStatus_databound()
+    {
+        var row = $("#ddlOLTStatus").closest("tr");
+        var grid = $("#gridOLTStatus").data("kendoGrid");
+        dataItem = grid.dataItem(row);
+        
+        var status = dataItem.OLT_STATUS;
+        if (status == undefined || status == "")
+        {
+            $("#ddlOLTStatus").data("kendoDropDownList").value('W');
+        }
+        else
+        {
+            $("#ddlOLTStatus").data("kendoDropDownList").value(dataItem.OLT_STATUS);
+        }
+        
+    }
+
+    function onSelectStatus(e)
+    {
+        var selectedValue = this.dataItem(e.item.index()).Value;
+        //alert(selectedValue);
+        if (dataItem != null)
+        {
+            //alert(3);
+            dataItem.SelectedValue = selectedValue;
+            dataItem.OLT_STATUS = selectedValue;
+            
+        }
+    }
+
+    function getStatusID()
+    {
+        var row = $("#ddlOLTStatus").closest("tr");
+        var grid = $("#gridOLTStatus").data("kendoGrid");
+        dataItem = grid.dataItem(row);
+        return {values:$("#ddlOLTStatus").val()};
+    }
+
+    function _UpdateData()
+    {
+        debugger;
+        var grid = $("#gridOLTStatus").data("kendoGrid");
+        var saveModel;
+        var saveModels = [];
+        for (var i = 0; i < gridTotal; i++) 
+        {
+            var dataRow = $("#gridOLTStatus").data("kendoGrid").dataSource.data()[i];
+            saveModel = defaultSaveData(dataRow);
+            saveModels.push(saveModel);            
+        }
+
+        $.ajax({
+            url: '/PAYGReport/UpdateOLTStatusData',
+            data: JSON.stringify({ saveModels: saveModels }),
+            dataType: "json",
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+
+                if (response) {
+                    if (response.item == "1") {
+                        Loading(0);
+                        showFeedback("success", "Update Success", "Update Paid Status");
+                    }
+                    else {
+                        Loading(0);
+                        showFeedback("error", "Update Fail", "Update Paid Status");
+                    }
+
+                }
+                else {
+                }
+            },
+            failure: function (msg) {
+            }
+        });
+
+        $('#btnUpdate').attr("disabled", true);
+    }
+
+    function defaultSaveData(saveDataRow)
+    {
+        var saveModel = new UpdateOLTStatusModel();
+        
+        saveModel.OLT_NAME = (saveDataRow.OLT_NAME != undefined) ? saveDataRow.OLT_NAME : '';
+        saveModel.OLT_STATUS = (saveDataRow.OLT_STATUS != undefined) ? saveDataRow.OLT_STATUS : '';
+
+        return saveModel;
+    }
+
+    var UpdateOLTStatusModel = function () {
+        OLT_NAME: "";
+        OLT_STATUS: "";
+    }
+
+    function ReplaceDateTimeReport() {
+        var currDate = new Date();
+        var month = new Array();
+        month[0] = "Jan";
+        month[1] = "Feb";
+        month[2] = "Mar";
+        month[3] = "Apr";
+        month[4] = "May";
+        month[5] = "Jun";
+        month[6] = "Jul";
+        month[7] = "Aug";
+        month[8] = "Sep";
+        month[9] = "Oct";
+        month[10] = "Nov";
+        month[11] = "Dec";
+
+        var dateTxt = currDate.getDate() + ' ' + month[currDate.getMonth()] + ' ' + currDate.getFullYear() + ' ' + currDate.toLocaleTimeString();
+
+        $("#lblDate").empty();
+        $("#lblDate").append(dateTxt);
+        dateVal = dateTxt;
+    }
+
+    var CriterModel = function ()
+    {
+
+        REPORT: "";
+        CRITERIA: "";
+        REPORT_DATE: "";
+
+    }
+
+    function criterData() {
+
+        var searchCriter = new CriterModel();
+        searchCriter.REPORT = '@L_PAGE_NAME';
+        searchCriter.CRITERIA = 'Criteria: ' + criteriaVal;
+        searchCriter.REPORT_DATE = 'Run report date/time: ' + dateVal;
+
+        return searchCriter;
+    }
+    function LoadingOLT(x) {
+        if (x == 0) {
+            $("#MyPopupLoading").data("kendoWindow").close();
+        }
+        else {
+            $("#MyPopupLoading").data("kendoWindow").center();
+            $("#MyPopupLoading").data("kendoWindow").open();
+        }
+    }
+
+    function bindingValue() {
+        LoadingOLT();
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    var OLTReportModel = function ()
+    {
+
+        dateFrom: "";
+        dateTo: "";
+
+    }
+
+    function defaultData()
+    {        
+        var searchModel = new OLTReportModel();
+        searchModel.dateFrom = kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy");
+        searchModel.dateTo = kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy");
+
+        return searchModel;
+    }
+
+    function _Clear() {
+       $("#lblCariteris").empty();
+        // $("#lblDate").empty();
+        criteriaVal = '';
+        dateVal = '';
+
+        $("#gridOLTStatus").data("kendoGrid").dataSource.data([]);
+
+        $("#dtpDateFrom").data("kendoDatePicker").value("");
+        $("#dtpDateTo").data("kendoDatePicker").value("");
+        //reset min, max.
+        $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+        $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+        $("#validatefor-dtpDateTo").html("");
+        $("#validatefor-dtpDateFrom").html("");
+
+    }
+
+    function _Search() {
+
+        var model = defaultData();
+
+        var chk = ValidationDateValue();
+        if (chk) {
+            if (model.oltbrand == "" && model.phase == "" && model.region == "") {
+                showFeedback("warning", "Please choose at least one condition.");
+            }
+            else {
+                LoadingOLT();
+                var grid = $("#gridOLTStatus").data("kendoGrid");
+                grid.dataSource.page(1);
+                ReplaceCariteris(model);
+            }
+        }
+
+    }
+
+    function ReplaceCariteris(model)
+    {
+        var dateFrom = '@L_PAGE_DATE_FROM';
+        var dateTo = '@L_PAGE_DATE_TO';
+
+        var text = dateFrom + " " + ConvertDateTime(model.dateFrom) + " to " + ConvertDateTime(model.dateTo);
+
+        $("#lblCariteris").empty();
+        $("#lblCariteris").append(text);
+        criteriaVal = text;
+
+        ReplaceDateTimeReport();
+    }
+
+    function ConvertDateTime(dateVal) {
+        var month = new Array();
+        month[0] = "Jan";
+        month[1] = "Feb";
+        month[2] = "Mar";
+        month[3] = "Apr";
+        month[4] = "May";
+        month[5] = "Jun";
+        month[6] = "Jul";
+        month[7] = "Aug";
+        month[8] = "Sep";
+        month[9] = "Oct";
+        month[10] = "Nov";
+        month[11] = "Dec";
+
+        var dateTxt = dateVal.getDate() + ' ' + month[dateVal.getMonth()] + ' ' + dateVal.getFullYear();
+
+        return dateTxt;
+    }
+       
+    function ChangdtpDateFrom() {
+
+        var endPicker = $("#dtpDateTo").data("kendoDatePicker"),
+        startDate = this.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            endPicker.min(startDate);
+        }
+
+    }
+
+    function ChangdtpDateTo() {
+        var startPicker = $("#dtpDateFrom").data("kendoDatePicker"),
+        endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            startPicker.max(endDate);
+        }
+
+    }
+
+    function ValidationDateValue() {
+
+        var chk = ValidationProcessing("dateselect");
+
+        if (chk) //check blank value
+        {
+            if ($.trim($("#dtpDateFrom").val()) == '') {
+                $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if ($.trim($("#dtpDateTo").val()) == '') {
+                $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check format
+        {
+            if (!kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if (!kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy")) {
+                if ($("#dtpDateTo").val() != "") {
+                    $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check Date From must be earlier than Date To
+        {
+            var startPicker = new Date(kendo.parseDate($("#dtpDateFrom").val(), "mm/dd/yyyy"));
+            var endPicker = new Date(kendo.parseDate($("#dtpDateTo").val(), "mm/dd/yyyy"));
+
+            if (startPicker > endPicker) {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+            }
+        }
+
+        return chk;
+    }
+</script>
+</html>

@@ -1,0 +1,102 @@
+﻿@using WBBEntity.PanelModels
+@{
+    Layout = "~/Views/Shared/_LayoutPaymentAndReportProblem.cshtml";
+
+    string L_REPORT_PROBLEM_HEADER = string.Empty;
+    string L_REPORT_PROBLEM_DESCRIPTION = string.Empty;
+    string L_RECEIVED_INFOMATION_SUCCESS = string.Empty;
+    string L_CONTACT_FROM_AIS = string.Empty;
+    string B_OK = string.Empty;
+
+    if (ViewBag.LabelFBBOR020 != null)
+    {
+        var labelFBBTOR020 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR020;
+        L_REPORT_PROBLEM_HEADER = labelFBBTOR020.Any(c => c.Name == "L_REPORT_PROBLEM_HEADER") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_REPORT_PROBLEM_HEADER").DisplayValue : "";
+        L_RECEIVED_INFOMATION_SUCCESS = labelFBBTOR020.Any(c => c.Name == "L_RECEIVED_INFOMATION_SUCCESS") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_RECEIVED_INFOMATION_SUCCESS").DisplayValue : "";
+        L_CONTACT_FROM_AIS = labelFBBTOR020.Any(c => c.Name == "L_CONTACT_FROM_AIS") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "L_CONTACT_FROM_AIS").DisplayValue : "";
+        B_OK = labelFBBTOR020.Any(c => c.Name == "B_OK") ? labelFBBTOR020.FirstOrDefault(c => c.Name == "B_OK").DisplayValue : "";
+    }
+    
+}
+<style>
+    
+    #box1P_holder {
+        background:none
+    }
+
+    .report-headtext {
+        font-size: 29px;
+        color: #558C0B;
+        font-family: 'db_helvethaicaais_x65_med';
+        padding-left: 15px;
+        /*float: left;*/
+    }
+
+    .report-detail-text {
+        color: #614e48;
+        font-size: 17px;
+        line-height: 25px;
+    }
+
+    .detail-for-menu-report {
+        width: 100%;
+        border: 1px solid #999999;
+        min-height: 200px;
+        background-color: #ffffff;
+    }
+
+    .report {
+        padding-bottom: 50px;
+    }
+
+</style>
+
+<div class="col-sm-6 col-sm-offset-3 report">
+    <div class="content-menu">
+        <div class="detail-for-menu-report">
+            <div class="innercontent">
+                <div class="row_ais">
+                    <div class="col-sm-12">
+                        <h4 class="report-headtext page-header">@L_REPORT_PROBLEM_HEADER</h4>
+                        <strong>@L_REPORT_PROBLEM_DESCRIPTION</strong>
+                        <p class="clearfix"></p>
+    
+                        <div class="col-md-12 report-detail-text">
+                            @L_RECEIVED_INFOMATION_SUCCESS 
+                        </div>
+                        <p class="clearfix"></p>
+
+                        <div class="col-md-12 report-detail-text">
+                            @L_CONTACT_FROM_AIS 
+                        </div>
+    
+                        <p class="clearfix"></p>
+                        <div class="col-md-12 text-right">
+                            <a href="@Url.Action("RedirectPage", "ReportProblem")" target="">
+                                <div  class="btn2 btn btn-for-xs">
+                                    @B_OK 
+                                </div>
+                            </a>
+                            <p class="clearfix"></p>
+                        </div>
+                        <p class="clearfix"></p>
+
+                    </div>
+                    <p class="clearfix"></p>
+                </div>
+                <p class="clearfix"></p>
+            </div>
+        </div>
+                
+        <p class="clearfix"></p>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('li').removeClass('active');
+        $('.bd-4').addClass('active');
+        $('.reportproblem').addClass('active');
+    });
+   </script>

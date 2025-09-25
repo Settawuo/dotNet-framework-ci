@@ -1,0 +1,220 @@
+﻿@model WBBEntity.PanelModels.QuickWinPanelModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+
+@{
+    Layout = null;
+
+    string B_NEXT = "";
+
+    string L_PROFILE_WELCOME = "";
+    string L_AIS_FIBRE_NO = "";
+    string L_MOBILE_NUMBER = "";
+    string L_PROFILE_PACKAGE = "";
+    string LOCK_CREATE_ORDER_CHGANGE_PRO = "";
+    string MSG_PENDING_ORDER_FBSS = "";
+
+    if (ViewBag.LabelLovScreen != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.labelLovScreen;
+
+        B_NEXT = labelLovScreen.Any(c => c.Name == "B_NEXT") ? labelLovScreen.First(c => c.Name == "B_NEXT").DisplayValue : "";
+        L_AIS_FIBRE_NO = labelLovScreen.Any(c => c.Name == "L_AIS_FIBRE_NO") ? labelLovScreen.First(c => c.Name == "L_AIS_FIBRE_NO").DisplayValue : "";
+        L_MOBILE_NUMBER = labelLovScreen.Any(c => c.Name == "L_MOBILE_NUMBER") ? labelLovScreen.First(c => c.Name == "L_MOBILE_NUMBER").DisplayValue : ""; //FBBOR015
+        L_PROFILE_PACKAGE = labelLovScreen.Any(c => c.Name == "L_PROFILE_PACKAGE") ? labelLovScreen.First(c => c.Name == "L_PROFILE_PACKAGE").DisplayValue : "";
+        L_PROFILE_WELCOME = labelLovScreen.Any(c => c.Name == "L_PROFILE_WELCOME") ? labelLovScreen.First(c => c.Name == "L_PROFILE_WELCOME").DisplayValue : "";
+        LOCK_CREATE_ORDER_CHGANGE_PRO = labelLovScreen.Any(c => c.Name == "LOCK_CREATE_ORDER_CHGANGE_PRO") ? labelLovScreen.First(c => c.Name == "LOCK_CREATE_ORDER_CHGANGE_PRO").DisplayValue : "";
+        MSG_PENDING_ORDER_FBSS = labelLovScreen.Any(c => c.Name == "MSG_PENDING_ORDER_FBSS") ? labelLovScreen.First(c => c.Name == "MSG_PENDING_ORDER_FBSS").DisplayValue : "";
+    }
+}
+
+<style>
+    .gusterbottom {
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+    }
+
+    .radius5 {
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .tab_red {
+        background-color: #E285AF;
+        color: #FFF;
+        padding: 10px 20px;
+    }
+
+        .tab_red span {
+            font-size: 2em;
+            line-height: 120%;
+            padding: 5px 0px;
+        }
+
+    .tab_green {
+        background-color: #8DC63F;
+        color: #FFF;
+        padding: 10px 20px;
+    }
+
+    .tab_green span {
+        font-size: 2em;
+        line-height: 120%;
+        padding: 5px 0;
+    }
+
+    .row .row {
+        width: auto;
+        margin-top: 0;
+        margin-bottom: 0;
+        max-width: none;
+    }
+
+    .columns {
+        position: relative;
+        float: left;
+    }
+
+    .large-1, .large-10, .large-11, .large-12, .large-2, .large-3, .large-4, .large-5, .large-6, .large-7, .large-8, .large-9 {
+        display: block;
+    }
+
+    .large-9 {
+        width: 75%;
+    }
+
+    .medium-9 {
+        width: 75%;
+    }
+
+    .small-8 {
+        width: 66.6667%;
+    }
+
+    .b_pad5 {
+        padding-bottom: 5px;
+    }
+
+    .large-12 {
+        width: 100%;
+    }
+
+    .border_bottom_gray {
+        border-bottom: 1px solid #E5E5E5;
+    }
+
+    .border_right_gray {
+        border-right: 1px solid #E5E5E5;
+    }
+
+
+    .font_green {
+        color: #8DC63F; /*old color #ACC42A*/
+    }
+
+    .box_padding15 {
+        padding: 15px;
+    }
+  
+</style>
+
+<div id="divPersonalInfo">
+    <div class="col-md-12">
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <div class="col-md-3"><h3 class="tgreen">@L_PROFILE_WELCOME</h3></div>
+        <div class="col-md-9"><h3 id="lblNameVal">คุณเอไอเอส ไฟเบอร์</h3></div>
+
+        <div class="col-md-3"><h3 class="tgreen">@L_AIS_FIBRE_NO</h3></div>
+        <div class="col-md-9"><h3 id="lblAisAirnetVal">88XXXXXXX</h3></div>
+
+        <div class="col-md-3"><h3 class="tgreen">@L_MOBILE_NUMBER</h3></div>
+        <div class="col-md-9"><h3 id="lblMobileNumVal">081XXXXXXX</h3></div>
+    </div>
+    <p class="clearfix"></p>
+    <div class="gusterbottom">
+        <div class="radius5">
+            <div class="">
+                <div class="tab_green"> <div class="row"> <div class="columns large-9 medium-9 small-8"> <span>@L_PROFILE_PACKAGE</span> </div> </div> </div> <div class="row">
+                    <div class="large-12 columns b_pad5" id="PERSONAL_INFO_CONTENT">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 text-center wrapButton-total">
+        <button class="btn btn-success btn-for-xs btn-lg" style="background-image:none" type="button" onclick="gotoChoosePackage();">@B_NEXT</button>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+</div>
+
+<div class="modal fade" id="modal_error_have2main" tabindex="-1" role="dialog" aria-labelledby="modal_cardreader_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p class="clearfix"></p>
+                <h3 id='errorMSG' class="text-center">
+                </h3>
+                <p class="clearfix"></p>
+                <div class="col-md-12 text-center">
+                    <p class="clearfix"></p>
+                    <button type="button" class="btn btn-success" onclick=" $('#modal_error_have2main').modal('toggle');">
+                        &nbsp; OK &nbsp; <i class="fa fa-arrow-circle-o-right "></i>
+                    </button>
+                    &nbsp;&nbsp;
+                  
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#lblNameVal").text(privacyNameSurname($("#outAccountName").val()));
+        if ($("#lblNameVal").text() == "")
+            $("#lblNameVal").text("N/A");
+        $("#lblAisAirnetVal").text(privacyFbbId($("#CoveragePanelModel_P_MOBILE").val()));
+        if ($("#lblAisAirnetVal").text() == "")
+            $("#lblAisAirnetVal").text("N/A");
+        $("#lblMobileNumVal").text(privacyMsisdn($("#outMobileNo").val()));
+        if ($("#lblMobileNumVal").text() == "")
+            $("#lblMobileNumVal").text("N/A");
+
+    });
+
+    function gotoChoosePackage()
+    {
+        if ($("#checkHave2Main").val() == "N") {
+            changePageHeader(2);
+            $("#divPersonalInfo").hide();
+            $("#divChoosePackage").show();
+        }
+        else {
+            if ($("#checkHave2Main").val() == "Y") {
+                if ($("#PendingOrderFbss_Change_Promotion_Flag").val() == "Y") {
+                    var errorMSG = '@Html.Raw(MSG_PENDING_ORDER_FBSS)';
+                    $("#errorMSG").text(errorMSG.replace('{0}', $("#CoveragePanelModel_P_MOBILE").val()));
+                    $('#modal_error_have2main').modal('show');
+                }
+                else {
+                    changePageHeader(2);
+                    $("#divPersonalInfo").hide();
+                    $("#divChoosePackage").show();
+                }
+            } else {
+                changePageHeader(2);
+                $("#divPersonalInfo").hide();
+                $("#divChoosePackage").show();
+            }
+        }
+    }
+</script>

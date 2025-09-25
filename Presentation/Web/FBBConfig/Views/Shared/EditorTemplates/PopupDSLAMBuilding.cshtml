@@ -1,0 +1,159 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.DslamPanel
+<script>
+    function filterRegionDSLAM() {
+        return {
+            region: $("#RegionDSLAM").val()   
+        };    
+    }
+</script>
+
+   <div class="k-popup-edit-form k-window-content k-content">
+
+       <div class="editor-label">
+            <label for="Code">Code</label>
+       </div>
+       <div class="editor-field">
+                @Html.TextBoxFor(Model => Model.Code, 
+                     new {
+                           @placeholder = "Code", 
+                            @title = "Code",
+                            @id = "txtCode", 
+                            @readonly = "readonly",
+                            @class = "k-textbox form-control"
+                            
+                     })
+        </div>
+       <div class="editor-label">
+            <label for="Code">Building Code</label>
+       </div>
+       <div class="editor-field">
+                @(Html.Kendo().DropDownList()
+                  .Name("BuildingCode")
+                 .DataTextField("Text")
+                  .DataValueField("Value")
+                  .HtmlAttributes(new { @style = "width:100%;"})
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetBuildingCode", "CoverageManagement");
+
+
+                      });
+                  })
+                  )
+       </div>
+       <div class="editor-label">
+            <label for="">(DL)Runing number</label>
+       </div>
+       <div class="editor-field">
+           @Html.TextBoxFor(Model => Model.DLRuningNumber, 
+                     new { 
+                        @placeholder = "DLRuningNumber", 
+                        @id = "txtDLRuningNumber", 
+                        @readonly = "readonly",
+                        @class = "k-textbox form-control",
+                        @maxlength = 100 })
+       </div>
+       <div class="editor-label">
+            <label for="">M,C</label>
+       </div>
+       <div class="editor-field">
+           @Html.TextBoxFor(Model => Model.MC, 
+                     new { 
+                       @placeholder = "MC", 
+                        @id = "txtMC", 
+                        @class = "k-textbox form-control",
+                       @maxlength = 1 })
+       </div>
+       <div class="editor-label">
+            <label for="">IPRAN Port</label>
+       </div>
+       <div class="editor-field">
+           @Html.TextBoxFor(Model => Model.IPRANPort, 
+                     new { 
+                        @placeholder = "IPRANPort", 
+                       @id = "txtIPRANPort", 
+                        @class = "k-textbox form-control", 
+                        @maxlength = 1 })
+       </div>
+       <div class="editor-label">
+            <label for="">Region DSLAM</label>
+       </div>
+       <div class="editor-field">
+            @(Html.Kendo().DropDownList()
+                  .Name("RegionDSLAM")
+                  .DataTextField("Region")
+                  .DataValueField("Region")
+                  .HtmlAttributes(new { @style = "width:48.5%;"})    
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetRegionDSLAM", "CoverageManagement");
+                      });
+                  }))
+
+                 @(Html.Kendo().DropDownList()
+                  .Name("Lot")
+                    .DataTextField("LotNo")
+                  .DataValueField("LotNo")  
+                  .HtmlAttributes(new { @style = "width:48.5%;"})
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetLot", "CoverageManagement").Data("filterRegionDSLAM");
+                      });
+                  }) 
+                  .Enable(false)
+                  .AutoBind(false)
+                  .CascadeFrom("RegionDSLAM") )
+       </div>
+       <div class="editor-label">
+            <label for="">DSLAM Model</label>
+       </div>
+       <div class="editor-field">
+           @(Html.Kendo().DropDownList()
+                  .Name("DSLAMModel")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .HtmlAttributes(new { @style = "width:100%;"})
+                    .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetDslamModel", "CoverageManagement");
+                      });
+                  }))
+       </div>
+       <div class="editor-label">
+            <label for="">Brand</label>
+       </div>
+       <div class="editor-field">
+           @Html.TextBoxFor(Model => Model.Brand, 
+                     new { 
+                       @placeholder = "Brand", 
+                        @id = "txtBrand", 
+                        @class = "k-textbox form-control", 
+                        @maxlength = 1 })
+       </div>
+       <div class="editor-label">
+            <label for="">Building Use</label>
+       </div>
+       <div class="editor-field">
+           @(Html.Kendo().DropDownList()
+                  .Name("BuildingUse")
+                .DataTextField("Text")
+                  .DataValueField("Value") 
+                  .HtmlAttributes(new { @style = "width:100%;"})   
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetBuildingUse", "CoverageManagement");
+                      });
+                  }))
+       </div>
+       
+</div>

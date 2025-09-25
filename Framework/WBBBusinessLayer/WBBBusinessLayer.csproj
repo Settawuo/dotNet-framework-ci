@@ -1,0 +1,1990 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\librdkafka.redist.2.5.0\build\librdkafka.redist.props" Condition="Exists('..\..\packages\librdkafka.redist.2.5.0\build\librdkafka.redist.props')" />
+  <Import Project="..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{89B88516-C7E4-4442-9734-C94B627B32B4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WBBBusinessLayer</RootNamespace>
+    <AssemblyName>WBBBusinessLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'staging|AnyCPU'">
+    <OutputPath>bin\staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>default</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'staging|x64'">
+    <OutputPath>bin\x64\staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>default</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'staging|x86'">
+    <OutputPath>bin\x86\staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AuthenDecrypt">
+      <HintPath>..\..\Packages\AuthenDecrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="Confluent.Kafka, Version=2.5.2.0, Culture=neutral, PublicKeyToken=12c514ca49093d1e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Confluent.Kafka.2.5.2\lib\net462\Confluent.Kafka.dll</HintPath>
+    </Reference>
+    <Reference Include="EncrypDLL">
+      <HintPath>..\..\Packages\EncrypDLL.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=3.1.2.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPPlus.3.1.2\lib\net35\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Inetlab.SMPP">
+      <HintPath>..\..\Packages\Inetlab.SMPP.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqKit">
+      <HintPath>..\..\Packages\LinqKit.1.0\lib\35\LinqKit.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=3.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Npgsql.3.2.7\lib\net45\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="ObjectDumper">
+      <HintPath>..\..\packages\ObjectDumper.1.0.0.12\lib\net35-Client\ObjectDumper.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.23.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Oracle.ManagedDataAccess.23.7.0\lib\net472\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.122.23.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Oracle.ManagedDataAccess.EntityFramework.23.7.0\lib\net472\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Renci.SshNet, Version=2020.0.2.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SSH.NET.2020.0.2\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\Packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=4.0.8.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.4.0.8\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Extensions.LifetimeScoping, Version=4.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.Extensions.LifetimeScoping.4.0.0\lib\net40\SimpleInjector.Extensions.LifetimeScoping.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.6.0.1\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Formats.Asn1, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Formats.Asn1.8.0.1\lib\net462\System.Formats.Asn1.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Pipelines.9.0.0\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Encodings.Web.9.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Json.9.0.0\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessLayerBootstrapper.cs" />
+    <Compile Include="CommandHandlers\ChangeContactMobileCommandHandler.cs" />
+    <Compile Include="CommandHandlers\CommandPerFormnceByRegion.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbCpGw\TransferFileToStorageCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbPaygLMD\UpdateOrderStatusCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbPaygLMD\UpdateInvoiceCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FbbNasUpdateLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBPAYGRevalueAssetCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBPurgeDateCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\AddConfigurationLookupCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\DeleteConfigurationLookupCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\DeleteConfigurationRulePriorityCammandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\FBBPaygPatchDataCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\FBBPAYGReconcileFBSSHVRCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\FBBPAYGReconcileFBSSCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\GendatafileExpireSIMCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\InventoryReconcileHVRCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\InventoryReconcileShareplexCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\ReportInstallationCostbyOrderRecalByRevampCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\ReportInstallationCostbyOrderRecalByOrderCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\ReportInstallationCostbyOrderUpdateByFileCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveEditConfigRulePriorityCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveLeavemessagePNCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SendMailReportInstallationCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateConfigurationLookupCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateFbssPatchDataConfigTblCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateFbssPaygPatchDataTblCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateReportInstallationCostbyOrderCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateNoteReportInstallationCostbyOrderCommandHandler.cs" />
+    <Compile Include="CommandHandlers\GetTruncateSIMSlocTempHVRCommandHandler.cs" />
+    <Compile Include="CommandHandlers\InsertCloudIPCameraCommandHandler.cs" />
+    <Compile Include="CommandHandlers\InsertLogDataPrivacyCommandHandler.cs" />
+    <Compile Include="CommandHandlers\InsertMasterTDMContractDeviceCommandHandler.cs" />
+    <Compile Include="CommandHandlers\InterfaceLog3BBCommandHandler.cs" />
+    <Compile Include="CommandHandlers\LoadFileSimHVRCommandHandler.cs" />
+    <Compile Include="CommandHandlers\LoadFileSimCommandHandler.cs" />
+    <Compile Include="CommandHandlers\GetTruncateSIMSlocTempCommandHandler.cs" />
+    <Compile Include="CommandHandlers\DeleteFileNameLeaveMessageCommandHandler.cs" />
+    <Compile Include="CommandHandlers\EmailTransactionCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\ChangPackFieldworkCustomerRegisterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbCpGw\InsertCoverageRusultCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbCpGw\PermissionUserCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbCpGw\MicrositeActionCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbCpGw\MicrositeWSCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbCpGw\UpdateCoverageRusultHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\LastmilePaymentCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\SAPFixedAsset\SubmitFOAErrorLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\SAPFixedAsset\UpdateSubmitFoaErrorLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBShareplex\UpdateQueryDataFBBDashboardCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\ConfigurationLMREmailCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\ConfigurationInstallCostCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\ConfigutationTypeCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\FBBCustInstallDeleteCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\FBBLastMileByDistanceJobHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\LastMileByDistanceRecalByFileCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\LastMileByDistanceRecalByOrderCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\LastMileByDistanceUpdateByFileCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveLeavemessageIMCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveLeavemessageICommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SendMailLastMileCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateAssetCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateFbssFOAConfigTblCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateFbssConfigTblCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateFOAResendStatusCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateLastMileByDistanceByOrderCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateNoteLastMileByDistanceCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateResendFoaCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\GenfileExpireSIMCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateSubContractEmailInfoCommandHandler.cs" />
+    <Compile Include="CommandHandlers\GetFBBOrderNoCommandHandle.cs" />
+    <Compile Include="CommandHandlers\GetLeaveMsgReferenceNoCommandHandler.cs" />
+    <Compile Include="CommandHandlers\InsertAppointmentTrackingCommandHandler.cs" />
+    <Compile Include="CommandHandlers\InsertImportExcelLeaveMessageCommandHandler.cs" />
+    <Compile Include="CommandHandlers\InterfaceLogPayGCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ConfigurationAutoMailCommabdHandler.cs" />
+    <Compile Include="CommandHandlers\LoadSimS4CommandHandler.cs" />
+    <Compile Include="CommandHandlers\SaveConfigRulePriorityCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SaveOutgoingMessageCommandHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CommandHandlers\SaveChangeStatusBuildingCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SavePaymentLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SaveRegisterFraudNoGoCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SaveRegisterFraudCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SaveRegisterItemRedeemCodeCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SendMailFTTHNotificationCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SendMailReportInstallationNotificationCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SendMailLastMileNotificationCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SendSmsMGMCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SetCSNoteCommandHandler.cs" />
+    <Compile Include="CommandHandlers\TranMatDocInsertFBSSLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateDeleteFileByOrderNoCancelCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateFilePathByOrderNoCommandByDayHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateFilePathByOrderNoCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateFilePathByOrderNoMaintainCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateLoadConfigLovCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateFoaResendEditCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdatePreregisterStatusPackageCommandHandler.cs" />
+    <Compile Include="CommandHandlers\CreateNewVoucherProjectCommandHandler.cs" />
+    <Compile Include="CommandHandlers\CreateOrderChangePromotionCommandHandler.cs" />
+    <Compile Include="CommandHandlers\CreateOrderChangePromotionDisCountCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbCpGw\AisWiFiRegCommandhandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\FbbCpGw\CustRegisterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\PreOrderCommandHandle.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\Quota_SubcontractCommandHandle.cs" />
+    <Compile Include="CommandHandlers\ExWebServices\SAPFixedAsset\HistoryLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\ArchiveInterfaceLogPAYGCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\CostInstallationCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\DSLAMRetockCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\CreateCardPortDataGentCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\EditAddBuildingCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\EditBuildingCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\EditDormMasterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\FBBCustInstallAddressCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\GenerateGiftVoucherPINsCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\ImportExcelDormCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\ImportPaidStatusCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\InventoryReconcileCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\PAYGReconcileCPECommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\PAYGTransAirnetCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveCampaignmessageCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveConfigEventCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveConfigPackagePage1CommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveDormMasterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveDormMasterDetailCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveLeavemessageCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SavePackageGroupDescCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SavePackageLocationCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SavePackageMappingCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SavePackageUserGroupCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SaveVendorPartnerCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\SendMailBatchCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateAddressIDCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateDormitorySubcontrachCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateOLTStatusCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateOnOffServiceCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdatePaidStatusCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdatePrepaidNonMobileStatusCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBSS\AlterChangedBuildingCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBSS\CreateConverageAreaLogHandler.cs" />
+    <Compile Include="CommandHandlers\FBSS\CreateOderPreRegisterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBSS\FBSSCoverageResultCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBSS\FBSSSubContractTimeslotInsertTableCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBSS\FBSSSubContractTimeslotRollbackCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBSS\FBSSSubContractTimslotInterfaceLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\GenPasswordCommandHandle.cs" />
+    <Compile Include="CommandHandlers\InterfaceLogAdminCommandHandler.cs" />
+    <Compile Include="CommandHandlers\NotificationBatchCommandHandler.cs" />
+    <Compile Include="CommandHandlers\PaymentLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ReconcileStandardAddressCommandHandlers.cs" />
+    <Compile Include="CommandHandlers\ReportProblemCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SaveMemberGetMemberCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SendSmsCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateBulkCorpCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateBulkMailStatusCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateFileNameCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SessionLoginCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdatePreregisterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdatePreregisterStatusCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateRegisterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\GeneratePdfCommandHandler.cs" />
+    <Compile Include="CommandHandlers\InterfaceLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ReportActiveCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ReserveTimeSlotCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SaveCradPortDataCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\CoverageDSLAMBuildingCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\FTTxCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\CreateAWCinformationCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\CoverageAreaBuildingCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\CreateAWCconfigCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\DeleteAWCconfigCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\DeleteAWCInfoCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\DeleteDSLAMMasterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\CreateDSLAMMasterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\DeletetempAPCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\DSLAMInfoCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\DSLAMModelCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateAWCconfigCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\UpdateAWCInfoCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SaveCardModelCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FBBWebConfigHandlers\CoverageAreaCommandHandler.cs" />
+    <Compile Include="CommandHandlers\PortAssignmentCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ProfileCustomerCommandHandler.cs" />
+    <Compile Include="CommandHandlers\CoverageResultCommandHandler.cs" />
+    <Compile Include="CommandHandlers\CustRegisterCommandHandler.cs" />
+    <Compile Include="CommandHandlers\MailLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\NotificationCommandHandler.cs" />
+    <Compile Include="CommandHandlers\RegAisRabbitCommandHandler.cs" />
+    <Compile Include="CommandHandlers\StatLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\SummaryPortCommandHandle.cs" />
+    <Compile Include="CommandHandlers\TrackingLogCommandHandler.cs" />
+    <Compile Include="CommandHandlers\WebServices\InsertConsentLogNewRegisterCommandHandle.cs" />
+    <Compile Include="CommandHandlers\WebServices\InsertSaveOrderNew911Handler.cs" />
+    <Compile Include="CommandHandlers\WebServices\SaveDeductionLogHandler.cs" />
+    <Compile Include="CommandHandlers\WebServices\SavePaymentSPDPLogHandler.cs" />
+    <Compile Include="CommandHandlers\WebServices\SavePendingDeductionHandler.cs" />
+    <Compile Include="CommandHandlers\WebServices\UpdateFBBSaleportalPreRegisterByOrdermcCommandHandler.cs" />
+    <Compile Include="CommandHandlers\WebServices\UpdateSplitterDummy3bbCommandHandler.cs" />
+    <Compile Include="CrossCuttingConcerns\AuthorizationCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\AuthorizationException.cs" />
+    <Compile Include="CrossCuttingConcerns\AuthorizationQueryHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\DataAnnotationsValidator.cs" />
+    <Compile Include="CrossCuttingConcerns\DeadlockRetryCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\TransactionCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\TransactionLogCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\ValidationCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\ValidationQueryHandlerDecorator.cs" />
+    <Compile Include="Extension\FBSSAccessToken.cs" />
+    <Compile Include="Extension\AWAPDirectionHelper.cs" />
+    <Compile Include="Extension\Conv_Extension.cs" />
+    <Compile Include="Extension\evESQueryPersonalInformationModel_Extension.cs" />
+    <Compile Include="Extension\ImageThing.cs" />
+    <Compile Include="Extension\ITraceable.cs" />
+    <Compile Include="Extension\FBBCache.cs" />
+    <Compile Include="Extension\FbbCpGwCustRegisterHelper.cs" />
+    <Compile Include="Extension\PdfSecurity.cs" />
+    <Compile Include="Extension\RestRequest_Extension.cs" />
+    <Compile Include="Extension\RestSharpJsonSerializer.cs" />
+    <Compile Include="Extension\ServicesConstants.cs" />
+    <Compile Include="Extension\String_Extension.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="IValidator.cs" />
+    <Compile Include="Minions\FileUploadServiceHandler.cs" />
+    <Compile Include="Minions\MinionExternalSmsSurveyFoaCommandHandler.cs" />
+    <Compile Include="Minions\MinionGetExternalSoapServiceQueryHandler.cs" />
+    <Compile Include="Minions\MinionGetListPackageByChangeQueryHandler.cs" />
+    <Compile Include="Minions\MinionGetListPackageByServiceQueryHandler.cs" />
+    <Compile Include="Minions\MinionGetListPackageBySffPromoQueryHandler.cs" />
+    <Compile Include="Minions\MinionGetListProfileAddressQueryHandler.cs" />
+    <Compile Include="Minions\MinionGetListProfileContactQueryHandler.cs" />
+    <Compile Include="Minions\MinionGetListProfileCustomerQueryHandler.cs" />
+    <Compile Include="Minions\MinionGetListProfilePackageQueryHandler.cs" />
+    <Compile Include="Minions\MinionGetListProfileSplitterQueryHandler.cs" />
+    <Compile Include="Minions\MinionGetMinionServiceQueryHandler.cs" />
+    <Compile Include="Minions\MinionProcInstallAddressCommandHandler.cs" />
+    <Compile Include="Minions\MinionProcInstallContactCommandHandler.cs" />
+    <Compile Include="Minions\MinionProcInstallPackageCommandHandler.cs" />
+    <Compile Include="Minions\MinionProcInstallSplitterCommandHandler.cs" />
+    <Compile Include="Minions\MinionProcMessageLogCommandHandler.cs" />
+    <Compile Include="Minions\MinionProfileCustomerCommandHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="QueryHandlers\Commons\Account\GetTemporaryLoginQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\ATN\ATNConstants.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetCheckEventCodeHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetCustomerSpeOfferQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetDormitoryQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetEventDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetLogQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetEmailProcessingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetLoadConfigLovHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetLovQueryV2Handler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetLovWithParamsQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetMappingSbnOwnerHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetModelnameDslamQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetModelNameQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetCardModelQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetCardInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetCoverageAreaReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetRoomNumberQueryhandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetVersionQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetZipCodeQueryHandlerAirWireless.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\ValidateNonMobilePinQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebApi\GetDataFBBPreRegisterQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebApi\RetrieveAddressQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebApi\GetListWebsiteConfigurationQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\ATN\1GetCustomerProfileMobilePackageCurrentHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\ATN\2GetCustomerProfileServiceProfileHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\ATN\3GetCustomerProfileSubscriptionAccountHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\ATN\4GetCustomerProfileSubScriptionProfileHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\ATN\5GetCustomerProfileRiskWatchlistHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\Contract\1GetQueryAgreementContractFbbHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\Contract\2GetQueryAgreementContractMobileHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\Contract\3GetQueryAgreementCheckDeviceContractFbbHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\D_LstPMETaxRcptHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\evAMQueryCustomerProfileByTaxIdHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\evCorpESQueryAccountInformationListInfoForWelcomeHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\QueryLOVForWebHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GenerateFilenamesForWorkflowQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetCustomerServiceProfileHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetDataCoverageAreaResultQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetOutstandingBalanceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetPatchAdressESRIQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\getLostTransactionQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\GetOM010EMailNotifyQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\NewRegistForSubmitFOA4HANAQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\ServiceLogNewRegisterHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\evESeServiceQueryMassCommonAccountInfoForAddBundlingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\evESeServiceQueryMassCommonAccountInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\evESeServiceQueryPrivilegeByMobileNoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\evOMNewRegisMultiInstanceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\evOMQueryListServiceAndPromotionByNeighborQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\evOMServiceIVRCheckBlackListQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\evOMQueryListServiceAndPromotionByPackageTypeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetListFBSSBuildingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetCoverageResultQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetListBuildingVillageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetMassCommonAccountQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetListPackageByServiceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetPackageListQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetPreRegisterQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetRegOutOfCoverageResultQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetRegResultQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\FbbCpGw\GetSFFInternetProfileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetAisMobileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetListPmMobileDetailsHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetListStatusLeaveMessageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\LastmilePayment\LastmilePaymentQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\InstallationCostQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\JoinOrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\MonitorLmrQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\NewRegisterQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\NewRegistForSubmitFOAMainAssetHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\NewRegistForSubmitFOAQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\NewRegistForSubmitFOARevaluePendingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\RenewServiceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\SubmitFOAMainAssetHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\SubmitFOARevalueBatchQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\SubmitFOARevalueQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\SAPOnline\TerminateServiceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\WS_AIS_MOBILEQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBHVR\CheckSerialStatusHVRQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBHVR\GetLowUtilizeSaleReportHVRQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBHVR\FBBTransactionWorkflowHVRQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBHVR\GetOrderByASCEmpIdHVRQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBHVR\GetOrderDetailDataHVRQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBHVR\GetPremiumAreaHVRQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBHVR\PatchSearchOrderHVRQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBHVR\RPAEquipmentReplenishmentToSubHVRQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBShareplex\CheckSerialStatusQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBShareplex\GenReportReconcileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBShareplex\GetLovShareplexQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBShareplex\GetLowUtilizeSaleReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBShareplex\GetOrderByASCEmpIdQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBShareplex\GetOrderDetailDataQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBShareplex\GetPremiumAreaQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GenerateGiftVoucherPINsQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWCAllCQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWCAllQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWCconfigQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWCEditQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWChannelGroupQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWConfigurationAddressIDQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWConfigurationDormitoryQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWConfigurationDormitorySubcontractQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWConfigurationEventQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWConfigurationOnOffServicetQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWConfigurationPackageEditQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWConfigurationPackagesQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWCQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWPackageForMappingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWPackageForMappingUseQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWPackageGroupQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWPackageUserGroupQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWProductSubtype3QueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWProvinceUseByPackageCodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWRegionQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWZipCodeProvinceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWZipCodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetDupfileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetGiftVoucherPINsQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetLastGiftVoucherLotByVoucherMasterIDQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetVoucherProjectDescriptionByGroupQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\FBSSConfigQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetConfigDropDownQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetConnectionNasMatDocQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetConnectionTransAirnetNasPAYGQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDataConfigLookupTableQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDataLookupIDQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDataOntopLookupQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDataPatchSNsendmailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetReportInstallationCostbyOrderFeeDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetReportInstallationCostbyOrderPackageDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFBBPAYGExpireSimReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetListLoadSimS4QueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetReportInstallationUserGroupHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetListEditRulePriorityQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetListPLookupNameQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetReportInstallationDistanceDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFormatFileNameFraudQueryHandle.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetListLookupNameQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetListLookupParameterQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetListRulePriorityQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetReportInstallationCostbyOrderPostSapDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetReportInstallationCostbyOrderDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetReportInstallationCostbyOrderHistoryDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetRuleReportInstallationCostbyOrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\LMDGenfileSubpaymentQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\LMDsubpaymentQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\NasPortalGetFileOwnerQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\PatchEquipmentQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\DetailLastMilecpeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDetailLastMileCPEReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetCFGqueryReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDataPopupQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFBBMeshReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetListCompanyNameQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetOfficerInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ArchiveInterfaceLogPAYGQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CheckEmpCodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\FBBPayGCheckLoadFileHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\FBBTrackingCompetitorQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDataCallSapWriteOffQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFixedOM010SendMailFileLogQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetConnectionNasPAYGQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetCostInstallationTableQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDistanceDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFbssConfigTBLQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFixedAssetConfigQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFoawriteoffQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLastMileByDistanceAcctOrderListQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLastMileByDistanceFapoOrderListQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLastMileByDistanceOrderDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLastMileByDistanceOrderHistoryDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLastMileByDistancePostSapDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLastMileByDistanceScmOrderListQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFixedAssetResultQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLastMileByDistanceConfigQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLastMileByDistanceUserGroupHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLovConfigLMRQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetPaymentOrderIDQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetListSubContractQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetSubcontractLocationQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetRuleLastMileByDistanceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetSelectFBBPAYGSubSontractHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetSelectFBBPAYG.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetStorageSubContractWfmQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBShareplex\RPAEquipmentReplenishmentToSubQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\LostTranQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBShareplex\PatchSearchOrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\PAYGEnhanceMatDocQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\PAYGEnhanceTransAirnetQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\PAYGLoadFileToTableEnhanceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\PayGTransMatdocLogQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ResendWSSAPS4MappingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ResendWSSAPS4QueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\FBBReturnedRevalueAssetS4HANAQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\FBSSInvSendTerminateS4HANAQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\GetProductListByPackageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\MonitorLmrInsQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOAInstallationReportBatchNewQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOAInstallationReportBatchQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOAResendOrderNewQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOANoDataInsNewQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOANoDataInsQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\FBBReconcileInvRPTBatchQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOANoDataReportBatchQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOAEquipmentReportBatchQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOANotGoodsIssueReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetSubContractEmailInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetLastMileByDistanceOrderListQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOASendmailDataNewQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetExistLookupReportInstallationCostbyOrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetSelectedLookupReportInstallationCostbyOrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SearchReportInstallationCostbyOrderListQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SearchReportInstallationCostbyOrderListNewQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SearchLastMileByDistanceOrderListNewQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ReportInstallationSelectSubContractorNameQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SupContractorReportQueryHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\InterfaceARCQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\LastMileByDistanceBatchHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ResendFoaQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ReverseAssetQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ReverseAssetSapQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\CreateFbssConfigTBLQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\FBBReturnedFixedAssetQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\FBSSInvSendTerminateQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\GetBuildingCostInstallationQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\GetListFbssFixedAssetConfigQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\GetListFbssFoaVendorCodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\GetMaterialCodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\GetVendorCostInstallationQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\ResendSFFSubmitFOAQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\ResendToSFFSubmitFOAQueryHendler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOAEquipmentReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOAGetErrorDescQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOAInstallationReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOASendmailDataQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SearchLastMileByDistanceOrderListQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectSubContractorNameQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\TranMatDocGetFBSSLogQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBSS\CheckFMCPackageHandler.cs" />
+    <Compile Include="QueryHandlers\FBSS\CheckPremiumFlagHandler.cs" />
+    <Compile Include="QueryHandlers\FBSS\CheckTimeslotBySubtypeHandler.cs" />
+    <Compile Include="QueryHandlers\FileHandlers\nasportal\GetfilesAllQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FileHandlers\nasportal\NasDeleteFileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FileHandlers\nasportal\NasDownloadFileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FileHandlers\nasportal\NasUploadFileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FileHandlers\sftp\DeleteFileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FileHandlers\sftp\DownloadFileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FileHandlers\sftp\ListfilesQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FileHandlers\sftp\UploadFileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\GetConfigSftpServiceHelper.cs" />
+    <Compile Include="QueryHandlers\GetFBBFBSSCoverageAreaResultHandler.cs" />
+    <Compile Include="QueryHandlers\FBSS\CheckInOrderHandler.cs" />
+    <Compile Include="QueryHandlers\GetListPackageV2\GetListPackageByServiceV2QueryHandler.cs" />
+    <Compile Include="QueryHandlers\GetListPackageV2\GetListPackageSellRouterV2QueryHangler.cs" />
+    <Compile Include="QueryHandlers\WebServices\AutoMailReportQueryHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="QueryHandlers\WebServices\CheckCardByLaserHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckCoverage3bbQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckCoverageListbvByAddressIDServiceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckFlagProcessQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckAROrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckFraudCentralizeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckNotiProductHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckOrderCancelQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckOrderPendingCreateHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckOrderPendingDeductionHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckPackageSpeedTopUpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckPendingOrderFbssHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckPendingOrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckPopupFMCQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckPrivilegeHanddler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckQueryReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\DeleteRegisterBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\evAMQueryCustomerInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ExistingRegisterBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetAddressIDRegisterBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkCorpMainPackageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkCorpOntopDiscountPackageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkCorpOntopPackage1QueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkCorpOntopPackage2QueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkCorpSearchBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkCorpSearchOrderNumberQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkCorpServicePackage1QueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkCorpServicePackage2QueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkCorpServicePackage3QueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetBulkNumberforExistingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\confirmPaymenHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CreateCaseGenericFlowQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CreateOrderNewRegisterWTTxHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\DeniedAccessTokenQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\DoServiceConfirmHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckCoverageMapServiceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBBInventoryResendPendingSAPS4QueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBBMonitorLMRSAPS4QueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FbbNasGetFileOwnerQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBBNoDataResendPendingSAPS4QueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBSS\PatchEquipmentUpdateCPEHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GenerateTokenHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetAccessTokenFBBConfigQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetChannelSalesCodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetProfileQueryFBBConfigHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\IdentifyServiceRedirectQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetTableAirFbbHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetProfileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetAPIMicrositeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetAPISendmailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCustomerRiskLimitAssetWatchListQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDataAddressBillQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDetailCalliMTopupReplaceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCheckATVTopupReplaceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCheckPromotionTopupReplaceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetContractDeviceNewQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCreateOrderMeshRentalHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ConfirmPaymentDeductionHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDetailMemberGerMemberQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDetailOrderFeeTopupReplaceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDisplayContractHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetIMQueryCampaignContactQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetListDeviceContractQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetListQueryConfigContractQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetOnlineAuthenRequestTokenQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetOnlineQueryAppointmentHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetOnlineQueryCheckFraudQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetOnlineQueryMAappointmentHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetOnlineQueryMobileInfoHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPackageDetailByNonMobileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPaymentToDeductionHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPaymentRabbitToSuperDuperHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetAccessTokenQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetRedirectIDSQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetRegisterPendingDeductionHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetIMCaseFBBRestServiceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDeliveryIPCameraHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSplitterDummy3bbQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetTokenFbbQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetUserProfileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GoodsMovementKAFKAQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\InsertFbbConsentLogQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\MapFBBAddressHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\NotifyDeductionHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\NotifySuperDuperHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\PdfOnWebHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\QueryOrderPendingDeductionHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBBFBSSToPAYGQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\QueryPortQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\RelatedMobileServiceATNHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ReleaseReservePort3bbQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\RequestsGSSOServiceHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ReservePort3bbQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\SMSFlagRegisterPendingHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CreateOrderPendingPaymentHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CreateOrderSCPEHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CreateOrderMeshHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\DeductionUpddateSendSMSFlagHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\DelectInterfaceLogARCQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\EncryptIntraAISServiceHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBBDeleteTransactionLogQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBBResetSequenceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBBTransactionWorkflowQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBSS\GetFBSSQueryCPEPenaltyHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCheckFileNameLeaveMessageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCheckPremiumInstallQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetConfigGenLineQrCodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetConfigRedeemCodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetConfigReqPaymentHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetConfigurationReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetConfigurationReportByIdQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDataResendOrderBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDirectoryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetExportPaymentQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetExportReportProblemsQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFormatFileNameBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFormatFileNameBulkQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFormatFileNameEAPPQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetOrderErrorLogByServiceQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetOrderErrorLogQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetReportPaymentQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetReportProblemsQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetScreenBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetScreenBulkCorpSFFQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetStdAddressFullConHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\PAYGTransAirnetQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\RegisterBulkCompleteSFFQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\RegisterBulkCompleteWorkflowQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\RegisterBulkCorpDocSumQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\RegisterBulkCorpInsertExcelQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\RegisterBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\Report\GetExportLogInterfaceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\Report\GetLogInterfaceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\Report\UpdateInterfaceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SaleTrackingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetCostInstallationQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\CreateCostInstallationQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\GetProductListQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SAPOnline\SubmitFOAReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SavePackageBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SaveUploadFileBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\InsertBulkCorpExistingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectLovDisplayQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SendRegisterBulkCorpInstanceToSFFQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SendRegisterBulkCorpPromoMainToSFFQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SendRegisterBulkCorpPromoOntopToSFFQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SendRegisterBulkCorpToServiceVDSLRouterQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SendRegisterBulkCorpToServiceVSDLQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SendRegisterBulkCorpToSFFQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SendRegisterBulkCorpToWorkFlowQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SLA\AppointmentDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SLA\AppointmentSummaryQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\TrackingCompetitorRptQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\UpdateResendOrderBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FileHelper.cs" />
+    <Compile Include="QueryHandlers\InterfaceLogPayGServiceHelper.cs" />
+    <Compile Include="QueryHandlers\WebServices\ChangeCountInstallDateQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ChangeInstallDateQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ChangePackageBundlingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckChangePackageOntopQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CheckdupBuildingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CheckStatusOnOffQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetCheckCorverageTieCardPortQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetGridDSLAMRestockHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetlistDataTieBuildingCardPortHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetLoxIndexDsalmHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetMaxDLHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetCardPortDataContQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetCardPortDataHistoryQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetCardPortDataQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetModelAndBrandHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetDSLAMAndExistingHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetCoverageAreaByCVRHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\DSLAMMasterPage\GetDeleteMinHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ExtractDormPAYGDTLQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ExtractDormPAYGMasterQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetCheckDuplicateMobileQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetCustInstallTrackQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetCustNotRegisQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetDupFileDormQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetFormatFileNameQueryHandle.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetOLTReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetOSPReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetOtherInfoHandle.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetOverviewStatusReportQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetPackageGroupDescriptionByPackageGroupQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetRequestFormReportQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetSelectFTTXHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetSumInstallPerformanceQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetTriplePlayDupQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\ExtractDormPAYGZipCodeQueryHandlers.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetUpdateScreenQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\PAYGLoadFileToTableQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\Report\GetNodeIDHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\Report\GetNodeNameTHHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\Report\GetProgram_Name_ListData.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\Report\GetReportPortAssignmentQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\GetZipcodeSummaryDataQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\Report\programe_Description.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SearchConfigurationPrepaidNonMobileDataQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectAirPanelQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectAmperSearchVDSLHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectAmphurDormENQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectAmphurDormQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectAumphurAirHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectAumphurSearchFTTXHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectDormitoryBuildingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectDormitoryNameQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectDormStatusQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectFbbVoucherPINQueryHandle.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectFTTXFBBPaneQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectHistoryLogHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectModelNameHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\SelectCoverageStatusHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectLovDefaultValueHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetCardInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\FTTx\GetCountCoverageHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\FTTx\GetCoverageRegionHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectMubanQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectOwnerTypeHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectOwnerProductHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectAmphurHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectPanelVDSLDataPanelHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectPostcodeDormENQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectPostcodeDormQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectProvinceAirHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectProvinceConfigEventQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectProvinceDormENQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectProvinceDormQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectProvinceHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetCheckCompleteFlagQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetCoverageAreaBuildingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetDSLAMInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetCoverageAreaQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetDSLAMInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetDSLAMModelQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetLovRabbitHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetRptlogQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetCustomerTitleQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetCoverageAreaQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetCoverageAreaRelQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetLovQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetNationalityQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetSendMailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Account\GetUserDataQueryHandler.cs" />
+    <Compile Include="QueryHandlers\Commons\Master\GetZipCodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetAvaliablePortQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetReAvailableQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetActivePortQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\ExWebServiceHelper.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetCoverageRegionQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetAssignNewPortQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetAWCQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetChangePortFailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetChangePortQueryHandler.cs" />
+    <Compile Include="QueryHandlers\ExWebServices\GetPortAvaliableQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\CoverageManagePage\GetEditCoverageAreaQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\DSLAMMasterPage\GetModelMaxSlotHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\DSLAMMasterPage\GetCardModelHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\DSLAMMasterPage\GetDSLAMModelHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\DSLAMMasterPage\GetDSLAMMasterHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\AirNetWirelessCoverage\GetAWCinformationQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectLovHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectProvinceSeachVDSLHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectProvinceSearchFTTXHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectRegionQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectSubRegionQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectTrowerThDatQueryHander.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectTumbonAirHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectTumbonDormEnQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectTumbonDormQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectTumbonHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectTumbonSearchFTTXHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectTumbonSearchVDSLHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\SelectZipCodeHandler.cs" />
+    <Compile Include="QueryHandlers\FBBWebConfigQueryHandlers\LastmileCPETransctionsQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FBSS\GetbuildingChangeHandler.cs" />
+    <Compile Include="QueryHandlers\FBSS\GetBuildingNoHandlers.cs" />
+    <Compile Include="QueryHandlers\InterfaceLogAdminServiceHelper.cs" />
+    <Compile Include="QueryHandlers\InterfaceLogServiceHelper.cs" />
+    <Compile Include="QueryHandlers\WebServices\A_GetCCCustInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckMoblieNumberSerenadeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\CheckPackageDownloadSpeedQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\EvOMPlayboxExtensionInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetBatchMailStatusQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ConfirmOneTimePWQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBSS\GetFBSSCheckCPEHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GeneratePDFHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetBatchBulkCorpGetRegisterHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetBatchBulkCorpGetWfAndSffStatusHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetBatchBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetBatchBulkCorpSFFQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetBatchBulkCorpSffReturnHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetBatchBulkCorpUpdateSffReturnHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetBatchBulkPackageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCancelOrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\GetPackageListHelper.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBSS\FBSSExtensions.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBSS\GetFBSSAppointmentHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBSS\GetFBSSChangedBuildingHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\FBSS\GetFBSSFeasibilityCheckHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCheckChangePromotionQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetConfirmChangePromotionQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCoverageAreaResultQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetCreateMerchantQrCodeHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDataESRIListBVQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDeveloperQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFbbIqsFoaQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameCancelFBSS90DayQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameCancelFBSSMaintainQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameCancelFBSSQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameCancelWF90DayQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameCancelWFMaintainQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameCancelWFQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameOthersQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetMeshCheckTechnologyQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetMeshCompareDeviceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetMeshParameterAppointmentQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetMeshCompareDeviceOrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetMeshParameterPackageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameCompleted90DayQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameCompletedMaintainQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameCompletedQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetFileNameQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetImagePOIQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetLeaveMessageSearchFileNameDetailQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetLeaveMessageSearchFileNameQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetListDeleteFileOrderCancelQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetListGroupMailSpecialAccountQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetListMenuAuthorizeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetListNoCoverageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetMemberGetMemberQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetMeshParameterReserveQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPaymentEnquiryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPaymentEnquiryToSuperDuperHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPaymentInquiryToSuperDuperHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPaymentLogDataSuperDuperHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPaymentQRToSuperDuperHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPaymentToSuperDuperHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPendingDeductionHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetQuestionByChannelQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetRegisterPendingPaymentByTransactionIDInHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSendSMSDeductionPaymentHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetServicePlayboxHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPackageSequenceHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPackageListBySFFPromoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetListPackageDisplayQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetListShortNamePackageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetMobileDataUsageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetOrderDupQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetOwnerByBuildingHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetOwnerProductByNoHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetAuthenLDAPQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPackageListBySFFPromoV2QueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPackageOntopListBySFFPromoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPathPdfQueryHeandle.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetPrivilegeBarcodeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSalePortalChannelHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSaveOrderBulkCorpQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSaveOrderNewHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSaveOrderRespQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetAuthenDBQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDbAccountQueryHandle.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetListPackageServiceHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSeibelInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSelfServiceChangeHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetServicePlayboxMappingCodeHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSessionLoginDateQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSessionLoginStatusQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetSFFPromotionConfigBySFFPromotionCodeAndClassTypeQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetTrackingReportQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetTrackingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetAppointmentTrackingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetWsLdapQueryIdQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\InstallLeaveMessageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ProcSiebelQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\QueryDBDProfileHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\QueryOrderQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\SalePortalLeaveMessageQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\SearchAirnetInterfaceLogQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\SearchInterfaceLogQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\SiebelCreateTroubleTicketQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\SiebelGenActivityQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\Tracking\GetEncryptDecryptQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\Tracking\TechnicianTrackingQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\Tracking\GetWfmfUrlQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\UpdateListBuildingVillageIMHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\UpdateListBuildingVillageSDHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\UpdateOrdTimeSlotQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\WebHookNotifyHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\GetDataAddressInstallQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\WTTX\GetWTTXReserveQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\WTTX\GetWTTXInfoQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ZTEReleaseTimeslotQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ZTEReservedTimeslotQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ZTEResQueryQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ZTEResReservedQueryHandler.cs" />
+    <Compile Include="QueryHandlers\WebServices\ZTESelfServiceAppointQueryHandler.cs" />
+    <Compile Include="ServiceHelper\SftpsService.cs" />
+    <Compile Include="ServiceHelper\SkyLovHelper.cs" />
+    <Compile Include="Web References\AisEmployeServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\AuthenDBServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\AuthenLDAPServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\BindingQSServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\CampaignDataServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\D_LstPMETaxRcptServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\FBBSAPOnline1\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\FBBSAPOnlineMA2\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\FBBSAPOnlineMA\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\FBBSAPOnlineRevalue\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\FBSSOrderServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\GssoSsoWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\IMService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\OMWService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SAPFixedAssetService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SBNNewWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SBNV2WebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SBNWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SFFServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SiebelGenActivity\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SiebelService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\Siebel_CreateTroubleTicketService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SmsSurveyFOAWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SubscriberWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\A_GetCCCustInfoServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\TTComplainSheet\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WTTxInventory\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="App_Content\Fonts\tahoma.ttf" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Oracle.ManagedDataAccess.Client.Configuration.Section.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\AisEmployeServices\AisEmployeService.wsdl" />
+    <None Include="Web References\AisEmployeServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AisEmployeServices\ServiceResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AuthenDBServices\DatabaseAccount.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AuthenDBServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AuthenDBServices\UserAccount.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AuthenDBServices\webDBconfigService.wsdl" />
+    <None Include="Web References\AuthenLDAPServices\CorporateService.wsdl" />
+    <None Include="Web References\AuthenLDAPServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\A_GetCCCustInfoServices\A_GetCCCustInfoResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\BindingQSServices\A_ConfPMOrderResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\BindingQSServices\A_ConfPMPay.wsdl" />
+    <None Include="Web References\BindingQSServices\A_ConfPMPayResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\BindingQSServices\A_LstPMETaxProfResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\BindingQSServices\A_LstPMMobDtlResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\BindingQSServices\A_LstPMOrderResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\BindingQSServices\D_InsPMGwRecResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\BindingQSServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\CampaignDataServices\CampaignDataService.wsdl" />
+    <None Include="Web References\CampaignDataServices\CampResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\CampaignDataServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\D_LstPMETaxRcptServices\A_ConfPMPayResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\D_LstPMETaxRcptServices\A_LstPMMobDtlResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\D_LstPMETaxRcptServices\D_LstPMETaxRcpt.wsdl" />
+    <None Include="Web References\D_LstPMETaxRcptServices\D_LstPMETaxRcptResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\D_LstPMETaxRcptServices\D_LstPWDocSrvResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\D_LstPMETaxRcptServices\D_LstPWRpteSrvResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\D_LstPMETaxRcptServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\FBBSAPOnline.wsdl" />
+    <None Include="Web References\FBBSAPOnline1\FBBSAPOnline.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\FBBSAPOnline0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\FBBSAPOnline1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\FBBSAPOnline2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\InstallationCostResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\JoinOrderResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\NewRegisterResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\NewRegistForSubmitFOAResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\RenewServiceResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnline1\TerminateServiceResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnlineMA2\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\FBBSAPOnlineMA2\SI_Z_MMIM_FBSS_TRANS_POST.wsdl" />
+    <None Include="Web References\FBBSAPOnlineMA2\ZOUTPUT_TRANS_COMPLETE_STRUC.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnlineMA2\ZOUTPUT_TRANS_ERROR_STRUC.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnlineMA\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\FBBSAPOnlineMA\SI_Z_MMIM_FBSS_TRANS_POST.wsdl" />
+    <None Include="Web References\FBBSAPOnlineMA\ZOUTPUT_TRANS_COMPLETE_STRUC.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnlineMA\ZOUTPUT_TRANS_ERROR_STRUC.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FBBSAPOnlineRevalue\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\FBBSAPOnlineRevalue\SI_Z_FIAM_FBSS_REVALUATION_ASSET.wsdl" />
+    <None Include="Web References\FBSSOrderServices\OrderService.wsdl" />
+    <None Include="Web References\FBSSOrderServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\GssoSsoWebService\gssoSsoResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\GssoSsoWebService\GssoSsoWeb.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\GssoSsoWebService\GssoSsoWebService.wsdl" />
+    <None Include="Web References\GssoSsoWebService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\IMService\GetFBBOrderNoResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\IMService\GetLeaveMsgReferenceNoResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\IMService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\IMService\Services.wsdl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\OMWService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\OMWService\WS_OM_OMService.wsdl" />
+    <None Include="Web References\SAPFixedAssetService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SAPFixedAssetService\SI_Z_FIAM_FBSS_FIXEDASSET.wsdl" />
+    <None Include="Web References\SAPFixedAssetService\ZFBSS_FIXEDASSET_ASSET.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SAPFixedAssetService\ZFBSS_FIXEDASSET_ASSET_OUT.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SAPFixedAssetService\ZFBSS_FIXEDASSET_INSTALL_IN.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SAPFixedAssetService\ZFBSS_FIXEDASSET_INS_OUT.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SAPFixedAssetService\ZFBSS_FIXEDASSET_INVENTORY_IN.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SAPFixedAssetService\ZFBSS_FIXEDASSET_INV_OUT.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\appointmentData.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\blackListFlagResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\checkChangePackageOntopResults.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\getFraudServiceURLResults.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\getLineObj.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\getSpeCialAccountNoti.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\installationDetailResponseReturn.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\listPackageShortNameResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\listTabResults.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\logJobResults.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\orderFilterCsResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SBNNewWebService\returnResults.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\sbnResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNNewWebService\SBNWebServiceService.wsdl" />
+    <None Include="Web References\SBNNewWebService\scoreAndReasonType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNV2WebService\AIRInterfaceWorkflowServiceService.wsdl" />
+    <None Include="Web References\SBNV2WebService\deleteUserGroupResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNV2WebService\getFBBProjectResults.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNV2WebService\permissionuserACIMResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNV2WebService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SBNV2WebService\respSaveAPI.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNV2WebService\resultListCleanSingAddress.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNV2WebService\returnCSNoteResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNV2WebService\saveChangeAddress.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNV2WebService\sbnAirWorkflowResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNWebService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SBNWebService\ReturnResults.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNWebService\SBNResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SBNWebService\SBNWebServiceServiceDefinitions.wsdl" />
+    <None Include="Web References\SFFServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SFFServices\SffResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFFServices\SFFServiceServiceDefinitions.wsdl" />
+    <None Include="Web References\SiebelGenActivity\Inbound__AIS_IM_Common_Create_Activity.wsdl" />
+    <None Include="Web References\SiebelGenActivity\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SiebelService\Inbound__AIS_DRM_Channel_Info.wsdl" />
+    <None Include="Web References\SiebelService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\Siebel_CreateTroubleTicketService\Inbound_AIS_Create_Trouble_Ticket.wsdl" />
+    <None Include="Web References\Siebel_CreateTroubleTicketService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SmsSurveyFOAWebService\index.wsdl" />
+    <None Include="Web References\SmsSurveyFOAWebService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SubscriberWebService\InquiryVASSubscriberResponce1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SubscriberWebService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SubscriberWebService\SubscriberResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SubscriberWebService\subscriberstatewebservice.wsdl" />
+    <None Include="Web References\A_GetCCCustInfoServices\A_GetCCCustInfo.wsdl" />
+    <None Include="Web References\A_GetCCCustInfoServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\TTComplainSheet\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\TTComplainSheet\TTComplainSheet.wsdl" />
+    <None Include="Web References\WTTxInventory\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\WTTxInventory\responseMsg.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WTTxInventory\WTTxInventoryService.wsdl" />
+    <None Include="Web References\WTTxInventory\wttxxGridInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="C:\SourceControl\WBB\WSDL\SI_Z_MMIM_FBSS_TRANS_POSTService.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\FBBSAPOnlineMA\</RelPath>
+      <UpdateFromURL>C:\SourceControl\WBB\WSDL\SI_Z_MMIM_FBSS_TRANS_POSTService.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_FBBSAPOnlineMA_SI_Z_MMIM_FBSS_TRANS_POSTService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="C:\SourceControl\WBB\WSDL\Z_FIAM_FBSS_REVALUATION_ASSET.WSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\FBBSAPOnlineRevalue\</RelPath>
+      <UpdateFromURL>C:\SourceControl\WBB\WSDL\Z_FIAM_FBSS_REVALUATION_ASSET.WSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_FBBSAPOnlineRevalue_SI_Z_FIAM_FBSS_REVALUATION_ASSETService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="C:\Users\X10\Desktop\sapma\SI_Z_MMIM_FBSS_TRANS_POSTService.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\FBBSAPOnlineMA2\</RelPath>
+      <UpdateFromURL>C:\Users\X10\Desktop\sapma\SI_Z_MMIM_FBSS_TRANS_POSTService.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_FBBSAPOnlineMA2_SI_Z_MMIM_FBSS_TRANS_POSTService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="D:\FBBCode\FBB_WEB_Register\WSDL\Inbound__AIS_DRM_Channel_Info.WSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SiebelService\</RelPath>
+      <UpdateFromURL>D:\FBBCode\FBB_WEB_Register\WSDL\Inbound__AIS_DRM_Channel_Info.WSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_SiebelService_AIS_spcDRM_spcChannel_spcInfo</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="D:\FBBCode\FBB_WEB_Register\WSDL\WS_OM_OMService.svc">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\OMWService\</RelPath>
+      <UpdateFromURL>D:\FBBCode\FBB_WEB_Register\WSDL\WS_OM_OMService.svc</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_OMWService_WS_OM_OMService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="D:\WBB\FBB.Web-Branch-Dev\WSDL\Inbound__AIS_IM_Common_Create_Activity.WSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SiebelGenActivity\</RelPath>
+      <UpdateFromURL>D:\WBB\FBB.Web-Branch-Dev\WSDL\Inbound__AIS_IM_Common_Create_Activity.WSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_SiebelGenActivity_AIS_spcIM_spcCommon_spcCreate_spcActivity</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="D:\fBB_NewContance\WSDL\subscriberstatewebservice.xml">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SubscriberWebService\</RelPath>
+      <UpdateFromURL>D:\fBB_NewContance\WSDL\subscriberstatewebservice.xml</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_SubscriberStateWebService_SubscriberStateWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="D:\sb\Inbound_AIS_Create_Trouble_Ticket.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Siebel_CreateTroubleTicketService\</RelPath>
+      <UpdateFromURL>D:\sb\Inbound_AIS_Create_Trouble_Ticket.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_Siebel_CreateTroubleTicketService_AIS_spcCreate_spcTrouble_spcTicket</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.104.140.72/WTTxResourceManagement/services/wttxinventory%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WTTxInventory\</RelPath>
+      <UpdateFromURL>http://10.104.140.72/WTTxResourceManagement/services/wttxinventory%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_WTTxInventory_WTTxInventoryService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.138.26.228:7101/axis2/services/TTComplainSheet%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\TTComplainSheet\</RelPath>
+      <UpdateFromURL>http://10.138.26.228:7101/axis2/services/TTComplainSheet%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_TTComplainSheet_TTComplainSheet</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.138.26.230:7105/axis2/services/OrderService%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\FBSSOrderServices\</RelPath>
+      <UpdateFromURL>http://10.138.26.230:7105/axis2/services/OrderService%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_FBSSOrderServices_OrderService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.138.32.21:8080/prweb/PRSOAPServlet/SOAP/AISNIMIntFBBIntegration/Services%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\IMService\</RelPath>
+      <UpdateFromURL>http://10.138.32.21:8080/prweb/PRSOAPServlet/SOAP/AISNIMIntFBBIntegration/Services%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_IMService_ServicesService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.197.51.164/services/smsSurveyFOA/index.php%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SmsSurveyFOAWebService\</RelPath>
+      <UpdateFromURL>http://10.197.51.164/services/smsSurveyFOA/index.php%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_SmsSurveyFOAWebService_smsSurveyFOA</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.252.54.75:8101//e-topup_Project/Proxy_Services/A_ConfPMPay%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\BindingQSServices\</RelPath>
+      <UpdateFromURL>http://10.252.54.75:8101//e-topup_Project/Proxy_Services/A_ConfPMPay%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_BindingQSServices_tuxsalt_BindingQSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.252.54.75:8101/eBILL_Projects/Proxy_Services/D_LstPMETaxRcpt%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\D_LstPMETaxRcptServices\</RelPath>
+      <UpdateFromURL>http://10.252.54.75:8101/eBILL_Projects/Proxy_Services/D_LstPMETaxRcpt%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_D_LstPMETaxRcptServices_eBill_webservices_BindingQSService1</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.252.64.129:6100/SFFWebService/SFFService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SFFServices\</RelPath>
+      <UpdateFromURL>http://10.252.64.129:6100/SFFWebService/SFFService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_SFFServices_SFFServiceService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.13.181.46:8701/airnet-service/SBNWebService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SBNWebService\</RelPath>
+      <UpdateFromURL>http://10.13.181.46:8701/airnet-service/SBNWebService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_SBNWebService_SBNWebServiceService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.13.181.71:8280/CampaignWS/services/CampaignDataService%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\CampaignDataServices\</RelPath>
+      <UpdateFromURL>http://10.13.181.71:8280/CampaignWS/services/CampaignDataService%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_CampaignDataServices_CampaignDataService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.240.141.222:8080/GSSO-SSO/GssoSsoWeb%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\GssoSsoWebService\</RelPath>
+      <UpdateFromURL>http://10.240.141.222:8080/GSSO-SSO/GssoSsoWeb%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_GssoSsoWebService_GssoSsoWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://10.252.54.24:7100/FBB/Proxy_Services/A_GetCCCustInfo%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\A_GetCCCustInfoServices\</RelPath>
+      <UpdateFromURL>http://10.252.54.24:7100/FBB/Proxy_Services/A_GetCCCustInfo%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_WebReference_FBB_BindingQSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://dblogintest.ais.co.th/wsAuthenDB/webDBconfigService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AuthenDBServices\</RelPath>
+      <UpdateFromURL>http://dblogintest.ais.co.th/wsAuthenDB/webDBconfigService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_AuthenDBServices_WebDBConfigService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://dev-airnetservice.ais.co.th:8180/airnet-service/SBNWebService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SBNNewWebService\</RelPath>
+      <UpdateFromURL>http://dev-airnetservice.ais.co.th:8180/airnet-service/SBNWebService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_SBNNewWebService_SBNWebServiceService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://fixedbbws.ais.co.th/ExWebServices/FBBSAPOnline.svc%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\FBBSAPOnline1\</RelPath>
+      <UpdateFromURL>http://fixedbbws.ais.co.th/ExWebServices/FBBSAPOnline.svc%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_FBBSAPOnline1_FBBSAPOnline</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://dev-airnetregws.ais.co.th:8543/airnet-service/AIRInterfaceWorkflowService%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SBNV2WebService\</RelPath>
+      <UpdateFromURL>https://dev-airnetregws.ais.co.th:8543/airnet-service/AIRInterfaceWorkflowService%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_SBNV2WebService_AIRInterfaceWorkflowServiceService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://dev-ldapws.intra.ais/AisEmployee/AisEmployeService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AisEmployeServices\</RelPath>
+      <UpdateFromURL>https://dev-ldapws.intra.ais/AisEmployee/AisEmployeService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_AisEmployeServices_AisEmployeService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://dev-ldapws.intra.ais/AuthenLdap/CorporateService.asmx%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AuthenLDAPServices\</RelPath>
+      <UpdateFromURL>https://dev-ldapws.intra.ais/AuthenLdap/CorporateService.asmx%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_AuthenLDAPServices_CorporateService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://pidev.itas.co.th/dir/wsdl%3fp=ic/d341c7fe14f63f649100ce076746a2c4">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SAPFixedAssetService\</RelPath>
+      <UpdateFromURL>https://pidev.itas.co.th/dir/wsdl%3fp=ic/d341c7fe14f63f649100ce076746a2c4</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WBBBusinessLayer_SAP_FixedAssetService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\AuthenDBServices\webDBconfigService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Content\Images\BG_base1.jpg" />
+    <Content Include="App_Content\Images\img-logo.png" />
+    <Content Include="App_Content\Images\status-4-eng.png" />
+    <Content Include="App_Content\Images\status-4.png" />
+    <None Include="Web References\AisEmployeServices\AisEmployeService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AIRNETEntity\AIRNETEntity.csproj">
+      <Project>{c39cd420-64d2-42e1-ac13-23e4a22bc61e}</Project>
+      <Name>AIRNETEntity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Notify\Notify.csproj">
+      <Project>{da426454-8629-4448-be2c-a9dd3ec63703}</Project>
+      <Name>Notify</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WBBContract\WBBContract.csproj">
+      <Project>{b2b6ac71-9b7d-4e71-b5fa-fa453bacda3f}</Project>
+      <Name>WBBContract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WBBData\WBBData.csproj">
+      <Project>{394421e5-d152-418a-a5b4-843658a4719b}</Project>
+      <Name>WBBData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WBBEntity\WBBEntity.csproj">
+      <Project>{41681256-03e6-4034-a050-146bd09adf2d}</Project>
+      <Name>WBBEntity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\..\packages\librdkafka.redist.2.5.0\build\librdkafka.redist.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\librdkafka.redist.2.5.0\build\librdkafka.redist.props'))" />
+  </Target>
+  <Import Project="..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

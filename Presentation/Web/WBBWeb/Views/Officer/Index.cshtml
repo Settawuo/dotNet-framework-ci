@@ -1,0 +1,273 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@model WBBEntity.PanelModels.QuickWinPanelModel
+@{
+    #region
+    string lINPUT_CAPTCHA = "";
+    string Input_Location_Code = "";
+    string Input_ASC_Code = "";
+    string Input_Employee_Id = "";
+    string L_CAPTCHA_ERR = "";
+    string L_AUTOMATE = "";
+
+    string bNext = "";
+    string sLoginType = "";
+    string pFGEmp = "";
+    string pFGPartnerStore = "";
+    string pFGPartnerSale = "";
+    string aFGEmpUrl = "";
+    string aFGPartnerStoreUrl = "";
+    string aFGPartnerSaleUrl = "";
+    string pCTEmp1 = "";
+    string pCTEmp2 = "";
+    string pCTEmp3 = "";
+    string aCTEmpUrl = "";
+    string pCCCPartnerStore = "";
+    string pCCCPartnerSale = "";
+    string pClosePage = "";
+
+    if (ViewBag.LabelFBBTR003 != null)
+    {
+        var labelFBBTR003 = (List<LovScreenValueModel>
+    )ViewBag.LabelFBBTR003;
+        L_CAPTCHA_ERR = labelFBBTR003.Any(c => c.Name == "L_CAPTCHA_ERR") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_CAPTCHA_ERR").DisplayValue : "";
+        L_AUTOMATE = labelFBBTR003.Any(c => c.Name == "L_AUTOMATE") ? labelFBBTR003.FirstOrDefault(c => c.Name == "L_AUTOMATE").DisplayValue : "";
+        
+    }
+
+    string L_MSG_LOGIN_PAGE = "";
+
+    if (ViewBag.labelFBBORV00 != null)
+    {
+        var labelFBBORV00 = (List<LovScreenValueModel>
+            )ViewBag.labelFBBORV00;
+        lINPUT_CAPTCHA = labelFBBORV00.Any(c => c.Name == "L_INPUT_CAPTCHA") ? labelFBBORV00.First(c => c.Name == "L_INPUT_CAPTCHA").DisplayValue : "";
+        L_MSG_LOGIN_PAGE = labelFBBORV00.Any(c => c.Name == "L_MSG_LOGIN_PAGE") ? labelFBBORV00.First(c => c.Name == "L_MSG_LOGIN_PAGE").DisplayValue : "";
+    }
+
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>
+            )ViewBag.FbbConstant;
+        Input_Location_Code = FbbConstant.Any(f => f.Field == "Input_Location_Code") ? FbbConstant.First(f => f.Field == "Input_Location_Code").Validation : "";
+        Input_ASC_Code = FbbConstant.Any(f => f.Field == "Input_ASC_Code") ? FbbConstant.First(f => f.Field == "Input_ASC_Code").Validation : "";
+        Input_Employee_Id = FbbConstant.Any(f => f.Field == "Input_Employee_Id") ? FbbConstant.First(f => f.Field == "Input_Employee_Id").Validation : "";
+        pClosePage = FbbConstant.Any(f => f.Field == "pClosePage") ? FbbConstant.First(f => f.Field == "pClosePage").Validation : "";
+    }
+
+    if (ViewBag.IDSConfig != null)
+    {
+        var IDSConfig = (List<LovScreenValueModel>
+            )ViewBag.IDSConfig;
+        bNext = IDSConfig.Any(f => f.Name == "Officer_Btn_Next_Text") ? IDSConfig.First(f => f.Name == "Officer_Btn_Next_Text").DisplayValue : "";
+        sLoginType = IDSConfig.Any(f => f.Name == "Officer_Type_Login_Text") ? IDSConfig.First(f => f.Name == "Officer_Type_Login_Text").DisplayValue : "";
+        pFGEmp = IDSConfig.Any(f => f.Name == "Officer_FG_Emp_Text") ? IDSConfig.First(f => f.Name == "Officer_FG_Emp_Text").DisplayValue : "";
+        pFGPartnerStore = IDSConfig.Any(f => f.Name == "Officer_FG_Partner_Store_Text") ? IDSConfig.First(f => f.Name == "Officer_FG_Partner_Store_Text").DisplayValue : "";
+        pFGPartnerSale = IDSConfig.Any(f => f.Name == "Officer_FG_Partner_Sale_Text") ? IDSConfig.First(f => f.Name == "Officer_FG_Partner_Sale_Text").DisplayValue : "";
+        aFGEmpUrl = IDSConfig.Any(f => f.Name == "Officer_FG_Emp_Url") ? IDSConfig.First(f => f.Name == "Officer_FG_Emp_Url").DisplayValue : "";
+        aFGPartnerStoreUrl = IDSConfig.Any(f => f.Name == "Officer_FG_Partner_Store_Url") ? IDSConfig.First(f => f.Name == "Officer_FG_Partner_Store_Url").DisplayValue : "";
+        aFGPartnerSaleUrl = IDSConfig.Any(f => f.Name == "Officer_FG_Partner_SaleUrl") ? IDSConfig.First(f => f.Name == "Officer_FG_Partner_SaleUrl").DisplayValue : "";
+        pCTEmp1 = IDSConfig.Any(f => f.Name == "Officer_CT_HD_Emp_Text_1") ? IDSConfig.First(f => f.Name == "Officer_CT_HD_Emp_Text_1").DisplayValue : "";
+        pCTEmp2 = IDSConfig.Any(f => f.Name == "Officer_CT_HD_Emp_Text_2") ? IDSConfig.First(f => f.Name == "Officer_CT_HD_Emp_Text_2").DisplayValue : "";
+        pCTEmp3 = IDSConfig.Any(f => f.Name == "Officer_CT_HD_Emp_Text_3") ? IDSConfig.First(f => f.Name == "Officer_CT_HD_Emp_Text_3").DisplayValue : "";
+        aCTEmpUrl = IDSConfig.Any(f => f.Name == "Officer_CT_HD_Emp_Url") ? IDSConfig.First(f => f.Name == "Officer_CT_HD_Emp_Url").DisplayValue : "";
+        pCCCPartnerStore = IDSConfig.Any(f => f.Name == "Officer_CCC_Partner_Store_Text") ? IDSConfig.First(f => f.Name == "Officer_CCC_Partner_Store_Text").DisplayValue : "";
+        pCCCPartnerSale = IDSConfig.Any(f => f.Name == "Officer_CCC_Partner_Sale_Text") ? IDSConfig.First(f => f.Name == "Officer_CCC_Partner_Sale_Text").DisplayValue : "";
+    }
+    #endregion
+}
+
+<form id="OfficerForm" method="post" action="/officer/SubmitOfficerForm">
+    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12 add-border-rounded-green grayscale">
+        <span><img src="~/img/logo-fibre.jpg" class="center-block img-responsive"></span>
+
+        <div class="col-md-10 col-md-offset-1 col-sm-6 col-sm-offset-3 col-xs-12 add-border-rounded-green grayscale" style="border-color: #648D2C; border-radius: 24px;">
+            <div class="col-md-12">
+                <p class="clearfix"></p>
+                @Html.Raw(L_MSG_LOGIN_PAGE)
+            </div>
+            @if(pClosePage == "Y")
+            {
+            <div class="col-md-6 col-md-offset-3">
+                <div style="text-align: center;">
+                    <img src="~/Content/images/officer/logo_login.png" alt="Login Logo" style="width: 160px; margin: 40px 40px 0 auto;">
+                </div>
+                <p class="clearfix"></p>
+                <label for="loginOptions" style="margin-left: 20px;">@sLoginType</label>
+                <p class="clearfix"></p>
+                <select id="loginOptions" style="min-width: 100%; padding: 6px; border-radius: 8px;"></select>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+                <p class="clearfix"></p><p class="clearfix"></p><p><b style="padding-left: 20px;"> @lINPUT_CAPTCHA</b></p>
+            </div>
+            <p class="clearfix"></p>
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <input type="text" id="defaultReal" class="form-control" name="defaultReal" />
+                <span class="clear-icon" id="clearInput">x</span>
+            </div>
+            <p class="clearfix"></p>
+            <div class="col-xs-12  text-center">
+                <button id="btnNext" type="button" class="btn btn-success btn-for-xs" style="min-width: 50%;font-size:large;">&nbsp; @bNext &nbsp; </button>
+            </div>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            }
+            else
+            {
+            <p class="clearfix"></p>
+            }
+        </div>
+        <p class="clearfix"></p>
+
+        <div class="officercolumn" style="display:flex; padding: 20px">
+            <div class="officercolumn1" style="flex: 2; padding: 10px;">
+                <a href="@aFGEmpUrl">@pFGEmp</a><br>
+                <a href="@aFGPartnerStoreUrl">@pFGPartnerStore</a><br>
+                <a href="@aFGPartnerSaleUrl">@pFGPartnerSale</a><br>
+            </div>
+            <div class="officercolumn2" style="flex: 3; padding: 10px;">
+                @pCTEmp1 <a href="@aCTEmpUrl">@pCTEmp2</a>@pCTEmp3<br>
+                @pCCCPartnerStore<br>@pCCCPartnerSale
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+                    var language = "";
+
+                    var digitalData = {};
+                    digitalData.page = {};
+                    digitalData.page.pageInfo = {};
+
+                    $(document).ready(function () {
+                        $.get('/WBB/GetCurrentCulture').done(function (x) {
+                            $("#LanguagePage").val(x);
+                            changeLanguage();
+
+                            //script Adobe Analytic
+                            if (x == 1)
+                                language = "th";
+                            else
+                                language = "en";
+
+                            digitalData.page = {
+                                pageInfo: {
+                                    pageName: "newfibre:" + language + ":loginOficer",
+                                    site: "newfibre",
+                                    language: language
+                                }
+                            }
+                            _satellite.track("page load");
+                        });
+                    });
+
+                    var redirectData = @Html.Raw(Json.Encode(ViewBag.GetRedirectIDS));
+                    $(function () {
+                        $('#logo_div').hide()
+                        $.each(redirectData, function (index, item) {
+                            var option = $("<option>").val(item).text(item);
+                            $("#loginOptions").append(option);
+                        });
+
+                        $('#defaultReal').realperson({
+                            length: 5,
+                            regenerate: 'Change',
+                            dot: '*',
+                            dots: $.realperson.defaultDots,
+                            chars: $.realperson.alphanumeric
+                        });
+
+                        //16Oct2023 issue enter
+                        $('#defaultReal').keyup(function () {
+                            $(this).val($(this).val().toUpperCase());
+                            if (!/^[0-9a-zA-Z]+$/.test($(this).val())) {
+                                $(this).val($(this).val().slice(0,-1));
+                            }
+                            if ($(this).val().length > 4) {
+                                validationCaptcha();
+                            }
+                        });
+
+                         //07Dec23 issue enter
+                        $('#clearInput').on('click', function () {
+                            $('#defaultReal').val('');
+                        });
+                    });
+
+                    $('#btnNext').click(function () { toastrErrorMessage("@L_CAPTCHA_ERR") });
+
+                    let errorCount = 0;
+                    function validationCaptcha() {
+                        LockScreen(true);
+                        $.ajax({
+                            url: '/Process/ValidateCaptcha',
+                            data: { inputUser: $('#defaultReal').val(), inputHash: $('#defaultReal').realperson('getHash') },
+                            dataType: "json",
+                            async: false,
+                            type: 'POST',
+                            success: function (response) {
+                                if (response) {
+                                    $("<input>").attr({
+                                        type: "hidden", name: "loginOption", value: $("#loginOptions").val()
+                                    }).appendTo("#OfficerForm");
+                                    $("#OfficerForm").submit();
+                                }
+                                else {
+                                    toastrErrorMessage("@L_CAPTCHA_ERR");
+                                    if (errorCount < 2) {
+                                        $('#defaultReal').val($('#defaultReal').val().slice(0, -1)).focus();
+                                        errorCount++;
+                                    } else {
+                                        $(".realperson-regen button").click();
+                                        $('#defaultReal').val('');
+                                        errorCount = 0;
+                                    }
+                                    LockScreen(false);
+                                }
+                            }
+                        });
+                    };
+
+                    function changeLanguage() {
+                        if ($("#LanguagePage").val() == "1") {
+                            $("#btnTh").show();
+                            $("#btnEn").hide();
+
+                            $(".display-th").show();
+                            $(".display-en").hide();
+                        }
+                        else {
+                            $("#btnTh").hide();
+                            $("#btnEn").show();
+
+                            $(".display-th").hide();
+                            $(".display-en").show();
+                        }
+                    }
+
+</script>
+
+<style>
+    a:link, a:active, a:visited, a:hover, a:focus {
+        color: #000;
+        text-decoration: underline;
+    }
+
+    .input-container {
+        position: relative;
+    }
+
+    .clear-icon {
+        position: absolute;
+        top: 40%;
+        right: 8%;
+        cursor: pointer;
+        transform: translateY(-50%);
+    }
+
+    #defaultReal {
+        border-radius: 8px;
+    }
+</style>

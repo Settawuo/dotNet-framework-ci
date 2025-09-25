@@ -1,0 +1,350 @@
+﻿@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+    string L_LOGIN_FAILED = "";
+    string B_OK = "";
+
+    string L_MY_ACCOUNT = "";
+    string L_WELCOME_1 = "";
+    string L_WELCOME_2 = "";
+    string L_WELCOME_3 = "";
+    string L_WELCOME_4 = "";
+    string L_WELCOME_5 = "";
+    string L_BUNDLING_CONDITION = "";
+    string L_BUNDLING_CONDITION_DETAIL = "";
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        L_LOGIN_FAILED = LabelFBBTR001.Any(c => c.Name == "L_LOGIN_FAILED") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_LOGIN_FAILED").DisplayValue : "";
+        B_OK = LabelFBBTR001.Any(c => c.Name == "B_OK") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "B_OK").DisplayValue : "";
+    }
+
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var LabelFBBTR001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        L_MY_ACCOUNT = LabelFBBTR001.Any(c => c.Name == "L_MY_ACCOUNT") ? LabelFBBTR001.FirstOrDefault(c => c.Name == "L_MY_ACCOUNT").DisplayValue : "";
+        
+    }
+
+    
+    
+    if (ViewBag.LabelFBBOR015 != null)
+    {
+        var LabelFBBOR015 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR015;
+        L_WELCOME_1 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_1") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_1").DisplayValue : "";
+        L_WELCOME_2 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_2") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_2").DisplayValue : "";
+        L_WELCOME_3 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_3") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_3").DisplayValue : "";
+        L_WELCOME_4 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_4") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_4").DisplayValue : "";
+        L_WELCOME_5 = LabelFBBOR015.Any(c => c.Name == "L_WELCOME_5") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_WELCOME_5").DisplayValue : "";
+        L_BUNDLING_CONDITION = LabelFBBOR015.Any(c => c.Name == "L_BUNDLING_CONDITION") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_BUNDLING_CONDITION").DisplayValue : "";
+        L_BUNDLING_CONDITION_DETAIL = LabelFBBOR015.Any(c => c.Name == "L_BUNDLING_CONDITION_DETAIL") ? LabelFBBOR015.FirstOrDefault(c => c.Name == "L_BUNDLING_CONDITION_DETAIL").DisplayValue : "";
+        
+    }
+}
+
+    
+<div id="col-err">
+  <div id="container">
+    <!--  Put Content Here เริ่มต้นเนื้อหา  -->
+    	
+    <div id="box1_holder">
+      <div class="panel_ais paddingmedium" >
+          <div class="row_ais">
+                <p class="clearfix"></p>
+                <p class="clearfix"></p>
+                <div class="col-xs-12 col-sm-12 col-md-12"  style="max-width: 1500px; padding-left: 0 !important; padding-right: 0 !important">
+                    <div class="col-xs-12" style="text-align: right; padding-left: 0 !important; padding-right: 0 !important">
+
+                        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+                        {
+                           <a id="btnTh" href="~/WBB/ChangeCurrentCulture?culture=2" onclick="sessionStorage.setItem('detectedIE', '');">
+                            <img src="~/Content/Content2016/images/lang_th.png" alt="" border="0" /></a>
+                        }
+                        else
+                        {
+                            <a id="btnEn" href="~/WBB/ChangeCurrentCulture?culture=1" class="i-hidden" onclick="sessionStorage.setItem('detectedIE', '');">
+                            <img src="~/Content/Content2016/images/lang_en.png" alt="" border="0" /></a>
+                        }
+
+                    </div>
+                </div>
+            </div>
+      <div class="row_ais">
+        <div class="column large-12">
+            <div class="fibrelogo"><img src="~/Content/images/postpaid/fibre_logo.png" alt=""/></div>
+            <div class="welcometext">@L_MY_ACCOUNT</div>
+        </div>
+      </div>
+      <div class="row_ais">
+          <div class="column large-4">
+          <div class="subheader">@L_WELCOME_1 <span>@L_WELCOME_2</span></div>
+          <div class="detailtext">
+            @L_WELCOME_3<br>
+            @L_WELCOME_4<br>
+            @L_WELCOME_5
+          </div>
+          </div>
+      </div>
+      <div class="boxform pay-topspace">
+      <div class="row_ais">
+         
+
+
+          <!--div login error-->
+          <div class="col-sm-6 col-md-6" id="col-err2">
+
+                <h1 style="color: #91908e">@L_LOGIN_FAILED</h1>
+                <h3 id="lb-failed"></h3>
+
+                <br />
+                <br />
+
+               <input id="btnerror" onclick="backForm()" class="btn2 btn btn-for-xs" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important; " value="@B_OK" />
+        
+            </div>
+          <!-- end div login error-->
+
+      </div>
+      
+      </div>
+      </div>
+      <p class="clearfix"></p>
+      <p class="clearfix"></p>
+      @*<div class="boxfootshader">
+      <div class="panel_ais">
+      <div class="row_ais">
+      <div class="column large-8">
+      <div class="foottext">
+         <div class="condition-head">@L_BUNDLING_CONDITION</div>
+        <ol>
+          <div class="t_inline">@(Html.Raw(L_BUNDLING_CONDITION_DETAIL))</div>
+         </ol>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>*@
+      
+      
+    </div>
+    
+    <div id="box2_holder">
+      
+    </div>
+    <div id="box3_holder">
+      
+    </div>
+    
+    
+    
+    <!--  Put Content Here จบเนื้อหา  -->
+
+    <div style="clear:both;"></div>
+  <div id="aisfooter">
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_FooterTH")
+        }
+        else
+        {
+            @Html.Partial("_FooterEN")
+        }
+        
+        </div>
+        <div class="truehits-bg">&nbsp;</div> 
+
+    </div>
+      
+      <div class="truehits-bg">&nbsp;</div> 
+
+    </div>
+    <div>
+        <input type="hidden" id="LanguagePage" />
+
+        <input type='hidden' name='outPrimaryContactFirstName' id='outPrimaryContactFirstName' />
+        <input type='hidden' name='outContactLastName' id='outContactLastName' />
+        <input type='hidden' name='outAmphur' id='outAmphur' />
+        <input type='hidden' name='outBuildingName' id='outBuildingName' />
+        <input type='hidden' name='outFloor' id='outFloor' />
+        <input type='hidden' name='outHouseNumber' id='outHouseNumber' />
+        <input type='hidden' name='outMoo' id='outMoo' />
+        <input type='hidden' name='outMooban' id='outMooban' />
+        <input type='hidden' name='outProvince' id='outProvince' />
+        <input type='hidden' name='outRoom' id='outRoom' />
+        <input type='hidden' name='outSoi' id='outSoi' />
+        <input type='hidden' name='outStreetName' id='outStreetName' />
+        <input type='hidden' name='outBillLanguage' id='outBillLanguage' />
+        <input type='hidden' name='outtumbol' id='outtumbol' />
+
+        <input type='hidden' name='outBirthDate' id='outBirthDate' />
+        <input type='hidden' name='outEmail' id='outEmail' />
+        <input type='hidden' name='outparameter2' id='outparameter2' />
+        <input type='hidden' name='outAccountName' id='outAccountName' />
+        <input type='hidden' name='outAccountNumber' id='outAccountNumber' />
+        <input type='hidden' name='outServiceAccountNumber' id='outServiceAccountNumber' />
+        <input type='hidden' name='outBillingAccountNumber' id='outBillingAccountNumber' />
+        <input type='hidden' name='outProductName' id='outProductName' />
+        <input type='hidden' name='outDayOfServiceYear' id='outDayOfServiceYear' />
+        <input type='hidden' name='no' id='no' />
+
+        <input type='hidden' name='outcardType' id='outcardType' />
+        <input type='hidden' name='outAccountSubCategory' id='outAccountSubCategory' />
+        <input type='hidden' name='outPostalCode' id='outPostalCode' />
+        <input type='hidden' name='IDCardNo' id='IDCardNo' />
+        <input type='hidden' name='IDCardType' id='IDCardType' />
+        <input type='hidden' name='mainProCode' id='mainProCode' />
+
+        @* new *@
+
+        @* AddressPanel *@
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_HOME_NUMBER_2' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_HOME_NUMBER_2' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOO' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOO' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_MOOBAN' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_MOOBAN' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_BUILD_NAME' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_BUILD_NAME' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_FLOOR' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_FLOOR' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROOM' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROOM' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_SOI' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_SOI' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_ROAD' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_ROAD' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_TUMBOL' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_TUMBOL' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_AMPHUR' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_AMPHUR' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_PROVINCE' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_PROVINCE' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSetup.L_ZIPCODE' id='CustomerRegisterPanelModel_AddressPanelModelSetup_L_ZIPCODE' />
+
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_HOME_NUMBER_2' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_HOME_NUMBER_2' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOO' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOO' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_MOOBAN' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_MOOBAN' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_BUILD_NAME' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_BUILD_NAME' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_FLOOR' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_FLOOR' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROOM' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROOM' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_SOI' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_SOI' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ROAD' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ROAD' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_TUMBOL' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_TUMBOL' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_AMPHUR' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_AMPHUR' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_PROVINCE' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_PROVINCE' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelSendDoc.L_ZIPCODE' id='CustomerRegisterPanelModel_AddressPanelModelSendDoc_L_ZIPCODE' />
+
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_HOME_NUMBER_2' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_HOME_NUMBER_2' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_MOO' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_MOO' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_MOOBAN' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_MOOBAN' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_BUILD_NAME' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_BUILD_NAME' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_FLOOR' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_FLOOR' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_ROOM' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_ROOM' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_SOI' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_SOI' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_ROAD' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_ROAD' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_TUMBOL' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_TUMBOL' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_AMPHUR' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_AMPHUR' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_PROVINCE' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_PROVINCE' />
+        <input type='hidden' name='CustomerRegisterPanelModel.AddressPanelModelVat.L_ZIPCODE' id='CustomerRegisterPanelModel_AddressPanelModelVat_L_ZIPCODE' />
+
+
+        @* New AddressPanel 15.7*@
+        <input type='hidden' name='CustomerRegisterPanelModel.installAddress1' id='CustomerRegisterPanelModel_installAddress1' />
+        <input type='hidden' name='CustomerRegisterPanelModel.installAddress2' id='CustomerRegisterPanelModel_installAddress2' />
+        <input type='hidden' name='CustomerRegisterPanelModel.installAddress3' id='CustomerRegisterPanelModel_installAddress3' />
+        <input type='hidden' name='CustomerRegisterPanelModel.installAddress4' id='CustomerRegisterPanelModel_installAddress4' />
+        <input type='hidden' name='CustomerRegisterPanelModel.installAddress5' id='CustomerRegisterPanelModel_installAddress5' />
+        <input type='hidden' name='CustomerRegisterPanelModel.pbox_count' id='CustomerRegisterPanelModel_pbox_count' />
+
+        @* New VAT AddressPanel 15.7*@
+        <input type='hidden' name='CustomerRegisterPanelModel.vatAddress1' id='CustomerRegisterPanelModel_vatAddress1' />
+        <input type='hidden' name='CustomerRegisterPanelModel.vatAddress2' id='CustomerRegisterPanelModel_vatAddress2' />
+        <input type='hidden' name='CustomerRegisterPanelModel.vatAddress3' id='CustomerRegisterPanelModel_vatAddress3' />
+        <input type='hidden' name='CustomerRegisterPanelModel.vatAddress4' id='CustomerRegisterPanelModel_vatAddress4' />
+        <input type='hidden' name='CustomerRegisterPanelModel.vatAddress5' id='CustomerRegisterPanelModel_vatAddress5' />
+        <input type='hidden' name='CustomerRegisterPanelModel.vatAddressFull' id='CustomerRegisterPanelModel_vatAddressFull' />
+        <input type='hidden' name='CustomerRegisterPanelModel.vatPostalCd' id='CustomerRegisterPanelModel_vatPostalCd' />
+
+        @* user detail *@
+        <input type='hidden' name='CustomerRegisterPanelModel.L_FIRST_NAME' id='CustomerRegisterPanelModel_L_FIRST_NAME' />
+        <input type='hidden' name='CustomerRegisterPanelModel.L_LAST_NAME' id='CustomerRegisterPanelModel_L_LAST_NAME' />
+        <input type='hidden' name='CustomerRegisterPanelModel.L_GOVERNMENT_NAME' id='CustomerRegisterPanelModel_L_GOVERNMENT_NAME' />
+        <input type='hidden' name='CustomerRegisterPanelModel.L_CONTACT_PERSON' id='CustomerRegisterPanelModel_L_CONTACT_PERSON' />
+        <input type='hidden' name='CustomerRegisterPanelModel.SubCateType' id='CustomerRegisterPanelModel_SubCateType' />
+        <input type='hidden' name='CustomerRegisterPanelModel.L_CONTACT_PHONE' id='CustomerRegisterPanelModel_L_CONTACT_PHONE' />
+        <input type='hidden' name='CustomerRegisterPanelModel.L_BIRTHDAY' id='CustomerRegisterPanelModel_L_BIRTHDAY' />
+        <input type='hidden' name='CustomerRegisterPanelModel.L_EMAIL' id='CustomerRegisterPanelModel_L_EMAIL' />
+        <input type='hidden' name='CustomerRegisterPanelModel.L_TITLE' id='CustomerRegisterPanelModel_L_TITLE' />
+
+        @* other *@
+        <input type='hidden' name='CoveragePanelModel.CA_ID' id='CoveragePanelModel_CA_ID' />
+        <input type='hidden' name='CoveragePanelModel.BA_ID' id='CoveragePanelModel_BA_ID' />
+        <input type='hidden' name='CoveragePanelModel.SA_ID' id='CoveragePanelModel_SA_ID' />
+        <input type='hidden' name='CoveragePanelModel.P_MOBILE' id='CoveragePanelModel_P_MOBILE' />
+        <input type='hidden' name='CoveragePanelModel.SffProductName' id='CoveragePanelModel_SffProductName' />
+        <input type='hidden' name='CoveragePanelModel.SffServiceYear' id='CoveragePanelModel_SffServiceYear' />
+        <input type='hidden' name='CustomerRegisterPanelModel.L_CARD_TYPE' id='CustomerRegisterPanelModel_L_CARD_TYPE' />
+        <input type='hidden' name='CustomerRegisterPanelModel.L_CARD_NO' id='CustomerRegisterPanelModel_L_CARD_NO' />
+        <input type='hidden' name='CustomerRegisterPanelModel.CateType' id='CustomerRegisterPanelModel_CateType' />
+        <input type="hidden" name="SffProfileLogID" id="SffProfileLogID" />
+        <input type="hidden" name="TopUp" id="TopUp" />
+        <input type="hidden" name="v_icon_pb" id="v_icon_pb" />
+        <input type="hidden" name="v_check_pb" id="v_check_pb" />
+        <input type="hidden" name="v_add_playbox" id="v_add_playbox" />
+
+
+
+
+
+        @* New Value 15.7*@
+        <input type='hidden' name='CustomerRegisterPanelModel.v_installAddress' id='CustomerRegisterPanelModel_v_installAddress' />
+        <input type='hidden' name='CustomerRegisterPanelModel.outFullAddress' id='CustomerRegisterPanelModel_outFullAddress' />
+
+
+        <input type="hidden" name="v_number_of_pb" id="v_number_of_pb" />
+        <input type="hidden" name="v_sff_main_promotionCD" id="v_sff_main_promotionCD" />
+        <input type="hidden" name="v_owner_product" id="v_owner_product" />
+        <input type="hidden" name="L_NUMBER_OF_PLAYBOX" id="L_NUMBER_OF_PLAYBOX" />
+    </div>
+    
+</div>
+
+<input type='hidden' name='FromPage' id='FromPage' />
+
+<script type="text/javascript">
+   
+
+    function backForm() {
+        $("#col-err").hide();
+        if ($("#FromPage").val() == "col-form") {
+            $("#col-form").show();            
+        }
+        else if ($("#FromPage").val() == "col-formInputMobileNo")
+        {
+            //กรณีให้ส่งใหม่
+            //$('#col-formInputMobileNo').show();
+            //$("#btnSendOTP2").show();
+            //$("#col-Condition").show();
+
+            //กลับไปหน้าแรก
+            window.location.href = window.location.href;
+        }
+        else if($("#FromPage").val() == "col-formInputOTP")
+        {
+            //กรณีให้กรอกใหม่
+            //$('#col-formInputMobileNo').show();
+            //$('#col-formInputOTP').show();
+
+            //กลับไปหน้าแรก
+            window.location.href = window.location.href;
+        }
+        else
+        {
+            //location.reload();
+            window.location.href = window.location.href;
+        }
+    }
+
+    //function changeLanguage() {
+    //    if ($("#LanguagePage").val() == "1") {
+    //        $("#btnTh").show();
+    //        $("#btnEn").hide();
+
+    //    }
+    //    else {
+    //        $("#btnTh").hide();
+    //        $("#btnEn").show();
+
+    //    }
+    //}
+</script>
+     

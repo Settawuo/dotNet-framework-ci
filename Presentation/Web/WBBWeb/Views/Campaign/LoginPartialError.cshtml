@@ -1,0 +1,42 @@
+﻿@using WBBEntity.PanelModels
+<!DOCTYPE html>
+
+@{
+    Layout = null;
+    string bOk = "";
+    string lLoginFailed = "";
+    string lNewCustNotFound = "";
+    if (ViewBag.LabelFBBTR001 != null)
+    {
+        var labelFbbtr001 = (List<LovScreenValueModel>)ViewBag.LabelFBBTR001;
+        var lovOk = labelFbbtr001.FirstOrDefault(c => c.Name == "B_OK");
+        if (lovOk != null)
+        {
+            bOk = labelFbbtr001.Any(c => c.Name == "B_OK") ? lovOk.DisplayValue : "";
+        }
+        var lovLoginFailed = labelFbbtr001.FirstOrDefault(c => c.Name == "L_LOGIN_FAILED");
+        if (lovLoginFailed != null)
+        {
+            lLoginFailed = labelFbbtr001.Any(c => c.Name == "L_LOGIN_FAILED") ? lovLoginFailed.DisplayValue : "";
+        }
+        var lovNewCustNotFound = labelFbbtr001.FirstOrDefault(c => c.Name == "L_NEW_CUST_NOT_FOUND");
+        if (lovNewCustNotFound != null)
+        {
+            lNewCustNotFound = labelFbbtr001.Any(c => c.Name == "L_NEW_CUST_NOT_FOUND") ? lovNewCustNotFound.DisplayValue : "";
+        }
+    }
+}
+
+<script>
+
+</script>​
+
+<div id="divLoginError" class="row_ais hidden">
+    <div class="col-sm-6 col-md-6" id="col-err">
+        <h1 style="color: #91908e">@lLoginFailed</h1>
+        <h3 id="lb-failed" style="line-height:160%">@lNewCustNotFound</h3>
+        <input id="btnError" class="btn2 btn btn-for-xs" type="button" style="font-size: 20px; border: 0 !important; border-radius: 0 !important;" value="@bOk" />
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+    </div>
+</div>

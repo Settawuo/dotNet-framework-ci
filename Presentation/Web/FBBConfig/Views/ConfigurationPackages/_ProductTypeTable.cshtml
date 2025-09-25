@@ -1,0 +1,131 @@
+﻿@model  List<WBBEntity.PanelModels.FBBWebConfigModels.PackageType>
+@using WBBEntity.PanelModels;
+@{
+    Layout = null;
+
+    string G_PRODUCT_TYPE = "";
+    string G_PACKAGE_GROUP = "";
+    string G_PACKAGE_GROUP_DESCRIPTION_THAI = "";
+    string G_PACKAGE_GROUP_DESCRIPTION_ENG = "";
+    string G_PRODUCT_SUBTYPE3 = "";
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        G_PRODUCT_TYPE = configscreen.Any(f => f.Name == "G_PRODUCT_TYPE") ? configscreen.First(f => f.Name == "G_PRODUCT_TYPE").LovValue1 : "";
+        G_PACKAGE_GROUP = configscreen.Any(f => f.Name == "G_PACKAGE_GROUP") ? configscreen.First(f => f.Name == "G_PACKAGE_GROUP").LovValue1 : "";
+        G_PACKAGE_GROUP_DESCRIPTION_THAI = configscreen.Any(f => f.Name == "G_PACKAGE_GROUP_DESCRIPTION_THAI") ? configscreen.First(f => f.Name == "G_PACKAGE_GROUP_DESCRIPTION_THAI").LovValue1 : "";
+        G_PACKAGE_GROUP_DESCRIPTION_ENG = configscreen.Any(f => f.Name == "G_PACKAGE_GROUP_DESCRIPTION_ENG") ? configscreen.First(f => f.Name == "G_PACKAGE_GROUP_DESCRIPTION_ENG").LovValue1 : "";
+        G_PRODUCT_SUBTYPE3 = configscreen.Any(f => f.Name == "G_PRODUCT_SUBTYPE3") ? configscreen.First(f => f.Name == "G_PRODUCT_SUBTYPE3").LovValue1 : "";
+    }
+
+    List<LovValueModel> configDDLProductType = new List<LovValueModel>();
+
+    if (ViewBag.configDDLProductType != null)
+    {
+        configDDLProductType = (List<LovValueModel>)ViewBag.configDDLProductType;
+    }
+}
+    
+        @if (Model != null)
+        {
+            <table class="table table-bordered" id="span-producttype">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>@G_PRODUCT_TYPE</th>
+                        <th>@G_PACKAGE_GROUP</th>
+                        <th>@G_PACKAGE_GROUP_DESCRIPTION_THAI</th>
+                        <th>@G_PACKAGE_GROUP_DESCRIPTION_ENG</th>
+                        <th>@G_PRODUCT_SUBTYPE3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @if (@Model[i].PACKAGE_TYPE_DISPLAY == "FTTH" || @Model[i].PACKAGE_TYPE_DISPLAY == "PBOX" || @Model[i].PACKAGE_TYPE_DISPLAY == "Fixed Line")
+                                {
+                                    @Html.CheckBox("ListPackageType[" + i + "].PACKAGE_SELECT", @Model[i].PACKAGE_SELECT, new { @class = "CheckBoxActive", @onclick = "CheckFTTB(" + i + ")" })
+                            }
+                                else
+                                {
+                                    @Html.CheckBox("ListPackageType[" + i + "].PACKAGE_SELECT", @Model[i].PACKAGE_SELECT)
+                            }
+                                @Html.Hidden("ListPackageType[" + i + "].PACKAGE_SELECTOld", @Model[i].PACKAGE_SELECTOld)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => x[i].PACKAGE_TYPE_DISPLAY, new { @class = "k-textbox form-control" })
+                                @Html.Hidden("ListPackageType[" + i + "].PACKAGE_TYPE", @Model[i].PACKAGE_TYPE)
+                            </td>
+                            <td>
+                                @(Html.Kendo().DropDownListFor(x => x[i].PACKAGE_GROUP)
+                                      .Name("ListPackageType[" + i + "].PACKAGE_GROUP")
+                                      .DataTextField("LOV_NAME")
+                                      .DataValueField("LOV_VAL1")
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend package-group-ddl" })
+                                      .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("SelectPackageGroupTmp", "ConfigurationPackages", new { ProductType = @Model[i].PACKAGE_TYPE });
+                                            });
+                                        })
+                                       .SelectedIndex(0)
+                                       .Events(e =>
+                                       {
+                                           e.Select("PackageGroupOnSelect");
+                                       })
+
+                                   )
+                            </td>
+                            <td>
+                                @Html.TextBox("ListPackageType[" + i + "].PACKAGE_GROUP_DESCRIPTION_THAI", @Model[i].PACKAGE_GROUP_DESCRIPTION_THAI, new { maxlength = 255, @class = "k-textbox form-control" })
+                                @Html.Hidden("ListPackageType[" + i + "].PACKAGE_GROUP_DESCRIPTION_THAI_OLD", @Model[i].PACKAGE_GROUP_DESCRIPTION_THAI_OLD)
+                            </td>
+                            <td>
+                                @Html.TextBox("ListPackageType[" + i + "].PACKAGE_GROUP_DESCRIPTION_ENG", @Model[i].PACKAGE_GROUP_DESCRIPTION_ENG, new { maxlength = 255, @class = "k-textbox form-control" })
+                                @Html.Hidden("ListPackageType[" + i + "].PACKAGE_GROUP_DESCRIPTION_ENG_OLD", @Model[i].PACKAGE_GROUP_DESCRIPTION_ENG_OLD)
+                            </td>
+                            <td>
+                                @if (@Model[i].PACKAGE_TYPE_DISPLAY == "PBOX")
+                                {
+                                    @(Html.Kendo().DropDownListFor(x => x[i].PRODUCT_SUBTYPE3)
+                                      .Name("ListPackageType[" + i + "].PRODUCT_SUBTYPE3")
+                                      .DataTextField("LOV_NAME")
+                                      .DataValueField("LOV_VAL1")
+                                      .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("SelectProductSubtype3Tmp", "ConfigurationPackages");
+                                          });
+                                      })
+                                       .SelectedIndex(0)
+
+                                   )
+                            }
+                                else
+                                {
+                                    @Html.Hidden("ListPackageType[" + i + "].PRODUCT_SUBTYPE3", @Model[i].PRODUCT_SUBTYPE3)
+                            }
+                            </td>
+                        </tr>
+                }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <table class="table table-bordered" id="span-producttype">
+                <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        }
+    

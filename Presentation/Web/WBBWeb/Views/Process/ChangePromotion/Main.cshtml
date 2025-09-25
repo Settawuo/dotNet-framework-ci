@@ -1,0 +1,750 @@
+﻿@using System.Collections.Generic;
+@using WBBEntity.PanelModels;
+@using System.Text.RegularExpressions;
+@using WBBEntity.Extensions;
+@using WBBWeb.Controllers;
+@model WBBEntity.PanelModels.QuickWinPanelModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutReferences.cshtml";
+
+    string lclose = "";
+    string LOADING = "";
+    string L_MENU_PROFILE = "";
+    string L_MENU_CURRENT = "";
+    string L_MENU_PLAYBOX = "";
+    string L_MENU_SUMMARY = "";
+
+    if (ViewBag.LabelLovScreen != null)
+    {
+        var labelLovScreen = (List<LovScreenValueModel>)ViewBag.LabelLovScreen;
+
+        L_MENU_PROFILE = labelLovScreen.Any(m => m.Name == "L_MENU_PROFILE") ? labelLovScreen.FirstOrDefault(m => m.Name == "L_MENU_PROFILE").DisplayValue : "";
+        L_MENU_CURRENT = labelLovScreen.Any(m => m.Name == "L_MENU_CURRENT") ? labelLovScreen.FirstOrDefault(m => m.Name == "L_MENU_CURRENT").DisplayValue : "";
+        L_MENU_PLAYBOX = labelLovScreen.Any(m => m.Name == "L_MENU_PLAYBOX") ? labelLovScreen.FirstOrDefault(m => m.Name == "L_MENU_PLAYBOX").DisplayValue : "";
+        L_MENU_SUMMARY = labelLovScreen.Any(m => m.Name == "L_MENU_SUMMARY") ? labelLovScreen.FirstOrDefault(m => m.Name == "L_MENU_SUMMARY").DisplayValue : "";
+        lclose = labelLovScreen.Any(c => c.Name == "B_CLOSE") ? labelLovScreen.First(c => c.Name == "B_CLOSE").DisplayValue : "";
+        LOADING = labelLovScreen.Any(m => m.Name == "TOPUP_LOADING") ? labelLovScreen.FirstOrDefault(m => m.Name == "TOPUP_LOADING").DisplayValue : "";
+    }
+
+    string CheckShowMenuChangeService = "";
+    string CheckShowMenuChangeServiceMsg = "";
+
+    var controller = DependencyResolver.Current.GetService<ProcessController>();
+    if (CheckShowMenuChangeService == "")
+    {
+        CheckShowMenuChangeService = controller.CheckShowMenuChangeService(Model.CoveragePanelModel.P_MOBILE, Model.IDCardNo);
+        string[] CheckShowMenuChangeServiceData = CheckShowMenuChangeService.Split('|');
+        CheckShowMenuChangeService = CheckShowMenuChangeServiceData[0];
+        if (CheckShowMenuChangeService == "N")
+        {
+            if (CheckShowMenuChangeServiceData[1] != "")
+            {
+                CheckShowMenuChangeServiceMsg = CheckShowMenuChangeServiceData[1];
+            }
+            else
+            {
+                var LovData = controller.GetScreenConfig("FBBOR041");
+                CheckShowMenuChangeServiceMsg = LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).Count() > 0 ? LovData.Where(t => t.Name == "ERROR_PENDING_ORDER").Select(t => t.DisplayValue).FirstOrDefault() : "";
+            }
+        }
+    }
+
+    var reloadPage = "/Process/ChangePackagePromotion";
+}
+@Styles.Render("~/Content/css/rabbit")
+@Scripts.Render("~/bundles/js/rabbit")
+<script type="text/javascript" src="~/js/ifbbweb.min.js"></script>
+
+<style>
+    #divRemark {
+        font-size: large;
+    }
+
+    #divResponsiveTimeSLot {
+        font-size: large !important;
+    }
+
+    .header-label-playbox {
+        width: 82px;
+        height: 40px;
+        display: normal;
+        background-color: #bed4e1;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .header-label-playbox-hidden {
+        width: 82px;
+        height: 40px;
+        display: none;
+        color: white;
+        background-color: #8cc43b;
+        line-height: 20px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .nav-nopadding {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        width: 20%;
+        background-color: #8DC63F;
+        text-align: center;
+        white-space: nowrap;
+        font-size: 20px;
+    }
+
+    .nav-padding {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        width: 20%;
+        text-align: center;
+        white-space: nowrap;
+        font-size: 20px;
+    }
+
+    fieldset {
+        border: 2px solid #83ad47;
+        -webkit-border-radius: 5px;
+        -khtml-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    #tbl-popup {
+        width: 100%;
+    }
+
+    .btnmodal {
+        padding: 10px 15px;
+        background-color: #58AA0C;
+        color: #fff !important;
+    }
+
+        .btnmodal:hover {
+            padding: 10px 15px;
+            background-color: #4a831c;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .modal-dialog-center {
+        margin-top: 10%;
+    }
+
+    #ais_topbar {
+        display: block;
+    }
+
+        #ais_topbar .topbar_ribbon {
+            padding-left: 10px;
+            float: left;
+            height: 60px;
+        }
+
+    #ribbonking {
+        width: 100%;
+        height: 60px;
+        background: url("/Images/bg1366.jpg") no-repeat center;
+        background-color: #000;
+    }
+
+    #ribbonking_wrapper {
+        height: 60px;
+        margin: 0 auto;
+        max-width: 1140px;
+    }
+</style>
+
+<div id="ais_topbar">
+    @*<div id="ribbonking">
+            <div id="ribbonking_wrapper">
+                <div class="topbar_ribbon"><img src="~/Images/iconribbon.png" alt="ais logo"></div>
+            </div>
+        </div>*@
+</div>
+<div id="container">
+    <div id="box1N_holder">
+        <div class="row_ais">
+            <div class="column large-11 large-centered">
+                <div class="container">
+                    <div id="wrapSwitchLanguage" class="col-xs-12 text-right nopading">
+                        <a id="btn_th" class="btn-sm btn-success rippler rippler-default" href="~/WBB/ChangeCurrentCulture?culture=1" role="button"
+                           style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">ภาษาไทย</a>&nbsp;&nbsp;
+                        <a id="btn_en" class="btn-sm btn-default rippler rippler-default" href="~/WBB/ChangeCurrentCulture?culture=2" role="button"
+                           style="font-family: inherit !important;" onclick="sessionStorage.setItem('detectedIE', '');">English</a>&nbsp;&nbsp;
+                    </div>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+
+                    <div class="col-md-2 hidden-xs hidden-sm" id="logo_div" style=" margin-top: 12px;">
+                        <img src="~/Content/images/postpaid/fibre_logo.png" class="img-responsive left">
+                    </div>
+                    <div class="col-md-10 col-xs-12 hidden-xs" id="status_div">
+
+                        <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status1_imgo">
+                            <p><img src="~/Content/images/postpaid/step4_on.png" class="img-responsive" style="display:inline-block"> </p>
+                            <p><span style="color:white">@L_MENU_PROFILE</span></p>
+                        </div>
+                        <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status2_imgo">
+                            <p><img src="~/Content/images/postpaid/step2_on.png" class="img-responsive" style="display:inline-block"> </p>
+                            <p><span style="color:white">@L_MENU_CURRENT</span></p>
+                        </div>
+                        <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status3_imgo">
+                            <p><img src="~/Content/images/postpaid/step3_on.png" class="img-responsive" style="display:inline-block"> </p>
+                            <p><span style="color:white">@L_MENU_PLAYBOX</span></p>
+                        </div>
+                        <div class="col-md-2 col-xs-12 hidden-xs nav-nopadding" style="display: none;" id="status4_imgo">
+                            <p><img src="~/Content/images/postpaid/step5_on.png" class="img-responsive" style="display:inline-block"> </p>
+                            <p><span style="color:white">@L_MENU_SUMMARY</span></p>
+                        </div>
+
+                        <div class="col-md-2 col-xs-12 hidden-xs nav-padding" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status1_imgf">
+                            <p><img src="~/Content/images/postpaid/step4_off.png" class="img-responsive" style="display:inline-block"> </p>
+                            <p><span style="color:#8DC63F">@L_MENU_PROFILE</span></p>
+                        </div>
+                        <div class="col-md-2 col-xs-12 hidden-xs nav-padding" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status2_imgf">
+                            <p><img src="~/Content/images/postpaid/step2_off.png" class="img-responsive" style="display:inline-block"> </p>
+                            <p><span style="color:#8DC63F">@L_MENU_CURRENT</span></p>
+                        </div>
+                        <div class="col-md-2 col-xs-12 hidden-xs nav-padding" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status3_imgf">
+                            <p><img src="~/Content/images/postpaid/step3_off.png" class="img-responsive" style="display:inline-block"> </p>
+                            <p><span style="color:#8DC63F">@L_MENU_PLAYBOX</span></p>
+                        </div>
+                        <div class="col-md-2 col-xs-12 hidden-xs nav-padding" style="text-align:center; display: none; width: 20%; white-space: nowrap;" id="status4_imgf">
+                            <p><img src="~/Content/images/postpaid/step5_off.png" class="img-responsive" style="display:inline-block"> </p>
+                            <p><span style="color:#8DC63F">@L_MENU_SUMMARY</span></p>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="LanguagePage" />
+
+
+            </div>
+        </div>
+        <div class="panel_ais">
+            <div class="row_ais">
+                <div class="column large-11 large-centered">
+                    <div class="content-menu">
+                        <div class="row_ais">
+                            <div class="column large-12 medium-12 small-12">
+                                <div class="detail-for-menu">
+                                    <div class="innercontent">
+                                        <div class="row_ais">
+                                            <div class="column large-10">
+                                                <div id="renderBody" class="card"></div>
+                                                <form id="ChangePromotionMainfrm" method="post" action="">
+                                                    <div class="container">
+                                                        <div class="form-summary col-md-12 col-xs-12 addrounded">
+                                                            @*//R20.04 Data Privacy*@
+                                                            @Html.Partial("~/Views/Shared/_DataPrivacy.cshtml")
+                                                            @Html.Partial("~/Views/Process/ChangePromotion/_PersonalInfo.cshtml")
+                                                            @Html.Partial("~/Views/Process/ChangePromotion/_ChoosePackage.cshtml")
+                                                            @Html.Partial("~/Views/Process/ChangePromotion/_ChoosePlayBox.cshtml")
+                                                            @Html.Partial("~/Views/Process/ChangePromotion/_Confirm.cshtml")
+                                                        </div>
+                                                    </div>
+
+                                                    @Html.HiddenFor(Model => Model.outAccountName)
+                                                    @Html.HiddenFor(Model => Model.CoveragePanelModel.P_MOBILE)
+                                                    @Html.HiddenFor(Model => Model.CoveragePanelModel.ChargeType)
+                                                    @Html.HiddenFor(Model => Model.CoveragePanelModel.Serenade_Flag)
+                                                    @Html.HiddenFor(Model => Model.CoveragePanelModel.FMC_SPECIAL_FLAG)
+                                                    @Html.HiddenFor(Model => Model.CoveragePanelModel.FMPA_FLAG)
+                                                    @Html.HiddenFor(Model => Model.CoveragePanelModel.CVM_FLAG)
+                                                    @Html.HiddenFor(Model => Model.CoveragePanelModel.EXISTING_MOBILE_FLAG)
+                                                    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.Project_name)
+                                                    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.L_MOBILE)
+                                                    @Html.HiddenFor(Model => Model.IDCardType)
+                                                    @Html.HiddenFor(Model => Model.IDCardNo)
+                                                    @Html.HiddenFor(Model => Model.no)
+                                                    @Html.HiddenFor(Model => Model.outMobileNo)
+                                                    @Html.HiddenFor(Model => Model.outOwnerProduct)
+                                                    @Html.HiddenFor(Model => Model.CoveragePanelModel.ARPU)
+                                                    @Html.HiddenFor(Model => Model.CATEGORY)
+                                                    @Html.HiddenFor(Model => Model.old_relate_mobile)
+                                                    @Html.HiddenFor(Model => Model.relate_mobile_action)
+                                                    @Html.HiddenFor(Model => Model.mobileNumberContact)
+                                                    @Html.HiddenFor(Model => Model.CoveragePanelModel.Address.AddressId)
+                                                    @Html.HiddenFor(Model => Model.CustomerRegisterPanelModel.EMP_NAME)
+
+                                                    @*R20.6 Add by Aware : Atipon*@
+                                                    @Html.HiddenFor(Model => Model.v_package_subtype)
+                                                    @*//R20.6 ChangePromotionCheckRight*@
+                                                    @Html.HiddenFor(Model => Model.outAccountNumber)
+                                                    <input type="hidden" id="fmc_specail_flag" />
+                                                    <input type="hidden" id="existing_mobile_flag" />
+                                                    <input type="hidden" id="hdnchangepro_pk" />
+                                                    @Html.HiddenFor(Model => Model.cur_project_name_option)
+                                                    @Html.HiddenFor(Model => Model.cur_mobile_checkright)
+                                                    @Html.HiddenFor(Model => Model.cur_mobile_checkright_option)
+                                                    @Html.HiddenFor(Model => Model.cur_mobile_get_benefit)
+                                                    @Html.HiddenFor(Model => Model.cur_mobile_get_benefit_option)
+
+                                                    @*20.7 change promotion - change device*@
+                                                    @Html.HiddenFor(Model => Model.PendingOrderFbss_Change_Promotion_Flag)
+
+                                                    <input type="hidden" id="ERROR_MSG" />
+                                                    <input id="dataCount" type="hidden" />
+                                                    <input id="dataNull" type="hidden" />
+                                                    <input id="dataError" type="hidden" />
+                                                    <input type="hidden" id="AppointmentDate" />
+                                                    <input type="hidden" id="InstallationCapacity" />
+                                                    <input type="hidden" id="TimeSlot" />
+                                                    <input type="hidden" id="TimeSlotId" />
+                                                    <input type="hidden" id="InstallDate" />
+                                                    <input type="hidden" id="AppointmentDateSelect" />
+                                                    <input type="hidden" id="RESERVED_ID" />
+                                                    <input type="hidden" id="BillDate" />
+                                                    <input type="hidden" id="tmpMobileSentOTP" />
+                                                    <input type="hidden" id="GSSO_transactionID" />
+
+
+                                                    @*22.04 WTTx*@
+                                                    @Html.HiddenFor(Model => Model.outtumbol)
+                                                    @Html.HiddenFor(Model => Model.outAmphur)
+                                                    @Html.HiddenFor(Model => Model.outProvince)
+                                                    <input type="hidden" id="gridId" />
+
+                                                    <input type="hidden" id="addressID" />
+                                                    <input type="hidden" id="installAddress1" />
+                                                    <input type="hidden" id="installAddress2" />
+                                                    <input type="hidden" id="installAddress3" />
+                                                    <input type="hidden" id="installAddress4" />
+                                                    <input type="hidden" id="installAddress5" />
+                                                    <input type="hidden" id="flowFlag" />
+
+                                                    <div id="HiddenForPersonalPackage" style="display:none">
+                                                    </div>
+                                                    <div id="HiddenForPersonalPackageUse" style="display:none">
+                                                    </div>
+                                                </form>
+
+                                                <div class="modal fade" id="basic-modal-content" tabindex="-1" role="dialog" aria-labelledby="basic-modal-content_label">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="border-bottom: none;">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="add-border-rounded-green">
+                                                                    <p class="clearfix"></p>
+                                                                    <div id="LastPopupMessage">
+                                                                    </div>
+                                                                    <h3 class="text-center"></h3>
+                                                                    <p class="clearfix"></p>
+                                                                    <p class="clearfix"></p>
+                                                                    <div class="col-md-12 text-center">
+                                                                        <p class="clearfix"></p>
+                                                                        <button type="button" class="btn btn-success btn-lg" style="background-image:none" data-dismiss="modal" onclick="$('#basic-modal-content').modal('hide'); window.location.href = window.location.href;">&nbsp; @lclose &nbsp; </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer" style="border-top: none;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="ProgressIcon" class="modal fade">
+                                                    <div class="modal-dialog" style="top:38%;">
+                                                        <div class="row" style="margin-left:auto; margin-right:auto; width:150px; height:100px; color:white;">
+                                                            <div>
+                                                                <i class="fa-li fa fa-spinner fa-spin fa-5x" style="position:inherit;"></i>
+                                                            </div>
+                                                            <div id="txtLoading" style="text-align:center;">
+                                                                @LOADING
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="modolCheckFail" tabindex="-1" role="dialog" aria-labelledby="modal003_label" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: none;">
+                </div>
+                <div class="modal-body">
+                    <div class="add-border-rounded-green">
+                        <p class="clearfix"></p>
+                        <h3 id="LastPopupCheckFailMessage" class="text-center"></h3>
+                        <p class="clearfix"></p>
+                        <p class="clearfix"></p>
+                        <div class="col-md-12 text-center">
+                            <p class="clearfix"></p>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="Reload();">&nbsp; @lclose &nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Put Content Here จบเนื้อหา  -->
+
+    <div style="clear:both;"></div>
+    <div id="aisfooter">
+        @if (Session[WBBWeb.Extension.WebConstants.SessionKeys.CurrentUICulture].ToString() == "1")
+        {
+            @Html.Partial("_FooterTH")
+        }
+        else
+        {
+            @Html.Partial("_FooterEN")
+        }
+
+    </div>
+    <div class="truehits-bg">&nbsp;</div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ('@CheckShowMenuChangeService' == "N") {
+            $('#LastPopupCheckFailMessage').html("@CheckShowMenuChangeServiceMsg");
+            $('#modolCheckFail').modal('show');
+        }
+
+        $("#chkShowPass").change(function () {
+            if (this.checked) {
+                $("#OTPPass").attr('type', 'text');
+            }
+            else {
+                $("#OTPPass").attr('type', 'password');
+            }
+        });
+
+        LockScreen(true, "");
+        ais_interface_process('mini-menu', 'postpaid', 'th', '', false);
+        $("#slt_OVERRULE").selectOrDie();
+
+        $('#basic-modal-content').on('hide.bs.modal', function (e) {
+            window.location.href = window.location.href;
+        });
+
+        var _EmpName = "";
+
+        if (window.parent.document.getElementById("EmpName") != null) {
+            _EmpName = window.parent.document.getElementById("EmpName").value;
+            if (_EmpName.length > 0) {
+                $("#CustomerRegisterPanelModel_EMP_NAME").val(_EmpName);
+                //console.log( $("#CustomerRegisterPanelModel_EMP_NAME").val());
+            }
+        }
+
+        $('#AppointmentDate').val("");
+        $('#InstallationCapacity').val("");
+        $('#TimeSlot').val("");
+        $('#TimeSlotId').val("");
+        $('#InstallDate').val("");
+        $('#AppointmentDateSelect').val("");
+        $('#RESERVED_ID').val("");
+
+        $('#gridId').val("");//R22.04 WTTx
+        $('#addressID').val("");
+        $('#installAddress1').val("");
+        $('#installAddress2').val("");
+        $('#installAddress3').val("");
+        $('#installAddress4').val("");
+        $('#installAddress5').val("");
+        $('#flowFlag').val("");
+
+        var get_current_language = $.ajax({
+            type: "GET",
+            url: "/WBB/GetCurrentCulture",
+            async: false,
+            success: function (x) {
+                $("#LanguagePage").val(x);
+                return x;
+            }
+        });
+        changeLanguage();
+        $("#wrapSwitchLanguage").hide();
+        getPersonalPackageData();
+        GetTablePersonalPackageInfo();
+        GetInstallAddress(GetTablePackageListByChange);
+        //GetTablePackageListByChange();
+        changePageHeader(1);
+    });
+
+    function Reload() {
+        window.location.href = "@reloadPage";
+    }
+
+    function changeLanguage() {
+        if ($("#LanguagePage").val() == "1") {
+            $("#btn_th").addClass('btn-success');
+            $("#btn_en").removeClass('btn-success').addClass('btn-default');
+        }
+        else {
+            $("#btn_th").removeClass('btn-success').addClass('btn-default');
+            $("#btn_en").addClass('btn-success');
+        }
+    }
+
+    function changePageHeader(operNo) {
+        $("#status_div").children().hide();
+        for (var i = 1; i <= 4; i++) {
+            $("#status_div").children("#status" + i + "_imgo").hide();
+            $("#status_div").children("#status" + i + "_imgf").show();
+        }
+        for (var i = operNo; i > 0; i--) {
+            $("#status_div").children("#status" + i + "_imgo").show();
+            $("#status_div").children("#status" + i + "_imgf").hide();
+        }
+        if ($("#checkHavePlayBox").val() == "Y") {
+            $("#status_div").children("#status3_imgo").hide();
+            $("#status_div").children("#status3_imgf").hide();
+        }
+        else {
+            if ($('input[name=SelectPackage]:checked').val() != undefined) {
+                var pkg_set = $('input[name=SelectPackage]:checked').val();
+                var checkSPB = $("#CHECK_SHOW_PLAYBOX" + pkg_set).val();
+                if (checkSPB == "N") {
+                    $("#status_div").children("#status3_imgo").hide();
+                    $("#status_div").children("#status3_imgf").hide();
+                }
+            }
+        }
+    }
+
+    function getPersonalPackageData() {
+        var non_mobile_no = $("#CoveragePanelModel_P_MOBILE").val();
+        $.ajax({
+            type: "POST",
+            url: "/ChangePromotion/GetPersonalPromotion",
+            dataType: "json",
+            data: { non_mobile_no: non_mobile_no },
+            async: false,
+            success: function (data) {
+                $("#HiddenForPersonalPackage").text("");
+                $("#HiddenForPersonalPackage").append(data.result1);
+                $("#HiddenForPersonalPackageUse").text("");
+                $("#HiddenForPersonalPackageUse").append(data.result2);
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    var packageResult;
+    function GetTablePersonalPackageInfo() {
+        var promocodeCurrent = $("#productCdUse").val();
+        var non_mobile_no = $("#CoveragePanelModel_P_MOBILE").val();
+        var relate_mobile = $("#outMobileNo").val();
+        var owner_product = $("#outOwnerProduct").val();
+        var serenate_flag = $("#CoveragePanelModel_Serenade_Flag").val();
+        var air_change_package_array = [];
+        var checkHavePlayBox = $("#checkHavePlayBox").val();
+        $("#HiddenForPersonalPackage").find("div").each(function (i) {
+            var obj = {
+                'SFF_PROMOTION_CODE': $(this).find("input[name=productCd]").val(),
+                'promotionName': $(this).find("input[name=promotionName]").val(),
+                'productClass': $(this).find("input[name=productClass]").val(),
+                'productGroup': $(this).find("input[name=productGroup]").val(),
+                'productPkg': $(this).find("input[name=productPkg]").val(),
+                'descThai': $(this).find("input[name=descThai]").val(),
+                'descEng': $(this).find("input[name=descEng]").val(),
+                'inStatementThai': $(this).find("input[name=inStatementThai]").val(),
+                'inStatementEng': $(this).find("input[name=inStatementEng]").val(),
+                'startDt': $(this).find("input[name=startDt]").val(),
+                'endDt': $(this).find("input[name=endDt]").val(),
+                'PRODUCT_SEQ': $(this).find("input[name=productSeq]").val()
+            };
+
+            air_change_package_array.push(obj);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/ChangePromotion/GetTablePersonalPackageInfo",
+            dataType: "text",
+            data: { non_mobile_no: non_mobile_no, relate_mobile: relate_mobile, owner_product: owner_product, serenate_flag: serenate_flag, promocodeCurrent: promocodeCurrent, checkHavePlayBox: checkHavePlayBox, air_change_package_array: JSON.stringify(air_change_package_array) },
+            async: false,
+            success: function (data) {
+                data = JSON.parse(data)
+                $("#PERSONAL_INFO_CONTENT").text("");
+                $("#PERSONAL_INFO_CONTENT").append(data.tblHtml);
+                packageResult = data.result;
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    function GetInstallAddress(callback) {
+        $.ajax({
+            type: "POST",
+            url: "/ChangePromotion/GetInstallAddress",
+            data: {
+                'NON_MOBILE': $("#CoveragePanelModel_P_MOBILE").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                //R22.04 WTTx
+                if (data.gridId != null || data.gridId != undefined)
+                    $('#gridId').val(data.gridId);
+
+                if (data.addressId != null || data.addressId != undefined)
+                    $('#addressID').val(data.addressId);
+
+                $('#installAddress1').val(data.v_installAddress1);
+                $('#installAddress2').val(data.v_installAddress2);
+                $('#installAddress3').val(data.v_installAddress3);
+                $('#installAddress4').val(data.v_installAddress4);
+                $('#installAddress5').val(data.v_installAddress5);
+                $('#flowFlag').val(data.flowFlag);
+
+                return callback()
+            },
+        });
+    }
+
+    function getAppointment() {
+        $('#AppointmentDate').val("");
+        $('#InstallationCapacity').val("");
+        $('#TimeSlot').val("");
+        $('#TimeSlotId').val("");
+        $('#InstallDate').val("");
+        $('#AppointmentDateSelect').val("");
+        $('#RESERVED_ID').val("");
+        var LANQUAGE_SCREEN = "E";
+        var timeSlotId = "divTimeSlot";
+
+        if ($("#LanguagePage").val() == "1") {
+            LANQUAGE_SCREEN = "T";
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/ChangePromotion/GetAppointment",
+            data: {
+                'NON_MOBILE': $("#CoveragePanelModel_P_MOBILE").val(),
+                'ID_CARD': $("#IDCardNo").val(),
+                'BILL_CYCLE': $("#billCycle").val(),
+                "LANQUAGE_SCREEN": LANQUAGE_SCREEN,
+                "timeSlotId": timeSlotId,
+                "P_ADDRESS_ID": $('#addressID').val(),
+                "INSTALL_ADDRESS_1": $('#installAddress1').val(),
+                "INSTALL_ADDRESS_2": $('#installAddress2').val(),
+                "INSTALL_ADDRESS_3": $('#installAddress3').val(),
+                "INSTALL_ADDRESS_4": $('#installAddress4').val(),
+                "INSTALL_ADDRESS_5": $('#installAddress5').val()
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#" + timeSlotId).html(data.timeSlotData);
+                $("#divTimeSlotRemark").html(data.timeSlotRemark);
+
+                var dataCount = data.timeSlotData.toString().indexOf("List data = 0");
+                var dataNull = data.timeSlotData.toString().indexOf(" Data null");
+                var dataError = data.timeSlotData.toString().indexOf("Data error");
+
+                $("#dataCount").val(dataCount);
+                $("#dataNull").val(dataNull);
+                $("#dataError").val(dataError);
+
+                if (dataCount != "-1" || dataNull != "-1" || dataError != "-1") {
+                    $('#AppointmentDate').val($("#" + timeSlotId).find("input[name='FBSSAppointmentDate']").val());
+                    $('#InstallationCapacity').val($("#" + timeSlotId).find("input[name='FBSSInstallationCapacity']").val());
+                    $('#TimeSlot').val($("#" + timeSlotId).find("input[name='FBSSTimeSlot']").val());
+                    $('#TimeSlotId').val($("#" + timeSlotId).find("input[name='TimeSlotId']").val());
+                    $('#InstallDate').val($("#" + timeSlotId).find("input[name='FBSSInstallDate']").val());
+                    $('#AppointmentDateSelect').val($("#" + timeSlotId).find("input[name='FBSSAppointmentDate']").val());
+                } else {
+                    $("#divResponsiveTimeSLot").show();
+                }
+                LockScreen(false);
+            },
+        });
+    }
+
+    function onDayItemClick(t, timeSlotId) {
+
+        var parentDiv = $(t).parent();
+
+        if ($(t).find(".color-red").length > 0) {
+            return;
+        }
+
+        $("#" + timeSlotId).find(".select-header").hide();
+        $("#" + timeSlotId).find(".day-item").removeClass("day-item-select");
+        $("#" + timeSlotId).find(".day-footer").hide();
+        $("#" + timeSlotId).find(".header-label").show();
+        $("#" + timeSlotId).find(".header-label-hidden").hide();
+
+        $('#AppointmentDate').val("");
+        $('#InstallationCapacity').val("");
+        $('#TimeSlot').val("");
+        $('#TimeSlotId').val("");
+        $('#InstallDate').val("");
+        $('#AppointmentDateSelect').val("");
+
+        if ($(t).find(".color-green").length > 0) {
+            $(t).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+            checkDateTimeSlot = false;
+            return;
+        }
+        else if ($("#" + timeSlotId).find(".color-green").length > 0) {
+            $("#" + timeSlotId).find(".color-green").removeClass().addClass("fa fa-circle color-gray");
+        }
+
+        if ($(t).find(".color-gray").length > 0) {
+            $(parentDiv).find(".select-header").show();
+            $(parentDiv).find(".day-item").addClass("day-item-select");
+            $(parentDiv).find(".day-footer").show();
+
+            $(parentDiv).find(".header-label").hide();
+            $(parentDiv).find(".header-label-hidden").show();
+
+            $(t).find(".color-gray").removeClass("color-gray").addClass("color-green");
+
+            $('#AppointmentDate').val($(t).find("input[name='FBSSAppointmentDate']").val());
+            $('#InstallationCapacity').val($(t).find("input[name='FBSSInstallationCapacity']").val());
+            $('#TimeSlot').val($(t).find("input[name='FBSSTimeSlot']").val());
+            $('#CustomerRegisterPanelModel_FBSSTimeSlot_TimeSlotId').val($(t).find("input[name='TimeSlotId']").val());
+            $('#InstallDate').val($(t).find("input[name='FBSSInstallDate']").val());
+            $('#AppointmentDateSelect').val($(t).find("input[name='FBSSAppointmentDate']").val());
+            checkDateTimeSlot = true;
+
+        }
+    }
+
+    function LockScreen(x, txt) {
+        if (x) {
+            $('#txtLoading').html(txt);
+            $('#ProgressIcon').modal({
+                backdrop: "static",
+                keyboard: true,
+                show: true
+            });
+        }
+        else {
+            $('#ProgressIcon').modal('hide');
+        }
+    }
+
+    function toastrErrorMessage(message) {
+        toastr.options.positionClass = "toast-top-center";
+        toastr.options.closeButton = true;
+        toastr.error(message)
+    }
+</script>

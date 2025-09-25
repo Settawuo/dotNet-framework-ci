@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:smsSurveyFOA" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:smsSurveyFOA" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:smsSurveyFOA">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+      <xsd:complexType name="FOAParam">
+        <xsd:all>
+          <xsd:element name="ordNo" type="xsd:string" />
+          <xsd:element name="nonMobile" type="xsd:string" />
+          <xsd:element name="ordType" type="xsd:string" />
+          <xsd:element name="productName" type="xsd:string" />
+          <xsd:element name="orgID" type="xsd:string" />
+          <xsd:element name="rejectReason" type="xsd:string" />
+          <xsd:element name="submitDate" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="insertFOAInfoRequest">
+    <wsdl:part name="FOAInfo" type="tns:FOAParam" />
+  </wsdl:message>
+  <wsdl:message name="insertFOAInfoResponse">
+    <wsdl:part name="FOAResponse" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="smsSurveyFOAPortType">
+    <wsdl:operation name="insertFOAInfo">
+      <documentation>FOA Data</documentation>
+      <wsdl:input message="tns:insertFOAInfoRequest" />
+      <wsdl:output message="tns:insertFOAInfoResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="smsSurveyFOABinding" type="tns:smsSurveyFOAPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="insertFOAInfo">
+      <soap:operation soapAction="urn:smsSurveyFOA" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:smsSurveyFOA" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:smsSurveyFOA" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="smsSurveyFOA">
+    <wsdl:port name="smsSurveyFOAPort" binding="tns:smsSurveyFOABinding">
+      <soap:address location="http://10.197.51.164/services/smsSurveyFOA/index.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

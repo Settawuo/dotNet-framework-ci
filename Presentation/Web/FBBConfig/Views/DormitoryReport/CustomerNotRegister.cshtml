@@ -1,0 +1,399 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.CusNotRegisModel
+@using WBBEntity.PanelModels;
+@{
+    string L_PAGE_DATE_FROM = "Date From";
+    string L_PAGE_DATE_TO = "Date To";
+    string L_GRID_ITEM_NO = "Item No.";
+    string L_GRID_DORM_NAME = "หอพัก";
+    string L_GRID_ROOM_NO = "ห้อง";
+    string L_GRID_INTERNAT_NO = "Internet No.";
+    string L_GRID_ACCOUNT_NAME = "Account Name";
+    string L_GRID_CONTRACT_MOBILE = "เบอร์โทรศัพท์";
+    string L_GRID_USER_CREATED = "ชื่อ Sale ที่ Key<br>pre-register";
+    string L_GRID_INSTALL_COMPLEATE_DATE = "Installation Complete<br>Date";
+    string L_PAGE_CANCEL = "ยกเลิก";
+    string L_PAGE_SEARCH = "ค้นหา";
+    string L_PAGE_EXPORT = "Export to Excel";
+    string L_PAGE_SEARCH_PANEL = "Search Panel";
+    string L_PAGE_NAME = "Dormitory Customer Not Register Report";
+    
+    
+
+    if (ViewBag.configscreen != null)
+    {
+        var configscreen = (List<LovValueModel>)ViewBag.configscreen;
+
+        L_GRID_ITEM_NO = configscreen.Any(f => f.Name == "ITEM_NO_REPORT2") ? configscreen.First(f => f.Name == "ITEM_NO_REPORT2").LovValue1 : "";
+        L_GRID_DORM_NAME = configscreen.Any(f => f.Name == "DORMITORY_NAME") ? configscreen.First(f => f.Name == "DORMITORY_NAME").LovValue1 : "";
+        L_GRID_ROOM_NO = configscreen.Any(f => f.Name == "ROOM") ? configscreen.First(f => f.Name == "ROOM").LovValue1 : "";
+        L_GRID_INTERNAT_NO = configscreen.Any(f => f.Name == "INTERNET_NUMBER") ? configscreen.First(f => f.Name == "INTERNET_NUMBER").LovValue1 : "";
+        L_GRID_ACCOUNT_NAME = configscreen.Any(f => f.Name == "ACCOUNT_NAME") ? configscreen.First(f => f.Name == "ACCOUNT_NAME").LovValue1 : "";
+        L_GRID_CONTRACT_MOBILE = configscreen.Any(f => f.Name == "CONTACT_NUMBER") ? configscreen.First(f => f.Name == "CONTACT_NUMBER").LovValue1 : "";
+        L_GRID_USER_CREATED = configscreen.Any(f => f.Name == "USER_CREATED") ? configscreen.First(f => f.Name == "USER_CREATED").LovValue1 : "";
+        L_GRID_INSTALL_COMPLEATE_DATE = configscreen.Any(f => f.Name == "INSTALLATION_COMPLETE_DATE") ? configscreen.First(f => f.Name == "INSTALLATION_COMPLETE_DATE").LovValue1 : "";        
+    }   
+    
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<div class="page-header i-header-fit">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 style="margin-top: 0">@L_PAGE_NAME</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="panel panel-success">            
+        <div class="panel-heading">
+           <h3 class="panel-title">
+              <span>@L_PAGE_SEARCH_PANEL</span>
+              <a data-toggle="collapse" class="pull-right" href="#SearchPanel" onclick="onPanelToggle(this);" id="SearchPanelHeader"><i class="fa fa-chevron-circle-down fa-lg" id="SearchPanelHeaderArrow"></i></a>
+           </h3>
+        </div>
+        <div id="SearchPanel" class="panel-collapse collapse in">
+            <div class="panel-body" style="min-height: 135px;"> 
+                <div id="row1" class="row">
+                    <div class="col-sm-6 col-md-6">
+                            <label>@L_PAGE_DATE_FROM</label>
+                            <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DatePicker().Name("dtpDateFrom")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .Events(e => e.Change("ChangdtpDateFrom")))
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-dtpDateFrom"></div>
+                            <span class="k-invalid-msg" data-for="PickupDate"></span>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                            <label>@L_PAGE_DATE_TO</label>
+                            <div class="i-fg-data-entry">
+                                 @(Html.Kendo().DatePicker().Name("dtpDateTo")
+                                 .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                 .Format("dd/MM/yyyy")
+                                 .Min(new DateTime(1900,1,1))
+                                 .Max(new DateTime(2099,12,31))
+                                 .ParseFormats(new List<string> { "dd/MM/yyyy" })
+                                 .Events(e => e.Change("ChangdtpDateTo")))
+                            </div>
+                            <div class="i-fg-data-entry-validation" id="validatefor-dtpDateTo"></div>
+                  </div>
+               </div> @*end row1*@
+               <div id="row2" class="row i-gap-top-1">
+                    <div class="col-sm-6 col-md-6">                                      
+                    </div>
+                    <div class="col-sm-6 col-md-6 i-text-align-right">          
+                        <a class="btn btn-default" onclick="_Clear();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;@L_PAGE_CANCEL</a>
+                        <a class="btn btn-info" onclick="_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;@L_PAGE_SEARCH</a>            
+                    </div>                                            
+               </div>@*end row2*@
+              
+        </div> @*end SearchPanel*@
+    </div>  
+
+    </div>
+    </div>
+</div>
+<div id="gridresult" class="row">
+        <div class="col-sm-12 col-md-12 " >
+                     @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.CusNotRegisList>()
+                        .Name("gridCustNotRegis")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.Item_no).Title(@L_GRID_ITEM_NO).HtmlAttributes(new { style = "text-align:center;" }).Width(100);
+                            columns.Bound(p => p.Dormitort_name).Title(@L_GRID_DORM_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(350);
+                            columns.Bound(p => p.Room_No).Title(@L_GRID_ROOM_NO).HtmlAttributes(new { style = "text-align:center;" }).Width(200);
+                            columns.Bound(p => p.Internet_number).Title(@L_GRID_INTERNAT_NO).HtmlAttributes(new { style = "text-align:center;" }).Width(200);
+                            columns.Bound(p => p.Account_name).Title(@L_GRID_ACCOUNT_NAME).HtmlAttributes(new { style = "text-align:left;" }).Width(350);
+                            columns.Bound(p => p.Contact_Mobile).Title(@L_GRID_CONTRACT_MOBILE).HtmlAttributes(new { style = "text-align:center;" }).Width(200);
+                            columns.Bound(p => p.User_Created).Title(@L_GRID_USER_CREATED).HtmlAttributes(new { style = "text-align:left;" }).Width(150);
+                            columns.Bound(p => p.Installation_Complete_Date).Title(@L_GRID_INSTALL_COMPLEATE_DATE)
+                                .HtmlAttributes(new { style = "text-align:center;" })
+                                .Format("{0:dd/MM/yyyy}").Width(150);        
+                            
+                        })
+                        .ToolBar(toolbar => toolbar.Template("" +
+                            //disabled='disabled'
+        "<div class='pull-right'><a onclick='_ExportToExcel()' id='btnExport'  class='btn btn-default'><i class='fa fa-reply fa-lg'></i>&nbsp; "+ @L_PAGE_EXPORT +"</a>&nbsp;</div>"
+         
+        ))
+                        //.ToolBar(toolBar =>
+                        //    {
+                        //        toolBar.Custom().Name("NewCoverExcel").Text("<i class='fa fa-file-excel-o'></i> New Coverage").HtmlAttributes(new { onclick = "goimortexcel();return false;" });
+                        //        toolBar.Custom().Name("NewCoverNormal").Text("<i class='fa fa-plus-circle fa-lg'></i> New Coverage").HtmlAttributes(new { onclick = "goaddnew();return false;" });
+                        //        toolBar.Custom().Text("<i class='fa fa-reply'></i> Export to Excel").HtmlAttributes(new { onclick = "_ExportToExcel();return false;" });                               
+                        //    }
+                        //    )
+                            .Scrollable(scrollable => scrollable.Height("auto"))
+                            .Pageable(pageable => pageable                           
+                            //.PageSizes(true)
+                            .Numeric(true)
+                            .PageSizes(new int[] {20, 50, 100})                 
+                            )
+                            .Sortable()   
+                            .AutoBind(false) 
+                            //.Filterable()                       
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(20)                 
+                                //.Sort(sort => sort.Add(p => p.Item_no).Ascending())              
+                                .Read(read => read.Action("ReadSearchRpt02", "DormitoryReport").Data("bindingValue"))                               
+                                )
+                            .Events(e => e.DataBound("onGridDataBound"))
+                            )
+      </div>                
+</div>         
+</body>
+
+
+<script>
+    $(document).ready(function () {
+        //debugger        
+        /*$("#dtpDateFrom").mask('99/99/9999');
+        $("#dtpDateTo").mask('99/99/9999');*/
+
+        $('#btnExport').attr("disabled", true);
+
+    });
+
+    function post(path, params, method) {
+
+        method = method || "post"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+      
+    function _ExportToExcel() {
+        var model = new defaultData();
+        window.open("/DormitoryReport/ExportCustNotRegisData?dataS=" + JSON.stringify(model) + "");
+
+
+    }
+    
+    function onGridDataBound() {
+        Loading(0);
+        if (this.dataSource.view().length == 0) {
+            //insert empty row
+
+            var colspan = this.thead.find("th").length;
+            //alert(colspan)
+            var emptyRow = "<tr><td colspan='" + colspan + "'></td></tr>";
+            this.tbody.html(emptyRow);
+
+            //workarounds for IE lt 9
+            //this.table.width(800);
+            //$(".k-grid-content").width(2 * kendo.support.scrollbar());
+            $(".k-grid-content").height(3 * kendo.support.scrollbar());
+        }
+        else {
+            $(".k-grid-content").height("auto");
+        }
+    }
+
+    function _Search()
+    {
+        var model = defaultData();
+        var chk = ValidationDateValue();
+        if (chk)
+        {
+            Loading();
+            var grid = $("#gridCustNotRegis").data("kendoGrid");
+            grid.dataSource.page(1);
+
+            $.ajax({
+                url: '/DormitoryReport/ReadSearchCustNotRegis',
+                data: { dataS: JSON.stringify(model) },
+                dataType: "json",
+                type: 'POST',
+                success: function (response) {
+
+                    if (response) {
+
+                        if (response.item == "0") {
+                            $('#btnExport').attr("disabled", true);
+                        }
+                        else {
+                            $('#btnExport').attr("disabled", false);
+                        }
+
+                    }
+                },
+                failure: function (msg) {
+                }
+            });            
+        }
+    }
+
+
+    function ValidationDateValue()
+    {
+
+        var chk = ValidationProcessing("dateselect");
+              
+        if (chk) //check blank value
+        {
+            if ($.trim($("#dtpDateFrom").val()) == '')
+            {
+                $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if ($.trim($("#dtpDateTo").val()) == '') {
+                $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is required.");
+                chk = false;
+            }
+            else {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check format
+        {
+            if (!kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy"))
+            {
+                if ($("#dtpDateFrom").val() != "") {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else
+            {
+                $("#validatefor-" + "dtpDateFrom").html("");
+            }
+
+            if (!kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy"))
+            {
+                if ($("#dtpDateTo").val() != "") {
+                    $("#validatefor-" + "dtpDateTo").html(ValidationIcon() + "This field is not correct format.");
+                    chk = false;
+                }
+            }
+            else
+            {
+                $("#validatefor-" + "dtpDateTo").html("");
+            }
+        }
+
+        if (chk) //check Date From must be earlier than Date To
+        {
+            var startPicker = new Date(kendo.parseDate($("#dtpDateFrom").val(), "mm/dd/yyyy"));
+            var endPicker = new Date(kendo.parseDate($("#dtpDateTo").val(), "mm/dd/yyyy"));
+            
+            if (startPicker > endPicker)
+            {
+                if ($("#dtpDateFrom").val() != "")
+                {
+                    $("#validatefor-" + "dtpDateFrom").html(ValidationIcon() + "Date From must be earlier than Date To.");
+                    chk = false;
+                }
+                else {
+                    $("#validatefor-" + "dtpDateFrom").html("");
+                }
+            }
+        }
+
+        return chk;
+    }
+
+    var CusNotRegisModel = function ()
+    {
+        dateFrom: "";
+        dateTo: "";
+    }
+
+    function bindingValue()
+    {
+        var model = defaultData();
+        return {
+            dataS: JSON.stringify(model)
+        };
+    }
+
+    function defaultData()
+    {
+        var searchModel = new CusNotRegisModel();
+        searchModel.dateFrom = kendo.parseDate($("#dtpDateFrom").val(), "dd/MM/yyyy"); 
+        searchModel.dateTo = kendo.parseDate($("#dtpDateTo").val(), "dd/MM/yyyy");         
+
+        return searchModel;
+    }
+    function _Clear()
+    {
+        $("#dtpDateFrom").data("kendoDatePicker").value("");
+        $("#dtpDateTo").data("kendoDatePicker").value("");
+        //reset min, max.
+        $("#dtpDateFrom").data("kendoDatePicker").max(new Date(2099, 11, 31, 0, 0, 0, 0));
+        $("#dtpDateTo").data("kendoDatePicker").min(new Date(1900, 0, 1, 0, 0, 0, 0));
+
+        $('#btnExport').attr("disabled", true);
+        $("#gridCustNotRegis").data("kendoGrid").dataSource.data([]);
+        $("#validatefor-dtpDateTo").html("");
+        $("#validatefor-dtpDateFrom").html("");
+    }
+
+    function ChangdtpDateFrom()
+    {
+
+        var endPicker = $("#dtpDateTo").data("kendoDatePicker"),
+        startDate = this.value();
+
+        if (startDate)
+        {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate());
+            endPicker.min(startDate);
+        }
+
+    }
+
+    function ChangdtpDateTo()
+    {
+        var startPicker = $("#dtpDateFrom").data("kendoDatePicker"),
+        endDate = this.value();
+
+        if (endDate)
+        {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate());
+            startPicker.max(endDate);
+        }
+
+    }
+
+    function Chang_Requrest_Date()
+    {
+        var requrestDatePicker = $("#dtpDateFrom").data("kendoDatePicker")
+    }
+
+</script>
+</html>

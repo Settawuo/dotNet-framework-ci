@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://employee.ais.co.th/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://employee.ais.co.th/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://employee.ais.co.th/">
+      <s:element name="WS_LDAP_AddEntry">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="employee" type="tns:AisEmployeeUser" />
+            <s:element minOccurs="1" maxOccurs="1" name="Project" nillable="true" type="tns:ProjectQuery" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AisEmployeeUser">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CommonName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Lastname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Firstname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PinCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TelephoneNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MobileNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CompanyCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Company" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BusinessUnitCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BusinessUnit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DepartmentHeadCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DepartmentHead" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DepartmentCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Department" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SectionCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Section" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FunctionCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Function" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PGGroupCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="locationcode" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ProjectQuery">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ProjectCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProjectLevel" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="WS_LDAP_AddEntryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WS_LDAP_AddEntryResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ServiceResponse">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ServiceResponseWithAisEmployeeInfomation">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ServiceResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="AisEmployee" type="tns:AisEmployeeUser" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="WS_LDAP_EditEntry">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="employee" type="tns:AisEmployeeUser" />
+            <s:element minOccurs="1" maxOccurs="1" name="Project" nillable="true" type="tns:ProjectQuery" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_LDAP_EditEntryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WS_LDAP_EditEntryResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_LDAP_DeleteEntry">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="employee" type="tns:AisEmployeeUser" />
+            <s:element minOccurs="1" maxOccurs="1" name="Project" nillable="true" type="tns:ProjectQuery" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_LDAP_DeleteEntryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WS_LDAP_DeleteEntryResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_LDAP_QueryUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="employee" type="tns:AisEmployeeUser" />
+            <s:element minOccurs="1" maxOccurs="1" name="Project" nillable="true" type="tns:ProjectQuery" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_LDAP_QueryUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WS_LDAP_QueryUIDResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_LDAP_QueryPINCODE">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="employee" type="tns:AisEmployeeUser" />
+            <s:element minOccurs="1" maxOccurs="1" name="Project" nillable="true" type="tns:ProjectQuery" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_LDAP_QueryPINCODEResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WS_LDAP_QueryPINCODEResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_LDAP_DisableUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Project" nillable="true" type="tns:ProjectQuery" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WS_LDAP_DisableUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WS_LDAP_DisableUserResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="WS_LDAP_AddEntrySoapIn">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_AddEntry" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_AddEntrySoapOut">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_AddEntryResponse" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_EditEntrySoapIn">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_EditEntry" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_EditEntrySoapOut">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_EditEntryResponse" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_DeleteEntrySoapIn">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_DeleteEntry" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_DeleteEntrySoapOut">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_DeleteEntryResponse" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_QueryUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_QueryUID" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_QueryUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_QueryUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_QueryPINCODESoapIn">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_QueryPINCODE" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_QueryPINCODESoapOut">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_QueryPINCODEResponse" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_DisableUserSoapIn">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_DisableUser" />
+  </wsdl:message>
+  <wsdl:message name="WS_LDAP_DisableUserSoapOut">
+    <wsdl:part name="parameters" element="tns:WS_LDAP_DisableUserResponse" />
+  </wsdl:message>
+  <wsdl:portType name="AisEmployeServiceSoap">
+    <wsdl:operation name="WS_LDAP_AddEntry">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add new LDAP Entry</wsdl:documentation>
+      <wsdl:input message="tns:WS_LDAP_AddEntrySoapIn" />
+      <wsdl:output message="tns:WS_LDAP_AddEntrySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_EditEntry">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Edit LDAP Entry</wsdl:documentation>
+      <wsdl:input message="tns:WS_LDAP_EditEntrySoapIn" />
+      <wsdl:output message="tns:WS_LDAP_EditEntrySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_DeleteEntry">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete LDAP Entry</wsdl:documentation>
+      <wsdl:input message="tns:WS_LDAP_DeleteEntrySoapIn" />
+      <wsdl:output message="tns:WS_LDAP_DeleteEntrySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_QueryUID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Search LDAP Entry. Filted by uid</wsdl:documentation>
+      <wsdl:input message="tns:WS_LDAP_QueryUIDSoapIn" />
+      <wsdl:output message="tns:WS_LDAP_QueryUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_QueryPINCODE">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Search LDAP Entry. Filted by pinCode</wsdl:documentation>
+      <wsdl:input message="tns:WS_LDAP_QueryPINCODESoapIn" />
+      <wsdl:output message="tns:WS_LDAP_QueryPINCODESoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_DisableUser">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Disable User LDAP Entry</wsdl:documentation>
+      <wsdl:input message="tns:WS_LDAP_DisableUserSoapIn" />
+      <wsdl:output message="tns:WS_LDAP_DisableUserSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="AisEmployeServiceHttpGet" />
+  <wsdl:portType name="AisEmployeServiceHttpPost" />
+  <wsdl:binding name="AisEmployeServiceSoap" type="tns:AisEmployeServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WS_LDAP_AddEntry">
+      <soap:operation soapAction="http://employee.ais.co.th/WS_LDAP_AddEntry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_EditEntry">
+      <soap:operation soapAction="http://employee.ais.co.th/WS_LDAP_EditEntry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_DeleteEntry">
+      <soap:operation soapAction="http://employee.ais.co.th/WS_LDAP_DeleteEntry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_QueryUID">
+      <soap:operation soapAction="http://employee.ais.co.th/WS_LDAP_QueryUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_QueryPINCODE">
+      <soap:operation soapAction="http://employee.ais.co.th/WS_LDAP_QueryPINCODE" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_DisableUser">
+      <soap:operation soapAction="http://employee.ais.co.th/WS_LDAP_DisableUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="AisEmployeServiceSoap12" type="tns:AisEmployeServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WS_LDAP_AddEntry">
+      <soap12:operation soapAction="http://employee.ais.co.th/WS_LDAP_AddEntry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_EditEntry">
+      <soap12:operation soapAction="http://employee.ais.co.th/WS_LDAP_EditEntry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_DeleteEntry">
+      <soap12:operation soapAction="http://employee.ais.co.th/WS_LDAP_DeleteEntry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_QueryUID">
+      <soap12:operation soapAction="http://employee.ais.co.th/WS_LDAP_QueryUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_QueryPINCODE">
+      <soap12:operation soapAction="http://employee.ais.co.th/WS_LDAP_QueryPINCODE" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WS_LDAP_DisableUser">
+      <soap12:operation soapAction="http://employee.ais.co.th/WS_LDAP_DisableUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="AisEmployeServiceHttpGet" type="tns:AisEmployeServiceHttpGet">
+    <http:binding verb="GET" />
+  </wsdl:binding>
+  <wsdl:binding name="AisEmployeServiceHttpPost" type="tns:AisEmployeServiceHttpPost">
+    <http:binding verb="POST" />
+  </wsdl:binding>
+  <wsdl:service name="AisEmployeService">
+    <wsdl:port name="AisEmployeServiceSoap" binding="tns:AisEmployeServiceSoap">
+      <soap:address location="https://dev-ldapws.intra.ais/AisEmployee/AisEmployeService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="AisEmployeServiceSoap12" binding="tns:AisEmployeServiceSoap12">
+      <soap12:address location="https://dev-ldapws.intra.ais/AisEmployee/AisEmployeService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="AisEmployeServiceHttpGet" binding="tns:AisEmployeServiceHttpGet">
+      <http:address location="https://dev-ldapws.intra.ais/AisEmployee/AisEmployeService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="AisEmployeServiceHttpPost" binding="tns:AisEmployeServiceHttpPost">
+      <http:address location="https://dev-ldapws.intra.ais/AisEmployee/AisEmployeService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

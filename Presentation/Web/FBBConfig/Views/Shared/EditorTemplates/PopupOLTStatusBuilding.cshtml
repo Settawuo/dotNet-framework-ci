@@ -1,0 +1,19 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.OLTList
+@using Kendo.Mvc.UI
+
+@(Html.Kendo().DropDownList()
+.Name("ddlOLTStatus")
+.DataValueField("Value")
+.DataTextField("Text")
+.HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+.BindTo(new List<SelectListItem>()
+{
+    new SelectListItem() {
+    Text = "Waiting Closed", Value ="W"
+    },
+    new SelectListItem() {
+    Text = "Closed", Value ="C"
+    }
+})
+.Events(e => { e.Change("onOLTStatusChange").DataBound("ddlOLTStatus_databound").Select("onSelectStatus"); })
+    )

@@ -1,0 +1,464 @@
+﻿@model WBBEntity.PanelModels.LeavemessagePanelModel
+@using System.Collections.Generic;
+@using WBBEntity.PanelModels
+@{
+    Layout = "~/Views/Shared/_ChangePlayboxLayout.cshtml";
+
+    string UrlRef = "";
+    string SaveStatus = "";
+    string RefNo = "";
+
+    if (ViewBag.UrlRef != null)
+    {
+        UrlRef = ViewBag.UrlRef;
+    }
+
+    if (null != ViewBag.SaveStatus)
+    {
+        SaveStatus = ViewBag.SaveStatus;
+        ViewBag.SaveStatus = null;
+    }
+    else
+    {
+        SaveStatus = "";
+    }
+
+    if (null != ViewBag.RefNo)
+    {
+        RefNo = ViewBag.RefNo;
+        ViewBag.RefNo = null;
+    }
+    else
+    {
+        RefNo = "";
+    }
+
+    string L_SELECT_PACKAGE = "";
+    string L_SUBSCRIBER_NAME = "";
+    string L_SURNAME = "";
+    string L_CONTACT_MOBILE = "";
+    string L_INTERNET_NO = "";
+    string L_CONTACT_TIME = "";
+    string L_ENTER_WORD = "";
+    string B_CLEAR = "";
+    string B_REGISTER = "";
+    string L_PLEASE_SELECT = "";
+    string L_POPUP_SUCCESS  = "";
+    string L_POPUP_ERROR  = "";
+    string L_POPUP_NOT_FOUND_INTERNET_NO = "";
+    string L_POPUP_SUCCESS_CHANGE = "";
+    string B_CLOSE   = "";
+
+
+    if (ViewBag.LabelFBBOR021 != null)
+    {
+        var LabelFBBOR021 = (List<LovScreenValueModel>)ViewBag.LabelFBBOR021;
+
+        L_SELECT_PACKAGE = LabelFBBOR021.Any(c => c.Name == "L_SELECT_PACKAGE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_SELECT_PACKAGE").DisplayValue : "";
+        L_SUBSCRIBER_NAME = LabelFBBOR021.Any(c => c.Name == "L_SUBSCRIBER_NAME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_SUBSCRIBER_NAME").DisplayValue : "";
+        L_SURNAME = LabelFBBOR021.Any(c => c.Name == "L_SURNAME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_SURNAME").DisplayValue : "";
+        L_CONTACT_MOBILE = LabelFBBOR021.Any(c => c.Name == "L_CONTACT_MOBILE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_CONTACT_MOBILE").DisplayValue : "";
+        L_INTERNET_NO = LabelFBBOR021.Any(c => c.Name == "L_INTERNET_NO") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_INTERNET_NO").DisplayValue : "";      
+        L_CONTACT_TIME = LabelFBBOR021.Any(c => c.Name == "L_CONTACT_TIME") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_CONTACT_TIME").DisplayValue : "";
+        L_ENTER_WORD = LabelFBBOR021.Any(c => c.Name == "L_ENTER_WORD") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_ENTER_WORD").DisplayValue : "";
+        B_CLEAR = LabelFBBOR021.Any(c => c.Name == "B_CLEAR") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "B_CLEAR").DisplayValue : "";
+        B_REGISTER = LabelFBBOR021.Any(c => c.Name == "B_REGISTER") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "B_REGISTER").DisplayValue : "";
+        L_PLEASE_SELECT = LabelFBBOR021.Any(c => c.Name == "L_PLEASE_SELECT") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_PLEASE_SELECT").DisplayValue : "";
+        L_POPUP_SUCCESS = LabelFBBOR021.Any(c => c.Name == "L_POPUP_SUCCESS") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_POPUP_SUCCESS").DisplayValue : "";
+        L_POPUP_ERROR = LabelFBBOR021.Any(c => c.Name == "L_POPUP_ERROR") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_POPUP_ERROR").DisplayValue : "";
+        L_POPUP_NOT_FOUND_INTERNET_NO = LabelFBBOR021.Any(c => c.Name == "L_POPUP_NOT_FOUND_INTERNET_NO") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_POPUP_NOT_FOUND_INTERNET_NO").DisplayValue : "";
+        L_POPUP_SUCCESS_CHANGE = LabelFBBOR021.Any(c => c.Name == "L_POPUP_SUCCESS_CHANGE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "L_POPUP_SUCCESS_CHANGE").DisplayValue : "";
+        B_CLOSE = LabelFBBOR021.Any(c => c.Name == "B_CLOSE") ? LabelFBBOR021.FirstOrDefault(c => c.Name == "B_CLOSE").DisplayValue : "";        
+    }
+
+    string FBB_Con_CharNotonName = "";
+    string FBB_Input_MobileNo = "";
+    
+    if (ViewBag.FbbConstant != null)
+    {
+        var FbbConstant = (List<FbbConstantModel>)ViewBag.FbbConstant;
+        
+        FBB_Con_CharNotonName = FbbConstant.Any(f => f.Field == "Char Not on Name") ? FbbConstant.First(f => f.Field == "Char Not on Name").Validation : "";
+        FBB_Input_MobileNo = FbbConstant.Any(f => f.Field == "Input_MobileNo") ? FbbConstant.First(f => f.Field == "Input_MobileNo").Validation : "";
+    }
+}
+
+@using (Html.BeginForm("SaveChangePlaybox", "ChangePlaybox", FormMethod.Post, new { id = "ChangePlayboxForm", enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    <h4 class="page-header tgreen"></h4>
+    <div>
+        <div class="row">            
+            <div class="col-xs-10 col-sm-5">
+                @Html.Label("L_SELECT_SERVICE", L_SELECT_PACKAGE)
+                <select class="select" style="width: 100%" id="SELECT_SERVICE" name="SELECT_SERVICE" onchange="">
+                </select>
+            </div>
+            <p class="clearfix"></p>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 col-sm-5">
+                @Html.Label("L_SUBSCRIBER_NAME", L_SUBSCRIBER_NAME)
+                @Html.TextBoxFor(m => m.NAME, "",
+                        new
+                        {
+                            @class = "form-control",
+                            @title = L_SUBSCRIBER_NAME,
+                            @maxlength = 50
+                        })
+            </div>
+            <div class="col-xs-2 col-sm-2">
+                
+            </div>
+            <div class="col-xs-10 col-sm-5">
+                @Html.Label("L_SURNAME", L_SURNAME)
+                @Html.TextBoxFor(m => m.SURNAME, "",
+                        new
+                        {
+                            @class = "form-control",
+                            @title = L_SURNAME,
+                            @maxlength = 50
+                        })
+            </div>
+            <p class="clearfix"></p>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 col-sm-5">
+                @Html.Label("L_CONTACT_MOBILE", L_CONTACT_MOBILE)
+                @Html.TextBoxFor(m => m.CONTACT_MOBILE, "",
+                        new
+                        {
+                            @class = "form-control",
+                            @title = L_CONTACT_MOBILE,
+                            @maxlength = 10
+                        })
+            </div>
+            <div class="col-xs-2 col-sm-2">
+            </div>
+            <div class="col-xs-10 col-sm-5">
+                @Html.Label("L_INTERNET_NO", L_INTERNET_NO)
+                @Html.TextBoxFor(m => m.INTERNET_NO, "",
+                        new
+                        {
+                            @class = "form-control",
+                            @title = L_INTERNET_NO,
+                            @maxlength = 10
+                        })
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+
+        @*<div class="row">
+            <div class="col-xs-10  col-sm-5">
+                @Html.Label("L_CONTACT_TIME", L_CONTACT_TIME)
+                <select class="select" style="width: 100%" id="CONTACT_TIME" name="CONTACT_TIME">
+                </select>
+            </div>
+            <p class="clearfix"></p>
+        </div>*@
+
+        <div class="row">
+            <div class="col-xs-10 col-sm-5">
+                @Html.Label("L_ENTER_WORD", L_ENTER_WORD)
+                <input type="text" id="defaultReal" name="defaultReal" class="form-control">
+            </div>
+            <p class="clearfix"></p>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    
+    <p class="clearfix"></p>
+    <p class="clearfix page-header"></p>
+
+    <div class="col-md-12 text-center">
+        <a class="btn btn-default btn-for-xs" role="button" style="color: #8DC63F;" onclick="Clear()">@B_CLEAR</a>
+        <a class="btn btn-success rippler rippler-default btn-for-xs" role="button" onclick="Register()">@B_REGISTER</a>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal001_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: none;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="Clear()"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-border-rounded-green">
+                        <p class="clearfix"></p>
+                        <h5 id="modal001txt" class="text-center">
+                            <span id="LastPopupMessage"></span>
+                        </h5>
+                        <p class="clearfix"></p>
+                        <div class="col-md-12 text-center">
+                            <p class="clearfix"></p>
+                            <button type="button" id="modal001btn" class="btn btn-default" data-dismiss="modal" onclick="Clear()">&nbsp; @B_CLOSE &nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="myModalPopup" tabindex="-1" role="dialog" aria-labelledby="modal002_label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: none;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=""><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-border-rounded-green">
+                        <p class="clearfix"></p>
+                        <h5 id="modal002txt" class="text-center">
+                            <span id="LastPopupMessage002"></span>
+                        </h5>
+                        <p class="clearfix"></p>
+                        <div class="col-md-12 text-center">
+                            <p class="clearfix"></p>
+                            <button type="button" id="modal002btn" class="btn btn-default" data-dismiss="modal" onclick="">&nbsp; @B_CLOSE &nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript"> 
+
+    var validateModel = new Array();
+
+    $(document).ready(function () {
+
+        var saveStatus = '@SaveStatus';
+
+        if (saveStatus != '') {
+            if (saveStatus == "Y") {
+                PopupMessage('@Html.Raw(L_POPUP_SUCCESS_CHANGE.Replace("{0}",RefNo))');
+            }
+            else {
+                PopupMessage('@Html.Raw(L_POPUP_ERROR)');
+            }
+            $('#myModal').modal('show');
+        }
+
+        getServiceSpeed();
+        //getContactTime();
+
+        $('#NAME').keyup(function () {
+            CheckKeyUps("NAME", "@FBB_Con_CharNotonName");
+        });
+        $('#SURNAME').keyup(function () {
+            CheckKeyUps("SURNAME", "@FBB_Con_CharNotonName");
+        });
+        $("#CONTACT_MOBILE").keyup(function () {
+            CheckKeyUps("CONTACT_MOBILE", '@FBB_Input_MobileNo','M');
+        });
+        $("#INTERNET_NO").keyup(function () {
+            CheckKeyUps("INTERNET_NO", '[0-9]');
+        });
+
+        $('#defaultReal').realperson({
+            length: 5,
+            regenerate: 'Change',
+            dot: '*',
+            dots: $.realperson.defaultDots,
+            chars: $.realperson.alphanumeric
+        });
+
+        $("#INTERNET_NO").focusout(function () {
+            var a = [];
+
+            a.pop({ id: "INTERNET_NO" });
+            a.push({ id: "INTERNET_NO" });
+
+            PopupMessage002('@Html.Raw(L_POPUP_NOT_FOUND_INTERNET_NO)');
+
+            var chk = ValidationProcessing(a, "err001");
+            if (chk) {
+                if ($("#INTERNET_NO").val().length == 10) {
+                    if (CheckInternetAIS()) {
+                        $("#INTERNET_NO")[0].className = "form-control";
+                    }
+                    else {
+                        $("#INTERNET_NO").val("")
+                        $("#INTERNET_NO")[0].className = "form-control errorinput";
+                        $('#myModalPopup').modal('show');
+                    }
+                }
+                else {
+                    $("#INTERNET_NO")[0].className = "form-control errorinput";
+                }
+            }
+
+        });
+    });
+
+    function ValidateCaptcha() {
+        var cap = false; 
+        $.ajax({
+            url: '/Process/ValidateCaptcha',
+            data: { inputUser: $('#defaultReal').val(), inputHash: $('#defaultReal').realperson('getHash') },
+            dataType: "json",
+            async: false,
+            type: 'POST',
+            success: function (response) {
+                if (!response) {
+                    $("#defaultReal")[0].className = "form-control errorinput";
+                    $('#defaultReal').realperson({
+                        length: 5,
+                        regenerate: 'Change',
+                        dot: '*',
+                        dots: $.realperson.defaultDots,
+                        chars: $.realperson.alphanumeric
+                    });
+                }
+                else {
+                    cap = true;
+                }
+            }
+        });
+        return  cap;
+    }
+
+    function Register() {
+
+        var a = [];
+
+        a.pop({ id: "SELECT_SERVICE" });
+        a.pop({ id: "NAME" });
+        a.pop({ id: "SURNAME" });
+        a.pop({ id: "CONTACT_MOBILE" });
+        a.pop({ id: "INTERNET_NO" });
+        //a.pop({ id: "CONTACT_TIME" });
+
+        a.push({ id: "SELECT_SERVICE" });
+        a.push({ id: "NAME" });
+        a.push({ id: "SURNAME" });
+        a.push({ id: "CONTACT_MOBILE", condition: "MobileNumber" });
+        a.push({ id: "INTERNET_NO", condition: "MobileNumber" });
+        //a.push({ id: "CONTACT_TIME" });
+
+        chk = ValidationProcessing(a, "err001");
+
+        if (chk && ValidateCaptcha()) {
+            $("#ChangePlayboxForm").submit();
+        }
+    }
+
+    function Clear() {
+        window.location.href = '@UrlRef';      
+    }
+
+    function getServiceSpeed() {
+        $('#SELECT_SERVICE').empty();
+        var str = '<option disabled selected value="">' + "@L_PLEASE_SELECT" + '</option>';
+
+        $('#SELECT_SERVICE').append(str);
+        $.ajax({
+            type: "GET",
+            url: "/ChangePlaybox/GetPackageSpeed",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder = '';
+                $.each(data, function (i, e) {
+                    var s = "";
+
+                    var str = '<option value="' + e.Value + '"' + s + '>' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+
+                $('#SELECT_SERVICE').append(strBuilder);
+                $('#SELECT_SERVICE').select2();
+            }
+        });
+    }
+
+    function getContactTime() {
+        $('#CONTACT_TIME').empty();
+        var str = '<option disabled selected value="">' + "@L_PLEASE_SELECT" + '</option>';
+
+        $('#CONTACT_TIME').append(str);
+        $.ajax({
+            type: "GET",
+            url: "/Leavemessage/GetContactTime",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var strBuilder = '';
+                $.each(data, function (i, e) {
+                    var s = "";
+
+                    var str = '<option value="' + e.Value + '"' + s + '>' + e.Text + '</option>';
+                    strBuilder += str;
+                });
+
+                $('#CONTACT_TIME').append(strBuilder);
+                $('#CONTACT_TIME').select2();
+            }
+        });
+    }
+
+    function CheckInternetAIS() {
+        var IsAIS = false;
+        $.ajax({
+            url: '/CheckCoverage/CheckIsAIS',
+            data: { mobileNo: codefbb.fbbMessage($("#INTERNET_NO").val()), Page: "ChangePlayBox" },
+            dataType: "json",
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                IsAIS = response.status;
+            }
+        });
+        return IsAIS;
+    }
+
+    function base64_decode(str) {
+        if (window.atob) // Internet Explorer 10 and above  
+            return decodeURIComponent(escape(window.atob(str)));
+        else {
+            // Cross-Browser Method (compressed)  
+
+            // Create Base64 Object  
+            var Base64 = { _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", encode: function (e) { var t = ""; var n, r, i, s, o, u, a; var f = 0; e = Base64._utf8_encode(e); while (f < e.length) { n = e.charCodeAt(f++); r = e.charCodeAt(f++); i = e.charCodeAt(f++); s = n >> 2; o = (n & 3) << 4 | r >> 4; u = (r & 15) << 2 | i >> 6; a = i & 63; if (isNaN(r)) { u = a = 64 } else if (isNaN(i)) { a = 64 } t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a) } return t }, decode: function (e) { var t = ""; var n, r, i; var s, o, u, a; var f = 0; e = e.replace(/[^A-Za-z0-9\+\/\=]/g, ""); while (f < e.length) { s = this._keyStr.indexOf(e.charAt(f++)); o = this._keyStr.indexOf(e.charAt(f++)); u = this._keyStr.indexOf(e.charAt(f++)); a = this._keyStr.indexOf(e.charAt(f++)); n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2; i = (u & 3) << 6 | a; t = t + String.fromCharCode(n); if (u != 64) { t = t + String.fromCharCode(r) } if (a != 64) { t = t + String.fromCharCode(i) } } t = Base64._utf8_decode(t); return t }, _utf8_encode: function (e) { e = e.replace(/\r\n/g, "\n"); var t = ""; for (var n = 0; n < e.length; n++) { var r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r) } else if (r > 127 && r < 2048) { t += String.fromCharCode(r >> 6 | 192); t += String.fromCharCode(r & 63 | 128) } else { t += String.fromCharCode(r >> 12 | 224); t += String.fromCharCode(r >> 6 & 63 | 128); t += String.fromCharCode(r & 63 | 128) } } return t }, _utf8_decode: function (e) { var t = ""; var n = 0; var r = c1 = c2 = 0; while (n < e.length) { r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r); n++ } else if (r > 191 && r < 224) { c2 = e.charCodeAt(n + 1); t += String.fromCharCode((r & 31) << 6 | c2 & 63); n += 2 } else { c2 = e.charCodeAt(n + 1); c3 = e.charCodeAt(n + 2); t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63); n += 3 } } return t } }
+            // Encode the String  
+            return decodeURIComponent(escape(Base64.decode(str)));
+        }
+    }
+
+    function CheckKeyUps(id, RexStr, checkMobile) {
+        var strKey = $("#" + id).val();
+        var strBuilder = "";
+        if (checkMobile == undefined || checkMobile != "M") {
+            var filter = new RegExp(RexStr);
+            for (var i = 0; i < strKey.length; i++) {
+                if (filter.test(strKey.substr(i, 1))) {
+                    strBuilder += strKey.substr(i, 1);
+                }
+            }
+        }
+        else {
+            var filterM = new RegExp(RexStr, "g");
+            strBuilder = strKey.match(filterM);
+        }
+        $("#" + id).val(strBuilder);
+    }
+
+    function PopupMessage(msg) {
+        $('#LastPopupMessage').empty();
+        $('#LastPopupMessage').append(msg);
+    }
+
+    function PopupMessage002(msg) {
+        $('#LastPopupMessage002').empty();
+        $('#LastPopupMessage002').append(msg);
+    }
+
+</script>

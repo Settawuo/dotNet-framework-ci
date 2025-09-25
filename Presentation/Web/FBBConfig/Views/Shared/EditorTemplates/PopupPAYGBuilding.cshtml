@@ -1,0 +1,22 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.UpdateScreenList
+@using Kendo.Mvc.UI
+
+@(Html.Kendo().DropDownList()
+.Name("ddlStatus")
+.DataValueField("Value")
+.DataTextField("Text")
+.HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+.DataSource(source =>
+           {
+              source.Read(read =>
+              {
+                  read.Action("GetStatusTopUp", "PAYGReport").Data("getParentID()");
+              });
+             })
+.Events(e =>
+{
+    e.Select("onSelectIndoor").DataBound("ddlIndoor_databound");    
+})
+)
+
+@Html.TextBoxFor(model => model.REMARK_IN, new { @id = "Remark_IN", @class = "k-textbox form-control", @maxlength = "1000", @onchange = "GetRemarkIN(this)"})

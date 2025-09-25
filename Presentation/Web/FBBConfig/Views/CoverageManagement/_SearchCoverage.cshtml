@@ -1,0 +1,351 @@
+﻿@model WBBEntity.PanelModels.FBBWebConfigModels.CoverageSitePanelModel
+@using WBBEntity.PanelModels.FBBWebConfigModels;
+@using WBBEntity.Models;
+
+@{
+    ViewBag.Title = "Search Coverage";
+}
+
+<ol class="breadcrumb">
+  <li><a href="#" id="navPage1">Main Page</a></li>
+    <li><a href="#" >Site/Coverage</a></li>
+  <li><a href="#" onclick="$('#navPage3').click()">Building/DSLAM</a></li>
+    <li><a href="#" id="navPage4">Card/Port</a></li>
+    
+</ol>
+
+<ol class="breadcrumb">
+  <li class="active">Main Page</li>
+</ol>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-info-circle" style="font-size: large;">&nbsp;Main Page</i>
+                    <a data-toggle="collapse" class="pull-right" href="#SearchCoveragePanel" onclick="onPanelToggle(this);" id="SearchCoveragePanelHeader">
+                        <i class="fa fa-chevron-down" id="ArrowIconSearchCoverage"></i>
+                    </a>
+                </h3>
+            </div>
+            <div id="SearchCoveragePanel" class="panel-collapse collapse in i-gap-top-1 i-gap-right-1 i-gap-left-1 i-gap-bottom-1">  
+                <div class="row">
+                    <div class="col-sm-6 col-md-6" >
+                        <div class=" panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                         @(Html.Kendo().DropDownList()
+                                          .Name("ddlRegion")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectLov", "MasterData", new { type = "REGION_CODE" });
+                                              });
+                                          })
+                                          .Events(e => e.Change("onRegionChanges"))
+                                    )                                
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        @(Html.Kendo().DropDownList()
+                                          .Name("ddlProvince")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectProvince", "MasterData");
+                                              });
+                                          })
+                                          .Events(e => e.Change("onProvinceChanges"))
+                                    )
+                                    </div>
+                                </div>
+                                <div class="row i-gap-top-1">
+                                    <div class="col-sm-6 col-md-6">
+                                        @(Html.Kendo().DropDownList()
+                                          .Name("ddlAmphur")
+                                          .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                          .DataTextField("DISPLAY_VAL")
+                                          .DataValueField("LOV_NAME")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("SelectAmphur", "MasterData");
+                                              });
+                                          })
+                                    )
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        @(Html.Kendo().DropDownList()
+                                              .Name("ddlStatus")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_NAME")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectLov", "MasterData", new { type = "COVERAGESTATUS" });
+                                                  });
+                                              })
+                                        )
+                                    </div>
+                                </div>
+                                <div class="row i-gap-top-1">
+                                    <div class="col-sm-6 col-md-6">
+                                        <input type="text" id="txtProjectName" class="k-textbox form-control" placeholder="ชื่อโครงการ" />
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        @(Html.Kendo().DropDownList()
+                                              .Name("ddlPortUtilization")
+                                              .DataTextField("DISPLAY_VAL")
+                                              .DataValueField("LOV_VAL1")
+                                              .HtmlAttributes(new { @class = "form-control i-form-control-extend" })
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("SelectLov", "MasterData", new { type = "PORT_UTILIZATION" }).Data("CM_GetDefaultPortUtilization");
+                                                  });
+                                              })                                             
+                                        )
+                                    </div>
+                                </div>
+                                <div class="row i-gap-top-1">
+                                    <div class="col-sm-6 col-md-6">
+                                        <input type="text" id="txtIPRANCode" class="k-textbox form-control" placeholder="IPRAN Code" />
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <input type="text" id="txtCondoCodeSC" class="k-textbox form-control" placeholder="Condo Code" />
+                                    </div>
+                                </div>                               
+                                <div class="row i-gap-top-1 i-gap-bottom-1"> 
+                                    <div class="col-sm-12 col-md-12 i-text-align-right">
+                                        <a class="btn btn-default" onclick="CM_Reset();"><i class="fa fa-ban fa-lg"></i>&nbsp;&nbsp;ยกเลิก</a>
+                                        <a class="btn btn-info" id="btnSearch" onclick="CM_Search();"><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;ค้นหา</a>                                     
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 " >
+                        <div class=" panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>Total Site : </label>
+                                        <label id="L_TotalSite">0</label>
+                                    </div> 
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>Total Coverage : </label>
+                                        <label id="L_TotalCoverage">0</label>
+                                    </div>                                    
+                                </div>
+                                <div class="row i-gap-top-1">
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>Total Port : </label>
+                                        <label id="L_TotalPort">0</label>
+                                    </div> 
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>Port Available : </label>
+                                        <label id="L_Available">0</label>
+                                    </div>                                    
+                                </div>
+                                <div class="row i-gap-top-1">
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>Port Active : </label>
+                                        <label id="L_Active">0</label>
+                                    </div> 
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>Port Reserve : </label>
+                                        <label id="L_Reserve">0</label>
+                                    </div>                                    
+                                </div>
+                                <div class="row i-gap-top-1">
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>Port Out Of Service : </label>
+                                        <label id="L_OutOfService">0</label>
+                                    </div> 
+                                    <div class="col-sm-6 col-md-6">
+                                        <label>Port Pending Terminate : </label>
+                                        <label id="L_PendingTerminate">0</label>
+                                    </div>                                    
+                                </div>
+                                <div class="row" style="margin-top:58px;">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 " >
+                     @(Html.Kendo().Grid<WBBEntity.PanelModels.FBBWebConfigModels.CoverageAreaPanel>()
+                        .Name("GridCoverageSite")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.IpRanSiteCode).Title("SITE <i class='fa fa-sort-alpha-desc'></i>").ClientTemplate("#=IpRanSiteCode#<br/>#=CondoCode#<br/>#=Status#<br/> #if(OnTargetDate == null){# # # #}else{# #=kendo.toString(OnTargetDate,'dd/MM/yyyy')# #}#").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.NodeNameTH).Title("Node Name <i class='fa fa-sort-alpha-desc'></i>").ClientTemplate("#=NodeType#<br/>#=NodeNameTH#<br/>#=NodeNameEN#</br>#=ContactNumber#").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Bound(p => p.MooTH).Title("Address <i class='fa fa-sort-alpha-desc'></i>").ClientTemplate("หมู่ #if(MooTH == 0){# # # #}else{# #=MooTH# #}#<br/>ซอย #=SoiTH#<br/>ถนน #=RoadTH#<br/>รหัสไปรษณีย์ #=ZipCodeTH#").HtmlAttributes(new { style = "text-align:left;" });
+
+                            columns.Bound(p => p.TumbonTH).Title("Province <i class='fa fa-sort-alpha-desc'></i>").ClientTemplate("#=TumbonTH#<br/>#=AmphurTH#<br/>#=ProvinceTH#<br/>#=RegionCode#").HtmlAttributes(new { style = "text-align:left;" });
+                            columns.Command(command => command.Custom("Config").Click("manageCoverage").Text("<i class='fa fa-cog'></i> Config")).Width(100);
+                        })
+                        .ToolBar(toolBar =>
+                            {
+                                toolBar.Custom().Text("<i class='fa fa-plus'></i> New Site").HtmlAttributes(new { onclick = "gotoSiteCoverage();return false;", @class = "pull-right" });
+                                toolBar.Custom().Text("<i class='fa fa-reply'></i> Export to Excel").HtmlAttributes(new { onclick = "downloadExcel();return false;", @class = "pull-right" });
+                            }
+                            )
+                            .Pageable(p => p.Input(true)
+                                        .Numeric(true)
+                                        .PageSizes(true))
+                            .Sortable()             
+                            .AutoBind(false)               
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(10)
+                                .Model(model => model.Id(p => p.ContactId))
+                                .Read(read => read.Action("Read_CoverageSite", "CoverageManagement").Data("CM_ReadData"))
+                                .Create(create => create.Action("Create_Building", "CoverageManagement"))
+                                )
+                               
+                               
+                    )
+                </div>                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        CM_setSummary();
+    });
+  
+    function downloadExcel() {
+        window.location.href = "/CoverageManagement/download";      
+     }
+
+    function manageCoverage(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));//alert(dataItem.REPORT_NAME);
+        resetManageCoverage();
+        getGet_EditCoverageSite(dataItem.ContactId);
+
+       
+    }
+
+    //$(function () {
+	//    var submitButton = $("#submitButton");
+	//    var infoForm = $("#infoForm");
+	     
+	//    //  Attach event handler to submit button
+	//        submitButton.click(function () {
+	//        SubmitInfo(infoForm);
+	//    });
+    //});
+
+    function CM_setSummary() {
+        $.ajax({
+            url: "/CoverageManagement/GetCoverageSiteTotal",
+            dataType: "json",
+            type: 'Get',
+            success: function (e) {
+                $("#L_TotalSite").text(e.TotalSite);
+                $("#L_Available").text(e.Available);
+                $("#L_Active").text(e.Active);
+                $("#L_OutOfService").text(e.OutOfService);
+                $("#L_PendingTerminate").text(e.PendingTerminate);
+                $("#L_Reserve").text(e.Reserve);
+                $("#L_TotalCoverage").text(e.TotalCoverage);
+                $("#L_TotalPort").text(e.TotalPort);
+                
+            }
+           
+        });
+    }
+
+    function CM_Search() {      
+        Loading();
+        $("#GridCoverageSite").data("kendoGrid").dataSource.read();
+        CM_setSummary();
+        Loading(0);
+    }
+
+    function CM_GetDefaultPortUtilization() {
+        $.ajax({
+            url: "/MasterData/SelectLovDefaultValue",
+            data: { type: "PORT_UTILIZATION" },            
+            dataType: "json",
+            type: 'Get',
+            success: function (data) {
+                $("#ddlPortUtilization").data("kendoDropDownList").value(data.LOV_VAL1);
+                $("#GridCoverageSite").data("kendoGrid").dataSource.read({ port: data.LOV_VAL1 });                
+            }           
+        });
+    }
+
+    function CM_Reset() {
+
+        $("#ddlAmphur").data("kendoDropDownList").value("");
+        $("#txtIPRANCode").val("")
+        $("#txtCondoCodeSC").val("")
+        $("#txtProjectName").val("")
+        $("#ddlStatus").data("kendoDropDownList").value("");
+        $("#ddlPortUtilization").data("kendoDropDownList").value("");
+        $("#ddlProvince").data("kendoDropDownList").value("");
+        $("#ddlRegion").data("kendoDropDownList").value("");
+
+        $("#L_TotalSite").text("0");
+        $("#L_Available").text("0");
+        $("#L_Active").text("0");
+        $("#L_OutOfService").text("0");
+        $("#L_PendingTerminate").text("0");
+        $("#L_Reserve").text("0");
+        $("#L_TotalCoverage").text("0");
+        $("#L_TotalPort").text("0");
+
+        $("#GridCoverageSite").data("kendoGrid").dataSource.data([]);
+    }
+
+    function CM_ReadData() {
+        return {
+            amphur: $("#ddlAmphur").val(),
+            ipranCode: $("#txtIPRANCode").val(),
+            locationCode: $("#txtCondoCodeSC").val(),
+            nodeName: $("#txtProjectName").val(),
+            nodeStatus: $("#ddlStatus").val(),
+            port: $("#ddlPortUtilization").val(),
+            province: $("#ddlProvince").val(),
+            regionCode : $("#ddlRegion").val()
+        };
+    }  
+  
+
+    function gotoSiteCoverage() {     
+        resetManageCoverage();
+        $("#navPage2").click();        
+    }
+
+    function onRegionChanges() {
+        $("#ddlProvince").data("kendoDropDownList").dataSource.read({ regionCode: $("#ddlRegion").data("kendoDropDownList").value() });
+        $("#ddlAmphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#ddlRegion").data("kendoDropDownList").value(), province: "" });
+    }
+
+    function onProvinceChanges() {
+        $("#ddlAmphur").data("kendoDropDownList").dataSource.read({ regionCode: $("#ddlRegion").data("kendoDropDownList").value(), province: $("#ddlProvince").data("kendoDropDownList").value() });
+    }
+</script>
