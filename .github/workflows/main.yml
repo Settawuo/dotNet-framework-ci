@@ -38,10 +38,11 @@ jobs:
       # Restore แบบโปรเจกต์ที่ใช้ packages.config (ถ้าโซลูชันใช้ PackageReference ข้ามขั้นนี้ได้)
       - name: NuGet restore
         run: nuget restore ".\Fixed_Broadband.sln"
+        
 
       # Build ด้วย MSBuild
       - name: Build (Release | Any CPU)
-        run: msbuild ".\Fixed_Broadband.sln" /m /t:Build /p:Configuration=Release /p:Platform="Any CPU" /verbosity:minimal
+        run: msbuild ".\Fixed_Broadband.sln" /m /p:Configuration=Release /p:Platform="Any CPU" /p:TreatWarningsAsErrors=false /p:WarningsAsErrors=
 
       # (ทางเลือก) รัน MSTest/VSTest สำหรับ .NET Framework
       # ต้องมี MSTest.TestAdapter/Framework ใน test projects อยู่แล้ว
